@@ -1,0 +1,49 @@
+Hearty: {
+	DisplayName: Hearty
+	Description: Relic value effectiveness is scaled accordingly to player current health, Minimum of 0.8 and maximum of 1.2 multiplier
+}
+
+Arcane: {
+	DisplayName: Arcane
+	Description: Relic value effectiveness is scaled accordingly to player current mana, Minimum of 0.8 and maximum of 1.2 multiplier
+}
+
+Alpha: {
+	DisplayName: Alpha
+	Description: Increases the first stat value by by 1.5x
+}
+
+Zeta: {
+	DisplayName: Zeta
+	Description: Increases the last stat value by 1.5x
+}
+
+Omega: {
+	DisplayName: Omega
+	Description: Increases projectile relic effect damage by 20%
+}
+
+Phi: {
+	DisplayName: Phi
+	Description: Increases relic stats value effect effect by 20%
+}
+
+Melee: {
+	DisplayName: Melee
+	Description: Increases base relic stats by 5 when helding melee weapon, +10 direct item damage
+}
+
+Archer: {
+	DisplayName: Archer
+	Description: Increases base relic stats by 5 when helding a weapon use arrow, +6% arrow damage
+}
+
+Staff: {
+	DisplayName: Staff
+	Description: Increases base relic stats by 5 when helding a magic staff, -5% mana cost
+}
+
+Defense: {
+	DisplayName: Defense
+	Description: Increases base relic stats by 5 when defenses is over 50, +5 defenses
+}

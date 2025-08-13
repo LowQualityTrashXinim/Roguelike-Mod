@@ -1,0 +1,178 @@
+TheBeginningOfEndless: {
+	DisplayName: The Beginning Of Endless
+	Description: This mark the beginning of where it all start.
+	ConditionTip: Open your first lootboxs.
+}
+
+TheFirstOfMany: {
+	DisplayName: The first of many
+	Description: From this point, a legend is born !
+	ConditionTip: Beat the mod first time
+}
+
+BountifulHarvest: {
+	DisplayName: Bountiful Harvest
+	Description: Enrich your future with many blessings.
+	ConditionTip: Open a total of 100 lootboxes.
+}
+
+OceanOfFortune: {
+	DisplayName: Ocean of Fortune
+	Description: Overwhelm yourself with countless blessings.
+	ConditionTip: Open a total of 1000 lootboxes.
+}
+
+SkillCheck: {
+	DisplayName: Skill Check
+	Description: This is just the beginning
+	ConditionTip: Beat a boss without getting hit
+}
+
+TokenOfGreed: {
+	DisplayName: Token of Greed
+	Description: Greed, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Greed artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool, unlock Eternal Wealth artifact
+}
+
+TokenOfPride: {
+	DisplayName: Token of Pride
+	Description: Pride, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Pride artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+TokenOfWrath: {
+	DisplayName: Token Of Wrath
+	Description: Wrath, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Wrath artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+TokenOfSloth: {
+	DisplayName: Token Of Sloth
+	Description: Sloth, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Sloth artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+TokenOfGluttony: {
+	DisplayName: Token Of Gluttony
+	Description: Gluttony, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Gluttony artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+BootOfSpeedManipulation: {
+	DisplayName: Boot Of Speed Manipulation
+	Description: Run with uncontrollable speed
+	ConditionTip: Beat the mod with Boot Of Speed Manipulation artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+VampirismCrystal: {
+	DisplayName: Vampirism Crystal
+	Description: Give you knowledge of the darkness
+	ConditionTip: Beat the mod with Vampirism Crystal artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+HeartOfEarth: {
+	DisplayName: Heart Of Earth
+	Description: A beating heart, it is warm to hold
+	ConditionTip: Beat the mod with Heart Of Earth artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+GamblerSoul: {
+	DisplayName: Gambler Soul
+	Description: Your entire life is to gamble on every moment
+	ConditionTip: Beat the mod with Gambler Soul artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+ManaOverloader: {
+	DisplayName: Mana Overloader
+	Description: Overflowing with endless power, too bad you can't use more
+	ConditionTip: Beat the mod with ManaOverloader artifact in expert or higher difficulty
+}
+
+EssenceLantern: {
+	DisplayName: Essence Lantern
+	Description: Enable new world perspective, shine light on the 3rd world
+	ConditionTip: Beat the mod with Essence Lantern artifact in expert or higher difficulty
+}
+
+AlchemistKnowledge: {
+	DisplayName: Alchemist Knowledge
+	Description: Knowledge said to be from True God
+	ConditionTip: Beat the mod with Alchemist Knowledge artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
+}
+
+LordOfLootBox: {
+	DisplayName: Lord Of Lootbox
+	Description: Requirement, prove your skill and beat a god
+	ConditionTip: ???
+	ConditionTipAfterAchieve: Beat Loot box lord, gained by no hitting all boss before hardmode
+}
+
+WeaponChallenge1: {
+	DisplayName: Weapon Challenge I
+	Description: A God dare you to beat 1 of his many challenge
+	ConditionTip: Beat the mod using only a copper shortsword from start to the end of the mod
+}
+
+NightmareOvercome: {
+	DisplayName: Nightmare Overcome
+	Description: You have overcome the hellish nightmare
+	ConditionTip: Beat the mod in Nightmare mode
+}
+
+TrueNightmare: {
+	DisplayName: True Nightmare
+	Description: no word can describe the pain you must goes through
+	ConditionTip: Beat the mod in Nightmare mode in For The Worthy Master mode
+}
+
+GodOfChallenge: {
+	DisplayName: God Of Challenge
+	Description: Impressive...
+	ConditionTip: Beat the mod with God Of Challenge enable with expert or higher difficulty
+}
+
+Elite: {
+	DisplayName: Elite
+	Description: Impressive...
+	ConditionTip: Beat a elite boss
+}
+
+SpeedRunner: {
+	DisplayName: Speed Runner
+	Description: You are certified a speed runner
+	ConditionTip: Beat the mod under 30 minutes
+}
+
+BossRushRunnerI: {
+	DisplayName: Boss Hunter I
+	Description: You are certified a boss hunter
+	ConditionTip: Beat the mod while in boss rush mode under 10 minutes
+}
+
+BossRushRunnerII: {
+	DisplayName: Boss Hunter II
+	Description: You are certified a boss hunter expert
+	ConditionTip: Beat the mod while in boss rush mode under 5 minutes
+}
+
+StraightForTheWall: {
+	DisplayName: Straight For The Wall
+	Description: Aren't you a bit too hurry ?
+	ConditionTip: Beat wall of flesh without beating any other boss prior
+}
+
+SynergyDream: {
+	DisplayName: Synergy fever dream
+	Description: What a weird dream, don't you agree ?
+	ConditionTip: Beat the mod with synergy fever mode on
+}

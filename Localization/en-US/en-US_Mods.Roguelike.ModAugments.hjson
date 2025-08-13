@@ -1,0 +1,209 @@
+Fire: {
+	DisplayName: Fire I
+	DisplayName1: Fire II
+	DisplayName2: Fire III
+	Description: Inflict on fire upon enemy hit
+	Description1: Enemy with on fire debuff receive 20% more damage
+	Description2: Enemy with on fire debuff receive 40% more knockback
+}
+
+FrostBurn: {
+	DisplayName: FrostBurn I
+	DisplayName1: FrostBurn II
+	DisplayName2: FrostBurn III
+	Description: Inflict frost burn upon enemy hit
+	Description1: Enemy with frost burn debuff receive 20% more damage
+	Description2: Enemy with frost burn debuff receive 40% more knockback
+}
+
+ShadowFlame: {
+	DisplayName: ShadowFlame I
+	Description: Inflict ShadowFlame upon enemy hit
+	DisplayName1: ShadowFlame II
+	Description1: Enemy with ShadowFlame debuff receive 20% more damage
+	DisplayName2: ShadowFlame III
+	Description2: Enemy with ShadowFlame debuff receive 40% more knockback
+}
+
+CursedFlame: {
+	DisplayName: CursedFlame I
+	Description: Inflict cursed flame upon enemy hit
+	DisplayName1: CursedFlame II
+	Description1: Enemy with cursed flame debuff receive 20% more damage
+	DisplayName2: CursedFlame III
+	Description2: Enemy with cursed flame debuff receive 40% more knockback
+}
+
+Poison: {
+	DisplayName: Poison I
+	Description: Inflict poisoned upon enemy hit
+	DisplayName1: Poison II
+	Description1: Enemy with poisoned debuff receive 20% more damage
+	DisplayName2: Poison III
+	Description2: Enemy with poisoned debuff receive 40% more knockback
+}
+
+Venom: {
+	DisplayName: Venom I
+	Description: Inflict venom upon enemy hit
+	DisplayName1: Venom II
+	Description1: Enemy with venom debuff receive 20% more damage
+	DisplayName2: Venom III
+	Description2: Enemy with venom debuff receive 40% more knockback
+}
+
+BerserkI: {
+	DisplayName: Berserk I
+	Description: Deal more damage the lower your health get
+}
+
+TrueStatus: {
+	DisplayName: True
+	Description: Deal 10% of weapon damage as True damage
+}
+
+Terra: {
+	DisplayName: Terra
+	Description: Your strike have 5% to deal 2nd strike as True damage
+}
+
+TitanI: {
+	DisplayName: Titan I
+	Description: Knock back value are added into base damage
+}
+
+TitanII: {
+	DisplayName: Titan II
+	Description: Knock back strength are increased by 5% of weapon damage
+}
+
+Critical: {
+	DisplayName: Critical I
+	Description: Increases critical chance by 5 but reduce critical damage by 10%
+	DisplayName1: Critical II
+	Description1: Critical strike ignore 50% of enemy defense
+	DisplayName2: Critical III
+	Description2: Critically strike a enemy will heal player for 1% of player health
+	DisplayName3: Critical IV
+	Description3: Critical strike will roll again increasing critical strike damage by 100%
+}
+
+VampireI: {
+	DisplayName: Vampire I
+	Description: Increase Life steal by 1%
+}
+
+VampireII: {
+	DisplayName: Vampire II
+	Description: During the night, your critical hit is more fatal
+}
+
+VampireIII: {
+	DisplayName: Vampire III
+	Description: During the night, your regeneration is increases by 25%
+}
+
+AlchemistI: {
+	DisplayName: Alchemist I
+	Description: Increases debuff damage by 6%
+}
+
+AlchemistII: {
+	DisplayName: Alchemist II
+	Description: For each debuff/buff you have, increases life regeneration by 1
+}
+
+Light: {
+	DisplayName: Light
+	Description: Deal 150% more damage to enemy above 80% max hp
+}
+
+Dark: {
+	DisplayName: Dark
+	Description: Deal 150% more damage to enemy below 40% max hp
+}
+
+Union: {
+	DisplayName: Union
+	Description: For every weapon in your inventory, +0.5 flat damage
+}
+
+Strengthen: {
+	DisplayName: Strengthen
+	Description: Grant various minor increases in stats
+}
+
+Ghost: {
+	DisplayName: Ghost
+	Description: Grant 8 tick of I-frame when hitting enemy with item
+}
+
+ExtraLife: {
+	DisplayName: Extra Life
+	Description: Grant you 1 extra life at the cost of this item
+}
+
+IntoxicateI: {
+	DisplayName: Intoxicate I
+	Description: While under a debuff effect, gain 10% damage reduction
+}
+
+IntoxicateII: {
+	DisplayName: Intoxicate II
+	Description: While under a debuff effect, gain 15% regeneration and flat 5 hp/s
+}
+
+ReactiveHealingI: {
+	DisplayName: Reactive Healing I
+	Description: Upon hit, have 33% chance to heal back 5% of your maximum life
+}
+
+ReactiveHealingII: {
+	DisplayName: Reactive Healing II
+	Description: Upon hit, have 33% chance to regenerate 10hp/s
+}
+
+ReactiveDefenseI: {
+	DisplayName: Reactive Defense I
+	Description: Upon hit, have 25% chance to gain 10% damage reduction
+}
+
+ReactiveDefenseII: {
+	DisplayName: Reactive Defense II
+	Description: Upon hit, have 25% chance to gain 10% defenses and flat 6 defenses
+}
+
+VitalityStrikeI: {
+	DisplayName: Vitality Strike I
+	Description: Your maximum life contribute to your output damage
+}
+
+ArcaneStrikeI: {
+	DisplayName: Arcane Strike I
+	Description: Your maximum mana contribute to your output damage
+}
+
+VitalityStrikeII: {
+	DisplayName: Vitality Strike II
+	Description: Increases your critical strike chance base on your maximum health
+}
+
+ArcaneStrikeII: {
+	DisplayName: Arcane Strike II
+	Description: Increases your critical strike chance base on your maximum mana
+}
+
+StealthStrikeI: {
+	DisplayName: Stealth Strike I
+	Description: While invisible, you deal 25% more damage
+}
+
+StealthStrikeII: {
+	DisplayName: Stealth Strike II
+	Description: 200% First strike damage
+}
+
+DryadBlessing: {
+	DisplayName: Dryad Blessing
+	Description: Grant passive regenaration 3 hp/s, getting hit have chance to give Dryad blessing
+}

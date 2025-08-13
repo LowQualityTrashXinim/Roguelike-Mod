@@ -1,0 +1,234 @@
+BootsOfSpeedManipulationArtifact: {
+	DisplayName: Boots Of Speed Manipulation
+	Description:
+		'''
+		"Run like you want to run."
+		[c/ffff00:Positive effect] : 
+			+ Increase your movement capacity massively
+		[c/ab3e43:Negative effect] : 
+			- You can't fly with wing
+			- Randomize your damage to be worse when moving
+		'''
+}
+
+EternalWealthArtifact: {
+	DisplayName: Eternal Wealth
+	Description:
+		'''
+		"Regardless of anything, wealth is all that matters."
+		[c/ffff00:Positive effect] : 
+			+ Multiply your lootbox drop by 3.
+		[c/ab3e43:Negative effect] : 
+			- A field of damage curses will be spawn and disappear after few seconds at where you are.
+			Field of damage will only damage you if you are in it for more than 3 second.
+		'''
+}
+
+HeartOfEarthArtifact: {
+	DisplayName: Heart Of Earth
+	Description:
+		'''
+		"Protected by the Earth"
+		[c/ffff00:Positive effect] : 
+			+ Increases your maximum health by 100 and increases your maximum life by 10%
+			+ Standing still for a short moment massively boost your regen
+		[c/ab3e43:Negative effect] : 
+			- Your damage effectiveness is depended on your current hp
+			- Getting hit will cut your timer by 25% of it's current value and you will receive 0.5s delay before the healing kick off
+		'''
+}
+
+MagicalCardDeckArtifact: {
+	DisplayName: Magical Card Deck
+	Description:
+		'''
+		"I Summon pot of greed ! it allow me to draw 2 card from the deck"
+		Banned for many reason
+		[c/ffff00:Positive effect] : 
+			+ Card packet can drop potentially more cards ( up to 3 )
+		[c/ab3e43:Negative effect] :
+			- Increase the chance to get faulty card
+		[c/9b9c76:Neutral effect] :
+			= Accelerate card luck stats
+		'''
+}
+
+SkillIssuedArtifact: {
+	DisplayName: Skill Issued
+	Description:
+		'''
+		"with this, nothing is impossible, even with skill issue in bloodstream"
+		[c/ffff00:Positive effect] : 
+			+ For each monster killed, your maximum life will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
+		[c/ab3e43:Negative effect] :
+			- make monster spawns increase by CRAZY amount
+		[c/757480:Only works with people have skill issue. Lives up to the name]
+		'''
+}
+
+TokenOfGreedArtifact: {
+	DisplayName: Token Of Greed
+	Description:
+		'''
+		"Satisfied by just having, caring not for weapon quality."
+		[c/ffff00:Positive effect] : 
+			+ Increase amount of drop by 1
+		[c/ab3e43:Negative effect] : 
+			- If the weapon type have been uses more than 1 time, damage effective will be decreases by 30%
+			Note : this can be reset by switching to other weapon
+		'''
+}
+
+TokenOfPrideArtifact: {
+	DisplayName: Token Of Pride
+	Description:
+		'''
+		"Having the skill to use whatever you are given."
+		[c/ffff00:Positive effect] : 
+			+ Randomize 1 of your weapon's enchantment
+			+ Increases chance to get augmentations by 65%
+		[c/ab3e43:Negative effect] : 
+			- Lootbox drop value set to 1 regardless of increasement
+		'''
+}
+
+TokenOfWrathArtifact: {
+	DisplayName: Token Of Wrath
+	Description:
+		'''
+		"Ruthless..."
+		[c/ffff00:Positive effect] : 
+			+ Increases your none-critical damage by 50%
+			+ Increases your critical strike chance by 50
+			+ Increases your damage by 10%
+		[c/ab3e43:Negative effect] : 
+			- Decreases your critical strike damage by 75%
+		'''
+}
+
+TokenOfSlothArtifact: {
+	DisplayName: Token Of Sloth
+	Description:
+		'''
+		"To them you are a laughing stock, but to you they are fragile"
+		[c/ffff00:Positive effect] : 
+			+ Increases defenses by 10%, maximum health by 15% 
+			+ Standing still will gain sloth status, which grant player 1 hit resistance
+			Note : Maximum sloth status is 2
+		[c/ab3e43:Negative effect] : 
+			- Decreases your attack speed by 35% and movement speed by 10%
+		'''
+}
+
+TokenOfGluttonyArtifact: {
+	DisplayName: Token Of Gluttony
+	Description:
+		'''
+		"..."
+		[c/ffff00:Positive effect] : 
+			+ The lower your health, the less damage you taken
+			+ Hitting enemy with item will heal yourself by small amount
+			+ While having a buff active, increases your damage reduction by 10%
+		[c/ab3e43:Negative effect] : 
+			- Decrease your buff duration by 90%
+			- You now have a small fixed radius, dealing outside of that radius result in 45% damage decreases
+		'''
+}
+
+VampirismCrystalArtifact: {
+	DisplayName: Vampirism Crystal
+	Description:
+		'''
+		"Unpure, relentess crystal."
+		[c/ffff00:Positive effect] :
+			+ Attacks heal the player. ( 0.25s cool down betwen hit )
+			+ You can survive 1 fatal attack (5 minute cooldown).
+		[c/ab3e43:Negative effect] : 
+			- Reduce max life by 55% and apply permanent potion sickness.
+		'''
+}
+
+ManaOverloaderArtifact: {
+	DisplayName: Mana Overloader
+	Description:
+		'''
+		"Unlimited potential"
+		[c/ffff00:Positive effect] :
+			+ You constantly regen Mana regardless of mana regen cooldown
+			+ When getting hit, deplete all of your mana to block incomming damage
+		[c/ab3e43:Negative effect] : 
+			- Damage dealt to you will be increases base on your mana
+		[c/9b9c76:Neutral effect] :
+			= Increases chance to get magic weapon from LootBox
+			= Spawn special orb that can increases your mana consumption rate
+			= Mana cost reduction can decreases your weapon damage and vice versa
+		'''
+}
+
+NormalizeArtifact: {
+	DisplayName: None
+	Description: Grants no effect.
+}
+
+AlchemistKnowledgeArtifact: {
+	DisplayName: Alchemist's Book
+	Description:
+		'''
+		"Knowledge of the ancient"
+		[c/ffff00:Positive effect] :
+			+ Increases buff duration by 35%
+			+ Increases transmutation success chance by 20%
+			+ Having active buff will increase your stats
+			+ Healing and Mana potion now heal for double the amount
+		[c/ab3e43:Negative effect] : 
+			- Debuff duration increases by 100% and are much more lethal
+		'''
+}
+
+GamblerSoulArtifact: {
+	DisplayName: Gambler's Soul
+	Description:
+		'''
+		"Do you want to taste luck ?"
+		[c/ffff00:Positive effect] :
+			+ Grant you exclusive coin flip and dice roll skill
+		[c/ab3e43:Negative effect] : 
+			- After 1 minute, not using coin flip or dice roll skill will unstable your character
+			Certain interaction may lead to death
+		[c/9b9c76:Neutral effect] :
+			= Damage variant increases from 15% to 65%
+		'''
+}
+
+SmallLootBoxArtifact: {
+	DisplayName: Small Lootbox
+	Description:
+		'''
+		"Start the game with more item, but at a cost"
+		[c/ffff00:Positive effect] :
+			+ Give you 1 perk and 1 extra spell
+			+ Increases lootbox drop by 1
+		[c/ab3e43:Negative effect] : 
+			- Taken damage are increases by 35% ( Final damage )
+			- Decreases your damage by 20%
+		'''
+}
+
+EssenceLanternArtifact: {
+	DisplayName: Essence Lantern
+	Description:
+		'''
+		"Enable new world perspective"
+		[c/9b9c76:Neutral effect] :
+			= Your attack spawn essence orb every 10s
+		[c/ffff00:Positive effect] :
+			+ Essence orb have positive effect and negative effect
+		[c/ab3e43:Negative effect] : 
+			- Essence of Wither orb are present which are hamrful
+		'''
+}
+
+RandomArtifact: {
+	DisplayName: Random Artifact
+	Description: Randomly chooses an artifact.
+}

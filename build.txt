@@ -1,0 +1,3 @@
+displayName = Record of Terrarian
+author = Xinim
+version = 0.0.1

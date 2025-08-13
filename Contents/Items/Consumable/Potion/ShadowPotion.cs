@@ -1,0 +1,29 @@
+﻿using Terraria;
+using Terraria.ModLoader;
+ 
+using Roguelike.Texture;
+using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+
+namespace Roguelike.Contents.Items.Consumable.Potion;
+internal class ShadowPotion : ModItem {
+	public override string Texture => ModTexture.MISSINGTEXTUREPOTION;
+	public override void SetStaticDefaults() {
+		ModItemLib.LootboxPotion.Add(Item);
+	}
+	public override void SetDefaults() {
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ShadowBuff>(), ModUtils.ToMinute(1.5f));
+		Item.Set_ItemIsRPG();
+	}
+}
+public class ShadowBuff : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.DodgeChance += 0.12f;
+		modplayer.AddStatsToPlayer(PlayerStats.Iframe, 1.1f);
+	}
+}
