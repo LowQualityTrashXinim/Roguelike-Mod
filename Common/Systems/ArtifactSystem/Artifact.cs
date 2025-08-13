@@ -16,8 +16,8 @@ namespace Roguelike.Common.Systems.ArtifactSystem
 		public int Type { get; private set; }
 		public virtual string TexturePath => (GetType().Namespace + "." + Name).Replace('.', '/');
 		public Asset<Texture2D> Texture { get; private set; }
-		public string DisplayName => Language.GetTextValue($"Mods.BossRush.Artifacts.{Name}.DisplayName");
-		public string Description => Language.GetTextValue($"Mods.BossRush.Artifacts.{Name}.Description");
+		public string DisplayName => Language.GetTextValue($"Mods.Roguelike.Artifacts.{Name}.DisplayName");
+		public string Description => Language.GetTextValue($"Mods.Roguelike.Artifacts.{Name}.Description");
 		public virtual Color DisplayNameColor => Color.White;
 		public virtual float Scale => 1f;
 		public virtual int Frames => 1;

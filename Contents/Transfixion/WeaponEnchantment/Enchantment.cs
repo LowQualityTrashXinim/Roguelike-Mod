@@ -20,7 +20,7 @@ namespace Roguelike.Contents.Transfixion.WeaponEnchantment
 		/// This will clean your counter automatically upon changing weapon
 		/// </summary>
 		public bool ForcedCleanCounter = false;
-		public string Description => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.Description");
+		public string Description => Language.GetTextValue($"Mods.Roguelike.ModEnchantment.{Name}.Description");
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);

@@ -319,7 +319,7 @@ namespace Roguelike.Contents.Items.Weapon
 					float width;
 					float height = -16;
 					Vector2 pos;
-					string value = $"Mods.BossRush.Items.{item.ModItem.Name}.ExtraInfo";
+					string value = $"Mods.Roguelike.Items.{item.ModItem.Name}.ExtraInfo";
 					string ExtraInfo = Language.GetTextValue(value);
 					DynamicSpriteFont font = FontAssets.MouseText.Value;
 					if (Main.MouseScreen.X < Main.screenWidth / 2) {

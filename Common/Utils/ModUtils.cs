@@ -17,9 +17,9 @@ namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
 		public static string LocalizationText(string text, string extra = null) {
 			if (string.IsNullOrEmpty(extra)) {
-				return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}");
+				return Language.GetTextValue($"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}");
 			}
-			return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}");
+			return Language.GetTextValue($"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}");
 		}
 		//Taken from chatGPT
 		public static Color FakeHueShift(Color original, float hueShiftDegrees) {

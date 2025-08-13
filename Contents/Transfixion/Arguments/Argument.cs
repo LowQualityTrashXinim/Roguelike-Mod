@@ -203,10 +203,10 @@ public abstract class ModAugments : ModType {
 	}
 	public static int GetAugmentType<T>() where T : ModAugments => ModContent.GetInstance<T>().Type;
 	public Color tooltipColor = Color.White;
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.DisplayName");
-	public string Description => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.Description");
-	protected string DisplayName2(string Extra) => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.DisplayName{Extra}");
-	protected string Description2(string Extra) => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.Description{Extra}");
+	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.ModAugments.{Name}.DisplayName");
+	public string Description => Language.GetTextValue($"Mods.Roguelike.ModAugments.{Name}.Description");
+	protected string DisplayName2(string Extra) => Language.GetTextValue($"Mods.Roguelike.ModAugments.{Name}.DisplayName{Extra}");
+	protected string Description2(string Extra) => Language.GetTextValue($"Mods.Roguelike.ModAugments.{Name}.Description{Extra}");
 	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) => new(Mod, "", Description);
 	public string ColorWrapper(string Name) => $"[c/{tooltipColor.Hex3()}:{Name}]";
 	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc, int index) { }

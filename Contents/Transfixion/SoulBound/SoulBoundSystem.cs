@@ -110,8 +110,8 @@ public abstract class ModSoulBound : ModType {
 		Type = SoulBoundLoader.Register(this);
 	}
 	public virtual string ModifiedToolTip(Item item) => Description;
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.DisplayName");
-	public string Description => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.SoulBound.{Name}.DisplayName");
+	public string Description => Language.GetTextValue($"Mods.Roguelike.SoulBound.{Name}.Description");
 	public int GetLevel(Item item) {
 		if (item.TryGetGlobalItem(out SoulBoundGlobalItem globalitem)) {
 			return globalitem.SoulBoundSlots.Level;

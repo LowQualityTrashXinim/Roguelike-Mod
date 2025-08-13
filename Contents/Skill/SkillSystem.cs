@@ -58,8 +58,8 @@ public abstract class ModSkill : ModType {
 	public float EnergyRequirePercentage { get => Skill_EnergyRequirePercentage; }
 	public bool CanBeSelect { get => Skill_CanBeSelect; }
 	public int Type { get; private set; }
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
-	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.ModSkill.{Name}.DisplayName");
+	public string Description => Language.GetTextValue($"Mods.Roguelike.ModSkill.{Name}.Description");
 	public ModSkill() {
 		SetDefault();
 	}

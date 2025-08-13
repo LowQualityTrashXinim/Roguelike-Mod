@@ -1,3 +1,4 @@
 displayName = Record of Terrarian
 author = Xinim
 version = 0.0.1
+modReferences  = StructureHelper@3.0, SubworldLibrary

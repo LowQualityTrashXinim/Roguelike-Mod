@@ -194,7 +194,7 @@ public abstract class ModArmorPiece : ModType {
 	/// <param name="player">the player</param>
 	/// <param name="item">the equipped item</param>
 	public virtual void UpdateEquip(Player player, Item item) { }
-	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{ArmorName}.{TypeEquipment}");
+	public string ToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{ArmorName}.{TypeEquipment}");
 	protected override void Register() {
 		SetDefault();
 		ArmorLoader.Register(this);
@@ -221,10 +221,10 @@ public abstract class ModArmorSet : ModType {
 	protected int bodyID;
 
 	public ModPlayer modplayer = null;
-	public string SetBonusToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}.SetBonus");
-	public string HeadToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}.Head");
-	public string BodyToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}.Body");
-	public string LegToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}.Leg");
+	public string SetBonusToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.SetBonus");
+	public string HeadToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Head");
+	public string BodyToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Body");
+	public string LegToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Leg");
 	public bool OverrideOriginalToolTip = false;
 	public int HeadID { get => headID; }
 	public int BodyID { get => bodyID; }

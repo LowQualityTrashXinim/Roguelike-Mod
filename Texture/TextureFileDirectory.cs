@@ -10,7 +10,7 @@
 		public const string PLACEHOLDERCHEST = CommonTextureStringPattern + "PlaceHolderTreasureChest";
 		public const string WHITEBALL = CommonTextureStringPattern + "WhiteBall";
 		public const string DIAMONDSWOTAFFORB = CommonTextureStringPattern + "DiamondSwotaffOrb";
-		public const string ACCESSORIESSLOT = CommonTextureStringPattern + "Inventory_Back7";
+		public const string ACCESSORIESSLOT = "Terraria/Images/Inventory_Back7";
 		public const string MENU = CommonTextureStringPattern + "UI/menu";
 		public const string SMALLWHITEBALL = CommonTextureStringPattern + "smallwhiteball";
 		public const string EMPTYCARD = CommonTextureStringPattern + "EmptyCard";
