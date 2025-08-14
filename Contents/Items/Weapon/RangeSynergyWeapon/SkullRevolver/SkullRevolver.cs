@@ -93,7 +93,7 @@ public class CursedStatus : ModBuff {
 		return true;
 	}
 }
-public class ShadowFlameSkullPortalProjectile : SynergyModProjectile {
+public class ShadowFlameSkullPortalProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
@@ -105,7 +105,7 @@ public class ShadowFlameSkullPortalProjectile : SynergyModProjectile {
 	public override bool? CanDamage() {
 		return false;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		float progress = Projectile.timeLeft;
 		for (int i = 0; i < 4; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Shadowflame);
@@ -134,7 +134,7 @@ public class ShadowFlameSkullPortalProjectile : SynergyModProjectile {
 		return false;
 	}
 }
-public class CursedSkullPortalProjectile : SynergyModProjectile {
+public class CursedSkullPortalProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
@@ -146,9 +146,9 @@ public class CursedSkullPortalProjectile : SynergyModProjectile {
 	public override bool? CanDamage() {
 		return false;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	Color[] colorArr = [Color.Purple, Color.Red, Color.White];
+	public override void AI() {
 		float progress = Projectile.timeLeft;
-		Color[] colorArr = new Color[] { Color.Purple, Color.Red, Color.White };
 		for (int i = 0; i < 4; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.WhiteTorch);
 			dust.velocity = Vector2.One.RotatedBy(MathHelper.ToRadians(progress + 90 * i)) * 4;

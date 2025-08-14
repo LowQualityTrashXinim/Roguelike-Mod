@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
@@ -9,8 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	internal class BloodyShot : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AquaScepter, $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood");
@@ -51,7 +50,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 				.Register();
 		}
 	}
-	public class BloodWater : SynergyModProjectile {
+	public class BloodWater : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<BloodBullet>();
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 10;
@@ -61,7 +60,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 			Projectile.tileCollide = true;
 			Projectile.hide = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.Blood);
 			Main.dust[dust].fadeIn = .5f;
 			Main.dust[dust].velocity = Vector2.Zero;
@@ -71,7 +70,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 			}
 		}
 	}
-	internal class BloodBullet : SynergyModProjectile {
+	internal class BloodBullet : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.tileCollide = false;
 			Projectile.penetrate = 1;
@@ -82,17 +81,17 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			if (!npc.HasBuff(ModContent.BuffType<BoilingBlood>()) && Main.rand.NextBool(10)) {
-				npc.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			if (!target.HasBuff(ModContent.BuffType<BoilingBlood>()) && Main.rand.NextBool(10)) {
+				target.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
 			}
 			else {
 				hit.Damage += (int)(Projectile.damage * .25f);
 				int randNum2 = 1 + Main.rand.Next(4, 6);
 				for (int i = 0; i < randNum2; i++) {
-					Vector2 newPos = npc.Center + Main.rand.NextVector2CircularEdge(npc.width, npc.height) * 1.1f;
-					Vector2 vel = (newPos - npc.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4, 7);
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, vel, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, player.whoAmI);
+					Vector2 newPos = target.Center + Main.rand.NextVector2CircularEdge(target.width, target.height) * 1.1f;
+					Vector2 vel = (newPos - target.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4, 7);
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, vel, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, Projectile.owner);
 				}
 			}
 			int randNum = 1 + Main.rand.Next(3, 6);
@@ -100,7 +99,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 				Vector2 newPos = new Vector2(Projectile.position.X + Main.rand.Next(-200, 200) + 5, Projectile.position.Y - (600 + Main.rand.Next(1, 200)) + 5);
 				Projectile.position.X += Main.rand.Next(-50, 50);
 				Vector2 safeAimto = (Projectile.position - newPos).SafeNormalize(Vector2.UnitX);
-				Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, safeAimto * 25, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, player.whoAmI);
+				Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, safeAimto * 25, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, Projectile.owner);
 			}
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Blood);
 			Main.dust[dust].noGravity = true;

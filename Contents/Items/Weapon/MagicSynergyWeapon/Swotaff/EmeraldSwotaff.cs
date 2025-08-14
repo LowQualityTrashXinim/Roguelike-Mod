@@ -1,13 +1,9 @@
-﻿ 
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class EmeraldSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 16;
@@ -31,7 +27,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 75;
 		}
 	}
-	public class EmeraldSwotaffGemProjectile : SynergyModProjectile {
+	public class EmeraldSwotaffGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Emerald);
 		public override void SetDefaults() {
 			Projectile.width = 18;
@@ -42,7 +38,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Magic;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.velocity = Projectile.velocity * .98f;
 
 			for (int i = 0; i < 10; i++) {

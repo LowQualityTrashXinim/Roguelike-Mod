@@ -127,7 +127,7 @@ public class TwilightNight : SynergyModItem {
 			.Register();
 	}
 }
-public class TwilightNightProjectile : SynergyModProjectile {
+public class TwilightNightProjectile : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.TitaniumSword);
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 5;
@@ -139,12 +139,12 @@ public class TwilightNightProjectile : SynergyModProjectile {
 		Projectile.tileCollide = true;
 		Projectile.timeLeft = 600;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(3)) {
-			Vector2 pos = npc.Center + Main.rand.NextVector2CircularEdge(400, 400) + Main.rand.NextVector2CircularEdge(npc.width, npc.height) * 2;
+			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(400, 400) + Main.rand.NextVector2CircularEdge(target.width, target.height) * 2;
 			float randomrotation = Main.rand.NextFloat(90);
 			Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 			for (int i = 0; i < 4; i++) {
@@ -157,12 +157,12 @@ public class TwilightNightProjectile : SynergyModProjectile {
 					Main.dust[dust].noGravity = true;
 				}
 			}
-			Vector2 vel = (npc.Center - pos).SafeNormalize(Vector2.Zero) * 10;
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 10;
 			Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), pos, vel, ProjectileID.MagicMissile, Projectile.damage, Projectile.knockBack, Projectile.owner);
 			proj.tileCollide = false;
 		}
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 30; i++) {
 			float multiplier = Main.rand.NextFloat();
 			float scale = MathHelper.Lerp(2.1f, .9f, multiplier);

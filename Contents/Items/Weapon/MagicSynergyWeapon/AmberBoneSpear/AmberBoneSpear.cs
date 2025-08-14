@@ -6,8 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 	public class AmberBoneSpear : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AntlionClaw, $"[i:{ItemID.AntlionClaw}] Your spear attack sometime will shoot out mandible blade, hitting enemies with your spear will spawn a mandible blade immediately");
@@ -47,7 +46,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
 				.Register();
 		}
 	}
-	class AmberBoneProjectile : SynergyModProjectile {
+	class AmberBoneProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<AmberBoneSpear>();
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 30;
@@ -57,8 +56,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
 			Projectile.timeLeft = 999;
 			base.SetDefaults();
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			base.SynergyAI(player, modplayer);
+		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			Projectile.ai[0]++;
 			if (Projectile.ai[0] >= 10) {
@@ -69,16 +67,15 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
 			Projectile.ai[1]++;
 			if (Projectile.ai[1] > 10) Projectile.velocity.Y += Projectile.velocity.Y > 20 ? 0 : .5f;
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 40; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.AmberBolt);
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(8f, 8f);
 				Main.dust[dust].noGravity = true;
 			}
-			base.SynergyKill(player, modplayer, timeLeft);
 		}
 	}
-	internal class AmberBoneSpearProjectile : SynergyModProjectile {
+	internal class AmberBoneSpearProjectile : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear);
 			Projectile.width = 30;
@@ -88,8 +85,8 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
 		float chooseRotation = Main.rand.NextFloat(-0.6f, 0.6f);
 		float HoldoutRangeMin => 50f;
 		float HoldoutRangeMax => 100f;
-
-		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
+		public override bool PreAI() {
+			Player player = Main.player[Projectile.owner];
 			int duration = player.itemAnimationMax;
 			player.heldProj = Projectile.whoAmI;
 			if (Projectile.timeLeft > duration) {
@@ -122,9 +119,9 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear
 			}
 			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-			runAI = false;
+			return base.PreAI();
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<AmberBoneSpear>(), ItemID.AntlionClaw))
 				if (Main.rand.NextBool(4))
 					Projectile.NewProjectile(

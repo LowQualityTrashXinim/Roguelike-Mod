@@ -1,13 +1,10 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class DiamondSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 17;
@@ -32,7 +29,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 100;
 		}
 	}
-	public class DiamondSwotaffGemProjectile : SynergyModProjectile {
+	public class DiamondSwotaffGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Diamond);
 		public override void SetDefaults() {
 			Projectile.width = 18;
@@ -44,7 +41,8 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.penetrate = -1;
 		}
 		Vector2 firstframePos = Vector2.Zero;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (Projectile.timeLeft == 1000) {
 				firstframePos = player.GetModPlayer<ModUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center;
 			}
@@ -72,7 +70,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				Projectile.ai[0] = 60;
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 10; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 				Main.dust[dust].noGravity = true;
@@ -80,7 +78,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			}
 		}
 	}
-	class DiamondGemProjectile : SynergyModProjectile {
+	class DiamondGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Diamond);
 		public override void SetDefaults() {
 			Projectile.width = 18;
@@ -92,7 +90,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.friendly = true;
 			Projectile.hide = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			for (int i = 0; i < 3; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 				Main.dust[dust].noGravity = true;

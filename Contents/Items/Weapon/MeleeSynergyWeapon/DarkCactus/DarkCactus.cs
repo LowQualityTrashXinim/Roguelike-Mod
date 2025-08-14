@@ -7,8 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
-{
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 	internal class DarkCactus : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BatScepter, $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat");
@@ -74,7 +73,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 				.Register();
 		}
 	}
-	internal class CactusBall : SynergyModProjectile {
+	internal class CactusBall : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = 24;
 			Projectile.height = 24;
@@ -84,7 +83,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.damage *= 3;
 		}
-		public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void PostAI() {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<DarkCactus>(), ItemID.BatScepter)) {
 				if (!Main.rand.NextBool(10)) {
 					return;
@@ -92,12 +91,11 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity.Vector2RotateByRandom(5f), ProjectileID.Bat, (int)(Projectile.damage * .5f), 0, Projectile.owner);
 			}
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.ai[0] += 1f;
 			if (Projectile.ai[0] > 10) {
 				Projectile.netUpdate = true;
 				Projectile.rotation += 0.5f;
-
 				if (Projectile.velocity.Y <= 20) Projectile.velocity.Y += 0.3f;
 			}
 		}

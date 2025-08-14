@@ -28,8 +28,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Common.ChallengeMode;
 
-namespace Roguelike.Contents.Items.Weapon
-{
+namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
 		public int ItemID;
 		public bool Active;
@@ -154,12 +153,7 @@ namespace Roguelike.Contents.Items.Weapon
 		public bool SynergyBonusBlock = false;
 		public int SynergyBonus = 0;
 
-		public int EnergyBlade_Code1_Energy = 0;
-
-		public int StreetLamp_VampireFrogStaff_HitCounter = 0;
 		public int Annihiliation_Counter = 0;
-
-		public int SinisterBook_DemonScythe_Counter = 0;
 
 		public override void ResetEffects() {
 			SynergyBonus = 0;
@@ -509,65 +503,12 @@ namespace Roguelike.Contents.Items.Weapon
 			Main.instance.LoadItem(Type);
 			Texture2D texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), frame, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), frame, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), frame, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), frame, auraColor, 0, origin, scale, SpriteEffects.None, 0);
 			}
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-		}
-	}
-	public abstract class SynergyModProjectile : ModProjectile {
-		public virtual void SpawnDustPostPostAI(Player player) { }
-		public override sealed bool PreAI() {
-			Player player = Main.player[Projectile.owner];
-			SynergyPreAI(player, player.GetModPlayer<PlayerSynergyItemHandle>(), out bool stopAI);
-			return stopAI;
-		}
-		/// <summary>
-		/// You should check the condition yourself
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="modplayer"></param>
-		/// <param name="runAI"></param>
-		public virtual void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) { runAI = true; }
-		public override sealed void AI() {
-			Player player = Main.player[Projectile.owner];
-			SynergyAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
-		}
-		/// <summary>
-		/// You should check the condition yourself
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="modplayer"></param>
-		public virtual void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) { }
-		public override sealed void PostAI() {
-			Player player = Main.player[Projectile.owner];
-			SynergyPostAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
-			SpawnDustPostPostAI(player);
-		}
-		/// <summary>
-		/// You should check the condition yourself
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="modplayer"></param>
-		public virtual void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) { }
-		public override sealed void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			Player player = Main.player[Projectile.owner];
-			ModifyHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, ref modifiers);
-		}
-		public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) { }
-		public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			Player player = Main.player[Projectile.owner];
-			OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
-		}
-		public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) { }
-		public override sealed void OnKill(int timeLeft) {
-			base.OnKill(timeLeft);
-			Player player = Main.player[Projectile.owner];
-			SynergyKill(player, player.GetModPlayer<PlayerSynergyItemHandle>(), timeLeft);
-		}
-		public virtual void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 		}
 	}
 	public abstract class SynergyBuff : ModBuff {

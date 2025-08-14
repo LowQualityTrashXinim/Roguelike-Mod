@@ -1,9 +1,7 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
 using System;
 using Terraria;
@@ -80,7 +78,7 @@ public class Epilogue_Ishboshet : ModBuff {
 		}
 	}
 }
-public class AnnihiliationBullet : SynergyModProjectile {
+public class AnnihiliationBullet : ModProjectile {
 	public override string Texture => ModTexture.SMALLWHITEBALL;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 100;
@@ -105,7 +103,7 @@ public class AnnihiliationBullet : SynergyModProjectile {
 		//money symbol
 		return color * Projectile.Opacity;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (Projectile.penetrate <= 10) {
 			int timeleft = 300;
 			if (Projectile.timeLeft > timeleft) {
@@ -120,12 +118,12 @@ public class AnnihiliationBullet : SynergyModProjectile {
 			Projectile.velocity *= .995f;
 		}
 	}
-	public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
-		if (player.HasBuff<Epilogue_Ishboshet>()) {
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (Main.player[Projectile.owner].HasBuff<Epilogue_Ishboshet>()) {
 			modifiers.ScalingArmorPenetration += 1;
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		for (int i = 0; i < 4; i++) {

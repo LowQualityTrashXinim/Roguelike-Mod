@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
@@ -9,9 +9,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
-{
-	abstract class BaseFOE : SynergyModProjectile {
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth {
+	abstract class BaseFOE : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.tileCollide = false;
 			Projectile.width = 16;
@@ -26,7 +25,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
 		public bool CanShootBecauseOfAmmo = true;
 		public float speed = 15;
 		public virtual float OffsetBehavior => 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (++TwoPiCounter > 360) {
 				TwoPiCounter -= 360;
 			}

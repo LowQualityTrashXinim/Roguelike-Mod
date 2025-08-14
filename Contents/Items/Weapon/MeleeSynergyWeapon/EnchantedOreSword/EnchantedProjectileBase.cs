@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
@@ -6,9 +6,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
-{
-	abstract class EnchantedProjectileBase : SynergyModProjectile {
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
+	abstract class EnchantedProjectileBase : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -23,7 +22,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		}
 		public virtual void PostSetDefault() { }
 		int counter = 0;
-		public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void PostAI() {
 			counter++;
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<EnchantedOreSword>(), ItemID.Starfury) && counter >= 20) {
 				int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -37,8 +36,8 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 				Projectile.Kill();
 			}
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			EnchantedProjectileOnHitNPC(npc, hit, damageDone);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			EnchantedProjectileOnHitNPC(target, hit, damageDone);
 		}
 		public virtual void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
 		public override bool PreDraw(ref Color lightColor) {
@@ -51,7 +50,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		public override void PostSetDefault() {
 			Projectile.light = .45f;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.alpha += 2;
 		}
 	}
@@ -62,7 +61,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		}
 		int count = 0;
 		float rotate = -2.5f;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.alpha += 2;
 			Projectile.ai[0] += 1f;
 			if (count == 2) {
@@ -91,7 +90,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		public override void PostSetDefault() {
 			Projectile.light = .55f;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.alpha += 4;
 			Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
 		}
@@ -103,9 +102,9 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		}
 		int count = 0;
 		int direction = 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (count == 0) {
-				direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+				direction = Projectile.Center.X - Main.player[Projectile.owner].Center.X > 0 ? 1 : -1;
 			}
 			count++;
 			if (count >= 20) {
@@ -121,9 +120,9 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		}
 		int firstFrame = 0;
 		int direction = 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (firstFrame == 0) {
-				direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+				direction = Projectile.Center.X - Main.player[Projectile.owner].Center.X > 0 ? 1 : -1;
 				firstFrame++;
 			}
 			Projectile.alpha += 3;
@@ -137,9 +136,9 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		}
 		int firstFrame = 0;
 		int direction = 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (firstFrame == 0) {
-				direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+				direction = Projectile.Center.X - Main.player[Projectile.owner].Center.X > 0 ? 1 : -1;
 				firstFrame++;
 			}
 			Projectile.alpha += 3;
@@ -154,7 +153,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 		public override void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.immune[Projectile.owner] = 4;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
 			Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
 			Projectile.alpha += 2;
@@ -166,7 +165,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 			Projectile.light = .75f;
 			Projectile.knockBack = 0;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.alpha += 2;
 			Projectile.knockBack = 0;
 		}

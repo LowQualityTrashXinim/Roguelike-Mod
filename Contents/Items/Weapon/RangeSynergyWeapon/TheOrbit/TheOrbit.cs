@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TheOrbit;
@@ -35,7 +35,7 @@ internal class TheOrbit : SynergyModItem {
 			.Register();
 	}
 }
-public class TheOrbitProjectile : SynergyModProjectile {
+public class TheOrbitProjectile : ModProjectile {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<TheOrbit>();
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 10;
@@ -48,7 +48,8 @@ public class TheOrbitProjectile : SynergyModProjectile {
 		Projectile.timeLeft = 999;
 		Projectile.penetrate = -1;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
 		if (Projectile.timeLeft == 999) {
 			for (int i = 0; i < Projectile.ai[0]; i++) {
 				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<OrbitProjectile>(), (int)(Projectile.damage * .55f), 0, player.whoAmI, Projectile.whoAmI, Projectile.ai[0], i);
@@ -75,9 +76,6 @@ public class TheOrbitProjectile : SynergyModProjectile {
 			}
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-
-	}
 	public override bool PreDraw(ref Color lightColor) {
 		if (Projectile.ai[1] == 1) {
 			Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
@@ -88,7 +86,7 @@ public class TheOrbitProjectile : SynergyModProjectile {
 		return base.PreDraw(ref lightColor);
 	}
 }
-public class OrbitProjectile : SynergyModProjectile {
+public class OrbitProjectile : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.FlamingMace);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 16;
@@ -97,7 +95,7 @@ public class OrbitProjectile : SynergyModProjectile {
 		Projectile.timeLeft = 999;
 		Projectile.penetrate = -1;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		int Projectile_WhoAmI = (int)Projectile.ai[0];
 		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 10);
 		if (Projectile.timeLeft <= 100) {
@@ -114,7 +112,7 @@ public class OrbitProjectile : SynergyModProjectile {
 			Projectile.Kill();
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		npc.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(1, 9)));
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(1, 9)));
 	}
 }

@@ -1,7 +1,5 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
@@ -9,8 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy {
 	internal class OrbOfEnergy : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BookofSkulls, $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy");
@@ -39,7 +36,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
 				.Register();
 		}
 	}
-	class OrbOfEnergyBolt : SynergyModProjectile {
+	class OrbOfEnergyBolt : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 1;
@@ -50,7 +47,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 200;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, Main.rand.Next(new int[] { DustID.Electric, DustID.GemSapphire }));
 			Main.dust[dust].scale = Main.rand.NextFloat(.3f, .75f);
 			Main.dust[dust].velocity = Vector2.Zero;

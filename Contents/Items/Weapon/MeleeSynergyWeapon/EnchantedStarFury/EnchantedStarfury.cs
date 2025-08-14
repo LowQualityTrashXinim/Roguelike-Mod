@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
@@ -9,8 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
-{
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 	internal class EnchantedStarfury : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture, $"[i:{ItemID.SkyFracture}] Shower down StarFury regardless of attack and with additional sky facture");
@@ -83,10 +82,10 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 		int timer = 0;
 		Vector2 localOriginalvelocity;
 		public override void AI() {
-			if(Projectile.alpha >= 255) {
+			if (Projectile.alpha >= 255) {
 				Projectile.ai[1] = 15;
 			}
-			if(Projectile.alpha <= 0) {
+			if (Projectile.alpha <= 0) {
 				Projectile.ai[1] = -15;
 			}
 			Projectile.alpha += (int)Projectile.ai[1];
@@ -119,7 +118,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 			}
 		}
 	}
-	class LivingBreakerBladeProjectile : SynergyModProjectile {
+	class LivingBreakerBladeProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.BreakerBlade);
 		public override void SetDefaults() {
 			Projectile.width = 80;
@@ -134,7 +133,8 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 		float MaxLengthX = 0;
 		float MaxLengthY = 0;
 		float MouseXPosDirection;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (firstframe == 0) {
 				MouseXPosDirection = Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1;
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
@@ -159,7 +159,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 			float X = MathHelper.Lerp(-20, MaxLengthX + 40, progressX);
 			float Y = MathHelper.Lerp(0, MaxLengthY, progressY);
 			Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
-			Projectile.Center = player.MountedCenter + VelocityPosition;
+			Projectile.Center = Main.player[Projectile.owner].MountedCenter + VelocityPosition;
 			Projectile.spriteDirection = (int)MouseXPosDirection;
 			float value;
 			if (MouseXPosDirection == 1) {
@@ -170,15 +170,15 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 			}
 			Projectile.rotation = MathHelper.ToRadians(value) + Projectile.velocity.ToRotation();
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			npc.immune[player.whoAmI] = 6;
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.immune[Projectile.owner] = 6;
 		}
-		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
-			if (npc.life > (int)(npc.lifeMax * .9f)) {
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.life > (int)(target.lifeMax * .9f)) {
 				modifiers.SourceDamage.Base += 2.5f * Projectile.damage;
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 60; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
 				Main.dust[dust].noGravity = true;

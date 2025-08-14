@@ -9,8 +9,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
-{
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 	internal class Nadir : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 54, 20, 7f, 7, 21, ItemUseStyleID.Shoot, true);
@@ -50,7 +49,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
 				.Register();
 		}
 	}
-	public class ZenishProjectile : SynergyModProjectile {
+	public class ZenishProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -65,13 +64,17 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
 			Projectile.timeLeft = 999;
 			Projectile.usesLocalNPCImmunity = true;
 		}
+		Player player;
 		int MouseXPosDirection;
 		float MaxLengthX = 0;
 		float MaxLengthY = 0;
 		int maxProgress = 25;
 		int progression = 0;
 		Vector2 offset = Vector2.Zero;
-		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
+		public override void OnSpawn(IEntitySource source) {
+			player = Main.player[Projectile.owner];
+		}
+		public override bool PreAI() {
 			if (Projectile.timeLeft == 999) {
 				Projectile.localAI[0] = Main.rand.NextBool(10).ToDirectionInt();
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
@@ -80,9 +83,9 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
 				MouseXPosDirection = Main.rand.NextBool().ToDirectionInt() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
 				MaxLengthY = -Main.rand.NextFloat(20, 150 + MaxLengthX * .25f) * MouseXPosDirection;
 			}
-			base.SynergyPreAI(player, modplayer, out runAI);
+			return base.PreAI();
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (progression <= 0) {
 				if (Projectile.timeLeft > 10)
 					Projectile.timeLeft = 10;
@@ -110,8 +113,8 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi + MathHelper.ToRadians(rotation);
 			progression--;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			npc.immune[Projectile.owner] = 3;
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.immune[Projectile.owner] = 3;
 		}
 		private void ProgressYHandle(int timeleft, float progressMaxHalf, float progressMaxQuad, out float Y) {
 			if (timeleft > progressMaxHalf + progressMaxQuad) {

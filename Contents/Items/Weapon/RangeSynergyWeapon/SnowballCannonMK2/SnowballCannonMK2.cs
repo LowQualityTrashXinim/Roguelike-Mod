@@ -8,7 +8,7 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using System;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
@@ -107,7 +107,7 @@ public class SnowballCannonMK2Projectile_CoolDown : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 }
-public class SnowballCannonMK2Projectile : SynergyModProjectile {
+public class SnowballCannonMK2Projectile : ModProjectile {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<SnowballCannonMK2>();
 	public override void SetDefaults() {
 		Projectile.width = 86;
@@ -117,7 +117,8 @@ public class SnowballCannonMK2Projectile : SynergyModProjectile {
 		Projectile.timeLeft = 999;
 		Projectile.penetrate = -1;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
 		for (int i = 0; i < 4; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.IceTorch);
 			dust.noGravity = true;
@@ -158,7 +159,7 @@ public class SnowballCannonMK2Projectile : SynergyModProjectile {
 		ModUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], 86, 28);
 	}
 }
-public class GiantSnowBall : SynergyModProjectile {
+public class GiantSnowBall : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.SnowBallFriendly);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 14;
@@ -169,7 +170,7 @@ public class GiantSnowBall : SynergyModProjectile {
 		Projectile.scale = 3;
 		Projectile.extraUpdates = 1;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Snow);
 		dust.noGravity = true;
 		dust.position += Main.rand.NextVector2Circular(32, 32);
@@ -179,7 +180,7 @@ public class GiantSnowBall : SynergyModProjectile {
 		Projectile.velocity.X *= .99f;
 		Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0]);
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SnowballCannonMK2>(), ItemID.WandofFrosting)) {
 			for (int i = 0; i < 16; i++) {
 				Vector2 vel = Vector2.One.InverseVector2DistributeEvenly(16, 360, i) * 3;

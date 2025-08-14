@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
@@ -48,7 +48,7 @@ public class HandmadeLauncher : SynergyModItem {
 			.Register();
 	}
 }
-public class LauncherProjectile : SynergyModProjectile {
+public class LauncherProjectile : ModProjectile {
 	public override void SetDefaults() {
 		Projectile.width = 36;
 		Projectile.height = 36;
@@ -57,7 +57,7 @@ public class LauncherProjectile : SynergyModProjectile {
 		Projectile.tileCollide = true;
 		Projectile.scale = .77f;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (++Projectile.ai[0] >= 30) {
 			if (Projectile.velocity.Y <= 20) {
 				Projectile.velocity.Y += 1;
@@ -72,10 +72,10 @@ public class LauncherProjectile : SynergyModProjectile {
 		Projectile.velocity.X *= .99f;
 		Projectile.rotation = Projectile.velocity.ToRotation();
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		npc.AddBuff<Aftershock>(ModUtils.ToSecond(Main.rand.Next(1, 4)));
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff<Aftershock>(ModUtils.ToSecond(Main.rand.Next(1, 4)));
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150);
 		for (int i = 0; i < 100; i++) {
@@ -98,6 +98,7 @@ public class LauncherProjectile : SynergyModProjectile {
 			dust.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.3f, .8f);
 			dust.scale = Main.rand.NextFloat(1.15f, 1.85f);
 		}
+		Player player = Main.player[Projectile.owner];
 		foreach (var npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, Projectile.direction, knockBack: Projectile.knockBack));
 		}

@@ -158,7 +158,7 @@ public class SakuraKatana_ModPlayer : ModPlayer {
 		}
 	}
 }
-public class SakuraLeaf_Projectile : SynergyModProjectile {
+public class SakuraLeaf_Projectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 14;
@@ -170,7 +170,7 @@ public class SakuraLeaf_Projectile : SynergyModProjectile {
 		Projectile.idStaticNPCHitCooldown = 50;
 		Projectile.ContinuouslyUpdateDamageStats = true;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		SakuraAI();
 	}
 	public virtual void SakuraAI() { }

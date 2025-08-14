@@ -9,8 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
-{
+namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 	public class StreetLamp : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(15, 6));
@@ -85,7 +84,7 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 			}
 		}
 	}
-	internal class MothProj : SynergyModProjectile {
+	internal class MothProj : ModProjectile {
 
 		public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = 4;
@@ -110,7 +109,8 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 		public override void OnSpawn(IEntitySource source) {
 			ModUtils.CombatTextRevamp(Main.player[Projectile.owner].Hitbox, Color.Beige, "LAMP");
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (!CheckActive(player)) {
 				return;
 			}
@@ -131,9 +131,10 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 			else
 				Projectile.direction = Projectile.spriteDirection = targetCenter.X > Projectile.Center.X ? 1 : -1;
 		}
-
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (currentState == State.dashing) {
+				Player player = Main.player[Projectile.owner];
+				MothWeapon_ModPlayer modplayer = player.GetModPlayer<MothWeapon_ModPlayer>();
 				//deal more damage if dashing
 				int DashBonusDamage = (int)(damageDone * .5f);
 				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<StreetLamp>(), ItemID.VampireFrogStaff)) {
@@ -145,10 +146,10 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 					}
 				}
 				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<StreetLamp>(), ItemID.FireWhip) && Main.rand.NextBool(10)) {
-					npc.Center.LookForHostileNPC(out List<NPC> npclist, 200);
+					target.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 					foreach (var entity in npclist) {
 						SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot);
-						entity.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 3, (Projectile.Center.X <= entity.Center.X).ToDirectionInt(), false, 8, DamageClass.Summon, true));
+						entity.StrikeNPC(target.CalculateHitInfo(Projectile.damage * 3, (Projectile.Center.X <= entity.Center.X).ToDirectionInt(), false, 8, DamageClass.Summon, true));
 						entity.AddBuff(BuffID.OnFire3, 300);
 						player.addDPS(Projectile.damage * 3);
 					}
@@ -161,7 +162,7 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 				}
 				state = State.hit;
 				Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(160, 200))) * Main.rand.NextFloat(1, 3);
-				npc.StrikeNPC(npc.CalculateHitInfo(DashBonusDamage, (Projectile.Center.X <= npc.Center.X).ToDirectionInt(), false));
+				target.StrikeNPC(target.CalculateHitInfo(DashBonusDamage, (Projectile.Center.X <= target.Center.X).ToDirectionInt(), false));
 				player.addDPS(DashBonusDamage);
 			}
 		}
@@ -380,4 +381,7 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 			}
 		}
 	}
+}
+public class MothWeapon_ModPlayer : ModPlayer {
+	public int StreetLamp_VampireFrogStaff_HitCounter = 0;
 }

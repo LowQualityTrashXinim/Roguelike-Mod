@@ -1,0 +1,4 @@
+Version 0.0.1:
+1/ Ported the mod into a new repository.
+2/ Fixes all the error caused by the port.
+3/ Removal of SynergyModProjectile due to unnecessary implementation

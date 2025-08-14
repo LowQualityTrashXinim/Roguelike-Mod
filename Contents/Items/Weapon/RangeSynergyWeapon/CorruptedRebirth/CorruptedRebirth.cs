@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ObjectSystem;
@@ -47,7 +47,7 @@ public class CorruptedRebirth : SynergyModItem {
 			.Register();
 	}
 }
-public class ToxicBubble : SynergyModProjectile {
+public class ToxicBubble : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.ToxicBubble);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 50;
@@ -59,7 +59,7 @@ public class ToxicBubble : SynergyModProjectile {
 		Projectile.scale = .66f;
 	}
 	NPC targetTo = null;
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (Projectile.alpha > 100) {
 			Projectile.alpha -= 5;
 		}
@@ -93,7 +93,7 @@ public class ToxicBubble : SynergyModProjectile {
 			Projectile.velocity = (targetTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * Projectile.ai[1];
 		}
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		Color greeen = new(0, 255, 0, 0);
 		for (int i = 0; i < 20; i++) {
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.WhiteTorch, 0, 0, 0, greeen, Main.rand.NextFloat(1.5f, 1.72f));
@@ -101,11 +101,11 @@ public class ToxicBubble : SynergyModProjectile {
 			Main.dust[dust].noGravity = true;
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		npc.AddBuff<Acid>(ModUtils.ToSecond(Main.rand.Next(1, 3)));
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff<Acid>(ModUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
-public class AcidArrow : SynergyModProjectile {
+public class AcidArrow : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.WoodenArrowFriendly);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 6;
@@ -113,7 +113,7 @@ public class AcidArrow : SynergyModProjectile {
 		Projectile.friendly = true;
 		Projectile.tileCollide = true;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		if (++Projectile.ai[0] >= 20) {
 			if (Projectile.velocity.Y <= 20) {
@@ -126,13 +126,13 @@ public class AcidArrow : SynergyModProjectile {
 		dust.noGravity = true;
 		dust.velocity = Vector2.Zero;
 	}
-	public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
-		if (npc.defense > 0) {
-			npc.defense--;
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.defense > 0) {
+			target.defense--;
 		}
-		npc.AddBuff<Acid>(ModUtils.ToSecond(Main.rand.Next(1, 4)));
+		target.AddBuff<Acid>(ModUtils.ToSecond(Main.rand.Next(1, 4)));
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		Color greeen = new(0, 255, 0, 0);
 		for (int i = 0; i < 10; i++) {
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.WhiteTorch, 0, 0, 0, greeen, Main.rand.NextFloat(1.5f, 1.72f));

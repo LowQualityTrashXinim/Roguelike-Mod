@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Roguelike.Common.Utils;
@@ -10,8 +10,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 	internal class MagicGrenade : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Grenade's explosion will be accompany by magical bolt that explode shortly after");
@@ -33,7 +32,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 				.Register();
 		}
 	}
-	public class MagicGrenadeProjectile : SynergyModProjectile {
+	public class MagicGrenadeProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<MagicGrenade>();
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 54;
@@ -42,7 +41,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			Projectile.timeLeft = 120;
 			Projectile.penetrate = 1;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Lighting.AddLight(Projectile.Center, Color.Purple.ToVector3());
 			if (Projectile.velocity != Vector2.Zero) {
 				Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * .5f) * (Projectile.velocity.X > 0 ? 1 : -1);
@@ -63,7 +62,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			}
 			Projectile.velocity.Y += .5f;
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item62 with { Pitch = .5f });
 			float randomrotation = Main.rand.NextFloat(90);
 			Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
@@ -102,6 +101,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			if (npc.Count < 1) {
 				return;
 			}
+			Player player = Main.player[Projectile.owner];
 			for (int i = 0; i < npc.Count; i++) {
 				npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 2, Projectile.DamageType, true, player.luck));
 				player.dpsDamage += Projectile.damage;
@@ -111,7 +111,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			return base.PreDraw(ref lightColor);
 		}
 	}
-	class CompoundGrenadeProjectile : SynergyModProjectile {
+	class CompoundGrenadeProjectile : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 20;
@@ -121,7 +121,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			Projectile.penetrate = 1;
 			Projectile.hide = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Lighting.AddLight(Projectile.Center, .1f, 0, .1f);
 			if (Projectile.ai[0] <= 15) {
 				Projectile.ai[0]++;
@@ -146,9 +146,8 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 					Main.dust[dust].noGravity = true;
 				}
 			}
-			base.SynergyAI(player, modplayer);
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			float randomrotation = Main.rand.NextFloat(90);
 			Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 			for (int i = 0; i < 4; i++) {
@@ -171,12 +170,13 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			if (npc.Count < 1) {
 				return;
 			}
+			Player player = Main.player[Projectile.owner];
 			for (int i = 0; i < npc.Count; i++) {
 				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
 			}
 		}
 	}
-	class MagicalExplosionBolt : ModProjectile {
+	public class MagicalExplosionBolt : ModProjectile {
 		public override string Texture => ModTexture.SMALLWHITEBALL;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 10;
@@ -219,7 +219,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 			}
 		}
 	}
-	class SmallerMagicalExplosionBolt : ModProjectile {
+	public class SmallerMagicalExplosionBolt : ModProjectile {
 		public override string Texture => ModTexture.SMALLWHITEBALL;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 5;

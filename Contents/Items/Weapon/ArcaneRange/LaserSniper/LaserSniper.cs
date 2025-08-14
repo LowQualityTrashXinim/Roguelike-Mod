@@ -185,7 +185,7 @@ public class LaserSniperProjectile : ModProjectile {
 	}
 }
 
-public class PlasmaGrenade : SynergyModProjectile {
+public class PlasmaGrenade : ModProjectile {
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.friendly = true;
@@ -193,10 +193,9 @@ public class PlasmaGrenade : SynergyModProjectile {
 		Projectile.penetrate = 1;
 		Projectile.tileCollide = false;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		Projectile.velocity *= .98f;
 		Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * Projectile.direction) * .5f;
-
 		foreach (Projectile proj in Main.ActiveProjectiles) {
 			if (proj.type == ModContent.ProjectileType<LaserSniperProjectile>()
 				&& Projectile.Center.IsCloseToPosition(proj.Center, 40)) {
@@ -204,9 +203,8 @@ public class PlasmaGrenade : SynergyModProjectile {
 				Projectile.Kill();
 			}
 		}
-
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<PlasmaExplosion>(), Projectile.damage / 3, 0, Projectile.owner);
 		SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
 	}

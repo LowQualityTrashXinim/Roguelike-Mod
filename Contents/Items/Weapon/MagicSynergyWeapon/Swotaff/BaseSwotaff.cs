@@ -1,7 +1,5 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -99,7 +97,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 	/// <summary>
 	/// By default, ai2 will contain index of gem
 	/// </summary>
-	public abstract class SwotaffProjectile : SynergyModProjectile {
+	public abstract class SwotaffProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Type] = 20;
 			ProjectileID.Sets.TrailingMode[Type] = 2;
@@ -139,8 +137,9 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			isAlreadyReleased = false,
 			isAlreadySpinState = false,
 			ProjectileAlreadyExist = false;
+		Player player;
 		public override void OnSpawn(IEntitySource source) {
-			base.OnSpawn(source);
+			player = Main.player[Projectile.owner];
 			for (int i = 0; i < Main.maxProjectiles; i++) {
 				if (Main.projectile[i] is null) {
 					continue;
@@ -150,10 +149,11 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				}
 			}
 		}
-		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
-			runAI = true;
-		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			if(player == null) {
+				Projectile.Kill();
+				return;
+			}
 			if (Projectile.ai[0] == 2) {
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 				Projectile.velocity -= Projectile.velocity * .1f;
@@ -194,9 +194,8 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			}
 			SpinAtCursorAI(player);
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
-			npc.immune[Projectile.owner] = 8;
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.immune[Projectile.owner] = 8;
 		}
 		public override void ModifyDamageHitbox(ref Rectangle hitbox) {
 			if (Projectile.ai[0] == 0) {
@@ -294,8 +293,6 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Main.dust[dust].scale = 0.1f;
 			Main.dust[dust].velocity = Projectile.rotation.ToRotationVector2() * 2f;
 			Main.dust[dust].fadeIn = 1.5f;
-		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Color sampleColor = Color.White;

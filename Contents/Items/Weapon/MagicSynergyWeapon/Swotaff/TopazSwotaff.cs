@@ -32,7 +32,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 50;
 		}
 	}
-	public class TopazGemProjectile : SynergyModProjectile {
+	public class TopazGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Topaz);
 		public override void SetDefaults() {
 			Projectile.width = 18;
@@ -44,7 +44,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		int cooktimer = 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.velocity -= Projectile.velocity * .025f;
 			if (++cooktimer > 30) {
 				cooktimer = 0;
@@ -56,7 +56,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				}
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
 			for (int i = 0; i < 25; i++) {
 				Vector2 RandomCircular = Main.rand.NextVector2Circular(4f, 4f);

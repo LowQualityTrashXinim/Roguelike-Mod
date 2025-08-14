@@ -71,7 +71,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 				.Register();
 		}
 	}
-	class ResolveProjectile : SynergyModProjectile {
+	class ResolveProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
@@ -85,7 +85,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 			Main.dust[dust].noGravity = true;
 			Projectile.alpha = (int)MathHelper.Lerp(0, 255, (90 - Projectile.timeLeft) / 90f);
@@ -101,18 +101,15 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			}
 			return false;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Projectile.damage = (int)Math.Clamp(Projectile.damage - Projectile.damage * .1f, 1, Projectile.damage);
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrail(lightColor);
 			return base.PreDraw(ref lightColor);
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			base.SynergyKill(player, modplayer, timeLeft);
-		}
 	}
-	class ResolveGhostArrow : SynergyModProjectile {
+	class ResolveGhostArrow : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.WoodenArrow);
 		public override void SetDefaults() {
 			Projectile.width = 12;
@@ -123,7 +120,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Projectile.penetrate = 1;
 			Projectile.friendly = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 			Main.dust[dust].velocity = Vector2.Zero;
@@ -154,14 +151,9 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Main.spriteBatch.Draw(texture, drawPos, null, new Color(255, 255, 255, 0), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 			return false;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
-		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			base.SynergyKill(player, modplayer, timeLeft);
-		}
+	
 	}
-	class GhostBroadsword : SynergyModProjectile {
+	class GhostBroadsword : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 36;
 			Projectile.DamageType = DamageClass.Melee;
@@ -172,7 +164,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Projectile.usesIDStaticNPCImmunity = true;
 		}
 		public int ProjDirection = 0;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			ProjDirection = Projectile.velocity.X > 0 ? 1 : -1;
 			int dust = Dust.NewDust(Projectile.Center + Projectile.rotation.ToRotationVector2() * 15, 0, 0, DustID.GemDiamond);
 			Main.dust[dust].noGravity = true;
@@ -180,15 +172,11 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
 			Projectile.rotation += MathHelper.ToRadians(20) * ProjDirection;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
-			npc.immune[Projectile.owner] = 3;
-		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			base.SynergyKill(player, modplayer, timeLeft);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.immune[Projectile.owner] = 3;
 		}
 	}
-	class GhostShortsword : SynergyModProjectile {
+	class GhostShortsword : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 32;
 			Projectile.DamageType = DamageClass.Melee;
@@ -198,18 +186,15 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			Projectile.friendly = true;
 			Projectile.usesIDStaticNPCImmunity = true;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Vector2.Zero;
 			Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Projectile.damage = (int)Math.Clamp(Projectile.damage - Projectile.damage * .1f, 1, Projectile.damage);
-		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			base.SynergyKill(player, modplayer, timeLeft);
 		}
 	}
 }

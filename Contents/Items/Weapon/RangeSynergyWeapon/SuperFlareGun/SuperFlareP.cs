@@ -1,7 +1,5 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
@@ -10,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 {
-	internal class SuperFlareP : SynergyModProjectile {
+	internal class SuperFlareP : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = 30;
 			Projectile.height = 30;
@@ -26,7 +24,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 			Projectile.velocity.Y = -20f;
 			return false;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SuperFlareGun>(), ItemID.BluePhaseblade))
 				if (Projectile.timeLeft > 50)
 					Projectile.timeLeft = 50;
@@ -37,7 +35,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 				Main.dust[dustnumber].noGravity = true;
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			float randomRotation = Main.rand.NextFloat(90);
 			int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz });
 			Vector2 Rotate;
@@ -60,7 +58,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 600);
 			foreach (NPC npc in npclist) {
 				int direction = Projectile.Center.X - npc.Center.X > 0 ? -1 : 1;
-				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 5, direction, false, 10));
+				Main.player[Projectile.owner].StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 5, direction, false, 10));
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SuperFlareGun>(), ItemID.Boomstick) && Main.rand.NextBool(10)) {
 				for (int i = 0; i < 36; i++) {

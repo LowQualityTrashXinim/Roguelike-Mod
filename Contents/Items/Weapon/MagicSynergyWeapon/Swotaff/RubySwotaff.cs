@@ -3,11 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class RubySwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 17;
@@ -38,7 +37,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 100;
 		}
 	}
-	class RubySwotaffGemProjectile : SynergyModProjectile {
+	class RubySwotaffGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Ruby);
 		public override void SetDefaults() {
 			Projectile.width = 14;
@@ -51,15 +50,13 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 		}
 		Vector2 firstframePos = Vector2.Zero;
 		float offset = 1;
-		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (Projectile.timeLeft == 200) {
 				firstframePos = player.GetModPlayer<ModUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center;
 			}
 			Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(60 * Projectile.ai[2] + 360 * offset)) * Projectile.timeLeft;
 			Projectile.velocity = (positionToGo - Projectile.Center).SafeNormalize(Vector2.Zero) * (positionToGo - Projectile.Center).Length() * .25f;
-			base.SynergyPreAI(player, modplayer, out runAI);
-		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			int reversecountdown = 200 - Projectile.timeLeft;
 			offset = MathHelper.Lerp(1, -10, ModUtils.InExpo(reversecountdown / 200f));
 			if (Main.rand.NextBool(5)) {
@@ -72,7 +69,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				return;
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			if (timeLeft <= 0) {
 				for (int i = 0; i < 6; i++) {
 					Vector2 vec = Vector2.One.Vector2DistributeEvenly(6, 360, i).RotatedBy(MathHelper.ToRadians(Projectile.ai[2] * 10)) * 3f;
@@ -86,7 +83,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			}
 		}
 	}
-	class RubyGemProjectileSwotaff : SynergyModProjectile {
+	class RubyGemProjectileSwotaff : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Ruby);
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 14;
@@ -99,7 +96,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.idStaticNPCHitCooldown = 6;
 			Projectile.DamageType = DamageClass.Magic;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			for (int i = 0; i < 3; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemRuby);
 				Main.dust[dust].noGravity = true;
@@ -108,7 +105,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				Main.dust[dust].Dust_GetDust().FollowEntity = true;
 				Main.dust[dust].Dust_BelongTo(Projectile);
 			}
-			Projectile.Center += player.velocity;
+			Projectile.Center += Main.player[Projectile.owner].velocity;
 			if (Projectile.timeLeft > 150) {
 				Projectile.velocity -= Projectile.velocity * .01f;
 			}

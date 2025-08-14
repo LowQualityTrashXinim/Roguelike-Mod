@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
@@ -7,8 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class SapphireSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 16;
@@ -33,7 +32,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 75;
 		}
 	}
-	public class SapphireSwotaffGemProjectile : SynergyModProjectile {
+	public class SapphireSwotaffGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Sapphire);
 		public override void SetDefaults() {
 			Projectile.width = 18;
@@ -45,7 +44,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		Vector2 firstframePos = Vector2.Zero;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (Projectile.timeLeft == 300) {
 				firstframePos = Main.MouseWorld - Projectile.Center;
 			}
@@ -55,6 +54,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				Main.dust[dust].scale = Main.rand.NextFloat(1f);
 			}
 			float counter = 300 - Projectile.timeLeft;
+			Player player = Main.player[Projectile.owner];
 			Vector2 positionToGo = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(72 * Projectile.ai[2] + counter) + firstframePos.ToRotation()) * Projectile.timeLeft;
 			if (!player.active || player.dead) {
 				Projectile.Kill();
@@ -62,13 +62,13 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			}
 			Projectile.velocity = (positionToGo - Projectile.Center).SafeNormalize(Vector2.Zero) * (positionToGo - Projectile.Center).Length() * .1f;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 100);
 			foreach (NPC npc1 in npclist) {
 				npc1.StrikeNPC(npc1.CalculateHitInfo(Projectile.damage * 2, 1, false, 0, DamageClass.Magic, false));
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 10; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemSapphire);
 				Main.dust[dust].noGravity = true;

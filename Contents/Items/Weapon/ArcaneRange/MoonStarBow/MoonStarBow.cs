@@ -8,11 +8,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
-{
+namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 	internal class MoonStarBow : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(18, 32, 33, 1f, 2, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<MoonStarProjectile>(), 5f, true);
@@ -43,7 +42,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 				.Register();
 		}
 	}
-	class MoonStarProjectile : SynergyModProjectile {
+	class MoonStarProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
@@ -64,7 +63,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;
 		int AlphaAdditionalCounter = 255;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			ExtraUpdateRecounter();
 			Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
 			Projectile.rotation += MathHelper.ToRadians(.5f);
@@ -104,7 +103,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 			Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 			return false;
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			Vector2 Rotate;
 			float randomRotation = Main.rand.NextFloat(90);
 			for (int i = 0; i < 25; i++) {
@@ -129,7 +128,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 			}
 		}
 	}
-	class MoonStarProjectileSmaller : SynergyModProjectile {
+	class MoonStarProjectileSmaller : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAs<MoonStarBow>("MoonStarProjectile");
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
@@ -149,7 +148,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 		}
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.scale = .5f;
 			ExtraUpdateRecounter();
 			AttackHomeIn();
@@ -197,7 +196,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow
 			Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255, 255, 255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
 			return false;
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 30; i++) {
 				Vector2 vec = Main.rand.NextVector2Unit(MathHelper.PiOver4, MathHelper.PiOver2) * Main.rand.NextFloat(3, 5) * -1f;
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Electric, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));

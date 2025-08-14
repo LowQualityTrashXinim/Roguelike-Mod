@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
@@ -9,8 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 	internal class Bowmarang : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WoodYoyo, $"[i:{ItemID.WoodYoyo}] Bowmerang are accompany with a wood yoyo");
@@ -39,7 +38,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
 				.Register();
 		}
 	}
-	public class BowmarangP : SynergyModProjectile {
+	public class BowmarangP : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Bowmarang>();
 		public override void SetDefaults() {
 			Projectile.width = 32;
@@ -59,7 +58,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
 		int progression = 0;
 
 		bool TileCollideJustHappen = false;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			if (progression % player.itemAnimationMax == 0) {
 				float offSetRotate = Projectile.rotation - MathHelper.PiOver4;
 				Vector2 aimto = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);

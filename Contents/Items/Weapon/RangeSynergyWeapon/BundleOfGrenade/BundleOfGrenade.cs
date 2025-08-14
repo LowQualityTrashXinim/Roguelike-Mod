@@ -33,7 +33,7 @@ internal class BundleOfGrenade : SynergyModItem {
 			.Register();
 	}
 }
-public class FragmentGrenadeProjectile : SynergyModProjectile {
+public class FragmentGrenadeProjectile : ModProjectile {
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 20;
 		Projectile.friendly = true;
@@ -49,14 +49,14 @@ public class FragmentGrenadeProjectile : SynergyModProjectile {
 		Projectile.timeLeft -= 60;
 		return false;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (Projectile.velocity != Vector2.Zero) {
 			Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 20 * -Projectile.direction);
 			Projectile.velocity.Y += 0.25f;
 			Projectile.velocity.X *= .999f;
 		}
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		for (int l = 0; l < 103; l++) {
 			if (l % 4 == 0) {
 				int smoke = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
@@ -82,6 +82,7 @@ public class FragmentGrenadeProjectile : SynergyModProjectile {
 		}
 		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
 		if (npclist.Count > 0) {
+			Player player = Main.player[Projectile.owner];
 			foreach (NPC npc in npclist) {
 				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, ModUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X), Main.rand.Next(1, 101) <= Projectile.CritChance, Projectile.knockBack));
 			}

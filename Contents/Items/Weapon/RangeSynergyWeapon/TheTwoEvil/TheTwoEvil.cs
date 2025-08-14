@@ -6,8 +6,6 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Items.Weapon;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
@@ -54,7 +52,7 @@ internal class TheTwoEvil : SynergyModItem {
 	}
 }
 
-internal class EvilShot : SynergyModProjectile {
+internal class EvilShot : ModProjectile {
 	public override string Texture => ModTexture.SMALLWHITEBALL;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 50;
@@ -73,7 +71,7 @@ internal class EvilShot : SynergyModProjectile {
 	public override bool? CanDamage() {
 		return Projectile.penetrate > 1;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (Projectile.timeLeft <= 60) {
 			Projectile.ProjectileAlphaDecay(60);
 			Projectile.velocity *= .96f;
@@ -85,15 +83,15 @@ internal class EvilShot : SynergyModProjectile {
 			Main.dust[dust].noGravity = true;
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Projectile.ai[0] == 0) {
+			Player player = Main.player[Projectile.owner];
 			Vector2 vel = Main.rand.NextVector2CircularEdge(1, 1);
-			Projectile.NewProjectile(player.GetSource_OnHit(npc), npc.Center.PositionOFFSET(vel, -30), vel, ProjectileID.LightsBane, (int)(hit.Damage * .5f), hit.Knockback, player.whoAmI, 1);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center.PositionOFFSET(vel, -30), vel, ProjectileID.LightsBane, (int)(hit.Damage * .5f), hit.Knockback, player.whoAmI, 1);
 		}
 		else {
-			npc.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
+			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
 		}
-
 		Projectile.timeLeft = 60;
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
@@ -102,7 +100,7 @@ internal class EvilShot : SynergyModProjectile {
 			for (int l = 0; l < 8; l++) {
 				float multiplier = Main.rand.NextFloat();
 				float scale = MathHelper.Lerp(1.5f, .1f, multiplier);
-				int dust = Dust.NewDust(npc.Center + randomPosOffset, 0, 0, dustID, 0, 0, 0, default, scale);
+				int dust = Dust.NewDust(target.Center + randomPosOffset, 0, 0, dustID, 0, 0, 0, default, scale);
 				Main.dust[dust].velocity = Toward * multiplier;
 				Main.dust[dust].noGravity = true;
 			}

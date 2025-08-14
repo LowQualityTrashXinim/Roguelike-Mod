@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
@@ -92,7 +92,7 @@ public class PlasmaDefensesMelt : ModBuff {
 		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense -= .5f;
 	}
 }
-public class PulseHomingProjectile : SynergyModProjectile {
+public class PulseHomingProjectile : ModProjectile {
 	public override string Texture => ModTexture.SMALLWHITEBALL;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 0;
@@ -110,7 +110,7 @@ public class PulseHomingProjectile : SynergyModProjectile {
 	public override Color? GetAlpha(Color lightColor) {
 		return new Color(255, 255, 255, 255);
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		if (npc == null) {
 			if (Main.MouseWorld.LookForHostileNPC(out NPC target, 1500f)) {
 				npc = target;
@@ -125,7 +125,7 @@ public class PulseHomingProjectile : SynergyModProjectile {
 			Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
 		}
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		for (int i = 0; i < 35; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemSapphire);
 			dust.noGravity = true;

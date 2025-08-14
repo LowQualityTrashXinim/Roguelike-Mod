@@ -36,7 +36,7 @@ public class MythrilBeamSword : SynergyModItem {
 	}
 
 }
-public class MythrilBeam : SynergyModProjectile {
+public class MythrilBeam : ModProjectile {
 	bool retargeting = false;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -70,8 +70,7 @@ public class MythrilBeam : SynergyModProjectile {
 	}
 	int timer = 0;
 	Vector2 localOriginalvelocity;
-	public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
-		runAI = false;
+	public override bool PreAI() {
 		Projectile.rotation = Projectile.velocity.ToRotation();
 		if (timer == 0) {
 			localOriginalvelocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
@@ -82,11 +81,12 @@ public class MythrilBeam : SynergyModProjectile {
 			timer++;
 		}
 		else {
-			runAI = true;
 			if (!Projectile.velocity.IsLimitReached(20) && Projectile.ai[0] < 25) Projectile.velocity += localOriginalvelocity;
+			return true;
 		}
+		return false;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void AI() {
 		Projectile.ai[0]++;
 		Projectile.rotation = Projectile.velocity.ToRotation();
 		int range = 1200;

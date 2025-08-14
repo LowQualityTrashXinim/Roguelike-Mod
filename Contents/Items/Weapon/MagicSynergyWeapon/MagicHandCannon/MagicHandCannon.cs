@@ -71,7 +71,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 			}
 		}
 	}
-	class MagicHandCannonProjectile : SynergyModProjectile {
+	class MagicHandCannonProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = 4;
 		}
@@ -87,7 +87,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 10;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			int dust = Dust.NewDust(Projectile.position + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.Shadowflame);
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = -Projectile.velocity * .1f;
@@ -118,17 +118,17 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 			}
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
-		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<MagicHandCannon>(), ItemID.Flamelash)) {
 				if (!Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center, 350)) {
 					modifiers.SourceDamage += .45f;
 				}
 			}
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			npc.AddBuff(BuffID.ShadowFlame, 180);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.AddBuff(BuffID.ShadowFlame, 180);
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 20; i++) {
 				int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2CircularEdge(5f, 5f), 0, 0, DustID.Shadowflame);
 				Main.dust[dust].noGravity = true;

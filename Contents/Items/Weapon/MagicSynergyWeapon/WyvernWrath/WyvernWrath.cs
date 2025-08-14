@@ -55,7 +55,7 @@ public class WyvernWrath : SynergyModItem {
 	}
 
 }
-public class WyvernWrathMainProjectile : SynergyModProjectile {
+public class WyvernWrathMainProjectile : ModProjectile {
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;
@@ -103,7 +103,7 @@ public class WyvernWrathMainProjectile : SynergyModProjectile {
 
 		return false;
 	}
-	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 
 		for (int l = 0; l < 20; l++) {
@@ -119,11 +119,11 @@ public class WyvernWrathMainProjectile : SynergyModProjectile {
 		}
 
 		Vector2 pos = (Projectile.Center + new Vector2(750, 0)).RotatedBy(Main.rand.NextFloat(MathHelper.ToRadians(360)), Projectile.Center);
-		Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), pos, pos.DirectionTo(Projectile.Center).SafeNormalize(Vector2.UnitY) * 25, ModContent.ProjectileType<WyvernWrathMiniProjectile>(), (int)(Projectile.damage * 0.8f), 0f, Projectile.owner);
+		Projectile.NewProjectile(Projectile.GetSource_OnHit(target), pos, pos.DirectionTo(Projectile.Center).SafeNormalize(Vector2.UnitY) * 25, ModContent.ProjectileType<WyvernWrathMiniProjectile>(), (int)(Projectile.damage * 0.8f), 0f, Projectile.owner);
 	}
 }
 
-public class WyvernWrathMiniProjectile : SynergyModProjectile {
+public class WyvernWrathMiniProjectile : ModProjectile {
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;

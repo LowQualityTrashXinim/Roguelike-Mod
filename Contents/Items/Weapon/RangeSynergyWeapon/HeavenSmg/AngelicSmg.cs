@@ -10,12 +10,11 @@ using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 	public class AngelicSmg : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(32, 32, 24, 1, 42, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 25, true, AmmoID.Bullet);
@@ -136,7 +135,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 			}
 		}
 	}
-	public class AngelicSmgThrow : SynergyModProjectile {
+	public class AngelicSmgThrow : ModProjectile {
 		static bool returningToOwner = false;
 		static bool targetHit = false;
 		int oldposFrameAmount = 15;
@@ -192,9 +191,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 			}
 			return false;
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (!returningToOwner) {
 				targetHit = true;
+				Player player = Main.player[Projectile.owner];
 				player.AddBuff(ModContent.BuffType<AngelicSmgBuff>(), 300);
 				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
 			}
@@ -220,13 +220,14 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 		float maxThrowSpeed = 50f;
 		float accel = 0.8f;
 		public int timeleftReset = 120;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (!returningToOwner && Projectile.timeLeft <= 2) {
 				resetStacks();
 				returnToPlayer();
 			}
 			Projectile.rotation += Projectile.velocity.ToRotation();
 			if (returningToOwner) {
+				Player player = Main.player[Projectile.owner];
 				Vector2 vel = player.Center - Projectile.Center;
 				vel.Normalize();
 				currentSpeed += accel;
@@ -240,7 +241,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 					Projectile.Kill();
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			if (targetHit)
 				for (int i = 1; i < oldposFrameAmount; i++) {
 					Vector2 oldVel = Projectile.oldPos[i].DirectionTo(Projectile.oldPos[i - 1]);
@@ -262,7 +263,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 			}
 		}
 	}
-	internal class AngelicBolt : SynergyModProjectile {
+	internal class AngelicBolt : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		static int oldposFrameAmount = 25;
 		public override void SetStaticDefaults() {
@@ -290,7 +291,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 		float maxProjSpeed = 15f;
 		float projSpeed = 0f;
 		public override bool? CanHitNPC(NPC target) => true;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			float maxDetectRadius = 2000f;
 			Vector2 vel = Projectile.velocity;
@@ -338,7 +339,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 			Main.EntitySpriteDraw(sparkleTexture, drawpos, null, smallColor, MathHelper.PiOver2 + rotation, origin, scaleLeftRight * 0.6f, dir);
 			Main.EntitySpriteDraw(sparkleTexture, drawpos, null, smallColor, 0f + rotation, origin, scaleUpDown * 0.6f, dir);
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item125 with { Pitch = 2f }, Projectile.Center);
 			for (int i = 0; i < 35; i++) {
 				var dust = Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch, Main.rand.NextVector2CircularEdge(1f, 1f) * (isMiniProjectile == true ? 5f : 15f), default, new Color(255, 255, 255, 0), 2f);

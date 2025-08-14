@@ -7,11 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.Audio;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster {
 	public class Mixmaster : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(130, 34, 35, 1f, 5, 5, ItemUseStyleID.Shoot, ModContent.ProjectileType<PlasmaProjectile>(), 10, true, AmmoID.Bullet);
@@ -41,7 +40,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster
 				.Register();
 		}
 	}
-	public class PlasmaProjectile : SynergyModProjectile {
+	public class PlasmaProjectile : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 6;
 			Projectile.friendly = true;
@@ -53,10 +52,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster
 			Projectile.extraUpdates = 3;
 			Projectile.scale = .5f;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0, ModContent.ProjectileType<OnHitRangeP>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 		}
 		public override bool PreDraw(ref Color lightColor) {
@@ -68,7 +67,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster
 			return false;
 		}
 	}
-	public class OnHitRangeP : SynergyModProjectile {
+	public class OnHitRangeP : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = 26;
 			Projectile.height = 26;
@@ -80,7 +79,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster
 			Projectile.usesIDStaticNPCImmunity = true;
 			Projectile.idStaticNPCHitCooldown = 30;
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (Projectile.timeLeft > 0) {
 				Projectile.scale -= 0.25f;
 			}

@@ -166,7 +166,7 @@ public class ShatteredSky : SynergyModItem {
 			.Register();
 	}
 }
-public class ShatteredSkyProjectileHidden : SynergyModProjectile {
+public class ShatteredSkyProjectileHidden : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 1;
@@ -176,11 +176,11 @@ public class ShatteredSkyProjectileHidden : SynergyModProjectile {
 		Projectile.tileCollide = false;
 		Projectile.timeLeft = 40;
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-		Projectile.Center += player.velocity;
+	public override void AI() {
+		Projectile.Center += Main.player[Projectile.owner].velocity;
 		Projectile.velocity = Vector2.Zero;
 		if (Projectile.timeLeft % 2 == 0) {
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 5, ProjectileID.CultistBossLightningOrbArc, Projectile.damage, Projectile.knockBack, player.whoAmI, Vector2.UnitY.ToRotation() + MathHelper.ToRadians(Main.rand.NextFloat(-10, 10)), Main.rand.Next(100));
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 5, ProjectileID.CultistBossLightningOrbArc, Projectile.damage, Projectile.knockBack, Projectile.owner, Vector2.UnitY.ToRotation() + MathHelper.ToRadians(Main.rand.NextFloat(-10, 10)), Main.rand.Next(100));
 			projectile.friendly = true;
 			projectile.hostile = false;
 			projectile.extraUpdates = 10;

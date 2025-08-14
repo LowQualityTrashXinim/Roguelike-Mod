@@ -99,7 +99,7 @@ public class HorusEyePlayer : ModPlayer {
 		}
 	}
 }
-class HorusEye_Projectile : SynergyModProjectile {
+class HorusEye_Projectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 20;
@@ -110,8 +110,7 @@ class HorusEye_Projectile : SynergyModProjectile {
 		Projectile.extraUpdates = 10;
 		Projectile.timeLeft = ModUtils.ToSecond(10);
 	}
-	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-		base.SynergyAI(player, modplayer);
+	public override void AI() {
 		for (int i = 0; i < 3; i++) {
 			int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemDiamond);
 			Main.dust[dust].noGravity = true;
@@ -119,7 +118,7 @@ class HorusEye_Projectile : SynergyModProjectile {
 			Main.dust[dust].color = new Color(255, 0, 100);
 		}
 	}
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ProjectileID.PrincessWeapon, Projectile.damage, Projectile.knockBack, Projectile.owner);
 	}
 }

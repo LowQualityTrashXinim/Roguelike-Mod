@@ -31,7 +31,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			ManaCost = 50;
 		}
 	}
-	public class AmethystSwotaffGemProjectile : SynergyModProjectile {
+	public class AmethystSwotaffGemProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Amethyst);
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 18;
@@ -42,7 +42,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		Vector2 firstframePos = Vector2.Zero;
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
 			if (Projectile.timeLeft == 200) {
 				firstframePos = Main.MouseWorld;
 			}
@@ -59,7 +59,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			}
 		}
-		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 20; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
 				Main.dust[dust].noGravity = true;

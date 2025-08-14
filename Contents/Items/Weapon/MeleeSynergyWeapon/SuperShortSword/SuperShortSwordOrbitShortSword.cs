@@ -9,7 +9,7 @@ using Roguelike.Texture;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
-	internal class SuperShortSwordOrbitShortSword : SynergyModProjectile {
+	internal class SuperShortSwordOrbitShortSword : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.height = Projectile.width = 32;
@@ -38,28 +38,27 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 		Vector2 HitNPCPos = Vector2.Zero;
 		int timeLeft = 9999;
 		bool IsInAtk2 = false;
-		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
+		public override bool PreAI() {
+			Player player = Main.player[Projectile.owner];
 			if (player.dead || !player.active || !player.HasBuff(ModContent.BuffType<SuperShortSwordPower>()) || player.HeldItem.type != ModContent.ItemType<SuperShortSword>()) {
 				Projectile.Kill();
 			}
 			RotatePosition = getPosToReturn(player, MathHelper.PiOver4 * Index, player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_Counter);
 
 			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_AttackType == 1) {
-				NormalAttackHandle(player, modplayer);
-				runAI = false;
-				return;
+				NormalAttackHandle(player);
+				return false;
 			}
 			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_AttackType == 2) {
-				AltAttackHandle(player, modplayer);
-				runAI = false;
-				return;
+				AltAttackHandle(player);
+				return false;
 			}
 			if (timeLeft <= 0) {
 				timeLeft = 9999;
 			}
-			runAI = true;
+			return true;
 		}
-		private void AltAttackHandle(Player player, PlayerSynergyItemHandle modplayer) {
+		private void AltAttackHandle(Player player) {
 			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_IsHoldingDownRightMouse) {
 				Vector2 PositionThatNeedToBe = projPos[(int)Index].RotatedBy((Main.MouseWorld - player.Center).ToRotation()) * 12.5f + player.Center;
 				Vector2 ToPos = PositionThatNeedToBe - Projectile.Center;
@@ -102,7 +101,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 		}
 		bool HasHitNPC = false;
 		//Turn out this not all sync so again
-		private void NormalAttackHandle(Player player, PlayerSynergyItemHandle modplayer) {
+		private void NormalAttackHandle(Player player) {
 			float duration = player.itemAnimationMax;
 			if (timeLeft > duration) {
 				timeLeft = (int)duration;
@@ -138,20 +137,21 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 				}
 			}
 		}
-		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
 			Projectile.damage = (int)(player.GetWeaponDamage(player.HeldItem) * 0.25f * player.GetTotalDamage(DamageClass.Melee).Additive);
 			Projectile.CritChance = (int)(player.GetCritChance(DamageClass.Melee) + player.GetCritChance(DamageClass.Generic));
 			Vector2 SafeDegree = Main.MouseWorld - Projectile.Center;
 			if (!player.ItemAnimationActive) Projectile.rotation = SafeDegree.ToRotation() + MathHelper.PiOver4;
 			Projectile.Center = RotatePosition;
 		}
-		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
-			SuperShortSwordPlayer supershortswordplayer = player.GetModPlayer<SuperShortSwordPlayer>();
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			SuperShortSwordPlayer supershortswordplayer = Main.player[Projectile.owner].GetModPlayer<SuperShortSwordPlayer>();
 			if (!supershortswordplayer.SuperShortSword_IsHoldingDownRightMouse && supershortswordplayer.SuperShortSword_AttackType == 2) {
 				modifiers.SourceDamage *= 2;
 			}
 		}
-		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (!HasHitNPC) {
 				HitNPCPos = Projectile.Center;
 				HasHitNPC = true;
