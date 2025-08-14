@@ -68,7 +68,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow
 
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrail(lightColor);
-			return true;
+			return false;
 		}
 	}
 }

@@ -11,8 +11,7 @@ using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Transfixion.Artifacts
-{
+namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
 		public override int Frames => 10;
 		public override Color DisplayNameColor => Color.PaleGreen;
@@ -51,13 +50,28 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			}
 		}
 	}
+	/*
+	 TokenOfPride_Upgrade1: {
+	DisplayName: Noble Pride [Token Of Pride]
+	Description: + Loot drop value are now halve instead of 0x
+}
+
+TokenOfPride_Upgrade2: {
+	DisplayName: Blacksmith Pride [Token Of Pride]
+	Description:
+		'''
+		+ Increases chance of getting augmentation from 65% to 85%
+		+ Weapon have 20% chance to get additional enchanted
+		'''
+}
+*/
 	public class TokenOfPride_Upgrade1 : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			list_category.Add(PerkCategory.ArtifactExclusive);
 		}
 		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() && !Main.LocalPlayer.HasPerk<TokenOfPride_Upgrade2>();
+			return false;
 		}
 	}
 	public class TokenOfPride_Upgrade2 : Perk {
@@ -66,7 +80,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			list_category.Add(PerkCategory.ArtifactExclusive);
 		}
 		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() && !Main.LocalPlayer.HasPerk<TokenOfPride_Upgrade2>();
+			return false;
 		}
 	}
 	public class BlindPride : Perk {

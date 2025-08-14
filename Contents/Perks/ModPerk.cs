@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.BuffAndDebuff;
- 
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
@@ -20,8 +19,7 @@ using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Perks
-{
+namespace Roguelike.Contents.Perks {
 	public class MarkOfSpectre : Perk {
 		public override void SetDefaults() {
 			textureString = ModUtils.GetTheSameTextureAsEntity<MarkOfSpectre>();
@@ -635,66 +633,6 @@ namespace Roguelike.Contents.Perks
 			}
 		}
 	}
-	public class BlessingOfMoon : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override bool SelectChoosing() {
-			Player player = Main.LocalPlayer;
-			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
-			if (perkplayer.perks.ContainsKey(GetPerkType<BlessingOfNebula>())
-				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfSolar>())
-				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfVortex>())
-				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfStardust>())) {
-				return true;
-			}
-			return false;
-		}
-		public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
-			if (!player.immune && Main.rand.NextFloat() <= .75f && !Main.dayTime) {
-				player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
-				player.immune = true;
-				return true;
-			}
-			return base.FreeDodge(player, hurtInfo);
-		}
-		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			int damage = player.GetWeaponDamage(item);
-			float knockback = player.GetWeaponKnockback(item);
-			player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
-
-			IEntitySource source = player.GetSource_OnHit(target);
-			Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
-			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
-			Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
-
-
-			target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
-		}
-		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			int damage = proj.damage;
-			float knockback = proj.knockBack;
-			player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
-
-			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
-				IEntitySource source = player.GetSource_OnHit(target);
-				Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
-				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
-				Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
-
-			}
-			target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
-		}
-	}
-	public class MoonLightDebuff : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultDeBuff();
-		}
-		public override void Update(NPC npc, ref int buffIndex) {
-			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= 0;
-		}
-	}
 	public class TitanPower : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
@@ -894,12 +832,73 @@ namespace Roguelike.Contents.Perks
 		}
 		public override void UpdateEquip(Player player) {
 			player.ModPlayerStats().CappedHealthAmount = 50;
+			player.GetModPlayer<GlassCannonPlayer>().GlassCannon = true;
 		}
 	}
+	public class GlassCannonPlayer : ModPlayer {
+		public bool GlassCannon = false;
+		public int cooldown = 0;
+		public override void ResetEffects() {
+			GlassCannon = false;
+			cooldown = ModUtils.CountDown(cooldown);
+		}
+		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (GlassCannon && cooldown == 0) {
+				cooldown = Player.itemAnimationMax * 5;
+				Vector2 reVelocity = velocity.SafeNormalize(Vector2.Zero) * 17;
+				Projectile.NewProjectile(source, position, reVelocity.Vector2RotateByRandom(5), ModContent.ProjectileType<GlassProjectile>(), damage * 5, knockback, Player.whoAmI);
+			}
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		}
+	}
+
 	public class EnchantmentSmith : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
+		}
+	}
+	public class ArcaneMaster : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 2;
+			textureString = ModUtils.GetTheSameTextureAsEntity<ArcaneMaster>();
+		}
+		public override void UpdateEquip(Player player) {
+			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.MagicDMG, Multiplicative: 1.1f);
+			float addition = (StackAmount(player) - 1) * .05f;
+			player.manaCost -= .15f + addition;
+			player.GetModPlayer<ArcaneMasterPlayer>().ArcaneMaster = true;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			ArcaneMasterPlayer modplayer = player.GetModPlayer<ArcaneMasterPlayer>();
+			if (modplayer.ArcaneMaster && item.DamageType == DamageClass.Magic) {
+				float addition = (StackAmount(player) - 1) * .005f;
+				damage += modplayer.ManaCostIncreases * .01f + addition;
+			}
+		}
+	}
+	public class ArcaneMasterPlayer : ModPlayer {
+		public bool ArcaneMaster = false;
+		public int ManaCostIncreases = 0;
+		public int Decay_ManaCostIncreases = 0;
+		public override void ResetEffects() {
+			ArcaneMaster = false;
+			if (ManaCostIncreases <= 0 || Player.ItemAnimationActive) return;
+			if (++Decay_ManaCostIncreases >= 60) {
+				ManaCostIncreases--;
+				Decay_ManaCostIncreases = 0;
+			}
+		}
+		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+			if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .01f;
+		}
+		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+			if (ArcaneMaster) mult += ManaCostIncreases * .02f;
+		}
+		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (ArcaneMaster) ManaCostIncreases = Math.Clamp(ManaCostIncreases + 1, 0, 60);
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 	}
 }

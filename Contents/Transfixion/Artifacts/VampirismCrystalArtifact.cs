@@ -79,14 +79,29 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			}
 		}
 	}
+	/*
+	 * VampirismCrystal_Upgrade1: {
+	DisplayName: Vitality Crystal [Vampirism Crystal]
+	Description: + Lessen the effect of decreases maximum hp from 55% -> 15%
+}
 
+VampirismCrystal_Upgrade2: {
+	DisplayName: Pure Vampire Crystal [Vampirism Crystal]
+	Description:
+		'''
+		+ Decreases cooldown between each life steal by half
+		+ Life steal is a lot stronger
+		- Strengthen decreases maximum life effect from 55% -> 65% 
+		'''
+}
+	 */
 	public class VampirismCrystal_Upgrade1 : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			list_category.Add(PerkCategory.ArtifactExclusive);
 		}
 		public override bool SelectChoosing() {
-			return !Main.LocalPlayer.HasPerk<VampirismCrystal_Upgrade2>() && Main.LocalPlayer.HasArtifact<VampirismCrystalArtifact>();
+			return false;
 		}
 	}
 	public class VampirismCrystal_Upgrade2 : Perk {
@@ -95,7 +110,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			list_category.Add(PerkCategory.ArtifactExclusive);
 		}
 		public override bool SelectChoosing() {
-			return !Main.LocalPlayer.HasPerk<VampirismCrystal_Upgrade1>() && Main.LocalPlayer.HasArtifact<VampirismCrystalArtifact>();
+			return false;
 		}
 	}
 	public class BloodVoodoo : Perk {

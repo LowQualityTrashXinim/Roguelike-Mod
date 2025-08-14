@@ -1,26 +1,24 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Perks;
-using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Perks.WeaponUpgrade;
- 
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Projectiles;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Perks.WeaponUpgrade.Content;
-public class EnhancedMagicStaff_GlobalItem : GlobalItem {
+namespace Roguelike.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+public class Roguelike_MagicGemStaff : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
-		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.EnhancedMagicStaff)) {
-			return;
-		}
 		switch (entity.type) {
 			case ItemID.AmethystStaff:
 				entity.shoot = ModContent.ProjectileType<AmethystMagicalBolt>();
 				entity.useTime = 3;
 				entity.useAnimation = 15;
 				entity.reuseDelay = 30;
-				entity.mana = 6;
+				entity.mana = 25;
 				entity.shootSpeed = 1;
 				entity.damage += 5;
 				break;
@@ -29,7 +27,7 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				entity.useTime = 3;
 				entity.useAnimation = 18;
 				entity.reuseDelay = 33;
-				entity.mana = 6;
+				entity.mana = 26;
 				entity.shootSpeed = 1;
 				entity.damage += 5;
 				break;
@@ -37,7 +35,7 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				entity.shoot = ModContent.ProjectileType<SapphireMagicalBolt>();
 				entity.useTime = 3;
 				entity.useAnimation = 18;
-				entity.mana = 6;
+				entity.mana = 12;
 				entity.damage -= 3;
 				entity.shootSpeed = 1;
 				break;
@@ -45,25 +43,24 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				entity.shoot = ModContent.ProjectileType<EmeraldMagicalBolt>();
 				entity.useTime = 10;
 				entity.useAnimation = 20;
-				entity.mana = 6;
+				entity.mana = 16;
 				entity.shootSpeed = 1;
 				break;
 			case ItemID.RubyStaff:
-				entity.damage += 10;
+				entity.damage += 5;
 				entity.shoot = ModContent.ProjectileType<RubyMagicalBolt>();
 				entity.shootSpeed = 1;
+				entity.mana = 40;
 				break;
 			case ItemID.DiamondStaff:
-				entity.damage += 10;
+				entity.damage += 5;
 				entity.shoot = ModContent.ProjectileType<DiamondMagicalBolt>();
 				entity.shootSpeed = 1;
+				entity.mana = 40;
 				break;
 		}
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		if (!UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.EnhancedMagicStaff)) {
-			return;
-		}
 		switch (item.type) {
 			case ItemID.AmethystStaff:
 				velocity = velocity.Vector2RotateByRandom(10);
@@ -82,23 +79,9 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.DiamondStaff:
-				position = position.PositionOFFSET(velocity, 50);
-				break;
 			case ItemID.RubyStaff:
 				position = position.PositionOFFSET(velocity, 50);
 				break;
 		}
-	}
-}
-internal class EnhancedMagicStaff : Perk {
-	public override void SetDefaults() {
-		CanBeStack = false;
-		list_category.Add(PerkCategory.WeaponUpgrade);
-	}
-	public override void OnChoose(Player player) {
-		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.EnhancedMagicStaff);
-		Mod.Reflesh_GlobalItem(player);
-		int[] Orestaff = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
-		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }

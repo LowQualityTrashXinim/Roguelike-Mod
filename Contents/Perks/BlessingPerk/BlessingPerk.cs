@@ -377,3 +377,63 @@ public class BlessingOfEvasive : Perk {
 		modplayer.DodgeChance += .04f * StackAmount(player);
 	}
 }
+public class BlessingOfMoon : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override bool SelectChoosing() {
+		Player player = Main.LocalPlayer;
+		PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+		if (perkplayer.perks.ContainsKey(GetPerkType<BlessingOfNebula>())
+			&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfSolar>())
+			&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfVortex>())
+			&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfStardust>())) {
+			return true;
+		}
+		return false;
+	}
+	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
+		if (!player.immune && Main.rand.NextFloat() <= .75f && !Main.dayTime) {
+			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
+			player.immune = true;
+			return true;
+		}
+		return base.FreeDodge(player, hurtInfo);
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		int damage = player.GetWeaponDamage(item);
+		float knockback = player.GetWeaponKnockback(item);
+		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+
+		IEntitySource source = player.GetSource_OnHit(target);
+		Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+		Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
+		Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
+
+
+		target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		int damage = proj.damage;
+		float knockback = proj.knockBack;
+		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
+			IEntitySource source = player.GetSource_OnHit(target);
+			Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
+			Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
+
+		}
+		target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
+	}
+}
+public class MoonLightDebuff : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+	public override void Update(NPC npc, ref int buffIndex) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= 0;
+	}
+}

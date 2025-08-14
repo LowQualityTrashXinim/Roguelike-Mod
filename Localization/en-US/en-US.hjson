@@ -1661,17 +1661,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ArcaneMaster: {
-				DisplayName: Orb of arcane mastery
-				Tooltip:
-					'''
-					"The zenith of sage ideology, well what used to be"
-					Multiply magic damage by 1.1x and reduce mana cost by 15%
-					Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
-					This have a capped at 60 and have 1s of decay
-					'''
-			}
-
 			DivinityStone: {
 				DisplayName: Divinity Stone
 				Tooltip:
@@ -1835,15 +1824,6 @@ Mods: {
 					'''
 					"The dice use by god to decide mortal fate"
 					Gives you a roll for each boss kill which will automatically roll for you
-					'''
-			}
-
-			GlassCannon: {
-				DisplayName: Glass Cannon
-				Tooltip:
-					'''
-					When using a weapon that shoot projectile
-					Shoot out a glass that deal 125% of weapon damage
 					'''
 			}
 

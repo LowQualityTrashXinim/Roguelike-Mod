@@ -337,8 +337,8 @@ OverchargedMana: {
 	Description:
 		'''
 		+ Your mana regenaration is increases
-		+ When at 50%, your mana regenaration is further increases
-		+ When you have full mana deal magic explode damage and +77% magic damage
+		+ When below 50% max mana, your mana regenaration is further increases
+		+ At full mana, next attack deal magic explode damage and +77% magic damage
 		+ When your current mana value is greater than your current life value, strengthen above effect
 		'''
 }
@@ -590,7 +590,6 @@ NightTerror: {
 		'''
 		During night :
 		+ Increases your life regeneration by 25% and flat 10
-		Also increases your :
 		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
 		( Note : effect above are stack differently )
 		'''
@@ -661,16 +660,6 @@ HunterInstinct: {
 		'''
 }
 
-EnhancedMagicStaff: {
-	DisplayName: Enhanced Magic Staff
-	Description:
-		'''
-		+ Gem staff are much stronger
-		+ Some of the gem staff receive new projectile
-		+ Some gem staff are completely changed
-		'''
-}
-
 DemolitionistGunner: {
 	DisplayName: Demolitionist Gunner
 	Description:
@@ -708,35 +697,6 @@ TripletShot: {
 		+ Weapon uses arrow will shoot out additional spread of 3 arrows !
 		- Decreases attack speed of the weapon by 15%
 		- Decreases base damage by 4 ( can't go below 1 )
-		'''
-}
-
-VampirismCrystal_Upgrade1: {
-	DisplayName: Vitality Crystal [Vampirism Crystal]
-	Description: + Lessen the effect of decreases maximum hp from 55% -> 15%
-}
-
-VampirismCrystal_Upgrade2: {
-	DisplayName: Pure Vampire Crystal [Vampirism Crystal]
-	Description:
-		'''
-		+ Decreases cooldown between each life steal by half
-		+ Life steal is a lot stronger
-		- Strengthen decreases maximum life effect from 55% -> 65% 
-		'''
-}
-
-TokenOfPride_Upgrade1: {
-	DisplayName: Noble Pride [Token Of Pride]
-	Description: + Loot drop value are now halve instead of 0x
-}
-
-TokenOfPride_Upgrade2: {
-	DisplayName: Blacksmith Pride [Token Of Pride]
-	Description:
-		'''
-		+ Increases chance of getting augmentation from 65% to 85%
-		+ Weapon have 20% chance to get additional enchanted
 		'''
 }
 
@@ -823,6 +783,7 @@ GlassCannon: {
 		"Paradise for mad pursuer"
 		+ Multiply your damage by 1.25x
 		+ Capped your maximum health at 50
+		Shoot out a glass that deal 5x of weapon damage ( CD: item usetime * 5 )
 		'''
 }
 
@@ -843,4 +804,22 @@ EssenceExtraction: {
 EnchantmentSmith: {
 	DisplayName: Enchantment Smith
 	Description: Increases the amount of enchantment can be put onto weapon by 1
+}
+
+ArcaneMaster: {
+	DisplayName: Arcane master
+	Description:
+		'''
+		"The zenith of sage ideology, well what used to be"
+		Multiply magic damage by 1.1x and reduce mana cost by 15%
+		Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
+		This have a capped at 60 and have 1s of decay
+		'''
+	Description1:
+		'''
+		"The zenith of sage ideology, well what used to be"
+		Multiply magic damage by 1.2x and reduce mana cost by 20%
+		Using a magic weapon will increases mana cost by 2.25% but increases weapon magic damage by 1.5%
+		This have a capped at 60 and have 1s of decay
+		'''
 }
