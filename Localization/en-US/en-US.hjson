@@ -1827,15 +1827,6 @@ Mods: {
 					'''
 			}
 
-			StimPack: {
-				DisplayName: Stimulant Bottle
-				Tooltip:
-					'''
-					When health fall below 40%, automatically give you stim pack buff
-					Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
-					'''
-			}
-
 			MagicalScroll: {
 				DisplayName: Obscure Orb Scroll
 				Tooltip:

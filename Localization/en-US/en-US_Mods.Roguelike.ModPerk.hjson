@@ -130,10 +130,10 @@ AlchemistEmpowerment: {
 }
 
 SelfExplosion: {
-	DisplayName: Self Explosion
+	DisplayName: Healing Explosion
 	Description:
 		'''
-		+ When you got hit, you explode damaging surrounding enemies
+		+ Explode damaging surrounding enemies when you got hit
 		+ After you explode, you gain a small buff that massively increases your life regenaration
 		'''
 }
@@ -470,10 +470,10 @@ BlessingOfMoon: {
 }
 
 TitanPower: {
-	DisplayName: Titan Power
+	DisplayName: Titan skin
 	Description:
 		'''
-		The power of a Titan
+		The skin of a Titan now is your
 		+ Increases your maximum health by 200, thorn damage by 150%, defenses by 15 flat and 25%
 		+ Increases your damage reduction by 40%
 		+ You can revive once ( 4 miniutes cool down )
@@ -781,9 +781,9 @@ GlassCannon: {
 	Description:
 		'''
 		"Paradise for mad pursuer"
-		+ Multiply your damage by 1.25x
-		+ Capped your maximum health at 50
-		Shoot out a glass that deal 5x of weapon damage ( CD: item usetime * 5 )
+		Multiply your damage by 1.25x, the next stack will increases multiply value by 0.25
+		Shoot out a glass that deal 5x of weapon damage (CD: item usetime * 5) (applied once)
+		Capped your maximum health at 50
 		'''
 }
 
@@ -813,13 +813,30 @@ ArcaneMaster: {
 		"The zenith of sage ideology, well what used to be"
 		Multiply magic damage by 1.1x and reduce mana cost by 15%
 		Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
-		This have a capped at 60 and have 1s of decay
+		This have a capped at 10 and have 1s of decay
 		'''
 	Description1:
 		'''
 		"The zenith of sage ideology, well what used to be"
 		Multiply magic damage by 1.2x and reduce mana cost by 20%
 		Using a magic weapon will increases mana cost by 2.25% but increases weapon magic damage by 1.5%
-		This have a capped at 60 and have 1s of decay
+		This have a capped at 10 and have 1s of decay
 		'''
+}
+
+Stimulation: {
+	DisplayName: Stimulation
+	Description:
+	'''
+	When health fall below 40%, automatically give you stim pack buff for 10s
+	Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
+	'''
+}
+VampiricAura: {
+	DisplayName: VampiricAura
+	Description:
+	'''
+	Increases your life regeneration by 3 and healing effectiveness by 25%
+	During your immunity frame, you drain life of enemies nearby you and heal you
+	'''
 }

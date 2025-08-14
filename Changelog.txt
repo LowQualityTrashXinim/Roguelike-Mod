@@ -6,3 +6,6 @@ Version 0.0.1:
 5/ Merged Glass Cannon accessory with Glass Cannon perk
 6/ Disabled perk artifact upgrade from ever being accessible unless using debug item
 7/ Enhanced Magic staff weapon upgrade are now part of roguelike overhaul (again) 
+8/ Changed mod perk localization
+9/ Removed Stimulant Bottle accessory and make it a perk named Stimulation
+10/ Removed Vampiric Totem and make it a perk named Vampiric Aura

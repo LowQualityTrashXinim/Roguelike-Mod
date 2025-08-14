@@ -877,28 +877,93 @@ namespace Roguelike.Contents.Perks {
 				damage += modplayer.ManaCostIncreases * .01f + addition;
 			}
 		}
-	}
-	public class ArcaneMasterPlayer : ModPlayer {
-		public bool ArcaneMaster = false;
-		public int ManaCostIncreases = 0;
-		public int Decay_ManaCostIncreases = 0;
-		public override void ResetEffects() {
-			ArcaneMaster = false;
-			if (ManaCostIncreases <= 0 || Player.ItemAnimationActive) return;
-			if (++Decay_ManaCostIncreases >= 60) {
-				ManaCostIncreases--;
-				Decay_ManaCostIncreases = 0;
+		class ArcaneMasterPlayer : ModPlayer {
+			public bool ArcaneMaster = false;
+			public int ManaCostIncreases = 0;
+			public int Decay_ManaCostIncreases = 0;
+			public override void ResetEffects() {
+				ArcaneMaster = false;
+				if (ManaCostIncreases <= 0 || Player.ItemAnimationActive) return;
+				if (++Decay_ManaCostIncreases >= 10) {
+					ManaCostIncreases--;
+					Decay_ManaCostIncreases = 0;
+				}
+			}
+			public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+				if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .01f;
+			}
+			public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+				if (ArcaneMaster) mult += ManaCostIncreases * .02f;
+			}
+			public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+				if (ArcaneMaster) ManaCostIncreases = Math.Clamp(ManaCostIncreases + 1, 0, 60);
+				return base.Shoot(item, source, position, velocity, type, damage, knockback);
 			}
 		}
-		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .01f;
+	}
+	public class Stimulantion : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
 		}
-		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-			if (ArcaneMaster) mult += ManaCostIncreases * .02f;
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<StimPackPlayer>().StimPack = true;
 		}
-		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (ArcaneMaster) ManaCostIncreases = Math.Clamp(ManaCostIncreases + 1, 0, 60);
-			return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		class StimPackPlayer : ModPlayer {
+			public bool StimPack = false;
+			public override void ResetEffects() {
+				StimPack = false;
+			}
+			public override void UpdateEquips() {
+				if (!Player.IsHealthAbovePercentage(.4f) && StimPack) {
+					Player.AddBuff(ModContent.BuffType<StimPackBuff>(), ModUtils.ToSecond(10));
+				}
+			}
+		}
+		class StimPackBuff : ModBuff {
+			public override string Texture => ModTexture.MissingTexture_Default;
+			public override void SetStaticDefaults() {
+				Main.debuff[Type] = false;
+			}
+			public override void Update(Player player, ref int buffIndex) {
+				PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+				modplayer.AddStatsToPlayer(PlayerStats.RegenHP, 1.5f, Flat: 10);
+				modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.12f);
+			}
+		}
+	}
+	public class VampiricAura : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<VitalityDrainTotemPlayer>().VitalityDrainTotem = true;
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.HealEffectiveness, Additive: 1.25f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Base: 3);
+		}
+		class VitalityDrainTotemPlayer : ModPlayer {
+			public bool VitalityDrainTotem = false;
+			int cooldown = 0;
+			public override void ResetEffects() {
+				VitalityDrainTotem = false;
+			}
+			public override void PostUpdate() {
+				if (!Player.immune || !VitalityDrainTotem) {
+					return;
+				}
+				if (++cooldown <= 12) {
+					return;
+				}
+				Player.Center.LookForHostileNPC(out List<NPC> npclist, 225f);
+				int amount = 0;
+				foreach (NPC npc in npclist) {
+					Player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Math.Clamp((int)(npc.lifeMax * .005f), 1, 1000), 0));
+					amount++;
+				}
+				if (amount > 0) {
+					Player.Heal(amount);
+				}
+				cooldown = 0;
+			}
 		}
 	}
 }
