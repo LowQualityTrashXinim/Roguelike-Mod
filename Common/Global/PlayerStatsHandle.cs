@@ -180,7 +180,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public int Rapid_ManaRegen = 0;
 	public int Debuff_LifeStruct = 0;
 	/// <summary>
-	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
+	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/><br/>
+	/// Check whenever or not the current hit is critical or not.
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
 

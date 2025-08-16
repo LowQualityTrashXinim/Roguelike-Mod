@@ -40,7 +40,6 @@ public class ModItemLib : ModSystem {
 	public static Dictionary<int, List<int>> BodyArmorRarityDB { get; private set; }
 	public static Dictionary<int, List<int>> LegsArmorRarityDB { get; private set; }
 	public static List<Item> SynergyItem { get; private set; }
-	public static HashSet<Item> LostAccessories { get; private set; }
 	/// <summary>
 	/// Due to how annoying this is in <see cref="LootBoxBase"/>, I decide to just make a hard record of it in the mod instead of trying to hack my own mod lol
 	/// </summary>
@@ -87,7 +86,6 @@ public class ModItemLib : ModSystem {
 	}
 	public override void OnModLoad() {
 		TrinketAccessories = new();
-		LostAccessories = new();
 		SynergyItem = new();
 		RPGItem = new();
 		WeaponRarityDB = new();
@@ -104,7 +102,6 @@ public class ModItemLib : ModSystem {
 	}
 	public override void OnModUnload() {
 		SynergyItem = null;
-		LostAccessories = null;
 		RPGItem = null;
 		TrinketAccessories = null;
 		ListLootboxType = null;
@@ -137,11 +134,6 @@ public class ModItemLib : ModSystem {
 				continue;
 			}
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				if (globalitem.LostAccessories) {
-					LostAccessories.Add(item);
-					VanillaAndLostAcc.Add(item.type);
-					continue;
-				}
 				if (globalitem.RPGItem) {
 					if (globalitem.AdvancedBuffItem) {
 						AdvancedRPGItem[item.type] = true;

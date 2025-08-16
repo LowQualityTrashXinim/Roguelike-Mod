@@ -119,8 +119,6 @@ internal class UniversalSystem : ModSystem {
 
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
 
-
-	public const string CHECK_LOSTACC = "lostacc";
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
 	public const string CHECK_WWEAPONENCHANT = "weaponenchant";
@@ -129,15 +127,13 @@ internal class UniversalSystem : ModSystem {
 	/// <summary>
 	/// Check config setting
 	/// </summary>
-	/// <param name="option">use <see cref="CHECK_LOSTACC"/> and other related string</param>
+	/// <param name="option">use <see cref="CHECK_RARELOOTBOX"/> and other related string</param>
 	/// <returns>
 	///		return true if config is enable<br/>
 	///		return false if config is disable
 	/// </returns>
 	public static bool LuckDepartment(string option) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (option == CHECK_LOSTACC)
-			return config.LostAccessory;
 		if (option == CHECK_RARELOOTBOX)
 			return config.RareLootbox;
 		if (option == CHECK_RARESPOILS)

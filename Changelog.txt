@@ -1,11 +1,22 @@
 Version 0.0.1:
 1/ Ported the mod into a new repository.
 2/ Fixes all the error caused by the port.
-3/ Removal of SynergyModProjectile due to unnecessary implementation
-4/ Removal of orb of arcane master and instead make it a perk and renamed it Arcane master
-5/ Merged Glass Cannon accessory with Glass Cannon perk
-6/ Disabled perk artifact upgrade from ever being accessible unless using debug item
-7/ Enhanced Magic staff weapon upgrade are now part of roguelike overhaul (again) 
-8/ Changed mod perk localization
-9/ Removed Stimulant Bottle accessory and make it a perk named Stimulation
-10/ Removed Vampiric Totem and make it a perk named Vampiric Aura
+3/ Removal of SynergyModProjectile due to unnecessary implementation.
+4/ Removal of orb of arcane master and instead make it a perk and renamed it Arcane master.
+5/ Merged Glass Cannon accessory with Glass Cannon perk.
+6/ Disabled perk artifact upgrade from ever being accessible unless using debug item.
+7/ Enhanced Magic staff weapon upgrade are now part of roguelike overhaul (again).
+8/ Changed mod perk localization.
+9/ Removed Stimulant Bottle accessory and make it a perk named Stimulation.
+10/ Removed Vampiric Totem and make it a perk named Vampiric Aura.
+11/ Disable Lost accessory and make it completely unobtainable in normal gameplay.
+12/ Slightly improved static method GetWeapon in LootBoxBase.
+13/ Removed Overcharged Orb.
+14/ Removed Forbidden Tome.
+15/ Merged Skill Engine with Energy Absorption perk.
+16/ Removed ChaosShield and made it into a perk.
+17/ Removed Stealth cloak.
+18/ Buff Invisibility by adding effect from "Stealth cloak".
+19/ Removed Golden Cross and changed it into a potion called Holy Potion.
+20/ Merged Chaos Tablet with Chaos Protection perk.
+21/ Changed some of the name of reic prefix.

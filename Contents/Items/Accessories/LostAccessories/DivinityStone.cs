@@ -35,7 +35,6 @@ public class DivinityStonePlayer : ModPlayer {
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1 + .1f * Booster, Flat: 2 * Booster);
 			modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Additive: 1 + .25f * Booster, Flat: 2 * Booster);
-			modplayer.AddStatsToPlayer(PlayerStats.StaticDefense, Additive: 1 + .15f * Booster, Flat: 3 * Booster);
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {

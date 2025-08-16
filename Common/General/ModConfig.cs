@@ -40,8 +40,6 @@ namespace Roguelike.Common.General
 		[DefaultValue(true)]
 		public bool RareLootbox { get; set; }
 		[DefaultValue(true)]
-		public bool LostAccessory { get; set; }
-		[DefaultValue(true)]
 		public bool WeaponEnchantment { get; set; }
 		[DefaultValue(true)]
 		public bool AccessoryPrefix { get; set; }

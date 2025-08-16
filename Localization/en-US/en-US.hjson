@@ -1673,17 +1673,7 @@ Mods: {
 					[Divinity Stone]
 					Increases player : 
 					[+] Life regenarate rate by 10% and 2 flat
-					[+] Mana regen by 25% and 2 flat 
-					[+] Static defenses by 15% and 3 flat
-					'''
-			}
-
-			ChaosTablet: {
-				DisplayName: Chaos Tablet
-				Tooltip:
-					'''
-					Chaos explosion may happen during combat
-					Increases one of your stats after 15s
+					[+] Mana regen by 25% and 2 flat
 					'''
 			}
 
@@ -1728,23 +1718,13 @@ Mods: {
 				DisplayName: Natural Crystal
 			}
 
-			EnergeticOrb: {
-				DisplayName: Overcharged Orb
-				Tooltip:
-					'''
-					"Bursting with energy"
-					Increases your mana regeneration, maximum mana by 30 and magic damage by 6%
-					Magic projectile upon hitting enemy will heal small amount of your mana
-					'''
-			}
-
 			StarStone: {
 				DisplayName: Starfell Stone
 				Tooltip:
 					'''
 					"Made from star that keep falling from the sky"
 					Increases synergy damage by 15%
-					Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+					Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
 					'''
 			}
 
@@ -1758,23 +1738,6 @@ Mods: {
 					Increases additional damage reduction by 5% when your life is under 15%
 					You have chance to resist a attack
 					When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
-					'''
-			}
-
-			StealthCloak: {
-				DisplayName: Steath Cloak
-				Tooltip:
-					'''
-					"No one will live to tell the tale"
-					You become invisible after 15s of not being invisible
-					While you are invisible you gain various buff 
-					'''
-				ExtraInfo:
-					'''
-					While being invisible :
-					[+] Your critical damage increases by 35%
-					[+] Increases your movement speed by 15%
-					[+] You have 1 in 15 chance to dodge
 					'''
 			}
 
@@ -1795,16 +1758,6 @@ Mods: {
 					"Made from pure gold"
 					Greatly increases length of invincibility after taking damage
 					Will also increases the strength of other item that grant invincibility
-					'''
-			}
-
-			VitalityDrainTotem: {
-				DisplayName: Vampiric Totem
-				Tooltip:
-					'''
-					Increases your life regeneration
-					Increases healing effectiveness by 25%
-					During your immunity frame, you drain life of enemies nearby you and heal you
 					'''
 			}
 
@@ -1854,26 +1807,6 @@ Mods: {
 					'''
 			}
 
-			MagicMuzzle: {
-				DisplayName: Arcane Muzzle
-				Tooltip:
-					'''
-					"Muzzle made by wizard"
-					Weapon that use bullet ammo will have their shot convert to Arcane Bullet
-					Arcane Bullet damage is affected by both range damage and magic damage
-					'''
-			}
-
-			ForbiddenTome: {
-				DisplayName: Forbidden Tome
-				Tooltip:
-					'''
-					Passively heal your mana by 40 every 5s
-					Create a tome that float around you in infinite symbol shape
-					When tome is near a enemy, shoot out shadow flame
-					'''
-			}
-
 			StarCharm: {
 				DisplayName: Stellar Charm
 				Tooltip:
@@ -1895,17 +1828,6 @@ Mods: {
 					'''
 			}
 
-			ChaosShield: {
-				DisplayName: Chaos Shield
-				Tooltip:
-					'''
-					Increases your defense by 5
-					Getting hit will randomly reduce taken damage from 25-50%
-					Have 25% chance to randomly spawn a projectile
-					Have 10% chance to convert taken damage to heal
-					'''
-			}
-
 			ElementalShield: {
 				DisplayName: Elemental Shield
 				Tooltip:
@@ -1916,13 +1838,13 @@ Mods: {
 					'''
 			}
 
-			EnergyEngine: {
-				DisplayName: Skill Engine
+			MagicMuzzle: {
+				DisplayName: Arcane Muzzle
 				Tooltip:
 					'''
-					Energy can regenerate slowly 1 energy/second
-					During skill activation, increases defense by 12 and damage by 22%
-					Decreases your maximum energy capacity by 100 but increase energy recharge rate by 11%
+					"Muzzle made by wizard"
+					Weapon that use bullet ammo will have their shot convert to Arcane Bullet
+					Arcane Bullet damage is affected by both range damage and magic damage
 					'''
 			}
 
@@ -2713,6 +2635,15 @@ Mods: {
 				DisplayName: Trial Wand
 				Tooltip: ""
 			}
+
+			HolyPotion: {
+				DisplayName: Holy Potion
+				Tooltip: 
+				'''
+				Greatly increases length of invincibility after taking damage
+				Will also increases the strength of other item that grant invincibility
+				'''
+			}
 		}
 
 		Buffs: {
@@ -3379,8 +3310,8 @@ Mods: {
 			}
 
 			Buff_VortexBlessing: {
-				DisplayName: Buff_ Vortex Blessing
-				Description: Mods.BossRush.Buffs.Buff_VortexBlessing.Description
+				DisplayName: Vortex Blessing
+				Description: Increases your damage the more critical hit you dealt
 			}
 
 			DebugStatus: {
@@ -3406,6 +3337,14 @@ Mods: {
 			TheRottedForkEnchantmentDebuff: {
 				DisplayName: The Rotted Fork Enchantment Debuff
 				Description: Mods.BossRush.Buffs.TheRottedForkEnchantmentDebuff.Description
+			}
+
+			Holy_Buff: {
+				DisplayName: Divine grace
+				Description:
+				'''
+				Grant more invincibility
+				'''
 			}
 		}
 

@@ -104,7 +104,7 @@ namespace Roguelike.Contents.Items.Chest
 				if (ChaosModeSystem.Chaos()) {
 					GetArmorPiece(Type, player);
 					for (int i = 0; i < 3; i++) {
-						GetAccessories(Type, player, true);
+						GetAccessories(Type, player);
 					}
 					GetPotion(Type, player);
 				}

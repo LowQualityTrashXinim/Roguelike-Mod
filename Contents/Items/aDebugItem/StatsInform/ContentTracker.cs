@@ -24,7 +24,6 @@ internal class ContentTracker : ModItem {
 		int total =
 			ModItemLib.ListLootboxType.Count
 			+ ModItemLib.SynergyItem.Count
-			+ ModItemLib.LostAccessories.Count
 			+ Artifact.ArtifactCount
 			+ EnchantmentLoader.TotalCount
 			+ SkillModSystem.TotalCount
@@ -36,7 +35,6 @@ internal class ContentTracker : ModItem {
 		var line = new TooltipLine(Mod, "StatsShowcase",
 			$"LootBox amount : {ModItemLib.ListLootboxType.Count}" +
 			$"\nSynergy item amount : {ModItemLib.SynergyItem.Count}" +
-			$"\nLost accessories amount : {ModItemLib.LostAccessories.Count}" +
 			$"\nArtifact amount : {Artifact.ArtifactCount}" +
 			$"\nWeapon enchantment amount : {EnchantmentLoader.TotalCount}" +
 			$"\nSkill amount: {SkillModSystem.TotalCount}" +

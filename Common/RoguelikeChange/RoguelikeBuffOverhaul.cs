@@ -2,6 +2,7 @@
 using Roguelike.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Accessories.LostAccessories;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -58,5 +59,24 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 				PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 35);
 			}
 		}
+		if (type == BuffID.Invisibility) {
+			/*					
+			 		[+] Your critical damage increases by 35%
+					[+] Increases your movement speed by 15%
+					[+] You have 1 in 15 chance to dodge
+			*/
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, 1.35f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
+		}
+	}
+}
+public class RoguelikeOverhaul_Buff_ModPlayer : ModPlayer {
+	public override bool FreeDodge(Player.HurtInfo info) {
+		if (UniversalSystem.Check_RLOH() && !Player.immune && Player.HasBuff(BuffID.Invisibility) && Main.rand.NextBool(15)) {
+			Player.AddImmuneTime(info.CooldownCounter, 60);
+			Player.immune = true;
+			return true;
+		}
+		return base.FreeDodge(info);
 	}
 }

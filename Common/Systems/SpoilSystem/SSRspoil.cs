@@ -41,7 +41,7 @@ internal class SSRspoil {
 					relic.AutoAddRelicTemplate(player, 3);
 				}
 			}
-			LootBoxBase.GetAccessories(itemsource, player, true);
+			LootBoxBase.GetAccessories(itemsource, player);
 		}
 	}
 	public class LegendaryRelicSpoil : ModSpoil {

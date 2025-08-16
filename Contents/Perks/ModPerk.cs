@@ -1,23 +1,24 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using System.Linq;
-using Terraria.ModLoader;
-using Terraria.Localization;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Roguelike.Contents.Items;
-using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Items.Weapon;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Projectiles;
+using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Accessories.LostAccessories;
 using Roguelike.Contents.Items.BuilderItem;
+using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Perks.BlessingPerk;
+using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
-using Roguelike.Common.Global;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Perks {
 	public class MarkOfSpectre : Perk {
@@ -270,9 +271,9 @@ namespace Roguelike.Contents.Perks {
 		public override string ModifyToolTip() {
 			int stack = StackAmount(Main.LocalPlayer);
 			if (stack > 0) {
-				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description{stack}");
+				return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description{stack}");
 			}
-			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
+			return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description");
 		}
 		public override void Update(Player player) {
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {
@@ -309,7 +310,7 @@ namespace Roguelike.Contents.Perks {
 			}
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (player.statMana == player.statManaMax2 && item.DamageType == DamageClass.Magic) {
+			if (player.statMana >= player.statManaMax2 * .9f && item.DamageType == DamageClass.Magic) {
 				damage += 0.77f;
 			}
 		}
@@ -571,11 +572,17 @@ namespace Roguelike.Contents.Perks {
 			CanBeStack = false;
 		}
 		public override void UpdateEquip(Player player) {
-			player.endurance += .1f;
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.EnergyCap, 1.2f);
+			PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+			statplayer.EnergyRegen.Base += 1;
+			statplayer.AddStatsToPlayer(PlayerStats.EnergyCap, 1.2f);
+			SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+			if (modplayer.Activate) {
+				player.endurance += .1f;
+				statplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.11f);
+			}
 		}
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(hurtInfo.Damage * .25f));
+			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(hurtInfo.Damage * .5f));
 		}
 	}
 	public class HybridRanger : Perk {
@@ -901,7 +908,7 @@ namespace Roguelike.Contents.Perks {
 			}
 		}
 	}
-	public class Stimulantion : Perk {
+	public class Stimulation : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 		}
@@ -963,6 +970,151 @@ namespace Roguelike.Contents.Perks {
 					Player.Heal(amount);
 				}
 				cooldown = 0;
+			}
+		}
+	}
+	public class ChaosProtection : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+			modifiers.SourceDamage -= Main.rand.NextFloat(.05f, .5f);
+		}
+		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+			modifiers.SourceDamage -= Main.rand.NextFloat(.05f, .5f);
+		}
+		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+			if (Main.rand.NextBool(10)) {
+				player.Heal(hurtInfo.Damage * 2);
+			}
+			SpawnProjectile(player,hurtInfo.Damage);
+		}
+		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+			if (Main.rand.NextBool(10)) {
+				player.Heal(hurtInfo.Damage * 2);
+			}
+			SpawnProjectile(player,hurtInfo.Damage);
+		}
+		private void SpawnProjectile(Player player,int Damage) {
+			if (Main.rand.NextBool(4)) {
+				Vector2 pos = player.Center + Main.rand.NextVector2Circular(400, 400);
+				Vector2 vel = Main.rand.NextVector2CircularEdge(10, 10);
+				int min = Math.Min(10, Damage);
+				int max = Math.Max(10, Damage);
+				int damageraw = Main.rand.Next(min - 1, max);
+				if (damageraw <= 0) {
+					damageraw = 1;
+				}
+				Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damageraw, Main.rand.NextFloat(2, 5), player.whoAmI);
+			}
+		}
+		class ChaosTabletPlayer : ModPlayer {
+			public bool ChaosTablet = false;
+			public PlayerStats chaosstat = PlayerStats.None;
+			public override void ResetEffects() {
+				ChaosTablet = false;
+			}
+			public override void UpdateEquips() {
+				if (!ChaosTablet) {
+					return;
+				}
+				if (chaosstat == PlayerStats.None) {
+					chaosstat = Main.rand.Next(MysteriousPotionBuff.lookupDictionary.Keys.ToList());
+					Player.AddBuff(ModContent.BuffType<ChaosBuff>(), ModUtils.ToSecond(15));
+				}
+				if (!Player.Center.LookForAnyHostileNPC(600)) {
+					return;
+				}
+				if (Main.rand.NextBool(100)) {
+					int weapondmg = Player.GetWeaponDamage(Player.HeldItem);
+					int dmg = Main.rand.Next(40, 180) + weapondmg;
+					int buffid = Main.rand.Next(TerrariaArrayID.Debuff);
+					Projectile.NewProjectile(Player.GetSource_Misc("ChaosTablet"), Player.Center + Main.rand.NextVector2Circular(600, 600), Vector2.Zero, ModContent.ProjectileType<ChaosExplosion>(), dmg, Main.rand.NextFloat(3, 9), Player.whoAmI, buffid);
+				}
+			}
+		}
+		class ChaosExplosion : ModProjectile {
+			public override string Texture => ModTexture.MissingTexture_Default;
+			public override void SetDefaults() {
+				Projectile.width = Projectile.height = 1;
+				Projectile.friendly = true;
+				Projectile.tileCollide = false;
+				Projectile.timeLeft = 10;
+				Projectile.hide = true;
+			}
+			public int BuffID { get => (int)Projectile.ai[0]; }
+			public override bool? CanDamage() {
+				return false;
+			}
+			public override void OnKill(int timeLeft) {
+				for (int i = 0; i < 100; i++) {
+					int firework = Main.rand.Next(new int[] { DustID.Firework_Blue, DustID.Firework_Green, DustID.Firework_Pink, DustID.Firework_Red, DustID.Firework_Yellow });
+					int dust = Dust.NewDust(Projectile.Center, 0, 0, firework);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = Main.rand.NextVector2Circular(20, 20);
+				}
+				for (int i = 0; i < 50; i++) {
+					int firework = Main.rand.Next(new int[] { DustID.Firework_Blue, DustID.Firework_Green, DustID.Firework_Pink, DustID.Firework_Red, DustID.Firework_Yellow });
+					int dust = Dust.NewDust(Projectile.Center, 0, 0, firework);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(20, 20);
+				}
+				Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 200);
+				Player player = Main.player[Projectile.owner];
+				NPC.HitInfo info = new();
+				info.Damage = Projectile.damage;
+				info.Knockback = Projectile.knockBack;
+				foreach (NPC npc in npclist) {
+					info.HitDirection = ModUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X);
+					info.Crit = Main.rand.NextBool(7);
+					player.StrikeNPCDirect(npc, info);
+					npc.AddBuff(BuffID, ModUtils.ToSecond(Main.rand.Next(5, 16)));
+				}
+			}
+		}
+
+		class ChaosBuff : ModBuff {
+			public override string Texture => ModTexture.EMPTYBUFF;
+			public override void SetStaticDefaults() {
+				this.BossRushSetDefaultBuff();
+			}
+			public override void Update(Player player, ref int buffIndex) {
+				ChaosTabletPlayer chaosplayer = player.GetModPlayer<ChaosTabletPlayer>();
+				PlayerStatsHandle statsplayer = player.GetModPlayer<PlayerStatsHandle>();
+				var modplayer = player.GetModPlayer<MysteriousPotionPlayer>();
+				switch (chaosplayer.chaosstat) {
+					case PlayerStats.MaxHP:
+					case PlayerStats.RegenHP:
+					case PlayerStats.MaxMana:
+					case PlayerStats.RegenMana:
+					case PlayerStats.CritChance:
+					case PlayerStats.MaxMinion:
+					case PlayerStats.Defense:
+					case PlayerStats.MaxSentry:
+						statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
+							Base: modplayer.ToStatsNumInt(chaosplayer.chaosstat, 2));
+						break;
+					default:
+						statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
+							Additive: 1 + modplayer.ToStatsNumFloat(chaosplayer.chaosstat, 2));
+						break;
+				}
+				if (player.buffTime[buffIndex] <= 0) {
+					player.GetModPlayer<ChaosTabletPlayer>().chaosstat = PlayerStats.None;
+				}
+			}
+			public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
+				ChaosTabletPlayer chaosplayer = Main.LocalPlayer.GetModPlayer<ChaosTabletPlayer>();
+				MysteriousPotionPlayer modplayer = Main.LocalPlayer.GetModPlayer<MysteriousPotionPlayer>();
+				if (ModUtils.DoesStatsRequiredWholeNumber(chaosplayer.chaosstat)) {
+					tip = $"+ {modplayer.ToStatsNumInt(chaosplayer.chaosstat, 1)} {chaosplayer.chaosstat}";
+				}
+				else {
+					tip = $"+ {modplayer.ToStatsNumInt(chaosplayer.chaosstat, 1)}% {chaosplayer.chaosstat}";
+				}
+			}
+			public override bool RightClick(int buffIndex) {
+				return false;
 			}
 		}
 	}

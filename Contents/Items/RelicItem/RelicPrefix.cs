@@ -143,7 +143,7 @@ public class Archer : RelicPrefix {
 		return value;
 	}
 }
-public class Defense : RelicPrefix {
+public class Defensive : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("DefenseRelic");
 	}
@@ -152,13 +152,13 @@ public class Defense : RelicPrefix {
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
 		if (player.statDefense >= 50 && index == 0) {
-			value.Base += 5;
+			value.Base += 2;
 			return value;
 		}
 		return value;
 	}
 }
-public class Melee : RelicPrefix {
+public class Warrior : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("MeleeRelic");
 	}
@@ -172,7 +172,7 @@ public class Melee : RelicPrefix {
 		return value;
 	}
 }
-public class Staff : RelicPrefix {
+public class Mage : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("StaffRelic");
 	}

@@ -28,8 +28,8 @@ Phi: {
 	Description: Increases relic stats value effect effect by 20%
 }
 
-Melee: {
-	DisplayName: Melee
+Warrior: {
+	DisplayName: Warrior
 	Description: Increases base relic stats by 5 when helding melee weapon, +10 direct item damage
 }
 
@@ -38,12 +38,12 @@ Archer: {
 	Description: Increases base relic stats by 5 when helding a weapon use arrow, +6% arrow damage
 }
 
-Staff: {
-	DisplayName: Staff
+Mage: {
+	DisplayName: Mage
 	Description: Increases base relic stats by 5 when helding a magic staff, -5% mana cost
 }
 
-Defense: {
-	DisplayName: Defense
-	Description: Increases base relic stats by 5 when defenses is over 50, +5 defenses
+Defensive: {
+	DisplayName: Defensive
+	Description: Increases base relic stats by 5 when defenses is over 50, +2 defenses
 }

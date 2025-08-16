@@ -15,8 +15,7 @@ using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Chest
-{
+namespace Roguelike.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
 		public override void SetStaticDefaults() {
 			LootPoolSetStaticDefaults();
@@ -421,9 +420,6 @@ namespace Roguelike.Contents.Items.Chest
 
 		private void AddAcc(List<int> flag) {
 			Accessories.Clear();
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC)) {
-				Accessories.AddRange(ModItemLib.LostAccessories.Select(i => i.type));
-			}
 			for (int i = 0; i < flag.Count; i++) {
 				switch (flag[i]) {
 					case 0:
@@ -514,7 +510,7 @@ namespace Roguelike.Contents.Items.Chest
 				player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
 			}
 			else {
-				player.QuickSpawnItem(entitySource, Main.rand.Next([.. LegArmor,.. BodyArmor,.. HeadArmor]));
+				player.QuickSpawnItem(entitySource, Main.rand.Next([.. LegArmor, .. BodyArmor, .. HeadArmor]));
 			}
 		}
 		/// <summary>
@@ -697,107 +693,9 @@ namespace Roguelike.Contents.Items.Chest
 			if (lootbox.ModItem is not LootBoxBase item) {
 				return;
 			}
-			int SpecialAmount = 350;
-			int ReturnWeapon = ItemID.None;
-			//adding stuff here
-			if (Main.masterMode) {
-				SpecialAmount += 150;
-			}
-			IEntitySource entitySource = player.GetSource_OpenItem(lootbox.type);
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-				int weapon = Main.rand.Next(ModItemLib.SynergyItem).type;
-				player.QuickSpawnItemDirect(entitySource, weapon);
-				item.AmmoForWeapon(entitySource, player, weapon);
-				return;
-			}
-			item.ModifyLootAdd(player);
-			//actual choosing item
 			PlayerStatsHandle modplayer = player.ModPlayerStats();
-			modplayer.GetAmount();
-			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(item.Type).DropItemMelee.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(item.Type).DropItemRange.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(item.Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(item.Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(item.Type).DropItemMisc;
-			DummyMeleeData.UnionWith(modplayer.Request_AddMelee);
-			DummyRangeData.UnionWith(modplayer.Request_AddRange);
-			DummyMagicData.UnionWith(modplayer.Request_AddMagic);
-			DummySummonData.UnionWith(modplayer.Request_AddSummon);
-			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
-			for (int i = 0; i < weaponAmount; i++) {
-				if (rng == 0) {
-					rng = RNGManage(player);
-					rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
-				}
-				switch (rng) {
-					case 0:
-						continue;
-					case 1:
-						if (DummyMeleeData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							continue;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyMeleeData.Remove(ReturnWeapon);
-						continue;
-					case 2:
-						if (DummyRangeData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							item.AmmoForWeapon(entitySource, player, Weapon);
-							continue;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyRangeData.Remove(ReturnWeapon);
-						continue;
-					case 3:
-						if (DummyMagicData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							item.AmmoForWeapon(entitySource, player, Weapon);
-							continue;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyMagicData.Remove(ReturnWeapon);
-						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
-						continue;
-					case 4:
-						if (DummySummonData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							item.AmmoForWeapon(entitySource, player, Weapon);
-							continue;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummySummonData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummySummonData.Remove(ReturnWeapon);
-						continue;
-					case 5:
-						if (DummyMiscsData.Count < 1) {
-							ChooseWeapon(Main.rand.Next(1, 5), ref ReturnWeapon, ref SpecialAmount, DummyMeleeData.ToList(), DummyRangeData.ToList(), DummyMagicData.ToList(), DummySummonData.ToList(), DummyMiscsData.ToList());
-							continue;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMiscsData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyMiscsData.Remove(ReturnWeapon);
-						continue;
-					case 6:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>());
-						continue;
-				}
-			}
+			item.GetWeapon(player.GetSource_OpenItem(lootbox.type), player, weaponAmount, rng);
 		}
 		/// <summary>
 		/// Use this if you only care about getting ammo for weapon
@@ -914,21 +812,9 @@ namespace Roguelike.Contents.Items.Chest
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="player"></param>
-		public static void GetAccessories(int type, Player player, bool LostAccIncluded = false) {
+		public static void GetAccessories(int type, Player player) {
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			//List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
-			//if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
-			//	acc.AddRange(ModItemLib.LostAccessories.Select(i => i.type));
-			//}
-			//player.QuickSpawnItem(entitySource, Main.rand.Next(acc));
-			//Slightly smarter approach
-			int acc;
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
-				acc = Main.rand.NextFromHashSet(ModItemLib.VanillaAndLostAcc);
-			}
-			else {
-				acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
-			}
+			int acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
 			player.QuickSpawnItem(entitySource, acc);
 		}
 		/// <summary>

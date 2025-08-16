@@ -30,7 +30,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
-			LootBoxBase.GetAccessories(itemsource, player, true);
+			LootBoxBase.GetAccessories(itemsource, player);
 			LootBoxBase.GetArmorPiece(itemsource, player, true);
 			LootBoxBase.GetSkillLootbox(itemsource, player);
 			LootBoxBase.GetRelic(itemsource, player);

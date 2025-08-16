@@ -338,7 +338,7 @@ OverchargedMana: {
 		'''
 		+ Your mana regenaration is increases
 		+ When below 50% max mana, your mana regenaration is further increases
-		+ At full mana, next attack deal magic explode damage and +77% magic damage
+		+ At above 90% of mana, next attack deal magic explode damage and +77% magic damage
 		+ When your current mana value is greater than your current life value, strengthen above effect
 		'''
 }
@@ -432,9 +432,9 @@ EnergyAbsorption: {
 	DisplayName: Energy Absorption
 	Description:
 		'''
-		+ Getting hit will recharge your energy for 25% of damage taken
-		+ Increases damage reduction by 10%
-		+ Increases energy capacity by 20%
+		+ Getting hit will recharge your energy for 50% of damage taken
+		+ Increases energy capacity by 20% and regenerate energy by 1
+		+ During skill activation, increases damage reduction by 10% and damage by 11%
 		'''
 }
 
@@ -781,9 +781,9 @@ GlassCannon: {
 	Description:
 		'''
 		"Paradise for mad pursuer"
-		Multiply your damage by 1.25x, the next stack will increases multiply value by 0.25
-		Shoot out a glass that deal 5x of weapon damage (CD: item usetime * 5) (applied once)
-		Capped your maximum health at 50
+		+ Multiply your damage by 1.25x, the next stack will increases multiply value by 0.25
+		+ Shoot out a glass that deal 5x of weapon damage (CD: item usetime * 5) (applied once)
+		- Capped your maximum health at 50
 		'''
 }
 
@@ -811,15 +811,15 @@ ArcaneMaster: {
 	Description:
 		'''
 		"The zenith of sage ideology, well what used to be"
-		Multiply magic damage by 1.1x and reduce mana cost by 15%
-		Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
+		+ Multiply magic damage by 1.1x and reduce mana cost by 15%
+		+ Using a magic weapon will increases mana cost by 2% and weapon magic damage by 1%
 		This have a capped at 10 and have 1s of decay
 		'''
 	Description1:
 		'''
 		"The zenith of sage ideology, well what used to be"
-		Multiply magic damage by 1.2x and reduce mana cost by 20%
-		Using a magic weapon will increases mana cost by 2.25% but increases weapon magic damage by 1.5%
+		+ Multiply magic damage by 1.2x and reduce mana cost by 20%
+		+ Using a magic weapon will increases mana cost by 2.25% and weapon magic damage by 1.5%
 		This have a capped at 10 and have 1s of decay
 		'''
 }
@@ -827,16 +827,29 @@ ArcaneMaster: {
 Stimulation: {
 	DisplayName: Stimulation
 	Description:
-	'''
-	When health fall below 40%, automatically give you stim pack buff for 10s
-	Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
-	'''
+		'''
+		+ When health fall below 40%, automatically give you stim pack buff for 10s
+		+ Stimulation increases attack speed by 12% and health regenaration by 50% and flat 10
+		'''
 }
+
 VampiricAura: {
-	DisplayName: VampiricAura
+	DisplayName: Vampiric Aura
 	Description:
-	'''
-	Increases your life regeneration by 3 and healing effectiveness by 25%
-	During your immunity frame, you drain life of enemies nearby you and heal you
-	'''
+		'''
+		+ Increases your life regeneration by 3 and healing effectiveness by 25%
+		+ During your immunity frame, you drain life of enemies nearby you and heal you
+		'''
+}
+
+ChaosProtection: {
+	DisplayName: Chaos Protection
+	Description:
+		'''
+		+ Getting hit will randomly reduce taken damage from 5-50%
+		+ Have 25% chance to randomly spawn a projectile
+		+ Have 10% chance to convert taken damage to heal
+		+ Chaos explosion may happen during combat
+		+ Increases one of your stats after 15s
+		'''
 }

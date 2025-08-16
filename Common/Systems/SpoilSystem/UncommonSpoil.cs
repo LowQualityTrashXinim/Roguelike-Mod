@@ -68,15 +68,15 @@ public class UncommonSpoil {
 			return DisplayName.FormatWith(chestplayer.accShowID);
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
 			return SpoilDropRarity.UncommonDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
+			int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
-				LootBoxBase.GetAccessories(itemsource, player, Main.rand.NextBool(5));
+				LootBoxBase.GetAccessories(itemsource, player);
 			}
 		}
 	}
