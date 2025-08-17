@@ -5,8 +5,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
 using System.Collections.Generic;
 
-namespace Roguelike.Contents.Items.Chest
-{
+namespace Roguelike.Contents.Items.Chest {
 	class ShadowLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
@@ -156,13 +155,11 @@ namespace Roguelike.Contents.Items.Chest
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}
-			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				GetArmorForPlayer(entitySource, player);
-				GetWeapon(entitySource, player, 2);
-				GetAccessories(Type, player);
-				GetPotion(Type, player);
-				GetSkillLootbox(Type, player, 1);
-			}
+			GetArmorForPlayer(entitySource, player);
+			GetWeapon(entitySource, player, 2);
+			GetAccessories(Type, player);
+			GetPotion(Type, player);
+			GetSkillLootbox(Type, player, 1);
 		}
 	}
 }

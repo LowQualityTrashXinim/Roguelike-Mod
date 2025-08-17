@@ -480,7 +480,7 @@ namespace Roguelike.Contents.Perks {
 	}
 	public class AspectOfFirstChaos : Perk {
 		public override bool SelectChoosing() {
-			return Main.LocalPlayer.IsEquipAcc(ModContent.ItemType<ChaosTablet>());
+			return Main.LocalPlayer.HasPerk<ChaosProtection>();
 		}
 		public override void SetDefaults() {
 			CanBeStack = true;

@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using Terraria.ModLoader;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
- 
-using Roguelike.Common.Mode.DreamLikeWorldMode;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Chest
-{
+namespace Roguelike.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 38;
@@ -100,26 +97,13 @@ namespace Roguelike.Contents.Items.Chest
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				if (ChaosModeSystem.Chaos()) {
-					GetArmorPiece(Type, player);
-					for (int i = 0; i < 3; i++) {
-						GetAccessories(Type, player);
-					}
-					GetPotion(Type, player);
-				}
-				else {
-					GetWeapon(entitySource, player, 2);
-					GetArmorForPlayer(entitySource, player, true);
-					GetAccessories(Type, player);
-					GetPotion(Type, player);
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SpecialSkillLootBox>());
-				}
-			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
-				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
-				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
-			}
+			GetWeapon(entitySource, player, 2);
+			GetArmorForPlayer(entitySource, player, true);
+			GetAccessories(Type, player);
+			GetPotion(Type, player);
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<SpecialSkillLootBox>());
+			int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
+			player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
 			player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);
 		}

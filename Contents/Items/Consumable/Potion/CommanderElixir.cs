@@ -4,8 +4,7 @@ using Terraria.ModLoader;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Consumable.Potion
-{
+namespace Roguelike.Contents.Items.Consumable.Potion {
 	internal class CommanderElixir : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<LeaderShip>(), 12000);
@@ -21,7 +20,8 @@ namespace Roguelike.Contents.Items.Consumable.Potion
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.maxMinions += 5;
+			player.maxMinions += 2;
+			player.maxTurrets += 2;
 			player.whipRangeMultiplier += .25f;
 			player.GetDamage(DamageClass.Summon).Base += 5;
 

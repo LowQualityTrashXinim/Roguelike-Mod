@@ -155,12 +155,6 @@ namespace Roguelike.Common.Global
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					LifeCrystal += 5;
 					ManaCrystal += 4;
-					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
-					}
-					else {
-						yield return new Item(ModContent.ItemType<BuilderLootBox>());
-					}
 					if (UniversalSystem.CanEnchantmentBeAccess()) {
 						yield return new Item(ModContent.ItemType<DivineHammer>());
 					}

@@ -19,26 +19,15 @@ namespace Roguelike.Common.General
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "deny you from loot regardless";
 	}
-	public class ChallengeModeException : IItemDropRuleCondition {
+	public class Droprule_GhostNPC : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) || ModContent.GetInstance<RogueLikeConfig>().ForceBossDropRegadless;
+			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
+				return !npc.IsAGhostEnemy;
 			}
 			return false;
 		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Exclusive to challenge mode";
-	}
-	public class CheckLegacyLootboxBoss : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation)
-				return UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) && info.npc.boss;
-			return false;
-		}
-
 		public bool CanShowItemDropInUI() => false;
-
-		public string GetConditionDescription() => "";
+		public string GetConditionDescription() => "You should not be able to see this";
 	}
 	public class NoHitAndIsRakan : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
@@ -50,15 +39,6 @@ namespace Roguelike.Common.General
 		public bool CanShowItemDropInUI() => false;
 
 		public string GetConditionDescription() => "";
-	}
-	public class EvilBossChallengeModeException : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation)
-				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<RogueLikeConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => null;
 	}
 	public class QueenBeeEnranged : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {

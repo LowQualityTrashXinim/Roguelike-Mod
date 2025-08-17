@@ -1111,7 +1111,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Let your minion do your binding"
-					+5 Max Minions
+					+2 max minions, +2 max sentries
 					Increases whip range by 25%
 					Increases summoner base damage by 5
 					Decreases range, magic, summon damage by 10%
@@ -2638,11 +2638,11 @@ Mods: {
 
 			HolyPotion: {
 				DisplayName: Holy Potion
-				Tooltip: 
-				'''
-				Greatly increases length of invincibility after taking damage
-				Will also increases the strength of other item that grant invincibility
-				'''
+				Tooltip:
+					'''
+					Greatly increases length of invincibility after taking damage
+					Will also increases the strength of other item that grant invincibility
+					'''
 			}
 		}
 
@@ -3341,10 +3341,7 @@ Mods: {
 
 			Holy_Buff: {
 				DisplayName: Divine grace
-				Description:
-				'''
-				Grant more invincibility
-				'''
+				Description: Grant more invincibility
 			}
 		}
 

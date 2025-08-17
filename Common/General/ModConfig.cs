@@ -55,10 +55,6 @@ namespace Roguelike.Common.General
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool AutoRandomizeCharacter { get; set; }
-		[Header($"LegacyHeader")]
-		[DefaultValue(false)]
-		public bool LegacyLootBoxDrop { get; set; }
-		public bool LegacyBossRushWorldGen { get; set; }
 
 		[Header($"DebugHeader")]
 		[DefaultValue(false)]

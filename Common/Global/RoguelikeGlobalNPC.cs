@@ -143,6 +143,24 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		Endurance = 0;
 	}
+	public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {
+		if (IsAGhostEnemy) {
+			return false;
+		}
+		return base.CanBeHitByItem(npc, player, item);
+	}
+	public override bool CanBeHitByNPC(NPC npc, NPC attacker) {
+		if (IsAGhostEnemy) {
+			return false;
+		}
+		return base.CanBeHitByNPC(npc, attacker);
+	}
+	public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
+		if (IsAGhostEnemy) {
+			return false;
+		}
+		return base.CanBeHitByProjectile(npc, projectile);
+	}
 	public override void ModifyTypeName(NPC npc, ref string typeName) {
 		if (EliteBoss) {
 			typeName = "Elite " + typeName;
@@ -150,8 +168,18 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());
+		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
 		foreach (var item in npcLoot.Get()) {
 			item.OnSuccess(rule);
+			item.OnSuccess(rule2);
+		}
+	}
+	public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
+		LeadingConditionRule rule = new(new DenyYouFromLoot());
+		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
+		foreach (var item in globalLoot.Get()) {
+			item.OnSuccess(rule);
+			item.OnSuccess(rule2);
 		}
 	}
 	public override Color? GetAlpha(NPC npc, Color drawColor) {
@@ -159,6 +187,12 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			drawColor.R = 255;
 			drawColor.G = 255;
 			drawColor.B = 90;
+			return drawColor;
+		}
+		if (IsAGhostEnemy) {
+			drawColor.A = 0;
+			drawColor.ScaleRGB(.25f);
+			drawColor.B = 255;
 			return drawColor;
 		}
 		return base.GetAlpha(npc, drawColor);

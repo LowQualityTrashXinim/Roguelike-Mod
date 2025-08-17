@@ -18,6 +18,7 @@ public class Relic : ModItem {
 	List<StatModifier> valuelist = new List<StatModifier>();
 	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	public short RelicPrefixedType = -1;
+	public short RelicSetType = -1;
 	public override void SetStaticDefaults() {
 		relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	}
@@ -298,12 +299,13 @@ public class Relic : ModItem {
 		tag.Add("statList", statlist);
 		tag.Add("modifierList", valuelist);
 		tag.Add("RelicPrefixedType", RelicPrefixedType);
+		tag.Add("RelicSetType", RelicSetType);
 	}
 	public override void LoadData(TagCompound tag) {
 		statlist = tag.Get<List<PlayerStats>>("statList");
 		templatelist = tag.Get<List<int>>("templatetypeList");
 		valuelist = tag.Get<List<StatModifier>>("modifierList");
-		RelicPrefixedType = tag.Get<short>("RelicPrefixedType");
+		RelicSetType = tag.Get<short>("RelicSetType");
 	}
 }
 public enum RelicType : byte {

@@ -108,11 +108,6 @@ internal class UniversalSystem : ModSystem {
 	/// return true if it is enable
 	/// </returns>
 	public static bool CheckLegacy(string option) {
-		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (option == LEGACY_LOOTBOX)
-			return config.LegacyLootBoxDrop;
-		if (option == LEGACY_WORLDGEN)
-			return config.LegacyBossRushWorldGen;
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
@@ -237,10 +232,12 @@ internal class UniversalSystem : ModSystem {
 		enchantmentMenuWiki = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
+		if (!CanAccessContent(BOSSRUSH_MODE)) {
 			orig();
 		}
-		Main.hardMode = true;
+		else {
+			Main.hardMode = true;
+		}
 	}
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {

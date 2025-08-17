@@ -20,3 +20,8 @@ Version 0.0.1:
 19/ Removed Golden Cross and changed it into a potion called Holy Potion.
 20/ Merged Chaos Tablet with Chaos Protection perk.
 21/ Changed some of the name of reic prefix.
+22/ Removed Fool's Aura perk cause it is not practical
+23/ Adjusted Commander's Elixir, reduce amount of minion given from 5 -> 2, it now gives 2 max sentry
+24/ Code clean up.
+25/ Fixed "IsAGhostNPC" variable not working as intended.
+26/ Removed Legacy Boss Rush mode and anything that related that can't be reused.

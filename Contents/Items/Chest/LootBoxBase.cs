@@ -34,8 +34,6 @@ namespace Roguelike.Contents.Items.Chest {
 					return;
 				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
 					return;
-				if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX))
-					return;
 				PlayerStatsHandle chestplayer = Main.LocalPlayer.ModPlayerStats();
 				//absolutely not recommend to do this
 				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
@@ -138,12 +136,10 @@ namespace Roguelike.Contents.Items.Chest {
 			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
-				if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-					if (modplayer.CanDropSynergyEnergy) {
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-					}
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
+				if (modplayer.CanDropSynergyEnergy) {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 				}
 			}
 			else {

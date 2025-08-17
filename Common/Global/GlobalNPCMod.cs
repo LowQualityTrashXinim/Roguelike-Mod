@@ -41,7 +41,6 @@ namespace Roguelike.Common.Global
 			var noHit = new LeadingConditionRule(new GitGudMode());
 			var dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
-			LeadingConditionRule legacyLootboxCheck = new(new CheckLegacyLootboxBoss());
 			if(npc.boss) {
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new LootBoxLordDrop(), ModContent.ItemType<LootboxLordSummon>()));
 			}
@@ -51,7 +50,6 @@ namespace Roguelike.Common.Global
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IronLootBox>()));
 			}
@@ -62,8 +60,6 @@ namespace Roguelike.Common.Global
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SilverLootBox>()));
 				//Expert Mode drop
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.WormFood));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}
 			else if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1) {
@@ -73,8 +69,6 @@ namespace Roguelike.Common.Global
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CorruptionLootBox>()));
 				//normal drop
-				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
-				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
 			}
 			else if (npc.type == NPCID.BrainofCthulhu) {
@@ -83,9 +77,7 @@ namespace Roguelike.Common.Global
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCDonHitReward>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrimsonLootBox>()));
-				//Normal mode drop
-				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
-				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
+				//Normal mode dro
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
 			}
 			else if (npc.type == NPCID.QueenBee) {
@@ -105,7 +97,6 @@ namespace Roguelike.Common.Global
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldLootBox>()));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GuideVoodooDoll));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GoldLootBox>()));
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new NoHitAndIsRakan(), ItemID.Handgun));
@@ -171,8 +162,6 @@ namespace Roguelike.Common.Global
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>(), 1, 2, 2));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>()));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdPowerCell));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureLootBox>()));
 			}
@@ -181,9 +170,6 @@ namespace Roguelike.Common.Global
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>(), 1, 2, 2));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>()));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<LunaticTablet>()));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.TruffleWorm));
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.EmpressButterfly, 1, 5, 5));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LihzahrdLootBox>()));
 			}
@@ -233,7 +219,6 @@ namespace Roguelike.Common.Global
 			npcLoot.Add(dontHit);
 			npcLoot.Add(ExpertVSnormal);
 			npcLoot.Add(IsABoss);
-			npcLoot.Add(legacyLootboxCheck);
 		}
 		public override void OnKill(NPC npc) {
 			if (npc.boss) {
