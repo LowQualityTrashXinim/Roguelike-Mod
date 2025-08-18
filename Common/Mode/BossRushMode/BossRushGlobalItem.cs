@@ -23,7 +23,6 @@ internal class BossRushGlobalItem : GlobalItem {
 	}
 
 	public override bool CanUseItem(Item item, Player player) {
-		return base.CanUseItem(item, player);
 		if (!UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
 			return base.CanUseItem(item, player);
 		}
