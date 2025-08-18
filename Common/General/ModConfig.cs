@@ -40,8 +40,6 @@ namespace Roguelike.Common.General
 		[DefaultValue(true)]
 		public bool RareLootbox { get; set; }
 		[DefaultValue(true)]
-		public bool WeaponEnchantment { get; set; }
-		[DefaultValue(true)]
 		public bool AccessoryPrefix { get; set; }
 		[Header($"QoLHeader")]
 		[DefaultValue(false)]
@@ -57,8 +55,6 @@ namespace Roguelike.Common.General
 		public bool AutoRandomizeCharacter { get; set; }
 
 		[Header($"DebugHeader")]
-		[DefaultValue(false)]
-		public bool WorldGenTest { get; set; }
 		public bool TemplateTest { get; set; }
 		[Header($"GameHeader")]
 		public bool HoldShift { get; set; }

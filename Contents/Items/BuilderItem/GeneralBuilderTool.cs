@@ -42,7 +42,7 @@ public class GeneralBuilderToolSystem : ModSystem {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 		if (InventoryIndex != -1)
 			layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
-				"BossRush: UI",
+				"Roguelike: UI",
 				delegate {
 					GameTime gametime = new GameTime();
 					userInterface.Draw(Main.spriteBatch, gametime);

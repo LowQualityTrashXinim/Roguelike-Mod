@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Roguelike.Common;
 using Roguelike.Common.General;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Texture;
@@ -153,7 +152,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeZone = new();
 
 		dict_BiomeBundle = new() {
-			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone} },
+			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone, weight2 = .67f} },
 			{ Bid.Jungle, new(TileID.Mud, WallID.Jungle, "") },
 			{ Bid.Tundra, new(TileID.SnowBlock, WallID.SnowWallUnsafe, "") },
 			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
@@ -185,7 +184,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (ModContent.GetInstance<RogueLikeConfig>().WorldGenTest) {
+		if (ModContent.GetInstance<RogueLikeConfig>().RoguelikeMode) {
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}

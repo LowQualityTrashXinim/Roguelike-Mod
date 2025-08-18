@@ -23,7 +23,7 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Common.Global;
 /// <summary>
 /// Offer powerful stats modify tool<br/>
-/// Direct stats increases is much more efficient than using <see cref="PlayerStatsHandle.AddStatsToPlayer(BossRush.PlayerStats, StatModifier)"/> or any of the relate<br/>
+/// Direct stats increases is much more efficient than using <see cref="AddStatsToPlayer(PlayerStats, StatModifier, float, float)"/> or any of the relate<br/>
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {

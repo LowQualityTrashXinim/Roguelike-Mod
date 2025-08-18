@@ -1,9 +1,7 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Roguelike.Common.Graphics;
 using Roguelike.Common.Graphics.Structs.QuadStructs;
 using Roguelike.Common.Utils;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -29,7 +27,7 @@ public class OnyxBulletProjectile : ModProjectile {
 	}
 
 	public override void OnSpawn(IEntitySource source) {
-		SoundStyle pewpewSound = new SoundStyle($"BossRush/Contents/Projectiles/OnyxBlasterWESound");
+		SoundStyle pewpewSound = new SoundStyle($"Roguelike/Contents/Projectiles/OnyxBlasterWESound");
 		SoundEngine.PlaySound(pewpewSound with { Pitch = Main.rand.NextFloat(-1f,1f)},Projectile.Center);
 		Projectile.velocity.SafeNormalize(Vector2.UnitY);
 		startingPos = Projectile.Center;

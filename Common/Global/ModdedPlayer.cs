@@ -153,6 +153,7 @@ namespace Roguelike.Common.Global
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+					yield return new Item(ModContent.ItemType<ExoticTeleporter>());
 					LifeCrystal += 5;
 					ManaCrystal += 4;
 					if (UniversalSystem.CanEnchantmentBeAccess()) {
@@ -236,59 +237,6 @@ namespace Roguelike.Common.Global
 				}
 			}
 		}
-		private void SpawnItem() {
-			if (NPC.AnyNPCs(NPCID.KingSlime)) {
-				Player.QuickSpawnItem(null, ItemID.SlimeCrown);
-			}
-			if (NPC.AnyNPCs(NPCID.EyeofCthulhu)) {
-				Player.QuickSpawnItem(null, ItemID.SuspiciousLookingEye);
-			}
-			if (NPC.AnyNPCs(NPCID.BrainofCthulhu)) {
-				Player.QuickSpawnItem(null, ItemID.BloodySpine);
-			}
-			if (NPC.AnyNPCs(NPCID.EaterofWorldsHead)) {
-				Player.QuickSpawnItem(null, ItemID.WormFood);
-			}
-			if (NPC.AnyNPCs(NPCID.SkeletronHead)) {
-				Player.QuickSpawnItem(null, ModContent.ItemType<CursedDoll>());
-			}
-			if (NPC.AnyNPCs(NPCID.QueenBee)) {
-				Player.QuickSpawnItem(null, ItemID.Abeemination);
-			}
-			if (NPC.AnyNPCs(NPCID.WallofFlesh)) {
-				Player.QuickSpawnItem(null, ItemID.GuideVoodooDoll);
-			}
-			if (NPC.AnyNPCs(NPCID.QueenSlimeBoss)) {
-				Player.QuickSpawnItem(null, ItemID.QueenSlimeCrystal);
-			}
-			if (NPC.AnyNPCs(NPCID.Spazmatism) || NPC.AnyNPCs(NPCID.Retinazer)) {
-				Player.QuickSpawnItem(null, ItemID.MechanicalEye);
-			}
-			if (NPC.AnyNPCs(NPCID.TheDestroyer)) {
-				Player.QuickSpawnItem(null, ItemID.MechanicalWorm);
-			}
-			if (NPC.AnyNPCs(NPCID.SkeletronPrime)) {
-				Player.QuickSpawnItem(null, ItemID.MechanicalSkull);
-			}
-			if (NPC.AnyNPCs(NPCID.Plantera)) {
-				Player.QuickSpawnItem(null, ModContent.ItemType<PlanteraSpawn>());
-			}
-			if (NPC.AnyNPCs(NPCID.Golem)) {
-				Player.QuickSpawnItem(null, ItemID.LihzahrdPowerCell);
-			}
-			if (NPC.AnyNPCs(NPCID.DukeFishron)) {
-				Player.QuickSpawnItem(null, ItemID.TruffleWorm);
-			}
-			if (NPC.AnyNPCs(NPCID.HallowBoss)) {
-				Player.QuickSpawnItem(null, ItemID.EmpressButterfly);
-			}
-			if (NPC.AnyNPCs(NPCID.CultistBoss)) {
-				Player.QuickSpawnItem(null, ModContent.ItemType<LunaticTablet>());
-			}
-			if (NPC.AnyNPCs(NPCID.MoonLordCore)) {
-				Player.QuickSpawnItem(null, ItemID.CelestialSigil);
-			}
-		}
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.BOSSRUSH_MODE)) {
 				itemsByMod["Terraria"].Clear();
@@ -299,12 +247,6 @@ namespace Roguelike.Common.Global
 		public override void OnHurt(Player.HurtInfo info) {
 			if (ModUtils.IsAnyVanillaBossAlive())
 				amountOfTimeGotHit++;
-		}
-
-		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-			if (Player.difficulty != PlayerDifficultyID.Hardcore) {
-				SpawnItem();
-			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			var packet = Mod.GetPacket();

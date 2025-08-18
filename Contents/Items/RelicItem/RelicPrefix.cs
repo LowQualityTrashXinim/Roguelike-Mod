@@ -1,11 +1,6 @@
-﻿ 
-using Roguelike.Common.Utils;
+﻿ using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -32,8 +27,8 @@ public class RelicPrefixSystem : ModSystem {
 }
 public abstract class RelicPrefix : ModType {
 	public short Type;
-	public string Description => DisplayName + " : " + Language.GetTextValue($"Mods.BossRush.RelicPrefix.{Name}.Description");
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicPrefix.{Name}.DisplayName");
+	public string Description => DisplayName + " : " + Language.GetTextValue($"Mods.Roguelike.RelicPrefix.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.RelicPrefix.{Name}.DisplayName");
 	public string TextureString = "";
 	public static short GetRelicType<T>() where T : RelicPrefix {
 		return ModContent.GetInstance<T>().Type;

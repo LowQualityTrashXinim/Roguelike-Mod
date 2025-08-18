@@ -318,8 +318,8 @@ public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
-	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.DisplayName");
+	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
 	public RelicType relicType = RelicType.None;
 	protected sealed override void Register() {

@@ -77,7 +77,7 @@ namespace Roguelike.Common.Utils {
 		/// <param name="target">where/how big the outline should be drawn</param>
 		/// <param name="color">the color of the outline</param>
 		public static void DrawOutline(SpriteBatch spriteBatch, Rectangle target, Color color = default) {
-			Texture2D tex = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_Box2").Value;
+			Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_Box2").Value;
 
 			if (color == default)
 				color = new Color(49, 84, 141) * 0.9f;

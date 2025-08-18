@@ -249,8 +249,8 @@ public class StructureUI : UIState {
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		if (CurrentUI_State == StructureUI_State.Selecting) {
-			Texture2D tex = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_corner").Value;
-			Texture2D tex2 = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_Box").Value;
+			Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
+			Texture2D tex2 = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_Box").Value;
 			Point16 topLeft = TopLeft;
 			Point16 bottomRight = BottomRight;
 

@@ -111,12 +111,9 @@ internal class UniversalSystem : ModSystem {
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
-
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
-
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
-	public const string CHECK_WWEAPONENCHANT = "weaponenchant";
 	public const string CHECK_RELICRANDOMVALUE = "relicvalue";
 	public const string CHECK_PREFIX = "prefix";
 	/// <summary>
@@ -133,8 +130,6 @@ internal class UniversalSystem : ModSystem {
 			return config.RareLootbox;
 		if (option == CHECK_RARESPOILS)
 			return config.RareSpoils;
-		if (option == CHECK_WWEAPONENCHANT)
-			return config.WeaponEnchantment;
 		if (option == CHECK_PREFIX)
 			return config.AccessoryPrefix;
 		return false;
@@ -271,7 +266,7 @@ internal class UniversalSystem : ModSystem {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 		if (InventoryIndex != -1)
 			layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
-				"BossRush: UI",
+				"Roguelike: UI",
 				delegate {
 					GameTime gametime = new GameTime();
 					userInterface.Draw(Main.spriteBatch, gametime);
@@ -317,7 +312,7 @@ internal class UniversalSystem : ModSystem {
 			ModUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
 	}
-	public static bool CanEnchantmentBeAccess() => LuckDepartment(CHECK_WWEAPONENCHANT) && !Check_TotalRNG();
+	public static bool CanEnchantmentBeAccess() => !Check_TotalRNG();
 	public void ActivateSynergyWikiMenu() {
 		DeactivateUI();
 		user2ndInterface.SetState(synergyWikiMenu);
@@ -482,7 +477,7 @@ public class UniversalGlobalItem : GlobalItem {
 			return;
 		for (int i = 0; i < tooltips.Count; i++) {
 			if (tooltips[i].Name == "ItemName") {
-				string tooltipText = Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.None");
+				string tooltipText = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.WeaponEnchantment.None");
 				if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
 					tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
 				}
@@ -607,13 +602,13 @@ public class DefaultUI : UIState {
 	}
 	public override void OnActivate() {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
-			string text = Language.GetTextValue($"Mods.BossRush.SystemTooltip.PopUpWarning.Tooltip");
+			string text = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.Tooltip");
 			popUpWarning = new UITextPanel<string>(text);
 			popUpWarning.Height.Set(66, 0);
 			popUpWarning.HAlign = .5f;
 			popUpWarning.VAlign = .5f;
 			Append(popUpWarning);
-			popUpWarningClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.PopUpWarning.ClosingText"));
+			popUpWarningClose = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.ClosingText"));
 			popUpWarningClose.HAlign = .5f;
 			popUpWarningClose.VAlign = .6f;
 			popUpWarningClose.OnLeftClick += PopUpWarning_OnLeftClick;
@@ -706,7 +701,7 @@ public class DefaultUI : UIState {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
 				SpoilsPlayer spoilplayer = player.GetModPlayer<SpoilsPlayer>();
-				string text = string.Format(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Tooltip"), spoilplayer.LootBoxSpoilThatIsNotOpen.Count);
+				string text = string.Format(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Tooltip"), spoilplayer.LootBoxSpoilThatIsNotOpen.Count);
 				Main.instance.MouseText(text);
 			}
 			else {
@@ -734,7 +729,7 @@ public class DefaultUI : UIState {
 		endofdemo_Main.VAlign = .5f;
 		Append(endofdemo_Main);
 
-		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
+		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.DemoEnding.Tooltip"));
 		EndOfDemoPanel.Width.Set(700, 0);
 		EndOfDemoPanel.Height.Set(EndOfDemoPanel.TextSize.Y * 2 + 40, 0);
 		EndOfDemoPanel.HAlign = .5f;
@@ -800,7 +795,7 @@ public class DefaultUI : UIState {
 		dmgTaken.SetText($"Damage taken : {dmgT}");
 		endofdemo_Main.Append(dmgTaken);
 
-		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
+		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.DemoEnding.Close"));
 		EndOfDemoPanelClose.HAlign = 1f;
 		EndOfDemoPanelClose.VAlign = 1f;
 		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;

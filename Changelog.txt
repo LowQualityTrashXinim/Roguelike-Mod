@@ -25,3 +25,10 @@ Version 0.0.1:
 24/ Code clean up.
 25/ Fixed "IsAGhostNPC" variable not working as intended.
 26/ Removed Legacy Boss Rush mode and anything that related that can't be reused.
+27/ Merged Roguelike Mode with World gen test config.
+28/ Removed massive StaticNoise png and using 255x255 one instead.
+29/ Small fixes toward boss rush mode missing exotic teleporter.
+30/ Fixed localization error.
+31/ Removed unused mechanic, dying in classic mode no longer drop boss spawner again.
+32/ Removed Enchantment config from luck department.
+33/ Removed Curses system.

@@ -885,7 +885,7 @@ class btn_SkillDeletion : UIImage {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		if (IsMouseHovering) {
-			Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Delete"));
+			Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Skill.Delete"));
 		}
 		base.Update(gameTime);
 	}

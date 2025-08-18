@@ -34,7 +34,7 @@ public class UiCharacterCreationChanges : ModSystem
             c.Index--;
             c.RemoveRange(4);
 
-            c.EmitLdstr("Mods.BossRush.SystemTooltip.NotSupported.Warning");
+            c.EmitLdstr("Mods.Roguelike.SystemTooltip.NotSupported.Warning");
             c.Emit(OpCodes.Call, typeof(Language).GetMethod(nameof(Language.GetText)));
             c.EmitStloc0();
 

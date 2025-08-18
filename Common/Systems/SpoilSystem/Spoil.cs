@@ -70,8 +70,8 @@ public static class SpoilDropRarity {
 public abstract class ModSpoil {
 	public string Name => GetType().Name;
 	public int RareValue = 0;
-	public string DisplayName => $"- {Language.GetTextValue($"Mods.BossRush.Spoils.{Name}.DisplayName")} -";
-	public string Description => Language.GetTextValue($"Mods.BossRush.Spoils.{Name}.Description");
+	public string DisplayName => $"- {Language.GetTextValue($"Mods.Roguelike.Spoils.{Name}.DisplayName")} -";
+	public string Description => Language.GetTextValue($"Mods.Roguelike.Spoils.{Name}.Description");
 	public virtual void SetStaticDefault() { }
 	public virtual string FinalDisplayName() => DisplayName;
 	public virtual string FinalDescription() => Description;
@@ -129,7 +129,7 @@ public class SpoilsUIState : UIState {
 	public int lootboxItem = -1;
 	public UITextPanel<string> panel;
 	public override void OnInitialize() {
-		panel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Header"));
+		panel = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Header"));
 		panel.HAlign = .5f;
 		panel.VAlign = .3f;
 		panel.UISetWidthHeight(150, 53);
@@ -235,7 +235,7 @@ public class SpoilsUIButton : UIImageButton {
 				return;
 			}
 			if (spoil == null) {
-				Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Randomize"));
+				Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
 				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);

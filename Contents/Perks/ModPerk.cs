@@ -489,7 +489,7 @@ namespace Roguelike.Contents.Perks {
 		}
 		public override string ModifyToolTip() {
 			if (StackAmount(Main.LocalPlayer) >= 1) {
-				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description1");
+				return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description1");
 			}
 			return base.ModifyToolTip();
 		}

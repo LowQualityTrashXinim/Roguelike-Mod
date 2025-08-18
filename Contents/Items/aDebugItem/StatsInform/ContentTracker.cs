@@ -9,7 +9,6 @@ using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
-using Roguelike.Common.Systems.CursesSystem;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.aDebugItem.StatsInform;
@@ -29,8 +28,7 @@ internal class ContentTracker : ModItem {
 			+ SkillModSystem.TotalCount
 			+ ModPerkLoader.TotalCount
 			+ ModSpoilSystem.TotalCount
-			+ AugmentsLoader.TotalCount
-			+ CursesLoader.CurseTabooCount;
+			+ AugmentsLoader.TotalCount;
 
 		var line = new TooltipLine(Mod, "StatsShowcase",
 			$"LootBox amount : {ModItemLib.ListLootboxType.Count}" +
@@ -42,7 +40,6 @@ internal class ContentTracker : ModItem {
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
 			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +
 			$"\nAugments amount : {AugmentsLoader.TotalCount}" +
-			$"\nCurses taboo amount : {CursesLoader.CurseTabooCount}" +
 			$"\nTotal content amount : {total}"
 			);
 		tooltips.Add(line);

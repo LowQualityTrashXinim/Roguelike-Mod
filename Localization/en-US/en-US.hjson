@@ -2824,7 +2824,7 @@ Mods: {
 
 			CrimsonAbsorbtion: {
 				DisplayName: Crimson Absorbtion
-				Description: Mods.BossRush.Buffs.CrimsonAbsorbtion.Description
+				Description: TODO
 			}
 
 			ExplosionHealing: {
@@ -2931,7 +2931,7 @@ Mods: {
 
 			StarGaze: {
 				DisplayName: Star Gaze
-				Description: Mods.BossRush.Buffs.StarGaze.Description
+				Description: TODO
 			}
 
 			ThrowShortSwordCoolDown: {
@@ -2941,12 +2941,12 @@ Mods: {
 
 			Marked: {
 				DisplayName: Marked
-				Description: Mods.BossRush.Buffs.Marked.Description
+				Description: TODO
 			}
 
 			TheUnderworldWrath: {
 				DisplayName: The Underworld Wrath
-				Description: Mods.BossRush.Buffs.TheUnderworldWrath.Description
+				Description: TODO
 			}
 
 			StimPackBuff: {
@@ -3060,12 +3060,12 @@ Mods: {
 
 			ChaosBuff: {
 				DisplayName: Chaos Buff
-				Description: Mods.BossRush.Buffs.ChaosBuff.Description
+				Description: TODO
 			}
 
 			LifeStruckDebuff: {
 				DisplayName: Life Struck Debuff
-				Description: Mods.BossRush.Buffs.LifeStruckDebuff.Description
+				Description: TODO
 			}
 
 			AngelicSmgBuff: {
@@ -3075,27 +3075,27 @@ Mods: {
 
 			BloodButchererEnchantmentDebuff: {
 				DisplayName: Blood Butcherer Enchantment Debuff
-				Description: Mods.BossRush.Buffs.BloodButchererEnchantmentDebuff.Description
+				Description: TODO
 			}
 
 			BackUpMana_CoolDown: {
 				DisplayName: Mana bank recharge
-				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
+				Description: TODO
 			}
 
 			StarWhipBuff: {
 				DisplayName: Star Whip Buff
-				Description: Mods.BossRush.Buffs.StarWhipBuff.Description
+				Description: TODO
 			}
 
 			StarWhipDebuff: {
 				DisplayName: Star Whip Debuff
-				Description: Mods.BossRush.Buffs.StarWhipDebuff.Description
+				Description: TODO
 			}
 
 			MeltingDefense: {
 				DisplayName: Melting Defense
-				Description: Mods.BossRush.Buffs.MeltingDefense.Description
+				Description: TODO
 			}
 
 			FuryStrike: {
@@ -3116,7 +3116,7 @@ Mods: {
 
 			DeepSeaPressure: {
 				DisplayName: Deep Sea Pressure
-				Description: Mods.BossRush.Buffs.DeepSeaPressure.Description
+				Description: TODO
 			}
 
 			TomahawkCD: {
@@ -3126,7 +3126,7 @@ Mods: {
 
 			Axe_BleedDebuff: {
 				DisplayName: Axe_ Bleed Debuff
-				Description: Mods.BossRush.Buffs.Axe_BleedDebuff.Description
+				Description: TODO
 			}
 
 			ReactiveDefenseBuff: {
@@ -3156,12 +3156,12 @@ Mods: {
 
 			GrimTouch: {
 				DisplayName: Grim Touch
-				Description: Mods.BossRush.Buffs.GrimTouch.Description
+				Description: TODO
 			}
 
 			Shatter: {
 				DisplayName: Shatter
-				Description: Mods.BossRush.Buffs.Shatter.Description
+				Description: TODO
 			}
 
 			Vulnerable: {
@@ -3171,12 +3171,12 @@ Mods: {
 
 			PlatinumDefense: {
 				DisplayName: Platinum Defense
-				Description: Mods.BossRush.Buffs.PlatinumDefense.Description
+				Description: TODO
 			}
 
 			SilverPurification: {
 				DisplayName: Silver Purification
-				Description: Mods.BossRush.Buffs.SilverPurification.Description
+				Description: TODO
 			}
 
 			TungstenEmpowerment: {
@@ -3186,7 +3186,7 @@ Mods: {
 
 			NightInfection: {
 				DisplayName: Night Infection
-				Description: Mods.BossRush.Buffs.NightInfection.Description
+				Description: TODO
 			}
 
 			StrikeSpell: {
@@ -3211,7 +3211,7 @@ Mods: {
 
 			RA_Rotting: {
 				DisplayName: Rotting
-				Description: Mods.BossRush.Buffs.RA_Rotting.Description
+				Description: TODO
 			}
 
 			RisingStarBurning_Debuff: {
@@ -3221,22 +3221,22 @@ Mods: {
 
 			Slimey_Debuff: {
 				DisplayName: Slimey_ Debuff
-				Description: Mods.BossRush.Buffs.Slimey_Debuff.Description
+				Description: TODO
 			}
 
 			Slimy_Debuff: {
 				DisplayName: Slimy_ Debuff
-				Description: Mods.BossRush.Buffs.Slimy_Debuff.Description
+				Description: TODO
 			}
 
 			TundraHypothermia: {
 				DisplayName: Tundra Hypothermia
-				Description: Mods.BossRush.Buffs.TundraHypothermia.Description
+				Description: TODO
 			}
 
 			NPC_Weakness: {
 				DisplayName: Weakness
-				Description: Mods.BossRush.Buffs.NPC_Weakness.Description
+				Description: TODO
 			}
 
 			SnowballCannonMK2Projectile_CoolDown: {
@@ -3246,7 +3246,7 @@ Mods: {
 
 			Aftershock: {
 				DisplayName: Aftershock
-				Description: Mods.BossRush.Buffs.Aftershock.Description
+				Description: TODO
 			}
 
 			Urine_Debuff: {
@@ -3256,12 +3256,12 @@ Mods: {
 
 			DiceRollBuff: {
 				DisplayName: Dice Roll Buff
-				Description: Mods.BossRush.Buffs.DiceRollBuff.Description
+				Description: TODO
 			}
 
 			DiceRollDebuff: {
 				DisplayName: Dice Roll Debuff
-				Description: Mods.BossRush.Buffs.DiceRollDebuff.Description
+				Description: TODO
 			}
 
 			Magic_Buff: {
@@ -3286,27 +3286,27 @@ Mods: {
 
 			StarRay: {
 				DisplayName: Star Ray
-				Description: Mods.BossRush.Buffs.StarRay.Description
+				Description: TODO
 			}
 
 			Acid: {
 				DisplayName: Acid
-				Description: Mods.BossRush.Buffs.Acid.Description
+				Description: TODO
 			}
 
 			CompletelyShatter: {
 				DisplayName: Completely Shatter
-				Description: Mods.BossRush.Buffs.CompletelyShatter.Description
+				Description: TODO
 			}
 
 			DodgeJutsu: {
 				DisplayName: Dodge Jutsu
-				Description: Mods.BossRush.Buffs.DodgeJutsu.Description
+				Description: TODO
 			}
 
 			DodgeJutsuCoolDown: {
 				DisplayName: Dodge Jutsu Cool Down
-				Description: Mods.BossRush.Buffs.DodgeJutsuCoolDown.Description
+				Description: TODO
 			}
 
 			Buff_VortexBlessing: {
@@ -3316,27 +3316,27 @@ Mods: {
 
 			DebugStatus: {
 				DisplayName: Debug Status
-				Description: Mods.BossRush.Buffs.DebugStatus.Description
+				Description: TODO
 			}
 
 			CursedStatus: {
 				DisplayName: Cursed Status
-				Description: Mods.BossRush.Buffs.CursedStatus.Description
+				Description: TODO
 			}
 
 			PlasmaDefensesMelt: {
 				DisplayName: Plasma Defenses Melt
-				Description: Mods.BossRush.Buffs.PlasmaDefensesMelt.Description
+				Description: TODO
 			}
 
 			SandArmorBuff: {
 				DisplayName: Sand Armor Buff
-				Description: Mods.BossRush.Buffs.SandArmorBuff.Description
+				Description: TODO
 			}
 
 			TheRottedForkEnchantmentDebuff: {
 				DisplayName: The Rotted Fork Enchantment Debuff
-				Description: Mods.BossRush.Buffs.TheRottedForkEnchantmentDebuff.Description
+				Description: TODO
 			}
 
 			Holy_Buff: {

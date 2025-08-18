@@ -24,7 +24,7 @@ namespace Roguelike.Contents.Items
 		}
 		public override bool? UseItem(Player player) {
 			if (player.ItemAnimationJustStarted)
-				ModUtils.CombatTextRevamp(player.Hitbox, Color.Red, Language.GetTextValue("Mods.BossRush.Items.CelestialWrath.WarningMessage"));
+				ModUtils.CombatTextRevamp(player.Hitbox, Color.Red, Language.GetTextValue("Mods.Roguelike.Items.CelestialWrath.WarningMessage"));
 			return true;
 		}
 	}

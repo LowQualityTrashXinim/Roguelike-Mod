@@ -41,9 +41,6 @@ public class EnchantmentSystem : ModSystem {
 			if (UniversalSystem.Check_TotalRNG()) {
 				randomizedchance += .2f;
 			}
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
-				return;
-			}
 		}
 		for (int i = 0; i < 3; i++) {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
