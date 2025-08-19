@@ -1,11 +1,12 @@
 UniversalGemstone: {
 	DisplayName: Universal Gemstone
-	Description: 
+	Description:
 		'''
 		Minor increases to various stats
-		You have a small chance to dodge a attack, and small chance to life steal
+		You have a small chance to dodge an attack, and small chance to life steal
 		'''
 }
+
 TitanicBlood: {
 	DisplayName: Titanic Blood
 	Description:
@@ -14,10 +15,11 @@ TitanicBlood: {
 		Increases damage reduction by 10% when your life is under 50%
 		Increases additional damage reduction by 5% when your life is under 35%
 		Increases additional damage reduction by 5% when your life is under 15%
-		You have chance to resist a attack
+		You have chance to resist an attack
 		'''
 }
-NatureOfEvilAndGood:{
+
+NatureOfGoodAndEvil: {
 	DisplayName: Nature of Evil and Good
 	Description:
 		'''
@@ -25,5 +27,14 @@ NatureOfEvilAndGood:{
 		If your health is above 50%: attack speed by 3%, damage by 5%
 		Otherwise: life regenarate by 10% and life regen by 2hp/s
 		The above effect can be stacked up to 5 times.
+		'''
+}
+
+HeartOfNature: {
+	DisplayName: Heart of Nature
+	Description:
+		'''
+		Increase maximum health and mana by 40
+		Getting hit both heal back your hp and mana for 25% of taken damage
 		'''
 }

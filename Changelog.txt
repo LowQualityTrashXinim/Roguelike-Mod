@@ -40,3 +40,8 @@ Version 0.0.1:
 39/ Removed Fury Emblem and made it into a artifact instead.
 40/ Removed Titan Blood and made it into a relic set.
 41/ Removed Divinity Stone and Blood stone, merged them into Nature of Good and Evil and turn it into a relic set.
+42/ Removed BloodThorn core acc and turn it into a perk.
+43/ Reverted Nature Crystal back to normal acc item and give the item old effects.
+44/ Added Heart Of Nature relic set.
+45/ Adjusted HP condition for when KS created a crown from 40% to 67%.
+46/ Massively increases bosses base HP.

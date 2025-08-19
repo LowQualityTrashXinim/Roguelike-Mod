@@ -841,3 +841,14 @@ ChaosProtection: {
 		+ Increases one of your stats after 15s
 		'''
 }
+
+BloodthornCore: {
+	DisplayName: Bloodthorn Core
+	Description:
+		'''
+		"A thorn in heart"
+		Upon hit, Burst out 6 blood thorn that deal 45 magic damage
+		Blood thorn that is created by this item have life steal effect
+		Increases healing effective by 15% and maximum life by 15
+		'''
+}

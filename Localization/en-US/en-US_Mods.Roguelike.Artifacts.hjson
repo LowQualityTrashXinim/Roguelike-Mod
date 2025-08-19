@@ -228,7 +228,7 @@ EssenceLanternArtifact: {
 		'''
 }
 
-FuryEmblemArtifact:{
+FuryEmblemArtifact: {
 	DisplayName: Fury Emblem
 	Descirption:
 		'''

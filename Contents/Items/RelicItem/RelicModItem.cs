@@ -31,7 +31,7 @@ public class Relic : ModItem {
 		if (RelicPrefixedType == -1 && Main.rand.NextBool(3)) {
 			RelicPrefixedType = (short)Main.rand.Next(RelicPrefixSystem.TotalCount);
 		}
-		if(RelicSetType == -1) {
+		if (RelicSetType == -1) {
 			RelicSetType = (short)Main.rand.Next(RelicSetSystem.TotalCount);
 		}
 	}
@@ -107,13 +107,29 @@ public class Relic : ModItem {
 		if (nameIndex == -1) {
 			return;
 		}
+		string line = "";
+		string extraname = "";
 		TooltipLine NameLine = tooltips[nameIndex];
+		if (RelicSetType != -1) {
+			var relicset = RelicSetSystem.GetSet(RelicSetType);
+			Color colorstring;
+			if (RelicSetSystem.Check_RelicSetRequirment(Main.LocalPlayer, RelicSetType)) {
+				colorstring = Color.Aqua;
+			}
+			else {
+				colorstring = Color.Gray;
+			}
+			TooltipLine relicsetLine = new(Mod, "relicSet", $"{relicset.DisplayName} ({Main.LocalPlayer.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]}/{relicset.Requirement}) :\n{relicset.Description}");
+			relicsetLine.OverrideColor = colorstring;
+			tooltips.Insert(nameIndex + 1, relicsetLine);
+			extraname = relicset.DisplayName;
+		}
 		NameLine.Text = $"[Tier {TemplateCount}] {DisplayName}";
 		NameLine.OverrideColor = relicColor.MultiColor(5);
 		if (RelicPrefixedType != -1) {
 			RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
 			if (relicprefix != null) {
-				NameLine.Text = $"[Tier {TemplateCount}] {relicprefix.DisplayName} {DisplayName}";
+				NameLine.Text = $"[Tier {TemplateCount}] {relicprefix.DisplayName} {extraname} {DisplayName}";
 				tooltips.Insert(nameIndex + 1, new(Mod, "RelicPrefixDesc", $"~{{ {relicprefix.Description} }}~"));
 			}
 		}
@@ -122,7 +138,6 @@ public class Relic : ModItem {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));
 			return;
 		}
-		string line = "";
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;

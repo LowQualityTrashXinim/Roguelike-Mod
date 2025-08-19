@@ -30,7 +30,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool DRFromFatalAttack = false;
 	public bool OneTimeDR = false;
 	public int DRTimer = 0;
-	public const int BossHP = 4000;
+	public const int BossHP = 10000;
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
 	public bool EliteBoss = false;

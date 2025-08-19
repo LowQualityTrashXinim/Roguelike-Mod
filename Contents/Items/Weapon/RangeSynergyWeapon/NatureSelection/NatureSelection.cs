@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
+using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using System.Collections.Generic;
 using Terraria;

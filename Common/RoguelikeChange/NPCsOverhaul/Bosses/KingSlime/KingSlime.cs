@@ -138,7 +138,7 @@ internal class KingSlime : NPCReworker {
 
 				case State.Idle: {
 						afterimages = true;
-						if (crownNPC == null && npc.life <= npc.lifeMax * 0.4f) {
+						if (crownNPC == null && npc.life <= npc.lifeMax * 0.67f) {
 
 							crownNPC = NPC.NewNPCDirect(npc.GetSource_FromAI(), crownPos, ModContent.NPCType<KingSlimeCrown>(), 0, ai2: npc.whoAmI);
 

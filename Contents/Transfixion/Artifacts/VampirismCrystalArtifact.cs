@@ -127,7 +127,7 @@ VampirismCrystal_Upgrade2: {
 				vecR = (npc.Center - player.Center).SafeNormalize(Vector2.Zero);
 				for (int i = 0; i < 6; i++) {
 					Vector2 vec = vecR.Vector2DistributeEvenlyPlus(6, 60, i);
-					Projectile.NewProjectile(player.GetSource_ItemUse(ContentSamples.ItemsByType[ModContent.ItemType<HeartOfBloodThorn>()].Clone()), player.Center, vec, ProjectileID.SharpTears, damage, 3f, player.whoAmI, 0, Main.rand.NextFloat(.9f, 1.1f));
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, vec, ProjectileID.SharpTears, damage, 3f, player.whoAmI, 0, Main.rand.NextFloat(.9f, 1.1f));
 				}
 			}
 			vecR = Vector2.One.Vector2RotateByRandom(90);
