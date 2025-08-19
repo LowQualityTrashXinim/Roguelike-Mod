@@ -39,3 +39,4 @@ Version 0.0.1:
 38/ Removed Overpowering Gem and made it into a relic set.
 39/ Removed Fury Emblem and made it into a artifact instead.
 40/ Removed Titan Blood and made it into a relic set.
+41/ Removed Divinity Stone and Blood stone, merged them into Nature of Good and Evil and turn it into a relic set.

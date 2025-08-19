@@ -17,3 +17,13 @@ TitanicBlood: {
 		You have chance to resist a attack
 		'''
 }
+NatureOfEvilAndGood:{
+	DisplayName: Nature of Evil and Good
+	Description:
+		'''
+		Dealing a critical strike will increases the following for short duration:
+		If your health is above 50%: attack speed by 3%, damage by 5%
+		Otherwise: life regenarate by 10% and life regen by 2hp/s
+		The above effect can be stacked up to 5 times.
+		'''
+}

@@ -1649,22 +1649,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			DivinityStone: {
-				DisplayName: Divinity Stone
-				Tooltip:
-					'''
-					Increases your crit chance by 5
-					Upon critial hit a enemy, you gain a divinity stack
-					'''
-				ExtraInfo:
-					'''
-					[Divinity Stone]
-					Increases player : 
-					[+] Life regenarate rate by 10% and 2 flat
-					[+] Mana regen by 25% and 2 flat
-					'''
-			}
-
 			ReactiveBombing: {
 				DisplayName: Bombshell Artillery
 				Tooltip:
@@ -1716,19 +1700,6 @@ Mods: {
 					'''
 			}
 
-			TitanBlood: {
-				DisplayName: Titanic Blood
-				Tooltip:
-					'''
-					"A small snippet strength of the ancient god"
-					Increases damage reduction by 10% when your life is under 50%
-					Increases additional damage reduction by 5% when your life is under 35%
-					Increases additional damage reduction by 5% when your life is under 15%
-					You have chance to resist a attack
-					When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
-					'''
-			}
-
 			GoldenCross: {
 				DisplayName: Golden Cross
 				Tooltip:
@@ -1764,24 +1735,6 @@ Mods: {
 					'''
 					Increases mana cost by 5%
 					Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
-					'''
-			}
-
-			BloodDiamond: {
-				DisplayName: Blood Diamond
-				Tooltip:
-					'''
-					Increases critical strike chance by 5
-					Upon critical hit a enemy, you gain a blood diamond stack
-					'''
-				ExtraInfo:
-					'''
-					[Blood diamond]
-					Increases player : 
-					[+] Attack speed by 6%
-					[+] Damage by 10%
-					[+] Critical damage by 20%
-					per stack
 					'''
 			}
 

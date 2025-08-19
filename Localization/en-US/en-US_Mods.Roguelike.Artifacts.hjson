@@ -7,7 +7,7 @@ BootsOfSpeedManipulationArtifact: {
 			+ Increase your movement capacity massively
 		[c/ab3e43:Negative effect] : 
 			- You can't fly with wing
-			- Randomize your damage to be worse when moving
+			- Randomize your damage to be worsen when moving
 		'''
 }
 
@@ -128,7 +128,7 @@ TokenOfGluttonyArtifact: {
 		[c/ffff00:Positive effect] : 
 			+ The lower your health, the less damage you taken
 			+ Hitting enemy with item will heal yourself by small amount
-			+ While having a buff active, increases your damage reduction by 10%
+			+ While having any buff active, increases your damage reduction by 10%
 		[c/ab3e43:Negative effect] : 
 			- Decrease your buff duration by 90%
 			- You now have a small fixed radius, dealing outside of that radius result in 45% damage decreases
