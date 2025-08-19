@@ -12,7 +12,6 @@ internal class LastingVilePotion : ModItem {
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LastingVileBuff>(), ModUtils.ToMinute(5));
-		Item.Set_ItemIsRPG();
 	}
 	public override bool? UseItem(Player player) {
 		if (player.itemAnimation == player.itemAnimationMax - 1) {

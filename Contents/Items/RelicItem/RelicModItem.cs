@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 
 namespace Roguelike.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -29,6 +30,9 @@ public class Relic : ModItem {
 		Item.Set_InfoItem(true);
 		if (RelicPrefixedType == -1 && Main.rand.NextBool(3)) {
 			RelicPrefixedType = (short)Main.rand.Next(RelicPrefixSystem.TotalCount);
+		}
+		if(RelicSetType == -1) {
+			RelicSetType = (short)Main.rand.Next(RelicSetLoader.TotalCount);
 		}
 	}
 	/// <summary>
@@ -50,7 +54,7 @@ public class Relic : ModItem {
 		valuelist.Add(value);
 	}
 	/// <summary>
-	/// Use this to add stats before the item automatic add stats
+	/// Use this to add template manually
 	/// </summary>
 	/// <param name="templateid"></param>
 	/// <param name="value"></param>
@@ -204,6 +208,12 @@ public class Relic : ModItem {
 				relicprefix.Update(player, this, 0);
 			}
 		}
+		if (RelicSetType != -1) {
+			var relicset = RelicSetLoader.GetSet(RelicSetType);
+			if (relicset != null) {
+				player.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]++;
+			}
+		}
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
 				StatModifier value = valuelist[i];
@@ -321,11 +331,11 @@ public abstract class RelicTemplate : ModType {
 	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.Description");
 	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
-	public RelicType relicType = RelicType.None;
 	protected sealed override void Register() {
 		SetStaticDefaults();
 		Type = RelicTemplateLoader.Register(this);
 	}
+	public RelicType relicType = RelicType.None;
 	public virtual void OnSettingTemplate() { }
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
@@ -381,7 +391,6 @@ public class StatModifierSerializer : TagSerializer<StatModifier, TagCompound> {
 		["Additive"] = MathF.Round(value.Additive, 2),
 		["Multiplicative"] = MathF.Round(value.Multiplicative, 2)
 	};
-
 	public override StatModifier Deserialize(TagCompound tag) =>
 		new StatModifier(tag.Get<float>("Additive"), tag.Get<float>("Multiplicative"), tag.Get<float>("Flat"), tag.Get<float>("Base"));
 }
@@ -390,6 +399,5 @@ public class PlayerStatsSerializer : TagSerializer<PlayerStats, TagCompound> {
 	public override TagCompound Serialize(PlayerStats value) => new TagCompound {
 		["PlayerStat"] = (byte)value
 	};
-
 	public override PlayerStats Deserialize(TagCompound tag) => (PlayerStats)tag.Get<byte>("PlayerStat");
 }

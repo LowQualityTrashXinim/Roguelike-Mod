@@ -9,7 +9,6 @@ internal class AntiPoisonPotion : ModItem {
 	public override string Texture => ModTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<AntiPoisonBuff>(), ModUtils.ToMinute(1.5f));
-		Item.Set_ItemIsRPG();
 	}
 }
 public class AntiPoisonBuff : ModBuff {

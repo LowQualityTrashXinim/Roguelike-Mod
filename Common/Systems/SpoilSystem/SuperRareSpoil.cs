@@ -3,7 +3,6 @@ using Terraria;
 using Humanizer;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
@@ -63,18 +62,6 @@ internal class SuperRareSpoil {
 			if (item.ModItem is Relic relic) {
 				relic.AutoAddRelicTemplate(player, 4);
 			}
-		}
-	}
-	public class TrinketSpoil : ModSpoil {
-		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.SuperRare;
-		}
-		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.SuperRareDrop();
-		}
-		public override void OnChoose(Player player, int itemsource) {
-			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			player.QuickSpawnItem(entitySource, Main.rand.Next(ModItemLib.TrinketAccessories));
 		}
 	}
 	public class DivineWeaponSpoil : ModSpoil {

@@ -4,16 +4,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.Chest;
-using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.General;
-using System.Diagnostics;
-using System.Threading.Channels;
-using Roguelike.Contents.Transfixion.Arguments;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
-using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Weapon;
+using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.RoguelikeChange.Mechanic;
+using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Common.Utils {
 	public enum WeaponTag : byte {
@@ -189,11 +183,6 @@ namespace Roguelike.Common.Utils {
 				globalitem.LostAccessories = Lost;
 			}
 		}
-		public static void Set_ItemIsRPG(this Item item, bool RPG = true) {
-			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				globalitem.RPGItem = RPG;
-			}
-		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.CriticalDamage = critDmg;
@@ -253,9 +242,6 @@ namespace Roguelike.Common.Utils {
 			CheckOnlyModdedWithoutDefault
 		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return false;
-			}
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 				switch (WhatToCheck) {
 					case MeleeStyle.CheckVanillaSwingWithModded:

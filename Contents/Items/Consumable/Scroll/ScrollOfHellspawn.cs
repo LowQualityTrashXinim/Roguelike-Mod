@@ -16,7 +16,6 @@ class ScrollOfHellspawn : ModItem {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
-		Item.Set_ItemIsRPG();
 		Item.maxStack = 99;
 	}
 	public override bool? UseItem(Player player) {

@@ -60,16 +60,6 @@ public class WeaponAltar : Altar {
 		}
 	}
 }
-public class RPGAltar : Altar {
-	public override void On_RightClick(Player player, int i, int j) {
-		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), Main.rand.Next(ModItemLib.RPGItem));
-
-		for (int a = 0; a < 30; a++) {
-			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
-		}
-	}
-}
 public class ArmorAltar : Altar {
 	public override void On_RightClick(Player player, int i, int j) {
 		LootBoxBase.GetArmorPiece(ModContent.ItemType<WoodenLootBox>(), player, true);

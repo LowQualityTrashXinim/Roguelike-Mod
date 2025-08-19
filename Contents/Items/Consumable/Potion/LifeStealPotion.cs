@@ -12,7 +12,6 @@ internal class LifeStealPotion : ModItem {
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LifeStealBuff>(), ModUtils.ToMinute(4));
-		Item.Set_ItemIsRPG();
 	}
 }
 public class LifeStealBuff : ModBuff {

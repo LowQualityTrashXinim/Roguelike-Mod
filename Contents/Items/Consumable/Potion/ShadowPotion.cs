@@ -13,7 +13,6 @@ internal class ShadowPotion : ModItem {
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ShadowBuff>(), ModUtils.ToMinute(1.5f));
-		Item.Set_ItemIsRPG();
 	}
 }
 public class ShadowBuff : ModBuff {

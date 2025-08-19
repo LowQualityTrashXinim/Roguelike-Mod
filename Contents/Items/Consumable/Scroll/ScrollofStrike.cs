@@ -12,7 +12,6 @@ namespace Roguelike.Contents.Items.Consumable.Scroll {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<StrikeSpell>(), ModUtils.ToMinute(1));
-			Item.Set_ItemIsRPG();
 		}
 	}
 	public class StrikeSpell : ModBuff {

@@ -40,12 +40,6 @@ public class ModItemLib : ModSystem {
 	public static Dictionary<int, List<int>> BodyArmorRarityDB { get; private set; }
 	public static Dictionary<int, List<int>> LegsArmorRarityDB { get; private set; }
 	public static List<Item> SynergyItem { get; private set; }
-	/// <summary>
-	/// Due to how annoying this is in <see cref="LootBoxBase"/>, I decide to just make a hard record of it in the mod instead of trying to hack my own mod lol
-	/// </summary>
-	public static HashSet<int> VanillaAndLostAcc { get; private set; }
-	public static List<Item> TrinketAccessories { get; private set; }
-	public static List<Item> RPGItem { get; private set; }
 	public static List<int> ListLootboxType { get; private set; }
 	public static HashSet<Item> List_Weapon { get; private set; }
 	public static HashSet<int> MinionPetMountBuff { get; private set; }
@@ -85,9 +79,7 @@ public class ModItemLib : ModSystem {
 		return ItemID.None;
 	}
 	public override void OnModLoad() {
-		TrinketAccessories = new();
 		SynergyItem = new();
-		RPGItem = new();
 		WeaponRarityDB = new();
 		ListLootboxType = new();
 		HeadArmorRarityDB = new();
@@ -96,14 +88,11 @@ public class ModItemLib : ModSystem {
 		AccRarityDB = new();
 		List_Weapon = new();
 		LootboxPotion = new();
-		VanillaAndLostAcc = new();
 		MinionPetMountBuff = new();
 		FireDeBuff = new();
 	}
 	public override void OnModUnload() {
 		SynergyItem = null;
-		RPGItem = null;
-		TrinketAccessories = null;
 		ListLootboxType = null;
 		WeaponRarityDB = null;
 		FireDeBuff = null;
@@ -114,7 +103,6 @@ public class ModItemLib : ModSystem {
 		AccRarityDB = null;
 		List_Weapon = null;
 		LootboxPotion = null;
-		VanillaAndLostAcc = null;
 		MinionPetMountBuff = null;
 	}
 	public override void PostSetupContent() {
@@ -134,11 +122,8 @@ public class ModItemLib : ModSystem {
 				continue;
 			}
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				if (globalitem.RPGItem) {
-					if (globalitem.AdvancedBuffItem) {
-						AdvancedRPGItem[item.type] = true;
-					}
-					RPGItem.Add(item);
+				if (globalitem.AdvancedBuffItem) {
+					AdvancedRPGItem[item.type] = true;
 					continue;
 				}
 			}
@@ -190,10 +175,6 @@ public class ModItemLib : ModSystem {
 					&& !TerrariaArrayID.NonHelpfulCombatAcc.Contains(item.type)
 					&& !TerrariaArrayID.IsInfoAcc.Contains(item.type)
 					&& !TerrariaArrayID.FishingAcc.Contains(item.type)) {
-					if (item.ModItem is BaseTrinket) {
-						TrinketAccessories.Add(item);
-						continue;
-					}
 					if (!AccRarityDB.ContainsKey(item.rare)) {
 						AccRarityDB.Add(item.rare, new List<int> { item.type });
 					}
@@ -218,7 +199,6 @@ public class ModItemLib : ModSystem {
 				}
 			}
 		}
-		VanillaAndLostAcc.Union(TerrariaArrayID.EveryCombatHealtMovehAcc);
 	}
 	public override void PostAddRecipes() {
 		if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {

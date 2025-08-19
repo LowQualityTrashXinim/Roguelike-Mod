@@ -193,7 +193,6 @@ namespace Roguelike.Contents.Items.Weapon {
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
-		public bool RPGItem = false;
 		public bool OverrideVanillaEffect = false;
 		public int Counter = 0;
 		public override void OnCreated(Item item, ItemCreationContext context) {

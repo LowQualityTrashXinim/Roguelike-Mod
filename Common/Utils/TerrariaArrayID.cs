@@ -337,7 +337,6 @@ public static class TerrariaArrayID {
 	public readonly static int[] Altar = {
 		ModContent.TileType<RelicAltar>(),
 		ModContent.TileType<WeaponAltar>(),
-		ModContent.TileType<RPGAltar>(),
 		ModContent.TileType<ArmorAltar>(),
 					ModContent.TileType<SkillAltar>(),
 					ModContent.TileType<PotionAltar>(),

@@ -32,3 +32,7 @@ Version 0.0.1:
 31/ Removed unused mechanic, dying in classic mode no longer drop boss spawner again.
 32/ Removed Enchantment config from luck department.
 33/ Removed Curses system.
+34/ Basic implementation of relic set system.
+35/ Removed Trinket Spoil and Lost Acc from spoil.
+36/ Removed Trinket and Lost Acc lib in ModItemLib.
+37/ Removed RPG altar, RPG field and any mention of RPG.
