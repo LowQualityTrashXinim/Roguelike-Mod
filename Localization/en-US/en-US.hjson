@@ -959,18 +959,6 @@ Mods: {
 				DisplayName: Guide To Master Ninja XL
 			}
 
-			FuryEmblem: {
-				Tooltip:
-					'''
-					"Your rage is what turns tides in battle"
-					Increase 5% damage, 5% critical strike chance and 25% maximum health
-					Grant a buff upon getting hit that increase 25% damage and critical strike chance
-					But shatter your defense and cut your life regen
-					The buff will reset its life time when you got hit again
-					'''
-				DisplayName: Fury Emblem
-			}
-
 			KingSlimeDelight: {
 				Tooltip:
 					'''
@@ -1738,16 +1726,6 @@ Mods: {
 					Increases additional damage reduction by 5% when your life is under 15%
 					You have chance to resist a attack
 					When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
-					'''
-			}
-
-			OverpoweringGem: {
-				DisplayName: Universal Gemstone
-				Tooltip:
-					'''
-					"Radiate with world energy"
-					Minor increases to various stats
-					You have a small chance to dodge a attack, and small chance to life steal 
 					'''
 			}
 

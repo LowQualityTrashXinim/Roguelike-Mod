@@ -36,3 +36,6 @@ Version 0.0.1:
 35/ Removed Trinket Spoil and Lost Acc from spoil.
 36/ Removed Trinket and Lost Acc lib in ModItemLib.
 37/ Removed RPG altar, RPG field and any mention of RPG.
+38/ Removed Overpowering Gem and made it into a relic set.
+39/ Removed Fury Emblem and made it into a artifact instead.
+40/ Removed Titan Blood and made it into a relic set.

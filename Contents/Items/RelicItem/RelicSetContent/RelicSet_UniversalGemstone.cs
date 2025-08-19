@@ -1,22 +1,21 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using Terraria.ID;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
-using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class OverpoweringGem : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
+public class UniversalGemstone_ModPlayer : ModPlayer {
+	class UniversalGemstone : RelicSet {
+		public override void SetStaticDefaults() {
+			Requirement = 5;
+		}
 	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<OverpoweringGemPlayer>().OverpoweringGem = true;
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<UniversalGemstone>());
+	public override void UpdateEquips() {
+		if (!set) {
+			return;
+		}
+		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: 10);
 		modplayer.AddStatsToPlayer(PlayerStats.MaxMana, Base: 5);
 		modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 1);
@@ -33,19 +32,13 @@ internal class OverpoweringGem : ModItem {
 		modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: 1);
 		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, 1.35f);
 	}
-}
-class OverpoweringGemPlayer : ModPlayer {
-	public bool OverpoweringGem = false;
-	public override void ResetEffects() {
-		OverpoweringGem = false;
-	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(30) && OverpoweringGem) {
+		if (Main.rand.NextBool(30) && set) {
 			Player.Heal(Main.rand.Next(3, 7));
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if (!Player.immune && OverpoweringGem && Main.rand.NextFloat() <= .025f) {
+		if (!Player.immune && set && Main.rand.NextFloat() <= .025f) {
 			Player.AddImmuneTime(info.CooldownCounter, 60);
 			Player.immune = true;
 			return true;

@@ -39,10 +39,10 @@ HeartOfEarthArtifact: {
 }
 
 MagicalCardDeckArtifact: {
-	DisplayName: Magical Card Deck
+	DisplayName: Stella card deck
 	Description:
 		'''
-		"I Summon pot of greed ! it allow me to draw 2 card from the deck"
+		"The card shows the star and its meaning"
 		Banned for many reason
 		[c/ffff00:Positive effect] : 
 			+ Card packet can drop potentially more cards ( up to 3 )
@@ -57,7 +57,7 @@ SkillIssuedArtifact: {
 	DisplayName: Skill Issued
 	Description:
 		'''
-		"with this, nothing is impossible, even with skill issue in bloodstream"
+		"with this artifact, nothing is impossible, even with skill issue in bloodstream"
 		[c/ffff00:Positive effect] : 
 			+ For each monster killed, your maximum life will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
 		[c/ab3e43:Negative effect] :
@@ -225,6 +225,21 @@ EssenceLanternArtifact: {
 			+ Essence orb have positive effect and negative effect
 		[c/ab3e43:Negative effect] : 
 			- Essence of Wither orb are present which are hamrful
+		'''
+}
+
+FuryEmblemArtifact:{
+	DisplayName: Fury Emblem
+	Descirption:
+		'''
+		"Your rage is what turns tides in battle"
+		[c/ffff00:Positive effect] :
+			+ Increase 5% damage, 5% critical strike chance
+			+ Upon getting hit, increases 25% damage and critical strike chance for short duration
+		[c/ab3e43:Negative effect] : 
+			- Getting hit shatter your defense and cut your life regen for short duration
+		[c/9b9c76:Neutral effect] :
+			= The buff will reset its life time when you got hit again
 		'''
 }
 

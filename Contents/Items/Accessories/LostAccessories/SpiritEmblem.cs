@@ -1,13 +1,12 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Roguelike.Texture;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Accessories.LostAccessories;
 internal class SpiritEmblem : ModItem {

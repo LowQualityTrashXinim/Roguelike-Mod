@@ -1,0 +1,19 @@
+UniversalGemstone: {
+	DisplayName: Universal Gemstone
+	Description: 
+		'''
+		Minor increases to various stats
+		You have a small chance to dodge a attack, and small chance to life steal
+		'''
+}
+TitanicBlood: {
+	DisplayName: Titanic Blood
+	Description:
+		'''
+		"A small snippet strength of the ancient god"
+		Increases damage reduction by 10% when your life is under 50%
+		Increases additional damage reduction by 5% when your life is under 35%
+		Increases additional damage reduction by 5% when your life is under 15%
+		You have chance to resist a attack
+		'''
+}

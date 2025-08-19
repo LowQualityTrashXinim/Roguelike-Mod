@@ -32,7 +32,7 @@ public class Relic : ModItem {
 			RelicPrefixedType = (short)Main.rand.Next(RelicPrefixSystem.TotalCount);
 		}
 		if(RelicSetType == -1) {
-			RelicSetType = (short)Main.rand.Next(RelicSetLoader.TotalCount);
+			RelicSetType = (short)Main.rand.Next(RelicSetSystem.TotalCount);
 		}
 	}
 	/// <summary>
@@ -209,7 +209,7 @@ public class Relic : ModItem {
 			}
 		}
 		if (RelicSetType != -1) {
-			var relicset = RelicSetLoader.GetSet(RelicSetType);
+			var relicset = RelicSetSystem.GetSet(RelicSetType);
 			if (relicset != null) {
 				player.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]++;
 			}
