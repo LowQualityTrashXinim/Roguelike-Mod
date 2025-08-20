@@ -2,9 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Perks;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Perks.WeaponUpgrade;
  
 using Roguelike.Contents.Projectiles;
 

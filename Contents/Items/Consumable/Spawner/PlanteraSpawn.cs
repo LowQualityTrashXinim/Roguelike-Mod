@@ -12,10 +12,5 @@ namespace Roguelike.Contents.Items.Consumable.Spawner
 		public override bool CanUseItem(Player player) {
 			return !NPC.AnyNPCs(NPCID.Plantera);
 		}
-		public override void AddRecipes() {
-			CreateRecipe()
-			.AddIngredient(ModContent.ItemType<PlanteraEssence>(), 3)
-			.Register();
-		}
 	}
 }

@@ -1,18 +1,14 @@
-﻿using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Terraria;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class NatureOfGoodAndEvil_ModPlayer : ModPlayer {
 	class NatureOfGoodAndEvil : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 5;
+			Requirement = 3;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<NatureOfGoodAndEvil>());

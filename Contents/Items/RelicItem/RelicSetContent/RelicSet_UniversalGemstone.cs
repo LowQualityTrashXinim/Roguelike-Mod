@@ -7,7 +7,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class UniversalGemstone_ModPlayer : ModPlayer {
 	class UniversalGemstone : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 5;
+			Requirement = 3;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<UniversalGemstone>());

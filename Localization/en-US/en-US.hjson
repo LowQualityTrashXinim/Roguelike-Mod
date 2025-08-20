@@ -1688,16 +1688,6 @@ Mods: {
 					'''
 			}
 
-			KillingThrill: {
-				DisplayName: Genocidal Pact
-				Tooltip:
-					'''
-					Increases your first strike damage by 300% but decreases your weapon damage by 25%
-					Killing a enemy will ingore the damage decreases and increases your attack damage by 10% and attack speed by 5%
-					You can stack the effect by keep killing enemies, the stack effect capped at 5 but can be over stack
-					'''
-			}
-
 			GodDice: {
 				DisplayName: Godborn Dice
 				Tooltip:
@@ -1731,9 +1721,9 @@ Mods: {
 				Tooltip:
 					'''
 					Increases your max minion, sentry slot by 1
-					You burst out a wave of confusion to enemy that get too close to you
-					When you are close to a minion, your defense increases by 2
 					Hitting enemy with whip will inflict enemy with Crystalized debuff
+					Minion hitting enemy with Crystalized debuff have chance to deal 55% more damage
+					Or have chance to burst out crystal at enemy position
 					'''
 			}
 

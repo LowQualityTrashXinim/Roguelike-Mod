@@ -76,7 +76,6 @@ namespace Roguelike.Contents.Items.Chest
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
 				player.QuickSpawnItem(entitySource, ItemID.ChlorophytePickaxe);
 			}
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<PlanteraEssence>());
 			player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
 			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
 		}

@@ -16,6 +16,7 @@ using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -290,9 +291,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (projectile.type == ProjectileID.HeatRay) {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
 		}
-		if ((projectile.minion || projectile.DamageType == DamageClass.Summon) && npc.HasBuff<Crystalized>() && Main.rand.NextBool(10)) {
-			modifiers.SourceDamage += .55f;
-		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.FinalDamage *= 1 - Endurance;
 		if (projectile.type == ProjectileID.GolemFist) {
@@ -390,8 +388,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (npc.boss && player.GetModPlayer<GamblePlayer>().GodDice) {
 			player.GetModPlayer<GamblePlayer>().Roll++;
 		}
-		if (player.GetModPlayer<KillingThrillPlayer>().KillingThrill) {
-			player.GetModPlayer<KillingThrillPlayer>().KillCount_Decay++;
+		if (player.GetModPlayer<GenocidalPact_ModPlayer>().set) {
+			player.GetModPlayer<GenocidalPact_ModPlayer>().KillCount_Decay++;
 		}
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {

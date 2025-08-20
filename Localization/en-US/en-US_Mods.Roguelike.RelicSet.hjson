@@ -38,3 +38,14 @@ HeartOfNature: {
 		Getting hit both heal back your hp and mana for 25% of taken damage
 		'''
 }
+			
+GenocidalPact: {
+	DisplayName: Genocidal Pact
+	Tooltip:
+		'''
+		Increases your first strike damage by 200%
+		Killing a enemy increases your damage by 5% and attack speed by 2.5%
+		You can stack the effect by keep killing enemies
+		The stack effect capped at 5 but can be over stack
+		'''
+}

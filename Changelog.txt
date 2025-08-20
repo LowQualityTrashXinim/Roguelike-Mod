@@ -45,3 +45,8 @@ Version 0.0.1:
 44/ Added Heart Of Nature relic set.
 45/ Adjusted HP condition for when KS created a crown from 40% to 67%.
 46/ Massively increases bosses base HP.
+47/ Deleted Legendary Wood Sword perk.
+48/ Removed Killing Thrill and made it into a relic set.
+49/ Deleted Plantera Essence and anything that related to it.
+50/ Changed Pocket Portal from spawning friendly NPC to spawning boss Betsy.
+51/ Removed Spirit Emblem and made it into a relic set.
