@@ -23,6 +23,9 @@ public class SpiritEssence_ModPlayer : ModPlayer {
 		modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: 1);
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (!set) {
+			return;
+		}
 		if ((proj.minion || proj.DamageType == DamageClass.Summon) && target.HasBuff<Crystalized>() && Main.rand.NextBool(3)) {
 			modifiers.SourceDamage += .55f;
 		}

@@ -38,7 +38,7 @@ HeartOfNature: {
 		Getting hit both heal back your hp and mana for 25% of taken damage
 		'''
 }
-			
+
 GenocidalPact: {
 	DisplayName: Genocidal Pact
 	Tooltip:
@@ -47,5 +47,36 @@ GenocidalPact: {
 		Killing a enemy increases your damage by 5% and attack speed by 2.5%
 		You can stack the effect by keep killing enemies
 		The stack effect capped at 5 but can be over stack
+		'''
+}
+
+SpiritEssence: {
+	DisplayName: Spirit Essence
+	Tooltip:
+		'''
+		Increases your max minion, sentry slot by 1
+		Hitting enemy with whip will inflict enemy with Crystalized debuff
+		Minion hitting enemy with Crystalized debuff have chance to deal 55% more damage
+		Or have chance to burst out crystal at enemy position
+		'''
+}
+
+SpectreArcher: {
+	DisplayName: Spectre Archer
+	Tooltip:
+		'''
+		"Grant the user with spectre archer knowledge"
+		Increases range base damage by 10 and arrow velocity by 10%
+		Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( CD: 1s )
+		'''
+}
+
+StarfellStone: {
+	DisplayName: Starfell Stone
+	Tooltip:
+		'''
+		"Made from star that keep falling from the sky"
+		Increases synergy damage by 15%
+		Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
 		'''
 }

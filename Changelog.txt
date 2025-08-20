@@ -50,3 +50,6 @@ Version 0.0.1:
 49/ Deleted Plantera Essence and anything that related to it.
 50/ Changed Pocket Portal from spawning friendly NPC to spawning boss Betsy.
 51/ Removed Spirit Emblem and made it into a relic set.
+52/ Adjusted Godborn dice, no longer a lost accessory and instead a legacy item
+53/ Removed Spectre Quiver and made it into a relic set.
+54/ Removed Starfell Stone and made it into a relic set.

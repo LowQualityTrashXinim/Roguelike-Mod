@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
 using Terraria.ID;
 using System;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +16,7 @@ using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
+using Roguelike.Contents.Items.NoneSynergy;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {

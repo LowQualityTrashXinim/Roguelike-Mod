@@ -18,6 +18,9 @@ public class GenocidalPact_ModPlayer : ModPlayer {
 	public override void ResetEffects() {
 	}
 	public override void UpdateEquips() {
+		if (!set) {
+			return;
+		}
 		if (KillCount_Decay <= 0) {
 			return;
 		}

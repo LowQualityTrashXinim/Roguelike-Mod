@@ -1668,16 +1668,6 @@ Mods: {
 					'''
 			}
 
-			SpectreQuiver: {
-				DisplayName: Spectre Quiver
-				Tooltip:
-					'''
-					"Grant the user with spectre archer knowledge"
-					Increases range base damage by 10 and arrow velocity by 10%
-					Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( 1s delay )
-					'''
-			}
-
 			StarStone: {
 				DisplayName: Starfell Stone
 				Tooltip:
@@ -1713,17 +1703,6 @@ Mods: {
 					Increases your summon damage by 10%
 					Minion attacking will have a chance shooting down star onto your enemy
 					During night, the chance are accelerate
-					'''
-			}
-
-			SpiritEmblem: {
-				DisplayName: Spirit Emblem
-				Tooltip:
-					'''
-					Increases your max minion, sentry slot by 1
-					Hitting enemy with whip will inflict enemy with Crystalized debuff
-					Minion hitting enemy with Crystalized debuff have chance to deal 55% more damage
-					Or have chance to burst out crystal at enemy position
 					'''
 			}
 

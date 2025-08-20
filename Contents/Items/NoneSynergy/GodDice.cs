@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories
+namespace Roguelike.Contents.Items.NoneSynergy
 {
 	internal class GodDice : ModItem {
 		public override void SetStaticDefaults() {
@@ -18,10 +18,9 @@ namespace Roguelike.Contents.Items.Accessories.LostAccessories
 			Item.width = 46;
 			Item.height = 52;
 			Item.accessory = true;
-			Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
 		}
 		public override void UpdateEquip(Player player) {
-			GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
+			var gamblePlayer = player.GetModPlayer<GamblePlayer>();
 			gamblePlayer.GodDice = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

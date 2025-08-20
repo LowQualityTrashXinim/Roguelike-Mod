@@ -4,12 +4,12 @@ using Terraria.ID;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Perks;
 using Roguelike.Common.Systems.SpoilSystem;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Skill;
 using Roguelike.Common.Global;
+using Roguelike.Contents.Items.NoneSynergy;
 
 namespace Roguelike {
 	partial class Roguelike {

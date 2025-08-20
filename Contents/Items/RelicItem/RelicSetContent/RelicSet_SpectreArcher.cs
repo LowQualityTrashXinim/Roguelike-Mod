@@ -1,37 +1,28 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve;
-using Roguelike.Texture;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class SpectreQuiver : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
+public class SpectreArcher_ModPlayer : ModPlayer {
+	class SpectreArcher : RelicSet {
+		public override void SetStaticDefaults() {
+			Requirement = 3;
+		}
 	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, Base: 10);
-		player.GetModPlayer<SpectreQuiverPlayer>().SpectreQuiver = true;
-
-	}
-}
-class SpectreQuiverPlayer : ModPlayer {
-	public bool SpectreQuiver = false;
+	public bool SpectreQuiver => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<SpectreArcher>());
 	public int timer = 0;
 	public override void ResetEffects() {
-		SpectreQuiver = false;
-		if(timer <= 60) {
+		if (timer <= 60) {
 			timer++;
 		}
+	}
+	public override void UpdateEquips() {
+		if (SpectreQuiver)
+			Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.RangeDMG, Base: 10);
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if ((item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) && SpectreQuiver) {

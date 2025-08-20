@@ -1,31 +1,28 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Accessories.LostAccessories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class StarStone : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
+public class StarfellStone_ModPlayer : ModPlayer {
+	class StarfellStone : RelicSet {
+		public override void SetStaticDefaults() {
+			Requirement = 2;
+		}
 	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<StarStonePlayer>().StarStone = true;
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.SynergyDamage, Additive: 1.15f);
-	}
-}
-class StarStonePlayer : ModPlayer {
-	public bool StarStone = false;
-	public override void ResetEffects() {
-		StarStone = false;
+	public bool StarStone => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<StarfellStone>());
+	public override void UpdateEquips() {
+		if (StarStone)
+			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.SynergyDamage, Additive: 1.15f);
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (StarStone && Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
