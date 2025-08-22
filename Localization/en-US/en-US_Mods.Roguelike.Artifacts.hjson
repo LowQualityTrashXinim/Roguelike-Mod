@@ -230,7 +230,7 @@ EssenceLanternArtifact: {
 
 FuryEmblemArtifact: {
 	DisplayName: Fury Emblem
-	Descirption:
+	Description:
 		'''
 		"Your rage is what turns tides in battle"
 		[c/ffff00:Positive effect] :

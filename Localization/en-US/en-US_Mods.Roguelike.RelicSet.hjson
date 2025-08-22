@@ -41,7 +41,7 @@ HeartOfNature: {
 
 GenocidalPact: {
 	DisplayName: Genocidal Pact
-	Tooltip:
+	Description:
 		'''
 		Increases your first strike damage by 200%
 		Killing a enemy increases your damage by 5% and attack speed by 2.5%
@@ -52,7 +52,7 @@ GenocidalPact: {
 
 SpiritEssence: {
 	DisplayName: Spirit Essence
-	Tooltip:
+	Description:
 		'''
 		Increases your max minion, sentry slot by 1
 		Hitting enemy with whip will inflict enemy with Crystalized debuff
@@ -63,7 +63,7 @@ SpiritEssence: {
 
 SpectreArcher: {
 	DisplayName: Spectre Archer
-	Tooltip:
+	Description:
 		'''
 		"Grant the user with spectre archer knowledge"
 		Increases range base damage by 10 and arrow velocity by 10%
@@ -73,7 +73,7 @@ SpectreArcher: {
 
 StarfellStone: {
 	DisplayName: Starfell Stone
-	Tooltip:
+	Description:
 		'''
 		"Made from star that keep falling from the sky"
 		Increases synergy damage by 15%

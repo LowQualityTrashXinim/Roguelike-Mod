@@ -53,3 +53,7 @@ Version 0.0.1:
 52/ Adjusted Godborn dice, no longer a lost accessory and instead a legacy item
 53/ Removed Spectre Quiver and made it into a relic set.
 54/ Removed Starfell Stone and made it into a relic set.
+55/ Changed Light Speed Round from accessory type to ammo type.
+56/ Changed Fragment Round from accessory type to ammo type.
+57/ Changed MagicMuzzle to Arcane Round and from accessory type to ammo type
+58/ Adjusted enemy stats scaling.

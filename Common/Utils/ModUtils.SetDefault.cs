@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeChange.Mechanic;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Projectiles;
+using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.Weapon;
-using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeChange.Mechanic;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Common.Utils {
 	public enum WeaponTag : byte {
@@ -76,6 +77,18 @@ namespace Roguelike.Common.Utils {
 			Main.debuff[buff.Type] = true;
 			Main.buffNoSave[buff.Type] = Save;
 			BuffID.Sets.NurseCannotRemoveDebuff[buff.Type] = Cure;
+		}
+		public static void Item_DefaultToAmmo(this Item item, int width, int height, int damage, int crit, float knockback, int shootspeed, int type, int ammoType) {
+			item.damage = damage; // The damage for projectiles isn't actually 12, it actually is the damage combined with the projectile and the item together.
+			item.crit = crit;
+			item.width = width;
+			item.height = height;
+			item.maxStack = Item.CommonMaxStack;
+			item.consumable = true;
+			item.knockBack = knockback;
+			item.shoot = type;
+			item.shootSpeed = shootspeed;
+			item.ammo = ammoType;
 		}
 		/// <summary>
 		/// Set your own DamageClass type

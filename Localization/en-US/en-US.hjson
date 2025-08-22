@@ -1668,16 +1668,6 @@ Mods: {
 					'''
 			}
 
-			StarStone: {
-				DisplayName: Starfell Stone
-				Tooltip:
-					'''
-					"Made from star that keep falling from the sky"
-					Increases synergy damage by 15%
-					Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
-					'''
-			}
-
 			GodDice: {
 				DisplayName: Godborn Dice
 				Tooltip:
@@ -1716,34 +1706,27 @@ Mods: {
 					'''
 			}
 
-			MagicMuzzle: {
-				DisplayName: Arcane Muzzle
+			ArcaneRound: {
+				DisplayName: Arcane Round
 				Tooltip:
 					'''
-					"Muzzle made by wizard"
-					Weapon that use bullet ammo will have their shot convert to Arcane Bullet
+					"Live rounds made by wizard"
 					Arcane Bullet damage is affected by both range damage and magic damage
 					'''
 			}
 
 			FragmentRound: {
-				DisplayName: Fragment Round Bundle
+				DisplayName: Fragment Round
 				Tooltip:
 					'''
 					Replace normal bullet with Fragment round
-					Increases range damage by 10% and 3 flat damage
 					Note : effect originate from gun or other source won't be inherited
 					'''
 			}
 
 			LightSpeedRound: {
 				DisplayName: Light-Speed Round
-				Tooltip:
-					'''
-					"Made to be perfect"
-					Replace normal bullet with Light-speed round
-					Increases critical chance strike by 5 and critical damage by 15%
-					'''
+				Tooltip: '''"Made to be perfect"'''
 			}
 
 			TestTeleporter: {

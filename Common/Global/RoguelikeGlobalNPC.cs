@@ -71,9 +71,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		else {
 			float adjustment = 1;
 			if (Main.expertMode)
-				adjustment = 1.5f;
-			else if (Main.masterMode)
 				adjustment = 2;
+			else if (Main.masterMode)
+				adjustment = 3;
 
 			entity.lifeMax += (int)(entity.lifeMax / adjustment * GetValueMulti() * .1f);
 			entity.life = entity.lifeMax;
@@ -85,39 +85,29 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}
-		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye) {
+		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye 
+			&& npc.type != NPCID.MoonLordCore && npc.type != NPCID.MoonLordHand && npc.type != NPCID.MoonLordHead && npc.type != NPCID.MoonLordLeechBlob) {
 			if (!NPC_SpecialException) {
-				float adjustment = 1;
-				if (Main.expertMode)
-					adjustment = 1.5f;
-				else if (Main.masterMode)
-					adjustment = 2;
-
-				npc.lifeMax = (int)(BossHP / adjustment * GetValueMulti());
+				npc.lifeMax = (int)(BossHP * GetValueMulti());
 				npc.life = npc.lifeMax;
-				npc.damage = (int)(BossDMG / adjustment * GetValueMulti());
-				npc.defense = (int)(BossDef / adjustment * GetValueMulti(.5f));
+				npc.damage = (int)(BossDMG * GetValueMulti());
+				npc.defense = (int)(BossDef * GetValueMulti(.5f));
 			}
 		}
 		else {
-			float adjustment = 1;
-			if (Main.expertMode)
-				adjustment = 1.5f;
-			else if (Main.masterMode)
-				adjustment = 2;
-			npc.lifeMax += (int)(npc.lifeMax / adjustment * GetValueMulti() * .1f);
+			npc.lifeMax += (int)(npc.lifeMax  * GetValueMulti() * .1f);
 			npc.life = npc.lifeMax;
-			npc.damage += (int)(npc.damage / adjustment * GetValueMulti() * .1f);
-			npc.defense += (int)(npc.defense / adjustment * GetValueMulti(.5f) * .1f);
+			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
+			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
 		}
 	}
 	public float GetValueMulti(float scale = 1) {
 		float extraMultiply = 0;
 		if (Main.expertMode) {
-			extraMultiply += .25f;
+			extraMultiply += .15f;
 		}
 		if (Main.masterMode) {
-			extraMultiply += .75f;
+			extraMultiply += .3f;
 		}
 		if (Main.getGoodWorld) {
 			extraMultiply += 1;

@@ -3,34 +3,26 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Contents.Items.Weapon;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class MagicMuzzle : ModItem {
+namespace Roguelike.Contents.Items.Consumable.Ammo;
+internal class ArcaneRound : ModItem {
 	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
-	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<MagicMuzzlePlayer>().MagicMuzzle = true;
+		Item.Item_DefaultToAmmo(32, 32, 7, 0, 1.9f, 22, ModContent.ProjectileType<MagicBullet>(), AmmoID.Bullet);
+		Item.DamageType = DamageClass.Ranged;
+		Item.rare = ItemRarityID.Green;
+		Item.value = 10;
 	}
 }
 class MagicMuzzlePlayer : ModPlayer {
-	public bool MagicMuzzle = false;
-	public override void ResetEffects() {
-		MagicMuzzle = false;
-	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		if (!MagicMuzzle) {
-			return;
-		}
-		if (item.useAmmo == AmmoID.Bullet) {
-			type = ModContent.ProjectileType<MagicBullet>();
+		if (type == ModContent.ProjectileType<MagicBullet>()) {
+			if (!Player.CheckMana(8, true)) {
+				damage /= 2;
+			}
 		}
 	}
 }
@@ -78,30 +70,30 @@ class MagicBullet : ModProjectile {
 	}
 	public void DrawTrail1(Texture2D texture, Vector2 origin) {
 		for (int k = 0; k < Projectile.oldPos.Length; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-			Color color = new Color(0, 0, 40, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+			var drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			var color = new Color(0, 0, 40, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			Main.EntitySpriteDraw(texture, drawPos, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, Projectile.scale - k / 100f, SpriteEffects.None, 0);
 		}
 	}
 	public void DrawTrail2(Texture2D texture, Vector2 origin) {
 		for (int k = 0; k < Projectile.oldPos.Length; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-			Color color = new Color(25, 25, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+			var drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			var color = new Color(25, 25, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			Main.EntitySpriteDraw(texture, drawPos, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, (Projectile.scale - k / 100f) * .5f, SpriteEffects.None, 0);
 		}
 	}
 	public override void OnKill(int timeLeft) {
 		if (Projectile.ai[2] == 0 && !Projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_FromDeathScatterShot)
 			if (Projectile.Center.LookForHostileNPC(out NPC npc, 250f)) {
-				Vector2 vel = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
+				var vel = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
 				int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel, Type, (int)(Projectile.damage * .5f), Projectile.knockBack, Projectile.owner, 1, 0, 1);
 				Main.projectile[proj].timeLeft = 3000;
 			}
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Type);
-		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
-		Vector2 origin = Projectile.Size * .5f;
+		var texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
+		var origin = Projectile.Size * .5f;
 		DrawTrail1(texture, origin);
 		DrawTrail2(texture, origin);
 		return false;

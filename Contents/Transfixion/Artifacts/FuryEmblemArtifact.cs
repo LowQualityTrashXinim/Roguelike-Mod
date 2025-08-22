@@ -9,7 +9,6 @@ using Roguelike.Common.Systems.ArtifactSystem;
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class FuryEmblemArtifact : Artifact {
 	public override Color DisplayNameColor => Color.LightGoldenrodYellow;
-	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 }
 class FuryEmblemPlayer : ModPlayer {
 	public bool Furious = false;

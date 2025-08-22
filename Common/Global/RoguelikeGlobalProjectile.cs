@@ -7,14 +7,14 @@ using System;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Skill;
- 
+
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Consumable.Ammo;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
