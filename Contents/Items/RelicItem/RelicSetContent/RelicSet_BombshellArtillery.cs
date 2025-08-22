@@ -1,30 +1,21 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using System.Collections.Generic;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class ReactiveBombing : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
+public class BombshellArtillery_ModPlayer : ModPlayer{
+	class BombshellArtillery : RelicSet {
+		public override void SetStaticDefaults() {
+			Requirement = 2;
+		}
 	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<ReactiveBombingPlayer>().ReactiveBomb = true;
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.StaticDefense, Base: 10);
-	}
-}
-public class ReactiveBombingPlayer : ModPlayer {
-	public bool ReactiveBomb = false;
-	public override void ResetEffects() {
-		ReactiveBomb = false;
+	public bool ReactiveBomb => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<BombshellArtillery>());
+	public override void UpdateEquips() {
+		Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 10);
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (ReactiveBomb) {

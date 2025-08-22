@@ -80,3 +80,23 @@ StarfellStone: {
 		Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
 		'''
 }
+			 
+BombshellArtillery: {
+	DisplayName: Bombshell Artillery
+	Tooltip:
+		'''
+		"Miner self defense equipment"
+		Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
+		Increases defense by 10
+		'''
+}			
+
+StellarCharm: {
+	DisplayName: Stellar Charm
+	Tooltip:
+		'''
+		Increases your summon damage by 12%
+		Minion attacking will have a chance shooting down star onto your enemy
+		During night, the chance are accelerate
+		'''
+}

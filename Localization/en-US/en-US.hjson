@@ -1658,16 +1658,6 @@ Mods: {
 				DisplayName: Natural Crystal
 			}
 
-			ReactiveBombing: {
-				DisplayName: Bombshell Artillery
-				Tooltip:
-					'''
-					"Miner self defense equipment"
-					Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
-					Reduce damage receive by 10
-					'''
-			}
-
 			GodDice: {
 				DisplayName: Godborn Dice
 				Tooltip:
@@ -1683,16 +1673,6 @@ Mods: {
 					'''
 					Increases mana cost by 5%
 					Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
-					'''
-			}
-
-			StarCharm: {
-				DisplayName: Stellar Charm
-				Tooltip:
-					'''
-					Increases your summon damage by 10%
-					Minion attacking will have a chance shooting down star onto your enemy
-					During night, the chance are accelerate
 					'''
 			}
 

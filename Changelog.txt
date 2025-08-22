@@ -55,5 +55,8 @@ Version 0.0.1:
 54/ Removed Starfell Stone and made it into a relic set.
 55/ Changed Light Speed Round from accessory type to ammo type.
 56/ Changed Fragment Round from accessory type to ammo type.
-57/ Changed MagicMuzzle to Arcane Round and from accessory type to ammo type
+57/ Changed MagicMuzzle to Arcane Round and from accessory type to ammo type.
 58/ Adjusted enemy stats scaling.
+59/ Changed Magical Scroll from accessory type to potion type ( scroll type ).
+60/ Changed Reactive Bombing and made it into a relic set.
+61/ Changed StarCharm and made it into a relic set.

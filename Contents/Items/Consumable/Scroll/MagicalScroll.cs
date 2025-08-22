@@ -4,19 +4,26 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Items.Weapon;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
+namespace Roguelike.Contents.Items.Consumable.Scroll;
 internal class MagicalScroll : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+	public override void SetStaticDefaults() {
+		ModItemLib.LootboxPotion.Add(Item);
 	}
-	public override void UpdateEquip(Player player) {
+	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetDefaults() {
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<EvasionSpell>(), ModUtils.ToSecond(20));
+	}
+}
+public class MagicalSpell : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
 		player.GetModPlayer<MagicalScrollPlayer>().MagicalScroll = true;
 		player.manaCost += .05f;
 	}
@@ -85,22 +92,22 @@ class MagicalBolt : ModProjectile {
 	}
 	public void DrawTrail1(Texture2D texture, Vector2 origin) {
 		for (int k = 0; k < Projectile.oldPos.Length; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-			Color color = new Color(25, 0, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+			var drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			var color = new Color(25, 0, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			Main.EntitySpriteDraw(texture, drawPos, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, Projectile.scale - k / 100f, SpriteEffects.None, 0);
 		}
 	}
 	public void DrawTrail2(Texture2D texture, Vector2 origin) {
 		for (int k = 0; k < Projectile.oldPos.Length; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-			Color color = new Color(25, 25, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+			var drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			var color = new Color(25, 25, 25, 1) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			Main.EntitySpriteDraw(texture, drawPos, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, (Projectile.scale - k / 100f) * .5f, SpriteEffects.None, 0);
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Type);
-		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
-		Vector2 origin = Projectile.Size * .5f;
+		var texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
+		var origin = Projectile.Size * .5f;
 		DrawTrail1(texture, origin);
 		DrawTrail2(texture, origin);
 		return false;

@@ -1,32 +1,20 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
-using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories;
-internal class StarCharm : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
-	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
+public class StellaCharm_ModPlayer : ModPlayer{
+	class StellaCharm : RelicSet {
+		public override void SetStaticDefaults() {
+			Requirement = 2;
+		}
 	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.SummonDMG, 1.2f);
-
-		player.GetModPlayer<StarCharmPlayer>().StarCharm = true;
-	}
-}
-public class StarCharmPlayer : ModPlayer {
 	public int ChanceToActivate = 0;
-	public bool StarCharm = false;
-	public override void ResetEffects() {
-		StarCharm = false;
+	public bool StarCharm => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<StellaCharm>());
+	public override void UpdateEquips() {
+		Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.SummonDMG, 1.12f);
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (StarCharm && (proj.DamageType == DamageClass.Summon || proj.minion)) {
