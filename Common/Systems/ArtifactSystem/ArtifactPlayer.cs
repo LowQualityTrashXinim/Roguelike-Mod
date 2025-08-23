@@ -4,18 +4,12 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Roguelike.Contents.Transfixion.Artifacts;
 
-namespace Roguelike.Common.Systems.ArtifactSystem
-{
+namespace Roguelike.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {
 		public int ActiveArtifact { get; set; } = Artifact.ArtifactType<NormalizeArtifact>();
 		public override void OnEnterWorld() {
-			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
-				while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {
-					ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
-				}
-			}
-			else {
-				ActiveArtifact = Artifact.ArtifactType<NormalizeArtifact>();
+			while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {
+				ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
 			}
 		}
 

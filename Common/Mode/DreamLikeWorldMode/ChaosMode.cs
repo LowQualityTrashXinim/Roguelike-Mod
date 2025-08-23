@@ -6,7 +6,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using System.Collections.Generic;
-using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Mode.DreamLikeWorldMode;
@@ -20,9 +19,7 @@ internal class ChaosModeSystem : ModSystem {
 	public Dictionary<int, int> Dict_Chained_Buff = new();
 	public Dictionary<int, ChaosItemInfo> Dict_Chaos_Weapon = new();
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (!UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
-			return;
-		}
+		return;
 		ChaosMode = true;
 		List_Ban_ItemID.Clear();
 		Dict_Chained_Buff.Clear();

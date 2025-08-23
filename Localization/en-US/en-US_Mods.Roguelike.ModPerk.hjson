@@ -841,3 +841,13 @@ BloodthornCore: {
 		Increases healing effective by 15% and maximum life by 15
 		'''
 }
+
+ElementalProtection: {
+	DisplayName: Elemental Protection
+	Description:
+		'''
+		Increases your defense by 10% and Flat 12
+		Having certain debuff will be beneficial instead
+		Getting hit may resulting you do a elemental explosion
+		'''
+}

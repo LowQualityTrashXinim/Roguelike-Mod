@@ -3,14 +3,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
-using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories.MashedOfCopper
+namespace Roguelike.Contents.Items.Accessories.EmpoweredAccessories.MashedOfCopper
 {
 	public class MashedOfCopper : ModItem {
 		public override void SetDefaults() {
-			Item.Set_LostAccessory(27, 27);
-			Item.value = Item.sellPrice(silver: 100);
+			Item.DefaultToAccessory(27, 27);
 			Item.rare = ItemRarityID.Blue;
 		}
 
@@ -18,6 +16,17 @@ namespace Roguelike.Contents.Items.Accessories.LostAccessories.MashedOfCopper
 			player.statDefense += 6;
 			player.GetModPlayer<RoguelikeArmorPlayer>().SafeAddArmorSet("CopperArmor");
 			player.GetModPlayer<MashedOfCopperPlayer>().MashedOfCopper = true;
+		}
+		public override void AddRecipes() {
+			CreateRecipe()
+			.AddIngredient(ItemID.CopperBow)
+			.AddIngredient(ItemID.CopperShortsword)
+			.AddIngredient(ItemID.CopperBroadsword)
+			.AddIngredient(ItemID.CopperHelmet)
+			.AddIngredient(ItemID.CopperChainmail)
+			.AddIngredient(ItemID.CopperGreaves)
+			.AddIngredient(ModContent.ItemType<PowerEnergy>())
+			.Register();
 		}
 	}
 	public class MashedOfCopperPlayer : ModPlayer {

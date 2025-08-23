@@ -107,9 +107,6 @@ public class PlayerStatsHandle : ModPlayer {
 		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
 		potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
 		potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
-		if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode) {
-			weaponAmount = 1;
-		}
 	}
 	public StatModifier UpdateMovement = new StatModifier();
 	public StatModifier UpdateJumpBoost = new StatModifier();

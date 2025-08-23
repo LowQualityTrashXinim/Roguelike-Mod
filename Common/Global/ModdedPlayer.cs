@@ -27,8 +27,7 @@ using Roguelike.Contents.Skill;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global
-{
+namespace Roguelike.Common.Global {
 	/// <summary>
 	/// This class hold random general information, not recommend to look into this class
 	/// </summary>
@@ -81,9 +80,7 @@ namespace Roguelike.Common.Global
 		}
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
-			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {
-				Player.difficulty = PlayerDifficultyID.Hardcore;
-			}
+			Player.difficulty = PlayerDifficultyID.Hardcore;
 			Player.itemAnimation = 0;
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
 				Player.itemAnimationMax = Player.HeldItem.useAnimation;
@@ -150,93 +147,88 @@ namespace Roguelike.Common.Global
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
-				yield return new Item(ModContent.ItemType<LunchBox>());
-				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					yield return new Item(ModContent.ItemType<ExoticTeleporter>());
-					LifeCrystal += 5;
-					ManaCrystal += 4;
-					if (UniversalSystem.CanEnchantmentBeAccess()) {
-						yield return new Item(ModContent.ItemType<DivineHammer>());
-					}
-					if (UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
-						yield return new Item(ModContent.ItemType<SkillLootBox>(), 3);
+			yield return new Item(ModContent.ItemType<LunchBox>());
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				yield return new Item(ModContent.ItemType<ExoticTeleporter>());
+				LifeCrystal += 5;
+				ManaCrystal += 4;
+				if (UniversalSystem.CanEnchantmentBeAccess()) {
+					yield return new Item(ModContent.ItemType<DivineHammer>());
+				}
+				for (int i = 0; i < 3; i++) {
+					yield return new Item(ModContent.ItemType<Relic>());
+				}
+				if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
+					if (Main.rand.NextBool(10)) {
 						yield return new Item(ModContent.ItemType<WorldEssence>());
-					}
-					for (int i = 0; i < 3; i++) {
-						yield return new Item(ModContent.ItemType<Relic>());
-					}
-					if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
-						if (Main.rand.NextBool(10)) {
-							yield return new Item(ModContent.ItemType<WorldEssence>());
-						}
-						else {
-							yield return new Item(ModContent.ItemType<CelestialEssence>());
-						}
 					}
 					else {
 						yield return new Item(ModContent.ItemType<CelestialEssence>());
 					}
-					yield return new Item(ModContent.ItemType<UserInfoTablet>());
-					yield return new Item(ModContent.ItemType<TransmuteTablet>());
-					yield return new Item(ModContent.ItemType<SkillOrb>());
 				}
-				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
-					yield return new Item(ItemID.RedPotion, 10);
+				else {
+					yield return new Item(ModContent.ItemType<CelestialEssence>());
 				}
-				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
-					yield return new Item(ModContent.ItemType<RainbowLootBox>());
-				}
-				if (Player.name.ToLower().Trim() == "drugaddict") {
-					yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
-				}
-				if (Player.name.Contains("Ninja")) {
-					yield return new Item(ItemID.Katana);
-					yield return new Item(ItemID.Shuriken, 100);
-					yield return new Item(ItemID.ThrowingKnife, 100);
-					yield return new Item(ItemID.PoisonedKnife, 100);
-					yield return new Item(ItemID.BoneDagger, 100);
-					yield return new Item(ItemID.FrostDaggerfish, 100);
-					yield return new Item(ItemID.NinjaHood);
-					yield return new Item(ItemID.NinjaShirt);
-					yield return new Item(ItemID.NinjaPants);
-				}
-				if (Secert_PototoVer) {
-					yield return new Item(ModContent.ItemType<SlipGun>());
-					yield return new Item(ModContent.ItemType<FairFrozen>());
-					yield return new Item(ItemID.MusketBall, 350);
-					yield return new Item(ItemID.PotatoChips, 99);
-				}
-				if (Player.name.Trim() == "hmdebug") {
-					yield return new Item(ModContent.ItemType<LootboxLordSummon>());
-					yield return new Item(ModContent.ItemType<IronLootBox>());
-					yield return new Item(ModContent.ItemType<SilverLootBox>());
-					yield return new Item(ModContent.ItemType<GoldLootBox>());
-					yield return new Item(ModContent.ItemType<CorruptionLootBox>());
-					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
-					yield return new Item(ModContent.ItemType<IceLootBox>());
-					yield return new Item(ModContent.ItemType<HoneyLootBox>());
-					yield return new Item(ModContent.ItemType<WorldEssence>(), 2);
-					yield return new Item(ItemID.PlatinumCoin, 2);
-					LifeCrystal = Math.Clamp(LifeCrystal + 15, 0, 15);
-					ManaCrystal = Math.Clamp(ManaCrystal + 9, 0, 9);
-					yield return new Item(ItemID.KingSlimeBossBag);
-					yield return new Item(ItemID.EyeOfCthulhuBossBag);
-					yield return new Item(ItemID.EaterOfWorldsBossBag);
-					yield return new Item(ItemID.BrainOfCthulhuBossBag);
-					yield return new Item(ItemID.SkeletronBossBag);
-					yield return new Item(ItemID.QueenBeeBossBag);
-					yield return new Item(ItemID.DeerclopsBossBag);
-					yield return new Item(ItemID.GuideVoodooDoll);
-				}
-				yield return new Item(ItemID.LifeCrystal, LifeCrystal);
-				yield return new Item(ItemID.ManaCrystal, ManaCrystal);
-				if (Player.HasArtifact<SmallLootBoxArtifact>()) {
-					yield return new Item(ModContent.ItemType<WorldEssence>());
-					yield return new Item(ModContent.ItemType<SkillLootBox>());
-				}
+				yield return new Item(ModContent.ItemType<UserInfoTablet>());
+				yield return new Item(ModContent.ItemType<TransmuteTablet>());
+				yield return new Item(ModContent.ItemType<SkillOrb>());
+			}
+			if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
+				yield return new Item(ItemID.RedPotion, 10);
+			}
+			if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
+				yield return new Item(ModContent.ItemType<RainbowLootBox>());
+			}
+			if (Player.name.ToLower().Trim() == "drugaddict") {
+				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
+			}
+			if (Player.name.Contains("Ninja")) {
+				yield return new Item(ItemID.Katana);
+				yield return new Item(ItemID.Shuriken, 100);
+				yield return new Item(ItemID.ThrowingKnife, 100);
+				yield return new Item(ItemID.PoisonedKnife, 100);
+				yield return new Item(ItemID.BoneDagger, 100);
+				yield return new Item(ItemID.FrostDaggerfish, 100);
+				yield return new Item(ItemID.NinjaHood);
+				yield return new Item(ItemID.NinjaShirt);
+				yield return new Item(ItemID.NinjaPants);
+			}
+			if (Secert_PototoVer) {
+				yield return new Item(ModContent.ItemType<SlipGun>());
+				yield return new Item(ModContent.ItemType<FairFrozen>());
+				yield return new Item(ItemID.MusketBall, 350);
+				yield return new Item(ItemID.PotatoChips, 99);
+			}
+			if (Player.name.Trim() == "hmdebug") {
+				yield return new Item(ModContent.ItemType<LootboxLordSummon>());
+				yield return new Item(ModContent.ItemType<IronLootBox>());
+				yield return new Item(ModContent.ItemType<SilverLootBox>());
+				yield return new Item(ModContent.ItemType<GoldLootBox>());
+				yield return new Item(ModContent.ItemType<CorruptionLootBox>());
+				yield return new Item(ModContent.ItemType<CrimsonLootBox>());
+				yield return new Item(ModContent.ItemType<IceLootBox>());
+				yield return new Item(ModContent.ItemType<HoneyLootBox>());
+				yield return new Item(ModContent.ItemType<WorldEssence>(), 2);
+				yield return new Item(ItemID.PlatinumCoin, 2);
+				LifeCrystal = Math.Clamp(LifeCrystal + 15, 0, 15);
+				ManaCrystal = Math.Clamp(ManaCrystal + 9, 0, 9);
+				yield return new Item(ItemID.KingSlimeBossBag);
+				yield return new Item(ItemID.EyeOfCthulhuBossBag);
+				yield return new Item(ItemID.EaterOfWorldsBossBag);
+				yield return new Item(ItemID.BrainOfCthulhuBossBag);
+				yield return new Item(ItemID.SkeletronBossBag);
+				yield return new Item(ItemID.QueenBeeBossBag);
+				yield return new Item(ItemID.DeerclopsBossBag);
+				yield return new Item(ItemID.GuideVoodooDoll);
+			}
+			yield return new Item(ItemID.LifeCrystal, LifeCrystal);
+			yield return new Item(ItemID.ManaCrystal, ManaCrystal);
+			if (Player.HasArtifact<SmallLootBoxArtifact>()) {
+				yield return new Item(ModContent.ItemType<WorldEssence>());
+				yield return new Item(ModContent.ItemType<SkillLootBox>());
 			}
 		}
+
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.BOSSRUSH_MODE)) {
 				itemsByMod["Terraria"].Clear();

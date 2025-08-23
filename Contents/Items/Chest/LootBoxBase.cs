@@ -199,12 +199,6 @@ namespace Roguelike.Contents.Items.Chest {
 			if (Main.masterMode) {
 				SpecialAmount += 150;
 			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-				int weapon = Main.rand.Next(ModItemLib.SynergyItem).type;
-				player.QuickSpawnItemDirect(entitySource, weapon);
-				AmmoForWeapon(entitySource, player, weapon);
-				return;
-			}
 			ModifyLootAdd(player);
 			//actual choosing item
 			PlayerStatsHandle modplayer = player.ModPlayerStats();

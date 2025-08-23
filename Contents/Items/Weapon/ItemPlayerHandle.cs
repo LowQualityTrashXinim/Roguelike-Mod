@@ -189,7 +189,6 @@ namespace Roguelike.Contents.Items.Weapon {
 	public class GlobalItemHandle : GlobalItem {
 		public const byte None = 0;
 		public override bool InstancePerEntity => true;
-		public bool LostAccessories = false;
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
@@ -247,10 +246,6 @@ namespace Roguelike.Contents.Items.Weapon {
 					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
-			if (item.accessory && LostAccessories) {
-				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
-				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") { OverrideColor = Color.LightGoldenrodYellow });
-			}
 			if (AdvancedBuffItem && NameLine != null) {
 				NameLine.Text += " [Advanced]";
 			}
@@ -303,7 +298,7 @@ namespace Roguelike.Contents.Items.Weapon {
 				return true;
 			}
 			//Prevent possible conflict, basically hardcoding to make it so that it only work for item belong to this mod
-			if (item.ModItem.Mod != Mod) {
+			if (item.ModItem.Mod.Name != Mod.Name) {
 				return true;
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();

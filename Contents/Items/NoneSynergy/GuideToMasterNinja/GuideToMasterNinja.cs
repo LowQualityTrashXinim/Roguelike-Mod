@@ -1,5 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
@@ -8,11 +7,11 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Accessories.LostAccessories.GuideToMasterNinja
+namespace Roguelike.Contents.Items.NoneSynergy.GuideToMasterNinja
 {
 	internal class GuideToMasterNinja : ModItem {
 		public override void SetDefaults() {
-			Item.Set_LostAccessory(24, 32);
+			Item.DefaultToAccessory(24, 32);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = 10000000;
 		}

@@ -1006,18 +1006,6 @@ Mods: {
 				DisplayName: Corrupted Flesh
 			}
 
-			BouncyRelic: {
-				Tooltip:
-					'''
-					"A small ancient power left from god, said to be cursed"
-					Increases damage reduction by 10%
-					Most projectiles can bounce off tile
-					Bouncing off a tile increase damage by 20%
-					Bouncing off a tile will make the projectile disappear after 3s
-					'''
-				DisplayName: Chalice of Royal Gel
-			}
-
 			TowerDestruction: {
 				Tooltip:
 					'''
@@ -1673,16 +1661,6 @@ Mods: {
 					'''
 					Increases mana cost by 5%
 					Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
-					'''
-			}
-
-			ElementalShield: {
-				DisplayName: Elemental Shield
-				Tooltip:
-					'''
-					Increases your defense by 10% and Flat 12
-					Having certain debuff will be beneficial instead
-					Getting hit may resulting you do a elemental explosion
 					'''
 			}
 
@@ -3184,6 +3162,11 @@ Mods: {
 				DisplayName: Divine grace
 				Description: Grant more invincibility
 			}
+
+			MagicalSpell: {
+				DisplayName: Magical Spell
+				Description: wow, very magical~
+			}
 		}
 
 		Configs: {
@@ -3202,28 +3185,17 @@ Mods: {
 
 				RoguelikeMode: {
 					Label: "[WIP] Roguelike Mode"
-					Tooltip: ""
-				}
-
-				SynergyFeverMode: {
-					Label: Synergy Fever Mode
 					Tooltip:
 						'''
-						Make every lootbox default to drop a synergy item ( hard limit at 1 item )
-						If a weapon isn't a synergy item then damage will be reduce down to 1
-						Relic that is drop from lootbox will automatically have their template set to Synergy template
+						Description for the mod:
+						Enter a brand new world waiting to be explored by you.
+						Many secret waiting to be discovered.
 						'''
 				}
 
 				RoguelikeOverhaul: {
 					Label: "[W.I.P] Roguelike Overhaul"
-					Tooltip:
-						'''
-						Enable this to activate vanilla terraria overhaul
-						- It will change some weapon behavior
-						- Rework how most vanilla item work to fit the mod
-						- Rebalancing vanilla item
-						'''
+					Tooltip: Soon to be merged with Roguelike mode
 				}
 
 				Nightmare: {
@@ -3240,26 +3212,6 @@ Mods: {
 						'''
 				}
 
-				HardEnableFeature: {
-					Label: Hard Enable Feature
-					Tooltip: This will enable feature that you should not be able to access because of world setting
-				}
-
-				ForceBossDropRegadless: {
-					Label: Force Boss Drop Regardless
-					Tooltip: Make boss drop loot outside of world setting
-				}
-
-				WorldGenTest: {
-					Label: World Gen Test
-					Tooltip: Do not mess with this, only for testing only
-				}
-
-				AutoHardCore: {
-					Label: Auto Hard Core
-					Tooltip: Will change your character difficulty to hardcore on world enter
-				}
-
 				AutoRandomizeCharacter: {
 					Label: Auto randomize character appearance
 					Tooltip: This will automatically change character apprearance
@@ -3270,19 +3222,8 @@ Mods: {
 					LuckDepartmentHeader: Luck Department
 					BaseGameHeader: Base Game
 					GameModeHeader: Gamemodes
-					LegacyHeader: Legacy
 					DebugHeader: Debug
 					GameHeader: Game option
-				}
-
-				LegacyLootBoxDrop: {
-					Label: Legacy Loot Box Drop
-					Tooltip: ""
-				}
-
-				LegacyBossRushWorldGen: {
-					Label: Legacy Boss Rush World Gen
-					Tooltip: ""
 				}
 
 				RareSpoils: {
@@ -3309,16 +3250,6 @@ Mods: {
 						'''
 						Enable to have a chance to get Lost accessories
 						Disable to not include Lost accessories into loot pool
-						'''
-				}
-
-				WeaponEnchantment: {
-					Label: Weapon Enchantment
-					Tooltip:
-						'''
-						Enable to gain access to weapon enchantment system
-						Disable to revoke access to weapon enchantment system
-						and you have 20% to get weapon enchantment
 						'''
 				}
 
@@ -3350,16 +3281,6 @@ Mods: {
 						"For those who believe"
 						Everything that deal damage via contact will instantly kill you
 						Your loot drop amount is limited down to 1 regardless
-						'''
-				}
-
-				LifeOfThorn: {
-					Label: Life Of Thorn (W.I.P)
-					Tooltip:
-						'''
-						"Blessing and curses"
-						You will be cursed right at the start
-						1 Major curses and 15 taboo curses
 						'''
 				}
 

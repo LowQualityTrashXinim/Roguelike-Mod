@@ -47,9 +47,6 @@ internal class UniversalSystem : ModSystem {
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HELLISH_MODE = "HellishEnable";
-	public const string CHAOS_MODE = "ChaosEnable";
-	public const string HARDCORE_MODE = "Hardcore";
-	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 	/// <summary>
 	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
@@ -59,19 +56,13 @@ internal class UniversalSystem : ModSystem {
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyFeverMode;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
-		if (config.HardEnableFeature || player.IsDebugPlayer())
-			return true;
-		if (context == HARDCORE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
-		if (player.difficulty != PlayerDifficultyID.Hardcore && !config.AutoHardCore)
+		if (player.difficulty != PlayerDifficultyID.Hardcore)
 			return false;
 		return false;
 	}
@@ -88,14 +79,6 @@ internal class UniversalSystem : ModSystem {
 			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
-		if (context == CHAOS_MODE)
-			return config.DreamlikeWorld;
-		if (context == HARDCORE_MODE)
-			return config.AutoHardCore;
-		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyFeverMode;
-		if (config.HardEnableFeature)
-			return true;
 		return false;
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";
@@ -512,9 +495,9 @@ public class UniversalModPlayer : ModPlayer {
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
-		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
-			WarnAlready = 1;
-		}
+		//if (false && WarnAlready == 0) {
+		//	WarnAlready = 1;
+		//}
 	}
 	int WarnAlready = 0;
 	public override void SaveData(TagCompound tag) {
@@ -601,7 +584,7 @@ public class DefaultUI : UIState {
 		}
 	}
 	public override void OnActivate() {
-		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
+		if (false) {
 			string text = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.Tooltip");
 			popUpWarning = new UITextPanel<string>(text);
 			popUpWarning.Height.Set(66, 0);

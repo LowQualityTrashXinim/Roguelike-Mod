@@ -86,7 +86,6 @@ TokenOfPrideArtifact: {
 		"Having the skill to use whatever you are given."
 		[c/ffff00:Positive effect] : 
 			+ Randomize 1 of your weapon's enchantment
-			+ Increases chance to get augmentations by 65%
 		[c/ab3e43:Negative effect] : 
 			- Lootbox drop value set to 1 regardless of increasement
 		'''
@@ -177,7 +176,6 @@ AlchemistKnowledgeArtifact: {
 		"Knowledge of the ancient"
 		[c/ffff00:Positive effect] :
 			+ Increases buff duration by 35%
-			+ Increases transmutation success chance by 20%
 			+ Having active buff will increase your stats
 			+ Healing and Mana potion now heal for double the amount
 		[c/ab3e43:Negative effect] : 
@@ -246,4 +244,19 @@ FuryEmblemArtifact: {
 RandomArtifact: {
 	DisplayName: Random Artifact
 	Description: Randomly chooses an artifact.
+}
+
+SlimyChaliceArtifact: {
+	DisplayName: Chalice of Royal Gel
+	Description:
+		'''
+		"A small ancient power left from god, said to be cursed"
+		[c/ffff00:Positive effect] :
+			+ Increases damage reduction by 10%
+			+ Most projectiles can bounce off tile
+			+ Bouncing off a tile increase damage by 20%
+		[c/ab3e43:Negative effect] : 
+			- Bouncing off a tile will make the projectile disappear after 3s
+			- Double your knockback intake and reduce knockback resistance effectiveness
+		'''
 }

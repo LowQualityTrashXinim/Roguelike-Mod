@@ -149,8 +149,6 @@ public class EnchantmentGlobalItem : GlobalItem {
 	}
 	public string GetWeaponModificationStats() => $"Item's enchantment slot : {EnchantmenStlot.Length}";
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE))
-			return;
 		if (UniversalSystem.EnchantingState)
 			return;
 		if (item.damage > 0 && EnchantmenStlot != null) {
@@ -186,7 +184,7 @@ public class EnchantmentModplayer : ModPlayer {
 		Player.GetModPlayer<PerkPlayer>().perks.TryGetValue(Perk.GetPerkType<EnchantmentSmith>(), out int value);
 		SlotUnlock = value + 1;
 	}
-	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
+	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null;
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;

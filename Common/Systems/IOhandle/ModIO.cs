@@ -29,7 +29,7 @@ public static class RoguelikeData {
 	public static Dictionary<string, List<SynergyBonus>> SynergyProgressTracker = new();
 }
 class ModIO : ModSystem {
-	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
+	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RoguelikeMode_Data");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
 	public override void Load() {

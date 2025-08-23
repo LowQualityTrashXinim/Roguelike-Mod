@@ -60,3 +60,12 @@ Version 0.0.1:
 59/ Changed Magical Scroll from accessory type to potion type ( scroll type ).
 60/ Changed Reactive Bombing and made it into a relic set.
 61/ Changed StarCharm and made it into a relic set.
+62/ Changed Guide to Ninja Master from lost accessory to normal accessory ( not obtainable as of now ).
+63/ Changed Bouncy Relic from Lost accessory to artifact.
+64/ Changed Mashed Of Copper from lost accessory to empowered accessories.
+65/ Changed Elemental Shield from lost accessory to perk.
+66/ Successfully removed any relation to lost accessory from the source code
+67/ Disable Chaos mode from accessing.
+68/ Deleted Life of Thorn mode.
+69/ Deleted Synergy Fever mode.
+70/ Deleted ForceBossDropRegardless, HardEnableFeature and AutoHarecore setting as those setting no longer needed.

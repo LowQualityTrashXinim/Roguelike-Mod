@@ -14,8 +14,6 @@ namespace Roguelike.Common.General
 		public bool RoguelikeMode { get; set; }
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
-		[DefaultValue(false)]
-		public bool SynergyFeverMode { get; set; }
 		//TODO : Add a world data IsNightmareWorld 
 		[ReloadRequired]
 		[DefaultValue(false)]
@@ -26,14 +24,6 @@ namespace Roguelike.Common.General
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool HellishEndeavour { get; set; }
-		//Cursed challenge
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool LifeOfThorn { get; set; }
-		//Chaotic god challenge
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool DreamlikeWorld { get; set; }
 		[Header($"LuckDepartmentHeader")]
 		[DefaultValue(true)]
 		public bool RareSpoils { get; set; }
@@ -42,14 +32,6 @@ namespace Roguelike.Common.General
 		[DefaultValue(true)]
 		public bool AccessoryPrefix { get; set; }
 		[Header($"QoLHeader")]
-		[DefaultValue(false)]
-		public bool AutoHardCore { get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool HardEnableFeature { get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool ForceBossDropRegadless { get; set; }
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool AutoRandomizeCharacter { get; set; }

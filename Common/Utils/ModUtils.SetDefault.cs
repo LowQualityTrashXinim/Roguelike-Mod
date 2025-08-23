@@ -190,12 +190,6 @@ namespace Roguelike.Common.Utils {
 				globalitem.AdvancedBuffItem = Advanced;
 			}
 		}
-		public static void Set_LostAccessory(this Item item, int width, int height, bool Lost = true) {
-			item.DefaultToAccessory(width, height);
-			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				globalitem.LostAccessories = Lost;
-			}
-		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.CriticalDamage = critDmg;

@@ -148,11 +148,3 @@ public class Elite : ModAchievement {
 		return false;
 	}
 }
-public class SynergyDream : ModAchievement {
-	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Easy;
-	}
-	public override bool Condition() {
-		return UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.SYNERGYFEVER_MODE);
-	}
-}

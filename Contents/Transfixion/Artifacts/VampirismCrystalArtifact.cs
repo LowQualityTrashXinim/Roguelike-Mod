@@ -7,7 +7,6 @@ using System;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Perks;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
  
 using Roguelike.Common.Global;

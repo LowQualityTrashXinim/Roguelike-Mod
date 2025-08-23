@@ -2,7 +2,6 @@
 using Roguelike.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Accessories.LostAccessories;
 using System;
 using Terraria;
 using Terraria.ID;

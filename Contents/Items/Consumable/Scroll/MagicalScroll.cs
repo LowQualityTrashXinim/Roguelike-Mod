@@ -15,7 +15,7 @@ internal class MagicalScroll : ModItem {
 	}
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<EvasionSpell>(), ModUtils.ToSecond(20));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<MagicalSpell>(), ModUtils.ToMinute(2));
 	}
 }
 public class MagicalSpell : ModBuff {

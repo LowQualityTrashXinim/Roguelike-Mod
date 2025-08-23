@@ -86,7 +86,6 @@ namespace Roguelike.Common.General
 				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;
@@ -116,7 +115,6 @@ namespace Roguelike.Common.General
 				return !info.player.GetModPlayer<ModdedPlayer>().ItemIsUsedDuringBossFight
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;
@@ -127,8 +125,7 @@ namespace Roguelike.Common.General
 	public class NightmareMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<RogueLikeConfig>().Nightmare
-					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature;
+				return ModContent.GetInstance<RogueLikeConfig>().Nightmare;
 			}
 			return false;
 		}

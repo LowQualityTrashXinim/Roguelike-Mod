@@ -482,9 +482,6 @@ public class SkillHandlePlayer : ModPlayer {
 		SkillInventory[whoAmI] = -1;
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
-		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
-			return;
-		}
 		if (SkillModSystem.SkillActivation.JustReleased) {
 			if (CoolDown > 0) {
 				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Skill on cool down !");

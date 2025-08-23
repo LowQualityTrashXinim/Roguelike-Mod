@@ -54,8 +54,6 @@ namespace Roguelike.Contents.Items
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGYFEVER_MODE) && !Player.IsDebugPlayer()) {
-			}
 			if (!CompareOldvsNewItemType) {
 				if (item.ModItem is SynergyModItem) {
 					damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().SynergyDamage);

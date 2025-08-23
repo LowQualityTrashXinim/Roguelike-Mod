@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Common.Utils;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems.ArtifactSystem;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class SlimyChaliceArtifact : Artifact {
@@ -16,6 +16,18 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 		public override void UpdateEquips() {
 			if (Bouncy) {
 				Player.endurance += .1f;
+			}
+		}
+		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+			if (Bouncy) {
+				modifiers.Knockback += 1;
+				modifiers.KnockbackImmunityEffectiveness *= .5f;
+			}
+		}
+		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+			if(Bouncy) {
+				modifiers.Knockback += 1;
+				modifiers.KnockbackImmunityEffectiveness *= .5f;
 			}
 		}
 	}
