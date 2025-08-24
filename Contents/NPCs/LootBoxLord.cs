@@ -10,14 +10,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent;
 using Roguelike.Contents.Items;
- 
+
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Chest;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.NPCs
-{
+namespace Roguelike.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 		public override void SetStaticDefaults() {
@@ -39,6 +38,7 @@ namespace Roguelike.Contents.NPCs
 			NPC.boss = true;
 			NPC.dontTakeDamage = true;
 			NPC.strengthMultiplier = 1;
+			NPC.despawnEncouraged = false;
 			NPC.ScaleStats_UseStrengthMultiplier(1);
 			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
 		}
@@ -114,14 +114,14 @@ namespace Roguelike.Contents.NPCs
 					dialog = "... I see";
 					break;
 				case 2:
-					dialog = "I'm just a mere toy in this play";
+					dialog = "Very well, I will entertain you";
 					break;
 				case 3:
-					dialog = "I will make you regret";
+					dialog = "Don't die too soon";
 					color = Color.Red;
 					BeforeAttack = false;
 					NPC.dontTakeDamage = false;
-					ResetEverything(120);
+					UniversalAttackCoolDown = 60;
 					break;
 			}
 			dialogCD = 120;
@@ -151,6 +151,10 @@ namespace Roguelike.Contents.NPCs
 						NPC.NewNPC(NPC.GetSource_FromAI(), NPC.Hitbox.X, NPC.Hitbox.Y, ModContent.NPCType<ElderGuardian>());
 				}
 			}
+			if (UniversalAttackCoolDown > 0) {
+				UniversalAttackCoolDown--;
+				return;
+			}
 			//TODO : change phase when boss hp is below 50%
 			//Move above the player
 			switch (CurrentAttack) {
@@ -170,11 +174,11 @@ namespace Roguelike.Contents.NPCs
 					CanTrackPlayer = false;
 					break;
 				case 4:
-					ShootBroadSword2();
+					ShootBroadSword2(player);
 					CanTrackPlayer = false;
 					break;
 				case 5:
-					ShootWoodBow();
+					ShootWoodBow(player);
 					CanTrackPlayer = false;
 					break;
 				case 6:
@@ -203,46 +207,57 @@ namespace Roguelike.Contents.NPCs
 					break;
 			}
 		}
+		int lifeCounter = 0;
 		public override void PostAI() {
 			Player player = Main.player[NPC.target];
 			if (CanTrackPlayer) {
 				NPC.velocity = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * ((player.Center - NPC.Center).Length() / 32f);
 			}
 			if (!ModUtils.CompareSquareFloatValue(NPC.Center, player.Center, 1000 * 1000)) {
+				if (++lifeCounter < 120) {
+					return;
+				}
 				NPC.life = Math.Clamp(NPC.life + 1, 0, NPC.lifeMax);
 				if (Main.rand.NextBool(5)) {
 					int dust = Dust.NewDust(NPC.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.HealingPlus, Scale: Main.rand.NextFloat(1, 1.5f));
 					Main.dust[dust].velocity = Vector2.UnitY * Main.rand.NextFloat(1, 3);
 				}
 			}
-		}
-		Vector2 offsetPos = Vector2.Zero;
-		private void Move(Player player) {
-			if (BossDelayAttack(0, 1, 0)) {
-				return;
+			else {
+				lifeCounter = 0;
 			}
+		}
+		private void Move(Player player) {
 			CanTrackPlayer = false;
-			Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 200) + offsetPos;
+			Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 200);
 			if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f)) {
-				AttackCounter++;
+				CurrentAttack++;
 			}
 		}
 		public float AttackTimer { get => NPC.ai[0]; set => NPC.ai[0] = value; }
 		public float CurrentAttack { get => NPC.ai[1]; set => NPC.ai[1] = value; }
 		public float AttackCounter { get => NPC.ai[2]; set => NPC.ai[2] = value; }
+		public int UniversalAttackCoolDown = 0;
 		private void ResetEverything(int delayAttack = 90) {
 			lastPlayerPosition = Main.player[NPC.target].Center;
 			HasReachPos = false;
 			AttackTimer = delayAttack;
 			CurrentAttack = 0;
 			AttackCounter = 0;
-			offsetPos = Vector2.Zero;
 			NPC.velocity = Vector2.Zero;
 		}
 		private void ShootShortSword() {
-			if (BossDelayAttack(10, 2, TerrariaArrayID.AllOreShortSword.Length - 1, 30)) {
+			if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length) {
+				CurrentAttack++;
+				AttackCounter = 0;
+				AttackTimer = 0;
+				UniversalAttackCoolDown = 30;
 				return;
 			}
+			if (++AttackTimer < 10) {
+				return;
+			}
+			AttackTimer = 0;
 			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
 			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(),
 				BossDamagePercentage(.75f), 2, NPC.target);
@@ -268,7 +283,7 @@ namespace Roguelike.Contents.NPCs
 				}
 				return;
 			}
-			if (++AttackTimer < 20) {
+			if (++AttackTimer < 40) {
 				return;
 			}
 			AttackTimer = 0;
@@ -289,7 +304,9 @@ namespace Roguelike.Contents.NPCs
 					NPC.velocity *= .8f;
 					AttackCounter++;
 					if (!NPC.velocity.IsLimitReached(.1f)) {
+						CurrentAttack++;
 						AttackCounter = 0;
+						AttackTimer = 0;
 					}
 				}
 				else {
@@ -307,7 +324,7 @@ namespace Roguelike.Contents.NPCs
 					}
 				}
 				Vector2 distance = lastPlayerPosition - NPC.Center;
-				NPC.velocity = distance.SafeNormalize(Vector2.Zero) * 15;
+				NPC.velocity = distance.SafeNormalize(Vector2.Zero) * 20;
 				NPC.velocity = NPC.velocity.RotatedBy(MathHelper.ToRadians(90));
 			}
 			if (++AttackTimer < 10) {
@@ -322,9 +339,16 @@ namespace Roguelike.Contents.NPCs
 			}
 			AttackCounter++;
 		}
-		private void ShootBroadSword2() {
-			NPC.ai[0] = 0;
-			if (BossDelayAttack(0, 5, 0)) {
+		private void ShootBroadSword2(Player player) {
+			if (AttackTimer == 0 && AttackCounter == 0) {
+				Vector2 distance2 = player.Center.Add(0, 300) - NPC.Center;
+				if (distance2.LengthSquared() > 20 * 20) {
+					NPC.velocity = distance2.SafeNormalize(Vector2.Zero) * distance2.Length() / 4f;
+					return;
+				}
+				NPC.velocity = Vector2.Zero;
+			}
+			if (++AttackTimer < 30) {
 				return;
 			}
 			if (Main.rand.NextBool()) {
@@ -346,25 +370,46 @@ namespace Roguelike.Contents.NPCs
 						projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
 				}
 			}
-			NPC.ai[2]++;
-			BossDelayAttack(0, 0, 0, 10);
-
+			CurrentAttack++;
+			AttackCounter = 0;
+			AttackTimer = 0;
 		}
-		private void ShootWoodBow() {
-			NPC.velocity = (Vector2.One * 15).RotatedBy(MathHelper.ToRadians(30));
-			NPC.rotation = NPC.velocity.ToRotation();
-			if (BossDelayAttack(30, 5, TerrariaArrayID.AllWoodBowPHM.Length - 1)) {
+		private void ShootWoodBow(Player player) {
+			if (AttackCounter >= TerrariaArrayID.AllWoodBowPHM.Length) {
+				CurrentAttack++;
+				AttackCounter = 0;
+				AttackTimer = 0;
 				return;
 			}
-			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<WoodBowAttackOne>(), BossDamagePercentage(.65f), 2, NPC.target);
-			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-				projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)NPC.ai[2]];
-			Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation();
-			NPC.ai[2]++;
+			if (AttackCounter == 0) {
+				Vector2 distance2 = player.Center.Add(-200, 400) - NPC.Center;
+				if (AttackTimer == 0 && distance2.LengthSquared() > 50 * 50) {
+					NPC.velocity = distance2.SafeNormalize(Vector2.Zero) * distance2.Length() / 4f;
+					return;
+				}
+				else {
+					AttackTimer++;
+					NPC.velocity += Vector2.UnitX * 1.5f;
+				}
+			}
+			NPC.velocity *= .999f;
+			if (++AttackTimer <= 12) {
+				return;
+			}
+			AttackTimer = 0;
+			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), BossDamagePercentage(.65f), 2, NPC.target);
+			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
+				projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)AttackCounter];
+				Main.projectile[proj].ai[0] = -10;
+				Main.projectile[proj].ai[2] = 5;
+				Main.projectile[proj].timeLeft = 120;
 
+			}
+			Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation();
+			AttackCounter++;
 		}
 		private void ShootWoodBow2() {
-			if (BossDelayAttack(5, 6, 0, 150)) {
+			if (BossDelayAttack(0, 7, 0, 0)) {
 				return;
 			}
 			for (int i = 0; i < TerrariaArrayID.AllWoodBowPHM.Length; i++) {
@@ -721,9 +766,10 @@ namespace Roguelike.Contents.NPCs
 	}
 	class WoodBowAttackOne : BaseHostileBow {
 		public override void AI() {
+			Projectile.velocity = Projectile.velocity * .98f;
 			CanDealContactDamage = false;
 			if (++Projectile.ai[0] >= Projectile.ai[2]) {
-				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(5, 5), Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
 				Projectile.ai[0] = 0;
 			}
 		}
@@ -744,6 +790,7 @@ namespace Roguelike.Contents.NPCs
 					ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 				}
 				else {
+					Projectile.rotation = Vector2.UnitY.ToRotation();
 					ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
 				}
 				Projectile.ai[0] = 0;

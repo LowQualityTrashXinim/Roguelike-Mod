@@ -1,4 +1,4 @@
 displayName = Everlasting
 author = Xinim
-version = 0.0.1
+version = 0.0.2
 modReferences  = StructureHelper@3.0, SubworldLibrary

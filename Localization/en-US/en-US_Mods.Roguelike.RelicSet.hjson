@@ -35,7 +35,7 @@ HeartOfNature: {
 	Description:
 		'''
 		Increase maximum health and mana by 40
-		Getting hit both heal back your hp and mana for 25% of taken damage
+		Getting hit both heal back your health and mana for 25% of taken damage
 		'''
 }
 
@@ -91,8 +91,8 @@ BombshellArtillery: {
 		'''
 }
 
-StellarCharm: {
-	DisplayName: Stellar Charm
+StellaCharm: {
+	DisplayName: Stella Charm
 	Description:
 		'''
 		Increases your summon damage by 12%

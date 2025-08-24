@@ -1,6 +1,4 @@
-﻿using Roguelike.Contents.Perks;
-using Roguelike.Contents.Items.Accessories.TrinketAccessories;
-using Roguelike.Contents.Items.Consumable.Potion;
+﻿using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using Terraria.ID;
@@ -218,15 +216,6 @@ public static class TerrariaArrayID {
 			ModContent.ProjectileType<EnchantedTungstenSwordP>(),
 			ModContent.ProjectileType<EnchantedGoldSwordP>(),
 			ModContent.ProjectileType<EnchantedPlatinumSwordP>() };
-
-	public readonly static int[] Trinket = new int[] {
-		ModContent.ItemType<Trinket_of_Swift_Health>(),
-		ModContent.ItemType<Trinket_of_Perpetuation>(),
-		ModContent.ItemType<Trinket_of_Ample_Perception>(),
-		ModContent.ItemType<Trinket4>(),
-		ModContent.ItemType<Trinket5>(),
-		ModContent.ItemType<Trinket6>(),
-	};
 
 	public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };
 	public readonly static int[] Smallmeal = new int[] { ItemID.CookedMarshmallow, ItemID.RoastedBird, ItemID.SauteedFrogLegs, ItemID.GrilledSquirrel, ItemID.FruitSalad, ItemID.CookedFish, ItemID.BunnyStew, ItemID.PotatoChips, ItemID.ShuckedOyster };

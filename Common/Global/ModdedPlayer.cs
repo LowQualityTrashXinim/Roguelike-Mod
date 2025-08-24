@@ -80,7 +80,12 @@ namespace Roguelike.Common.Global {
 		}
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
-			Player.difficulty = PlayerDifficultyID.Hardcore;
+			if (Player.IsDebugPlayer()) {
+				Player.difficulty = PlayerDifficultyID.Creative;
+			}
+			else {
+				Player.difficulty = PlayerDifficultyID.Hardcore;
+			}
 			Player.itemAnimation = 0;
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
 				Player.itemAnimationMax = Player.HeldItem.useAnimation;

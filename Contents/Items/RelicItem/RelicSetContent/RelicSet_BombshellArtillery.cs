@@ -28,7 +28,7 @@ public class BombshellArtillery_ModPlayer : ModPlayer{
 		}
 	}
 	public void SpawnBomb() {
-		int damage = (int)Player.GetDamage(DamageClass.Generic).ApplyTo(90);
+		int damage = (int)Player.GetDamage(DamageClass.Generic).ApplyTo(30);
 		for (int i = 0; i < 4; i++) {
 			Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Main.rand.NextVector2Circular(5f, 5f) * Main.rand.NextFloat(2, 3.5f), ModContent.ProjectileType<ReactiveBombProjectile>(), damage, 3f, Player.whoAmI);
 		}

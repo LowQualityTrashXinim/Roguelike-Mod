@@ -8,7 +8,6 @@ using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.Chest;
-using Roguelike.Contents.Items.Toggle;
 using Roguelike.Texture;
 
 namespace Roguelike.Contents.NPCs;
@@ -68,7 +67,6 @@ internal class M_018T : ModNPC {
 		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 17) });
 		shop.Add(new Item(ModContent.ItemType<WorldEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
 		shop.Add(new Item(ModContent.ItemType<CelestialEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
-		shop.Add(new Item(ModContent.ItemType<UserInfoTablet>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
 		shop.Register();
 	}
 }

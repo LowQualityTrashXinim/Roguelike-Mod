@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Linq;
 using Roguelike.Common.Systems;
-using Roguelike.Common.Utils;
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 
@@ -18,11 +17,11 @@ internal class WeaponLootBox : ModItem {
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
 		var entitySource = player.GetSource_OpenItem(Type);
+		LootBoxBase.GetWeapon(out int Weapon, out int amount);
 		if (Main.rand.NextBool(100) && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
-			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
+			player.QuickSpawnItem(entitySource, Weapon, amount);
 			return;
 		}
-		LootBoxBase.GetWeapon(out int Weapon, out int amount);
 		player.QuickSpawnItem(entitySource, Weapon, amount);
 	}
 }

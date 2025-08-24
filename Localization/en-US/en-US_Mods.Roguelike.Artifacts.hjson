@@ -260,3 +260,18 @@ SlimyChaliceArtifact: {
 			- Double your knockback intake and reduce knockback resistance effectiveness
 		'''
 }
+
+SwiftHealthIdolArtifact: {
+	DisplayName: Swift Health idol
+	Description:
+		'''
+		[c/ffff00:Positive effect] :
+			+ Increases maximum health by 5% and 10% movement speed
+			+ After dealing damage to a enemy, you receive a buff for 30 second ( CD: 60s )
+			During buff duration: increases your damage by 1 for each 50 health you currently have
+			Hitting a enemy will increases your max health by 1% and movement speed by 2% (capped at 20) ( CD: 1s )
+		[c/ab3e43:Negative effect] : 
+			- Getting hit while health is above 200 will triple your taken damage
+			- While health is below 200 decreases your damage by 20%
+		'''
+}

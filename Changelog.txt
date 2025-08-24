@@ -69,3 +69,8 @@ Version 0.0.1:
 68/ Deleted Life of Thorn mode.
 69/ Deleted Synergy Fever mode.
 70/ Deleted ForceBossDropRegardless, HardEnableFeature and AutoHarecore setting as those setting no longer needed.
+71/ Removed Trinket of Swift Health and made it into a artifact.
+72/ Deleted Trinket7 causes it is never implemented.
+73/ Reduced sound volume when player spawn skeletron.
+74/ Small fixes toward localization.
+75/ Nerf Reactive Bombing damage from 90 to 30 damage. 

@@ -1363,25 +1363,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			Trinket_of_Swift_Health: {
-				DisplayName: Trinket of Swift Health
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases your maximum health by 25%
-					[[c/8888ea:Active]]
-					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					After the buff ends, you receive a 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
-					'''
-				ExtraInfo:
-					'''
-					[c/b7bf5c:Swift Steal] :
-					Increases your damage by 1 for each 5 health you currently have
-					Hitting a enemy will increases your max health by 5% and movement speed by 10% 
-					(max out at 6 times with 2s coold down between hits)
-					'''
-			}
-
 			Trinket_of_Perpetuation: {
 				DisplayName: Trinket of Perpetuation
 				Tooltip:
@@ -1470,11 +1451,6 @@ Mods: {
 					But during the "stack" active, your damage is increased by how much defense effectiveness you have
 					The "stack" will last for 5s, after losing a "stack", you gain 5 defenses as compensation that last for 1 min
 					'''
-			}
-
-			Trinket7: {
-				DisplayName: Trinket7
-				Tooltip: ""
 			}
 
 			StructureMaker: {
