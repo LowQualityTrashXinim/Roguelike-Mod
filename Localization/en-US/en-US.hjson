@@ -1363,24 +1363,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			Trinket_of_Ample_Perception: {
-				DisplayName: Trinket of Ample Perception
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases your critical strike chance by 12%
-					[[c/8888ea:Active]]
-					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye] ( 2s cool down )
-					'''
-				ExtraInfo:
-					'''
-					[[c/b7bf5c:Divine Eye]]
-					Increases your critical strike chance by 3% and damage by 6%
-					(You can only have at most 4 [c/b7bf5c:Divine Eye])
-					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
-					'''
-			}
-
 			Trinket4: {
 				DisplayName: Trinket of Mythical Conditioning
 				Tooltip:

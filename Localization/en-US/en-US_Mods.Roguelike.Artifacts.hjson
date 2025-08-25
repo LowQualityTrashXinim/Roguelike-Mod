@@ -288,3 +288,17 @@ PerpetuatedCycleArtifact: {
 			- Decreases damage you dealt by 35%
 		'''
 }
+			
+AmplePerceptionArtifact: {
+	DisplayName: Ample Perception
+	Tooltip:
+		'''
+		[c/ffff00:Positive effect] :
+			+ Dealing critical strike to an enemy grant 1 [c/b7bf5c:Divine Eye] ( CD: 2s ) ( capped at 4 )
+			+ Having [c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6%
+			If no critical strike dealt after 7 seconds, 1 [c/b7bf5c:Divine Eye] is lost
+		[c/ab3e43:Negative effect] :
+			- Decreases your none-critical strike damage by 25%
+			- Critical strike chance multiplier is 0.75x
+		'''
+}

@@ -52,6 +52,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool CanDenyYouFromLoot = false;
 	public int PositiveLifeRegen = 0;
 	public int PositiveLifeRegenCount = 0;
+	public int Perpetuation_PointStack = 0;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>

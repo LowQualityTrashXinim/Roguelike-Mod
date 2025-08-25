@@ -20,10 +20,6 @@ public abstract class BaseTrinket : ModItem {
 public class TrinketPlayer : ModPlayer {
 	public PlayerStatsHandle GetStatsHandle() => Player.GetModPlayer<PlayerStatsHandle>();
 }
-public class Trinket_GlobalNPC : GlobalNPC {
-	public override bool InstancePerEntity => true;
-	public int Perpetuation_PointStack = 0;
-}
 public abstract class TrinketBuff : ModBuff {
 	public override string Texture => ModTexture.EMPTYBUFF;
 	public sealed override void SetStaticDefaults() {

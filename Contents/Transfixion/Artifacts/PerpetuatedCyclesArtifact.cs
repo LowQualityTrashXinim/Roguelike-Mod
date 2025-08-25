@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Terraria;
+using Roguelike.Texture;
+using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Accessories.TrinketAccessories;
-using Roguelike.Texture;
-using System;
-using Terraria;
-using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class PerpetuatedCyclesArtifact : Artifact {
@@ -55,13 +54,13 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 			this.BossRushSetDefaultDeBuff();
 		}
 		public override bool ReApply(NPC npc, int time, int buffIndex) {
-			npc.GetGlobalNPC<Trinket_GlobalNPC>().Perpetuation_PointStack = Math.Clamp(++npc.GetGlobalNPC<Trinket_GlobalNPC>().Perpetuation_PointStack, 0, 1000);
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack = Math.Clamp(++npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack, 0, 1000);
 			return base.ReApply(npc, time, buffIndex);
 		}
 		public override void Update(NPC npc, ref int buffIndex) {
-			npc.lifeRegen -= 1 + npc.GetGlobalNPC<Trinket_GlobalNPC>().Perpetuation_PointStack;
+			npc.lifeRegen -= 1 + npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack;
 			if (npc.buffTime[buffIndex] <= 0) {
-				npc.GetGlobalNPC<Trinket_GlobalNPC>().Perpetuation_PointStack = 0;
+				npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack = 0;
 			}
 		}
 	}
