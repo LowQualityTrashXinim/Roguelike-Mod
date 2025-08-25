@@ -275,3 +275,16 @@ SwiftHealthIdolArtifact: {
 			- While health is below 200 decreases your damage by 20%
 		'''
 }
+
+PerpetuatedCycleArtifact: {
+	DisplayName: Perpetuated Cycle
+	Description:
+		'''
+		[c/ffff00:Positive effect] :
+			+ Increases debuff infliction duration by 35%
+			+ Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] for 1 second 
+			+ Re-inflicting [c/b7bf5c:Samsara of Retribution] will strengthen it
+		[c/ab3e43:Negative effect] :
+			- Decreases damage you dealt by 35%
+		'''
+}

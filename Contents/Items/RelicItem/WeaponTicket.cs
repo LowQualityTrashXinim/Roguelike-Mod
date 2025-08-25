@@ -34,9 +34,6 @@ internal class WeaponTicket : ModItem {
 		return $"[c/{info[index].MultiColor(5).Hex3()}:{c}]";
 	}
 	public bool Add_Item(int itemID) {
-		if (RequestItem.Contains(itemID)) {
-			return false;
-		}
 		return RequestItem.Add(itemID);
 	}
 	public void Add_HashSet(HashSet<int> pool) {

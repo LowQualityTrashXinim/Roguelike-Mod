@@ -124,15 +124,15 @@ public class Relic : ModItem {
 			tooltips.Insert(nameIndex + 1, relicsetLine);
 			extraname = relicset.DisplayName;
 		}
-		NameLine.Text = $"[Tier {TemplateCount}] {DisplayName}";
-		NameLine.OverrideColor = relicColor.MultiColor(5);
 		if (RelicPrefixedType != -1) {
 			RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
 			if (relicprefix != null) {
-				NameLine.Text = $"[Tier {TemplateCount}] {relicprefix.DisplayName} {extraname} {DisplayName}";
+				extraname = $"{relicprefix.DisplayName} {extraname}";
 				tooltips.Insert(nameIndex + 1, new(Mod, "RelicPrefixDesc", $"~{{ {relicprefix.Description} }}~"));
 			}
 		}
+		NameLine.Text = $"[Tier {TemplateCount}] {extraname} {DisplayName}";
+		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));

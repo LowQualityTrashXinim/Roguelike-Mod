@@ -1367,22 +1367,9 @@ Mods: {
 				DisplayName: Trinket of Perpetuation
 				Tooltip:
 					'''
-					[[c/8888ea:Passive]]
 					Increases inflicting debuff time by 35%
-					[[c/8888ea:Active]]
-					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second 
-					and grant you [c/b7bf5c:Samsara of Tribution]
-					'''
-				ExtraInfo:
-					'''
-					[c/b7bf5c:Samsara of Retribution] 
-					Deal 10 damage over time onto enemy
-					Hitting enemy that already have [c/b7bf5c:Samsara of Retribution] will strengthen the debuff
-					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
-
-					[c/b7bf5c:Samsara of Tribution]
-					Increases your damage based on amount of NPC you inflict with [c/b7bf5c:Samsara of Retribution] for 15s 
-					( Have 25s cooldown )
+					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] for 1 second 
+					Re-inflicting [c/b7bf5c:Samsara of Retribution] will strengthen it
 					'''
 			}
 

@@ -22,7 +22,7 @@ public class TrinketPlayer : ModPlayer {
 }
 public class Trinket_GlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
-	public int Trinket_of_Perpetuation_PointStack = 0;
+	public int Perpetuation_PointStack = 0;
 }
 public abstract class TrinketBuff : ModBuff {
 	public override string Texture => ModTexture.EMPTYBUFF;

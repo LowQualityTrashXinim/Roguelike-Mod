@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -13,21 +12,33 @@ public class SynergyTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
 	}
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SynergyDamage;
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return Main.rand.Next([
+			PlayerStats.PureDamage,
+			PlayerStats.CritChance,
+			PlayerStats.CritDamage,
+			PlayerStats.Defense,
+			PlayerStats.AttackSpeed
+			]);
+	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) =>
 		string.Format(Description, [
 			Color.Yellow.Hex3(),
 			RelicTemplateLoader.RelicValueToNumber(value.Flat + value.Flat * .12f * (relic.RelicTier - 1)),
-			new Color(100, 255, 255).Hex3()
+			new Color(100, 255, 255).Hex3(),
+			Enum.GetName(stat),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive + value.Additive * .12f  * (relic.RelicTier - 1)),
 		]);
 
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.04f, .06f), 2), 1, Main.rand.Next(3, 11), 0);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		float tierValue = .12f * (relic.RelicTier - 1);
 		value.Flat += value.Flat * tierValue;
-		modplayer.AddStatsToPlayer(stat, value);
+		value += value.Additive * tierValue;
+		modplayer.AddStatsToPlayer(PlayerStats.SynergyDamage, Flat: value.Flat);
+		modplayer.AddStatsToPlayer(stat, Additive: value.Additive);
 	}
 }
 public class StrikeFullHPTemplate : RelicTemplate {

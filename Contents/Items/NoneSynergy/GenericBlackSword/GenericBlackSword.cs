@@ -46,8 +46,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 				tracker = new();
 			}
 			if (tracker.Count <= 60) {
-				SpriteTracker track = new SpriteTracker();
-				track = new(Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.5f, 1f), MathHelper.ToRadians(Main.rand.Next(-20, 20)), Main.rand.Next(60, 90));
+				SpriteTracker track = new(Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.5f, 1f), MathHelper.ToRadians(Main.rand.Next(-20, 20)), Main.rand.Next(60, 90));
 				tracker.Add(track);
 			}
 			Texture2D texture = TextureAssets.Item[Type].Value;
@@ -286,9 +285,6 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 				}
 			}
 		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		}
-
 		public override void OnHurt(Player.HurtInfo info) {
 			VoidCount = 0;
 			YouGotHitLMAO = true;

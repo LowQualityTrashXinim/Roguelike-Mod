@@ -50,7 +50,7 @@ MagicCostTemplate: {
 
 SynergyTemplate: {
 	DisplayName: Synergetic Pirouette
-	Description: Increases flat damage once by [c/{0}:{1}] upon switching weapons
+	Description: Increases [c/{2}:Synergy damage] by [c/{2}:{1}] and [c/{0}:{3}] by [c/{0}:{4}]
 }
 
 GunFireRateTemplate: {
