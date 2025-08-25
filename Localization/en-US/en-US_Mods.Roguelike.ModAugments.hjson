@@ -52,6 +52,15 @@ Venom: {
 	Description2: Enemy with venom debuff receive 40% more knockback
 }
 
+PaperDefense: {
+	DisplayName: Paper defense I
+	Description: +1 defense
+	DisplayName1: Paper defense II
+	Description1: On getting hit, decreases defenses by 5% for 5s ( capped at 50% )
+	DisplayName2: Paper defense III
+	Description2: Afterward you gain 5 defenses as compensation that last for 1 min
+}
+
 BerserkI: {
 	DisplayName: Berserk I
 	Description: Deal more damage the lower your health get

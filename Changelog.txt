@@ -81,3 +81,5 @@ Version 0.0.1:
 80/ Small fix toward buff missing texture and deleting no longer needed item localization.
 81/ Removed Trinket of Ample Perception and made it into a artifact.
 82/ Moved a variable from 1 global NPC class to main global NPC file and delete the unnecessary global class.
+83/ Deleted Trinket6 ( Trinket of Mythical Conditioning ) because it is similar with Mana Overloader.
+84/ Removed Trinket 6 and turn it into a augmentation with a lot of nerfs.

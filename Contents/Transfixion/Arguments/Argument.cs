@@ -1,6 +1,5 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;

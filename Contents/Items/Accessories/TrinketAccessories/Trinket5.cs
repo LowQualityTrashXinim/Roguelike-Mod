@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 

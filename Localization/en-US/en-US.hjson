@@ -1363,22 +1363,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			Trinket4: {
-				DisplayName: Trinket of Mythical Conditioning
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases your max mana by 60
-					[[c/8888ea:Active]]
-					While current mana amount is above 50% max mana :
-					+ Increases your projectile attack by 20% at the cost of 10 mana ( can be reduce )
-					While current mana amount is below 50% max mana :
-					+ Hitting a enemy with magic projectile will restore your mana by 1 but decreases your damage by 30%
-					When you got hit, if the damage taken is less than current amount of mana
-					+ You take 1 damage instead and your mana take a hit instead
-					'''
-			}
-
 			Trinket5: {
 				DisplayName: Trinket of Protective Onslaught
 				Tooltip:
@@ -1395,20 +1379,6 @@ Mods: {
 					Heals the player at the end of the buff based on defense gained.
 					Excess healing bursts into an AoE explosion.
 					For each 10 defenses you have, increases your damage by 1%
-					'''
-			}
-
-			Trinket6: {
-				DisplayName: Trinket6
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases your defensive effectiveness by 1.5x
-					[[c/8888ea:Active]]
-					For each time you get hit, you gain a "stack"
-					For each "stack" your defense decrease by 10% ( maximum defense decrease is 50% )
-					But during the "stack" active, your damage is increased by how much defense effectiveness you have
-					The "stack" will last for 5s, after losing a "stack", you gain 5 defenses as compensation that last for 1 min
 					'''
 			}
 
@@ -2717,7 +2687,7 @@ Mods: {
 				Description: Have a chance to deal mini critical strike
 			}
 
-			Trinket6_DefensesBonus_Buff: {
+			PaperDefense_DefensesBonus_Buff: {
 				DisplayName: Fraggile defense
 				Description: " "
 			}
