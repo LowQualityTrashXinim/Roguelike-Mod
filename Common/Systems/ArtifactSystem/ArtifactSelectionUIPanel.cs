@@ -95,7 +95,8 @@ namespace Roguelike.Common.Systems.ArtifactSystem
 		}
 		public override void ScrollWheel(UIScrollWheelEvent evt) {
 			currentOffset -= MathF.Sign(evt.ScrollWheelValue);
-			currentOffset = Math.Clamp(currentOffset, 0, 1);
+			int maximumvalue = Math.Clamp((int)Math.Ceiling(list_artifactInOrder.Count / (float)ARTIFACTS_PER_ROW) - 4, 0, 99);
+			currentOffset = Math.Clamp(currentOffset, 0, maximumvalue);
 			int offsetvalue = currentOffset * ARTIFACTS_PER_ROW;
 			int offsetlength = list_artifactInOrder.Count - offsetvalue - 1;
 			for (int i = 0; i < list_btnArtifact.Count; i++) {

@@ -39,17 +39,18 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		Trinket_of_Perpetuation_OnHitNPCEffect(target, hit);
+		Trinket_of_Perpetuation_OnHitNPCEffect(target);
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		Trinket_of_Perpetuation_OnHitNPCEffect(target, hit);
+		Trinket_of_Perpetuation_OnHitNPCEffect(target);
 	}
-	private void Trinket_of_Perpetuation_OnHitNPCEffect(NPC target, NPC.HitInfo hit) {
+	private void Trinket_of_Perpetuation_OnHitNPCEffect(NPC target) {
 		if (PerpetuationCycle) {
 			target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), ModUtils.ToSecond(1));
 		}
 	}
 	public class Samsara_of_Retribution : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff();
 		}

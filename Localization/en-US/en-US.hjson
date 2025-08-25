@@ -1363,16 +1363,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			Trinket_of_Perpetuation: {
-				DisplayName: Trinket of Perpetuation
-				Tooltip:
-					'''
-					Increases inflicting debuff time by 35%
-					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] for 1 second 
-					Re-inflicting [c/b7bf5c:Samsara of Retribution] will strengthen it
-					'''
-			}
-
 			Trinket_of_Ample_Perception: {
 				DisplayName: Trinket of Ample Perception
 				Tooltip:

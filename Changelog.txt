@@ -77,3 +77,5 @@ Version 0.0.1:
 76/ Slightly buff Synergy template in relic.
 77/ Small code optimization.
 78/ Removed Trinket of Perpetuation and made it into a artifact.
+79/ Fixed artifact selection panel scrolling being hard capped and not dynamically changed depending on current artifact amount.
+80/ Small fix toward buff missing texture and deleting no longer needed item localization.
