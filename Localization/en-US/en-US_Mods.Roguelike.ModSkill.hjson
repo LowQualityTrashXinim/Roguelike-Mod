@@ -347,3 +347,13 @@ GreaterDamageUp: {
 	DisplayName: Greater damage +
 	Description: Increase skill damage by 300%
 }
+
+ProtectiveOnslaught: {
+	DisplayName: Protective Onslaught
+	Description: 
+		'''
+		Increases defence by 1 every successful strike (CD: 0.1s).
+		Heals the player at the end of the buff based on defense gained.
+		Excess healing bursts into an AoE explosion.
+		'''
+}

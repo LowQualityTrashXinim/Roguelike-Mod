@@ -6,7 +6,6 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 

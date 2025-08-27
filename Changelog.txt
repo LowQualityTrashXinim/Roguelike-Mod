@@ -83,3 +83,4 @@ Version 0.0.1:
 82/ Moved a variable from 1 global NPC class to main global NPC file and delete the unnecessary global class.
 83/ Deleted Trinket6 ( Trinket of Mythical Conditioning ) because it is similar with Mana Overloader.
 84/ Removed Trinket 6 and turn it into a augmentation with a lot of nerfs.
+85/ Removed Trinket 5 and turn it into a mod skill.

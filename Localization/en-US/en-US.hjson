@@ -1363,25 +1363,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			Trinket5: {
-				DisplayName: Trinket of Protective Onslaught
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases defense by 25
-					[[c/8888ea:Active]]
-					Upon getting hit, grants [c/b7bf5c:Gradual Rockshell] for 10 seconds. (40s cooldown)
-					'''
-				ExtraInfo:
-					'''
-					[[c/b7bf5c:Gradual Rockshell]]
-					Increases defence by 1 every successful melee hit (stackable, 0.1 cooldown).
-					Heals the player at the end of the buff based on defense gained.
-					Excess healing bursts into an AoE explosion.
-					For each 10 defenses you have, increases your damage by 1%
-					'''
-			}
-
 			StructureMaker: {
 				DisplayName: Structure Maker
 				Tooltip: ""

@@ -1,6 +1,5 @@
 using Roguelike.Common.RoguelikeChange.Prefixes;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Accessories.TrinketAccessories;
 using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.Weapon;
 using System;
