@@ -40,5 +40,6 @@ namespace Roguelike.Common.General
 		public bool TemplateTest { get; set; }
 		[Header($"GameHeader")]
 		public bool HoldShift { get; set; }
+		public bool DisableRingVisual { get; set; }
 	}
 }

@@ -1,5 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;

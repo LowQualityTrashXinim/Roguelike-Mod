@@ -452,7 +452,7 @@ HybridRanger: {
 	Description:
 		'''
 		+ Increases max minion and sentry by 1 and range damage by 10%
-		+ For every 2 max minion or sentry, summon short lived spectre spirit when shoot
+		+ For every 2 max minion or sentry, 10% chance to summon short lived spectre spirit when shoot
 		+ Summon damage now have critical strike chance base on ranger critical strike chance
 		'''
 }
@@ -477,17 +477,6 @@ TitanPower: {
 		+ Increases your maximum health by 200, thorn damage by 150%, defenses by 15 flat and 25%
 		+ Increases your damage reduction by 40%
 		+ You can revive once ( 4 miniutes cool down )
-		'''
-}
-
-LostInWonderLand: {
-	DisplayName: Lost In Wonderland
-	Description:
-		'''
-		[WARNING:EXPERIMENTAL DO NOT CHOOSE]
-		+ Increases chance of NPC getting mutate by 10%
-		+ Your weapon have 10% to get enchantment
-		+ Your accessory have 10% to get augmentation
 		'''
 }
 

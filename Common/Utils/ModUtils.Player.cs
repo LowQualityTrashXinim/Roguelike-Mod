@@ -1,15 +1,17 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.ID;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Terraria.DataStructures;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.General;
+using Roguelike.Common.Global;
+using Roguelike.Common.RoguelikeChange.Mechanic;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Perks;
-using Roguelike.Common.RoguelikeChange.Mechanic;
-using Roguelike.Common.Global;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
@@ -485,6 +487,9 @@ namespace Roguelike.Common.Utils {
 		/// <param name="name"></param>
 		/// <param name="context"></param>
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+			if (ModContent.GetInstance<RogueLikeConfig>().DisableRingVisual) {
+				return;
+			}
 			foreach (var item in DataStorer.dict_drawCircleContext.Values) {
 				if (item.Activate) {
 					ModUtils.BresenhamCircle(item.Position, item.Distance, item.Color);

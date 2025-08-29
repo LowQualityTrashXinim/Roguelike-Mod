@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.DreamLikeWorldMode;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Perks;
@@ -37,11 +36,9 @@ public class EnchantmentSystem : ModSystem {
 			modplayer.Request_EnchantedItem--;
 		}
 		float randomizedchance = 0f;
-		if (!ChaosModeSystem.Chaos()) {
 			if (UniversalSystem.Check_TotalRNG()) {
 				randomizedchance += .2f;
 			}
-		}
 		for (int i = 0; i < 3; i++) {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
 				if (globalitem.EnchantmenStlot[i] != 0) {

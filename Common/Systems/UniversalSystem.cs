@@ -5,7 +5,6 @@ using ReLogic.Content;
 using Roguelike.Common.ChallengeMode;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.DreamLikeWorldMode;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Systems.SpoilSystem;
@@ -347,11 +346,6 @@ internal class UniversalSystem : ModSystem {
 	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
 	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
 		DeactivateUI();
-		if (ChaosModeSystem.Chaos()) {
-			if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .9f)) {
-				return;
-			}
-		}
 		if (Check_TotalRNG()) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {

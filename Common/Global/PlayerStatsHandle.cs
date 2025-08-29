@@ -1,8 +1,5 @@
-﻿using Roguelike.Contents.Items.Chest;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.General;
-using Roguelike.Common.Mode.DreamLikeWorldMode;
 using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Contents.Items.Weapon;
@@ -1207,12 +1204,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
-		var system = ModContent.GetInstance<ChaosModeSystem>();
-		if (system.ChaosMode) {
-			if (system.Dict_Chained_Buff.ContainsKey(type)) {
-				self.AddBuff(system.Dict_Chained_Buff[type], timeToAdd);
-			}
-		}
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);

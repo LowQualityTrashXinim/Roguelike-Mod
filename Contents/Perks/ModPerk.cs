@@ -6,18 +6,17 @@ using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using Roguelike.Contents.Perks.BlessingPerk;
 
 namespace Roguelike.Contents.Perks;
 public class MarkOfSpectre : Perk {
@@ -111,8 +110,6 @@ public class BackUpMana : Perk {
 		mana.Base += 67 * StackAmount(player);
 	}
 	public override void OnMissingMana(Player player, Item item, int neededMana) {
-		//player.statMana += neededMana;
-		//player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 1, player.statLifeMax2);
 		if (!player.HasBuff<BackUpMana_CoolDown>()) {
 			player.statMana = player.statManaMax2;
 			player.AddBuff(ModContent.BuffType<BackUpMana_CoolDown>(), ModUtils.ToSecond(Math.Clamp(37 - 7 * StackAmount(player), 1, 9999)));
@@ -165,14 +162,14 @@ public class SelfExplosion : Perk {
 		}
 		player.AddBuff(ModContent.BuffType<ExplosionHealing>(), ModUtils.ToSecond(5 + StackAmount(player)));
 	}
-}
-public class ExplosionHealing : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		player.lifeRegen += 22;
+	class ExplosionHealing : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.lifeRegen += 22;
+		}
 	}
 }
 public class ProjectileProtection : Perk {
@@ -270,9 +267,9 @@ public class ArenaBlessing : Perk {
 	public override string ModifyToolTip() {
 		int stack = StackAmount(Main.LocalPlayer);
 		if (stack > 0) {
-			return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description{stack}");
+			return ModUtils.LocalizationText("ModPerk", $"{Name}.Description{stack}");
 		}
-		return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description");
+		return ModUtils.LocalizationText("ModPerk", $"{Name}.Description");
 	}
 	public override void Update(Player player) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {
@@ -290,6 +287,7 @@ public class StellarRetirement : Perk {
 			int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
 			int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.SuperStar, damage, 5);
 			Main.projectile[proj].tileCollide = false;
+			Main.projectile[proj].timeLeft = ModUtils.ToSecond(3);
 		}
 	}
 }
@@ -488,7 +486,7 @@ public class AspectOfFirstChaos : Perk {
 	}
 	public override string ModifyToolTip() {
 		if (StackAmount(Main.LocalPlayer) >= 1) {
-			return Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description1");
+			return ModUtils.LocalizationText("ModPerk", $"{Name}.Description1");
 		}
 		return base.ModifyToolTip();
 	}
@@ -600,6 +598,9 @@ public class HybridRanger : Perk {
 		}
 		int amount = (player.maxMinions + player.maxTurrets) / 2;
 		for (int i = 0; i < amount; i++) {
+			if (!Main.rand.NextBool(10)) {
+				continue;
+			}
 			Vector2 pos = position + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 400), Main.rand.NextFloat(300, 400));
 			for (int l = 0; l < 20; l++) {
 				Dust dust = Dust.NewDustDirect(pos, 0, 0, DustID.SpectreStaff);

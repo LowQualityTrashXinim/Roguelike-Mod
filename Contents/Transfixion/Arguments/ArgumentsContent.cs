@@ -25,10 +25,11 @@ public class Fire : ModAugments {
 					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += "\n" + Description2("2");
 					break;
 			}
 		}
@@ -42,10 +43,11 @@ public class Fire : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);
@@ -91,13 +93,14 @@ public class FrostBurn : ModAugments {
 		for (int i = 0; i < stack; i++) {
 			switch (stack) {
 				case 1:
-					desc += Description2("1");
+					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += Description2("2");
 					break;
 			}
 		}
@@ -111,10 +114,11 @@ public class FrostBurn : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);
@@ -488,13 +492,14 @@ public class ShadowFlame : ModAugments {
 		for (int i = 0; i < stack; i++) {
 			switch (stack) {
 				case 1:
-					desc += Description2("1");
+					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += Description2("2");
 					break;
 			}
 		}
@@ -508,10 +513,11 @@ public class ShadowFlame : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);
@@ -559,13 +565,14 @@ public class CursedFlame : ModAugments {
 		for (int i = 0; i < stack; i++) {
 			switch (stack) {
 				case 1:
-					desc += Description2("1");
+					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += Description2("2");
 					break;
 			}
 		}
@@ -579,10 +586,11 @@ public class CursedFlame : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);
@@ -631,13 +639,14 @@ public class Poison : ModAugments {
 		for (int i = 0; i < stack; i++) {
 			switch (stack) {
 				case 1:
-					desc += Description2("1");
+					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += Description2("2");
 					break;
 			}
 		}
@@ -651,10 +660,11 @@ public class Poison : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);
@@ -700,13 +710,14 @@ public class Venom : ModAugments {
 		for (int i = 0; i < stack; i++) {
 			switch (stack) {
 				case 1:
-					desc += Description2("1");
+					desc += "\n" + Description2("1");
 					break;
 				case 2:
+					desc += "\n" + Description2("2");
+					break;
 				case 3:
 				case 4:
 				case 5:
-					desc += Description2("2");
 					break;
 			}
 		}
@@ -720,10 +731,11 @@ public class Venom : ModAugments {
 				name = DisplayName2("1");
 				break;
 			case 2:
+				name = DisplayName2("2");
+				break;
 			case 3:
 			case 4:
 			case 5:
-				name = DisplayName2("2");
 				break;
 		}
 		return ColorWrapper(name);

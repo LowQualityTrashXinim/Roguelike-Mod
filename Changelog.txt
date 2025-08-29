@@ -84,3 +84,8 @@ Version 0.0.1:
 83/ Deleted Trinket6 ( Trinket of Mythical Conditioning ) because it is similar with Mana Overloader.
 84/ Removed Trinket 6 and turn it into a augmentation with a lot of nerfs.
 85/ Removed Trinket 5 and turn it into a mod skill.
+86/ Added "Disable ring visual" into the configuration setting.
+87/ Deleted Chaos Mode.
+88/ Nerfed Hybrid Ranger perk.
+89/ Deleted Lost In Wonderland perk.
+90/ Reworked Trial System and how it functions.

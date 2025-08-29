@@ -82,21 +82,6 @@ public class PeaceWithGod : Perk {
 		player.GetModPlayer<PlayerStatsHandle>().CanDropSynergyEnergy = true;
 	}
 }
-public class LostInWonderLand : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 10;
-	}
-	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
-	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
-		modplayer.AugmentationChance += .05f * StackAmount(player);
-		modplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
-	}
-}
 public class AlchemistEmpowerment : Perk {
 	public override void SetDefaults() {
 		textureString = ModUtils.GetTheSameTextureAs<AlchemistEmpowerment>("PotionExpert");
