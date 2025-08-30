@@ -350,7 +350,7 @@ GreaterDamageUp: {
 
 ProtectiveOnslaught: {
 	DisplayName: Protective Onslaught
-	Description: 
+	Description:
 		'''
 		Increases defence by 1 every successful strike (CD: 0.1s).
 		Heals the player at the end of the buff based on defense gained.

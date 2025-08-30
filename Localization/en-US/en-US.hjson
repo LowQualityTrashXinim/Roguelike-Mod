@@ -3053,6 +3053,11 @@ Mods: {
 				DisplayName: Magical Spell
 				Description: wow, very magical~
 			}
+
+			ProtectiveOnslaught_Buff: {
+				DisplayName: Protective Onslaught_ Buff
+				Description: Mods.Roguelike.Buffs.ProtectiveOnslaught_Buff.Description
+			}
 		}
 
 		Configs: {

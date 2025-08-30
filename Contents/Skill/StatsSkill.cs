@@ -453,6 +453,7 @@ public class ProtectiveOnslaught : ModSkill {
 		}
 	}
 	class ProtectiveOnslaught_Buff : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultBuff();
 		}

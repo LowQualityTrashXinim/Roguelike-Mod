@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Texture;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -89,6 +90,7 @@ public class PaperDefense_ModPlayer : ModPlayer {
 
 }
 public class PaperDefense_DefensesBonus_Buff : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}
