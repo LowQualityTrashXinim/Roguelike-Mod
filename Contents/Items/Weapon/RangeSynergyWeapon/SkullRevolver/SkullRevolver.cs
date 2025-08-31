@@ -3,10 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 internal class SkullRevolver : SynergyModItem {

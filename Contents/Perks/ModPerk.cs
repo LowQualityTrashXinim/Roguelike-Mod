@@ -10,8 +10,8 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using System;
-using System.Linq;
 using Terraria;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
@@ -115,14 +115,14 @@ public class BackUpMana : Perk {
 			player.AddBuff(ModContent.BuffType<BackUpMana_CoolDown>(), ModUtils.ToSecond(Math.Clamp(37 - 7 * StackAmount(player), 1, 9999)));
 		}
 	}
-}
-public class BackUpMana_CoolDown : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultDeBuff(true);
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenMana, -.5f);
+	class BackUpMana_CoolDown : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff(true);
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenMana, -.5f);
+		}
 	}
 }
 public class Dirt : Perk {
@@ -267,9 +267,9 @@ public class ArenaBlessing : Perk {
 	public override string ModifyToolTip() {
 		int stack = StackAmount(Main.LocalPlayer);
 		if (stack > 0) {
-			return ModUtils.LocalizationText("ModPerk", $"{Name}.Description{stack}");
+			return DescriptionIndex(stack);
 		}
-		return ModUtils.LocalizationText("ModPerk", $"{Name}.Description");
+		return Description;
 	}
 	public override void Update(Player player) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {

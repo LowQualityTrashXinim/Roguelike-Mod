@@ -1,18 +1,10 @@
-﻿ 
-using Roguelike.Common.ChallengeMode;
+﻿using Roguelike.Common.ChallengeMode;
 using Roguelike.Common.Global;
-using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Perks;
 using Roguelike.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -46,17 +38,6 @@ public class GiftOfRelic : Perk {
 		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
 	}
 }
-public class WeaponDismantle : Perk {
-	public override void SetDefaults() {
-		CanBeStack = false;
-	}
-	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
-	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
-	}
-}
 public class EssenceExtraction : Perk {
 	public override void SetDefaults() {
 		CanBeStack = true;
@@ -66,7 +47,7 @@ public class EssenceExtraction : Perk {
 		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
+		player.GetModPlayer<PerkPlayer>().perk_EssenceExtraction = true;
 	}
 }
 public class PeaceWithGod : Perk {

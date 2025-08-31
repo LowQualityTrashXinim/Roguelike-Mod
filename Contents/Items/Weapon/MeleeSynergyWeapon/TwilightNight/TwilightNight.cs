@@ -4,10 +4,10 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TwilightNight;
 

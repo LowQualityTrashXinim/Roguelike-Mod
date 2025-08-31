@@ -25,7 +25,6 @@ public class DemonScytheTemplate : RelicTemplate {
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
-			PlayerStats.PureDamage
 		]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {

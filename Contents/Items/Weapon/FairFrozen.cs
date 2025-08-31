@@ -4,11 +4,11 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon
 {

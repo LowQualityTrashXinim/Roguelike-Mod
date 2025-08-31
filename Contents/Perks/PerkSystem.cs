@@ -23,8 +23,7 @@ using Roguelike.Contents.Perks.RoguelikePerk;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Perks
-{
+namespace Roguelike.Contents.Perks {
 	public class PerkItem : GlobalItem {
 		public override bool? UseItem(Item item, Player player) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
@@ -155,7 +154,6 @@ namespace Roguelike.Contents.Perks
 		public bool perk_ImprovedPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
-		public bool perk_DismantleWeapon = false;
 		public bool perk_EssenceExtraction = false;
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
@@ -185,7 +183,6 @@ namespace Roguelike.Contents.Perks
 			perk_AlchemistPotion = false;
 			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
-			perk_DismantleWeapon = false;
 			perk_EssenceExtraction = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
@@ -384,9 +381,9 @@ namespace Roguelike.Contents.Perks
 		ArtifactExclusive
 	}
 	public abstract class Perk : ModType {
-		public string DisplayName => Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.DisplayName");
-		public string Description => Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description");
-		public string DescriptionIndex(byte index) => Language.GetTextValue($"Mods.Roguelike.ModPerk.{Name}.Description{index}");
+		public string DisplayName => ModUtils.LocalizationText("ModPerk", $"{Name}.DisplayName");
+		public string Description => ModUtils.LocalizationText("ModPerk", $"{Name}.Description");
+		public string DescriptionIndex(int index) => ModUtils.LocalizationText("ModPerk", $"{Name}.Description{index}");
 		public bool CanBeStack = false;
 		/// <summary>
 		/// This will get the value from Mod Perk player itself<br/>
@@ -525,7 +522,6 @@ namespace Roguelike.Contents.Perks
 		public const short StarterPerkState = 1;
 		public const short DebugState = 2;
 		public const short GamblerState = 3;
-		public const short WeaponUpgradeState = 4;
 		public short StateofState = 0;
 		public UIText toolTip;
 		public Roguelike_UIImageButton reroll = null;
@@ -618,32 +614,6 @@ namespace Roguelike.Contents.Perks
 				if (StateofState == GamblerState) {
 					ActivateGamblerUI(modplayer, player);
 				}
-				if (StateofState == WeaponUpgradeState) {
-					ActivateWeaponUpgradeUI(modplayer, player);
-				}
-			}
-		}
-		private void ActivateWeaponUpgradeUI(PerkPlayer modplayer, Player player) {
-			reroll.Hide = false;
-			Vector2 originDefault = new Vector2(26, 26);
-			List<int> starterPerk = new(PerkModSystem.WeaponUpgradeType);
-			int limit = 3;
-			for (int i = 0; i < limit; i++) {
-				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
-				starterPerk.Remove(choosenperk.Type);
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
-				//After that we assign perk
-				if (modplayer.perks.ContainsKey(choosenperk.Type)) {
-					if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
-						continue;
-					}
-				}
-				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
-				btn.UISetWidthHeight(52, 52);
-				btn.UISetPosition(player.Center + offsetPos, originDefault);
-				btn.perkType = choosenperk.Type;
-				list_perkbtn.Add(btn);
-				Append(btn);
 			}
 		}
 		private void ActivateDebugPerkUI(Player player) {

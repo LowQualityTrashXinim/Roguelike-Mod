@@ -22,36 +22,6 @@ using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.RoguelikeMode;
-public class PlayerBiome : ModPlayer {
-	HashSet<short> CurrentBiome = new HashSet<short>();
-	public override void ResetEffects() {
-		if (!Player.active) {
-			return;
-		}
-		CurrentBiome.Clear();
-		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
-		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
-		if (WorldIndex >= gen.BiomeMapping.Length) {
-			return;
-		}
-		string zone = gen.BiomeMapping[WorldIndex];
-		if (zone == null) {
-			return;
-		}
-		for (int i = 0; i < zone.Length; i++) {
-			short biomeID = RogueLikeWorldGen.CharToBid(zone, i);
-			CurrentBiome.Add(biomeID);
-		}
-		foreach (var item in CurrentBiome) {
-			if (RogueLikeWorldGen.BiomeID.TryGetValue(item, out string value)) {
-				Main.NewText("Player are currently in:" + value);
-			}
-			if (item == Bid.Forest) {
-			}
-		}
-	}
-}
 /// <summary>
 /// short for Biome Arena ID 
 /// </summary>
@@ -153,8 +123,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 
 		dict_BiomeBundle = new() {
 			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone, weight2 = .67f} },
-			{ Bid.Jungle, new(TileID.Mud, WallID.Jungle, "") },
-			{ Bid.Tundra, new(TileID.SnowBlock, WallID.SnowWallUnsafe, "") },
+			{ Bid.Jungle, new BiomeDataBundle(TileID.Mud, WallID.Jungle, "") with { tile2 = TileID.JungleGrass, weight2 = .34f} },
+			{ Bid.Tundra, new BiomeDataBundle(TileID.SnowBlock, WallID.SnowWallUnsafe, "")with { tile2 = TileID.IceBlock, weight2 = .44f} },
 			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
 			{ Bid.Corruption, new(TileID.Ebonstone, WallID.EbonstoneUnsafe, "") },
 			{ Bid.Crimson, new(TileID.Crimstone, WallID.CrimstoneUnsafe, "") },
@@ -293,6 +263,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			return " ";
 		}
 		return assign;
+	}
+	public void ResetTemplate_GenerationValue() {
+		rect = new();
+		counter = OffSetPoint;
+		EmptySpaceRecorder.Clear();
+		count = -1;
+		IsUsingHorizontal = false;
+		offsetcount = 0;
+		additionaloffset = -1;
+		BiomeZone.Clear();
 	}
 	public static int MapIndex(int x, int y) => x + y * 24;
 	public static short Get_BiomeIDViaPos(Vector2 position, int WorldBiomeIndex) {
@@ -486,8 +466,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		while (Get_BiomeIDViaPos(pos_SpaceTrial, 0) != Bid.Space) {
 			pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
 		}
-		ZoneToBeIgnored.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
-		TrialArea.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		foreach (var item in modsystem.list_Structure) {
 			if (item.Get_FilePath == RogueLikeWorldGenSystem.FileDestination + "Watcher") {
@@ -495,7 +473,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 	}
-	StructureData Trial_Space = Generator.GetStructureData("Assets/Trial_Space", ModContent.GetInstance<Roguelike>());
 	public static bool Get_BiomeData(Point positions, int BiomeIndex, out BiomeDataBundle bundle) {
 		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(GetStringDataBiomeMapping(positions.X / GridPart_X, positions.Y / GridPart_Y)[BiomeIndex]), out BiomeDataBundle value1)) {
 			bundle = value1;
@@ -734,16 +711,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ResetTemplate_GenerationValue();
 		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
 	}
-	public void ResetTemplate_GenerationValue() {
-		rect = new();
-		counter = OffSetPoint;
-		EmptySpaceRecorder.Clear();
-		count = -1;
-		IsUsingHorizontal = false;
-		offsetcount = 0;
-		additionaloffset = -1;
-		BiomeZone.Clear();
-	}
 	[Task]
 	public void Generate_SmallForest() {
 		Rectangle forestArea = ZoneToBeIgnored[0];
@@ -753,7 +720,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		bool MoveToNextX;
 		float left = Rand.NextFloat(.25f, .35f);
 		float right = Rand.NextFloat(.75f, .85f);
-		int CurrentPosY = 0;
+		int CurrentPosY;
 		int LeftPos = forestArea.X + (int)(forestArea.Width * left);
 		int RightPos = forestArea.X + (int)(forestArea.Width * right);
 		int datawidth = 20;
@@ -794,8 +761,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 
 		}
-		Rectangle SpaceTrial = ZoneToBeIgnored[1];
-		Generator.GenerateFromData(Trial_Space, new(SpaceTrial.X, SpaceTrial.Y));
 	}
 	[Task]
 	public void Generate_EyeRoom() {
@@ -854,29 +819,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 		return false;
-	}
-	public void Generate_Trial(int X, int Y) {
-		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");
-		template.EnumeratePixels((a, b, color) => {
-			if (a == 25 && b == 25) {
-				a += X;
-				b += Y;
-				GenerationHelper.FastRemoveTile(a, b);
-				WorldGen.PlaceTile(a, b, ModContent.TileType<StartTrialAltar_Template_1>());
-				GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
-				return;
-			}
-			a += X;
-			b += Y;
-			GenerationHelper.FastRemoveTile(a, b);
-			if (color.R == 255 && color.B == 0 && color.G == 0) {
-				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
-			}
-			else if (color.R == 0 && color.B == 255 && color.G == 0) {
-				GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			}
-			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
-		});
 	}
 	[Task]
 	public void FinalTask() {

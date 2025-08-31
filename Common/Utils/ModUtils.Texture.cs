@@ -1,9 +1,5 @@
-﻿using Roguelike.Common.RoguelikeChange.ItemOverhaul;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria;
-using ReLogic.Peripherals.RGB;
 using Roguelike.Texture;
 
 namespace Roguelike.Common.Utils {

@@ -3,10 +3,10 @@ using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment.ShortSwordEnchantments;
 public class ModPlayer_ShortSwordEnchantment : ModPlayer {

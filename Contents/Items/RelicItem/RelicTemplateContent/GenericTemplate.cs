@@ -1,13 +1,11 @@
 ﻿using System;
-using Terraria.ModLoader;
 using Terraria;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Perks;
- 
-using Roguelike.Contents.Perks.BlessingPerk;
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using Roguelike.Contents.Perks;
+using Roguelike.Contents.Perks.BlessingPerk;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class GenericTemplate : RelicTemplate {

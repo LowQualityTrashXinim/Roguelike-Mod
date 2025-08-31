@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Common.Graphics;
 public class SwordSlashTrail : ModSystem {

@@ -23,7 +23,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Contents.Transfixion.Arguments;
-using Roguelike.Common.RoguelikeChange.Prefixes;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;

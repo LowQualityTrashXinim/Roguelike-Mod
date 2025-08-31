@@ -178,9 +178,6 @@ namespace Roguelike.Common.Global {
 				yield return new Item(ModContent.ItemType<TransmuteTablet>());
 				yield return new Item(ModContent.ItemType<SkillOrb>());
 			}
-			if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
-				yield return new Item(ItemID.RedPotion, 10);
-			}
 			if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
 				yield return new Item(ModContent.ItemType<RainbowLootBox>());
 			}

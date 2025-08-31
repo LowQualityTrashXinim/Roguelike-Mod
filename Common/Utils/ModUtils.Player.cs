@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
-using Roguelike.Common.RoguelikeChange.Mechanic;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Perks;
 using System;

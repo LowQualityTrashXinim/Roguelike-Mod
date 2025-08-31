@@ -89,3 +89,14 @@ Version 0.0.1:
 88/ Nerfed Hybrid Ranger perk.
 89/ Deleted Lost In Wonderland perk.
 90/ Reworked Trial System and how it functions.
+91/ Deleted Weapon Dismantle because it is no longer needed.
+92/ Various bug fixes, and fix a rounding error.
+93/ Removed Pure Damage player stats from most relic template.
+94/ Overall mod clean up.
+95/ Deleted Nightmare Mode.
+96/ Deleted damage reduction mutation.
+97/ Merged Roguelike Overhaul with roguelike mode while still make it enable when player in Boss Rush mode.
+98/ Slightly clean up Lootbox.
+99/ Clean up the messes created by Merging Roguelike overhaul with roguelike mode.
+100/ Added recharged animation for axe.
+101/ If player releases LMB during axe recharge animation then the animation will be cancelled and player can attack right away.

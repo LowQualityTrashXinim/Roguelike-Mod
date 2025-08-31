@@ -1,6 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
@@ -41,11 +39,11 @@ public class TouchOfGrim : ModMutation {
 		target.statLife = 1;
 		target.AddBuff(ModContent.BuffType<GrimTouch>(), ModUtils.ToSecond(Main.rand.Next(3, 9)));
 	}
-}
-public class GrimTouch : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultDeBuff();
+	class GrimTouch : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
 	}
 }
 public class ProjectileResistance : ModMutation {
@@ -197,7 +195,7 @@ public class DarkTentacle : ModMutation {
 		for (int i = 0; i < 5; i++) {
 			Vector2 vec2 = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 10;
 			Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, vec2, ProjectileID.ShadowFlame, npc.damage * 2, 3f);
-			proj.ai[0] = Main.rand.NextFloat(-1,1);
+			proj.ai[0] = Main.rand.NextFloat(-1, 1);
 			proj.ai[1] = Main.rand.NextFloat(-1, 1);
 			proj.ai[2] = Main.rand.NextFloat(-1, 1);
 		}

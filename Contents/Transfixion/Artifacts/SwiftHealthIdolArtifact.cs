@@ -27,6 +27,9 @@ public class SwiftHealthIdolPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
+		if (!SwiftHealth) {
+			return;
+		}
 		Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.MaxHP, 1.05f);
 		Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.1f);
 	}
@@ -37,7 +40,7 @@ public class SwiftHealthIdolPlayer : ModPlayer {
 		Trinket_of_Swift_Health_OnHitEffect();
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (Player.statLife < 200) {
+		if (Player.statLife < 200 && SwiftHealth) {
 			damage *= .8f;
 		}
 	}

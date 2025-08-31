@@ -44,7 +44,6 @@ namespace Roguelike.Common.Systems;
 internal class UniversalSystem : ModSystem {
 	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => Main.hardMode && BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
-	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 	/// <summary>
@@ -55,8 +54,6 @@ internal class UniversalSystem : ModSystem {
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (context == NIGHTMARE_MODE)
-			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
 		if (context == BOSSRUSH_MODE)
@@ -74,25 +71,10 @@ internal class UniversalSystem : ModSystem {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
-		if (context == NIGHTMARE_MODE)
-			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
 		return false;
 	}
-	public const string LEGACY_LOOTBOX = "lootbox";
-	public const string LEGACY_WORLDGEN = "worldgen";
-	/// <summary>
-	/// Check legacy option whenever or not if it enable or not
-	/// </summary>
-	/// <param name="option"></param>
-	/// <returns>
-	/// return true if it is enable
-	/// </returns>
-	public static bool CheckLegacy(string option) {
-		return false;
-	}
-	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";

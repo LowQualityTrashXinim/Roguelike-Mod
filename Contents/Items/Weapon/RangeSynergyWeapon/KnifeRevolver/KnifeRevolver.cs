@@ -2,8 +2,8 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {

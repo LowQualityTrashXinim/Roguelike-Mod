@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
 using Terraria;

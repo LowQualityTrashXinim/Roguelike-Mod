@@ -134,19 +134,15 @@ namespace Roguelike.Contents.Items.Chest {
 			if (modplayer.LootboxCanDropSpecialPotion) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			}
-			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				OnRightClick(player, modplayer);
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-				if (modplayer.CanDropSynergyEnergy) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-				}
+			//Lootbox basic behavior
+			OnRightClick(player, modplayer);
+			if (modplayer.CanDropSynergyEnergy) {
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			}
-			else {
-				if (CanActivateSpoil) {
-					UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-					system.ActivateSpoilsUI(Type);
-				}
+			//Lootbox basic behavior
+			if (CanActivateSpoil) {
+				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+				system.ActivateSpoilsUI(Type);
 			}
 			AbsoluteRightClick(player);
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
@@ -283,9 +279,6 @@ namespace Roguelike.Contents.Items.Chest {
 				}
 			}
 		}
-		List<int> DropArrowAmmo = new List<int>();
-		List<int> DropBulletAmmo = new List<int>();
-		List<int> DropDartAmmo = new List<int>();
 		/// <summary>
 		/// Automatically quick drop player ammo item accordingly to weapon ammo type
 		/// </summary>
@@ -294,48 +287,50 @@ namespace Roguelike.Contents.Items.Chest {
 		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
 		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
 			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
-			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
-				if (weapontoCheck.mana > 0) {
-					player.QuickSpawnItem(source, ItemID.LesserManaPotion, 5);
-				}
+			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None && weapontoCheck.mana <= 0) {
 				return;
 			}
-			//The most ugly code
 			int Amount = (int)(350 * AmountModifier);
 			int Ammo;
 			if (Main.masterMode) {
 				Amount += 150;
 			}
-			DropArrowAmmo.Clear();
-			DropBulletAmmo.Clear();
-			DropDartAmmo.Clear();
 
-			DropArrowAmmo.AddRange(TerrariaArrayID.defaultArrow);
-			DropBulletAmmo.AddRange(TerrariaArrayID.defaultBullet);
-			DropDartAmmo.AddRange(TerrariaArrayID.defaultDart);
+			List<int> AmmoPool = new();
 
-			if (Main.hardMode) {
-				DropArrowAmmo.AddRange(TerrariaArrayID.ArrowHM);
-				DropBulletAmmo.AddRange(TerrariaArrayID.BulletHM);
-				DropDartAmmo.AddRange(TerrariaArrayID.DartHM);
-			}
-			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				DropArrowAmmo.Add(ItemID.ChlorophyteArrow);
-				DropBulletAmmo.Add(ItemID.ChlorophyteBullet);
-			}
-			if (NPC.downedPlantBoss) {
-				DropArrowAmmo.Add(ItemID.VenomArrow);
-				DropBulletAmmo.Add(ItemID.NanoBullet);
-				DropBulletAmmo.Add(ItemID.VenomBullet);
-			}
 			if (weapontoCheck.useAmmo == AmmoID.Arrow) {
-				Ammo = Main.rand.NextFromCollection(DropArrowAmmo);
+				AmmoPool.AddRange(TerrariaArrayID.defaultArrow);
+				if (Main.hardMode) {
+					AmmoPool.AddRange(TerrariaArrayID.ArrowHM);
+				}
+				if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+					AmmoPool.Add(ItemID.ChlorophyteArrow);
+				}
+				if (NPC.downedPlantBoss) {
+					AmmoPool.Add(ItemID.VenomArrow);
+				}
+				Ammo = Main.rand.Next(AmmoPool);
 			}
 			else if (weapontoCheck.useAmmo == AmmoID.Bullet) {
-				Ammo = Main.rand.NextFromCollection(DropBulletAmmo);
+				AmmoPool.AddRange(TerrariaArrayID.defaultBullet);
+				if (Main.hardMode) {
+					AmmoPool.AddRange(TerrariaArrayID.BulletHM);
+				}
+				if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+					AmmoPool.Add(ItemID.ChlorophyteBullet);
+				}
+				if (NPC.downedPlantBoss) {
+					AmmoPool.Add(ItemID.NanoBullet);
+					AmmoPool.Add(ItemID.VenomBullet);
+				}
+				Ammo = Main.rand.Next(AmmoPool);
 			}
 			else if (weapontoCheck.useAmmo == AmmoID.Dart) {
-				Ammo = Main.rand.NextFromCollection(DropDartAmmo);
+				AmmoPool.AddRange(TerrariaArrayID.defaultDart);
+				if (Main.hardMode) {
+					AmmoPool.AddRange(TerrariaArrayID.DartHM);
+				}
+				Ammo = Main.rand.Next(AmmoPool);
 			}
 			else if (weapontoCheck.mana > 0) {
 				Ammo = ItemID.LesserManaPotion;
@@ -385,7 +380,6 @@ namespace Roguelike.Contents.Items.Chest {
 			}
 			player.QuickSpawnItem(source, Ammo, Amount);
 		}
-		List<int> Accessories = new List<int>();
 		/// <summary>
 		///      Allow user to return a list of number that contain different data to insert into chest <br/>
 		///      0 : Tier 1 Combat acc <br/>
@@ -407,48 +401,6 @@ namespace Roguelike.Contents.Items.Chest {
 		/// </summary>
 		/// <returns></returns>
 		public virtual List<int> SafePostAddAcc() => new List<int>() { };
-
-		private void AddAcc(List<int> flag) {
-			Accessories.Clear();
-			for (int i = 0; i < flag.Count; i++) {
-				switch (flag[i]) {
-					case 0:
-						Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
-						break;
-					case 1:
-						Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
-						break;
-					case 2:
-						Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
-						break;
-					case 3:
-						Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
-						break;
-					case 4:
-						Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
-						break;
-					case 5:
-						Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
-						break;
-					case 6:
-						Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
-						break;
-					case 7:
-						Accessories.Add(ItemID.CobaltShield);
-						break;
-					case 8:
-						Accessories.AddRange(TerrariaArrayID.AnhkCharm);
-						break;
-					case 9:
-						Accessories.AddRange(TerrariaArrayID.HMAccessory);
-						break;
-					case 10:
-						Accessories.Add(ItemID.PhilosophersStone);
-						break;
-				}
-			}
-			if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
-		}
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
@@ -507,7 +459,46 @@ namespace Roguelike.Contents.Items.Chest {
 		/// Return a random accessory 
 		/// </summary>
 		public int GetAccessory() {
-			AddAcc(FlagNumAcc());
+			List<int> flag = FlagNumAcc();
+			List<int> Accessories = new List<int>();
+			for (int i = 0; i < flag.Count; i++) {
+				switch (flag[i]) {
+					case 0:
+						Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
+						break;
+					case 1:
+						Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
+						break;
+					case 2:
+						Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
+						break;
+					case 3:
+						Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
+						break;
+					case 4:
+						Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
+						break;
+					case 5:
+						Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
+						break;
+					case 6:
+						Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
+						break;
+					case 7:
+						Accessories.Add(ItemID.CobaltShield);
+						break;
+					case 8:
+						Accessories.AddRange(TerrariaArrayID.AnhkCharm);
+						break;
+					case 9:
+						Accessories.AddRange(TerrariaArrayID.HMAccessory);
+						break;
+					case 10:
+						Accessories.Add(ItemID.PhilosophersStone);
+						break;
+				}
+			}
+			if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
 			return Main.rand.Next(Accessories);
 		}
 		/// <summary>

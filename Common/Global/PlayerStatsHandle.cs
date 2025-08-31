@@ -342,6 +342,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public int EnergyRegen_Count = 0;
 	public int EnergyRegen_CountLimit = 60;
 	public int CappedHealthAmount = -1;
+	public const short Default_EnergyCap = 1500;
+	public const short Default_RelicActivationCap = 10;
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
@@ -352,9 +354,9 @@ public class PlayerStatsHandle : ModPlayer {
 				CurrentMinionAmount += Main.projectile[i].minionSlots;
 			}
 		}
-		synchronize_Counter = ModUtils.Safe_SwitchValue(synchronize_Counter, int.MaxValue);
+		synchronize_Counter = ModUtils.Safe_SwitchValue(synchronize_Counter, 216000);
 		var modplayer = Player.GetModPlayer<SkillHandlePlayer>();
-		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
+		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(Default_EnergyCap);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
@@ -377,10 +379,10 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 
 		if (CappedHealthAmount == -1) {
-			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
+			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, int.MaxValue);
 		}
 		else {
-			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, CappedHealthAmount);
+			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, CappedHealthAmount);
 		}
 		CappedHealthAmount = -1;
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
@@ -454,7 +456,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
 
-		RelicActivation = RelicPoint <= 10;
+		RelicActivation = RelicPoint <= Default_RelicActivationCap;
 		RelicPoint = 0;
 
 		EnergyRegen = StatModifier.Default;
@@ -552,7 +554,9 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		if (singularAdditiveMultiplier != 1 && singularBaseMultiplier != 1) {
+			StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		}
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);

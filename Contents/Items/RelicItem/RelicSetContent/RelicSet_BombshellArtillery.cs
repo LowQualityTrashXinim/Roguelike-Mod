@@ -7,7 +7,7 @@ using Roguelike.Common.Global;
 using System.Collections.Generic;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
-public class BombshellArtillery_ModPlayer : ModPlayer{
+public class BombshellArtillery_ModPlayer : ModPlayer {
 	class BombshellArtillery : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
@@ -15,7 +15,8 @@ public class BombshellArtillery_ModPlayer : ModPlayer{
 	}
 	public bool ReactiveBomb => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<BombshellArtillery>());
 	public override void UpdateEquips() {
-		Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 10);
+		if (ReactiveBomb)
+			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 10);
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (ReactiveBomb) {

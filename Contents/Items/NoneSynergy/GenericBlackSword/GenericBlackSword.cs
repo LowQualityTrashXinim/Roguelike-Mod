@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Graphics;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-using Roguelike.Common.RoguelikeChange.Prefixes;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.Weapon;

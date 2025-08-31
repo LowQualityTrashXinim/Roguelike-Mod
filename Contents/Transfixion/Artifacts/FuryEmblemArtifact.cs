@@ -16,6 +16,9 @@ class FuryEmblemPlayer : ModPlayer {
 		Furious = Player.HasArtifact<FuryEmblemArtifact>();
 	}
 	public override void UpdateEquips() {
+		if (!Furious) {
+			return;
+		}
 		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.05f);
 		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 5);

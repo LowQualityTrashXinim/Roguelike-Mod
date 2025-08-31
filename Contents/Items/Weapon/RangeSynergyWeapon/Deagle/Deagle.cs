@@ -5,7 +5,7 @@ using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
 {

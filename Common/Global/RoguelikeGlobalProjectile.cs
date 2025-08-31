@@ -133,10 +133,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
-		if (projectile.type == ProjectileID.StarCannonStar 
-			|| projectile.type == ProjectileID.Starfury 
-			|| projectile.type == ProjectileID.StarWrath 
-			&& UniversalSystem.Check_RLOH()) {
+		if (projectile.type == ProjectileID.StarCannonStar
+			|| projectile.type == ProjectileID.Starfury
+			|| projectile.type == ProjectileID.StarWrath) {
 			fallThrough = true;
 		}
 		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);

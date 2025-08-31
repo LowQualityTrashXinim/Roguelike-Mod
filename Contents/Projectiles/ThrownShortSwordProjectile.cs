@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Projectiles;
 public class ThrowShortSwordProjectile : ModProjectile {

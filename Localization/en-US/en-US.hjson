@@ -3089,20 +3089,6 @@ Mods: {
 					Tooltip: Soon to be merged with Roguelike mode
 				}
 
-				Nightmare: {
-					Label: Nightmare [W.I.P]
-					Tooltip:
-						'''
-						"So you think the game is too easy ?"
-						Note : Highly not recommend for inexperience player
-						Will enable ForTheWorthy seeds regardless of world type
-						- Enemy are much more brutal and is immune to lava and trap
-						- NPC randomize health and damage that range from 0% to 100%
-						- Some bosses receive minor AI change and buff
-						- Boss can sometime become elite
-						'''
-				}
-
 				AutoRandomizeCharacter: {
 					Label: Auto randomize character appearance
 					Tooltip: This will automatically change character apprearance
@@ -3196,6 +3182,11 @@ Mods: {
 						Enable this to disable ring visual in some of the mod's content, do this if you have framerate skip on
 						Otherwise disable this to show the ring visual effect which will benefit the gameplay
 						'''
+				}
+
+				Nightmare: {
+					Label: Nightmare
+					Tooltip: ""
 				}
 			}
 		}

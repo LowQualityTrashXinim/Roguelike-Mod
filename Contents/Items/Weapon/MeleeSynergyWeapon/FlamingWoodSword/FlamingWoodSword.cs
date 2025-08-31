@@ -3,9 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 internal class FlamingWoodSword : SynergyModItem {

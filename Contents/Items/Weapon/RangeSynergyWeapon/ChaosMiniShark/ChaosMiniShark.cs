@@ -2,8 +2,8 @@
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
 {

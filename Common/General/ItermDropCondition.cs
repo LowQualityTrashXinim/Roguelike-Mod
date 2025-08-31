@@ -122,16 +122,6 @@ namespace Roguelike.Common.General
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Drop if player beat boss in no hit aka git gud mode";
 	}
-	public class NightmareMode : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<RogueLikeConfig>().Nightmare;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Nightmare mode exclusive";
-	}
 	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {

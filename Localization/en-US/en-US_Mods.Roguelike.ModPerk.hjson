@@ -753,11 +753,6 @@ GlassCannon: {
 		'''
 }
 
-WeaponDismantle: {
-	DisplayName: Weapon Dismantle [WIP]
-	Description: Enable ability to dismantle weapon via divine hammer
-}
-
 EssenceExtraction: {
 	DisplayName: Essence Extraction [WIP]
 	Description:

@@ -5,7 +5,7 @@ using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
-public class StellaCharm_ModPlayer : ModPlayer{
+public class StellaCharm_ModPlayer : ModPlayer {
 	class StellaCharm : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
@@ -14,7 +14,8 @@ public class StellaCharm_ModPlayer : ModPlayer{
 	public int ChanceToActivate = 0;
 	public bool StarCharm => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<StellaCharm>());
 	public override void UpdateEquips() {
-		Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.SummonDMG, 1.12f);
+		if (StarCharm)
+			Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.SummonDMG, 1.12f);
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (StarCharm && (proj.DamageType == DamageClass.Summon || proj.minion)) {

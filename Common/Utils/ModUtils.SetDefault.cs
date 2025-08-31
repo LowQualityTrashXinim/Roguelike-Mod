@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeChange.ItemOverhaul;
-using Roguelike.Common.RoguelikeChange.Mechanic;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using System;
@@ -9,6 +8,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Common.Utils {
 	public enum WeaponTag : byte {
