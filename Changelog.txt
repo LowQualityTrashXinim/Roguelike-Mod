@@ -100,3 +100,7 @@ Version 0.0.1:
 99/ Clean up the messes created by Merging Roguelike overhaul with roguelike mode.
 100/ Added recharged animation for axe.
 101/ If player releases LMB during axe recharge animation then the animation will be cancelled and player can attack right away.
+102/ Added snow forest into world generation.
+103/ Optimized Create_Biome codes for zone to be ignored using smarter chunk generation.
+104/ Made small progress on Trial Archer.
+105/ Added Trial tile for trial editor.

@@ -210,8 +210,8 @@ namespace Roguelike.Common.ChallengeMode {
 			}
 			if (!NPC.downedSlimeKing && !NPC.AnyNPCs(NPCID.KingSlime)) {
 				if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<KSsealed>())) {
-					Rectangle rect = Room[Bid.Slime][0];
-					ModObject.NewModObject(rect.Center() * 16f, Vector2.Zero, ModObject.GetModObjectType<KSsealed>());
+					//Rectangle rect = Room[Bid.Slime][0];
+					//ModObject.NewModObject(rect.Center() * 16f, Vector2.Zero, ModObject.GetModObjectType<KSsealed>());
 				}
 			}
 		}
