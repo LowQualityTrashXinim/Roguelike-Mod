@@ -35,7 +35,7 @@ namespace Roguelike.Common.Systems.ArtifactSystem
 			previousArtifactType = currentArtifactType;
 			Artifact artifact = Artifact.GetArtifact(currentArtifactType);
 
-			string text = artifact.Description;
+			string text = artifact.ModifyDesc(Player);
 			if (UniversalSystem.Check_TotalRNG()) {
 				text = "It doesn't matter what you choose, it will be random anyway";
 			}

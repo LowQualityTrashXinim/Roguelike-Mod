@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment.ShortSwordEnchantments;
 public class ModPlayer_ShortSwordEnchantment : ModPlayer {
@@ -96,7 +95,6 @@ public class CopperShortSword : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.35f);
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, Base: 5);
-		player.GetModPlayer<GlobalItemPlayer>().ShortSword_ThrownCD *= 0;
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;

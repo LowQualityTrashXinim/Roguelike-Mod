@@ -10,7 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 
 public class Roguelike_ChlorophyteClaymore : GlobalItem {
 	public override void SetDefaults(Item entity) {
@@ -43,7 +43,7 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 			}
 		}
 		if (counter >= 0) {
-			Projectile proj = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<FlyingSlashProjectile>(), damage * 3, knockback, player.whoAmI);
+			var proj = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<FlyingSlashProjectile>(), damage * 3, knockback, player.whoAmI);
 			if (proj.ModProjectile is FlyingSlashProjectile slash) {
 				slash.projectileColor = new(90, 255, 90, 0);
 			}
@@ -99,7 +99,7 @@ public class Roguelike_ChlorophyteClaymore_GlobalProjectile : GlobalProjectile {
 	}
 	public override void PostAI(Projectile projectile) {
 		if (projectile.type == ProjectileID.ChlorophyteOrb) {
-			Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.ChlorophyteWeapon);
+			var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.ChlorophyteWeapon);
 			dust.noGravity = true;
 			dust.velocity = Vector2.Zero;
 		}
@@ -172,16 +172,16 @@ public class ChlorophyteOrb_SimplePiercingTrailProjectile : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(ProjectileID.PiercingStarlight);
-		Texture2D texture = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
-		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawPos = Projectile.position - Main.screenPosition + origin * .5f + new Vector2(0f, Projectile.gfxOffY);
+		var texture = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		var origin = texture.Size() * .5f;
+		var drawPos = Projectile.position - Main.screenPosition + origin * .5f + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(ProjectileColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		DrawTrail2(texture, lightColor, origin);
 		return false;
 	}
 	public void DrawTrail2(Texture2D texture, Color color, Vector2 origin) {
 		for (int k = 0; k < Projectile.oldPos.Length; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin * .5f + new Vector2(0f, Projectile.gfxOffY);
+			var drawPos = Projectile.oldPos[k] - Main.screenPosition + origin * .5f + new Vector2(0f, Projectile.gfxOffY);
 			color = color * .45f * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(ProjectileColor), Projectile.oldRot[k], origin, (Projectile.scale - k * .05f) * .5f, SpriteEffects.None, 0);
 		}

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Humanizer;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
@@ -9,14 +10,28 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Roguelike.Common.Systems.ArtifactSystem
-{
+namespace Roguelike.Common.Systems.ArtifactSystem {
 	public abstract class Artifact : ModType {
+		public virtual IEnumerable<Item> AddStartingItems(Player player) => null;
 		private static List<Artifact> AllArtifacts { get; set; }
 		public int Type { get; private set; }
 		public virtual string TexturePath => (GetType().Namespace + "." + Name).Replace('.', '/');
 		public Asset<Texture2D> Texture { get; private set; }
 		public string DisplayName => Language.GetTextValue($"Mods.Roguelike.Artifacts.{Name}.DisplayName");
+		public string ModifyDesc(Player player) {
+			string starterItem = "";
+			var starterItemlist = AddStartingItems(player);
+			if (starterItemlist == null) {
+				return Description;
+			}
+			else {
+				foreach (var item in starterItemlist) {
+					starterItem += $"+ {item.Name} [i:{item.type}]x{item.stack}\n";
+				}
+				string localization = Description;
+				return localization.FormatWith(starterItem.Substring(0, starterItem.Length - 1));
+			}
+		}
 		public string Description => Language.GetTextValue($"Mods.Roguelike.Artifacts.{Name}.Description");
 		public virtual Color DisplayNameColor => Color.White;
 		public virtual float Scale => 1f;

@@ -27,6 +27,7 @@ using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using Terraria.ModLoader.IO;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -182,11 +183,52 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 	}
+	public class WorldVaultSystem : ModSystem {
+		public static short Set_Variant = -1;
+		private static Dictionary<int, List<ModVariant>> variantlist = new();
+		public static short Register(ModVariant variant) {
+			ModTypeLookup<ModVariant>.Register(variant);
+			if (variantlist.ContainsKey(variant.ItemType)) {
+				variantlist[variant.ItemType].Add(variant);
+			}
+			else {
+				variantlist.Add(variant.ItemType, new() { variant });
+			}
+			return (short)(variantlist[variant.ItemType].Count - 1);
+		}
+		public static ModVariant GetVariant(int ItemType, short variant) {
+			if (variantlist.ContainsKey(ItemType)) {
+				foreach (var item in variantlist[ItemType]) {
+					if (item.Variant == variant) {
+						return item;
+					}
+				}
+				return null;
+			}
+			else {
+				return null;
+			}
+		}
+	}
+	public abstract class ModVariant : ModType {
+		public short Variant = 0;
+		public int ItemType = 0;
+		public static short GetVariantType<T>() where T : ModVariant => ModContent.GetInstance<T>().Variant;
+		protected sealed override void Register() {
+			SetStaticDefaults();
+			Variant = WorldVaultSystem.Register(this);
+		}
+		public virtual void SetDefault(Item item) { }
+	}
 	/// <summary>
 	/// This class hold mainly tooltip information<br/>
 	/// However this doesn't handle overhaul information
 	/// </summary>
 	public class GlobalItemHandle : GlobalItem {
+		/// <summary>
+		/// Use this to set variant before using Player.QuickSpawnItem or Item.NewItemDirect<br/>
+		/// This is a hacky way of setting up custom stats for item
+		/// </summary>
 		public const byte None = 0;
 		public override bool InstancePerEntity => true;
 		public bool DebugItem = false;
@@ -194,6 +236,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public bool AdvancedBuffItem = false;
 		public bool OverrideVanillaEffect = false;
 		public int Counter = 0;
+		public short VariantType = -1;
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.ModItem == null) {
 				return;
@@ -203,6 +246,14 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void SetDefaults(Item entity) {
+			if (WorldVaultSystem.Set_Variant != -1) {
+				VariantType = WorldVaultSystem.Set_Variant;
+				var variant = WorldVaultSystem.GetVariant(entity.type, VariantType);
+				if (variant != null) {
+					variant.SetDefault(entity);
+				}
+				WorldVaultSystem.Set_Variant = 0;
+			}
 		}
 		public float CriticalDamage;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -332,6 +383,12 @@ namespace Roguelike.Contents.Items.Weapon {
 				player.AddBuff(ModContent.BuffType<Drawback>(), ModUtils.ToMinute(6));
 			}
 			return base.UseItem(item, player);
+		}
+		public override void SaveData(Item item, TagCompound tag) {
+			tag["VariantType"] = VariantType;
+		}
+		public override void LoadData(Item item, TagCompound tag) {
+			VariantType = tag.Get<short>("VariantType");
 		}
 	}
 	public abstract class SynergyModItem : ModItem {

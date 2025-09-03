@@ -1,4 +1,4 @@
-﻿ using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 
 public class Roguelike_CobaltSword : GlobalItem {
 	public override void SetDefaults(Item entity) {
@@ -38,8 +38,8 @@ public class Roguelike_CobaltSword : GlobalItem {
 				counter -= 150;
 			}
 			for (int i = 0; i < 16; i++) {
-				Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt();
-				Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * (i * .25f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f + counter), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 3 + i * .5f);
+				var velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt();
+				var Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * (i * .25f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f + counter), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 3 + i * .5f);
 				if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 					modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 					Swordprojectile.scale += .2f;
@@ -48,8 +48,8 @@ public class Roguelike_CobaltSword : GlobalItem {
 			return false;
 		}
 		for (int i = 0; i < 2; i++) {
-			Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(55);
-			Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * Main.rand.NextFloat(.4f, 1.2f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
+			var velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(55);
+			var Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * Main.rand.NextFloat(.4f, 1.2f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
 			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 			}
@@ -64,7 +64,7 @@ public class Roguelike_CobaltSword_ModPlayer : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
-		Item item = Player.HeldItem;
+		var item = Player.HeldItem;
 		CobaltSword_Counter++;
 		if (CobaltSword_Counter > 300) {
 			CobaltSword_Counter = 300;

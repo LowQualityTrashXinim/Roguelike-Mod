@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_TinBow : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (entity.type != ItemID.TinBow) {
@@ -36,7 +36,7 @@ public class Roguelike_TinBow : GlobalItem {
 				randomizeYAxis = true;
 			}
 			for (int i = 0; i < amount; i++) {
-				Vector2 pos = position.Add(Main.rand.Next(-300, 300), 1000);
+				var pos = position.Add(Main.rand.Next(-300, 300), 1000);
 				if (randomizeYAxis) {
 					pos.Y -= Main.rand.Next(0, 1000);
 				}
@@ -48,7 +48,7 @@ public class Roguelike_TinBow : GlobalItem {
 				}
 			}
 		}
-		Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+		var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 		Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15) * 5, ModContent.ProjectileType<TinOreMeteor>(), damage, knockback, player.whoAmI);
 		proj.extraUpdates = 1;
 		return false;
@@ -117,7 +117,7 @@ public class TinOreMeteor : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 25; i++) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Tin);
+			var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Tin);
 			dust.noGravity = true;
 			dust.velocity = Main.rand.NextVector2Circular(5, 5);
 		}

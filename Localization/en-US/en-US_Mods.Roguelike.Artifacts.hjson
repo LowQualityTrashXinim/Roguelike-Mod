@@ -139,6 +139,8 @@ VampirismCrystalArtifact: {
 	Description:
 		'''
 		"Unpure, relentess crystal."
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] :
 			+ Attacks heal the player. ( 0.25s cool down betwen hit )
 			+ You can survive 1 fatal attack (5 minute cooldown).
@@ -165,8 +167,8 @@ ManaOverloaderArtifact: {
 }
 
 NormalizeArtifact: {
-	DisplayName: None
-	Description: Grants no effect.
+	DisplayName: A good luck charm
+	Description: Grants no effect whatsoever.
 }
 
 AlchemistKnowledgeArtifact: {

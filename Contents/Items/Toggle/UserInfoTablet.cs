@@ -19,14 +19,13 @@ using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.Arguments;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Toggle
-{
+namespace Roguelike.Contents.Items.Toggle {
 	class UserInfoTablet : ModItem {
 		public override void SetDefaults() {
 			Item.width = 32;
@@ -299,7 +298,7 @@ namespace Roguelike.Contents.Items.Toggle
 				string line = "";
 				var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
 				line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
-				line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
+				line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).ModifyDesc(Main.CurrentPlayer)}";
 				artifactcustomtextpanel.SetText(line);
 			}
 			if (!sett) {
@@ -481,7 +480,7 @@ namespace Roguelike.Contents.Items.Toggle
 					}
 					var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
 					artifact_text.SetText(Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName);
-					line = $"{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
+					line = $"{Artifact.GetArtifact(artifactplayer.ActiveArtifact).ModifyDesc(player)}";
 					artifactcustomtextpanel.SetText(line);
 					break;
 				case 3:

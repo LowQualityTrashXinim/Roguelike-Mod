@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Common;
 internal class Roguelike_BoneSword : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.BoneSword) {
@@ -27,7 +27,7 @@ internal class Roguelike_BoneSword : GlobalItem {
 		if (item.type != ItemID.BoneSword) {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
-		Roguelike_BoneSword_ModPlayer modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
+		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
 		if (modplayer.Counter >= 60) {
 			for (int i = 0; i < 3; i++) {
 				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(3, 60, i), type, damage, knockback, player.whoAmI);
@@ -45,7 +45,7 @@ internal class Roguelike_BoneSword : GlobalItem {
 		if (item.type != ItemID.BoneSword) {
 			return;
 		}
-		Roguelike_BoneSword_ModPlayer modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
+		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
 		if (modplayer.PerfectStrike || modplayer.Counter >= 180) {
 			damage *= 1.5f;
 		}
@@ -55,7 +55,7 @@ internal class Roguelike_BoneSword : GlobalItem {
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (item.type == ItemID.BoneSword) {
-			Projectile projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), target.Center.Add(0, target.height + 5), Vector2.UnitY * (-5 + Main.rand.NextFloat(0, 2)), ProjectileID.Bone, player.GetWeaponDamage(item), 1f, player.whoAmI);
+			var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), target.Center.Add(0, target.height + 5), Vector2.UnitY * (-5 + Main.rand.NextFloat(0, 2)), ProjectileID.Bone, player.GetWeaponDamage(item), 1f, player.whoAmI);
 			projectile.friendly = true;
 			projectile.hostile = false;
 			projectile.penetrate = 3;
@@ -86,16 +86,16 @@ public class Roguelike_BoneSword_ModPlayer : ModPlayer {
 	}
 	private void PerfectStrikeEffect() {
 		SoundEngine.PlaySound(SoundID.Item71 with { Pitch = -.5f }, Player.Center);
-		Vector2 abovePlayer = Player.Center.Add(0, -60);
+		var abovePlayer = Player.Center.Add(0, -60);
 		for (int i = 0; i < 35; i++) {
-			Dust dust = Dust.NewDustDirect(abovePlayer, 0, 0, DustID.Bone, Scale: Main.rand.NextFloat(.6f, .9f));
+			var dust = Dust.NewDustDirect(abovePlayer, 0, 0, DustID.Bone, Scale: Main.rand.NextFloat(.6f, .9f));
 			dust.noGravity = true;
 			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
 			dust.Dust_GetDust().FollowEntity = true;
 			dust.Dust_BelongTo(Player);
 
 
-			Dust dust2 = Dust.NewDustDirect(abovePlayer, 0, 0, DustID.GemSapphire, Scale: Main.rand.NextFloat(.8f, .9f));
+			var dust2 = Dust.NewDustDirect(abovePlayer, 0, 0, DustID.GemSapphire, Scale: Main.rand.NextFloat(.8f, .9f));
 			dust2.noGravity = true;
 			dust2.velocity = Main.rand.NextVector2CircularEdge(4.5f, 4.5f);
 			dust2.Dust_GetDust().FollowEntity = true;

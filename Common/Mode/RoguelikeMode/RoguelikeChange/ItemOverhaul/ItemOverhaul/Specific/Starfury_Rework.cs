@@ -10,7 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_Starfury : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.Starfury) {
@@ -59,30 +59,30 @@ public class Roguelike_Starfury_ModPlayer : ModPlayer {
 	private void SpawnStarEffect() {
 		//Taken from vanilla code :>>
 		SoundEngine.PlaySound(SoundID.Item4);
-		Vector2 center3 = Player.Center - Vector2.UnitY * 150;
-		Color celeb2Color3 = new Color(255, 255, 0, 0);
+		var center3 = Player.Center - Vector2.UnitY * 150;
+		var celeb2Color3 = new Color(255, 255, 0, 0);
 		float num9 = .1f;
 		float num10 = .1f;
 
 		float num11 = Main.rand.NextFloatDirection();
 		for (float num12 = 0f; num12 < 5f; num12 += 1f) {
-			Vector2 spinningpoint = new Vector2(0f, -100f);
-			Vector2 vector4 = center3 + spinningpoint.RotatedBy(num11 + num12 * ((float)Math.PI * 2f / 5f));
-			Vector2 vector5 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 1f) * ((float)Math.PI * 2f / 5f));
-			Vector2 vector6 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 0.5f) * ((float)Math.PI * 2f / 5f)) * 0.4f;
+			var spinningpoint = new Vector2(0f, -100f);
+			var vector4 = center3 + spinningpoint.RotatedBy(num11 + num12 * ((float)Math.PI * 2f / 5f));
+			var vector5 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 1f) * ((float)Math.PI * 2f / 5f));
+			var vector6 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 0.5f) * ((float)Math.PI * 2f / 5f)) * 0.4f;
 			for (int num13 = 0; num13 < 2; num13++) {
-				Vector2 value = vector4;
-				Vector2 value2 = vector6;
+				var value = vector4;
+				var value2 = vector6;
 				if (num13 == 1) {
 					value = vector6;
 					value2 = vector5;
 				}
 
 				for (float num14 = 0f; num14 < 1f; num14 += num10) {
-					Vector2 vector7 = Vector2.Lerp(value, value2, num14);
-					Vector2 vector8 = Vector2.Lerp(vector7, center3, 0.9f);
-					Vector2 vector9 = (vector7 - vector8).SafeNormalize(Vector2.Zero);
-					Dust dust5 = Dust.NewDustPerfect(vector8, 267, Vector2.Zero, 0, celeb2Color3, 0.5f);
+					var vector7 = Vector2.Lerp(value, value2, num14);
+					var vector8 = Vector2.Lerp(vector7, center3, 0.9f);
+					var vector9 = (vector7 - vector8).SafeNormalize(Vector2.Zero);
+					var dust5 = Dust.NewDustPerfect(vector8, 267, Vector2.Zero, 0, celeb2Color3, 0.5f);
 					dust5.fadeIn = 1.2f;
 					dust5.noGravity = true;
 					dust5.velocity = vector9 * Vector2.Distance(vector7, vector8) * num9;
@@ -107,13 +107,13 @@ public class Roguelike_Starfury_Projectile : ModProjectile {
 			toMouse = Main.MouseWorld;
 		}
 		if (Main.rand.NextBool(5)) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(22, 22), 0, 0, DustID.Enchanted_Pink);
+			var dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(22, 22), 0, 0, DustID.Enchanted_Pink);
 			dust.noGravity = true;
 			dust.scale = Main.rand.NextFloat(.8f, 1.2f);
 			dust.velocity = Vector2.Zero;
 		}
 		if (Main.rand.NextBool(15)) {
-			Gore gore = Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(22, 22), Vector2.Zero, 16 + Main.rand.NextBool().ToInt());
+			var gore = Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(22, 22), Vector2.Zero, 16 + Main.rand.NextBool().ToInt());
 			gore.rotation += MathHelper.ToRadians(Main.rand.Next(1, 45));
 			gore.scale += Main.rand.NextFloat() * .5f;
 		}
@@ -129,28 +129,28 @@ public class Roguelike_Starfury_Projectile : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 18; i++) {
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(18, 360, i) * 15, ProjectileID.Starfury, Math.Max(Projectile.damage / 4, 1), 3f, Projectile.owner);
+			var projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(18, 360, i) * 15, ProjectileID.Starfury, Math.Max(Projectile.damage / 4, 1), 3f, Projectile.owner);
 			projectile.timeLeft = 300;
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+		Projectile.ProjectileDefaultDrawInfo(out var texture, out var origin);
 		origin = new Vector2(11, 11);
 
-		Texture2D value28 = TextureAssets.Extra[91].Value;
-		Rectangle value29 = value28.Frame();
-		Vector2 vector43 = Projectile.Center + Projectile.velocity;
-		Vector2 spinningpoint2 = new Vector2(0f, -15f);
+		var value28 = TextureAssets.Extra[91].Value;
+		var value29 = value28.Frame();
+		var vector43 = Projectile.Center + Projectile.velocity;
+		var spinningpoint2 = new Vector2(0f, -15f);
 		float num195 = Projectile.timeLeft;
 		float num196 = 1.5f;
 		float num197 = 1.1f;
 		float num198 = 1.3f;
-		Color color = Color.Purple;
+		var color = Color.Purple;
 		color.A = 0;
 		Main.EntitySpriteDraw(value28, vector43 - Main.screenPosition + spinningpoint2.RotatedBy(MathHelper.ToRadians(num195)), value29, color, Projectile.velocity.ToRotation() + (float)Math.PI / 2f, origin, num196, SpriteEffects.None);
 		Main.EntitySpriteDraw(value28, vector43 - Main.screenPosition + spinningpoint2.RotatedBy(MathHelper.ToRadians(num195 + 90)), value29, color, Projectile.velocity.ToRotation() + (float)Math.PI / 2f, origin, num197, SpriteEffects.None);
 
-		Vector2 drawpos = Projectile.position - Main.screenPosition + origin;
+		var drawpos = Projectile.position - Main.screenPosition + origin;
 		Main.EntitySpriteDraw(texture, drawpos, texture.Frame(1, 8, frameY: Projectile.frame), lightColor, Projectile.rotation, origin, 2f, SpriteEffects.None);
 
 		Main.EntitySpriteDraw(value28, vector43 - Main.screenPosition + spinningpoint2.RotatedBy(MathHelper.ToRadians(num195 + 180)), value29, color, Projectile.velocity.ToRotation() + (float)Math.PI / 2f, origin, num198, SpriteEffects.None);

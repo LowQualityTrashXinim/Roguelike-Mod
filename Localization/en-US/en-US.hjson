@@ -380,6 +380,8 @@ Mods: {
 			PurpleClubberfishPRojectile.DisplayName: Purple Clubberfish P Rojectile
 			TinBolt.DisplayName: Tin Bolt
 			TinOreMeteor.DisplayName: Tin Ore Meteor
+			Special_ThrowShortSwordProjectile.DisplayName: Special_ Throw Short Sword Projectile
+			RoguelikeOverhaul_ShortSwordProjectile.DisplayName: Roguelike Overhaul_ Short Sword Projectile
 		}
 
 		NPCs: {
@@ -2261,7 +2263,7 @@ Mods: {
 					'''
 					"A sniper rifle of a forgotten alternative timeline in a broken alternative universe"
 					Wait for 2s to charge your next shot
-					Charge shot increases damage by 2.0x, have 50% of instantly killing enemy
+					Charge shot increases damage by 2.0x, have 0.1% to instant kill enemies
 					Charge shot explode enemy on hit inflicting Completely Shatter debuff
 					'''
 			}
@@ -3057,6 +3059,11 @@ Mods: {
 			ProtectiveOnslaught_Buff: {
 				DisplayName: Protective Onslaught_ Buff
 				Description: Mods.Roguelike.Buffs.ProtectiveOnslaught_Buff.Description
+			}
+
+			Special_Vulnerable: {
+				DisplayName: Special_ Vulnerable
+				Description: Mods.Roguelike.Buffs.Special_Vulnerable.Description
 			}
 		}
 

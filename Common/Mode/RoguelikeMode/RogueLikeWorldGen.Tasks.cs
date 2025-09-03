@@ -839,7 +839,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_PostWorld() {
-		Rectangle goldRoomSize = new(0, 0, 150, 150);
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				if (CanGenerateGoldRoom(i, j)) {

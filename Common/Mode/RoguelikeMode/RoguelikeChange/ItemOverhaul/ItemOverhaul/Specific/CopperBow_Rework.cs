@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_CopperBow : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.CopperBow) {
@@ -27,14 +27,14 @@ public class Roguelike_CopperBow : GlobalItem {
 				amount += 5;
 			}
 			for (int i = 0; i < amount; i++) {
-				Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.7f, 1f), ProjectileID.ThunderSpearShot, (int)(damage * 1.25f), knockback, player.whoAmI);
+				var projectile = Projectile.NewProjectileDirect(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.7f, 1f), ProjectileID.ThunderSpearShot, (int)(damage * 1.25f), knockback, player.whoAmI);
 				projectile.DamageType = DamageClass.Ranged;
 				projectile.extraUpdates = 2;
 				projectile.alpha -= 120;
 			}
 		}
 		if (item.type == ItemID.CopperBow) {
-			Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, ProjectileID.ThunderSpearShot, (int)(damage * 1.25f), knockback, player.whoAmI);
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, ProjectileID.ThunderSpearShot, (int)(damage * 1.25f), knockback, player.whoAmI);
 			projectile.DamageType = DamageClass.Ranged;
 			projectile.extraUpdates = 2;
 			projectile.alpha -= 120;

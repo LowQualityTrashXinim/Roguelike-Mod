@@ -76,18 +76,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.shootSpeed += 3;
 					item.crit += 6;
 					break;
-				case ItemID.CopperShortsword:
-				case ItemID.TinShortsword:
-				case ItemID.IronShortsword:
-				case ItemID.LeadShortsword:
-				case ItemID.SilverShortsword:
-				case ItemID.TungstenShortsword:
-				case ItemID.GoldShortsword:
-				case ItemID.PlatinumShortsword:
-					item.crit += 21;
-					item.useTime = item.useAnimation = 9;
-					item.Set_ItemCriticalDamage(3f);
-					break;
 				case ItemID.HeatRay:
 					item.useTime = item.useAnimation = 4;
 					item.mana = 4;
@@ -172,20 +160,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					break;
 			}
 		}
-		public override bool AltFunctionUse(Item item, Player player) {
-			switch (item.type) {
-				case ItemID.CopperShortsword:
-				case ItemID.GoldShortsword:
-				case ItemID.IronShortsword:
-				case ItemID.LeadShortsword:
-				case ItemID.PlatinumShortsword:
-				case ItemID.SilverShortsword:
-				case ItemID.TinShortsword:
-				case ItemID.TungstenShortsword:
-					return true;
-			}
-			return base.AltFunctionUse(item, player);
-		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			if (StarWarSword(item.type)) {
@@ -202,20 +176,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				return false;
 			}
 			switch (item.type) {
-				case ItemID.CopperShortsword:
-				case ItemID.GoldShortsword:
-				case ItemID.IronShortsword:
-				case ItemID.LeadShortsword:
-				case ItemID.PlatinumShortsword:
-				case ItemID.SilverShortsword:
-				case ItemID.TinShortsword:
-				case ItemID.TungstenShortsword:
-					if (player.altFunctionUse == 2 && !modplayer.ShortSword_OnCoolDown) {
-						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), modplayer.ShortSword_ThrownCD);
-						return false;
-					}
-					return true;
 				case ItemID.GoldBow:
 				case ItemID.PlatinumBow:
 					var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
@@ -252,18 +212,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			//We are using name format RoguelikeOverhaul_+ item name
 			TooltipLine line;
 			switch (item.type) {
-				case ItemID.CopperShortsword:
-				case ItemID.GoldShortsword:
-				case ItemID.IronShortsword:
-				case ItemID.LeadShortsword:
-				case ItemID.PlatinumShortsword:
-				case ItemID.SilverShortsword:
-				case ItemID.TinShortsword:
-				case ItemID.TungstenShortsword:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 1.5s cool down )");
-					line.OverrideColor = Color.Yellow;
-					tooltips.Add(line);
-					break;
 				case ItemID.WoodenBoomerang:
 				case ItemID.EnchantedBoomerang:
 				case ItemID.IceBoomerang:
@@ -317,13 +265,8 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		/// </summary>
 		public bool WeaponKeyHeld = false;
 		public int ReuseDelay = 0;
-
-		public int ShortSword_ThrownCD = 90;
-		public bool ShortSword_OnCoolDown = false;
 		public int FrostBandBurst = 0;
 		public override void ResetEffects() {
-			ShortSword_ThrownCD = 90;
-			ShortSword_OnCoolDown = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 			var item = Player.HeldItem;
 			if (WeaponKeyPressed) {

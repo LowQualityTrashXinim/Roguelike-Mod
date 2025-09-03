@@ -26,6 +26,7 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Skill;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Systems.ArtifactSystem;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -149,6 +150,13 @@ namespace Roguelike.Common.Global {
 		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
 		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
+			if (arti != null) {
+				var moreStarter = arti.AddStartingItems(Player);
+				foreach (var item in moreStarter) {
+					yield return item;
+				}
+			}
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());

@@ -55,3 +55,9 @@ BoneSword:
 	Wait additional 2s to instead deal 1.5x damage
 	Striking at perfect moment will make your attacks as if you waited
 	'''
+ShortSword:
+	'''
+	Alt-click to throw out a shortsword (CD: 2s)
+	Thrown out shortsword will always deal critical strike and
+	Additionally inflict bleeding and make enemy more vulnerable
+	'''

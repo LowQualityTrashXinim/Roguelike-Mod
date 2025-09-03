@@ -104,3 +104,8 @@ Version 0.0.1:
 103/ Optimized Create_Biome codes for zone to be ignored using smarter chunk generation.
 104/ Made small progress on Trial Archer.
 105/ Added Trial tile for trial editor.
+106/ Nerfed Sniper Rifle, no longer have 50% chance to 1 shot anything, now instead a 0.1% instead, hf.
+107/ Significantly buff general shortsword.
+108/ Implemented item variant system.
+109/ Modify Artifact system to allow for starter item to be added.
+110/ Added new Vampire Knives variant.

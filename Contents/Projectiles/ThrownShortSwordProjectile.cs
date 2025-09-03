@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Projectiles;
 public class ThrowShortSwordProjectile : ModProjectile {
@@ -30,14 +29,5 @@ public class ThrowShortSwordProjectile : ModProjectile {
 		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
-	}
-}
-class ThrowShortSwordCoolDown : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		Main.debuff[Type] = true;
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<GlobalItemPlayer>().ShortSword_OnCoolDown = true;
 	}
 }

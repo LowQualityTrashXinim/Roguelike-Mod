@@ -217,7 +217,6 @@ NightsEdge.Description:
 CopperShortSword.Description:
 	'''
 	Increases critical strike damage by 35% and critical strike chance by 5
-	Remove cool down effect of shortsword alt attack
 	Critical striking enemy have 50% chance to throw a shortsword
 	( Have 1s cool down )
 	'''

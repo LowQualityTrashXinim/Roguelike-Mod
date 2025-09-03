@@ -162,7 +162,7 @@ public class LegacySniperRiflePlayer : ModPlayer {
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (Counter >= 120 + Player.itemAnimationMax && proj.Check_ItemTypeSource(ModContent.ItemType<SniperRifle>())) {
-			if (Main.rand.NextBool()) {
+			if (Main.rand.NextFloat() <= .001f) {
 				target.StrikeInstantKill();
 			}
 			if (target.HasBuff<CompletelyShatter>() && target.SuperArmor) {

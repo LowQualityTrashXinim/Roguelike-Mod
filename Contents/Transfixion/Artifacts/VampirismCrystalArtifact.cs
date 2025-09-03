@@ -8,17 +8,24 @@ using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using System.Collections.Generic;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
+using Roguelike.Contents.Items.Consumable.Potion;
 
-namespace Roguelike.Contents.Transfixion.Artifacts
-{
+namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {
 		public override int Frames => 7;
 		public override Color DisplayNameColor => Color.MediumVioletRed;
+		public override IEnumerable<Item> AddStartingItems(Player player) {
+			WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<VampireKnive_Var1>();
+			Item item = new(ItemID.VampireKnives);
+			yield return item;
+			yield return new(ModContent.ItemType<LifeStealPotion>(), 5);
+		}
 	}
-
 	public class VampirePlayer : ModPlayer {
 		bool Vampire = false;
 		int cooldown = 0;
