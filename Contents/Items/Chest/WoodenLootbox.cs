@@ -32,6 +32,9 @@ namespace Roguelike.Contents.Items.Chest {
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 2 };
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
+			if (CanActivateSpoil) {
+				return;
+			}
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);

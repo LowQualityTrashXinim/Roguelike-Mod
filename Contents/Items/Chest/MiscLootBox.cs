@@ -49,5 +49,8 @@ internal class SpecialSkillLootBox : ModItem {
 	public override void RightClick(Player player) {
 		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
 		skillplayer.RequestAddSkill_Inventory(Main.rand.Next(SkillModSystem.dict_skill[SkillTypeID.Skill_Projectile].Select(i => i.Type).ToList()));
+		if (player.HasItem(ModContent.ItemType<SkillOrb>())) {
+			ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
+		}
 	}
 }

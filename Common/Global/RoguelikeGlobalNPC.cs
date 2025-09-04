@@ -316,7 +316,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
 		if (projectile.type == ProjectileID.HeatRay) {
-			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 100);
+			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 200);
 			HeatRay_Decay = 30;
 		}
 		else if (projectile.type == ProjectileID.GolemFist) {

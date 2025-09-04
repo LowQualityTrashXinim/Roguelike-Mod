@@ -107,5 +107,14 @@ Version 0.0.1:
 106/ Nerfed Sniper Rifle, no longer have 50% chance to 1 shot anything, now instead a 0.1% instead, hf.
 107/ Significantly buff general shortsword.
 108/ Implemented item variant system.
-109/ Modify Artifact system to allow for starter item to be added.
+109/ Modified Artifact system to allow for starter item to be added.
 110/ Added new Vampire Knives variant.
+111/ Modified Gem staff to not be affected by attack speed stats.
+112/ Gem staff now have alt-click attack.
+113/ Minor buff to Diamond Staff and Ruby Staff.
+114/ Modified player starter loot to be less.
+115/ Made it so that upon opening a very special skill lootbox, skill UI are automatically open if player has the skill orb.
+116/ Added starter item into Fury Emblem.
+117/ Buff Heat Ray by increasing the cap from 100 to 200.
+118/ Added starter item into Chalice of Royal Gel.
+119/ Added new variant for slime staff and volcano sword.

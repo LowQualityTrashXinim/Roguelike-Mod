@@ -1,12 +1,23 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
+using Roguelike.Contents.Items.NoneSynergy.GuideToMasterNinja;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class SlimyChaliceArtifact : Artifact {
 		public override Color DisplayNameColor => Color.Blue;
+		public override IEnumerable<Item> AddStartingItems(Player player) {
+			WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<SlimeStaff_Var1>();
+			Item item = new Item(ItemID.SlimeStaff);
+			yield return item;
+			yield return new Item(ModContent.ItemType<GuideToMasterNinja>());
+		}
 	}
 	public class SlimyChalicePlayer : ModPlayer {
 		public bool Bouncy = false;
@@ -25,7 +36,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			}
 		}
 		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-			if(Bouncy) {
+			if (Bouncy) {
 				modifiers.Knockback += 1;
 				modifiers.KnockbackImmunityEffectiveness *= .5f;
 			}

@@ -5,13 +5,11 @@ using Terraria.ID;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Common;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Consumable.Spawner;
@@ -153,8 +151,10 @@ namespace Roguelike.Common.Global {
 			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
 			if (arti != null) {
 				var moreStarter = arti.AddStartingItems(Player);
-				foreach (var item in moreStarter) {
-					yield return item;
+				if (moreStarter != null) {
+					foreach (var item in moreStarter) {
+						yield return item;
+					}
 				}
 			}
 			int LifeCrystal = 0;
@@ -167,9 +167,6 @@ namespace Roguelike.Common.Global {
 				ManaCrystal += 4;
 				if (UniversalSystem.CanEnchantmentBeAccess()) {
 					yield return new Item(ModContent.ItemType<DivineHammer>());
-				}
-				for (int i = 0; i < 3; i++) {
-					yield return new Item(ModContent.ItemType<Relic>());
 				}
 				if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 					if (Main.rand.NextBool(10)) {
@@ -233,10 +230,6 @@ namespace Roguelike.Common.Global {
 			}
 			yield return new Item(ItemID.LifeCrystal, LifeCrystal);
 			yield return new Item(ItemID.ManaCrystal, ManaCrystal);
-			if (Player.HasArtifact<SmallLootBoxArtifact>()) {
-				yield return new Item(ModContent.ItemType<WorldEssence>());
-				yield return new Item(ModContent.ItemType<SkillLootBox>());
-			}
 		}
 
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {

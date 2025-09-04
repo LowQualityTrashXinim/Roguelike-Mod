@@ -235,8 +235,8 @@ internal class RubyMagicalBolt : ModProjectile {
 		return false;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		Projectile.velocity = (Projectile.Center - target.Center).SafeNormalize(Vector2.Zero) * 2;
-		Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(30);
+		Projectile.velocity = (Projectile.Center - target.Center).SafeNormalize(Vector2.Zero) * 1.5f;
+		Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(12);
 	}
 	public override void AI() {
 		if (Main.rand.NextBool(5)) {
@@ -287,6 +287,7 @@ internal class DiamondMagicalBolt : ModProjectile {
 		if(Projectile.penetrate == 1) {
 			return;
 		}
+		Projectile.tileCollide = false;
 		Projectile.Center = target.Center + Main.rand.NextVector2CircularEdge(200 + target.width, 200 + target.height);
 		Projectile.velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 3;
 		for (int i = 0; i < 5; i++) {

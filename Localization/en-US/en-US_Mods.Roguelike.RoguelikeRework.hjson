@@ -61,3 +61,8 @@ ShortSword:
 	Thrown out shortsword will always deal critical strike and
 	Additionally inflict bleeding and make enemy more vulnerable
 	'''
+HeatRay:
+	'''
+	Each shot increases damage taken from this item by 2% ( up to 400% )
+	The damage increases have 0.5s decay time
+	'''

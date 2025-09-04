@@ -23,7 +23,7 @@ public class Roguelike_ShortSword : GlobalItem {
 			|| type == ItemID.PlatinumShortsword;
 	public override void SetDefaults(Item entity) {
 		if (ShortSwordCheck(entity.type)) {
-			entity.damage = 22;
+			entity.damage = 14;
 			entity.crit += 21;
 			entity.useTime = entity.useAnimation = 6;
 			entity.Set_ItemCriticalDamage(3f);

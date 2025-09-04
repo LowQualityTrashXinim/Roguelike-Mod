@@ -1,14 +1,23 @@
-﻿using Terraria;
-using Roguelike.Texture;
-using Terraria.ModLoader;
-using Roguelike.Common.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
+using Roguelike.Texture;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class FuryEmblemArtifact : Artifact {
 	public override Color DisplayNameColor => Color.LightGoldenrodYellow;
+	public override IEnumerable<Item> AddStartingItems(Player player) {
+		WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<Volcano_Var1>();
+		Item item = new(ItemID.FieryGreatsword);
+		yield return item;
+	}
 }
 class FuryEmblemPlayer : ModPlayer {
 	public bool Furious = false;

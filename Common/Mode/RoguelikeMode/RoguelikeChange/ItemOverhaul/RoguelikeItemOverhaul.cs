@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.Graphics;
@@ -75,11 +74,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.damage += 10;
 					item.shootSpeed += 3;
 					item.crit += 6;
-					break;
-				case ItemID.HeatRay:
-					item.useTime = item.useAnimation = 4;
-					item.mana = 4;
-					item.damage = 40;
 					break;
 				case ItemID.AbigailsFlower:
 					item.damage += 10;
@@ -242,9 +236,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_GolemFist",
 					"On every 3rd hit on the same enemy, deal extra 150% damage and do a small sun explosion"));
 			}
-		}
-		public override void HoldItem(Item item, Player player) {
-			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {

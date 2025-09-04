@@ -205,6 +205,8 @@ SmallLootBoxArtifact: {
 	Description:
 		'''
 		"Start the game with more item, but at a cost"
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] :
 			+ Give you 1 perk and 1 extra spell
 			+ Increases lootbox drop by 1
@@ -233,6 +235,8 @@ FuryEmblemArtifact: {
 	Description:
 		'''
 		"Your rage is what turns tides in battle"
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] :
 			+ Increase 5% damage, 5% critical strike chance
 			+ Upon getting hit, increases 25% damage and critical strike chance for short duration
@@ -253,6 +257,8 @@ SlimyChaliceArtifact: {
 	Description:
 		'''
 		"A small ancient power left from god, said to be cursed"
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] :
 			+ Increases damage reduction by 10%
 			+ Most projectiles can bounce off tile

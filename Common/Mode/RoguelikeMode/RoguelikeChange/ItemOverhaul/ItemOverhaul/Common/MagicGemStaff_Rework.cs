@@ -1,12 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Contents.Projectiles;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Common;
 public class Roguelike_MagicGemStaff : GlobalItem {
+	public override void SetStaticDefaults() {
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AmethystStaff] = 0;
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TopazStaff] = 0;
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SapphireStaff] = 0;
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EmeraldStaff] = 0;
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RubyStaff] = 0;
+		ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DiamondStaff] = 0;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.AmethystStaff] = true;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.TopazStaff] = true;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.SapphireStaff] = true;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.EmeraldStaff] = true;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.RubyStaff] = true;
+		ItemID.Sets.ItemsThatAllowRepeatedRightClick[ItemID.DiamondStaff] = true;
+	}
 	public override void SetDefaults(Item entity) {
 		switch (entity.type) {
 			case ItemID.AmethystStaff:
@@ -51,33 +65,113 @@ public class Roguelike_MagicGemStaff : GlobalItem {
 			case ItemID.DiamondStaff:
 				entity.damage += 5;
 				entity.shoot = ModContent.ProjectileType<DiamondMagicalBolt>();
-				entity.shootSpeed = 1;
+				entity.shootSpeed = 4;
 				entity.mana = 40;
 				break;
 		}
 	}
-	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+	public override bool AltFunctionUse(Item item, Player player) {
 		switch (item.type) {
 			case ItemID.AmethystStaff:
-				velocity = velocity.Vector2RotateByRandom(10);
-				position = position.PositionOFFSET(velocity, 50);
-				break;
 			case ItemID.TopazStaff:
-				velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
-				position = position.PositionOFFSET(velocity, 50);
-				break;
 			case ItemID.SapphireStaff:
-				velocity = velocity.Vector2RotateByRandom(6) * Main.rand.NextFloat(.75f, 1.25f);
-				position = position.PositionOFFSET(velocity, 50);
-				break;
 			case ItemID.EmeraldStaff:
-				velocity *= Main.rand.NextFloat(1, 1.5f);
-				position = position.PositionOFFSET(velocity, 50);
-				break;
-			case ItemID.DiamondStaff:
 			case ItemID.RubyStaff:
-				position = position.PositionOFFSET(velocity, 50);
+			case ItemID.DiamondStaff:
+				return true;
+		}
+		return base.AltFunctionUse(item, player);
+	}
+	public override float UseTimeMultiplier(Item item, Player player) {
+		if (player.altFunctionUse != 2) {
+			float speedMulti = 1;
+			switch (item.type) {
+				case ItemID.AmethystStaff:
+				case ItemID.TopazStaff:
+				case ItemID.SapphireStaff:
+				case ItemID.EmeraldStaff:
+				case ItemID.RubyStaff:
+				case ItemID.DiamondStaff:
+					speedMulti = item.useAnimation / (float)item.useTime;
+					item.reuseDelay = 0;
+					return speedMulti;
+			}
+		}
+		else {
+			switch (item.type) {
+				case ItemID.AmethystStaff:
+					item.reuseDelay = 30;
+					break;
+				case ItemID.TopazStaff:
+					item.reuseDelay = 33;
+					break;
+			}
+		}
+		return base.UseTimeMultiplier(item, player);
+	}
+	public override void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult) {
+		switch (item.type) {
+			case ItemID.AmethystStaff:
+			case ItemID.TopazStaff:
+			case ItemID.SapphireStaff:
+			case ItemID.EmeraldStaff:
+			case ItemID.RubyStaff:
+			case ItemID.DiamondStaff:
+				if (player.altFunctionUse != 2) {
+					mult = .2f;
+				}
 				break;
+		}
+	}
+	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		if (player.altFunctionUse != 2) {
+			switch (item.type) {
+				case ItemID.AmethystStaff:
+					type = ProjectileID.AmethystBolt;
+					break;
+				case ItemID.TopazStaff:
+					type = ProjectileID.TopazBolt;
+					break;
+				case ItemID.SapphireStaff:
+					type = ProjectileID.SapphireBolt;
+					break;
+				case ItemID.EmeraldStaff:
+					type = ProjectileID.EmeraldBolt;
+					break;
+				case ItemID.DiamondStaff:
+					type = ProjectileID.DiamondBolt;
+					break;
+				case ItemID.RubyStaff:
+					type = ProjectileID.RubyBolt;
+					break;
+			}
+			if (!velocity.IsLimitReached(7)) {
+				velocity = velocity.SafeNormalize(Vector2.Zero) * 7;
+			}
+		}
+		else {
+			switch (item.type) {
+				case ItemID.AmethystStaff:
+					velocity = velocity.Vector2RotateByRandom(10);
+					position = position.PositionOFFSET(velocity, 50);
+					break;
+				case ItemID.TopazStaff:
+					velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
+					position = position.PositionOFFSET(velocity, 50);
+					break;
+				case ItemID.SapphireStaff:
+					velocity = velocity.Vector2RotateByRandom(6) * Main.rand.NextFloat(.75f, 1.25f);
+					position = position.PositionOFFSET(velocity, 50);
+					break;
+				case ItemID.EmeraldStaff:
+					velocity *= Main.rand.NextFloat(1, 1.5f);
+					position = position.PositionOFFSET(velocity, 50);
+					break;
+				case ItemID.DiamondStaff:
+				case ItemID.RubyStaff:
+					position = position.PositionOFFSET(velocity, 50);
+					break;
+			}
 		}
 	}
 }
