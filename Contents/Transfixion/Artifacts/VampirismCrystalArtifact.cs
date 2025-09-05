@@ -39,12 +39,12 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			if (Vampire) {
 				health -= .55f;
 				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
-				if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade1>())) {
-					health += .4f;
-				}
-				if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade2>())) {
-					health -= .1f;
-				}
+				//if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade1>())) {
+				//	health += .4f;
+				//}
+				//if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade2>())) {
+				//	health -= .1f;
+				//}
 			}
 		}
 		public override void PostUpdate() {
@@ -77,10 +77,10 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy) {
 				cooldown = ModUtils.ToSecond(.25f);
 				int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
-				if (Player.HasPerk<VampirismCrystal_Upgrade2>()) {
-					cooldown /= 2;
-					HP += Main.rand.Next(1, 10);
-				}
+				//if (Player.HasPerk<VampirismCrystal_Upgrade2>()) {
+				//	cooldown /= 2;
+				//	HP += Main.rand.Next(1, 10);
+				//}
 				Player.Heal(HP);
 			}
 		}
@@ -101,24 +101,6 @@ VampirismCrystal_Upgrade2: {
 		'''
 }
 	 */
-	public class VampirismCrystal_Upgrade1 : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			list_category.Add(PerkCategory.ArtifactExclusive);
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-	}
-	public class VampirismCrystal_Upgrade2 : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			list_category.Add(PerkCategory.ArtifactExclusive);
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-	}
 	public class BloodVoodoo : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -160,12 +142,11 @@ VampirismCrystal_Upgrade2: {
 			StackLimit = 3;
 		}
 		public override void UpdateEquip(Player player) {
-			if (Main.IsItDay()) {
+			if (player.IsHealthAbovePercentage(.4f)) {
 				return;
 			}
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, 1.25f, Flat: 10 * StackAmount(player));
-			modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, Multiplicative: 1.3f + .1f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.4f + .1f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.55f + .1f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.55f + .1f * StackAmount(player));

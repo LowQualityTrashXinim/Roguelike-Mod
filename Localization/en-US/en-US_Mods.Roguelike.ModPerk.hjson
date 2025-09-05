@@ -577,9 +577,9 @@ NightTerror: {
 	DisplayName: Night Terror
 	Description:
 		'''
-		During night :
+		While your health is below 40%:
 		+ Increases your life regeneration by 25% and flat 10
-		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
+		+ Critical damage by 1.4x, movement and jump boost by 55%
 		( Note : effect above are stack differently )
 		'''
 }

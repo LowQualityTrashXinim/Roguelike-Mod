@@ -555,7 +555,7 @@ public class Structure_XinimVer {
 				}
 			}
 			int AttemptToFall = cachedcounter - 1;
-			if (AttemptToFall > -1) {
+			if (AttemptToFall > -1 && AttemptToFall < data.Length) {
 				int JumpCounter = cachedIndexOld - data[AttemptToFall].Count;
 				if (index >= JumpCounter && index <= cachedIndexOld) {
 					return data[AttemptToFall].tileData;
@@ -591,11 +591,11 @@ public struct GenPassData {
 		Count = count;
 	}
 	public void Default_Set(TileData data, ushort count) {
-        Count = count;
-        tileData = data;
+		Count = count;
+		tileData = data;
 	}
 	public void Clear() {
-        Count = 0;
-        tileData = new();
+		Count = 0;
+		tileData = new();
 	}
 }

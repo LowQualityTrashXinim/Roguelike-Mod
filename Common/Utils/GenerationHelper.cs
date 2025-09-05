@@ -1,18 +1,19 @@
-﻿using System;
-using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common;
+using Roguelike.Common.RoguelikeMode;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
-using Terraria.ID;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using Roguelike.Common.RoguelikeMode;
-using Roguelike.Common;
 
 namespace Roguelike.Common.Utils;
 
@@ -676,6 +677,153 @@ internal static partial class GenerationHelper {
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());
 			throw;
+		}
+	}
+	public static void Create_WorldBiome(int width, int height, BiomeDataBundle bundle) {
+		Rectangle rect = new(0, 0, width, height);
+		string TemplatePath = "Template/WG_Template";
+		string horizontal = TemplatePath + "Horizontal";
+		string vertical = TemplatePath + "Vertical";
+		string file = "";
+		Point counter = new Point();
+		int additionaloffset = 0;
+		bool IsUsingHorizontal;
+		int count = 0;
+		int offsetcount = 0;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+			Structure_XinimVer structure = null;
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				if (bundle.FormatFile == "") {
+					file = horizontal + WorldGen.genRand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + WorldGen.genRand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + WorldGen.genRand.Next(1, bundle.Range);
+					}
+				}
+				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+					}
+				}
+				if (structure == null) {
+					continue;
+				}
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+				if (bundle.FormatFile == "") {
+					file = vertical + WorldGen.genRand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + WorldGen.genRand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + WorldGen.genRand.Next(1, bundle.Range);
+					}
+				}
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+					}
+				}
+				if (structure == null) {
+					continue;
+				}
+			}
+			int length;
+			switch (Main.rand.Next(RogueLikeWorldGen.styles)) {
+				case GenerateStyle.None:
+					length = structure.Get_TotalLength();
+					for (int i = 0; i < length; i++) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						if (WorldGen.InWorld(holdX, holdY)) {
+							Structure_PlaceTile(holdX, holdY, ref data);
+						}
+						offsetY++;
+					}
+					break;
+				case GenerateStyle.FlipHorizon:
+					for (int i = 0; i < structure.Get_Data.Length; i++) {
+						GenPassData gdata = structure.Get_Data[i];
+						TileData data = gdata.tileData;
+						for (int l = gdata.Count; l > 0; l--) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
+							}
+							holdX = X + offsetX; holdY = Y + offsetY;
+							if (WorldGen.InWorld(holdX, holdY)) {
+								Structure_PlaceTile(holdX, holdY, ref data);
+							}
+							offsetY++;
+						}
+					}
+					break;
+				case GenerateStyle.FlipVertical:
+					for (int i = structure.Get_Data.Length - 1; i >= 0; i--) {
+						GenPassData gdata = structure.Get_Data[i];
+						TileData data = gdata.tileData;
+						for (int l = 0; l < gdata.Count; l++) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
+							}
+							holdX = X + offsetX; holdY = Y + offsetY;
+							if (WorldGen.InWorld(holdX, holdY)) {
+								Structure_PlaceTile(holdX, holdY, ref data);
+							}
+							offsetY++;
+						}
+					}
+					break;
+				case GenerateStyle.FlipBoth:
+					length = structure.Get_TotalLength();
+					for (int i = length; i >= 0; i--) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						if (WorldGen.InWorld(holdX, holdY)) {
+							Structure_PlaceTile(holdX, holdY, ref data);
+						}
+						offsetY++;
+					}
+					break;
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
 		}
 	}
 }

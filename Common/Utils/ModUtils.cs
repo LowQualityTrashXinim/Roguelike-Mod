@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using SubworldLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,28 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		/// <summary>
+		/// This will allow developer to write enter subworld code very easily<br/>
+		/// Consider setting Override param to true if you want to jump from 1 subworld to another
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="Override"></param>
+		/// <returns> Return true if enter successfully </returns>
+		public static bool EnterSubWorld<T>(bool Override = false) where T : Subworld {
+			if (Override) {
+				SubworldSystem.Enter<T>();
+				return true;
+			}
+			else {
+				if (SubworldSystem.Current == null) {
+					SubworldSystem.Enter<T>();
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
 		public static string LocalizationText(string text, string extra = null) {
 			if (string.IsNullOrEmpty(extra)) {
 				return Language.GetTextValue($"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}");

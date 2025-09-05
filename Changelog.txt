@@ -118,3 +118,7 @@ Version 0.0.1:
 117/ Buff Heat Ray by increasing the cap from 100 to 200.
 118/ Added starter item into Chalice of Royal Gel.
 119/ Added new variant for slime staff and volcano sword.
+120/ Changed activate condition of Night Terror perk.
+121/ Removed Jungle Temple and Dungeon biome from world generation.
+122/ Added 2 new subworlds.
+123/ Added utils for subworld.

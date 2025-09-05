@@ -306,7 +306,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// </summary>
 	private void InitializeBiomeWorld() {
 		//Initialize Space biome
-		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 14);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 15);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 2), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 3), 6);
@@ -318,11 +318,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(12, 2), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(13, 3), 3);
 
-		//Initialize jungle temple
-		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(7, 1), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 2), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 3), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 4), 4);
 
 		//Initialize Hallow biome
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 0), 9);
@@ -332,7 +327,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 4), 4);
 
 		//Initialize Jungle biome
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(10, 4), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 1), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 3), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 4), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 5), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 6), 9);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 7), 8);
@@ -403,19 +401,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(8, 14), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(18, 14), 3);
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(9, 15), 13);
-		BiomeMapping[MapIndex(9, 16)] = ToC(Bid.Caven);
-		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(13, 16), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 17), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 18), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 19), 2);
-		BiomeMapping[MapIndex(16, 20)] = ToC(Bid.Caven);
-
-		//Initialize dungeon biome
-		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(10, 16), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(9, 17), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(10, 18), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(11, 19), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(14, 20), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(9, 16), 11);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(9, 17), 10);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(10, 18), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(11, 19), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 20), 3);
 
 		//Initialize crimson biome
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 9), 2);
