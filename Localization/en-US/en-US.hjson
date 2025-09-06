@@ -2484,11 +2484,6 @@ Mods: {
 				Description: TODO: ADD DESCRIPTION
 			}
 
-			Samsara_of_Retribution: {
-				DisplayName: Samsara of Retribution
-				Description: TODO: ADD DESCRIPTION
-			}
-
 			SwiftSteal_Buff: {
 				DisplayName: Swift Steal
 				Description: Increases health and crit chance
@@ -2499,14 +2494,14 @@ Mods: {
 				Description: " "
 			}
 
+			Samsara_of_Retribution: {
+				DisplayName: Samsara of Retribution
+				Description: TODO
+			}
+
 			HyperRegen: {
 				DisplayName: Hyper Regen
 				Description: Rapidly regen your wound
-			}
-
-			Trinket5_Buff: {
-				DisplayName: Trinket5_ Buff
-				Description: " "
 			}
 
 			ManaReleaseBuff: {
@@ -2809,16 +2804,10 @@ Mods: {
 				DisplayName: Fury Strike
 				Description:
 					'''
-					Increases your critical damage by 50%
 					Increases your none-critical damage by 20%
 					Have {0}% to deal 2nd strike
 					Critical hit will ignore 10 defenses
 					'''
-			}
-
-			RageEmpowerment: {
-				DisplayName: Rage Empowerment
-				Description: Your next hit will always be critical !
 			}
 
 			DeepSeaPressure: {

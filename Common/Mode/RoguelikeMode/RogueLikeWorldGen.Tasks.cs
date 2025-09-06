@@ -48,6 +48,8 @@ public class Bid {
 	public const short Space = 19;
 	public const short Caven = 20;
 	//These are biome ignore char value, do not uses this in general biome mapping
+	public const short Structure_Dungeon = 996;
+	public const short Structure_JungleTemple = 997;
 	public const short ShrineOfOffering = 998;
 	public const short Advanced = 999;
 }
@@ -83,6 +85,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, List<Rectangle>> BiomeZone = new();
 	public static Dictionary<short, List<short>> BiomeGroup = new();
 	public static bool[] StaticNoise255x255 = new bool[65025];
+	ModObject DungeonPortal = null;
+	ModObject JungleTemplePortale = null;
+	ModObject SlimePortal = null;
 	public override void OnModLoad() {
 		Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
 		Color[] color = new Color[65025];
@@ -124,7 +129,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		dict_BiomeBundle = new() {
 			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone, weight2 = .67f} },
 			{ Bid.Jungle, new BiomeDataBundle(TileID.Mud, WallID.Jungle, "") with { tile2 = TileID.JungleGrass, weight2 = .34f} },
-			{ Bid.Tundra, new BiomeDataBundle(TileID.SnowBlock, WallID.SnowWallUnsafe, "")with { tile2 = TileID.IceBlock, weight2 = .44f} },
+			{ Bid.Tundra, new BiomeDataBundle(TileID.SnowBlock, WallID.SnowWallUnsafe, "") with { tile2 = TileID.IceBlock, weight2 = .44f} },
 			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
 			{ Bid.Corruption, new(TileID.Ebonstone, WallID.EbonstoneUnsafe, "") },
 			{ Bid.Crimson, new(TileID.Crimstone, WallID.CrimstoneUnsafe, "") },

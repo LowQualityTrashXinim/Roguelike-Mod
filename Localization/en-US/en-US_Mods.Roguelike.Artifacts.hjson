@@ -96,9 +96,10 @@ TokenOfWrathArtifact: {
 	Description:
 		'''
 		"Ruthless..."
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] : 
 			+ Increases your none-critical damage by 50%
-			+ Increases your critical strike chance by 50
 			+ Increases your damage by 10%
 		[c/ab3e43:Negative effect] : 
 			- Decreases your critical strike damage by 75%
@@ -110,6 +111,8 @@ TokenOfSlothArtifact: {
 	Description:
 		'''
 		"To them you are a laughing stock, but to you they are fragile"
+		[c/00ff47:Starter item] :
+			{0}
 		[c/ffff00:Positive effect] : 
 			+ Increases defenses by 10%, maximum health by 15% 
 			+ Standing still will gain sloth status, which grant player 1 hit resistance
@@ -303,7 +306,7 @@ AmplePerceptionArtifact: {
 		'''
 		[c/ffff00:Positive effect] :
 			+ Dealing critical strike to an enemy grant 1 Divine Eye ( CD: 2s ) ( capped at 4 )
-			+ Having [c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6%
+			+ Having Divine Eye increases your critical strike chance by 3% and damage by 6%
 			If no critical strike dealt after 7 seconds, 1 Divine Eye is lost
 		[c/ab3e43:Negative effect] :
 			- Decreases your none-critical strike damage by 25%

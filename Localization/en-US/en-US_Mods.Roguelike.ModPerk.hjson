@@ -442,8 +442,8 @@ OathOfSword: {
 	DisplayName: Oath Of Sword
 	Description:
 		'''
-		+ Increases your melee damage by 100% and melee damage are multiply by 1.1x
-		- Using any other weapon that is not melee will decreases their damage by 65%
+		+ Increases your melee damage by 100% and multiply it by 1.1x
+		- Decreases none melee weapon damage by 35%
 		'''
 }
 
@@ -461,7 +461,7 @@ BlessingOfMoon: {
 	DisplayName: Blessing Of Moon
 	Description:
 		'''
-		The lunar power, the moon power are now at your disposal 
+		"The lunar power are now at your disposal" 
 		+ Your attack deal extra 125% of weapon damage as True damage
 		+ Inflict Moonlight debuff onto enemy which drastically make enemies more vulnerable 
 		+ Your attack is always accompany by Lunar Flare
@@ -592,7 +592,6 @@ StrikeOfFury: {
 		Critical strike enemy will :
 		+ Have chance to gain FuryStrike buff for 3 to 7 second
 		+ Have 5% to deal 2nd strike with 45 damage
-		- Decreases your critical damage by 10% and critical strike chance by 20 ( unstackable )
 		'''
 }
 
@@ -600,11 +599,10 @@ RuthlessRage: {
 	DisplayName: Ruthless Rage
 	Description:
 		'''
-		+ Increases your critical damage by 55% and your none critical damage by 35%
-		Critical strike enemy will :
-		+ Have 5% chance to multiply final damage by 2.0x ( stackable ) and 1% chance to multiply by 4.0x ( unstackable )
-		+ Getting hit give you Rage Empowerment for 1 to 9s
-		- Decreases critical strike chance by 20 ( unstackable )
+		+ Increases your none critical damage by 35%
+		+ Critical strike enemy will :
+		Have 5% chance to multiply final damage by 2.0x ( stackable ) 
+		Have 1% chance to multiply by 4.0x ( unstackable )
 		'''
 }
 

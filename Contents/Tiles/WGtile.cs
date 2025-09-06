@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Roguelike.Texture;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using Roguelike.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace Roguelike.Contents.Tiles;
-public abstract class TrialTile : ModTile {
+public abstract class WGtile : ModTile{
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override string HighlightTexture => ModTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
@@ -24,10 +24,9 @@ public abstract class TrialTile : ModTile {
 	}
 	public virtual void On_RightClick(Player player, int i, int j) { }
 }
-
-public class TrialKnightTile : TrialTile{
+public class Portal_Dungeon : WGtile {
 
 }
-public class TrialArcherTile : TrialTile {
+public class Portal_JungleTemple : WGtile {
 
 }

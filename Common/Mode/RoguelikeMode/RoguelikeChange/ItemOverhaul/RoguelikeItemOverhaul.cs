@@ -227,11 +227,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			else if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose", "Grant immunity to OnFire debuff !"));
 			}
-			else if (item.type == ItemID.VikingHelmet) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
-					"Increases melee damage by 15%" +
-					"\nIncreases melee weapon size by 10%"));
-			}
 			else if (item.type == ItemID.GolemFist) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_GolemFist",
 					"On every 3rd hit on the same enemy, deal extra 150% damage and do a small sun explosion"));
@@ -239,7 +234,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
-		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
 		public int PhaseSaberBlade_Counter = 0;
@@ -258,7 +252,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public int ReuseDelay = 0;
 		public int FrostBandBurst = 0;
 		public override void ResetEffects() {
-			RoguelikeOverhaul_VikingHelmet = false;
 			var item = Player.HeldItem;
 			if (WeaponKeyPressed) {
 			}
@@ -279,13 +272,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 			return base.CanUseItem(item);
 		}
-		public override void UpdateDead() {
-			RoguelikeOverhaul_VikingHelmet = false;
-		}
-		public override float UseTimeMultiplier(Item item) {
-			float time = base.UseTimeMultiplier(item);
-			return base.UseTimeMultiplier(item);
-		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				ReuseDelay = ModUtils.CountDown(ReuseDelay);
@@ -293,16 +279,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 			else {
 				var item = Player.HeldItem;
-			}
-		}
-		public override void ModifyItemScale(Item item, ref float scale) {
-			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
-				scale += .1f;
-			}
-		}
-		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
-				damage += .15f;
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {

@@ -358,7 +358,8 @@ public class PlayerStatsHandle : ModPlayer {
 		var modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(Default_EnergyCap);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
-		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
+		Player.jumpSpeed = UpdateJumpBoost.ApplyTo(Player.jumpSpeed);
+		Player.extraFall += (int)Player.jumpSpeed;
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
 		Player.statDefense += (int)(UpdateDefenseBase.Base + UpdateDefenseBase.Flat);
 		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive - 1;

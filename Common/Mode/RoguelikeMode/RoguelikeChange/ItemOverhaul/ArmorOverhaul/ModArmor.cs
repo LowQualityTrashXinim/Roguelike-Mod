@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
+using System.Linq;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
+using Terraria.Localization;
+using Roguelike.Common.Utils;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 public class ArmorLoader : ModSystem {
@@ -169,6 +169,8 @@ public abstract class ModArmorPiece : ModType {
 	public const string Type_Head = "Head";
 	public const string Type_Body = "Body";
 	public const string Type_Leg = "Leg";
+	public const string NoArmorSet = "None";
+	public bool IsASingleEquipment = false;
 	public int PieceID = ItemID.None;
 
 	/// <summary>
@@ -194,7 +196,7 @@ public abstract class ModArmorPiece : ModType {
 	/// <param name="player">the player</param>
 	/// <param name="item">the equipped item</param>
 	public virtual void UpdateEquip(Player player, Item item) { }
-	public string ToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{ArmorName}.{TypeEquipment}");
+	public string ToolTip => ModUtils.LocalizationText("Armor", $"{ArmorName}.{TypeEquipment}");
 	protected override void Register() {
 		SetDefault();
 		ArmorLoader.Register(this);

@@ -48,18 +48,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public int VariableBulletAmount = 0;
 		public bool itemIsAShotgun = false;
 		public override void SetDefaults(Item entity) {
-			//Prototype_PrefixedWorldVault(entity);
-		}
-		private void Prototype_PrefixedWorldVault(Item item) {
-			if (item.type == ItemID.Minishark) {
-				item.damage += 2;
-				item.knockBack += 2;
-				item.useTime += 2;
-				item.useAnimation += 2;
-				item.Set_ItemCriticalDamage(.5f);
-				item.crit += 10;
-
-			}
 		}
 		/// <summary>
 		/// Use this if your weapon have spread or not

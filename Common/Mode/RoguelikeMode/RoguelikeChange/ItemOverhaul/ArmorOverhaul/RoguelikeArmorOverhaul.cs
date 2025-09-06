@@ -1,14 +1,12 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems;
-using Roguelike.Contents.Projectiles;
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using System.Collections.Generic;
+using Roguelike.Contents.Projectiles;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
@@ -18,16 +16,16 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		ModifyArmorTooltip(item, tooltips);
 	}
 	private void ModifyArmorSetToolTip(Player player, Item item, List<TooltipLine> tooltips) {
-		int index = tooltips.FindIndex(line => line.Name == "SetBonus");
-		if (index == -1) {
-			return;
-		}
 		if (player.TryGetModPlayer(out RoguelikeArmorPlayer modplayer)) {
 			var armor = modplayer.ActiveArmor;
 			if (!armor.ContainAnyOfArmorPiece(item.type)) {
 				return;
 			}
 			if (armor.Name == "None") {
+				return;
+			}
+			int index = tooltips.FindIndex(line => line.Name == "SetBonus");
+			if (index == -1) {
 				return;
 			}
 			string text = armor.SetBonusToolTip;
@@ -98,9 +96,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		if (item.type == ItemID.NightVisionHelmet) {
 			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.RangeDMG, Multiplicative: 1.1f);
-		}
-		if (item.type == ItemID.VikingHelmet) {
-			player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 		}
 		if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 			player.buffImmune[BuffID.OnFire] = true;

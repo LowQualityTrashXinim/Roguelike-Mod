@@ -10,9 +10,16 @@ using Roguelike.Contents.Perks;
 using System.Collections.Generic;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {
+	public override IEnumerable<Item> AddStartingItems(Player player) {
+		WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<BreakerBlade_Var1>();
+		yield return new Item(ItemID.BreakerBlade);
+		yield return new Item(ItemID.EndurancePotion, 5);
+	}
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.LimeGreen;
 }

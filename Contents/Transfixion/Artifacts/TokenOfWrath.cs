@@ -1,18 +1,23 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Terraria;
 using Humanizer;
-using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Perks;
-using Roguelike.Common.Systems.Achievement;
- 
+using Terraria.ID;
 using Roguelike.Texture;
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
+using Microsoft.Xna.Framework;
+using Roguelike.Contents.Perks;
+using System.Collections.Generic;
+using Roguelike.Common.Systems.Achievement;
+using Roguelike.Common.Systems.ArtifactSystem;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfWrathArtifact : Artifact {
+	public override IEnumerable<Item> AddStartingItems(Player player) {
+		yield return new(ItemID.BladedGlove);
+		yield return new(ItemID.WrathPotion, 5);
+	}
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.LimeGreen;
 }
@@ -28,7 +33,6 @@ public class TokenOfWrathPlayer : ModPlayer {
 		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.1f);
 		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .25f);
-		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 50);
 		modplayer.NonCriticalDamage += .5f;
 	}
 }
@@ -42,21 +46,16 @@ public class StrikeOfFury : Perk {
 		list_category.Add(PerkCategory.ArtifactExclusive);
 	}
 	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.NonCriticalDamage += .25f * StackAmount(player);
-		modplayer.UpdateCritDamage -= .1f;
-		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: -20);
+		player.ModPlayerStats().NonCriticalDamage += .25f * StackAmount(player);
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (player.HasBuff<FuryStrike>()
-			&& player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
-			modifiers.ArmorPenetration += 10;
+		if (player.HasBuff<FuryStrike>()) {
+			modifiers.ArmorPenetration += 10 * StackAmount(player);
 		}
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (player.HasBuff<FuryStrike>()
-			&& player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
-			modifiers.ArmorPenetration += 10;
+		if (player.HasBuff<FuryStrike>()) {
+			modifiers.ArmorPenetration += 10 * StackAmount(player);
 		}
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -84,25 +83,23 @@ public class StrikeOfFury : Perk {
 			player.StrikeNPCDirect(target, newinfo);
 		}
 	}
-}
-public class FuryStrike : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().NonCriticalDamage += .2f;
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .5f;
-	}
-	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
-		tip = tip.FormatWith(1);
-		if (Main.LocalPlayer.TryGetModPlayer(out PerkPlayer perkplayer)) {
-			if (perkplayer.perks.ContainsKey(Perk.GetPerkType<StrikeOfFury>()))
-				tip = tip.FormatWith(perkplayer.perks[Perk.GetPerkType<StrikeOfFury>()]);
+	class FuryStrike : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.GetModPlayer<PlayerStatsHandle>().NonCriticalDamage += .2f;
+		}
+		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
+			tip = tip.FormatWith(1);
+			if (Main.LocalPlayer.TryGetModPlayer(out PerkPlayer perkplayer)) {
+				if (perkplayer.perks.ContainsKey(GetPerkType<StrikeOfFury>()))
+					tip = tip.FormatWith(perkplayer.perks[GetPerkType<StrikeOfFury>()]);
+			}
 		}
 	}
 }
-
 public class RuthlessRage : Perk {
 	public override bool SelectChoosing() {
 		return Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() || AchievementSystem.IsAchieved("TokenOfWrath");
@@ -114,41 +111,22 @@ public class RuthlessRage : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: -20 * StackAmount(player));
 		modplayer.NonCriticalDamage += .35f * StackAmount(player);
-		modplayer.UpdateCritDamage += .55f * StackAmount(player);
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (Main.rand.NextFloat() <= .05f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2;
 		}
-		if (Main.rand.NextFloat() <= .01f || modplayer.ModifyHit_Before_Crit && Main.rand.NextFloat() <= .05f) {
+		if (Main.rand.NextFloat() <= .01f) {
 			modifiers.FinalDamage *= 4;
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (Main.rand.NextFloat() <= .05f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2;
 		}
-		if (Main.rand.NextFloat() <= .01f || modplayer.ModifyHit_Before_Crit && Main.rand.NextFloat() <= .05f) {
+		if (Main.rand.NextFloat() <= .01f) {
 			modifiers.FinalDamage *= 4;
 		}
-	}
-	public override void OnHitByAnything(Player player) {
-		if (Main.rand.NextFloat() <= .2f * StackAmount(player) && !player.HasBuff<RageEmpowerment>()) {
-			player.AddBuff(ModContent.BuffType<RageEmpowerment>(), ModUtils.ToSecond(Main.rand.Next(1, 10)));
-		}
-	}
-}
-public class RageEmpowerment : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AlwaysCritValue++;
 	}
 }

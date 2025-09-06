@@ -122,3 +122,9 @@ Version 0.0.1:
 121/ Removed Jungle Temple and Dungeon biome from world generation.
 122/ Added 2 new subworlds.
 123/ Added utils for subworld.
+124/ Fixed problem where jump boost stats doesn't affect player jump boost.
+125/ Buff Viking Helmet using modded piece system.
+126/ General Builder Tool when override tile will check the current hover tile is the same as selected tile.
+127/ Buff Goggles using modded piece system.
+128/ Changed Token of Wrath and its exclusive perk.
+129/ Added starter item into Token of Sloth.

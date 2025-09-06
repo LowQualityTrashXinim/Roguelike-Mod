@@ -1,3 +1,18 @@
+None: {
+	VikingHelmet:
+		'''
+		+ 15% melee damage
+		+ 30% critical strike damage
+		+ 20% movement speed
+		+ 30% jump boost
+		'''
+	Goggles:
+		'''
+		+50% critical strike damage
+		+5% critical strike chance
+		'''
+}
+
 WoodArmor: {
 	Head:
 		'''

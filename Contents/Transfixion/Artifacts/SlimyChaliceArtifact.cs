@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.Weapon.ItemVariant;
-using Roguelike.Contents.Items.NoneSynergy.GuideToMasterNinja;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class SlimyChaliceArtifact : Artifact {
@@ -16,7 +15,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<SlimeStaff_Var1>();
 			Item item = new Item(ItemID.SlimeStaff);
 			yield return item;
-			yield return new Item(ModContent.ItemType<GuideToMasterNinja>());
 		}
 	}
 	public class SlimyChalicePlayer : ModPlayer {
