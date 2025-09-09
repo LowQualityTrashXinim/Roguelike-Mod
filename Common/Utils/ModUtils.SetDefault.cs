@@ -112,6 +112,15 @@ namespace Roguelike.Common.Utils {
 			item.autoReuse = false;
 			item.consumable = true;
 		}
+		public static void Item_DefaultToConsume(this Item item, int width, int height, int useT = 15, int useA = 15, int useStyle = ItemUseStyleID.HoldUp) {
+			item.width = width;
+			item.height = height;
+			item.useTime = useT;
+			item.useAnimation = useA;
+			item.useStyle = useStyle;
+			item.autoReuse = false;
+			item.consumable = true;
+		}
 		/// <summary>
 		/// Use this along with <see cref="BossRushSetDefault(Item, int, int, int, float, int, int, int, bool)"/>
 		/// </summary>

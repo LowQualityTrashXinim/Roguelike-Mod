@@ -273,32 +273,21 @@ Katana.Description:
 	critical damage by 20% and first strike damage by 35%
 	Hitting enemy with item will spawn a ghost katana that attack enemy ( CD : 0.25s )
 	'''
-WoodenBow.Description:
-	'''
-	Increases damage by 1
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
-	Holding weapon will increases user's movement speed by 10%
-	'''
+WoodenBow.Description: Weapon will shoot a additional wooden arrow ( CD: 1s )
 AshWoodBow.Description:
 	'''
-	Increases damage by 1
 	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to light enemy on fire
-	Deal extra 25% damage to enemy on fire
 	'''
 BorealWoodBow.Description:
 	'''
-	Increases damage by 1
 	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to inflict frost burn on enemy
-	Deal extra 25% damage to enemy have frost burn
 	'''
 RichMahoganyBow.Description:
 	'''
-	Increases damage by 1
 	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to poison enemy
-	Deal extra 15% damage to poisoned enemy 
 	'''
 EbonwoodBow.Description:
 	'''

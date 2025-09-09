@@ -128,3 +128,7 @@ Version 0.0.1:
 127/ Buff Goggles using modded piece system.
 128/ Changed Token of Wrath and its exclusive perk.
 129/ Added starter item into Token of Sloth.
+130/ Changed Wooden type bow enchantment.
+131/ Added scroll of fire, water and magic missile
+132/ Added scroll of teleportation.
+133/ Minor small updated to Enchantment system variable

@@ -2351,6 +2351,26 @@ Mods: {
 					Will also increases the strength of other item that grant invincibility
 					'''
 			}
+
+			ScrollOfFire: {
+				DisplayName: Scroll Of Fire
+				Tooltip: ""
+			}
+
+			ScrollOfMagicMissile: {
+				DisplayName: Scroll Of Magic Missile
+				Tooltip: ""
+			}
+
+			ScrollOfWater: {
+				DisplayName: Scroll Of Water
+				Tooltip: ""
+			}
+
+			ScrollOfTeleportation: {
+				DisplayName: Scroll Of Teleportation
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

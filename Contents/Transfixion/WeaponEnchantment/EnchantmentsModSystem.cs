@@ -36,9 +36,9 @@ public class EnchantmentSystem : ModSystem {
 			modplayer.Request_EnchantedItem--;
 		}
 		float randomizedchance = 0f;
-			if (UniversalSystem.Check_TotalRNG()) {
-				randomizedchance += .2f;
-			}
+		if (UniversalSystem.Check_TotalRNG()) {
+			randomizedchance += .2f;
+		}
 		for (int i = 0; i < 3; i++) {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
 				if (globalitem.EnchantmenStlot[i] != 0) {
@@ -87,6 +87,11 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] Item_Counter1 = new int[4];
 	public int[] Item_Counter2 = new int[4];
 	public int[] Item_Counter3 = new int[4];
+	/// <summary>
+	/// You won't need to do manual timer decreases.
+	/// </summary>
+	public int[] Cooldown_Timer = new int[4];
+	public int[] Cooldown_Stack = new int[4];
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
 		if (clone == null) {
@@ -105,6 +110,8 @@ public class EnchantmentGlobalItem : GlobalItem {
 		Item_Counter1 = new int[4];
 		Item_Counter2 = new int[4];
 		Item_Counter3 = new int[4];
+		Cooldown_Timer = new int[4];
+		Cooldown_Stack = new int[4];
 		return base.NewInstance(target);
 	}
 	public int GetValidNumberOfEnchantment() {
@@ -127,6 +134,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 		for (int l = 0; l < EnchantmenStlot.Length; l++) {
 			if (EnchantmenStlot[l] == 0)
 				continue;
+			Cooldown_Timer[l] = ModUtils.CountDown(Cooldown_Timer[l]);
 			EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[l]).Update(l, item, this, player);
 		}
 	}
