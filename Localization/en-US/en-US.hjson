@@ -382,6 +382,7 @@ Mods: {
 			TinOreMeteor.DisplayName: Tin Ore Meteor
 			Special_ThrowShortSwordProjectile.DisplayName: Special_ Throw Short Sword Projectile
 			RoguelikeOverhaul_ShortSwordProjectile.DisplayName: Roguelike Overhaul_ Short Sword Projectile
+			Roguelike_RedRyder_ModProjectile.DisplayName: Roguelike_ Red Ryder_ Mod Projectile
 		}
 
 		NPCs: {
@@ -3073,6 +3074,11 @@ Mods: {
 			Special_Vulnerable: {
 				DisplayName: Special_ Vulnerable
 				Description: Mods.Roguelike.Buffs.Special_Vulnerable.Description
+			}
+
+			Roguelike_RedRyder_Buff: {
+				DisplayName: It is show time!
+				Description: Massively increases damage of red ryder
 			}
 		}
 

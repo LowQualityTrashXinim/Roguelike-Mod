@@ -1,20 +1,19 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using System;
-using Roguelike.Common.Systems;
+using Roguelike.Contents.Skill;
+using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.BuilderItem;
+using Roguelike.Contents.Items.Consumable.Ammo;
+using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
-using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Skill;
 
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Consumable.Ammo;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -32,6 +31,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public float VelocityMultiplier = 1f;
 	public float CritDamage = 0;
 	public int EnergyRegainOnHit = 0;
+	public bool? SetCrit = null;
 	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>
@@ -144,6 +144,14 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		Player player = Main.player[projectile.owner];
 		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
 		modifiers.CritDamage += CritDamage;
+		if(SetCrit != null) {
+			if(SetCrit == true) {
+				modifiers.SetCrit();
+			}
+			else {
+				modifiers.DisableCrit();
+			}
+		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		var player = Main.player[projectile.owner];

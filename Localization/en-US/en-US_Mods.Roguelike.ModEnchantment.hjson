@@ -3,11 +3,27 @@ Musket.Description:
 	Increases range critical strike damage by 50% and weapon critical strike chance by 5%
 	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
+/*
+Musket.Description:
+'''
++50% critical damage, 5% critical chance
+If the weapon are the following: {0}
+For every 15 attack, shoot out a critical bullet
+'''
+*/
 RedRyder.Description:
 	'''
 	Increases range critical strike damage by 15% and weapon critical strike chance by 5%
 	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
+/*
+RedRyder.Description:
+'''
++5% critical chance
+If the weapon are the following: {0}
+While airborn, increases damage by 25%
+'''
+*/
 FlintlockPistol.Description:
 	'''
 	Weapon that can shoot :

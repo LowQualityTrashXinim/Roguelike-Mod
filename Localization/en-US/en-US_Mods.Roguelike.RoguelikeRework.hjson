@@ -66,3 +66,14 @@ HeatRay:
 	Each shot increases damage taken from this item by 2% ( up to 400% )
 	The damage increases have 0.5s decay time
 	'''
+Musket:
+	'''
+	Wait 1s to guarantee the next shot always be critical
+	Wait additional 2s to increases critical damage of next shot by 100%
+	'''
+RedRyder:
+	'''
+	Replaced normal bullet with high velocity round
+	Alt-click to throw the gun, alt click again to be pulled to the gun (CD:5s)
+	Multiply damage by 3x after collecting the gun
+	'''

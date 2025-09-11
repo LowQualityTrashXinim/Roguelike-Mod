@@ -132,3 +132,6 @@ Version 0.0.1:
 131/ Added scroll of fire, water and magic missile
 132/ Added scroll of teleportation.
 133/ Minor small updated to Enchantment system variable
+134/ Reworked Musket.
+135/ Reworked Red Ryder.
+136/ Added new field for projectile.

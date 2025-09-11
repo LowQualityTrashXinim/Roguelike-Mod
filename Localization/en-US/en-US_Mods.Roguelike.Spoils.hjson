@@ -119,7 +119,3 @@ SpeedSpoilHM: {
 	DisplayName: Mobility Special
 	HMDescription: Contains 1 mount of any type and 1 pair of wings.
 }
-
-WeaponUpgrade.DisplayName: Description:
-ArtifactUpgrade.DisplayName: Description:
-Curses.DisplayName: Description:
