@@ -144,3 +144,4 @@ Version 0.0.1:
 143/ Fixed a problem where loot box always give a full set of armor of same type.
 144/ Deleted 3 relic templates (skill cool down, gun fire rate and static defenses).
 145/ Removed Static Defenses stat and Skill cool down stat.
+146/ Skill's stats adjustment and some minor skill effect adjustment.

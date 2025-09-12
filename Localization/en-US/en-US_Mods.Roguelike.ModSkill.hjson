@@ -15,7 +15,7 @@ FastForward: {
 
 Skip1: {
 	DisplayName: Skip
-	Description: Skips one skill to refund 100 Energy back
+	Description: Skips one skill to refund 600 Energy back
 }
 
 PowerSaver: {
@@ -59,8 +59,13 @@ ChaosArrowRain: {
 }
 
 Increases_3xDamage: {
+	DisplayName: 3x damage
+	Description: Increases damage by +300%
+}
+
+PowerBank: {
 	DisplayName: Power Bank
-	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute
+	Description: Give you 300 energy but reduce the upcoming skill duration by 100%
 }
 
 Icicle: {
@@ -75,7 +80,7 @@ Icicle: {
 
 MeteorShower: {
 	DisplayName: Meteor Shower
-	Description: Rains down several meteors towards your cursor, dealing 44 base damage within a large radius
+	Description: Rains down several meteors, dealing 44 base damage within a large radius
 }
 
 SpiritBurst: {
@@ -108,12 +113,7 @@ GuaranteedCrit: {
 
 RapidHealing: {
 	DisplayName: Rapid Overflow
-	Description: Regenerates 6 health every 0.1 seconds
-}
-
-FireBall: {
-	DisplayName: Fireball
-	Description: Shoots out a fireball every 10 ticks, dealing 23 magic damage and inflicting the 'On Fire!' debuff
+	Description: Rapidly regenerate your health
 }
 
 StarFury: {

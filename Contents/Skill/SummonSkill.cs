@@ -12,7 +12,6 @@ public class BroadSwordSpirit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 545;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -31,7 +30,6 @@ public class WoodSwordSpirit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 645;
 		Skill_Duration = ModUtils.ToSecond(3);
-		Skill_CoolDown = ModUtils.ToSecond(6);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -48,9 +46,8 @@ public class WoodSwordSpirit : ModSkill {
 public class WilloFreeze : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<WilloFreeze>();
 	public override void SetDefault() {
-		Skill_EnergyRequire = 485;
+		Skill_EnergyRequire = 685;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -68,7 +65,6 @@ public class PowerPlant : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 525;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -81,7 +77,6 @@ public class TransferStation : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 525;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -94,7 +89,6 @@ public class OrbOfPurity : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 325;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -109,7 +103,6 @@ public class PhoenixBlazingTornado : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 325;
 		Skill_Duration = ModUtils.ToSecond(5);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -124,7 +117,6 @@ public class DebugCommand : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 777;
 		Skill_Duration = ModUtils.ToSecond(10);
-		Skill_CoolDown = ModUtils.ToSecond(60);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -155,9 +147,8 @@ public class DebugStatus : ModBuff {
 
 public class LucidNightmares : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 450;
+		Skill_EnergyRequire = 850;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -170,9 +161,8 @@ public class LucidNightmares : ModSkill {
 
 public class SacrificialWormhole : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 150;
+		Skill_EnergyRequire = 950;
 		Skill_Duration = ModUtils.ToSecond(14);
-		Skill_CoolDown = ModUtils.ToSecond(30);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {

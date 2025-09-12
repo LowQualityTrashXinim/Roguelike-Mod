@@ -70,10 +70,9 @@ public abstract class ModSkill : ModType {
 	/// <param name="energy"></param>
 	/// <param name="duration"></param>
 	/// <param name="cooldown"></param>
-	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
+	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration) {
 		energy = new();
 		duration = new();
-		cooldown = new();
 	}
 	/// <summary>
 	/// Use this to set skill stat
@@ -87,7 +86,7 @@ public abstract class ModSkill : ModType {
 	/// <param name="player"></param>
 	/// <param name="modplayer"></param>
 	/// <param name="index"></param>
-	public virtual void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) { }
+	public virtual void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) { }
 	/// <summary>
 	/// Called upon player activate the skill when the skill requirement is fullfilled<br/>
 	/// This is called before cool down, duration of the skill and energy subtraction is set
@@ -294,7 +293,7 @@ public class SkillHandlePlayer : ModPlayer {
 		int energy = 0;
 		int[] active = GetCurrentActiveSkillHolder();
 		float percentageEnergy = 1;
-		StatModifier energyS = new(), durationS = new(), cooldownS = new();
+		StatModifier energyS = new(), durationS = new();
 		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
 			ModSkill skill = SkillModSystem.GetSkill(active[i]);
@@ -308,8 +307,8 @@ public class SkillHandlePlayer : ModPlayer {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
 			percentageEnergy += skill.EnergyRequirePercentage;
-			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
-			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
+			skill.ModifyNextSkillStats(out energyS, out durationS);
+			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 		}
 		return (int)(energy * percentageEnergy) + seperateEnergy;
 	}
@@ -319,7 +318,7 @@ public class SkillHandlePlayer : ModPlayer {
 		duration = 0;
 		cooldown = 0;
 		float percentageEnergy = 1;
-		StatModifier energyS = new(), durationS = new(), cooldownS = new();
+		StatModifier energyS = new(), durationS = new();
 		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
 			ModSkill skill = SkillModSystem.GetSkill(active[i]);
@@ -334,8 +333,8 @@ public class SkillHandlePlayer : ModPlayer {
 			}
 			duration += (int)durationS.ApplyTo(skill.Duration);
 			percentageEnergy += skill.EnergyRequirePercentage;
-			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
-			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
+			skill.ModifyNextSkillStats(out energyS, out durationS);
+			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 			activeskill.Add(skill);
 		}
 		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
@@ -602,20 +601,21 @@ public class SkillHandlePlayer : ModPlayer {
 	int Rechargebucket = 0;
 	int CurrentbucketAmount = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (RechargeDelay <= 0) {
-			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-			int eGain = (int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(MathF.Ceiling(hit.Damage * .01f)));
-			Energy = Math.Clamp(eGain + Energy, 0, EnergyCap);
-			if (Rechargebucket == 0) {
-				Rechargebucket = hit.Damage;
-			}
-			CurrentbucketAmount += eGain;
-			if (CurrentbucketAmount >= Rechargebucket) {
-				CurrentbucketAmount = 0;
-				RechargeDelay = (int)modplayer.RechargeEnergyCap.ApplyTo(Rechargebucket * 10);
-				Rechargebucket = 0;
+		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
+		int eGain = (int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(MathF.Ceiling(hit.Damage * .01f)));
+		if (Rechargebucket == 0) {
+			Rechargebucket = (int)Math.Ceiling(modplayer.RechargeEnergyCap.ApplyTo(hit.Damage));
+		}
+		CurrentbucketAmount += eGain;
+		if (CurrentbucketAmount >= Rechargebucket) {
+			CurrentbucketAmount = 0;
+			Rechargebucket = 0;
+			if (RechargeDelay <= 0) {
+				eGain += hit.Damage;
+				RechargeDelay = (int)(60 + 60 * hit.Damage * .01f);
 			}
 		}
+		Energy = Math.Clamp(eGain + Energy, 0, EnergyCap);
 	}
 	public override void UpdateDead() {
 		Activate = false;

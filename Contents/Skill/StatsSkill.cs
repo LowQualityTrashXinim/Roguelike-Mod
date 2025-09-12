@@ -15,7 +15,6 @@ public class DamageUp : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 50;
 		Skill_Duration = 0;
-		Skill_CoolDown = ModUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -24,9 +23,8 @@ public class DamageUp : ModSkill {
 }
 public class GreaterDamageUp : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 200;
+		Skill_EnergyRequire = 350;
 		Skill_Duration = 0;
-		Skill_CoolDown = ModUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -34,34 +32,33 @@ public class GreaterDamageUp : ModSkill {
 	}
 }
 public class Increases_3xDamage : ModSkill {
-	public override string Texture => ModUtils.GetTheSameTextureAs<Increases_3xDamage>("PowerBank");
 	public override void SetDefault() {
-		Skill_EnergyRequire = 530;
-		Skill_Duration = 8;
-		Skill_CoolDown = ModUtils.ToSecond(15);
+		Skill_EnergyRequire = 400;
+		Skill_Duration = 120;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 4);
 	}
-	public override void OnEnded(Player player) {
-		player.AddBuff(ModContent.BuffType<PowerBankDebuff>(), ModUtils.ToMinute(1));
+}
+public class PowerBank : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAs<PowerBank>();
+	public override void SetDefault() {
+		Skill_EnergyRequire = 0;
+		Skill_Duration = 0;
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public class PowerBankDebuff : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultDeBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.EnergyRecharge, -.5f);
-		}
+	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration) {
+		energy = StatModifier.Default;
+		energy.Base -= 300;
+		duration = StatModifier.Default;
+		duration -= 1;
 	}
 }
 public class PowerSaver : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 560;
+		Skill_EnergyRequire = 300;
 		Skill_Duration = 0;
-		Skill_CoolDown = ModUtils.ToMinute(1);
 		Skill_EnergyRequirePercentage = -.5f;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
@@ -73,10 +70,9 @@ public class FastForward : ModSkill {
 		Skill_CoolDown = ModUtils.ToSecond(20);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
+	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration) {
 		energy = new();
 		duration = new();
-		cooldown = new();
 		duration -= .5f;
 		energy -= .5f;
 	}
@@ -85,10 +81,9 @@ public class Skip1 : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 0;
-		Skill_CoolDown = ModUtils.ToSecond(15);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) {
+	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
 		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
 		for (int i = index + 1; i < currentskillset.Length; i++) {
 			ModSkill skill = SkillModSystem.GetSkill(currentskillset[i]);
@@ -96,7 +91,7 @@ public class Skip1 : ModSkill {
 				continue;
 			}
 			index = index + 1;
-			energy.Base -= 300;
+			energy.Base -= 600;
 			break;
 		}
 	}
@@ -108,7 +103,6 @@ public class PowerCord : ModSkill {
 		Skill_EnergyRequire = 100;
 		Skill_EnergyRequirePercentage = .25f;
 		Skill_Duration = 0;
-		Skill_CoolDown = 0;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnEnded(Player player) {
@@ -129,7 +123,6 @@ public class Procrastination : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(17);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -144,7 +137,6 @@ public class SpeedDemon : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 330;
 		Skill_Duration = 30;
-		Skill_CoolDown = ModUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -156,9 +148,8 @@ public class SpeedDemon : ModSkill {
 public class TranquilMind : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<TranquilMind>();
 	public override void SetDefault() {
-		Skill_EnergyRequire = 400;
+		Skill_EnergyRequire = 550;
 		Skill_Duration = ModUtils.ToSecond(5);
-		Skill_CoolDown = ModUtils.ToSecond(60);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 }
@@ -167,7 +158,6 @@ public class InfiniteManaSupply : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = ModUtils.ToSecond(.5f);
-		Skill_CoolDown = ModUtils.ToSecond(6);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -180,7 +170,6 @@ public class GuaranteedCrit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 425;
 		Skill_Duration = ModUtils.ToSecond(.5f);
-		Skill_CoolDown = ModUtils.ToSecond(2.5f);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -192,15 +181,10 @@ public class RapidHealing : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 345;
 		Skill_Duration = ModUtils.ToSecond(2);
-		Skill_CoolDown = ModUtils.ToSecond(30);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 6 != 0) {
-			return;
-		}
-		player.Heal(6);
+		player.ModPlayerStats().Rapid_LifeRegen += 1;
 	}
 }
 public class AdAstra : ModSkill {
@@ -208,7 +192,6 @@ public class AdAstra : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 450;
 		Skill_Duration = ModUtils.ToSecond(3);
-		Skill_CoolDown = ModUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -236,7 +219,6 @@ public class BloodToPower : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 570;
 		Skill_Duration = ModUtils.ToSecond(2);
-		Skill_CoolDown = ModUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
@@ -253,7 +235,6 @@ public class Overclock : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 635;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -264,7 +245,6 @@ public class TerrorForm : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 900;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_CoolDown = ModUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -290,7 +270,6 @@ public class AllOrNothing : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequirePercentage = 1;
 		Skill_Duration = 1;
-		Skill_CoolDown = ModUtils.ToMinute(15);
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
@@ -324,7 +303,6 @@ public class CoinFlip : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 600;
-		Skill_CoolDown = ModUtils.ToMinute(.1f);
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
@@ -343,7 +321,6 @@ public class DiceRoll : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 600;
-		Skill_CoolDown = ModUtils.ToMinute(.1f);
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
@@ -424,7 +401,6 @@ public class ProtectiveOnslaught : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1000;
 		Skill_Duration = 10;
-		Skill_CoolDown = ModUtils.ToSecond(30);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
