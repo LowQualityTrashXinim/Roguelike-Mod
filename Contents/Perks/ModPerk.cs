@@ -750,7 +750,6 @@ public class MindOfBattlefield : Perk {
 		}
 		statplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1 + .2f * stack);
 		statplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1 + .15f * stack);
-		statplayer.AddStatsToPlayer(PlayerStats.StaticDefense, Base: 10 * stack);
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		//Hope this work exactly what I expect it to do

@@ -1,15 +1,13 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
- 
+using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Skill;
-
 public class BroadSwordSpirit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 545;

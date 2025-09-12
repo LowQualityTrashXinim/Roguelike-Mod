@@ -40,26 +40,7 @@ namespace Roguelike.Contents.Items.Chest
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				int randChooser = Main.rand.Next(4);
-				switch (randChooser) {
-					case 0:
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
-						break;
-					case 1:
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteHeadgear);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
-						break;
-					case 2:
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteMask);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
-						player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
-						break;
-					default:
-						break;
-				}
+				GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			}
 			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));
 			for (int i = 0; i < 2; i++) {

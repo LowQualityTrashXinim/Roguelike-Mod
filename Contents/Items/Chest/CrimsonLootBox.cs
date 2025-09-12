@@ -41,38 +41,7 @@ namespace Roguelike.Contents.Items.Chest
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (player.IsDebugPlayer()) {
-				GetArmorForPlayer(entitySource, player);
-			}
-			else {
-				switch (Main.rand.Next(5)) {
-					case 0:
-						player.QuickSpawnItem(entitySource, ItemID.CrimsonHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.CrimsonScalemail);
-						player.QuickSpawnItem(entitySource, ItemID.CrimsonGreaves);
-						break;
-					case 1:
-						player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
-						player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
-						break;
-					case 2:
-						player.QuickSpawnItem(entitySource, ItemID.FossilHelm);
-						player.QuickSpawnItem(entitySource, ItemID.FossilShirt);
-						player.QuickSpawnItem(entitySource, ItemID.FossilPants);
-						break;
-					case 3:
-						player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
-						player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
-						break;
-					case 4:
-						player.QuickSpawnItem(entitySource, ItemID.ObsidianHelm);
-						player.QuickSpawnItem(entitySource, ItemID.ObsidianShirt);
-						player.QuickSpawnItem(entitySource, ItemID.ObsidianPants);
-						break;
-				}
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);
 			player.QuickSpawnItem(entitySource, GetAccessory());

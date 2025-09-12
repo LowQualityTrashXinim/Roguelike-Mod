@@ -16,8 +16,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Items.aDebugItem.SkillDebug;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
@@ -40,7 +38,7 @@ public abstract class ModSkill : ModType {
 		return ModContent.GetInstance<T>().Type;
 	}
 	/// <summary>
-	/// This is also handle itself so no worry
+	/// No longer used, will be removed in the future version
 	/// </summary>
 	protected int Skill_CoolDown = 0;
 	/// <summary>
@@ -52,7 +50,6 @@ public abstract class ModSkill : ModType {
 	protected bool Skill_CanBeSelect = true;
 	public byte Skill_Type { get; protected set; }
 	public virtual string Texture => ModTexture.Get_MissingTexture("Skill");
-	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
 	public int EnergyRequire { get => Skill_EnergyRequire; }
 	public float EnergyRequirePercentage { get => Skill_EnergyRequirePercentage; }
@@ -183,13 +180,13 @@ public class SkillHandlePlayer : ModPlayer {
 		speed *= ProjectileSpeedMultiplier;
 
 		for (int i = 0; i < ProjectileAmount; i++) {
-			float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier * i;
 			Vector2 vel;
 			if (ProjectileAmount > 1) {
 				vel = velNormalize.Vector2DistributeEvenly(ProjectileSpreadAmount, 360, i) * speed;
 			}
 			else {
-				vel = velNormalize * speed;
+				float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier * i;
+				vel = (velNormalize * speed).Vector2RotateByRandom(modifierSpread);
 			}
 			Projectile projectile = Projectile.NewProjectileDirect(source, position, vel, type, SkillDamage(damage), knockback, Player.whoAmI);
 			projectile.CritChance += ProjectileCritChance;
@@ -210,7 +207,6 @@ public class SkillHandlePlayer : ModPlayer {
 	public int EnergyCap = 1500;
 	public int Energy { get; private set; }
 	public int Duration { get; private set; }
-	public int CoolDown { get; private set; }
 	public byte AvailableSkillActiveSlot = 3;
 	int[] SkillHolder1 = new int[10];
 	int[] SkillHolder2 = new int[10];
@@ -224,7 +220,6 @@ public class SkillHandlePlayer : ModPlayer {
 	int CurrentActiveHolder = 1;
 	public int CurrentActiveIndex { get => CurrentActiveHolder; }
 	int RechargeDelay = 0;
-	public int MaximumCoolDown = 0;
 	public int MaximumDuration = 0;
 	public int BloodToPower = 0;
 	public int Request_Repeat = 0;
@@ -244,7 +239,8 @@ public class SkillHandlePlayer : ModPlayer {
 		Energy = 0;
 		Duration = 0;
 		RechargeDelay = 0;
-		CoolDown = 0;
+		Rechargebucket = 0;
+		CurrentbucketAmount = 0;
 		activeskill = new();
 	}
 	public void ChangeHolder(int index) {
@@ -337,7 +333,6 @@ public class SkillHandlePlayer : ModPlayer {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
 			duration += (int)durationS.ApplyTo(skill.Duration);
-			cooldown += (int)cooldownS.ApplyTo(skill.CoolDown);
 			percentageEnergy += skill.EnergyRequirePercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
@@ -483,20 +478,13 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (SkillModSystem.SkillActivation.JustReleased) {
-			if (CoolDown > 0) {
-				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Skill on cool down !");
-				return;
-			}
 			Activate = true;
 			SkillStatTotal(out int energy, out int duration, out int cooldown);
 			Duration += duration;
-			CoolDown += cooldown;
-			MaximumCoolDown = 0;
 			MaximumDuration = 0;
 			if (energy > Energy) {
 				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
-				CoolDown = 0;
 				Activate = false;
 			}
 			else {
@@ -505,7 +493,6 @@ public class SkillHandlePlayer : ModPlayer {
 				foreach (var item in activeskill) {
 					item.OnTrigger(Player, this, duration, cooldown, energy);
 				}
-				MaximumCoolDown += CoolDown;
 				MaximumDuration += Duration;
 				Energy -= energy;
 			}
@@ -529,14 +516,8 @@ public class SkillHandlePlayer : ModPlayer {
 			}
 		}
 		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
-		if (!Activate) {
-			CoolDown = ModUtils.CountDown(CoolDown);
-		}
 	}
 	public override void ResetEffects() {
-		if (Player.HeldItem.type == ModContent.ItemType<SkillCoolDownRemove>()) {
-			CoolDown = 0;
-		}
 		ProjectileCritChance = 0;
 		ProjectileAmount = 1;
 		ProjectileCritDamage = 0;
@@ -618,11 +599,22 @@ public class SkillHandlePlayer : ModPlayer {
 			skill.OnHitNPCWithProj(Player, proj, target, hit, damageDone);
 		}
 	}
+	int Rechargebucket = 0;
+	int CurrentbucketAmount = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (!Activate && RechargeDelay <= 0) {
+		if (RechargeDelay <= 0) {
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-			Energy = Math.Clamp((int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(hit.Damage)) + Energy, 0, EnergyCap);
-			RechargeDelay = (int)modplayer.RechargeEnergyCap.ApplyTo(hit.Damage * 2);
+			int eGain = (int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(MathF.Ceiling(hit.Damage * .01f)));
+			Energy = Math.Clamp(eGain + Energy, 0, EnergyCap);
+			if (Rechargebucket == 0) {
+				Rechargebucket = hit.Damage;
+			}
+			CurrentbucketAmount += eGain;
+			if (CurrentbucketAmount >= Rechargebucket) {
+				CurrentbucketAmount = 0;
+				RechargeDelay = (int)modplayer.RechargeEnergyCap.ApplyTo(Rechargebucket * 10);
+				Rechargebucket = 0;
+			}
 		}
 	}
 	public override void UpdateDead() {
@@ -630,7 +622,8 @@ public class SkillHandlePlayer : ModPlayer {
 		Energy = 0;
 		Duration = 0;
 		RechargeDelay = 0;
-		CoolDown = 0;
+		Rechargebucket = 0;
+		CurrentbucketAmount = 0;
 		activeskill.Clear();
 	}
 	public override void SaveData(TagCompound tag) {
@@ -741,16 +734,18 @@ internal class SkillUI : UIState {
 	public UIPanel panel;
 	public UIText energyCostText;
 	public UIText durationText;
-	public UIText cooldownText;
 	public override void OnInitialize() {
 		panel = new UIPanel();
+		panel.UISetWidthHeight(250, 60);
+		panel.Left.Pixels = 860;
+		panel.Top.Pixels = 360;
 		Append(panel);
 		energyCostText = new UIText("");
-		Append(energyCostText);
+		energyCostText.VAlign = 0;
+		panel.Append(energyCostText);
 		durationText = new UIText("");
-		Append(durationText);
-		cooldownText = new UIText("");
-		Append(cooldownText);
+		durationText.VAlign = 1f;
+		panel.Append(durationText);
 	}
 
 	public override void Update(GameTime gameTime) {
@@ -760,19 +755,9 @@ internal class SkillUI : UIState {
 		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
 		durationText.SetText($"Duration = {MathF.Round(modplayer.MaximumDuration / 60f, 2)}s");
-		cooldownText.SetText($"Cool down = {MathF.Round(modplayer.MaximumCoolDown / 60f, 2)}s");
 	}
 
 	private void ActivateSkillUI(Player player) {
-		panel.UISetWidthHeight(200, 90);
-		panel.Left.Pixels = 860;
-		panel.Top.Pixels = 330;
-		energyCostText.Top.Pixels = 349;
-		energyCostText.Left.Pixels = 880;
-		durationText.Top.Pixels = 370;
-		durationText.Left.Pixels = 880;
-		cooldownText.Top.Pixels = 390;
-		cooldownText.Left.Pixels = 880;
 		if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
 			//Explain : since most likely in the future we aren't gonna expand the skill slot, we just hard set it to 10
 			//We are also pre render these UI first
@@ -981,8 +966,7 @@ class btn_SkillSlotHolder : UIImageButton {
 				tooltipText = SkillModSystem.GetSkill(sKillID).Description;
 				tooltipText +=
 					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillModSystem.GetSkill(sKillID).Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}" +
-					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillModSystem.GetSkill(sKillID).CoolDown / 60f, 2)}s";
+					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}";
 			}
 			Main.instance.MouseText(Name + "\n" + tooltipText);
 		}

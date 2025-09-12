@@ -12,7 +12,7 @@ internal class SpiritProjectile : ModProjectile {
 	public override string Texture => ModTexture.SMALLWHITEBALL;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 0;
-		ProjectileID.Sets.TrailCacheLength[Type] = 25;
+		ProjectileID.Sets.TrailCacheLength[Type] = 50;
 	}
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 15;
@@ -24,7 +24,7 @@ internal class SpiritProjectile : ModProjectile {
 		Projectile.timeLeft = ModUtils.ToSecond(100);
 	}
 	public override void AI() {
-		if (Projectile.ai[0] % 2 == 0) {
+		if (Projectile.ai[0] % 5 == 0) {
 			Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond);
 			dust.noGravity = true;
 			dust.velocity = Vector2.Zero;
@@ -53,7 +53,7 @@ internal class SpiritProjectile : ModProjectile {
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		Projectile.DrawTrail(lightColor, .04f);
+		Projectile.DrawTrail(lightColor, .02f);
 		return base.PreDraw(ref lightColor);
 	}
 }

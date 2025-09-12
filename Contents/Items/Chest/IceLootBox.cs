@@ -2,11 +2,10 @@
 using Terraria.ID;
 using System.Collections.Generic;
 using Roguelike.Common.Utils;
- 
+
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Chest
-{
+namespace Roguelike.Contents.Items.Chest {
 	internal class IceLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 38;
@@ -61,7 +60,7 @@ namespace Roguelike.Contents.Items.Chest
 				itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicSkele);
 				itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonSkele);
 			}
-			if(NPC.downedQueenBee) {
+			if (NPC.downedQueenBee) {
 				itempool.DropItemMelee.Add(ItemID.BeeKeeper);
 				itempool.DropItemRange.Add(ItemID.BeesKnees);
 				itempool.DropItemRange.Add(ItemID.Blowgun);
@@ -73,12 +72,10 @@ namespace Roguelike.Contents.Items.Chest
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedQueenBee) {
-				int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace, ItemID.WaspGun });
+				int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace });
 				player.QuickSpawnItem(entitySource, OneRareBeeItem);
 			}
-			if (player.IsDebugPlayer()) {
-				GetArmorForPlayer(entitySource, player);
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			player.QuickSpawnItem(entitySource, GetAccessory());
 			GetWeapon(entitySource, player, 5);
 			for (int i = 0; i < 5; i++) {

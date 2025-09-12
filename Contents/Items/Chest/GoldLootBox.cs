@@ -1,9 +1,7 @@
-﻿ 
-using Roguelike.Common.Global;
+﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Roguelike.Contents.Items.Chest
@@ -61,29 +59,7 @@ namespace Roguelike.Contents.Items.Chest
 
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (player.IsDebugPlayer()) {
-				GetArmorForPlayer(entitySource, player);
-			}
-			else {
-				int RandomNumber = Main.rand.Next(3);
-				switch (RandomNumber) {
-					case 0:
-						player.QuickSpawnItem(entitySource, ItemID.NecroHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.NecroBreastplate);
-						player.QuickSpawnItem(entitySource, ItemID.NecroGreaves);
-						break;
-					case 1:
-						player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
-						player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
-						break;
-					case 2:
-						player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
-						player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
-						break;
-				}
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);
 			player.QuickSpawnItem(entitySource, GetAccessory());

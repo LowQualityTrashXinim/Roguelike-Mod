@@ -78,7 +78,7 @@ public class FastForward : ModSkill {
 		duration = new();
 		cooldown = new();
 		duration -= .5f;
-		cooldown -= .5f;
+		energy -= .5f;
 	}
 }
 public class Skip1 : ModSkill {

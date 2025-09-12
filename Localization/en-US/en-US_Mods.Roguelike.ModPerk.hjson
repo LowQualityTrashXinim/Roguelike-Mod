@@ -669,7 +669,7 @@ MindOfBattlefield: {
 	DisplayName: Mind Of Battlefield
 	Description:
 		'''
-		+ Increases movement speed by 25%, jump boost by 20% and reduce damage taken by 10
+		+ Increases movement speed by 25%, jump boost by 20%
 		+ Increases critical strike chance by 7% when using bow/repeater 
 		+ Helding sword will increases your i-frame duration by 11%
 		+ Using explosive increases direct hit damage by 50%

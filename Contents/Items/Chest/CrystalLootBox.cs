@@ -2,7 +2,6 @@
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Roguelike.Contents.Items.Chest
@@ -43,23 +42,7 @@ namespace Roguelike.Contents.Items.Chest
 			var entitySource = player.GetSource_OpenItem(Type);
 			int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings, ItemID.LeafWings, ItemID.FairyWings, ItemID.HarpyWings });
 			player.QuickSpawnItem(entitySource, wing);
-			switch (Main.rand.Next(3)) {
-				case 0:
-					player.QuickSpawnItem(entitySource, ItemID.FrostHelmet);
-					player.QuickSpawnItem(entitySource, ItemID.FrostBreastplate);
-					player.QuickSpawnItem(entitySource, ItemID.FrostLeggings);
-					break;
-				case 1:
-					player.QuickSpawnItem(entitySource, ItemID.AncientBattleArmorHat);
-					player.QuickSpawnItem(entitySource, ItemID.AncientBattleArmorShirt);
-					player.QuickSpawnItem(entitySource, ItemID.AncientBattleArmorPants);
-					break;
-				case 2:
-					player.QuickSpawnItem(entitySource, ItemID.CrystalNinjaHelmet);
-					player.QuickSpawnItem(entitySource, ItemID.CrystalNinjaChestplate);
-					player.QuickSpawnItem(entitySource, ItemID.CrystalNinjaLeggings);
-					break;
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);
 			for (int i = 0; i < 2; i++) {

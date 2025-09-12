@@ -9,147 +9,10 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Skill;
-public class HellFireArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(13);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.HellfireArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class FireArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(9);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.FireArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class FrostburnArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(9);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.FrostburnArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class Skill_UnholyArrow : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(11);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
-		position.Y += 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.UnholyArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Corruption, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
 public class Skill_BoneArrow : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 65;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -168,51 +31,11 @@ public class Skill_BoneArrow : ModSkill {
 			}
 		}
 	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class Skill_HolyArrow : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(8);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.HolyArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.AncientLight, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
 }
 public class WoodenArrowRain : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 45;
+		Skill_EnergyRequire = 145;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -236,152 +59,11 @@ public class WoodenArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class CholorophyteArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 95;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(11);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.ChlorophyteArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class CursedArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 95;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(12);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.CursedArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class IchorArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 95;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(12);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.IchorArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
-}
-public class JesterArrowRain : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 75;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 20 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(15);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = player.Center + Main.rand.NextVector2RectangleEdge(new(0, 0, 1000, 1000)) * Main.rand.NextBool().ToDirectionInt();
-		Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Main.rand.Next(12, 15);
-		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, vel, Main.rand.NextFloat(20, 24), ProjectileID.JestersArrow, damage, knockback);
-		foreach (var proj in projlist) {
-			proj.tileCollide = false;
-			proj.timeLeft = 180;
-		}
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .05f;
-	}
 }
 public class ChaosArrowRain : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 385;
 		Skill_Duration = ModUtils.ToSecond(1.2f);
-		Skill_CoolDown = ModUtils.ToSecond(7);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -411,11 +93,6 @@ public class ChaosArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
-	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.ProjectileCritDamage += .1f;
-		skillplayer.ProjectileCritChance += 2;
-		player.arrowDamage += .08f;
-	}
 }
 
 public class SpiritBurst : ModSkill {
@@ -426,8 +103,11 @@ public class SpiritBurst : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
-		if (Main.rand.NextFloat() <= .1f) {
-			cooldown = (int)(cooldown * .5f);
+		for (int i = 0; i < 5; i++) {
+			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44);
+			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
+			Vector2 vel = Main.rand.NextVector2CircularEdge(4, 4);
+			skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
 		}
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -436,7 +116,7 @@ public class SpiritBurst : ModSkill {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44);
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 			Vector2 vel = Main.rand.NextVector2CircularEdge(4, 4);
-			List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center + vel * 100, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
+			List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
 		}
 	}
 }
@@ -444,7 +124,6 @@ public class Icicle : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = ModUtils.ToSecond(1f);
-		Skill_CoolDown = ModUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -475,36 +154,11 @@ public class Icicle : ModSkill {
 		skillplayer.ProjectileCritChance += 5;
 	}
 }
-public class FireBall : ModSkill {
-	public override string Texture => ModUtils.GetTheSameTextureAsEntity<FireBall>();
-	public override void SetDefault() {
-		Skill_EnergyRequire = 45;
-		Skill_Duration = 10;
-		Skill_CoolDown = ModUtils.ToSecond(2);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(23);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(4);
-		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-		List<Projectile> proj = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center, velocity, 15, ProjectileID.Flamelash, damage, knockback);
-		foreach (var item in proj) {
-			item.friendly = true;
-			item.hostile = false;
-			item.timeLeft = 120;
-		}
-	}
-}
 public class StarFury : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAs<StarFury>("StarFall");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 325;
-		Skill_Duration = 6;
-		Skill_CoolDown = ModUtils.ToSecond(20);
+		Skill_Duration = ModUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -564,37 +218,6 @@ public class BulletStorm : ModSkill {
 			float RandomizeX = Main.rand.NextFloat(-300, 300);
 			Projectile.NewProjectile(player.GetSource_Misc("Skill"), spawn.Add(RandomizeX, 0) + Main.rand.NextVector2Circular(300, 300), Vector2.UnitY * Main.rand.Next(10, 14), Main.rand.Next(TerrariaArrayID.Bullet), damage, 2);
 		}
-	}
-}
-public class IceAge : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 255;
-		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_CoolDown = ModUtils.ToSecond(19);
-		Skill_Type = SkillTypeID.Skill_Projectile;
-	}
-	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 50 != 0) {
-			return;
-		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 24));
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
-
-		Vector2 pos = Main.MouseWorld - Vector2.UnitY * Main.rand.Next(500, 600);
-		for (int l = 0; l < 6; l++) {
-			int dust = Dust.NewDust(pos, 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(1, 2));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
-		}
-		Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * 14;
-		Projectile proj = Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
-
-		proj.timeLeft = 120;
-		proj.penetrate = -1;
-		proj.maxPenetrate = -1;
-		proj.scale = 2;
-		proj.Resize(proj.width * 2, proj.height * 2);
 	}
 }
 public class EnergyBolt : ModSkill {

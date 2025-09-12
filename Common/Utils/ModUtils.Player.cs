@@ -352,10 +352,6 @@ namespace Roguelike.Common.Utils {
 		/// </summary>
 		FullHPDamage,
 		/// <summary>
-		/// To be replaced
-		/// </summary>
-		StaticDefense,
-		/// <summary>
 		/// This is damage dealt base on debuff stat, the intake damage of enemy is depend on the enemy current amount of debuff * this stat value
 		/// </summary>
 		DebuffDamage,
@@ -368,7 +364,6 @@ namespace Roguelike.Common.Utils {
 		Iframe,
 		EnergyRecharge,
 		SkillDuration,
-		SkillCooldown,
 		/// <summary>
 		/// This stat will increases debuff duration when inflicting on enemy
 		/// </summary>

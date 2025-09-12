@@ -10,7 +10,7 @@ Rewind: {
 
 FastForward: {
 	DisplayName: Fast Forward
-	Description: Halves the cooldown and duration of succeeding skills
+	Description: Halves energy and duration of succeeding skills
 }
 
 Skip1: {
@@ -43,137 +43,19 @@ TranquilMind: {
 	Description: Increases skill duration by 5 seconds
 }
 
-HellFireArrowRain: {
-	DisplayName: Hellborn Cascade
-	Description:
-		'''
-		Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-FireArrowRain: {
-	DisplayName: Firefall Rain
-	Description:
-		'''
-		Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-FrostburnArrowRain: {
-	DisplayName: Frosthail
-	Description:
-		'''
-		Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
 Skill_BoneArrow: {
 	DisplayName: Bonefide Shower
-	Description:
-		'''
-		Casts a ring of 16 bone arrows, dealing 10 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-Skill_UnholyArrow: {
-	DisplayName: Demonic Shatter
-	Description:
-		'''
-		Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-Skill_HolyArrow: {
-	DisplayName: Blessed Flood
-	Description:
-		'''
-		Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-CholorophyteArrowRain: {
-	DisplayName: Leafspore Rainfall
-	Description:
-		'''
-		Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-CursedArrowRain: {
-	DisplayName: Cursed Fanfare
-	Description:
-		'''
-		Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-			
-		'''
-}
-
-IchorArrowRain: {
-	DisplayName: Golden Spread
-	Description:
-		'''
-		Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
-}
-
-JesterArrowRain: {
-	DisplayName: Circus Tricks
-	Description:
-		'''
-		Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
+	Description: Casts a ring of 16 bone arrows, dealing 10 damage each
 }
 
 WoodenArrowRain: {
 	DisplayName: Tribal Ambush
-	Description:
-		'''
-		Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 5% arrow damage
-		'''
+	Description: Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
 }
 
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
-	Description:
-		'''
-		Rain down random arrow each dealing damage range from 8 to 16
-		+ 10% skill critical damage
-		+ 2% skill critical chance
-		+ 8% arrow damage
-		'''
+	Description: Rain down random arrow each dealing damage range from 8 to 16
 }
 
 Increases_3xDamage: {
@@ -185,7 +67,7 @@ Icicle: {
 	DisplayName: Icicle
 	Description:
 		'''
-		Shoots out up to 6 icicles every 20 ticks towards your cursor, dealing 9 damage and inflicting the 'Chilled' debuff
+		Shoots a icicles every 20 ticks towards your cursor, dealing 9 damage
 		+ 10% skill critical chance
 		+ 10% skill critical damage
 		'''
@@ -201,7 +83,7 @@ SpiritBurst: {
 	Description:
 		'''
 		Bursts out a powerful spirit that homes in on the nearest enemy.
-		Have 10% chance to halve cool down
+		On triggering this skill, burst out 5 powerful spirit
 		'''
 }
 

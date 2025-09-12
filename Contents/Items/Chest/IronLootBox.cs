@@ -1,13 +1,10 @@
-﻿ 
-using Roguelike.Common.Global;
+﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Chest
-{
+namespace Roguelike.Contents.Items.Chest {
 	class IronLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;
@@ -35,44 +32,7 @@ namespace Roguelike.Contents.Items.Chest
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (player.IsDebugPlayer()) {
-				GetArmorForPlayer(entitySource, player);
-			}
-			else {
-				int RandomNumber = Main.rand.Next(6);
-				switch (RandomNumber) {
-					case 0:
-						player.QuickSpawnItem(entitySource, ItemID.CopperHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.CopperChainmail);
-						player.QuickSpawnItem(entitySource, ItemID.CopperGreaves);
-						break;
-					case 1:
-						player.QuickSpawnItem(entitySource, ItemID.TinHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.TinChainmail);
-						player.QuickSpawnItem(entitySource, ItemID.TinGreaves);
-						break;
-					case 2:
-						player.QuickSpawnItem(entitySource, ItemID.IronHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.IronChainmail);
-						player.QuickSpawnItem(entitySource, ItemID.IronGreaves);
-						break;
-					case 3:
-						player.QuickSpawnItem(entitySource, ItemID.LeadHelmet);
-						player.QuickSpawnItem(entitySource, ItemID.LeadChainmail);
-						player.QuickSpawnItem(entitySource, ItemID.LeadGreaves);
-						break;
-					case 4:
-						player.QuickSpawnItem(entitySource, ItemID.NinjaHood);
-						player.QuickSpawnItem(entitySource, ItemID.NinjaPants);
-						player.QuickSpawnItem(entitySource, ItemID.NinjaShirt);
-						break;
-					case 5:
-						player.QuickSpawnItem(entitySource, ItemID.JungleHat);
-						player.QuickSpawnItem(entitySource, ItemID.JungleShirt);
-						player.QuickSpawnItem(entitySource, ItemID.JunglePants);
-						break;
-				}
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);
 			player.QuickSpawnItem(entitySource, GetAccessory());

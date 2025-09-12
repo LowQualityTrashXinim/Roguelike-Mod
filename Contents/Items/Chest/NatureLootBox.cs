@@ -27,44 +27,7 @@ namespace Roguelike.Contents.Items.Chest
 		public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			int RandomNumber = Main.rand.Next(5); int Random2 = Main.rand.Next(3);
-			switch (RandomNumber) {
-				case 0:
-					player.QuickSpawnItem(entitySource, ItemID.TurtleHelmet);
-					player.QuickSpawnItem(entitySource, ItemID.TurtleScaleMail);
-					player.QuickSpawnItem(entitySource, ItemID.TurtleLeggings);
-					break;
-				case 1:
-					player.QuickSpawnItem(entitySource, ItemID.SpookyHelmet);
-					player.QuickSpawnItem(entitySource, ItemID.SpookyBreastplate);
-					player.QuickSpawnItem(entitySource, ItemID.SpookyLeggings);
-					break;
-				case 2:
-					switch (Random2) {
-						case 0:
-							player.QuickSpawnItem(entitySource, ItemID.ShroomiteHeadgear);
-							break;
-						case 1:
-							player.QuickSpawnItem(entitySource, ItemID.ShroomiteHelmet);
-							break;
-						case 2:
-							player.QuickSpawnItem(entitySource, ItemID.ShroomiteMask);
-							break;
-					}
-					player.QuickSpawnItem(entitySource, ItemID.ShroomiteBreastplate);
-					player.QuickSpawnItem(entitySource, ItemID.ShroomiteLeggings);
-					break;
-				case 3:
-					player.QuickSpawnItem(entitySource, ItemID.SpectreHood);
-					player.QuickSpawnItem(entitySource, ItemID.SpectreRobe);
-					player.QuickSpawnItem(entitySource, ItemID.SpectrePants);
-					break;
-				case 4:
-					player.QuickSpawnItem(entitySource, ItemID.SpectreMask);
-					player.QuickSpawnItem(entitySource, ItemID.SpectreRobe);
-					player.QuickSpawnItem(entitySource, ItemID.SpectrePants);
-					break;
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));
 			for (int i = 0; i < 2; i++) {

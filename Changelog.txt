@@ -135,3 +135,12 @@ Version 0.0.1:
 134/ Reworked Musket.
 135/ Reworked Red Ryder.
 136/ Added new field for projectile.
+137/ Reworked The Undertaker.
+138/ Changed how player can recharge their energy in skill.
+139/ Complete removal of cool down from skill system.
+140/ Deleted the following skills: IchorArrowRain, JesterArrowRain, CursedArrowRain, CholorophyteArrowRain, Skill_HolyArrow, Skill_UnholyArrow, FrostburnArrowRain, FireArrowRain and HellFireArrowRain.
+141/ Deleted FireBall skill and IceAge skill.
+142/ Various skill reworked.
+143/ Fixed a problem where loot box always give a full set of armor of same type.
+144/ Deleted 3 relic templates (skill cool down, gun fire rate and static defenses).
+145/ Removed Static Defenses stat and Skill cool down stat.

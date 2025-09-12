@@ -493,7 +493,6 @@ public class UniversalModPlayer : ModPlayer {
 /// </summary>
 public class DefaultUI : UIState {
 	Roguelike_ProgressUIBar energyBar;
-	Roguelike_ProgressUIBar energyCoolDownBar;
 	Roguelike_ProgressUIBar energyCostBar;
 
 	private UITextPanel<string> EndOfDemoPanel;
@@ -522,7 +521,6 @@ public class DefaultUI : UIState {
 	private ColorInfo colorchanging3;
 	public override void OnInitialize() {
 		CreateEnergyBar();
-		CreateCoolDownBar();
 		staticticUI = new UIImageButton(ModContent.Request<Texture2D>(ModTexture.MENU));
 		staticticUI.UISetWidthHeight(32, 32);
 		staticticUI.HAlign = .3f;
@@ -609,30 +607,6 @@ public class DefaultUI : UIState {
 		energyBar.BarProgress = modPlayer.Energy / (float)modPlayer.EnergyCap;
 		energyBar.SetColorA(colorChanging1.MultiColor(5));
 		energyBar.SetColorB(colorChanging2.MultiColor(5));
-	}
-	private void CreateCoolDownBar() {
-		energyCoolDownBar = new Roguelike_ProgressUIBar(null, Color.Red, Color.Yellow, "0/0", .8f);
-		energyCoolDownBar.VAlign = .02f;
-		energyCoolDownBar.HAlign = .47f;
-		energyCoolDownBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
-		energyCoolDownBar.Width.Set(182, 0);
-		energyCoolDownBar.Height.Set(60, 0);
-		energyCoolDownBar.OnUpdate += EnergyCoolDownBar_OnUpdate;
-		energyCoolDownBar.Hide = true;
-		Append(energyCoolDownBar);
-	}
-	private void EnergyCoolDownBar_OnUpdate(UIElement affectedElement) {
-		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		// Setting the text per tick to update and show our resource values.
-		if (modPlayer.CoolDown > 0) {
-			energyCoolDownBar.Hide = false;
-			energyCoolDownBar.text.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f, 2)}");
-		}
-		else {
-			energyCoolDownBar.DelayHide(120);
-			energyCoolDownBar.text.SetText("");
-		}
-		energyCoolDownBar.BarProgress = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown;
 	}
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();

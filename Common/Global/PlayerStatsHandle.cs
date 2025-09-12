@@ -649,9 +649,6 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.FullHPDamage:
 				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
 				break;
-			case PlayerStats.StaticDefense:
-				StaticDefense = StaticDefense.CombineWith(StatMod);
-				break;
 			case PlayerStats.DebuffDamage:
 				DebuffDamage = DebuffDamage.CombineWith(StatMod);
 				break;
@@ -663,9 +660,6 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.SkillDuration:
 				SkillDuration = SkillDuration.CombineWith(StatMod);
-				break;
-			case PlayerStats.SkillCooldown:
-				SkillCoolDown = SkillCoolDown.CombineWith(StatMod);
 				break;
 			case PlayerStats.DebuffDurationInflict:
 				DebuffTime = DebuffTime.CombineWith(StatMod);

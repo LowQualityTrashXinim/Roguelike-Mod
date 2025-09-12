@@ -65,9 +65,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				case ItemID.TrueExcalibur:
 					item.damage += 15;
 					break;
-				case ItemID.TheUndertaker:
-					item.autoReuse = true;
-					break;
 				case ItemID.PlatinumBow:
 				case ItemID.GoldBow:
 					item.useTime = item.useAnimation = 42;
@@ -218,9 +215,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
 			}
-			else if (item.type == ItemID.TheUndertaker) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_TheUndertaker", "Hitting your shot heal you for 1hp"));
-			}
 			else if (item.type == ItemID.NightVisionHelmet) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases range damage by 1.1x"));
 			}
@@ -283,7 +277,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			OnHitNPC_WoodBow(proj, target);
-			OnHitNPC_TheUnderTaker(proj, target);
 			OnHitNPC_Boomerang(proj, target);
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
@@ -292,12 +285,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.BorealWoodBow && Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(2));
-			}
-		}
-		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {
-			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
-				Player.Heal(1);
-				npc.AddBuff(ModContent.BuffType<CrimsonAbsorbtion>(), 240);
 			}
 		}
 		private void OnHitNPC_Boomerang(Projectile proj, NPC npc) {

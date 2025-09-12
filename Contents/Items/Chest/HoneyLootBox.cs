@@ -52,28 +52,7 @@ namespace Roguelike.Contents.Items.Chest
 		//public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (player.IsDebugPlayer()) {
-				GetArmorForPlayer(entitySource, player);
-			}
-			for (int i = 0; i < 3; i++) {
-				switch (Main.rand.Next(30)) {
-					case 0:
-						player.QuickSpawnItem(entitySource, ItemID.BeeCloak);
-						break;
-					case 2:
-						player.QuickSpawnItem(entitySource, ItemID.HoneyedGoggles);
-						break;
-					case 5:
-						player.QuickSpawnItem(entitySource, ItemID.QueenBeeBossBag);
-						break;
-					case 10:
-						player.QuickSpawnItem(entitySource, ItemID.HoneyBalloon);
-						break;
-					case 15:
-						player.QuickSpawnItem(entitySource, ItemID.SweetheartNecklace);
-						break;
-				}
-			}
+			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			GetWeapon(entitySource, player, 5);
 			player.QuickSpawnItem(entitySource, GetPotion(), 3);
 		}
