@@ -145,3 +145,10 @@ Version 0.0.1:
 144/ Deleted 3 relic templates (skill cool down, gun fire rate and static defenses).
 145/ Removed Static Defenses stat and Skill cool down stat.
 146/ Skill's stats adjustment and some minor skill effect adjustment.
+147/ Added a new skill classification: Skill empowered.
+148/ Update a lot of skill classification.
+149/ Fixed a problem where opening skill UI while activate results in adding active skills infinitely.
+150/ Added buff texture for Vortex Blessing.
+151/ Added debuff texture.
+152/ Added Unforgiving.
+153/ Made projectile critical always crit system more aligned with the mod current always crit system.

@@ -25,7 +25,7 @@ public class Roguelike_Musket : GlobalItem {
 		Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 		player.GetModPlayer<Roguelike_Musket_ModPlayer>().Timer = -player.itemAnimationMax;
 		if (timer >= 60) {
-			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().SetCrit = true;
+			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().SetCrit++;
 			if (timer >= 180) {
 				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CritDamage += 1;
 			}

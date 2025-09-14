@@ -178,7 +178,6 @@ public class PlayerStatsHandle : ModPlayer {
 	/// Check whenever or not the current hit is critical or not.
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
-
 	/// <summary>
 	/// Use this if you want to make a series of item that shoot out all of the effect in the same timeline
 	/// </summary>
@@ -244,6 +243,12 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SourceDamage.CombineWith(DirectItemDamage);
+		if (AlwaysCritValue > 0) {
+			modifiers.SetCrit();
+		}
+		else if (AlwaysCritValue < 0) {
+			modifiers.DisableCrit();
+		}
 	}
 	public StatModifier UpdateCritDamage = new StatModifier();
 	public StatModifier Melee_CritDamage = StatModifier.Default;
@@ -299,11 +304,16 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
-
-		if (AlwaysCritValue > 0) {
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		int value = AlwaysCritValue;
+		if (proj.TryGetGlobalProjectile(out RoguelikeGlobalProjectile globalProj)) {
+			value += globalProj.SetCrit;
+		}
+		if (value > 0) {
 			modifiers.SetCrit();
 		}
-		else if (AlwaysCritValue < 0) {
+		else if (value < 0) {
 			modifiers.DisableCrit();
 		}
 	}

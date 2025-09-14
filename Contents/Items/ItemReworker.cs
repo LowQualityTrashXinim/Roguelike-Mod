@@ -11,4 +11,3 @@ public abstract class ItemReworker : ModItem {
 		Item.CloneDefaults(VanillaItemType);
 	}
 }
-

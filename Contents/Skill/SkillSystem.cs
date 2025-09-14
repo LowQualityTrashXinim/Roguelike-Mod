@@ -32,6 +32,7 @@ public static class SkillTypeID {
 	public const byte Skill_Projectile = 1;
 	public const byte Skill_Stats = 2;
 	public const byte Skill_Summon = 3;
+	public const byte Skill_Empowered = 4;
 }
 public abstract class ModSkill : ModType {
 	public static int GetSkillType<T>() where T : ModSkill {
@@ -312,7 +313,7 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		return (int)(energy * percentageEnergy) + seperateEnergy;
 	}
-	public void SkillStatTotal(out int energy, out int duration, out int cooldown) {
+	public void SkillStatTotal(bool simulated, out int energy, out int duration, out int cooldown) {
 		int[] active = GetCurrentActiveSkillHolder();
 		energy = 0;
 		duration = 0;
@@ -335,7 +336,8 @@ public class SkillHandlePlayer : ModPlayer {
 			percentageEnergy += skill.EnergyRequirePercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
-			activeskill.Add(skill);
+			if (!simulated)
+				activeskill.Add(skill);
 		}
 		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
@@ -476,9 +478,9 @@ public class SkillHandlePlayer : ModPlayer {
 		SkillInventory[whoAmI] = -1;
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
-		if (SkillModSystem.SkillActivation.JustReleased) {
+		if (SkillModSystem.SkillActivation.JustReleased && !Activate) {
 			Activate = true;
-			SkillStatTotal(out int energy, out int duration, out int cooldown);
+			SkillStatTotal(false, out int energy, out int duration, out int cooldown);
 			Duration += duration;
 			MaximumDuration = 0;
 			if (energy > Energy) {
@@ -751,7 +753,7 @@ internal class SkillUI : UIState {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		SkillHandlePlayer modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
+		modplayer.SkillStatTotal(true,out int energy, out int duration, out int cooldown);
 		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
 		durationText.SetText($"Duration = {MathF.Round(modplayer.MaximumDuration / 60f, 2)}s");

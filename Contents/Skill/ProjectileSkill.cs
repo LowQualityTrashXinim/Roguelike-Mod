@@ -161,10 +161,10 @@ public class StarFury : ModSkill {
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 15 != 0) {
+		if (modplayer.Duration % 5 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(SkillDamage(player, 1000));
+		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(SkillDamage(player, 10));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 		Vector2 position = player.Center.Add(Main.rand.Next(-200, 200), 1000);
 		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 20f;

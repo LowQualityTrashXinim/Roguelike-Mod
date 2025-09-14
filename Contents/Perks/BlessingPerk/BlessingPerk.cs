@@ -100,7 +100,6 @@ public class BlessingOfVortex : Perk {
 	}
 }
 public class Buff_VortexBlessing : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
 	public override void Update(Player player, ref int buffIndex) {
 		BlessingOfVortexPlayer vortex = player.GetModPlayer<BlessingOfVortexPlayer>();
 		player.ModPlayerStats().AddStatsToPlayer(PlayerStats.RangeDMG, 1 + .05f * vortex.VortexStack);

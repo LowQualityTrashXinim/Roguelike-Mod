@@ -118,7 +118,7 @@ RapidHealing: {
 
 StarFury: {
 	DisplayName: Starfall Blast
-	Description: Shoots down a Fallen Star every 1.5s seconds towards your cursor, dealing 1000 damage
+	Description: Rain down Star Wrath
 }
 
 WoodSwordSpirit: {

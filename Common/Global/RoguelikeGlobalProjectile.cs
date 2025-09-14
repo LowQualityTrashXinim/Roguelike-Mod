@@ -14,11 +14,10 @@ using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 
-
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
-
+	public bool CanThisProjectileBeDevoured = true;
 	public int Source_ItemType = -1;
 	public int Source_ProjectileType = -1;
 	public string Source_CustomContextInfo = string.Empty;
@@ -31,7 +30,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public float VelocityMultiplier = 1f;
 	public float CritDamage = 0;
 	public int EnergyRegainOnHit = 0;
-	public bool? SetCrit = null;
+	public int SetCrit = 0;
 	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>
@@ -144,14 +143,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		Player player = Main.player[projectile.owner];
 		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
 		modifiers.CritDamage += CritDamage;
-		if(SetCrit != null) {
-			if(SetCrit == true) {
-				modifiers.SetCrit();
-			}
-			else {
-				modifiers.DisableCrit();
-			}
-		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		var player = Main.player[projectile.owner];
