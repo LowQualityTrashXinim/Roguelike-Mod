@@ -7,6 +7,7 @@
 		public const string WHITEDOT = CommonTextureStringPattern + "WhiteDot";
 		public const string MISSINGTEXTUREPOTION = CommonTextureStringPattern + "MissingTexturePotion";
 		public const string EMPTYBUFF = CommonTextureStringPattern + "EmptyBuff";
+		public const string EMPTYDEBUFF = CommonTextureStringPattern + "EmptyDeBuff";
 		public const string PLACEHOLDERCHEST = CommonTextureStringPattern + "PlaceHolderTreasureChest";
 		public const string WHITEBALL = CommonTextureStringPattern + "WhiteBall";
 		public const string DIAMONDSWOTAFFORB = CommonTextureStringPattern + "DiamondSwotaffOrb";

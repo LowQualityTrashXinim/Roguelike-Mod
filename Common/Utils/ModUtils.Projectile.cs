@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Texture;
 using System;
@@ -57,6 +58,9 @@ namespace Roguelike.Common.Utils {
 			origin = texture.Size() * .5f;
 		}
 		public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
 			SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {
@@ -78,6 +82,9 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 		public static void DrawTrailWithoutAlpha(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
 			SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {
@@ -97,6 +104,9 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 		public static void DrawTrailWithoutColorAdjustment(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
 			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {
 				for (int k = 0; k < projectile.oldPos.Length; k++) {

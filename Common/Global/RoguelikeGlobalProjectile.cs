@@ -31,6 +31,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public float CritDamage = 0;
 	public int EnergyRegainOnHit = 0;
 	public int SetCrit = 0;
+	public int CustomDataValue = 0;
 	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>

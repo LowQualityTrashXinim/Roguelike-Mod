@@ -383,6 +383,9 @@ Mods: {
 			Special_ThrowShortSwordProjectile.DisplayName: Special_ Throw Short Sword Projectile
 			RoguelikeOverhaul_ShortSwordProjectile.DisplayName: Roguelike Overhaul_ Short Sword Projectile
 			Roguelike_RedRyder_ModProjectile.DisplayName: Roguelike_ Red Ryder_ Mod Projectile
+			Unforgiving_BlastWave.DisplayName: Unforgiving_ Blast Wave
+			Unforgiving_Bolt.DisplayName: Unforgiving_ Bolt
+			Roguelike_SpiritFlame.DisplayName: Roguelike_ Spirit Flame
 		}
 
 		NPCs: {
@@ -3080,11 +3083,35 @@ Mods: {
 				DisplayName: It is show time!
 				Description: Massively increases damage of red ryder
 			}
+
+			Unforgiving_BoltFury: {
+				DisplayName: Unforgiving_ Bolt Fury
+				Description: Mods.Roguelike.Buffs.Unforgiving_BoltFury.Description
+			}
+
+			Unforgiving_Curse: {
+				DisplayName: Unforgiving_ Curse
+				Description: Mods.Roguelike.Buffs.Unforgiving_Curse.Description
+			}
+
+			Unforgiving_Mark: {
+				DisplayName: Unforgiving_ Mark
+				Description: Mods.Roguelike.Buffs.Unforgiving_Mark.Description
+			}
 		}
 
 		Configs: {
 			RogueLikeConfig: {
 				DisplayName: Roguelike Mod Config
+
+				Headers: {
+					QoLHeader: Quality of Life
+					LuckDepartmentHeader: Luck Department
+					BaseGameHeader: Base Game
+					GameModeHeader: Gamemodes
+					DebugHeader: Debug
+					GameHeader: Game option
+				}
 
 				BossRushMode: {
 					Label: Boss Rush Mode
@@ -3114,15 +3141,6 @@ Mods: {
 				AutoRandomizeCharacter: {
 					Label: Auto randomize character appearance
 					Tooltip: This will automatically change character apprearance
-				}
-
-				Headers: {
-					QoLHeader: Quality of Life
-					LuckDepartmentHeader: Luck Department
-					BaseGameHeader: Base Game
-					GameModeHeader: Gamemodes
-					DebugHeader: Debug
-					GameHeader: Game option
 				}
 
 				RareSpoils: {
@@ -3206,9 +3224,14 @@ Mods: {
 						'''
 				}
 
-				Nightmare: {
-					Label: Nightmare
-					Tooltip: ""
+				LowerQuality: {
+					Label: Lower visual quality
+					Tooltip:
+						'''
+						Enable this if you are experiencing lag or is going toward late endgame
+						This will disable a lot of predraw call from mainly projectile
+						THIS won't help you if you are spawning more than 1000 projectiles per tick
+						'''
 				}
 			}
 		}

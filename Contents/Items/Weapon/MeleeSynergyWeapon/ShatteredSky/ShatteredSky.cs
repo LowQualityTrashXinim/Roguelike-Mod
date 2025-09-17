@@ -1,21 +1,13 @@
-﻿
-using Microsoft.Xna.Framework;
-using Mono.Cecil;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.ShatteredSky;
 public class ShatteredSky : SynergyModItem {
@@ -28,6 +20,7 @@ public class ShatteredSky : SynergyModItem {
 		meleeItem.CircleSwingAmount = 2.6f;
 		meleeItem.DistanceThrust = 150;
 		meleeItem.OffsetThrust = 20;
+		meleeItem.Ignore_AttackSpeed = true;
 	}
 	int ComboCounter = 0;
 	int RealCounter = 0;

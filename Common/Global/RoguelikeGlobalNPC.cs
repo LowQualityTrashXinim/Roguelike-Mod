@@ -1,22 +1,24 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using System;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent.ItemDropRules;
 using Roguelike.Common.General;
-using System.Collections.Generic;
-using Terraria.Audio;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
-using Roguelike.Contents.Items.Consumable.Throwable;
-using Roguelike.Contents.Transfixion.Artifacts;
-using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.RelicItem.RelicSetContent;
+using Roguelike.Contents.Items.Consumable.Throwable;
 using Roguelike.Contents.Items.NoneSynergy;
+using Roguelike.Contents.Items.RelicItem.RelicSetContent;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
+using Roguelike.Contents.Items.Weapon.UnfinishedItem;
+using Roguelike.Contents.Perks.BlessingPerk;
+using Roguelike.Contents.Transfixion.Artifacts;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -86,7 +88,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}
-		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye 
+		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye
 			&& npc.type != NPCID.MoonLordCore && npc.type != NPCID.MoonLordHand && npc.type != NPCID.MoonLordHead && npc.type != NPCID.MoonLordLeechBlob) {
 			if (!NPC_SpecialException) {
 				npc.lifeMax = (int)(BossHP * GetValueMulti());
@@ -96,7 +98,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			}
 		}
 		else {
-			npc.lifeMax += (int)(npc.lifeMax  * GetValueMulti() * .1f);
+			npc.lifeMax += (int)(npc.lifeMax * GetValueMulti() * .1f);
 			npc.life = npc.lifeMax;
 			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
 			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
@@ -199,6 +201,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		return base.PreAI(npc);
 	}
 	public override void PostAI(NPC npc) {
+		if (npc.HasBuff<Unforgiving_Curse>()) {
+			if (Main.rand.NextBool(10)) {
+				Projectile.NewProjectile(new EntitySource_Misc("UnforgivingCurse"), npc.Center + Main.rand.NextVector2CircularEdge(100 + npc.width, 100 + npc.height), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), 5 + npc.lifeMax / 10, 1f);
+			}
+		}
 		if (VelocityMultiplier != 0) {
 			npc.velocity *= VelocityMultiplier + static_velocityMultiplier - 1;
 		}
