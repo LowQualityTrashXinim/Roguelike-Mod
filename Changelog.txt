@@ -158,3 +158,4 @@ Version 0.0.1:
 157/ Implemented outro attack function for synergy mod item.
 158/ Added in "CustomDataValue" for projectile which basically act like ai[3].
 159/ Added in a weapon guide value and make it functional.
+160/ Added in a sneaky secret for chaotic prefix

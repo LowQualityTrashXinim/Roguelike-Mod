@@ -341,7 +341,9 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public void Prefix_UnstableEffect(Item item) {
 			item.SetDefaults(Main.rand.NextFromHashSet(ModItemLib.List_Weapon).type);
-			item.prefix = ModContent.PrefixType<Unstable>();
+			if (Main.rand.NextBool(1000)) {
+				item.prefix = ModContent.PrefixType<Unstable>();
+			}
 		}
 		public override void PostUpdate(Item item) {
 			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
