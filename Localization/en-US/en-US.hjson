@@ -2213,7 +2213,29 @@ Mods: {
 
 			Unforgiving: {
 				DisplayName: Unforgiving
-				Tooltip: ""
+				Tooltip:
+					'''
+					 "A gun and a bow at the same time, master craft of range combat"
+					Every 5th attack of the weapon will switch mode
+					'''
+				Guide:
+					'''
+					Gun mode : shoot a dark bolt deal 300% of weapon damage (CD: 1s)
+					Bow mode : attack is accompany with 3 dark wisps (CD: 1s)
+					Every attack have a chance to inflict shadow flame debuff
+
+					At 25th attacks, releases shadow homing bolts that deal 50% of weapon damage which mark target that got hit.
+					On reapplying shadow flame debuff onto marked enemy will creates dark wisp around the target.
+
+					Wait for 2s to enhance next attack depending on which mode weapon are currently in.
+					Increases damage by 50% and 100% chance to inflict shadow flame
+					Bow mode : Arrow are imbues with special curse that constantly spawn dark wisp for 1s.
+					Gun mode : Shoot arch of 4 smaller dark bolt deal 150% of weapon damage.
+
+					Wait additional 1s to releases dark wave dealing 200% weapon damage
+
+					On switching to other weapon after dealing 34000 damage, you shoot dark bolt and spawn dark wisp for 6s
+					'''
 			}
 
 			BundleOfGrenade: {
@@ -3097,6 +3119,11 @@ Mods: {
 			Unforgiving_Mark: {
 				DisplayName: Unforgiving_ Mark
 				Description: Mods.Roguelike.Buffs.Unforgiving_Mark.Description
+			}
+
+			Unforgiving_OutroAttack: {
+				DisplayName: Unforgiving_ Outro Attack
+				Description: Mods.Roguelike.Buffs.Unforgiving_OutroAttack.Description
 			}
 		}
 

@@ -13,6 +13,7 @@ using Roguelike.Contents.Items.Consumable.Ammo;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
+using Roguelike.Contents.Items.Weapon.UnfinishedItem;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -92,6 +93,17 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		return base.PreAI(projectile);
 	}
 	public override void PostAI(Projectile projectile) {
+		if (projectile.type == ProjectileID.ShadowFlameArrow && CustomDataValue == 1) {
+			for (int i = 0; i < 2; i++) {
+				Dust flame = Dust.NewDustDirect(projectile.Center, 0, 0, DustID.Shadowflame);
+				flame.velocity = projectile.velocity * -.1f;
+				flame.position += Main.rand.NextVector2Circular(8, 8);
+				flame.scale = Main.rand.NextFloat(.8f, 1.1f);
+			}
+			if (projectile.timeLeft % 10 == 0) {
+				Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center + Main.rand.NextVector2Circular(12, 12), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), projectile.damage / 10 + 5, 2, projectile.owner);
+			}
+		}
 		if (VelocityMultiplier != 0) {
 			projectile.velocity *= VelocityMultiplier;
 		}

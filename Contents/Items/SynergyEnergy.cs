@@ -2,13 +2,12 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Systems;
- 
+
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items
-{
+namespace Roguelike.Contents.Items {
 	internal class SynergyEnergy : ModItem {
 		public override void SetDefaults() {
 			Item.rare = ItemRarityID.Red;
@@ -33,23 +32,31 @@ namespace Roguelike.Contents.Items
 	}
 	public class SynergyModPlayer : ModPlayer {
 		public int ItemTypeCurrent = 0;
+		public Item itemOld = null;
 		public int ItemTypeOld = 0;
 		public bool acc_SynergyEnergy = false;
 		public bool IsTheItemInQuestionASynergyItem = false;
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
 			Item item = Player.HeldItem;
+			IsTheItemInQuestionASynergyItem = item.ModItem is SynergyModItem;
+			if(item.type == ItemID.None) {
+				return;
+			}
 			if (ItemTypeCurrent != item.type) {
 				ItemTypeCurrent = item.type;
+				itemOld = item;
 			}
 			if (Player.itemAnimation == 1) {
 				ItemTypeOld = ItemTypeCurrent;
 			}
-			if (item.ModItem is SynergyModItem) {
-				IsTheItemInQuestionASynergyItem = true;
-			}
-			else {
-				IsTheItemInQuestionASynergyItem = false;
+		}
+		public override void UpdateEquips() {
+			if (Player.itemAnimation == 1) {
+				if (IsTheItemInQuestionASynergyItem && ItemTypeCurrent != ItemTypeOld) {
+					SynergyModItem moditem = (SynergyModItem)itemOld.ModItem;
+					moditem.OutroAttack(Player);
+				}
 			}
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;

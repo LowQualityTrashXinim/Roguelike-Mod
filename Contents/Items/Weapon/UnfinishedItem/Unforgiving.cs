@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,7 +15,7 @@ namespace Roguelike.Contents.Items.Weapon.UnfinishedItem;
 public class Unforgiving : SynergyModItem {
 	public override string Texture => ModTexture.Get_MissingTexture("Synergy");
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 24, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
+		Item.BossRushDefaultRange(32, 32, 34, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
 	}
 	public override bool CanShoot(Player player) {
 		if (GunMode) {
@@ -74,7 +76,7 @@ public class Unforgiving : SynergyModItem {
 			if (GunMode) {
 				proj.damage = (int)(proj.damage * 1.5f);
 				for (int i = 0; i < 4; i++) {
-					Projectile blackbolt = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(4, 45, i), ProjectileID.BlackBolt, damage * 2, knockback, player.whoAmI);
+					Projectile blackbolt = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(4, 45, i), ProjectileID.BlackBolt, (int)(damage * 1.5f), knockback, player.whoAmI);
 					blackbolt.scale = .56f;
 					blackbolt.extraUpdates += 3;
 				}
@@ -83,6 +85,9 @@ public class Unforgiving : SynergyModItem {
 				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CustomDataValue = 1;
 				proj.extraUpdates += 2;
 			}
+		}
+		if (counter >= 180) {
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), (int)(damage * 2), 0, player.whoAmI);
 		}
 		if (GlobalCounter % 5 == 0) {
 			GunMode = !GunMode;
@@ -97,10 +102,16 @@ public class Unforgiving : SynergyModItem {
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
 			}
 			else {
-				for (int i = 0; i < 5; i++) {
-					Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, player.whoAmI);
+				Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+				for (int i = 0; i < 3; i++) {
+					Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, player.whoAmI);
 				}
 			}
+		}
+	}
+	public override void OutroAttack(Player player) {
+		if (player.GetModPlayer<Unforgiving_ModPlayer>().CanActivateOutroAttack()) {
+			player.AddBuff<Unforgiving_OutroAttack>(ModUtils.ToSecond(6));
 		}
 	}
 	public override void AddRecipes() {
@@ -110,10 +121,18 @@ public class Unforgiving : SynergyModItem {
 			.Register();
 	}
 }
+public class Unforgiving_OutroAttack : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+}
 public class Roguelike_SpiritFlame : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.SpiritFlame);
-	public override void SetDefaults() {
+	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 4;
+	}
+	public override void SetDefaults() {
 		Projectile.CloneDefaults(ProjectileID.SpiritFlame);
 		Projectile.aiStyle = -1;
 		Projectile.usesLocalNPCImmunity = true;
@@ -200,16 +219,24 @@ public class Roguelike_SpiritFlame : ModProjectile {
 public class Unforgiving_ModPlayer : ModPlayer {
 	public int Counter = 0;
 	public int CD = 0;
-	public int Duration25th = 0;
-	public int DamageBucket = 0;
-	int DamageBucketCap = 0;
 	public bool Unforgiving_GunMode = false;
 	public int AttackCD = 0;
+	const int AttackBucketCap = 34000;
+	int AttackBucket = 0;
+	bool OutroAttack = false;
+	public bool CanActivateOutroAttack() {
+		if (OutroAttack) {
+			OutroAttack = false;
+			AttackBucket = 0;
+			return true;
+		}
+		return false;
+	}
 	public override void ResetEffects() {
 		AttackCD = ModUtils.CountDown(AttackCD);
 		CD = ModUtils.CountDown(CD);
-		if (++Counter >= 270) {
-			Counter = 270;
+		if (++Counter >= 180) {
+			Counter = 180;
 		}
 		if (AttackCD > 0) {
 			return;
@@ -218,31 +245,37 @@ public class Unforgiving_ModPlayer : ModPlayer {
 	public override void UpdateEquips() {
 		if (Player.HasBuff<Unforgiving_BoltFury>()) {
 			int bufftime = Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<Unforgiving_BoltFury>())];
-			if (bufftime % 5 == 0) {
-				Vector2 newPos = Player.Center + Main.rand.NextVector2CircularEdge(50, 50) * Main.rand.NextFloat(.9f, 1.4f);
-				Vector2 vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero);
+			if (bufftime % 20 == 0) {
+				Vector2 newPos = Player.Center + (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * 50 + Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.9f, 1.4f);
+				Vector2 vel = (newPos - Player.Center).SafeNormalize(Vector2.Zero) * 2;
 				int damage = 5;
 				if (Player.IsHeldingModItem<Unforgiving>()) {
 					damage += Player.GetWeaponDamage(Player.HeldItem) / 2;
 				}
 				Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem),
-					newPos, Main.rand.NextVector2CircularEdge(2, 2) + vel, ModContent.ProjectileType<Unforgiving_Bolt>(), damage, 3f, Player.whoAmI);
+					newPos, Main.rand.NextVector2CircularEdge(1, 1) + vel, ModContent.ProjectileType<Unforgiving_Bolt>(), damage, 3f, Player.whoAmI);
 			}
+		}
+	}
+	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Player.HasBuff<Unforgiving_OutroAttack>()) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, Player.whoAmI);
+			Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, Player.whoAmI);
+		}
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		AttackBucket = Math.Clamp(AttackBucket + hit.Damage, 0, int.MaxValue);
+		if (AttackBucket >= AttackBucketCap) {
+			OutroAttack = true;
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.Check_ItemTypeSource<Unforgiving>()) {
-			int value = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CustomDataValue;
-			if (Main.rand.NextBool(4) || Counter >= 120 && Unforgiving_GunMode) {
+			if (Main.rand.NextBool(4) || Counter >= 120) {
 				int time = ModUtils.ToSecond(Main.rand.Next(1, 3));
 				target.AddBuff(BuffID.ShadowFlame, time);
-			}
-			if (DamageBucketCap == 0) {
-				DamageBucketCap = hit.Damage * 10;
-			}
-			DamageBucket += hit.Damage;
-			if (value == 1) {
-				target.AddBuff<Unforgiving_Curse>(ModUtils.ToSecond(Main.rand.Next(1, 5)));
 			}
 		}
 		if (proj.type == ModContent.ProjectileType<Unforgiving_Bolt>() && target.HasBuff(BuffID.ShadowFlame)) {
@@ -290,9 +323,17 @@ public class Unforgiving_Bolt : ModProjectile {
 		if (InitialMousePos == Vector2.Zero) {
 			return;
 		}
+		if (++Projectile.ai[2] < 300) {
+			Projectile.velocity *= .99f;
+			return;
+		}
 		NPC npc = getNPC();
+		Projectile.ai[1] += .001f;
+		if (Projectile.ai[1] > 2) {
+			Projectile.ai[1] = 2;
+		}
 		if (npc == null) {
-			Projectile.velocity += (InitialMousePos - Projectile.Center) * .1f;
+			Projectile.velocity = (InitialMousePos - Projectile.Center) * Projectile.ai[1];
 			if (Projectile.Center.LookForHostileNPC(out NPC target, 600)) {
 				Projectile.ai[0] = target.whoAmI;
 			}
@@ -301,12 +342,6 @@ public class Unforgiving_Bolt : ModProjectile {
 			}
 		}
 		else {
-			if (Projectile.ai[1] == 0) {
-				Projectile.ai[1] = Projectile.velocity.Length();
-			}
-			if (Projectile.ai[1] > 2) {
-				Projectile.ai[1] = 2;
-			}
 			Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * Projectile.ai[1];
 		}
 		Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
@@ -328,20 +363,53 @@ public class Unforgiving_Mark : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 }
-public class Unforgiving_Curse : ModBuff {
-	public override string Texture => ModTexture.EMPTYDEBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultDeBuff();
-	}
-}
 public class Unforgiving_BlastWave : ModProjectile {
-	public override string Texture => ModTexture.SMALLWHITEBALL;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
+		ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+	}
 	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 15;
+		Projectile.width = 68;
+		Projectile.height = 112;
 		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.DamageType = DamageClass.Melee;
 		Projectile.tileCollide = false;
-		Projectile.penetrate = 1;
-		Projectile.timeLeft = 6000;
+		Projectile.timeLeft = 1250;
+		Projectile.light = 0.5f;
 		Projectile.extraUpdates = 10;
+		Projectile.alpha = 255;
+	}
+	public override void AI() {
+		if (Projectile.timeLeft <= 75) {
+			Projectile.velocity *= .96f;
+			Projectile.alpha = Math.Clamp(Projectile.alpha - 3, 0, 255);
+		}
+		Projectile.rotation = Projectile.velocity.ToRotation();
+
+		var BetterTop = new Vector2(Projectile.Center.X, Projectile.Center.Y);
+		Dust dust = Dust.NewDustDirect(BetterTop, 0, 0, DustID.Shadowflame, Projectile.velocity.X, 0, 0, Color.White, Main.rand.NextFloat(0.55f, 1f));
+		dust.position += Main.rand.NextVector2Circular(Projectile.width, Projectile.width);
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Projectile.damage > 10) {
+			Projectile.damage = (int)(Projectile.damage * .95f);
+		}
+		else {
+			Projectile.damage = 10;
+		}
+		target.immune[Projectile.owner] = 2;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+		var texture = TextureAssets.Projectile[Projectile.type].Value;
+		float percentageAlpha = Math.Clamp(Projectile.alpha / 255f, 0, 1f);
+		var origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+		for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
+			var drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + new Vector2(Projectile.gfxOffY);
+			var color = new Color(0, 0, 0, (1 - k / 100f));
+			Main.EntitySpriteDraw(texture, drawPos, null, color * percentageAlpha, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		}
+		return false;
 	}
 }

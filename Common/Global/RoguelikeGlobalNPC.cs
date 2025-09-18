@@ -201,11 +201,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		return base.PreAI(npc);
 	}
 	public override void PostAI(NPC npc) {
-		if (npc.HasBuff<Unforgiving_Curse>()) {
-			if (Main.rand.NextBool(10)) {
-				Projectile.NewProjectile(new EntitySource_Misc("UnforgivingCurse"), npc.Center + Main.rand.NextVector2CircularEdge(100 + npc.width, 100 + npc.height), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), 5 + npc.lifeMax / 10, 1f);
-			}
-		}
 		if (VelocityMultiplier != 0) {
 			npc.velocity *= VelocityMultiplier + static_velocityMultiplier - 1;
 		}

@@ -199,6 +199,11 @@ namespace Roguelike.Common.Utils {
 				globalitem.AdvancedBuffItem = Advanced;
 			}
 		}
+		public static void Set_RequiredWeaponGuide(this Item item, bool Guide = true) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.RequiredWeaponGuide = Guide;
+			}
+		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.CriticalDamage = critDmg;

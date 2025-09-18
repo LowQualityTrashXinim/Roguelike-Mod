@@ -233,6 +233,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public override bool InstancePerEntity => true;
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
+		public bool RequiredWeaponGuide = false;
 		public bool AdvancedBuffItem = false;
 		public bool OverrideVanillaEffect = false;
 		public int Counter = 0;
@@ -297,6 +298,11 @@ namespace Roguelike.Contents.Items.Weapon {
 					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
+			if (RequiredWeaponGuide && item.ModItem != null) {
+				if (!moddedplayer.Shift_Option()) {
+					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for weapon guide]") { OverrideColor = Color.Gray });
+				}
+			}
 			if (AdvancedBuffItem && NameLine != null) {
 				NameLine.Text += " [Advanced]";
 			}
@@ -352,14 +358,22 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (item.ModItem.Mod.Name != Mod.Name) {
 				return true;
 			}
-			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
-			if (ExtraInfo && item.ModItem != null)
+			if (item.ModItem != null) {
+				string value = null;
+				if (ExtraInfo) {
+					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
+				}
+				if (RequiredWeaponGuide) {
+					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.Guide");
+				}
+				if (value == null) {
+					return base.PreDrawTooltip(item, lines, ref x, ref y); ;
+				}
+				ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 				if (moddedplayer.Shift_Option()) {
 					float width;
 					float height = -16;
 					Vector2 pos;
-					string value = $"Mods.Roguelike.Items.{item.ModItem.Name}.ExtraInfo";
-					string ExtraInfo = Language.GetTextValue(value);
 					DynamicSpriteFont font = FontAssets.MouseText.Value;
 					if (Main.MouseScreen.X < Main.screenWidth / 2) {
 						string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
@@ -367,15 +381,16 @@ namespace Roguelike.Contents.Items.Weapon {
 						pos = new Vector2(x, y) + new Vector2(width + 30, 0);
 					}
 					else {
-						width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
+						width = ChatManager.GetStringSize(font, value, Vector2.One).X + 20;
 						pos = new Vector2(x, y) - new Vector2(width + 30, 0);
 					}
-					width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
-					height += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
+					width = ChatManager.GetStringSize(font, value, Vector2.One).X + 20;
+					height += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
 					Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
-					Utils.DrawBorderString(Main.spriteBatch, ExtraInfo, pos, Color.White);
-					pos.Y += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
+					Utils.DrawBorderString(Main.spriteBatch, value, pos, Color.White);
+					pos.Y += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
 				}
+			}
 			return base.PreDrawTooltip(item, lines, ref x, ref y);
 		}
 		public override bool? UseItem(Item item, Player player) {
