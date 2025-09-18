@@ -341,7 +341,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public void Prefix_UnstableEffect(Item item) {
 			item.SetDefaults(Main.rand.NextFromHashSet(ModItemLib.List_Weapon).type);
-			if (Main.rand.NextBool(1000)) {
+			if (!Main.rand.NextBool(1000)) {
 				item.prefix = ModContent.PrefixType<Unstable>();
 			}
 		}
