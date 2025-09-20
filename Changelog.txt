@@ -159,3 +159,4 @@ Version 0.0.1:
 158/ Added in "CustomDataValue" for projectile which basically act like ai[3].
 159/ Added in a weapon guide value and make it functional.
 160/ Added in a sneaky secret for chaotic prefix
+161/ Minor buff to The Underdog (34 -> 24 use time) and The Underdog have life steal effect when under 25% health

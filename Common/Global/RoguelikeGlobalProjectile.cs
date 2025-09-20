@@ -13,7 +13,7 @@ using Roguelike.Contents.Items.Consumable.Ammo;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
-using Roguelike.Contents.Items.Weapon.UnfinishedItem;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {

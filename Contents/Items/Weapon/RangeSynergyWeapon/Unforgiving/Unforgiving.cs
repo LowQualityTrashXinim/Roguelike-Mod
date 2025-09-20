@@ -5,17 +5,22 @@ using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.UnfinishedItem;
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 
 public class Unforgiving : SynergyModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("Synergy");
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 34, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
+		Item.BossRushDefaultRange(114, 46, 34, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
+		Item.Set_RequiredWeaponGuide();
+		Item.scale = .67f;
+	}
+	public override Vector2? HoldoutOffset() {
+		return new Vector2(-10, 0);
 	}
 	public override bool CanShoot(Player player) {
 		if (GunMode) {
@@ -24,7 +29,7 @@ public class Unforgiving : SynergyModItem {
 		else {
 			Item.useAmmo = AmmoID.Arrow;
 		}
-		Item ammo = player.ChooseAmmo(Item);
+		var ammo = player.ChooseAmmo(Item);
 		if (ammo == null) {
 			GunMode = !GunMode;
 			if (GunMode) {
@@ -52,10 +57,13 @@ public class Unforgiving : SynergyModItem {
 	/// </summary>
 	public bool GunMode = false;
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		position = position.PositionOFFSET(velocity, 50);
 		if (GunMode) {
+			SoundEngine.PlaySound(SoundID.Item11);
 			type = Pre_ShootType;
 		}
 		else {
+			SoundEngine.PlaySound(SoundID.Item5);
 			if (Pre_ShootType == ProjectileID.WoodenArrowFriendly) {
 				type = ProjectileID.ShadowFlameArrow;
 			}
@@ -67,16 +75,16 @@ public class Unforgiving : SynergyModItem {
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
 		GlobalCounter = ModUtils.Safe_SwitchValue(GlobalCounter, 24);
-		Unforgiving_ModPlayer unforgive = player.GetModPlayer<Unforgiving_ModPlayer>();
+		var unforgive = player.GetModPlayer<Unforgiving_ModPlayer>();
 		int counter = unforgive.Counter;
 		unforgive.Counter = -player.itemAnimationMax;
 		int CD = unforgive.CD;
-		Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+		var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 		if (counter >= 120) {
 			if (GunMode) {
 				proj.damage = (int)(proj.damage * 1.5f);
 				for (int i = 0; i < 4; i++) {
-					Projectile blackbolt = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(4, 45, i), ProjectileID.BlackBolt, (int)(damage * 1.5f), knockback, player.whoAmI);
+					var blackbolt = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(4, 45, i), ProjectileID.BlackBolt, (int)(damage * 1.5f), knockback, player.whoAmI);
 					blackbolt.scale = .56f;
 					blackbolt.extraUpdates += 3;
 				}
@@ -87,7 +95,8 @@ public class Unforgiving : SynergyModItem {
 			}
 		}
 		if (counter >= 180) {
-			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), (int)(damage * 2), 0, player.whoAmI);
+			SoundEngine.PlaySound(SoundID.Item60, position);
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), damage * 2, 0, player.whoAmI);
 		}
 		if (GlobalCounter % 5 == 0) {
 			GunMode = !GunMode;
@@ -102,7 +111,7 @@ public class Unforgiving : SynergyModItem {
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
 			}
 			else {
-				Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+				var vel = velocity.SafeNormalize(Vector2.Zero);
 				for (int i = 0; i < 3; i++) {
 					Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, player.whoAmI);
 				}
@@ -118,6 +127,7 @@ public class Unforgiving : SynergyModItem {
 		CreateRecipe()
 			.AddIngredient(ItemID.OnyxBlaster)
 			.AddIngredient(ItemID.ShadowFlameBow)
+			.AddIngredient(ItemID.SpiritFlame)
 			.Register();
 	}
 }
@@ -191,7 +201,7 @@ public class Roguelike_SpiritFlame : ModProjectile {
 		Projectile.ai[1]++;
 		for (float num1060 = 0f; num1060 < 3f; num1060++) {
 			if (Main.rand.Next(3) == 0) {
-				Dust dust61 = Main.dust[Dust.NewDust(Projectile.Center, 0, 0, DustID.Shadowflame, 0f, -2f)];
+				var dust61 = Main.dust[Dust.NewDust(Projectile.Center, 0, 0, DustID.Shadowflame, 0f, -2f)];
 				dust61.position = Projectile.Center + Vector2.UnitY.RotatedBy(num1060 * ((float)Math.PI * 2f) / 3f + Projectile.ai[1]) * 10f;
 				dust61.noGravity = true;
 				dust61.velocity = Projectile.DirectionFrom(dust61.position);
@@ -204,7 +214,7 @@ public class Roguelike_SpiritFlame : ModProjectile {
 		if (npc != null) {
 			if (npc.active) {
 				if (Projectile.Distance(npc.Center) > num1054) {
-					Vector2 vector174 = Projectile.DirectionTo(npc.Center);
+					var vector174 = Projectile.DirectionTo(npc.Center);
 					if (vector174.HasNaNs())
 						vector174 = Vector2.UnitY;
 
@@ -246,8 +256,8 @@ public class Unforgiving_ModPlayer : ModPlayer {
 		if (Player.HasBuff<Unforgiving_BoltFury>()) {
 			int bufftime = Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<Unforgiving_BoltFury>())];
 			if (bufftime % 20 == 0) {
-				Vector2 newPos = Player.Center + (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * 50 + Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.9f, 1.4f);
-				Vector2 vel = (newPos - Player.Center).SafeNormalize(Vector2.Zero) * 2;
+				var newPos = Player.Center + (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * 50 + Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.9f, 1.4f);
+				var vel = (newPos - Player.Center).SafeNormalize(Vector2.Zero) * 2;
 				int damage = 5;
 				if (Player.IsHeldingModItem<Unforgiving>()) {
 					damage += Player.GetWeaponDamage(Player.HeldItem) / 2;
@@ -260,7 +270,7 @@ public class Unforgiving_ModPlayer : ModPlayer {
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (Player.HasBuff<Unforgiving_OutroAttack>()) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, Player.whoAmI);
-			Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+			var vel = velocity.SafeNormalize(Vector2.Zero);
 			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, Player.whoAmI);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -305,7 +315,6 @@ public class Unforgiving_Bolt : ModProjectile {
 	}
 	Vector2 InitialMousePos = Vector2.Zero;
 	public override void OnSpawn(IEntitySource source) {
-		InitialMousePos = Main.MouseWorld;
 		Projectile.ai[0] = -1;
 	}
 	public NPC getNPC() {
@@ -313,32 +322,30 @@ public class Unforgiving_Bolt : ModProjectile {
 		if (whoAmI == -1 || whoAmI >= Main.maxNPCs) {
 			return null;
 		}
-		NPC npc = Main.npc[whoAmI];
+		var npc = Main.npc[whoAmI];
 		if (!npc.active || npc.life <= 0) {
 			return null;
 		}
 		return npc;
 	}
 	public override void AI() {
-		if (InitialMousePos == Vector2.Zero) {
-			return;
-		}
 		if (++Projectile.ai[2] < 300) {
 			Projectile.velocity *= .99f;
 			return;
 		}
-		NPC npc = getNPC();
+		if (InitialMousePos == Vector2.Zero) {
+			InitialMousePos = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+			return;
+		}
+		var npc = getNPC();
 		Projectile.ai[1] += .001f;
 		if (Projectile.ai[1] > 2) {
 			Projectile.ai[1] = 2;
 		}
 		if (npc == null) {
-			Projectile.velocity = (InitialMousePos - Projectile.Center) * Projectile.ai[1];
+			Projectile.velocity = InitialMousePos * Projectile.ai[1];
 			if (Projectile.Center.LookForHostileNPC(out NPC target, 600)) {
 				Projectile.ai[0] = target.whoAmI;
-			}
-			if (Projectile.Center.IsCloseToPosition(InitialMousePos, 30f)) {
-				Projectile.Kill();
 			}
 		}
 		else {
@@ -355,6 +362,11 @@ public class Unforgiving_Bolt : ModProjectile {
 		lightColor.G = 0;
 		Projectile.DrawTrail(lightColor, .01f);
 		return false;
+	}
+	public override void OnKill(int timeLeft) {
+		for (int i = 0; i < 30; i++) {
+
+		}
 	}
 }
 public class Unforgiving_Mark : ModBuff {
@@ -388,7 +400,7 @@ public class Unforgiving_BlastWave : ModProjectile {
 		Projectile.rotation = Projectile.velocity.ToRotation();
 
 		var BetterTop = new Vector2(Projectile.Center.X, Projectile.Center.Y);
-		Dust dust = Dust.NewDustDirect(BetterTop, 0, 0, DustID.Shadowflame, Projectile.velocity.X, 0, 0, Color.White, Main.rand.NextFloat(0.55f, 1f));
+		var dust = Dust.NewDustDirect(BetterTop, 0, 0, DustID.Shadowflame, Projectile.velocity.X, 0, 0, Color.White, Main.rand.NextFloat(0.55f, 1f));
 		dust.position += Main.rand.NextVector2Circular(Projectile.width, Projectile.width);
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
@@ -407,7 +419,7 @@ public class Unforgiving_BlastWave : ModProjectile {
 		var origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 		for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
 			var drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + new Vector2(Projectile.gfxOffY);
-			var color = new Color(0, 0, 0, (1 - k / 100f));
+			var color = new Color(0, 0, 0, 1 - k / 100f);
 			Main.EntitySpriteDraw(texture, drawPos, null, color * percentageAlpha, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		}
 		return false;
