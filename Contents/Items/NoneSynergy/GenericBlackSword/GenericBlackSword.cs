@@ -29,11 +29,11 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 		}
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 50);
+			player.GetModPlayer<GenericBlackSwordPlayer>().VoidCount++;
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			player.GetModPlayer<GenericBlackSwordPlayer>().VoidCount++;
 		}
-
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			var hitboxCenter = new Vector2(hitbox.X, hitbox.Y);
 
@@ -99,11 +99,11 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 			Projectile.light = 1;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
-			Projectile.extraUpdates = 6;
+			Projectile.extraUpdates = 10;
 		}
 		public void Behavior(Player player, float offSet, int Counter, float Distance = 150) {
 			var Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
-			var NewCenter = player.Center + Rotate.RotatedBy(Counter * 0.01f) * Distance;
+			var NewCenter = player.Center + Rotate.RotatedBy(Counter * 0.008f) * Distance;
 			Projectile.Center = NewCenter;
 		}
 		public override void OnSpawn(IEntitySource source) {
@@ -137,7 +137,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 					if (closestNPC != null) {
 						if (Projectile.ai[0] == 150) {
 							Projectile.damage *= 5;
-							Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
+							Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
 							Projectile.timeLeft = 400;
 						}
 						Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
@@ -145,7 +145,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 					else {
 						if (Projectile.ai[0] == 150) {
 							Projectile.damage *= 5;
-							Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
+							Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
 							Projectile.timeLeft = 400;
 						}
 						Projectile.rotation = MathHelper.PiOver4 + (Main.MouseWorld - Projectile.Center).ToRotation();
@@ -253,7 +253,6 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 				Projectile.damage = 10;
 			}
 			Projectile.velocity *= .98f;
-			Main.player[Projectile.owner].GetModPlayer<GenericBlackSwordPlayer>().VoidCount++;
 			target.immune[Projectile.owner] = 7;
 		}
 		public override bool PreDraw(ref Color lightColor) {

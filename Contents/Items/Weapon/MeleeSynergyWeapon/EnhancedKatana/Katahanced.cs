@@ -1,31 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
-{
-	internal class PlatinumKatana : SynergyModItem {
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana {
+	internal class Katahanced : ModItem {
 		public override void SetDefaults() {
-			Item.BossRushSetDefault(50, 52, 43, 4, 20, 20, ItemUseStyleID.Swing, true);
-			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<KatanaSlash>(), 3);
+			Item.BossRushDefaultMeleeShootCustomProjectile(50, 52, 43, 4, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<KatanaSlash>(), 3, true);
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
+			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul melee)) {
+				melee.SwingType = BossRushUseStyle.Swipe;
+				melee.UseSwipeTwo = true;
+			}
 		}
-		int count = 0;
-		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, count);
-			count++;
-			CanShootItem = false;
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			position = position.PositionOFFSET(velocity, Item.Size.Length());
 		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Katana)
-				.AddRecipeGroup("Ore broadsword")
-				.Register();
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, player.GetModPlayer<MeleeOverhaulPlayer>().ComboNumber);
+			return false;
 		}
 	}
 	public class KatanaSlash : ModProjectile {
@@ -43,7 +41,10 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 			Projectile.tileCollide = false;
 			Projectile.friendly = true;
 			Projectile.wet = false;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 20;
 		}
+		Vector2 offset = Vector2.Zero;
 		public override void AI() {
 			SelectFrame();
 			Projectile.ai[1]++;
@@ -52,6 +53,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 			int duration = player.itemAnimationMax;
 			if (Projectile.timeLeft > duration) {
 				Projectile.timeLeft = duration;
+				offset = Projectile.Center - player.MountedCenter;
 			}
 			Projectile.rotation = Projectile.velocity.ToRotation();
 			if (Projectile.ai[0] % 2 == 0) {
@@ -63,7 +65,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
 			float halfDuration = duration * .5f;
 			float progress = (duration - Projectile.timeLeft) / halfDuration;
-			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
+			Projectile.Center = player.MountedCenter + offset + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
 			if (Projectile.ai[1] >= 5) {
 				Projectile.scale -= 0.03f;
 				Projectile.alpha += 20;
@@ -79,7 +81,6 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 			}
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			target.immune[Projectile.owner] = 8;
 		}
 	}
 }

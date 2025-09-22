@@ -7,7 +7,6 @@ using Roguelike.Common.Utils;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Underdog;
-
 class TheUnderdog : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(102, 28, 36, 7f, 24, 24, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);

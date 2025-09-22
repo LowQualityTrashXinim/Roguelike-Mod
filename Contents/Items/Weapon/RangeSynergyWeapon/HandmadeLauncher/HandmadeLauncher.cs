@@ -5,11 +5,10 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using Roguelike.Contents.Items.Weapon;
-
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HandmadeLauncher;
 public class HandmadeLauncher : SynergyModItem {
@@ -50,8 +49,7 @@ public class HandmadeLauncher : SynergyModItem {
 }
 public class LauncherProjectile : ModProjectile {
 	public override void SetDefaults() {
-		Projectile.width = 36;
-		Projectile.height = 36;
+		Projectile.width = Projectile.height = 36;
 		Projectile.penetrate = 1;
 		Projectile.friendly = true;
 		Projectile.tileCollide = true;
@@ -102,6 +100,44 @@ public class LauncherProjectile : ModProjectile {
 		foreach (var npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, Projectile.direction, knockBack: Projectile.knockBack));
 		}
+		for (int i = 1; i <= 5; i++) {
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.5f, 1.25f), ModContent.ProjectileType<LauncherProjectileFragment>(), Projectile.damage / 3 + 1, 0, Projectile.owner, 0, i);
+		}
+	}
+}
+public class LauncherProjectileFragment : ModProjectile {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<LauncherProjectile>();
+	public override void SetDefaults() {
+		Projectile.width = 10;
+		Projectile.height = 10;
+		Projectile.penetrate = -1;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 10;
+		Projectile.friendly = true;
+		Projectile.tileCollide = true;
+	}
+	public override void AI() {
+		if (Main.rand.NextBool()) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Torch);
+			dust.position += Main.rand.NextVector2Circular(10, 10);
+			dust.velocity = Vector2.Zero;
+			dust.noGravity = true;
+			dust.scale = Main.rand.NextFloat(.9f, 1.24f);
+		}
+		Projectile.rotation += MathHelper.ToRadians(20);
+		if (++Projectile.ai[0] >= 30) {
+			Projectile.velocity.Y += .5f;
+			if (Projectile.velocity.Y >= 16) {
+				Projectile.velocity.Y = 16;
+			}
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAsEntity<LauncherProjectileFragment>() + ((int)Projectile.ai[1]).ToString()).Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawpos = Projectile.position - Main.screenPosition + origin;
+		Main.EntitySpriteDraw(texture, drawpos, null, lightColor, Projectile.rotation, origin, 1, SpriteEffects.None);
+		return false;
 	}
 }
 public class Aftershock : ModBuff {

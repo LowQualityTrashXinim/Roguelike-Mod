@@ -386,6 +386,7 @@ Mods: {
 			Unforgiving_BlastWave.DisplayName: Unforgiving_ Blast Wave
 			Unforgiving_Bolt.DisplayName: Unforgiving_ Bolt
 			Roguelike_SpiritFlame.DisplayName: Roguelike_ Spirit Flame
+			LauncherProjectileFragment.DisplayName: Launcher Projectile Fragment
 		}
 
 		NPCs: {
@@ -449,16 +450,6 @@ Mods: {
 			QuadDemonBlaster: {
 				Tooltip: The coolness factor makes me melt!
 				DisplayName: Quad Demon Blaster
-			}
-
-			UltimatePistol: {
-				Tooltip:
-					'''
-					It can be many things, but in no way decisive of its identity
-					Shoots many things
-					Right-Click installs a copy of itself on-screen
-					'''
-				DisplayName: ??? Pistol
 			}
 
 			PaintRifle: {
@@ -702,7 +693,7 @@ Mods: {
 				DisplayName: Everlasting Cold
 			}
 
-			PlatinumKatana: {
+			Katahanced: {
 				Tooltip: Aren't all magical weapons enchanted anyhow? Where's quality control???
 				DisplayName: Katahanced
 			}
@@ -868,6 +859,16 @@ Mods: {
 					Collect three Chlropolen to watch it sprout
 					'''
 				DisplayName: Chloropolen
+			}
+
+			UltimatePistol: {
+				Tooltip:
+					'''
+					It can be many things, but in no way decisive of its identity
+					Shoots many things
+					Right-Click installs a copy of itself on-screen
+					'''
+				DisplayName: ??? Pistol
 			}
 
 			CursedDoll: {
@@ -1821,11 +1822,6 @@ Mods: {
 				Tooltip: Coming soon
 			}
 
-			FragmentGrenade: {
-				DisplayName: Fragment Grenade
-				Tooltip: Coming soon
-			}
-
 			TheTwoEvil: {
 				DisplayName: The Two Evil
 				Tooltip: Disgusting
@@ -1900,7 +1896,7 @@ Mods: {
 				DisplayName: Weapon Ticket
 				Tooltip:
 					'''
-					Use the item to have a chance to gain 1 of the following item
+					Use the item to randomly gain 1 of the following item
 					Alt click to select a item to increases it's chance of dropping
 					'''
 			}
@@ -2094,11 +2090,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BasicLauncher: {
-				DisplayName: Basic Launcher
-				Tooltip: ""
-			}
-
 			SnowballCannonMK2: {
 				DisplayName: Snowball Cannon MK2
 				Tooltip:
@@ -2126,11 +2117,6 @@ Mods: {
 					Gain +1.5% Total Damage per 1 Armor Penetration
 					+5 Armor Penetration
 					'''
-			}
-
-			ItemReworker: {
-				DisplayName: Item Reworker
-				Tooltip: ""
 			}
 
 			FeralClaw: {
@@ -2194,6 +2180,7 @@ Mods: {
 					Shoot out a shell that on direct contact with enemy deal double damage
 					Enemy hit by the shell directly get inflicted with Aftershock effect
 					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
+					Shell upon hit will shatter into 5 fragments each deal 33% of shell damage
 					'''
 			}
 
@@ -2396,6 +2383,11 @@ Mods: {
 
 			ScrollOfTeleportation: {
 				DisplayName: Scroll Of Teleportation
+				Tooltip: ""
+			}
+
+			DrainingVeilBlade: {
+				DisplayName: Draining Veil Blade
 				Tooltip: ""
 			}
 		}
@@ -3108,22 +3100,22 @@ Mods: {
 			}
 
 			Unforgiving_BoltFury: {
-				DisplayName: Unforgiving_ Bolt Fury
+				DisplayName: Fury of Bolt
 				Description: Mods.Roguelike.Buffs.Unforgiving_BoltFury.Description
 			}
 
 			Unforgiving_Curse: {
-				DisplayName: Unforgiving_ Curse
+				DisplayName: Unforgiving Curse
 				Description: Mods.Roguelike.Buffs.Unforgiving_Curse.Description
 			}
 
 			Unforgiving_Mark: {
-				DisplayName: Unforgiving_ Mark
+				DisplayName: Unforgiving Marked
 				Description: Mods.Roguelike.Buffs.Unforgiving_Mark.Description
 			}
 
 			Unforgiving_OutroAttack: {
-				DisplayName: Unforgiving_ Outro Attack
+				DisplayName: Unforgiving Outro Attack
 				Description: Mods.Roguelike.Buffs.Unforgiving_OutroAttack.Description
 			}
 		}

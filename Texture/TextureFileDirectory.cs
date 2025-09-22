@@ -39,6 +39,7 @@
 		public const string DrawBrush = CommonTextureStringPattern + "UI/Brush";
 		public const string BackIcon = CommonTextureStringPattern + "UI/BackIcon";
 		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
+		public const string Wave = CommonTextureStringPattern + "Wave";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 	}
