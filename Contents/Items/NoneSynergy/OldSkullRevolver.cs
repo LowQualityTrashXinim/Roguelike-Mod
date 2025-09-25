@@ -20,10 +20,10 @@ internal class OldSkullRevolver : ModItem {
 		Item.reuseDelay = 57;
 		Item.value = Item.buyPrice(gold: 50);
 		Item.UseSound = SoundID.Item41;
-		if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-			weapon.SpreadAmount = 10;
-			weapon.OffSetPost = 50;
-		}
+	}
+	public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		position = position.PositionOFFSET(velocity, 50);
+		velocity = ModUtils.RoguelikeSpread(velocity, 10);
 	}
 	public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		SoundEngine.PlaySound(Item.UseSound);

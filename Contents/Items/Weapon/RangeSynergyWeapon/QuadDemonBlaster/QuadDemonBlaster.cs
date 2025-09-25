@@ -1,8 +1,6 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -20,15 +18,12 @@ class QuadDemonBlaster : SynergyModItem {
 		Item.rare = ItemRarityID.Orange;
 		Item.reuseDelay = 15;
 		Item.UseSound = SoundID.Item41;
-		if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-			weapon.OffSetPost = 30;
-			weapon.NumOfProjectile = 1;
-		}
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 		base.ModifySynergyToolTips(ref tooltips, modplayer);
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		position = position.PositionOFFSET(velocity, 30);
 		QuadDemonBlaster_ModPlayer quad = player.GetModPlayer<QuadDemonBlaster_ModPlayer>();
 		if (quad.HitBucketLimitReached) {
 			quad.HitBucket -= 500;

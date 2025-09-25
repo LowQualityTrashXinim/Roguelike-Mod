@@ -10,7 +10,6 @@ namespace Roguelike.Common.General
 		public bool RoguelikeMode { get; set; }
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
-		//TODO : Add a world data IsNightmareWorld 
 		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
 		//Replace Cursed skull
@@ -28,7 +27,6 @@ namespace Roguelike.Common.General
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool AutoRandomizeCharacter { get; set; }
-
 		[Header($"DebugHeader")]
 		public bool TemplateTest { get; set; }
 		[Header($"GameHeader")]
@@ -37,5 +35,8 @@ namespace Roguelike.Common.General
 		public bool DisableRingVisual { get; set; }
 		[DefaultValue(false)]
 		public bool LowerQuality { get; set; }
+		[DefaultValue(false)]
+		[ReloadRequired]
+		public bool LowRAMMode { get; set; }
 	}
 }

@@ -1017,7 +1017,7 @@ public class ChaosProtection : Perk {
 				return;
 			}
 			if (chaosstat == PlayerStats.None) {
-				chaosstat = Main.rand.Next(MysteriousPotionBuff.lookupDictionary.Keys.ToList());
+				chaosstat = Main.rand.Next(TerrariaArrayID.Dict_PlayerStatAndValue.Keys.ToArray());
 				Player.AddBuff(ModContent.BuffType<ChaosBuff>(), ModUtils.ToSecond(15));
 			}
 			if (!Player.Center.LookForAnyHostileNPC(600)) {
@@ -1079,7 +1079,6 @@ public class ChaosProtection : Perk {
 		public override void Update(Player player, ref int buffIndex) {
 			ChaosTabletPlayer chaosplayer = player.GetModPlayer<ChaosTabletPlayer>();
 			PlayerStatsHandle statsplayer = player.GetModPlayer<PlayerStatsHandle>();
-			var modplayer = player.GetModPlayer<MysteriousPotionPlayer>();
 			switch (chaosplayer.chaosstat) {
 				case PlayerStats.MaxHP:
 				case PlayerStats.RegenHP:
@@ -1090,11 +1089,11 @@ public class ChaosProtection : Perk {
 				case PlayerStats.Defense:
 				case PlayerStats.MaxSentry:
 					statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-						Base: modplayer.ToStatsNumInt(chaosplayer.chaosstat, 2));
+						Base: ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 2));
 					break;
 				default:
 					statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-						Additive: 1 + modplayer.ToStatsNumFloat(chaosplayer.chaosstat, 2));
+						Additive: 1 + ModUtilsPlayer.ToStatsNumFloat(chaosplayer.chaosstat, 2));
 					break;
 			}
 			if (player.buffTime[buffIndex] <= 0) {
@@ -1103,12 +1102,11 @@ public class ChaosProtection : Perk {
 		}
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
 			ChaosTabletPlayer chaosplayer = Main.LocalPlayer.GetModPlayer<ChaosTabletPlayer>();
-			MysteriousPotionPlayer modplayer = Main.LocalPlayer.GetModPlayer<MysteriousPotionPlayer>();
 			if (ModUtils.DoesStatsRequiredWholeNumber(chaosplayer.chaosstat)) {
-				tip = $"+ {modplayer.ToStatsNumInt(chaosplayer.chaosstat, 1)} {chaosplayer.chaosstat}";
+				tip = $"+ {ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 1)} {chaosplayer.chaosstat}";
 			}
 			else {
-				tip = $"+ {modplayer.ToStatsNumInt(chaosplayer.chaosstat, 1)}% {chaosplayer.chaosstat}";
+				tip = $"+ {ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 1)}% {chaosplayer.chaosstat}";
 			}
 		}
 		public override bool RightClick(int buffIndex) {

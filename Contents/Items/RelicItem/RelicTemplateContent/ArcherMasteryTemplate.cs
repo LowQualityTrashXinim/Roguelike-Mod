@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 

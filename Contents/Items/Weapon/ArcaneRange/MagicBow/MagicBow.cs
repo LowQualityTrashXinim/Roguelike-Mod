@@ -19,7 +19,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item75;
-			Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+			Item.DamageType = DamageClass.Magic;
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			for (int i = 0; i < 20; i++) {

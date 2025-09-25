@@ -121,7 +121,6 @@ AlchemistEmpowerment: {
 	DisplayName: Alchemist Empowerment
 	Description:
 		'''
-		+ Drinking any buff potion will give you additional helpful buff
 		+ Quick Potion heal is halved, but also cleanses almost all debuffs
 		+ Potion have 55% to not be consumed when not using Quick Buff key
 		+ Opening Lootbox will drop you 1 random special potion

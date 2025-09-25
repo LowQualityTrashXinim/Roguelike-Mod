@@ -8,7 +8,6 @@ using Terraria.Audio;
 using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
@@ -58,9 +57,6 @@ namespace Roguelike.Contents.Perks {
 
 					}
 				}
-			}
-			if (perkplayer.perk_AlchemistPotion && item.buffType > 0 && !player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
-				MysteriousPotionBuff.SetBuff(7, ModUtils.ToMinute(4), player);
 			}
 			return base.ConsumeItem(item, player);
 		}

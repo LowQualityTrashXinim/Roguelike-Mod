@@ -6,8 +6,6 @@ using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common;
-using Roguelike.Contents.Items.Weapon;
 
 using Roguelike.Common.Utils;
 
@@ -19,7 +17,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item75;
-			Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+			Item.DamageType = DamageClass.Magic;
 		}
 		int count = 0;
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {

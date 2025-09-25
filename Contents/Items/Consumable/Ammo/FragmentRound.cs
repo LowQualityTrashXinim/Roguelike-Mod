@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Consumable.Ammo;
 internal class FragmentRound : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
+	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.Item_DefaultToAmmo(32, 32, 7, 0, 1.9f, 10, ModContent.ProjectileType<FragmentRound_Projectile>(), AmmoID.Bullet);
 		Item.DamageType = DamageClass.Ranged;

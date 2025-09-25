@@ -364,6 +364,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				}
 				list_genPass.Clear();
 				r.Close();
+				filepath.Close();
 			}
 		}
 		catch {

@@ -19,16 +19,13 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 			Item.rare = ItemRarityID.LightRed;
 			Item.reuseDelay = 30;
 			Item.UseSound = SoundID.Item38;
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 0;
-				weapon.OffSetPost = 40;
-			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.QuadBarrelShotgun);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			type = ModContent.ProjectileType<RectangleBullet>();
+			position = position.PositionOFFSET(velocity, 40);
 			velocity *= .1f;
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {

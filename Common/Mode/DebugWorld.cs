@@ -63,31 +63,6 @@ public partial class DebugWorld : ITaskCollection {
 		}
 	}
 	[Task]
-	public void GenerateEmptyTemplate() {
-		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 5, 64, 64));
-		int X = re.Width + 10;
-		ImageData arena = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal1");
-		arena.EnumeratePixels((a, b, color) => {
-			a += re.X;
-			b += re.Y;
-			GenerationHelper.FastRemoveTile(a, b);
-			if (color.R == 255 && color != Color.White) {
-				GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
-			}
-			GenerationHelper.FastPlaceWall(a, b, WallID.Stone);
-		});
-		ImageData arena2 = ImageStructureLoader.Get_Tempate("WG_TemplateVertical1");
-		arena2.EnumeratePixels((a, b, color) => {
-			a += re.X + X;
-			b += re.Y;
-			GenerationHelper.FastRemoveTile(a, b);
-			if (color.R == 255 && color != Color.White) {
-				GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
-			}
-			GenerationHelper.FastPlaceWall(a, b, WallID.Stone);
-		});
-	}
-	[Task]
 	public void GenerateSpaceTemplate_Horizontal() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 6, 64, 32));
 		int X = 0;

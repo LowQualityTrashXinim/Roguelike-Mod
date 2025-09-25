@@ -18,10 +18,10 @@ internal class SkullRevolver : SynergyModItem {
 		Item.crit = 15;
 		Item.value = Item.buyPrice(gold: 50);
 		Item.UseSound = SoundID.Item41;
-		if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-			weapon.SpreadAmount = 5;
-			weapon.OffSetPost = 50;
-		}
+	}
+	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		velocity = ModUtils.RoguelikeSpread(velocity, 5);
+		position = position.PositionOFFSET(velocity, 50);
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		if (++counter >= 10) {

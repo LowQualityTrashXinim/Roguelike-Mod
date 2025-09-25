@@ -233,7 +233,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.scale += .25f;
 					item.useTurn = false;
 					item.Set_ItemCriticalDamage(1.5f);
-					item.DamageType = ModContent.GetInstance<MeleeRangerHybridDamageClass>();
+					item.DamageType = DamageClass.Melee;
 					SwingType = BossRushUseStyle.SwipeDown;
 					SwingDegree = 155;
 					Ignore_AttackSpeed = true;

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
 using Roguelike.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;

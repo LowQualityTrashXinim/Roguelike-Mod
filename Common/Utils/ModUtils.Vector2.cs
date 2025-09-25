@@ -1,12 +1,18 @@
-﻿ 
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Utilities;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static Vector2 RoguelikeSpread(Vector2 velocity, float SpreadAmount, float AdditionalSpread = 0, float AdditionalMulti = 1) {
+			if (AdditionalMulti == 0) {
+				return velocity.Vector2RotateByRandom(SpreadAmount);
+			}
+			return velocity
+				.Vector2RotateByRandom(SpreadAmount)
+				.Vector2RandomSpread(AdditionalSpread, AdditionalMulti);
+		}
 		public static Vector2 LimitedVelocity(this Vector2 velocity, float limited) {
 			GetAbsoluteVectorNormalized(velocity, limited, out float X, out float Y);
 			velocity.X = Math.Clamp(velocity.X, -X, X);

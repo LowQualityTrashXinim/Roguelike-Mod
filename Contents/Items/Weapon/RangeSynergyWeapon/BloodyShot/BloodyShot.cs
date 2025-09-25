@@ -20,16 +20,13 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 5;
-				weapon.OffSetPost = 30;
-			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.AquaScepter);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			position = position.PositionOFFSET(velocity, 10);
+			position = position.PositionOFFSET(velocity, 40);
+			velocity = ModUtils.RoguelikeSpread(velocity, 5);
 			type = ModContent.ProjectileType<BloodBullet>();
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {

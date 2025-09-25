@@ -1,6 +1,7 @@
 ﻿using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
+using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -352,4 +353,25 @@ public static class TerrariaArrayID {
 	public readonly static int[] MossMaterial = {
 		ItemID.BlueMoss, ItemID.GreenMoss, ItemID.BrownMoss, ItemID.PurpleMoss, ItemID.RedMoss, ItemID.LavaMoss, ItemID.KryptonMoss, ItemID.ArgonMoss, ItemID.XenonMoss, ItemID.RainbowMoss, ItemID.VioletMoss
 	};
+	public static readonly Dictionary<PlayerStats, int> Dict_PlayerStatAndValue = new Dictionary<PlayerStats, int>() {
+			{ PlayerStats.Thorn, 15 },
+			{ PlayerStats.MeleeDMG, 15 },
+			{ PlayerStats.RangeDMG, 15 },
+			{ PlayerStats.MagicDMG, 15 },
+			{ PlayerStats.SummonDMG, 15 },
+			{ PlayerStats.MovementSpeed, 20 },
+			{ PlayerStats.JumpBoost, 20 },
+			{ PlayerStats.DefenseEffectiveness, 20 },
+			{ PlayerStats.CritDamage, 30 },
+			{ PlayerStats.MaxMana, 20 },
+			{ PlayerStats.MaxHP, 20 },
+			{ PlayerStats.Defense, 8 },
+			{ PlayerStats.CritChance, 8 },
+			{ PlayerStats.PureDamage, 8 },
+			{ PlayerStats.RegenHP, 7 },
+			{ PlayerStats.RegenMana, 5 },
+			{ PlayerStats.MaxMinion, 1 },
+			{ PlayerStats.MaxSentry, 1 },
+			{ PlayerStats.AttackSpeed, 10 },
+		};
 }

@@ -1,0 +1,9 @@
+1/ Make world generation process much more easy to work with.
+2/ Assign NPC and Item to EF (ElemFac).
+3/ Work on more Trial NPC and Trial Projectile that Trial NPC will be holding along with some artificial path finding
+4/ Work on debuff and buff sprite.
+5/ Remove connection between spoil and lootbox.
+6/ Make uses of ModUtils localization universally.
+7/ De-randomize relic.
+8/ Show player more information on relic tier buff value benefit.
+9/ Work on localization "TODO"

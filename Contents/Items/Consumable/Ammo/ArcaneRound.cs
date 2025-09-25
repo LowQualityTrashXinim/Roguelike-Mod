@@ -9,7 +9,7 @@ using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Consumable.Ammo;
 internal class ArcaneRound : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("LostAcc");
+	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.Item_DefaultToAmmo(32, 32, 7, 0, 1.9f, 22, ModContent.ProjectileType<MagicBullet>(), AmmoID.Bullet);
 		Item.DamageType = DamageClass.Ranged;

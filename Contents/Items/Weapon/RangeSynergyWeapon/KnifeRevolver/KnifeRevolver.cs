@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 	internal class KnifeRevolver : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(84, 24, 21, 3f, 30, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
@@ -14,10 +13,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 			Item.scale = 0.85f;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 1;
-				weapon.OffSetPost = 40;
-			}
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-3, 4);
@@ -33,6 +28,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 			return player.ownedProjectileCounts[ModContent.ProjectileType<KnifeRevolverSpearProjectile>()] < 1;
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			position = position.PositionOFFSET(velocity, 40);
+			velocity = ModUtils.RoguelikeSpread(velocity, 1);
 			if (Main.mouseRight) {
 				type = ModContent.ProjectileType<KnifeRevolverSpearProjectile>();
 				damage *= 2;

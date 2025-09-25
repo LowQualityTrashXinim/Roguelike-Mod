@@ -3253,6 +3253,17 @@ Mods: {
 						THIS won't help you if you are spawning more than 1000 projectiles per tick
 						'''
 				}
+
+				LowRAMMode: {
+					Label: Low RAM mode
+					Tooltip:
+						'''
+						Use this if you keep getting out of game memory while playing game
+						This will lessen the caching method within the mod
+						But it will significantly slow down some aspect of the mod
+						WIP
+						'''
+				}
 			}
 		}
 

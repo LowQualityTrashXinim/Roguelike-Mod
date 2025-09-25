@@ -4,8 +4,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using Roguelike.Contents.Items.Weapon;
-
 using Roguelike.Common.Utils;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
@@ -20,9 +18,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Merciless
 			Item.reuseDelay = 30;
 			Item.scale -= 0.15f;
 			Item.UseSound = SoundID.Item38;
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.itemIsAShotgun = true;
-			}
 		}
 		int counter = 0;
 		public override Vector2? HoldoutOffset() {

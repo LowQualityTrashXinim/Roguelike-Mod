@@ -11,7 +11,6 @@ using Roguelike.Common.General;
 namespace Roguelike.Common.Global
 {
 	internal class CommonRecipe : ModSystem {
-		List<int> list = new List<int>();
 		public override void AddRecipes() {
 			//QoL convert
 			Recipe recipe = Recipe.Create(ItemID.FallenStar, 5);
@@ -19,14 +18,6 @@ namespace Roguelike.Common.Global
 			recipe.Register();
 		}
 		public override void AddRecipeGroups() {
-			//foreach (var item in ContentSamples.ItemsByType) {
-			//	if (item.Value.ModItem is SynergyModItem) {
-			//		list.Add(item.Key);
-			//	}
-			//}
-			//RecipeGroup SynergyItem = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<SynergyEnergy>())}", list.ToArray());
-			//RecipeGroup.RegisterGroup("Synergy Item", SynergyItem);
-
 			RecipeGroup WoodSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Wood sword", new int[]
 			{
 				ItemID.WoodenSword,

@@ -140,7 +140,7 @@ namespace Roguelike.Common.Global {
 		}
 		public override bool CanUseItem(Item item) {
 			if (Secret_MrRakan) {
-				return item.DamageType == DamageClass.Ranged || item.DamageType == ModContent.GetInstance<RangeMageHybridDamageClass>();
+				return item.DamageType == DamageClass.Ranged;
 			}
 			return base.CanUseItem(item);
 		}

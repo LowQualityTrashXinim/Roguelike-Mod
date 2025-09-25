@@ -5,10 +5,8 @@ using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 	internal class Deagle : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PhoenixBlaster, $"[i:{ItemID.PhoenixBlaster}] You shoot out additional bullet but at a random position, getting crit will make the next shot shoot out a fire phoenix dealing quadruple damage");
@@ -20,22 +18,17 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
 			Item.value = Item.sellPrice(silver: 1000);
 			Item.scale -= 0.25f;
 			Item.UseSound = SoundID.Item38;
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 0;
-				weapon.OffSetPost = 50;
-			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.PhoenixBlaster);
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.DaedalusStormbow);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			var weapon = Item.GetGlobalItem<RangeWeaponOverhaul>();
+			position = position.PositionOFFSET(velocity, 50);
 			if (player.velocity != Vector2.Zero) {
-				weapon.SpreadAmount = 120;
+				velocity = ModUtils.RoguelikeSpread(velocity, 120);
 			}
 			else {
-				weapon.SpreadAmount = 0;
 				velocity *= 1.5f;
 				damage = (int)(damage * 1.5f);
 				knockback *= 2f;

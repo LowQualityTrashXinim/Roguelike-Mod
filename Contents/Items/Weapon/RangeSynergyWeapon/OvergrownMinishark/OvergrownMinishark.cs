@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
@@ -7,22 +6,16 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 	internal class OvergrownMinishark : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.CrimsonRod, $"[i:{ItemID.CrimsonRod}] When shooting, you summon blood rain at cursor");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(54, 24, 14, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
-
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.sellPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
-			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 7;
-				weapon.OffSetPost = 40;
-			}
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-4, 0);
@@ -31,6 +24,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.CrimsonRod);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			position = position.PositionOFFSET(velocity, 40);
+			velocity = ModUtils.RoguelikeSpread(velocity, 7);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.CrimsonRod)) {

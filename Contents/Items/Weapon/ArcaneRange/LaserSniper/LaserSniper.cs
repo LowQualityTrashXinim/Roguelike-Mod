@@ -8,7 +8,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using Roguelike.Common.Graphics;
-using Roguelike.Common;
 using Roguelike.Texture;
 using Roguelike.Common.Graphics.Structs.QuadStructs;
 using Roguelike.Common.Graphics.Structs.TrailStructs;
@@ -31,7 +30,7 @@ internal class LaserSniper : SynergyModItem {
 		Item.value = Item.buyPrice(gold: 50);
 		Item.scale = 0.9f;
 		Item.mana = 20;
-		Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+		Item.DamageType = DamageClass.Ranged;
 		Item.noUseGraphic = true;
 
 	}
@@ -162,7 +161,7 @@ public class LaserSniperProjectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.aiStyle = -1;
 		Projectile.penetrate = 1;
-		Projectile.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+		Projectile.DamageType = DamageClass.Ranged;
 		Projectile.extraUpdates = 15;
 		Projectile.timeLeft = 1200;
 	}
@@ -227,7 +226,7 @@ public class PlasmaExplosion : ModProjectile {
 		Projectile.width = Projectile.height = 98;
 		Projectile.friendly = true;
 		Projectile.hostile = false;
-		Projectile.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+		Projectile.DamageType = DamageClass.Ranged;
 		Projectile.penetrate = -1;
 		Projectile.frame = 0;
 		Projectile.timeLeft = 15;

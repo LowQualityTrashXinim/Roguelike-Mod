@@ -5,8 +5,6 @@ using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using System.Linq;
-using Roguelike.Common;
-using Roguelike.Contents.Items.Weapon;
  
 using Roguelike.Common.Utils;
 
@@ -16,7 +14,7 @@ internal class TheBurningSky : SynergyModItem {
 		Item.BossRushDefaultRange(44, 80, 34, 5f, 6, 18, ItemUseStyleID.Shoot, ProjectileID.FireArrow, 12, true, AmmoID.Arrow);
 		Item.reuseDelay = 14;
 		Item.UseSound = SoundID.Item5;
-		Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+		Item.DamageType = DamageClass.Ranged;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;

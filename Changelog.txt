@@ -163,5 +163,19 @@ Version 0.0.1:
 162/ Buff Handmade Launcher projectile to now shatter into many fragments upon explosion.
 163/ Change Generic Black Sword sword ring condition.
 164/ De-synergy Katahanced now to be extra weapon and slight change to weapon itself.
-165/ Added new sprite for Draining Veil Blade ( also change name Draining Veil to Draining Veil Blade )
-166/ Added in common texture call "Wave"
+165/ Added new sprite for Draining Veil Blade ( also change name Draining Veil to Draining Veil Blade ).
+166/ Added in common texture call "Wave".
+167/ Added Low RAM mode config.
+168/ Deleted image structure loader due to being inefficient and outdated.
+169/ Deleted Lost Acc missing texture sprite.
+170/ Deleted MeleeMageHybridDamageClass due to it is not being used.
+171/ Deleted "RangeWeaponOverhaul" file because it is no longer needed.
+172/ Deleted Path finding system because it is not being used.
+173/ Clean up the entire mod.
+174/ Deleted MeleeRangerHybridDamageClass due to it is not really fitting.
+175/ Changed Laser Sniper damage type from MagicRanger Hybrid to Ranger.
+176/ Changed Magic Bow damage type from MagicRanger hybrid to Magic.
+177/ Changed The Burning Sky damage type from MagicRanger hybrid to Ranger.
+178/ Changed MoonStarBow damage type from MagicRanger hybrid to Magic.
+179/ Deleted RangeMageHybridDamageClass because it is too OP.
+180/ Deleted Mysterious Potion file because it is no longer used.
