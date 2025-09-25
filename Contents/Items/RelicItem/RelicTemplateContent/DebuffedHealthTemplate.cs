@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
 using Terraria;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
-{
+namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class DebuffedHealthTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
+			RelicTierUPValue = .33f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([
@@ -30,16 +24,15 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 		}
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 			if (stat == PlayerStats.RegenHP) {
-				return new StatModifier(1, 1, 0, Main.rand.Next(3, 5) * 3);
+				return new StatModifier(1, 1, 0, Main.rand.NextFloat(3, 4) * 2.25f);
 			}
-			return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 2);
+			return new StatModifier(1, 1, 0, Main.rand.NextFloat(4, 5) * 1.5f);
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			for (int i = 0; i < player.buffType.Length; i++) {
 				if (player.buffType[i] == 0) continue;
 				if (Main.debuff[player.buffType[i]]) {
-					float additive = MathF.Round(value.Base * (1 + (relic.RelicTier - 1) / 3f));
-					modplayer.AddStatsToPlayer(stat, Base: additive);
+					modplayer.AddStatsToPlayer(stat, value);
 					break;
 				}
 			}

@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
 using Terraria;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
-using Roguelike.Contents.Skill;
-using Roguelike.Common.Global;
+using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using Roguelike.Contents.Skill;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 {
 	public class SkillActivationTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
+			RelicTierUPValue = .34f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([
@@ -29,35 +24,34 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 		}
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 			string Name = Enum.GetName(stat) ?? string.Empty;
-			string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base + value.Base * ((relic.RelicTier - 1) / 3f)) : RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * ((relic.RelicTier - 1) / 3f));
+			string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base) : RelicTemplateLoader.RelicValueToPercentage(value.Additive);
 			return string.Format(Description, [Color.Yellow.Hex3(), Name, Number]);
 		}
 
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 			if (stat == PlayerStats.PureDamage) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .3f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .3f), 2), 1, 0, 0);
 			}
 			if (stat == PlayerStats.CritChance) {
-				return new StatModifier(1, 1, 0, Main.rand.Next(5, 21));
+				return new StatModifier(1, 1, 0, Main.rand.Next(10, 21));
 			}
 			if (stat == PlayerStats.CritDamage) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .5f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.3f, .4f), 2), 1, 0, 0);
 			}
 			if (stat == PlayerStats.AttackSpeed) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .2f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .12f), 2), 1, 0, 0);
 			}
-			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .35f), 2), 1, 0, 0);
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .15f), 2), 1, 0, 0);
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			SkillHandlePlayer skillPlayer = player.GetModPlayer<SkillHandlePlayer>();
 			if (skillPlayer.Activate) {
 				float additive;
 				if (stat == PlayerStats.CritChance) {
-					additive = MathF.Round(value.Base * (relic.RelicTier - 1) / 3f);
-					modplayer.AddStatsToPlayer(stat, Base: additive);
+					modplayer.AddStatsToPlayer(stat, value);
 				}
 				else {
-					modplayer.AddStatsToPlayer(stat, value, (relic.RelicTier - 1) / 3f);
+					modplayer.AddStatsToPlayer(stat, value);
 				}
 			}
 		}

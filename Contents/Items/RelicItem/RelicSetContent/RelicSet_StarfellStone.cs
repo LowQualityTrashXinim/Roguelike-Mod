@@ -8,12 +8,12 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class StarfellStone_ModPlayer : ModPlayer {
-	class StarfellStone : RelicSet {
+	class RelicSet_StarfellStone : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
 		}
 	}
-	public bool StarStone => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<StarfellStone>());
+	public bool StarStone => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_StarfellStone>());
 	public override void UpdateEquips() {
 		if (StarStone)
 			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.SynergyDamage, Additive: 1.15f);

@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -22,6 +16,7 @@ public class SkyFractureTemplate : RelicTemplate {
 			false,
 			Color.Cyan
 			));
+		RelicTierUPValue = .3f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -40,7 +35,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				Color.Cyan.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -65,7 +60,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				position,
 				toTarget,
 				ProjectileID.SkyFracture,
-				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				(int)value.ApplyTo(1),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.Set_ProjectileTravelDistance(450);

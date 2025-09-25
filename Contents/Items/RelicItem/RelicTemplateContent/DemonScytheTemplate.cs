@@ -1,8 +1,6 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.RelicItem;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -18,6 +16,7 @@ public class DemonScytheTemplate : RelicTemplate {
 			false,
 			Color.MediumPurple
 			));
+		RelicTierUPValue = .2f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -36,7 +35,7 @@ public class DemonScytheTemplate : RelicTemplate {
 				Color.MediumPurple.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -61,7 +60,7 @@ public class DemonScytheTemplate : RelicTemplate {
 				player.Center + Main.rand.NextVector2Circular(590, 590),
 				vel,
 				ProjectileID.DemonScythe,
-				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				(int)value.ApplyTo(1),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;

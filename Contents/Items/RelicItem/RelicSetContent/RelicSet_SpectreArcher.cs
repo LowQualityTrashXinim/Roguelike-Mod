@@ -8,12 +8,12 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class SpectreArcher_ModPlayer : ModPlayer {
-	class SpectreArcher : RelicSet {
+	class RelicSet_SpectreArcher : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 3;
 		}
 	}
-	public bool SpectreQuiver => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<SpectreArcher>());
+	public bool SpectreQuiver => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_SpectreArcher>());
 	public int timer = 0;
 	public override void ResetEffects() {
 		if (timer <= 60) {

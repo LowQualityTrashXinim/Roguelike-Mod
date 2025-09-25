@@ -12,8 +12,13 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		//This is to set our relic type which relic prefix used to determine whenever or not if this relic can get benefit of that relic prefix
 		relicType = RelicType.Projectile;
+		//This is code not relates to relic, copy and paste and adjust value until you see it fit
 		DataStorer.AddContext("Relic_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
+		//This is necessary if you want your template to increases your relic stat base on relic tier
+		//We will set it to .2, this mean the template will get its stat increases by 20% when they are tier up
+		RelicTierUPValue = .2f;
 	}
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal
@@ -41,7 +46,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
 				//This is my custom method that convert float number to string
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -65,7 +70,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				(int)(value.Base * (1 + .1f * (Tier - 1)) * value.Multiplicative),
+				(int)value.ApplyTo(1),
 				2 + .5f * Tier,
 				player.whoAmI);
 			//Setting projectile travel distance before killing

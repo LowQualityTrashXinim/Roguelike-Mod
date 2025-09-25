@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class StellaCharm_ModPlayer : ModPlayer {
-	class StellaCharm : RelicSet {
+	class RelicSet_StellaCharm : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
 		}
 	}
 	public int ChanceToActivate = 0;
-	public bool StarCharm => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<StellaCharm>());
+	public bool StarCharm => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_StellaCharm>());
 	public override void UpdateEquips() {
 		if (StarCharm)
 			Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.SummonDMG, 1.12f);

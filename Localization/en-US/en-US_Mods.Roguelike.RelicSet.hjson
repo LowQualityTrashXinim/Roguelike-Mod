@@ -1,4 +1,4 @@
-UniversalGemstone: {
+RelicSet_UniversalGemstone: {
 	DisplayName: Universal Gemstone
 	Description:
 		'''
@@ -7,7 +7,7 @@ UniversalGemstone: {
 		'''
 }
 
-TitanicBlood: {
+RelicSet_TitanicBlood: {
 	DisplayName: Titanic Blood
 	Description:
 		'''
@@ -19,7 +19,7 @@ TitanicBlood: {
 		'''
 }
 
-NatureOfGoodAndEvil: {
+RelicSet_NatureOfGoodAndEvil: {
 	DisplayName: Nature of Evil and Good
 	Description:
 		'''
@@ -30,7 +30,7 @@ NatureOfGoodAndEvil: {
 		'''
 }
 
-HeartOfNature: {
+RelicSet_HeartOfNature: {
 	DisplayName: Heart of Nature
 	Description:
 		'''
@@ -39,7 +39,7 @@ HeartOfNature: {
 		'''
 }
 
-GenocidalPact: {
+RelicSet_GenocidalPact: {
 	DisplayName: Genocidal Pact
 	Description:
 		'''
@@ -50,7 +50,7 @@ GenocidalPact: {
 		'''
 }
 
-SpiritEssence: {
+RelicSet_SpiritEssence: {
 	DisplayName: Spirit Essence
 	Description:
 		'''
@@ -61,7 +61,7 @@ SpiritEssence: {
 		'''
 }
 
-SpectreArcher: {
+RelicSet_SpectreArcher: {
 	DisplayName: Spectre Archer
 	Description:
 		'''
@@ -71,7 +71,7 @@ SpectreArcher: {
 		'''
 }
 
-StarfellStone: {
+RelicSet_StarfellStone: {
 	DisplayName: Starfell Stone
 	Description:
 		'''
@@ -81,7 +81,7 @@ StarfellStone: {
 		'''
 }
 
-BombshellArtillery: {
+RelicSet_BombshellArtillery: {
 	DisplayName: Bombshell Artillery
 	Description:
 		'''
@@ -91,7 +91,7 @@ BombshellArtillery: {
 		'''
 }
 
-StellaCharm: {
+RelicSet_StellaCharm: {
 	DisplayName: Stella Charm
 	Description:
 		'''
@@ -99,4 +99,9 @@ StellaCharm: {
 		Minion attacking will have a chance shooting down star onto your enemy
 		During night, the chance are accelerate
 		'''
+}
+
+RelicSet_DamageUp: {
+	DisplayName: Damage UP
+	Description: +12% damage
 }

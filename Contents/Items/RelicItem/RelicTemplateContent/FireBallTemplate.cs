@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -22,6 +16,7 @@ public class FireBallTemplate : RelicTemplate {
 			false,
 			Color.OrangeRed
 			));
+		RelicTierUPValue = .25f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -40,7 +35,7 @@ public class FireBallTemplate : RelicTemplate {
 				Color.Orange.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -59,7 +54,7 @@ public class FireBallTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 				ProjectileID.BallofFire,
-				(int)(value.Base * (1 + .1f * Tier + 1) * value.Multiplicative),
+				(int)value.ApplyTo(1),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.Set_ProjectileTravelDistance(400);

@@ -3,8 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.RelicItem;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -19,6 +17,7 @@ public class BlizzardTemplate : RelicTemplate {
 			false,
 			Color.LightBlue
 			));
+		RelicTierUPValue = .1f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -38,7 +37,7 @@ public class BlizzardTemplate : RelicTemplate {
 				Color.LightSkyBlue.Hex3(),
 				Math.Round(cooldown / 60f, 2).ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -58,7 +57,7 @@ public class BlizzardTemplate : RelicTemplate {
 			player.Center,
 			Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(10, 15), Main.rand.NextFloat(10, 15)),
 			ProjectileID.Blizzard,
-			(int)(value.Base * (1 + .1f * Tier - 1) * value.Multiplicative),
+			(int)value.ApplyTo(1),
 			4 + .5f * Tier,
 			player.whoAmI);
 		proj.DamageType = dmgclass;

@@ -7,12 +7,12 @@ using Roguelike.Common.Global;
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 
 public class GenocidalPact_ModPlayer : ModPlayer {
-	public class GenocidalPact : RelicSet {
+	class RelicSet_GenocidalPact : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 3;
 		}
 	}
-	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<GenocidalPact>());
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_GenocidalPact>());
 	public int KillCount_Decay = 0;
 	public int Decay_CoolDown = 0;
 	public override void ResetEffects() {

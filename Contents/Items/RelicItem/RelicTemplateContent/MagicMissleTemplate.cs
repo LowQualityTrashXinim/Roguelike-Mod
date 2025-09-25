@@ -16,6 +16,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			false,
 			Color.LightSkyBlue
 			));
+		RelicTierUPValue = .2f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -35,7 +36,7 @@ public class MagicMissileTemplate : RelicTemplate {
 				Color.LightSkyBlue.Hex3(),
 				Math.Round(cooldown / 60f, 2).ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
+				RelicTemplateLoader.RelicValueToNumber(value.ApplyTo(1)),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -55,7 +56,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			player.Center,
 			Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 			ProjectileID.MagicMissile,
-			(int)(value.Base * (1 + .1f * Tier + 1) * value.Multiplicative),
+			(int)value.ApplyTo(1),
 			4 + .5f * Tier,
 			player.whoAmI);
 		proj.DamageType = dmgclass;

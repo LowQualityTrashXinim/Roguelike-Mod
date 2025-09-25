@@ -1,3 +1,4 @@
+Version 0.0.2:
 Version 0.0.1:
 1/ Ported the mod into a new repository.
 2/ Fixes all the error caused by the port.
@@ -179,3 +180,10 @@ Version 0.0.1:
 178/ Changed MoonStarBow damage type from MagicRanger hybrid to Magic.
 179/ Deleted RangeMageHybridDamageClass because it is too OP.
 180/ Deleted Mysterious Potion file because it is no longer used.
+181/ Added Damage Up Relic Set ( which act more of a additional prefix ).
+182/ Change how Relic Set name is formatted.
+183/ Changing fixed hardcoded localization key to universal one for easier time to manage.
+184/ Make it no longer neccessary to calculate tier up value from relic in Effect method.
+185/ Implemented new change to relic and also adjusted Relic RNG.
+186/ Deleted Triple Debuff Template because the condition for the template is too difficult.
+187/ Deleted CombatV4Template template because it is too bloated.

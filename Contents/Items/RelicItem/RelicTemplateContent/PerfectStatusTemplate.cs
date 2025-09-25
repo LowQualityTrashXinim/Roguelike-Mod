@@ -1,15 +1,16 @@
-﻿ using Microsoft.Xna.Framework;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
-using System;
+﻿using System;
 using Terraria;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 
 public class PerfectStatusTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
+		RelicTierUPValue = .55f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -25,10 +26,10 @@ public class PerfectStatusTemplate : RelicTemplate {
 		string valuestring;
 		if (stat == PlayerStats.CritChance
 			|| stat == PlayerStats.Defense) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + value.Base * (.55f * (relic.RelicTier - 1)));
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base);
 		}
 		else {
-			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.55f * (relic.RelicTier - 1)));
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive);
 		}
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring]);
 	}
@@ -53,12 +54,11 @@ public class PerfectStatusTemplate : RelicTemplate {
 			}
 			return;
 		}
-		float relictier = .55f * (relic.RelicTier - 1f);
 		if (stat == PlayerStats.CritChance || stat == PlayerStats.Defense) {
-			modplayer.AddStatsToPlayer(stat, value, 1, relictier);
+			modplayer.AddStatsToPlayer(stat, value);
 		}
 		else {
-			modplayer.AddStatsToPlayer(stat, value, relictier);
+			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}
 }

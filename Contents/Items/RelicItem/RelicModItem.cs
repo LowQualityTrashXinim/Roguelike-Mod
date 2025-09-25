@@ -139,7 +139,8 @@ public class Relic : ModItem {
 			return;
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
-			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
+			RelicTemplate template = RelicTemplateLoader.GetTemplate(templatelist[i]);
+			if (template == null) {
 				continue;
 			}
 			StatModifier value = valuelist[i];
@@ -149,7 +150,18 @@ public class Relic : ModItem {
 					value = relicprefix.StatsModifier(Main.LocalPlayer, this, value, templatelist[i], i);
 				}
 			}
-			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], value);
+			float tierUP = template.RelicTierUPValue * (RelicTier - 1);
+			if (value.Additive != 1)
+				value += value.Additive * tierUP;
+			value.Base += value.Base * tierUP;
+			value.Flat += value.Flat * tierUP;
+			if (value.Multiplicative != 1) {
+				value *= 1 + tierUP;
+			}
+			line += template.ModifyToolTip(this, statlist[i], value);
+			if (tierUP != 0) {
+				line += $" (+{RelicTemplateLoader.RelicValueToPercentage(tierUP + 1)})";
+			}
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -230,12 +242,21 @@ public class Relic : ModItem {
 			}
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
-			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
+			RelicTemplate template = RelicTemplateLoader.GetTemplate(templatelist[i]);
+			if (template != null) {
 				StatModifier value = valuelist[i];
 				if (relicprefix != null) {
 					value = relicprefix.StatsModifier(player, this, value, templatelist[i], i);
 				}
-				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(this, modplayer, player, value, statlist[i]);
+				float tierUP = template.RelicTierUPValue * (RelicTier - 1);
+				if (value.Additive != 1)
+					value += value.Additive * tierUP;
+				value.Base += value.Base * tierUP;
+				value.Flat += value.Flat * tierUP;
+				if (value.Multiplicative != 1) {
+					value *= 1 + tierUP;
+				}
+				template.Effect(this, modplayer, player, value, statlist[i]);
 			}
 			else {
 				templatelist[i] = Main.rand.Next(RelicTemplateLoader.TotalCount);
@@ -343,8 +364,8 @@ public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
-	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.Description");
-	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.RelicTemplate.{Name}.DisplayName");
+	public string Description => DisplayName + "\n - " + ModUtils.LocalizationText("RelicTemplate", $"{Name}.Description");
+	public string DisplayName => ModUtils.LocalizationText("RelicTemplate", $"{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
 		SetStaticDefaults();
@@ -352,6 +373,7 @@ public abstract class RelicTemplate : ModType {
 	}
 	public RelicType relicType = RelicType.None;
 	public virtual void OnSettingTemplate() { }
+	public float RelicTierUPValue { get; protected set; } = 0;
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
 	public virtual PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.None;

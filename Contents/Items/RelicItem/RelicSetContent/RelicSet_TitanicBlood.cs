@@ -4,12 +4,12 @@ using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 internal class TitanicBlood_ModPlayer : ModPlayer {
-	class TitanicBlood : RelicSet {
+	class RelicSet_TitanicBlood : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 3;
 		}
 	}
-	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<TitanicBlood>());
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_TitanicBlood>());
 	public override void UpdateEquips() {
 		if (!set) {
 			return;

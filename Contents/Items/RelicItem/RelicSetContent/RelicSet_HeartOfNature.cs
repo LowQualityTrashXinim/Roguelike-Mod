@@ -4,12 +4,12 @@ using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class HeartOfNature_ModPlayer : ModPlayer {
-	class HeartOfNature : RelicSet {
+	class RelicSet_HeartOfNature : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
 		}
 	}
-	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<HeartOfNature>());
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_HeartOfNature>());
 	public override void UpdateEquips() {
 		if(!set) {
 			return;

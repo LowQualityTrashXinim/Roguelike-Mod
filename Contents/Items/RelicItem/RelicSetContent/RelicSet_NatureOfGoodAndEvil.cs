@@ -6,12 +6,12 @@ using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class NatureOfGoodAndEvil_ModPlayer : ModPlayer {
-	class NatureOfGoodAndEvil : RelicSet {
+	class RelicSet_NatureOfGoodAndEvil : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 3;
 		}
 	}
-	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<NatureOfGoodAndEvil>());
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_NatureOfGoodAndEvil>());
 	public int Stack = 0;
 	public int Decay = 0;
 	public override void ResetEffects() {

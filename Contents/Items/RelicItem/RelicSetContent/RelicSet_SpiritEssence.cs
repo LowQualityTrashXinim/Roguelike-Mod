@@ -8,12 +8,12 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class SpiritEssence_ModPlayer : ModPlayer {
-	class SpiritEssence : RelicSet {
+	class RelicSet_SpiritEssence : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 3;
 		}
 	}
-	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<SpiritEssence>());
+	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_SpiritEssence>());
 	public override void UpdateEquips() {
 		if (!set) {
 			return;

@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class BombshellArtillery_ModPlayer : ModPlayer {
-	class BombshellArtillery : RelicSet {
+	class RelicSet_BombshellArtillery : RelicSet {
 		public override void SetStaticDefaults() {
 			Requirement = 2;
 		}
 	}
-	public bool ReactiveBomb => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<BombshellArtillery>());
+	public bool ReactiveBomb => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_BombshellArtillery>());
 	public override void UpdateEquips() {
 		if (ReactiveBomb)
 			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 10);
