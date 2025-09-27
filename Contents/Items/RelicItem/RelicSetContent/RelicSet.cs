@@ -27,7 +27,7 @@ public static class RelicSetSystem {
 			if (type < 0 || type >= handle.RelicSet.Length) {
 				return false;
 			}
-			return handle.RelicSet[type] >= set[type].Requirement;
+			return handle.RelicSet[type] >= set[type].Requirement && handle.RelicTierValid[type];
 		}
 		return false;
 	}
@@ -47,10 +47,13 @@ public class RelicSetPlayerHandle : ModPlayer {
 	/// Relic set type will point to the value in the array<br/>
 	/// </summary>
 	public int[] RelicSet = new int[RelicSetSystem.TotalCount];
+	public bool[] RelicTierValid = new bool[RelicSetSystem.TotalCount];
 	public override void Initialize() {
 		Array.Resize(ref RelicSet, RelicSetSystem.TotalCount);
+		Array.Resize(ref RelicTierValid, RelicSetSystem.TotalCount);
 	}
 	public override void ResetEffects() {
 		Array.Fill(RelicSet, 0);
+		Array.Fill(RelicTierValid, false);
 	}
 }

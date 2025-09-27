@@ -6,7 +6,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class HeartOfNature_ModPlayer : ModPlayer {
 	class RelicSet_HeartOfNature : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 2;
+			Requirement = 3;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_HeartOfNature>());

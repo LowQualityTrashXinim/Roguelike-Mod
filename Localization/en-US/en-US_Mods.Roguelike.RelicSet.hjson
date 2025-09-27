@@ -105,3 +105,8 @@ RelicSet_DamageUp: {
 	DisplayName: Damage UP
 	Description: +12% damage
 }
+
+RelicSet_DefensesUp: {
+	DisplayName: Defenses UP
+	Description: +6 defenses
+}

@@ -8,9 +8,13 @@ using Roguelike.Contents.Perks;
 using Roguelike.Contents.Perks.BlessingPerk;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
+/// <summary>
+/// This will be serves as the generalize base stats for across relic, use this template as reference
+/// </summary>
 public class GenericTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
+		RelicTierUPValue = .75f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		var perkplayer = player.GetModPlayer<PerkPlayer>();
@@ -81,25 +85,12 @@ public class GenericTemplate : RelicTemplate {
 
 			PlayerStats.DebuffDamage,
 			PlayerStats.FullHPDamage,
-			PlayerStats.SynergyDamage
+			PlayerStats.SynergyDamage,
 		]);
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
-		float multiValue = 0;
-		if (stat == PlayerStats.DebuffDamage) {
-			multiValue = .1f * (relic.RelicTier - 1);
-		}
-		else if (stat == PlayerStats.SynergyDamage) {
-			multiValue = .12f * (relic.RelicTier - 1);
-		}
-		else if (stat == PlayerStats.FullHPDamage) {
-			multiValue = .5f * (relic.RelicTier - 1);
-		}
-		else {
-			multiValue = .25f * (relic.RelicTier - 1);
-		}
 		if (stat == PlayerStats.Defense
 			|| stat == PlayerStats.MaxMana
 			|| stat == PlayerStats.MaxHP
@@ -110,28 +101,25 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.EnergyCap
 			|| stat == PlayerStats.Thorn
 			) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + (value.Base - 1) * multiValue);
-		}
-		else if (stat == PlayerStats.SynergyDamage) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Flat + (value.Flat - 1) * multiValue);
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base);
 		}
 		else {
-			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * multiValue);
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive);
 		}
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring,]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.JumpBoost || stat == PlayerStats.MovementSpeed) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.15f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.06f, 1.1f), 2), 1);
 		}
 		if (stat == PlayerStats.MaxMinion || stat == PlayerStats.MaxSentry) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3));
+			return new StatModifier(1, 1, 0, 1);
 		}
 		if (stat == PlayerStats.RegenHP || stat == PlayerStats.RegenMana) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 3);
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5));
 		}
 		if (stat == PlayerStats.MaxHP || stat == PlayerStats.MaxMana) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10);
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3) * 10);
 		}
 		if (stat == PlayerStats.Defense) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5));
@@ -140,45 +128,26 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.RangeDMG
 			|| stat == PlayerStats.MagicDMG
 			|| stat == PlayerStats.SummonDMG) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.1f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.03f, 1.9f), 2), 1);
 		}
 		if (stat == PlayerStats.EnergyCap) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 6) * 20);
+			return new StatModifier(1, 1, 0, MathF.Round(Main.rand.NextFloat(5, 6) * 20));
 		}
 		if (stat == PlayerStats.Thorn) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(10, 40));
+			return new StatModifier(1, 1, 0, Main.rand.Next(10, 20));
 		}
 		if (stat == PlayerStats.DebuffDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.06f, 1.09f), 2), 1, 0, 0);
 		}
 		if (stat == PlayerStats.FullHPDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1, 0, 0);
 		}
 		if (stat == PlayerStats.SynergyDamage) {
-			return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.07f), 2), 1, 0, 0);
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		float multiValue = 0;
-		if (stat == PlayerStats.DebuffDamage) {
-			multiValue = .1f * (relic.RelicTier - 1);
-		}
-		else if (stat == PlayerStats.SynergyDamage) {
-			multiValue = .12f * (relic.RelicTier - 1);
-		}
-		else if (stat == PlayerStats.FullHPDamage) {
-			multiValue = .5f * (relic.RelicTier - 1);
-		}
-		else if (stat == PlayerStats.SynergyDamage) {
-			float tierValue = .12f * (relic.RelicTier - 1);
-			value.Flat += value.Flat * tierValue;
-			modplayer.AddStatsToPlayer(stat, value);
-			return;
-		}
-		else {
-			multiValue = .25f * (relic.RelicTier - 1);
-		}
-		modplayer.AddStatsToPlayer(stat, value, multiValue);
+		modplayer.AddStatsToPlayer(stat, value);
 	}
 }

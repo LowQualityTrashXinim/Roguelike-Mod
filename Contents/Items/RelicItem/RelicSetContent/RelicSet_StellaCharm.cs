@@ -8,7 +8,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class StellaCharm_ModPlayer : ModPlayer {
 	class RelicSet_StellaCharm : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 2;
+			Requirement = 3;
 		}
 	}
 	public int ChanceToActivate = 0;

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
@@ -54,6 +53,7 @@ public class Bid {
 	public const short Advanced = 999;
 }
 public struct BiomeDataBundle {
+	public ushort outlineTile = 0;
 	/// <summary>
 	/// The main tile that will be used in the tile format
 	/// </summary>
@@ -72,7 +72,9 @@ public struct BiomeDataBundle {
 	public BiomeDataBundle() {
 	}
 	public BiomeDataBundle(ushort t, ushort w, string file, short r = -1) {
+		outlineTile = t;
 		tile = t;
+		tile2 = t;
 		wall = w;
 		FormatFile = file;
 		Range = r;
@@ -127,19 +129,19 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeZone = new();
 
 		dict_BiomeBundle = new() {
-			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone, weight2 = .67f} },
-			{ Bid.Jungle, new BiomeDataBundle(TileID.Mud, WallID.Jungle, "") with { tile2 = TileID.JungleGrass, weight2 = .34f} },
-			{ Bid.Tundra, new BiomeDataBundle(TileID.SnowBlock, WallID.SnowWallUnsafe, "") with { tile2 = TileID.IceBlock, weight2 = .44f} },
+			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { outlineTile = TileID.Grass,tile2 = TileID.Stone, weight2 = .67f} },
+			{ Bid.Jungle, new BiomeDataBundle(TileID.JungleGrass, WallID.Jungle, "") with { outlineTile = TileID.JungleGrass,tile2 = TileID.Mud, weight2 = .34f} },
+			{ Bid.Tundra, new BiomeDataBundle(TileID.SnowBlock, WallID.SnowWallUnsafe, "") with { outlineTile = TileID.SnowBlock,tile2 = TileID.IceBlock, weight2 = .44f} },
 			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
-			{ Bid.Corruption, new(TileID.Ebonstone, WallID.EbonstoneUnsafe, "") },
-			{ Bid.Crimson, new(TileID.Crimstone, WallID.CrimstoneUnsafe, "") },
-			{ Bid.Dungeon, new(TileID.BlueDungeonBrick, WallID.BlueDungeon, "Dungeon") },
-			{ Bid.Hallow, new(TileID.HallowedGrass, WallID.HallowedGrassUnsafe, "") },
-			{ Bid.Ocean, new(TileID.Coralstone, WallID.Sandstone, "") },
-			{ Bid.Space, new(TileID.Stone, WallID.None, "Space", 18) },
-			{ Bid.Caven, new(TileID.Stone, WallID.Stone, "") },
-			{ Bid.Underworld, new(TileID.Ash, WallID.None, "") },
-			{ Bid.JungleTemple, new(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
+			{ Bid.Corruption, new BiomeDataBundle(TileID.Ebonstone, WallID.EbonstoneUnsafe, "") with { outlineTile = TileID.CorruptGrass } },
+			{ Bid.Crimson, new BiomeDataBundle(TileID.Crimstone, WallID.CrimstoneUnsafe, "") with { outlineTile = TileID.CrimsonGrass} },
+			{ Bid.Dungeon, new BiomeDataBundle(TileID.BlueDungeonBrick, WallID.BlueDungeon, "Dungeon") },
+			{ Bid.Hallow, new  BiomeDataBundle(TileID.HallowedGrass, WallID.HallowedGrassUnsafe, "") with { outlineTile = TileID.HallowedGrass, tile2 = TileID.Dirt} },
+			{ Bid.Ocean, new BiomeDataBundle(TileID.Coralstone, WallID.Sandstone, "") },
+			{ Bid.Space, new BiomeDataBundle(TileID.Stone, WallID.None, "Space", 18) },
+			{ Bid.Caven, new BiomeDataBundle(TileID.Stone, WallID.Stone, "") },
+			{ Bid.Underworld, new BiomeDataBundle(TileID.Ash, WallID.None, "") },
+			{ Bid.JungleTemple, new BiomeDataBundle(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
 		};
 
 		BiomeGroup = new();
@@ -173,7 +175,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
-		tag["EyeRoom"] = EyeRoom;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		var Type = tag.Get<List<short>>("BiomeType");
@@ -183,16 +184,10 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
-		EyeRoom = tag.Get<Rectangle>("EyeRoom");
 	}
 	public override void PostUpdateEverything() {
 		if (!Main.LocalPlayer.active) {
 			return;
-		}
-		if (EyeRoom.X != 0 && EyeRoom.Y != 0) {
-			if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<EyeCreature>())) {
-				ModObject.NewModObject(EyeRoom.Center().ToWorldCoordinates(), Vector2.Zero, ModObject.GetModObjectType<EyeCreature>());
-			}
 		}
 	}
 }
@@ -215,7 +210,7 @@ public class EyeCreature : ModObject {
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
-	public Rectangle EyeRoom = new Rectangle();
+	public static readonly GenerateStyle[] styles = [GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth];
 	/// <summary>
 	/// Convert from <see cref="Bid"/> biome area id to char type
 	/// </summary>
@@ -227,19 +222,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		return "" + (char)num;
 	}
-	public static string ToC(int[] num) {
-		if (num.Length < 1) {
-			return "" + char.MinValue;
-		}
-		StringBuilder builder = new();
-		for (int i = 0; i < num.Length; i++) {
-			if (num[i] < 0 || num[i] >= char.MaxValue) {
-				return "" + char.MinValue;
-			}
-			builder.Append(num[i]);
-		}
-		return builder.ToString();
-	}
 	public static short CharToBid(string c, int index = 0) {
 		if (string.IsNullOrEmpty(c)) {
 			return Bid.None;
@@ -249,12 +231,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		return (short)c[index];
 	}
-	public static GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	private static UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
 	Point counter = OffSetPoint;
-	HashSet<Point> EmptySpaceRecorder = new();
 	int count = -1;
 	bool IsUsingHorizontal = false;
 	int offsetcount = 0;
@@ -272,7 +252,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void ResetTemplate_GenerationValue() {
 		rect = new();
 		counter = OffSetPoint;
-		EmptySpaceRecorder.Clear();
 		count = -1;
 		IsUsingHorizontal = false;
 		offsetcount = 0;
@@ -300,7 +279,60 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		string zone = gen.BiomeMapping[WorldIndex];
 		return CharToBid(zone, WorldBiomeIndex);
 	}
+	Rectangle MainForestZone = new Rectangle();
+	Rectangle MainTundraForestZone = new Rectangle();
 	public List<Rectangle> ZoneToBeIgnored = new();
+	public List<Rectangle> SmallForestZone = new();
+	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
+	private void InitializeForestWorld() {
+		//Forest spawn zone
+		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
+		ZoneToBeIgnored.Add(MainForestZone);
+		//Snow forest zone
+		//Finding Suitable index in snow forest
+		int xdex = Main.rand.Next(4, 6);
+		int ydex = Main.rand.Next(9, 11);
+		Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
+		MainTundraForestZone = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 400, 150);
+		ZoneToBeIgnored.Add(MainTundraForestZone);
+		//Set small forest area
+		for (int i = 0; i < 60; i++) {
+			xdex = Main.rand.Next(1, 23);
+			ydex = Main.rand.Next(1, 22);
+			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
+			if (ID == Bid.Space || ID == Bid.Ocean) {
+				i--;
+				continue;
+			}
+			zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
+			Rectangle re = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 80, 40);
+			bool canBeAdded = true;
+			foreach (var item in ZoneToBeIgnored) {
+				if (item.Intersects(re)) {
+					canBeAdded = false;
+					break;
+				}
+			}
+			short centralID = Get_BiomeIDViaPos(re.Center, 0);
+			short topleftID = Get_BiomeIDViaPos(re.TopLeft().ToPoint(), 0);
+			short toprightID = Get_BiomeIDViaPos(re.TopRight().ToPoint(), 0);
+			short bottomleftID = Get_BiomeIDViaPos(re.BottomLeft().ToPoint(), 0);
+			short bottomrightID = Get_BiomeIDViaPos(re.BottomRight().ToPoint(), 0);
+			if (!canBeAdded || centralID != topleftID || centralID != toprightID || centralID != bottomleftID || centralID != bottomrightID) {
+				i--;
+				continue;
+			}
+			SmallForestZone.Add(re);
+			ZoneToBeIgnored.Add(re);
+		}
+	}
+	private void InitializeTrial() {
+		//Space trial
+		Point pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
+		while (Get_BiomeIDViaPos(pos_SpaceTrial, 0) != Bid.Space) {
+			pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
+		}
+	}
 	/// <summary>
 	/// This code here is pure definition of evil for the sake of "optimization", idfk if this is fast or not<br/>
 	/// But don't touch this code<br/>
@@ -329,7 +361,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 1), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(17, 2), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 3), 9);
-		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 4), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 4), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 5), 4);
 
 		//Initialize Jungle biome
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 1), 4);
@@ -369,7 +402,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(8, 10), 10);
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 11), 12);
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(6, 12), 13);
-		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 13), 12);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 13), 13);
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(15, 14), 3);
 
 		//Initialize Ocean biome
@@ -453,22 +486,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		InitializeBiomeWorld();
 		watch.Stop();
 		Mod.Logger.Info(watch.ToString());
+		InitializeForestWorld();
 
-		//Forest spawn zone
-		ZoneToBeIgnored.Add(new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200));
-		//Snow forest zone
-		Point zonecachedPoint = new();
-		int xdex = Main.rand.Next(4, 6);
-		int ydex = Main.rand.Next(9, 11);
-		zonecachedPoint = new(GridPart_X * xdex, GridPart_Y * ydex);
-		int width = 400, height = 150;
-		Rectangle zone = new(zonecachedPoint.X + Main.rand.Next(0, GridPart_X) - width / 2, zonecachedPoint.Y - height / 2, width, height);
-		ZoneToBeIgnored.Add(zone);
-		//Space trial
-		Point pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
-		while (Get_BiomeIDViaPos(pos_SpaceTrial, 0) != Bid.Space) {
-			pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
-		}
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		foreach (var item in modsystem.list_Structure) {
 			if (item.Get_FilePath == RogueLikeWorldGenSystem.FileDestination + "Watcher") {
@@ -727,8 +746,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
 	}
 	[Task]
-	public void Generate_SmallForest() {
-		Rectangle forestArea = ZoneToBeIgnored[0];
+	public void Generate_StarterForest() {
+		Rectangle forestArea = MainForestZone;
 		//We are using standard generation for this one
 		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
 		int offsetRaise = 0;
@@ -778,8 +797,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
-	public void Generate_SmallSnowForest() {
-		Rectangle forestArea = ZoneToBeIgnored[1];
+	public void Generate_SnowForest() {
+		Rectangle forestArea = MainTundraForestZone;
 		//We are using standard generation for this one
 		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
 		int offsetRaise = 0;
@@ -792,13 +811,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		int datawidth = 20;
 		for (int i = forestArea.X; i < forestArea.Width + forestArea.X; i++) {
 			MoveToNextX = true;
-			//if (Main.spawnTileX == i) {
-			//	Main.spawnTileY = startingPoint - offsetRaise - 3;
-			//	StructureData data = Generator.GetStructureData("Assets/ShrineOfOffering", Mod);
-			//	Generator.GenerateStructure("Assets/ShrineOfOffering", new(i - data.width / 2, forestArea.Y + forestArea.Height / 2), Mod);
-			//	Rectangle zone = new Rectangle(i - data.width / 2, forestArea.Y + forestArea.Height / 2, data.width, data.height);
-			//	BiomeZone.TryAdd(Bid.ShrineOfOffering, new() { zone });
-			//}
 			for (int j = startingPoint; j < forestArea.Height + forestArea.Y; j++) {
 				if (MoveToNextX) {
 					if (Rand.NextBool(5)) {
@@ -826,11 +838,39 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
-	public void Generate_EyeRoom() {
-		Point point = new((int)(Main.maxTilesX * Main.rand.NextFloat(.7f, .9f)), (int)(Main.maxTilesY * Main.rand.NextFloat(.7f, .9f)));
-		StructureData data = Generator.GetStructureData("Assets/Watcher", Mod);
-		Generator.GenerateFromData(data, new(point.X - data.width / 2, point.Y + data.height / 2));
-		EyeRoom = new(point.X - data.width / 2, point.Y + data.height / 2, data.width, data.height);
+	public void Generate_SmallForest() {
+		foreach (Rectangle zone in SmallForestZone) {
+			//We are using standard generation for this one
+			int startingPoint = zone.Height - zone.Height / 8 + zone.Y;
+			int offsetRaise = 0;
+			bool MoveToNextX;
+			int CurrentPosY;
+			Get_BiomeData(zone.Center, 0, out BiomeDataBundle bundle);
+			for (int i = zone.X; i < zone.Width + zone.X; i++) {
+				MoveToNextX = true;
+				for (int j = startingPoint; j < zone.Height + zone.Y; j++) {
+					if (MoveToNextX) {
+						if (Rand.NextBool(5)) {
+							offsetRaise += Rand.Next(-1, 2);
+						}
+						MoveToNextX = false;
+						j = startingPoint - offsetRaise;
+						GenerationHelper.FastPlaceTile(i, j, bundle.outlineTile);
+						continue;
+					}
+					if (Rand.NextFloat() <= .45f) {
+						GenerationHelper.FastPlaceTile(i, j, bundle.tile2);
+					}
+					else {
+						GenerationHelper.FastPlaceTile(i, j, bundle.tile);
+					}
+				}
+				CurrentPosY = startingPoint - offsetRaise;
+				if (Rand.NextBool(11)) {
+					WorldGen.GrowTree(i, CurrentPosY);
+				}
+			}
+		}
 	}
 	[Task]
 	public void Generate_PostWorld() {

@@ -9,7 +9,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class GenocidalPact_ModPlayer : ModPlayer {
 	class RelicSet_GenocidalPact : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 3;
+			Requirement = 4;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_GenocidalPact>());

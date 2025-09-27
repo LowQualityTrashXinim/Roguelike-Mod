@@ -16,7 +16,7 @@ public class SkyFractureTemplate : RelicTemplate {
 			false,
 			Color.Cyan
 			));
-		RelicTierUPValue = .3f;
+		RelicTierUPValue = 1.3f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class BombshellArtillery_ModPlayer : ModPlayer {
 	class RelicSet_BombshellArtillery : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 2;
+			Requirement = 3;
 		}
 	}
 	public bool ReactiveBomb => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_BombshellArtillery>());

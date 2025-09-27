@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class PerfectStatusTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = .55f;
+		RelicTierUPValue = 1f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

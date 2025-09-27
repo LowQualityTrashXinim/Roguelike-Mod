@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class BattleMountTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = .2f;
+		RelicTierUPValue = 1.2f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

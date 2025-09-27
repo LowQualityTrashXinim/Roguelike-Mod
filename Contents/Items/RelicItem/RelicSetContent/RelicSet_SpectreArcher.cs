@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class SpectreArcher_ModPlayer : ModPlayer {
 	class RelicSet_SpectreArcher : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 3;
+			Requirement = 4;
 		}
 	}
 	public bool SpectreQuiver => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_SpectreArcher>());

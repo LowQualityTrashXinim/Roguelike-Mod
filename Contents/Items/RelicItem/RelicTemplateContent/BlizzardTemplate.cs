@@ -17,7 +17,7 @@ public class BlizzardTemplate : RelicTemplate {
 			false,
 			Color.LightBlue
 			));
-		RelicTierUPValue = .1f;
+		RelicTierUPValue = 1.1f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

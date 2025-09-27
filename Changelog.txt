@@ -187,3 +187,6 @@ Version 0.0.1:
 185/ Implemented new change to relic and also adjusted Relic RNG.
 186/ Deleted Triple Debuff Template because the condition for the template is too difficult.
 187/ Deleted CombatV4Template template because it is too bloated.
+188/ Update World generation to add in many mini forest
+189/ Changed relic set activation condition.
+190/ Added Defenses Up relic set.

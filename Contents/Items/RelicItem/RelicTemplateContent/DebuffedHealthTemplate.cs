@@ -9,7 +9,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class DebuffedHealthTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
-			RelicTierUPValue = .33f;
+			RelicTierUPValue = 1.33f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([

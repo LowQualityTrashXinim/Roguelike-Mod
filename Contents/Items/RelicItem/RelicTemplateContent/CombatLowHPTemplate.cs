@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 	public class CombatLowHPTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
-			RelicTierUPValue = .3f;
+			RelicTierUPValue = .87f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			if (Main.rand.NextFloat() <= .25f) {

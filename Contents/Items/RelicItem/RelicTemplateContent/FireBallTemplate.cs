@@ -16,7 +16,7 @@ public class FireBallTemplate : RelicTemplate {
 			false,
 			Color.OrangeRed
 			));
-		RelicTierUPValue = .25f;
+		RelicTierUPValue = 1.25f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

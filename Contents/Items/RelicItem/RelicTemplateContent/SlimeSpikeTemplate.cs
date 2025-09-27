@@ -18,7 +18,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		DataStorer.AddContext("Relic_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 		//This is necessary if you want your template to increases your relic stat base on relic tier
 		//We will set it to .2, this mean the template will get its stat increases by 20% when they are tier up
-		RelicTierUPValue = .2f;
+		RelicTierUPValue = 1.2f;
 	}
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal

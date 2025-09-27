@@ -2,14 +2,13 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Localization;
+using Terraria.GameContent;
 using Terraria.ModLoader.IO;
+using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 
 namespace Roguelike.Contents.Items.RelicItem;
@@ -152,16 +151,13 @@ public class Relic : ModItem {
 			}
 			float tierUP = template.RelicTierUPValue * (RelicTier - 1);
 			if (value.Additive != 1)
-				value += value.Additive * tierUP;
+				value += (value.Additive - 1) * tierUP;
 			value.Base += value.Base * tierUP;
 			value.Flat += value.Flat * tierUP;
 			if (value.Multiplicative != 1) {
 				value *= 1 + tierUP;
 			}
-			line += template.ModifyToolTip(this, statlist[i], value);
-			if (tierUP != 0) {
-				line += $" (+{RelicTemplateLoader.RelicValueToPercentage(tierUP + 1)})";
-			}
+			line += template.ModifyToolTip(this, statlist[i], value) + $" (+{RelicTemplateLoader.RelicValueToPercentage(tierUP + 1)} | Base:{RelicTemplateLoader.RelicValueToPercentage(template.RelicTierUPValue + 1)})";
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -192,7 +188,6 @@ public class Relic : ModItem {
 		}
 		tooltips.Add(new(Mod, "RelicItem", active) { OverrideColor = color });
 		tooltips.Add(relicPoint);
-
 	}
 	/// <summary>
 	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop
@@ -235,10 +230,13 @@ public class Relic : ModItem {
 				relicprefix.Update(player, this, 0);
 			}
 		}
+		RelicSetPlayerHandle handler = player.GetModPlayer<RelicSetPlayerHandle>();
 		if (RelicSetType != -1) {
 			var relicset = RelicSetSystem.GetSet(RelicSetType);
 			if (relicset != null) {
-				player.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]++;
+				handler.RelicSet[RelicSetType]++;
+				if (relicset.Requirement == RelicTier)
+					handler.RelicTierValid[RelicSetType] = true;
 			}
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
@@ -250,7 +248,7 @@ public class Relic : ModItem {
 				}
 				float tierUP = template.RelicTierUPValue * (RelicTier - 1);
 				if (value.Additive != 1)
-					value += value.Additive * tierUP;
+					value += (value.Additive - 1) * tierUP;
 				value.Base += value.Base * tierUP;
 				value.Flat += value.Flat * tierUP;
 				if (value.Multiplicative != 1) {

@@ -16,7 +16,7 @@ public class DemonScytheTemplate : RelicTemplate {
 			false,
 			Color.MediumPurple
 			));
-		RelicTierUPValue = .2f;
+		RelicTierUPValue = 1.2f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

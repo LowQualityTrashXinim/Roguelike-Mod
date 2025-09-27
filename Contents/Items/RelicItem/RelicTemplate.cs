@@ -11,7 +11,7 @@ namespace Roguelike.Contents.Items.RelicItem;
 public class SynergyTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = .22f;
+		RelicTierUPValue = 1.22f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -42,7 +42,7 @@ public class SynergyTemplate : RelicTemplate {
 public class StrikeFullHPTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = .5f;
+		RelicTierUPValue = 1.5f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.FullHPDamage;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
@@ -58,6 +58,7 @@ public class StrikeFullHPTemplate : RelicTemplate {
 public class SkillDurationTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
+		RelicTierUPValue = 1;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SkillDuration;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {

@@ -8,7 +8,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class NatureOfGoodAndEvil_ModPlayer : ModPlayer {
 	class RelicSet_NatureOfGoodAndEvil : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 3;
+			Requirement = 4;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_NatureOfGoodAndEvil>());

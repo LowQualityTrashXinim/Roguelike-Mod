@@ -16,7 +16,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			false,
 			Color.LightSkyBlue
 			));
-		RelicTierUPValue = .2f;
+		RelicTierUPValue = .92f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([

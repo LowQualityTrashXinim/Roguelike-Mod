@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class StarfellStone_ModPlayer : ModPlayer {
 	class RelicSet_StarfellStone : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 2;
+			Requirement = 3;
 		}
 	}
 	public bool StarStone => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_StarfellStone>());
