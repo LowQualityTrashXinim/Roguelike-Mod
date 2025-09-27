@@ -14,6 +14,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Roguelike.Texture;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -33,6 +34,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				}
 			}
 			VanillaBuff(entity);
+			UpgradeVariant(entity);
+			MythicalWeapon(entity);
+			BossWeapon(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal || entity.type == ItemID.LifeFruit) {
 				entity.useTime = entity.useAnimation = 12;
 				entity.autoReuse = true;
@@ -44,26 +48,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.shoot = ModContent.ProjectileType<SandProjectile>();
 					item.damage = 22;
 					break;
-				case ItemID.Stynger:
-					item.useTime = 5;
-					item.useAnimation = 40;
-					item.reuseDelay = 30;
-					item.damage += 10;
-					break;
 				case ItemID.ToxicFlask:
 					item.damage += 5;
 					item.useTime = item.useAnimation = 25;
-					break;
-				case ItemID.BeamSword:
-					item.useTime = item.useAnimation;
-					item.damage += 5;
-					item.crit += 10;
-					break;
-				case ItemID.TrueNightsEdge:
-					item.useTime = item.useAnimation = 25;
-					break;
-				case ItemID.TrueExcalibur:
-					item.damage += 15;
 					break;
 				case ItemID.PlatinumBow:
 				case ItemID.GoldBow:
@@ -90,9 +77,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;
 					break;
-				case ItemID.Frostbrand:
-					item.shootsEveryUse = true;
-					break;
 				case ItemID.Starfury:
 					item.scale += .25f;
 					break;
@@ -114,6 +98,38 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.shootSpeed = 1;
 					item.useAnimation = item.useTime = 15;
 					item.ArmorPenetration = 30;
+					break;
+			}
+		}
+		private void UpgradeVariant(Item item) {
+			switch (item.type) {
+				case ItemID.Frostbrand:
+					item.shootsEveryUse = true;
+					break;
+				case ItemID.BeamSword:
+					item.useTime = item.useAnimation;
+					item.damage += 5;
+					item.crit += 10;
+					break;
+			}
+		}
+		private void MythicalWeapon(Item item) {
+			switch (item.type) {
+				case ItemID.TrueNightsEdge:
+					item.useTime = item.useAnimation = 25;
+					break;
+				case ItemID.TrueExcalibur:
+					item.damage += 15;
+					break;
+			}
+		}
+		private void BossWeapon(Item item) {
+			switch (item.type) {
+				case ItemID.Stynger:
+					item.useTime = 5;
+					item.useAnimation = 40;
+					item.reuseDelay = 30;
+					item.damage += 10;
 					break;
 			}
 		}

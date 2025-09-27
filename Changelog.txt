@@ -190,3 +190,4 @@ Version 0.0.1:
 188/ Update World generation to add in many mini forest
 189/ Changed relic set activation condition.
 190/ Added Defenses Up relic set.
+191/ Reworked Minishark.

@@ -3,6 +3,7 @@
 3/ Work on more Trial NPC and Trial Projectile that Trial NPC will be holding along with some artificial path finding
 4/ Work on debuff and buff sprite.
 5/ Remove connection between spoil and lootbox.
+5.1/ Rework the entire lootbox and loot table.
 6/ Make uses of ModUtils localization universally.
 7/ Work on Generic Template and break it down into multiple template.
 8/ Work on localization "TODO"

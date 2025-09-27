@@ -3118,6 +3118,11 @@ Mods: {
 				DisplayName: Unforgiving Outro Attack
 				Description: Mods.Roguelike.Buffs.Unforgiving_OutroAttack.Description
 			}
+
+			Freezy: {
+				DisplayName: Freezy
+				Description: significantly increases attack speed and bullet shot
+			}
 		}
 
 		Configs: {

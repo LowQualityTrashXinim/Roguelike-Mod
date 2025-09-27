@@ -82,3 +82,9 @@ TheUndertaker:
 	Shoot out a burst of 6 inaccurate bullets
 	Bullet shot from this gun have life steal effect
 	'''
+Minishark:
+	'''
+	Have 1 in 6 chance to shoot additional bullet
+	There are 1% chance to get freezy buff for 5s
+	While freezy buff are active, minishark shoot more bullet
+	'''
