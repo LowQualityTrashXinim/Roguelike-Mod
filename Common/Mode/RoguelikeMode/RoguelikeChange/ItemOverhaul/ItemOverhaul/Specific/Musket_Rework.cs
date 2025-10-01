@@ -14,7 +14,7 @@ public class Roguelike_Musket : GlobalItem {
 		return entity.type == ItemID.Musket;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.damage = 60;
+		entity.damage = 120;
 		entity.useTime = entity.useAnimation = 60;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -27,7 +27,7 @@ public class Roguelike_Musket : GlobalItem {
 		if (timer >= 60) {
 			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().SetCrit++;
 			if (timer >= 180) {
-				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CritDamage += 1;
+				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CritDamage += 1.5f;
 			}
 		}
 		return false;

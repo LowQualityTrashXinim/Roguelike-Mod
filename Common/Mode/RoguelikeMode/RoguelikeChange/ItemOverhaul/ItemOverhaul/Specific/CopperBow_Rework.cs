@@ -9,17 +9,15 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_CopperBow : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.CopperBow;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.CopperBow) {
-			entity.damage += 5;
-			entity.useTime = entity.useAnimation = 23;
-			entity.shootSpeed = 15;
-		}
+		entity.damage += 5;
+		entity.useTime = entity.useAnimation = 23;
+		entity.shootSpeed = 15;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.CopperBow) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
 		int Counter = player.GetModPlayer<Roguelike_CopperBow_ModPlayer>().CopperBow_Counter;
 		if (Counter >= 90) {
 			int amount = 8;
@@ -43,9 +41,7 @@ public class Roguelike_CopperBow : GlobalItem {
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.CopperBow) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_CoperBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
-		}
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_CoperBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 }
 public class Roguelike_CopperBow_ModPlayer : ModPlayer {

@@ -12,22 +12,19 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 
 public class Roguelike_CobaltSword : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.CobaltSword;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.CobaltSword) {
-			entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
-			entity.shootSpeed = 1;
-			entity.damage += 20;
-		}
+		entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
+		entity.shootSpeed = 1;
+		entity.damage += 20;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.CobaltSword) {
-			tooltips.Add(new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
-		}
+		tooltips.Add(new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.CobaltSword) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
+		velocity = velocity.SafeNormalize(Vector2.Zero);
 		int counter = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter;
 		player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter = -player.itemAnimationMax;
 		if (counter >= 150) {

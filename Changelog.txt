@@ -191,3 +191,5 @@ Version 0.0.1:
 189/ Changed relic set activation condition.
 190/ Added Defenses Up relic set.
 191/ Reworked Minishark.
+192/ Added Cursed Kingdom from ModJam2 mod.
+193/ Renamed ModAchievement system to RoguelikeAchievement

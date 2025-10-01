@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.Achievement.Hard;
-public class OceanOfFortune : ModAchievement {
+public class OceanOfFortune : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -16,7 +16,7 @@ public class OceanOfFortune : ModAchievement {
 	}
 }
 
-public class LordOfLootBox : ModAchievement {
+public class LordOfLootBox : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -25,7 +25,7 @@ public class LordOfLootBox : ModAchievement {
 		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(ModContent.NPCType<LootBoxLord>());
 	}
 }
-public class SpeedRunner : ModAchievement {
+public class SpeedRunner : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -36,7 +36,7 @@ public class SpeedRunner : ModAchievement {
 		return false;
 	}
 }
-public class BossRushRunnerI : ModAchievement {
+public class BossRushRunnerI : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.BossRush;
@@ -48,7 +48,7 @@ public class BossRushRunnerI : ModAchievement {
 		return false;
 	}
 }
-public class BossRushRunnerII : ModAchievement {
+public class BossRushRunnerII : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.BossRush;
@@ -60,7 +60,7 @@ public class BossRushRunnerII : ModAchievement {
 		return false;
 	}
 }
-public class StraightForTheWall : ModAchievement {
+public class StraightForTheWall : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.Challenge;

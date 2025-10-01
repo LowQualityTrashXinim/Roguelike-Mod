@@ -16,6 +16,24 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static bool Check_PositionValid(int X, int Y) {
+			if (!WorldGen.InWorld(X, Y)) {
+				return false;
+			}
+			int pass = 0;
+			for (int offsetX = -1; offsetX <= 1; offsetX++) {
+				for (int offsetY = -1; offsetY <= 1; offsetY++) {
+					if (WorldGen.InWorld(X + offsetX, Y + offsetY))
+						if (WorldGen.TileEmpty(X + offsetX, Y + offsetY)) {
+							pass++;
+						}
+				}
+			}
+			if (pass >= 8) {
+				return true;
+			}
+			return false;
+		}
 		/// <summary>
 		/// This will allow developer to write enter subworld code very easily<br/>
 		/// Consider setting Override param to true if you want to jump from 1 subworld to another

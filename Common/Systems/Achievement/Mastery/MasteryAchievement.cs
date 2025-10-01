@@ -2,7 +2,7 @@
 using Terraria;
 
 namespace Roguelike.Common.Systems.Achievement.Mastery;
-public class GodOfChallenge : ModAchievement {
+public class GodOfChallenge : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Mastery;
 		CategoryTag = AchievementTag.Challenge;

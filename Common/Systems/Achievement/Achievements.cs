@@ -6,7 +6,7 @@ using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Systems.Achievement;
 
-public class TheBeginningOfEndless : ModAchievement {
+public class TheBeginningOfEndless : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Tutorial;
 	}
@@ -18,7 +18,7 @@ public class TheBeginningOfEndless : ModAchievement {
 	}
 }
 
-public class TheFirstOfMany : ModAchievement {
+public class TheFirstOfMany : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Tutorial;
 	}
@@ -26,7 +26,7 @@ public class TheFirstOfMany : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod();
 	}
 }
-public class WeaponChallenge1 : ModAchievement {
+public class WeaponChallenge1 : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Mastery;
 		CategoryTag = AchievementTag.Challenge;

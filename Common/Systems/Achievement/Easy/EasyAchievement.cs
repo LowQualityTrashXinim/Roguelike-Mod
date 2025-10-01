@@ -12,7 +12,7 @@ using Terraria;
 using Terraria.UI;
 
 namespace Roguelike.Common.Systems.Achievement.Easy;
-public class BountifulHarvest : ModAchievement {
+public class BountifulHarvest : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -21,7 +21,7 @@ public class BountifulHarvest : ModAchievement {
 	}
 }
 
-public class SkillCheck : ModAchievement {
+public class SkillCheck : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -30,7 +30,7 @@ public class SkillCheck : ModAchievement {
 	}
 }
 
-public class TokenOfGreed : ModAchievement {
+public class TokenOfGreed : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -40,7 +40,7 @@ public class TokenOfGreed : ModAchievement {
 	}
 }
 
-public class TokenOfPride : ModAchievement {
+public class TokenOfPride : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -51,7 +51,7 @@ public class TokenOfPride : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class TokenOfWrath : ModAchievement {
+public class TokenOfWrath : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -59,7 +59,7 @@ public class TokenOfWrath : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class TokenOfSloth : ModAchievement {
+public class TokenOfSloth : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -67,7 +67,7 @@ public class TokenOfSloth : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfSlothArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class TokenOfGluttony : ModAchievement {
+public class TokenOfGluttony : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -75,7 +75,7 @@ public class TokenOfGluttony : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class BootOfSpeedManipulation : ModAchievement {
+public class BootOfSpeedManipulation : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -84,7 +84,7 @@ public class BootOfSpeedManipulation : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<BootsOfSpeedManipulationArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class VampirismCrystal : ModAchievement {
+public class VampirismCrystal : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -96,7 +96,7 @@ public class VampirismCrystal : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<VampirismCrystalArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class HeartOfEarth : ModAchievement {
+public class HeartOfEarth : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -105,7 +105,7 @@ public class HeartOfEarth : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class GamblerSoul : ModAchievement {
+public class GamblerSoul : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -113,7 +113,7 @@ public class GamblerSoul : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class ManaOverloader : ModAchievement {
+public class ManaOverloader : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -121,7 +121,7 @@ public class ManaOverloader : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<ManaOverloaderArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class EssenceLantern : ModAchievement {
+public class EssenceLantern : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -129,7 +129,7 @@ public class EssenceLantern : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<EssenceLanternArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class AlchemistKnowledge : ModAchievement {
+public class AlchemistKnowledge : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
@@ -137,7 +137,7 @@ public class AlchemistKnowledge : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class Elite : ModAchievement {
+public class Elite : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}

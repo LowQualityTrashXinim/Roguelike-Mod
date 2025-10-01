@@ -175,10 +175,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
+		tag["CursedKingdomArea"] = CursedKingdomArea;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
+		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
 		if (Type == null || Area == null) {
 			return;
 		}
@@ -279,6 +281,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		string zone = gen.BiomeMapping[WorldIndex];
 		return CharToBid(zone, WorldBiomeIndex);
 	}
+	public Rectangle CursedKingdomArea = new Rectangle();
 	Rectangle MainForestZone = new Rectangle();
 	Rectangle MainTundraForestZone = new Rectangle();
 	public List<Rectangle> ZoneToBeIgnored = new();
@@ -871,6 +874,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+	}
+	[Task]
+	public void Generate_CursedKingdomStructure() {
+		int X = Main.rand.Next(12, 16) * GridPart_X;
+		int Y = Main.rand.Next(15, 20) * GridPart_Y;
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Caven) {
+			X = Main.rand.Next(12, 16) * GridPart_X;
+			Y = Main.rand.Next(15, 20) * GridPart_Y;
+		}
+		ModContent.GetInstance<CursedKingdom_GenSystem>().Place_CursedKingdomEntrance(X, Y);
 	}
 	[Task]
 	public void Generate_PostWorld() {

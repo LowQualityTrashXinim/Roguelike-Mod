@@ -29,7 +29,7 @@ public enum AchievementTag : byte {
 /// <summary>
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
-public abstract class ModAchievement {
+public abstract class RoguelikeAchievement {
 	public AchievementTag CategoryTag = AchievementTag.None;
 	public AchievementTag DifficultyTag = AchievementTag.None;
 	public bool Achieved { get; set; }
@@ -53,9 +53,9 @@ public abstract class ModAchievement {
 }
 
 public class AchievementSystem : ModSystem {
-	public static readonly List<ModAchievement> Achievements = [];
-	public static ModAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
-	public static ModAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
+	public static readonly List<RoguelikeAchievement> Achievements = [];
+	public static RoguelikeAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
+	public static RoguelikeAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
 	public static bool IsAchieved(string AchievementName) => GetAchievement(AchievementName).Achieved;
 	public override void PostSetupContent() {
 		foreach (var item in Achievements) {
@@ -99,7 +99,7 @@ public class AchievementUI : UIState {
 	TagPanel tagMisc;
 	HashSet<AchievementTag> hash_tag = new();
 	Asset<Texture2D> asset = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-	List<ModAchievement> lib_achievement = new();
+	List<RoguelikeAchievement> lib_achievement = new();
 	UIPanel currentSelectAchievement;
 	AchievementHeaderPreview achievementheader;
 	UITextPanel<string> txtachievementheader;
@@ -322,7 +322,7 @@ public class AchievementUI : UIState {
 				txt_Achievement[i].SetText("");
 				continue;
 			}
-			ModAchievement achievement = lib_achievement[i];
+			RoguelikeAchievement achievement = lib_achievement[i];
 			btn.SetAchievement(achievement.Name);
 			txt_Achievement[i].SetText(achievement.DisplayName);
 		}
@@ -382,7 +382,7 @@ public class AchievementUI : UIState {
 				txt_Achievement[i].SetText("");
 				continue;
 			}
-			ModAchievement achievement = lib_achievement[indexChecker];
+			RoguelikeAchievement achievement = lib_achievement[indexChecker];
 			btn.SetAchievement(achievement.Name);
 			txt_Achievement[i].SetText(achievement.DisplayName);
 		}
@@ -428,7 +428,7 @@ public class AchievementUI : UIState {
 			return;
 		}
 		//Main.NewText(CurrentSelectedIndex);
-		ModAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
+		RoguelikeAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
 		if (achievement == null) {
 			return;
 		}
@@ -500,7 +500,7 @@ public class PageImage : UIImage {
 }
 public class AchievementHeaderPreview : UIImageButton {
 	public string achievementname;
-	private ModAchievement achievement;
+	private RoguelikeAchievement achievement;
 	Texture2D texture;
 	Asset<Texture2D> Lock;
 	Asset<Texture2D> achieved;
@@ -574,7 +574,7 @@ public class AchievementHeaderPreview : UIImageButton {
 }
 public class AchievementButton : UIImageButton {
 	public string achievementname;
-	private ModAchievement achievement;
+	private RoguelikeAchievement achievement;
 	Texture2D texture;
 	Asset<Texture2D> Lock;
 	Asset<Texture2D> achieved;

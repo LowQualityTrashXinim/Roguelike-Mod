@@ -387,6 +387,7 @@ Mods: {
 			Unforgiving_Bolt.DisplayName: Unforgiving_ Bolt
 			Roguelike_SpiritFlame.DisplayName: Roguelike_ Spirit Flame
 			LauncherProjectileFragment.DisplayName: Launcher Projectile Fragment
+			Portal.DisplayName: Portal
 		}
 
 		NPCs: {
