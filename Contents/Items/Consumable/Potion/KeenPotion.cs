@@ -25,9 +25,13 @@ public class KeenBuff : ModBuff {
 	}
 }
 public class KeenPlayer : ModPlayer {
-	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		if(Player.HasBuff<KeenBuff>()) {
-			modifiers.SetCrit();
+	public override void UpdateEquips() {
+		if (Player.HasBuff<KeenBuff>()) {
+			Player.ModPlayerStats().AlwaysCritValue++;
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Player.HasBuff<KeenBuff>()) {
 			int buffindex = Player.FindBuffIndex(ModContent.BuffType<KeenBuff>());
 			Player.buffTime[buffindex] -= ModUtils.ToSecond(30);
 		}

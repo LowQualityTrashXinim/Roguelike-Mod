@@ -193,3 +193,8 @@ Version 0.0.1:
 191/ Reworked Minishark.
 192/ Added Cursed Kingdom from ModJam2 mod.
 193/ Renamed ModAchievement system to RoguelikeAchievement
+194/ Simplified the functionality of PlayerStatsHandler.AddStatsToPlayer
+195/ Lead Irradiation now have effect on player.
+196/ Work on some localization of the mod.
+197/ A lot of fixes and patched on world biome handler.
+198/ Better Keen potion buff check.

@@ -472,6 +472,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
 
 	}
+	/// <summary>
+	/// This is mainly for initialization, so it is safe to use in anywhere that need initialize
+	/// </summary>
 	[Task]
 	public void SetUp() {
 		ZoneToBeIgnored.Clear();
@@ -487,9 +490,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Stopwatch watch = new();
 		watch.Start();
 		InitializeBiomeWorld();
+		InitializeForestWorld();
 		watch.Stop();
 		Mod.Logger.Info(watch.ToString());
-		InitializeForestWorld();
 
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		foreach (var item in modsystem.list_Structure) {

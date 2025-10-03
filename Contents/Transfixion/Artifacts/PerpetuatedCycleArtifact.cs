@@ -49,7 +49,7 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 		}
 	}
 	public class Samsara_of_Retribution : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
+		public override string Texture => ModTexture.EMPTYDEBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff();
 		}

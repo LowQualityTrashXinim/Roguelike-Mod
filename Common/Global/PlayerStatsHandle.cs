@@ -561,7 +561,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
-	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
+	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod) {
 		if (stat == PlayerStats.None) {
 			return;
 		}
@@ -794,6 +794,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		return false;
 	}
+	Dictionary<PlayerStats, StatModifier> PernamentStats = new();
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;
@@ -860,13 +861,13 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
+	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		var StatMod = new StatModifier();
 		StatMod += Additive - 1;
 		StatMod *= Multiplicative;
 		StatMod.Flat = Flat;
 		StatMod.Base = Base;
-		AddStatsToPlayer(stat, StatMod, singularAdditiveMultiplier, singularBaseMultiplier);
+		AddStatsToPlayer(stat, StatMod);
 	}
 	/// <summary>
 	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
@@ -878,8 +879,8 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base, singularAdditiveMultiplier, singularBaseMultiplier);
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0 ) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
 	}
 	/// <summary>
 	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
@@ -891,8 +892,8 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat, StatModifier modifier, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier, singularAdditiveMultiplier, singularBaseMultiplier);
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, StatModifier modifier) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier);
 	}
 	/// <summary>
 	/// Only work with certain PlayerStats

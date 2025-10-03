@@ -96,7 +96,7 @@ public class PaperDefense_DefensesBonus_Buff : ModBuff {
 	}
 	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
 		PaperDefense_ModPlayer trinketplayer = Main.LocalPlayer.GetModPlayer<PaperDefense_ModPlayer>();
-		tip = $"Compenstate value :{trinketplayer.Trinket6_StackLossses}\nCurrent Stack{trinketplayer.Trinket6_Stack}";
+		tip = string.Format(tip,new string[] { trinketplayer.Trinket6_StackLossses.ToString(), trinketplayer.Trinket6_Stack.ToString() });
 	}
 	public override bool ReApply(Player player, int time, int buffIndex) {
 		player.buffTime[buffIndex] = time;

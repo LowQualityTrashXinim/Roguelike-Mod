@@ -1,9 +1,9 @@
 1/ Make world generation process much more easy to work with.
 2/ Assign NPC and Item to EF (ElemFac).
-3/ Work on more Trial NPC and Trial Projectile that Trial NPC will be holding along with some artificial path finding
+3/ Work on more Trial NPC and Trial Projectile
 4/ Work on debuff and buff sprite.
-5/ Remove connection between spoil and lootbox.
+5/ Remove connection between spoil and lootbox. (connect with task 8)
 5.1/ Rework the entire lootbox and loot table.
 6/ Make uses of ModUtils localization universally.
-7/ Work on Generic Template and break it down into multiple template.
-8/ Work on localization "TODO"
+7/ Work on localization "TODO"
+8/ Add a universal loot pool.

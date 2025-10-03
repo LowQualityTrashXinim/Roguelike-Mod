@@ -1648,6 +1648,9 @@ Mods: {
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
 					Alt-attack to throw out a anti gravity plasma grenade
+					'''
+				Guide:
+					'''
 					Shooting the plasma grenade will make it explode
 					Letting it collide or explode naturally will make it deal 1/3 of original damage
 					'''
@@ -1875,7 +1878,7 @@ Mods: {
 				DisplayName: The Horizon: Annihiliation
 				Tooltip:
 					'''
-					Belong to the most fearsome, recommend pampering
+					"Belong to the most fearsome, recommend pampering"
 					Not shooting for a while will grant you [c/8715d2:Epilogue: Ishbóshet]
 					'''
 				ExtraInfo:
@@ -2180,6 +2183,9 @@ Mods: {
 					'''
 					Shoot out a shell that on direct contact with enemy deal double damage
 					Enemy hit by the shell directly get inflicted with Aftershock effect
+					'''
+				Guide:
+					'''
 					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
 					Shell upon hit will shatter into 5 fragments each deal 33% of shell damage
 					'''
@@ -2516,12 +2522,12 @@ Mods: {
 
 			LeadIrradiation: {
 				DisplayName: Lead Irradiation
-				Description: TODO: ADD DESCRIPTION
+				Description: Rapidly losing life ..., but at least you are strong
 			}
 
 			BoilingBlood: {
 				DisplayName: Boiling Blood
-				Description: TODO: ADD DESCRIPTION
+				Description: Rapidly losing life...
 			}
 
 			SwiftSteal_Buff: {
@@ -2529,19 +2535,14 @@ Mods: {
 				Description: Increases health and crit chance
 			}
 
-			Samsara_of_Retribution_Buff: {
-				DisplayName: Samsara of Tribution
-				Description: " "
-			}
-
 			Samsara_of_Retribution: {
 				DisplayName: Samsara of Retribution
-				Description: TODO
+				Description: Retribution
 			}
 
 			HyperRegen: {
 				DisplayName: Hyper Regen
-				Description: Rapidly regen your wound
+				Description: Rapidly regenerate your wound
 			}
 
 			ManaReleaseBuff: {
@@ -2566,7 +2567,7 @@ Mods: {
 
 			CrimsonAbsorbtion: {
 				DisplayName: Crimson Absorbtion
-				Description: TODO
+				Description: Losing life until you have 30% left
 			}
 
 			ExplosionHealing: {
@@ -2673,22 +2674,22 @@ Mods: {
 
 			StarGaze: {
 				DisplayName: Star Gaze
-				Description: TODO
+				Description: Rapidly losing life
 			}
 
 			ThrowShortSwordCoolDown: {
-				DisplayName: Throw Cool Down
-				Description: " "
+				DisplayName: Thrown cool down
+				Description: You need to prepare for new shortsword
 			}
 
 			Marked: {
 				DisplayName: Marked
-				Description: TODO
+				Description: Increases taken critical damage by 100%
 			}
 
 			TheUnderworldWrath: {
 				DisplayName: The Underworld Wrath
-				Description: TODO
+				Description: Rapidly losing life, and are more vulnerable while on fire
 			}
 
 			StimPackBuff: {
@@ -2707,7 +2708,12 @@ Mods: {
 
 			PaperDefense_DefensesBonus_Buff: {
 				DisplayName: Fraggile defense
-				Description: " "
+				Description:
+					'''
+					Increases defenses
+					Compenstate value :{0}
+					Current Stack{1}
+					'''
 			}
 
 			AdAstraDebuff: {
@@ -2715,39 +2721,34 @@ Mods: {
 				Description: Multiply your attack, defense, attack speed by 0.1
 			}
 
-			PowerBankDebuff: {
-				DisplayName: Power Bank Debuff
-				Description: TODO: ADD DESCRIPTION
-			}
-
 			PowerCordBuff: {
-				DisplayName: Power Cord Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Power Cord
+				Description: Increases energy recharge by 150%
 			}
 
 			MoonLightDebuff: {
-				DisplayName: Moon Light Debuff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Moon Light radiation
+				Description: Completely shatter your defenses
 			}
 
 			TitanPowerBuff: {
-				DisplayName: Titan Power Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Titan cool down
+				Description: Revival cool down.
 			}
 
 			AntiPoisonBuff: {
-				DisplayName: Anti Poison Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Anti Poison
+				Description: Grant immunity to poison and venom.
 			}
 
 			FireResistanceBuff: {
 				DisplayName: Fire Resistance
-				Description: TODO: ADD DESCRIPTION
+				Description: Grant immunity to most fire debuff
 			}
 
 			LastingVileBuff: {
 				DisplayName: Lasting Vile Cooldown
-				Description: TODO: ADD DESCRIPTION
+				Description: You can't consume another vile.
 			}
 
 			ProtectionSpell: {
@@ -2756,13 +2757,17 @@ Mods: {
 			}
 
 			LifeStealBuff: {
-				DisplayName: Life Steal Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Life Steal
+				Description: Increases universal life steal by 5%.
 			}
 
 			ShadowBuff: {
-				DisplayName: Shadow Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Shadow dodge
+				Description:
+					'''
+					Increases universal dodge chance by 25%
+					Increases i-frame duration by 10%
+					'''
 			}
 
 			EvasionSpell: {
@@ -2787,12 +2792,12 @@ Mods: {
 
 			Drawback: {
 				DisplayName: Drawback
-				Description: TODO: ADD DESCRIPTION
+				Description: Without proper preparation, side effect are unavoidable
 			}
 
 			KeenBuff: {
 				DisplayName: Keen Buff
-				Description: TODO: ADD DESCRIPTION
+				Description: Your attack will always be critical for duration of the buff.
 			}
 
 			RejuvenatePotionBuff: {
