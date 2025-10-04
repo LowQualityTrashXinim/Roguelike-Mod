@@ -5,11 +5,14 @@ using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Achievements;
+using Terraria.GameContent.Creative;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
@@ -21,29 +24,32 @@ namespace Roguelike.Common.Mode.RoguelikeMode;
 public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public HashSet<short> CurrentBiome = new HashSet<short>();
 	public float shaderOff = 1;
-	public float shaderblizzard = 1f;
-	public float shaderdesert = 1f;
 	public float shaderstorm = 1f;
-	public float shaderdeerclop = 1f;
 	public SlotId strongBlizzardSound = SlotId.Invalid;
 	public SlotId insideBlizzardSound = SlotId.Invalid;
 	public float strongblizzVol = 1f;
-	public float insideblizzVol = 1f;
 	public override void OnEnterWorld() {
-		ModContent.GetInstance<RogueLikeWorldGen>().SetUp();
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		if (gen.RoguelikeWorld) {
+			ModContent.GetInstance<RogueLikeWorldGen>().SetUp();
+		}
 	}
 	public override void ResetEffects() {
-		if (!Player.active) {
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		if (!Player.active || !gen.RoguelikeWorld) {
 			return;
 		}
 		CurrentBiome.Clear();
-		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
 		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return;
 		}
 		string zone = gen.BiomeMapping[WorldIndex];
+		bool IsInSmallForest = gen.SmallForestZone.Where(rect => rect.Contains(Player.Center.ToTileCoordinates())).Any();
+		if (IsInSmallForest) {
+			CurrentBiome.Add(Bid.Forest);
+		}
 		if (zone == null) {
 			return;
 		}
@@ -51,56 +57,136 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 			short biomeID = RogueLikeWorldGen.CharToBid(zone, i);
 			CurrentBiome.Add(biomeID);
 		}
-		foreach (var item in CurrentBiome) {
-			if (RogueLikeWorldGen.BiomeID.TryGetValue(item, out string value)) {
-				Main.NewText("Player are currently in:" + value);
-			}
+	}
+}
+public abstract class BiomeData : ModType {
+	public short BiomeID = Bid.None;
+	public ushort Type = 0;
+	protected override void Register() {
+		Type = RoguelikeBiomeHandle_ModSystem.Register(this);
+	}
+	public List<spawnInfo> SpawningInfo(NPCSpawnInfo spawnInfo) {
+		return new();
+	}
+	public struct spawnInfo {
+		/// <summary>
+		/// Type of NPC to be spawned
+		/// </summary>
+		public int Type = 0;
+		/// <summary>
+		/// Their weight range from 0 to 1f with 0 being unlikely to spawn and 1f being common<br/>
+		/// </summary>
+		public float Weight = 1f;
+
+		public spawnInfo() {
 		}
 	}
 }
 public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 	FieldInfo blizzardsetting = null;
 	FieldInfo blizzardsoundset = null;
+	MethodInfo updateworld_grass = null;
+	public static Dictionary<short, BiomeData> dict_BiomeData { get; private set; } = new();
+	public static ushort Register(BiomeData data) {
+		ModTypeLookup<BiomeData>.Register(data);
+		if (!dict_BiomeData.TryAdd(data.BiomeID, data)) {
+			dict_BiomeData[data.BiomeID] = data;
+		}
+		return (ushort)dict_BiomeData.Keys.Count;
+	}
 	public override void Load() {
+		if (dict_BiomeData == null) {
+			dict_BiomeData = new();
+		}
 		if (blizzardsetting == null) {
 			blizzardsetting = typeof(Player).GetField("disabledBlizzardGraphic", BindingFlags.NonPublic | BindingFlags.Static);
 		}
 		if (blizzardsoundset == null) {
 			blizzardsoundset = typeof(Player).GetField("disabledBlizzardSound", BindingFlags.NonPublic | BindingFlags.Static);
 		}
+		if (updateworld_grass == null) {
+			updateworld_grass = typeof(WorldGen).GetMethod("UpdateWorld_OvergroundTile", BindingFlags.NonPublic | BindingFlags.Static);
+		}
 		On_Main.DrawBlack += On_Main_DrawBlack;
 		On_Player.UpdateBiomes += On_Player_UpdateBiomes;
+		On_WorldGen.UpdateWorld_Inner += On_WorldGen_UpdateWorld_Inner;
+	}
+
+	private void On_WorldGen_UpdateWorld_Inner(On_WorldGen.orig_UpdateWorld_Inner orig) {
+		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+			orig();
+			return;
+		}
+		Wiring.UpdateMech();
+		TileEntity.UpdateStart();
+		foreach (TileEntity value in TileEntity.ByID.Values) {
+			value.Update();
+		}
+
+		TileEntity.UpdateEnd();
+		if (Main.netMode != 1) {
+			WorldGen.totalD++;
+			if (WorldGen.totalD >= 30) {
+				WorldGen.totalD = 0;
+				WorldGen.CountTiles(WorldGen.totalX);
+				WorldGen.totalX++;
+				if (WorldGen.totalX >= Main.maxTilesX)
+					WorldGen.totalX = 0;
+			}
+		}
+
+		Liquid.skipCount++;
+		if (Liquid.skipCount > 1) {
+			Liquid.UpdateLiquid();
+			Liquid.skipCount = 0;
+		}
+	}
+
+	public override void Unload() {
+		dict_BiomeData.Clear();
 	}
 
 	private void On_Main_DrawBlack(On_Main.orig_DrawBlack orig, Main self, bool force) {
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		if (!gen.RoguelikeWorld) {
+			orig(self, force);
+			return;
+		}
 		if (Main.shimmerAlpha == 1f)
 			return;
 
 		int num = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
-		float num2 = (float)((double)num * 0.4) / 255f;
+		float num2 = (float)(num * 0.4f) / 255f;
 		if (Lighting.Mode == LightMode.Retro) {
-			num2 = (float)(Main.tileColor.R - 55) / 255f;
+			num2 = (Main.tileColor.R - 55) / 255f;
 			if (num2 < 0f)
 				num2 = 0f;
 		}
 		else if (Lighting.Mode == LightMode.Trippy) {
-			num2 = (float)(num - 55) / 255f;
+			num2 = (num - 55) / 255f;
 			if (num2 < 0f)
 				num2 = 0f;
 		}
 		Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
 		Vector2 vector = (Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange));
 		Point point = new Point(-Main.offScreenRange / 16 + screenOverdrawOffset.X, -Main.offScreenRange / 16 + screenOverdrawOffset.Y);
+		int num3 = (int)((Main.screenPosition.X - vector.X) / 16f - 1f) + point.X;
+		int num4 = (int)((Main.screenPosition.X + Main.screenWidth + vector.X) / 16f) + 2 - point.X;
 		int num5 = (int)((Main.screenPosition.Y - vector.Y) / 16f - 1f) + point.Y;
-		int num6 = (int)((Main.screenPosition.Y + (float)Main.screenHeight + vector.Y) / 16f) + 5 - point.Y;
+		int num6 = (int)((Main.screenPosition.Y + Main.screenHeight + vector.Y) / 16f) + 5 - point.Y;
+
+		if (num3 < 0)
+			num3 = point.X;
+
+		if (num4 > Main.maxTilesX)
+			num4 = Main.maxTilesX - point.X;
+
 		if (num5 < 0)
 			num5 = point.Y;
 
 		if (num6 > Main.maxTilesY)
 			num6 = Main.maxTilesY - point.Y;
 
-		int num3 = (int)((Main.screenPosition.X - vector.X) / 16f - 1f) + point.X;
-		int num4 = (int)((Main.screenPosition.X + (float)Main.screenWidth + vector.X) / 16f) + 2 - point.X;
 		bool flag = Main.ShouldShowInvisibleWalls();
 		for (int i = num5; i < num6; i++) {
 			bool flag2 = i >= Main.UnderworldLayer;
@@ -114,18 +200,27 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 						return;
 
 					Tile tile = Main.tile[j, i];
+					if (tile == null)
+						tile = new Tile();
+
 					float num8 = Lighting.Brightness(j, i);
-					num8 = (float)Math.Floor(num8 * 255f) / 255f;
+					num8 = MathF.Floor(num8 * 255f) / 255f;
 					byte b = tile.LiquidAmount;
 					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
 					bool flag3 = tile.IsActuated && Main.tileBlockLight[tile.TileType] && (!tile.IsTileInvisible || flag);
 					bool flag4 = !WallID.Sets.Transparent[tile.WallType] && (!tile.IsWallInvisible || flag);
-					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == 0 && !tile.IsHalfBlock && !((double)i <= Main.worldSurface)))
+					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == 0 && !tile.IsHalfBlock && !(i <= Main.worldSurface)))
 						break;
 				}
 
 				if (j - num7 > 0) {
-					Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16),Color.Black);
+					float lighting = MathF.Floor(Lighting.Brightness(j, i) * 255f) / 255f;
+					if (lighting != 0) {
+						Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16), Color.Black with { A = (byte)(255 - lighting) });
+					}
+					else {
+						Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16), Color.Black);
+					}
 				}
 			}
 		}
@@ -468,10 +563,11 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		LoaderManager.Get<SceneEffectLoader>().UpdateSceneEffect(self);
 	}
 	private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-		//if (!UniversalSystem.CanAccessContent(self, UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
-		//	orig(self);
-		//	return;
-		//}
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		if (!gen.RoguelikeWorld) {
+			orig(self);
+			return;
+		}
 		self.ZoneSkyHeight = false;
 		self.ZoneCorrupt = false;
 		self.ZoneCrimson = false;

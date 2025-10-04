@@ -323,16 +323,6 @@ public static class TerrariaArrayID {
 	public readonly static int[] PoisonBuff = { BuffID.Poisoned, BuffID.Venom };
 	public readonly static int[] Debuff = [.. FireBuff, .. PoisonBuff];
 	//Perk
-	//Tile
-	public readonly static int[] Altar = {
-		ModContent.TileType<RelicAltar>(),
-		ModContent.TileType<WeaponAltar>(),
-		ModContent.TileType<ArmorAltar>(),
-					ModContent.TileType<SkillAltar>(),
-					ModContent.TileType<PotionAltar>(),
-					ModContent.TileType<PotionAltar>(),
-					ModContent.TileType<FoodAltar>(),
-	};
 	//Material
 	public readonly static int[] SeedsMaterial = {
 		ItemID.GrassSeeds, ItemID.JungleGrassSeeds, ItemID.MushroomGrassSeeds,ItemID.AshGrassSeeds, ItemID.CorruptSeeds, ItemID.CrimsonSeeds, ItemID.HallowedSeeds, ItemID.Acorn,

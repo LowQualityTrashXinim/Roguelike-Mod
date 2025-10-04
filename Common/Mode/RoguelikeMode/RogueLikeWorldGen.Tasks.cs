@@ -155,7 +155,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 	public override void Load() {
 	}
-
+	public bool RoguelikeWorld = false;
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
@@ -164,6 +164,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		if (ModContent.GetInstance<RogueLikeConfig>().RoguelikeMode) {
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
+			RoguelikeWorld = true;
 		}
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
@@ -172,15 +173,19 @@ public partial class RogueLikeWorldGen : ModSystem {
 		if (Biome == null) {
 			return;
 		}
+		tag["RoguelikeWorld"] = RoguelikeWorld;
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
 		tag["CursedKingdomArea"] = CursedKingdomArea;
+		tag["SmallForestZone"] = SmallForestZone;
 	}
 	public override void LoadWorldData(TagCompound tag) {
+		RoguelikeWorld = tag.Get<bool>("RoguelikeWorld");
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
 		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
+		SmallForestZone = tag.Get<List<Rectangle>>("SmallForestZone");
 		if (Type == null || Area == null) {
 			return;
 		}
