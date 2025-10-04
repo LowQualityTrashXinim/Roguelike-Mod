@@ -155,6 +155,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 	public override void Load() {
 	}
+	public bool AlreadyGenerated = false;
 	public bool RoguelikeWorld = false;
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
@@ -178,14 +179,16 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
 		tag["CursedKingdomArea"] = CursedKingdomArea;
-		tag["SmallForestZone"] = SmallForestZone;
+		tag["ForestZone"] = ForestZone;
+		tag["AlreadyGenerated"] = AlreadyGenerated;
 	}
 	public override void LoadWorldData(TagCompound tag) {
+		AlreadyGenerated = tag.Get<bool>("AlreadyGenerated");
 		RoguelikeWorld = tag.Get<bool>("RoguelikeWorld");
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
 		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
-		SmallForestZone = tag.Get<List<Rectangle>>("SmallForestZone");
+		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
 		if (Type == null || Area == null) {
 			return;
 		}
@@ -290,25 +293,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	Rectangle MainForestZone = new Rectangle();
 	Rectangle MainTundraForestZone = new Rectangle();
 	public List<Rectangle> ZoneToBeIgnored = new();
-	public List<Rectangle> SmallForestZone = new();
+	public List<Rectangle> ForestZone = new();
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
 	private void InitializeForestWorld() {
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
 		ZoneToBeIgnored.Add(MainForestZone);
+		ForestZone.Add(MainForestZone);
 		//Snow forest zone
 		//Finding Suitable index in snow forest
 		int xdex = Main.rand.Next(4, 6);
 		int ydex = Main.rand.Next(9, 11);
 		Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
 		MainTundraForestZone = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 400, 150);
+		ForestZone.Add(MainTundraForestZone);
 		ZoneToBeIgnored.Add(MainTundraForestZone);
 		//Set small forest area
 		for (int i = 0; i < 60; i++) {
 			xdex = Main.rand.Next(1, 23);
 			ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean) {
+			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven) {
 				i--;
 				continue;
 			}
@@ -330,7 +335,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				i--;
 				continue;
 			}
-			SmallForestZone.Add(re);
+			ForestZone.Add(re);
 			ZoneToBeIgnored.Add(re);
 		}
 	}
@@ -489,8 +494,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
-		Main.spawnTileX = GridPart_X * 11;
-		Main.spawnTileY = GridPart_Y * 14;
+		if (!AlreadyGenerated) {
+			Main.spawnTileX = GridPart_X * 11;
+			Main.spawnTileY = GridPart_Y * 14;
+			FieldInfo[] field = typeof(Main).GetFields();
+			foreach (var item in field) {
+				if (item.IsStatic && item.Name == "UnderworldLayer") {
+					item.SetValue(null, Main.maxTilesY);
+				}
+			}
+		}
 
 		Stopwatch watch = new();
 		watch.Start();
@@ -850,7 +863,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_SmallForest() {
-		foreach (Rectangle zone in SmallForestZone) {
+		foreach (Rectangle zone in ForestZone) {
+			if (zone == MainForestZone) {
+				continue;
+			}
+			if (zone == MainTundraForestZone) {
+				continue;
+			}
 			//We are using standard generation for this one
 			int startingPoint = zone.Height - zone.Height / 8 + zone.Y;
 			int offsetRaise = 0;

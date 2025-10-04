@@ -201,3 +201,4 @@ Version 0.0.1:
 199/ Deleted Altar tile due to no longer needing it.
 200/ Update the mod's description.
 201/ Patched up Update World Inner method
+202/ Added Weaken skill

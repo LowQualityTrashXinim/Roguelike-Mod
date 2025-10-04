@@ -239,3 +239,11 @@ ProtectiveOnslaught: {
 		Excess healing bursts into an AoE explosion.
 		'''
 }
+
+Weaken: {
+	DisplayName: Weaken
+	Description: 
+	'''
+	Decreases skill projectile damage by 50%
+	'''
+}

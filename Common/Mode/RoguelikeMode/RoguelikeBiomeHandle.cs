@@ -46,7 +46,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 			return;
 		}
 		string zone = gen.BiomeMapping[WorldIndex];
-		bool IsInSmallForest = gen.SmallForestZone.Where(rect => rect.Contains(Player.Center.ToTileCoordinates())).Any();
+		bool IsInSmallForest = gen.ForestZone.Where(rect => rect.Contains(Player.Center.ToTileCoordinates())).Any();
 		if (IsInSmallForest) {
 			CurrentBiome.Add(Bid.Forest);
 		}
