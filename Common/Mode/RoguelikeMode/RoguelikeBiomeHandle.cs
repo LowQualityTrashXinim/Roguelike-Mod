@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
+using SubworldLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,16 +31,16 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public float strongblizzVol = 1f;
 	public override void OnEnterWorld() {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (gen.RoguelikeWorld) {
+		if (gen.RoguelikeWorld&& SubworldSystem.Current == null) {
 			ModContent.GetInstance<RogueLikeWorldGen>().SetUp();
 		}
 	}
 	public override void ResetEffects() {
+		CurrentBiome.Clear();
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		if (!Player.active || !gen.RoguelikeWorld) {
 			return;
 		}
-		CurrentBiome.Clear();
 		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
 		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
@@ -85,7 +86,6 @@ public abstract class BiomeData : ModType {
 public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 	FieldInfo blizzardsetting = null;
 	FieldInfo blizzardsoundset = null;
-	MethodInfo updateworld_grass = null;
 	public static Dictionary<short, BiomeData> dict_BiomeData { get; private set; } = new();
 	public static ushort Register(BiomeData data) {
 		ModTypeLookup<BiomeData>.Register(data);
@@ -104,9 +104,6 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		if (blizzardsoundset == null) {
 			blizzardsoundset = typeof(Player).GetField("disabledBlizzardSound", BindingFlags.NonPublic | BindingFlags.Static);
 		}
-		if (updateworld_grass == null) {
-			updateworld_grass = typeof(WorldGen).GetMethod("UpdateWorld_OvergroundTile", BindingFlags.NonPublic | BindingFlags.Static);
-		}
 		On_Main.DrawBlack += On_Main_DrawBlack;
 		On_Player.UpdateBiomes += On_Player_UpdateBiomes;
 		On_WorldGen.UpdateWorld_Inner += On_WorldGen_UpdateWorld_Inner;
@@ -124,17 +121,6 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		}
 
 		TileEntity.UpdateEnd();
-		if (Main.netMode != 1) {
-			WorldGen.totalD++;
-			if (WorldGen.totalD >= 30) {
-				WorldGen.totalD = 0;
-				WorldGen.CountTiles(WorldGen.totalX);
-				WorldGen.totalX++;
-				if (WorldGen.totalX >= Main.maxTilesX)
-					WorldGen.totalX = 0;
-			}
-		}
-
 		Liquid.skipCount++;
 		if (Liquid.skipCount > 1) {
 			Liquid.UpdateLiquid();
@@ -156,7 +142,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			return;
 
 		int num = (Main.tileColor.R + Main.tileColor.G + Main.tileColor.B) / 3;
-		float num2 = (float)(num * 0.4f) / 255f;
+		float num2 = (float)(num * 0.1f) / 255f;
 		if (Lighting.Mode == LightMode.Retro) {
 			num2 = (Main.tileColor.R - 55) / 255f;
 			if (num2 < 0f)
@@ -192,7 +178,6 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			bool flag2 = i >= Main.UnderworldLayer;
 			if (flag2)
 				num2 = 0.2f;
-
 			for (int j = num3; j < num4; j++) {
 				int num7 = j;
 				for (; j < num4; j++) {
@@ -206,21 +191,15 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 					float num8 = Lighting.Brightness(j, i);
 					num8 = MathF.Floor(num8 * 255f) / 255f;
 					byte b = tile.LiquidAmount;
-					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
+					bool num9 = num8 <= num2 && ((b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
 					bool flag3 = tile.IsActuated && Main.tileBlockLight[tile.TileType] && (!tile.IsTileInvisible || flag);
 					bool flag4 = !WallID.Sets.Transparent[tile.WallType] && (!tile.IsWallInvisible || flag);
-					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == 0 && !tile.IsHalfBlock && !(i <= Main.worldSurface)))
+					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == 0 && !tile.IsHalfBlock))
 						break;
 				}
 
 				if (j - num7 > 0) {
-					float lighting = MathF.Floor(Lighting.Brightness(j, i) * 255f) / 255f;
-					if (lighting != 0) {
-						Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16), Color.Black with { A = (byte)(255 - lighting) });
-					}
-					else {
-						Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16), Color.Black);
-					}
+					Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(num7 << 4, i << 4) - Main.screenPosition + vector, new Rectangle(0, 0, j - num7 << 4, 16), Color.Black);
 				}
 			}
 		}

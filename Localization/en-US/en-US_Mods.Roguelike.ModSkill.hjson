@@ -242,8 +242,5 @@ ProtectiveOnslaught: {
 
 Weaken: {
 	DisplayName: Weaken
-	Description: 
-	'''
-	Decreases skill projectile damage by 50%
-	'''
+	Description: Decreases skill projectile damage by 50%
 }

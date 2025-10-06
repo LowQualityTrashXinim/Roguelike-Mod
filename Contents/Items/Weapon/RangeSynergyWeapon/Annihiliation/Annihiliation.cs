@@ -40,7 +40,7 @@ internal class Annihiliation : SynergyModItem {
 		}
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		velocity = velocity * .1f;
+		velocity = velocity * Main.rand.NextFloat(.075f, .1f);
 		type = Item.shoot;
 		position = position.PositionOFFSET(velocity, 90);
 	}

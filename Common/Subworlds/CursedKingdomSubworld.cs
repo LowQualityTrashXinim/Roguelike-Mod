@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ModJam2.Common.Subworlds;
-using ModJam2.Common.Wrapper;
+using Roguelike.Common.Wrapper;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Scroll;
@@ -14,20 +13,17 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace ModJam2.Common.Subworlds {
-	public class CursedKingdomSubworld : Subworld {
-		public override int Width => 800;
-
-		public override int Height => 420;
-
-		public override List<GenPass> Tasks => new()
-		{
+namespace Roguelike.Common.Subworlds;
+public class CursedKingdomSubworld : Subworld {
+	public override int Width => 800;
+	public override int Height => 420;
+	public override List<GenPass> Tasks => new()
+	{
 			new GenPass_Seed(),
-			new GenPass_CursedKingdom("Cursed Kingdom", 0.01f)
+			new GenPass_CursedKingdom("Cursed Kingdom", 0.02f)
 		};
-		public override void OnEnter() {
-			Main.NewText("Cursed Kingdom Domain: Disable natural life regeneration", Color.DarkRed);
-		}
+	public override void OnEnter() {
+		Main.NewText("Cursed Kingdom Domain: Disable natural life regeneration", Color.DarkRed);
 	}
 }
 public class GenPass_Seed : GenPass {
@@ -44,8 +40,8 @@ public class GenPass_CursedKingdom : GenPass {
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 		int length = 800 * 420;
 		short counterH = 0;
-		Main.worldSurface = 0;
-		Main.rockLayer = 0;
+		Main.worldSurface = 500;
+		Main.rockLayer = 500;
 		for (int i = 0; i < length; i++) {
 			int x = i % 800;
 			WorldGen.PlaceTile(x, counterH, TileID.Stone);

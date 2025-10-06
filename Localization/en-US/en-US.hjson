@@ -388,6 +388,7 @@ Mods: {
 			Roguelike_SpiritFlame.DisplayName: Roguelike_ Spirit Flame
 			LauncherProjectileFragment.DisplayName: Launcher Projectile Fragment
 			Portal.DisplayName: Portal
+			TheOrbitTheProjectile.DisplayName: The Orbit The Projectile
 		}
 
 		NPCs: {
@@ -2111,6 +2112,7 @@ Mods: {
 					Throw out the disk that have flaming mace orbit around it
 					After 4th throw, the next throw will release 3 flaming mace orbiting around the disk
 					Every 2th throw, damage is increases by 50%
+					Upon recieved the disk, a short lived weaker copy of the disk will orbit around the player
 					'''
 			}
 
@@ -2395,6 +2397,11 @@ Mods: {
 
 			DrainingVeilBlade: {
 				DisplayName: Draining Veil Blade
+				Tooltip: ""
+			}
+
+			RuleOfNature: {
+				DisplayName: Rule Of Nature
 				Tooltip: ""
 			}
 		}

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Items.Weapon;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
@@ -24,6 +24,8 @@ public class TundraBow : SynergyModItem {
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		Projectile.NewProjectile(source, position.PositionOFFSET(velocity.RotatedBy(MathHelper.ToRadians(90)), 20), velocity, type, damage, knockback, player.whoAmI);
+		Projectile.NewProjectile(source, position.PositionOFFSET(velocity.RotatedBy(MathHelper.ToRadians(-90)), 20), velocity, type, damage, knockback, player.whoAmI);
 		TundraBow_ModPlayer tundra = player.GetModPlayer<TundraBow_ModPlayer>();
 		if (Main.rand.NextFloat() <= chance) {
 			tundra.ActivateSnowStorm(Item);

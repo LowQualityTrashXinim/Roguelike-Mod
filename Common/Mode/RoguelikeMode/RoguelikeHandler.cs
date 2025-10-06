@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ModJam2.Common.Subworlds;
+using Roguelike.Common.Subworlds;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;

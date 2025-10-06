@@ -113,7 +113,7 @@ public class TranquilMind : ModSkill {
 public class Weaken : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 400;
-		Skill_Duration = ModUtils.ToSecond(4);
+		Skill_Duration = ModUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {

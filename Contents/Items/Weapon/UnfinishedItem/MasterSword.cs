@@ -13,11 +13,7 @@ internal class MasterSword : SynergyModItem {
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.WoodenSword)
-			.AddIngredient(ItemID.BorealWoodSword)
-			.AddIngredient(ItemID.RichMahoganySword)
-			.AddIngredient(ItemID.EbonwoodSword)
-			.AddIngredient(ItemID.ShadewoodSword)
-			.AddIngredient(ItemID.PalmWoodSword)
+			.AddIngredient(ItemID.EnchantedSword)
 			.Register();
 	}
 }

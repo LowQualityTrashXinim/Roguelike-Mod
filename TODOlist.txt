@@ -7,3 +7,5 @@
 6/ Make uses of ModUtils localization universally.
 7/ Work on localization "TODO"
 8/ Add a universal loot pool.
+9/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
+10/ Refactor User info tablet

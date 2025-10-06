@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Projectiles;
+using System.Collections.Generic;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Common;
 public class Roguelike_MagicGemStaff : GlobalItem {
@@ -70,6 +71,18 @@ public class Roguelike_MagicGemStaff : GlobalItem {
 				break;
 		}
 	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		switch (item.type) {
+			case ItemID.AmethystStaff:
+			case ItemID.TopazStaff:
+			case ItemID.SapphireStaff:
+			case ItemID.EmeraldStaff:
+			case ItemID.RubyStaff:
+			case ItemID.DiamondStaff:
+				ModUtils.AddTooltip(ref tooltips, new(Mod, "Staff", ModUtils.LocalizationText("RoguelikeRework", "GemStaff")));
+				break;
+		}
+	}
 	public override bool AltFunctionUse(Item item, Player player) {
 		switch (item.type) {
 			case ItemID.AmethystStaff:
@@ -128,25 +141,40 @@ public class Roguelike_MagicGemStaff : GlobalItem {
 			switch (item.type) {
 				case ItemID.AmethystStaff:
 					type = ProjectileID.AmethystBolt;
+					if (!velocity.IsLimitReached(5)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 5;
+					}
 					break;
 				case ItemID.TopazStaff:
 					type = ProjectileID.TopazBolt;
+					if (!velocity.IsLimitReached(5)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 5;
+					}
 					break;
 				case ItemID.SapphireStaff:
 					type = ProjectileID.SapphireBolt;
+					if (!velocity.IsLimitReached(7)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 7;
+					}
 					break;
 				case ItemID.EmeraldStaff:
 					type = ProjectileID.EmeraldBolt;
+					if (!velocity.IsLimitReached(7)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 7;
+					}
 					break;
 				case ItemID.DiamondStaff:
 					type = ProjectileID.DiamondBolt;
+					if (!velocity.IsLimitReached(9)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 9;
+					}
 					break;
 				case ItemID.RubyStaff:
 					type = ProjectileID.RubyBolt;
+					if (!velocity.IsLimitReached(9)) {
+						velocity = velocity.SafeNormalize(Vector2.Zero) * 9;
+					}
 					break;
-			}
-			if (!velocity.IsLimitReached(7)) {
-				velocity = velocity.SafeNormalize(Vector2.Zero) * 7;
 			}
 		}
 		else {
@@ -170,6 +198,7 @@ public class Roguelike_MagicGemStaff : GlobalItem {
 				case ItemID.DiamondStaff:
 				case ItemID.RubyStaff:
 					position = position.PositionOFFSET(velocity, 50);
+					damage *= 2;
 					break;
 			}
 		}

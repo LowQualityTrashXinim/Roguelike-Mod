@@ -19,6 +19,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using Roguelike.Common.Subworlds;
 
 namespace Roguelike.Common.RoguelikeMode;
 /// <summary>
@@ -299,14 +300,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
 		ZoneToBeIgnored.Add(MainForestZone);
-		ForestZone.Add(MainForestZone);
 		//Snow forest zone
 		//Finding Suitable index in snow forest
 		int xdex = Main.rand.Next(4, 6);
 		int ydex = Main.rand.Next(9, 11);
 		Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
 		MainTundraForestZone = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 400, 150);
-		ForestZone.Add(MainTundraForestZone);
 		ZoneToBeIgnored.Add(MainTundraForestZone);
 		//Set small forest area
 		for (int i = 0; i < 60; i++) {
@@ -864,12 +863,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Generate_SmallForest() {
 		foreach (Rectangle zone in ForestZone) {
-			if (zone == MainForestZone) {
-				continue;
-			}
-			if (zone == MainTundraForestZone) {
-				continue;
-			}
 			//We are using standard generation for this one
 			int startingPoint = zone.Height - zone.Height / 8 + zone.Y;
 			int offsetRaise = 0;
@@ -921,6 +914,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+		ForestZone.Add(MainTundraForestZone);
+		ForestZone.Add(MainForestZone);
 	}
 
 	Rectangle goldRoomSize = new(0, 0, 150, 150);

@@ -4,7 +4,7 @@ using StructureHelper.Models;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace ModJam2.Common.Wrapper
+namespace Roguelike.Common.Wrapper
 {
     public static partial class ModWrapper
     {

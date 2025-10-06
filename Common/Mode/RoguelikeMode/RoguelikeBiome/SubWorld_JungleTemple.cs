@@ -7,9 +7,9 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeBiome;
 internal class SubWorld_JungleTemple : Subworld {
-	public override int Width => 1000;
+	public override int Width => 800;
 
-	public override int Height => 2500;
+	public override int Height => 2000;
 
 	public override List<GenPass> Tasks =>
 		new() {

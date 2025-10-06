@@ -200,5 +200,10 @@ Version 0.0.1:
 198/ Better Keen potion buff check.
 199/ Deleted Altar tile due to no longer needing it.
 200/ Update the mod's description.
-201/ Patched up Update World Inner method
-202/ Added Weaken skill
+201/ Patched up Update World Inner method.
+202/ Added Weaken skill.
+203/ Fixed a bug caused by Staff overhaul.
+204/ Added more subworld for boss.
+205/ Buffed The Orbit.
+206/ Buffed The Two Evil.
+207/ Buffed The Tundra Bow.

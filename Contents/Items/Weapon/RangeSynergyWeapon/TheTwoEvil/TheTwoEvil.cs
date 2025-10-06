@@ -12,7 +12,7 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
 internal class TheTwoEvil : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(30, 30, 27, 6, 55, 55, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 17f, false, AmmoID.Arrow);
+		Item.BossRushDefaultRange(30, 30, 27, 6, 35, 35, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 17f, false, AmmoID.Arrow);
 		Item.UseSound = SoundID.Item5;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
@@ -26,7 +26,7 @@ internal class TheTwoEvil : SynergyModItem {
 		int colorchosing = Main.rand.NextBool().ToInt();
 		int color = colorchosing == 0 ? DustID.GemAmethyst : DustID.GemRuby;
 		Vector2 newpos = pos + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.5f, 1.25f);
-		Vector2 vel = (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * 5f;
+		Vector2 vel = (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 7f);
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		for (int i = 0; i < 4; i++) {
@@ -40,6 +40,13 @@ internal class TheTwoEvil : SynergyModItem {
 			}
 		}
 		Projectile.NewProjectile(source, newpos, vel, ModContent.ProjectileType<EvilShot>(), (int)(damage * 1.5f), knockback, player.whoAmI, colorchosing);
+		for (int i = 0; i < 3; i++) {
+			Vector2 newpos2 = position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.5f, 1.25f);
+			Vector2 newvel2 = (Main.MouseWorld - newpos2).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Projectile projectile = Projectile.NewProjectileDirect(source, newpos2, newvel2, ModContent.ProjectileType<EvilShot>(), (int)(damage * .33f) + 1, knockback, player.whoAmI, colorchosing);
+			projectile.scale -= .5f;
+			projectile.penetrate = 2;
+		}
 	}
 	public override Vector2? HoldoutOffset() {
 		return new(-3f, 0);
