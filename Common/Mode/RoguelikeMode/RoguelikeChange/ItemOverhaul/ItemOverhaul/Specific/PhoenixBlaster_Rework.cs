@@ -9,23 +9,19 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_PhoenixBlaster : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.PhoenixBlaster;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.PhoenixBlaster) {
-			entity.damage += 12;
-			entity.useTime = entity.useAnimation = 30;
-			entity.knockBack += 1;
-			entity.crit = 6;
-		}
+		entity.damage += 12;
+		entity.useTime = entity.useAnimation = 30;
+		entity.knockBack += 1;
+		entity.crit = 6;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.PhoenixBlaster) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_PhoenixBlaster", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
-		}
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_PhoenixBlaster", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.PhoenixBlaster) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
 		int Counter = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter;
 		if (++player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter >= 5) {
 			player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter = 0;

@@ -52,7 +52,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.damage += 5;
 					item.useTime = item.useAnimation = 25;
 					break;
-				case ItemID.PlatinumBow:
 				case ItemID.GoldBow:
 					item.useTime = item.useAnimation = 42;
 					item.damage += 10;
@@ -160,9 +159,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 					break;
-				case ItemID.TinBow:
-					velocity = velocity.Vector2RotateByRandom(5);
-					break;
 				case ItemID.ChlorophyteClaymore:
 					break;
 			}
@@ -184,7 +180,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 			switch (item.type) {
 				case ItemID.GoldBow:
-				case ItemID.PlatinumBow:
 					var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 					if (ContentSamples.ProjectilesByType[type].arrow) {
 						projectile.extraUpdates += 1;

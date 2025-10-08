@@ -207,3 +207,9 @@ Version 0.0.1:
 205/ Buffed The Orbit.
 206/ Buffed The Two Evil.
 207/ Buffed The Tundra Bow.
+208/ Minor optimization.
+209/ Made it easier to reuse portal projectile for future subworld.
+210/ Fixed Potential bug that would caused the world generation to generate multiple time.
+211/ Overall work on LootBox lord to make it more playable.
+212/ Reworked Platinum Bow.
+213/ Minor code clean up.

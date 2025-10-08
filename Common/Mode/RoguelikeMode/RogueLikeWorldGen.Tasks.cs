@@ -1,25 +1,25 @@
-﻿using Roguelike.Common.Utils;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Roguelike.Common.General;
-using Roguelike.Common.Systems.ObjectSystem;
-using Roguelike.Texture;
-using StructureHelper.API;
-using StructureHelper.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System;
 using Terraria;
+using System.Linq;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
+using ReLogic.Content;
+using Roguelike.Texture;
+using System.Reflection;
+using System.Diagnostics;
 using Terraria.Utilities;
+using Terraria.ModLoader;
+using StructureHelper.API;
+using Terraria.ModLoader.IO;
+using Roguelike.Common.Utils;
+using StructureHelper.Models;
+using System.Threading.Tasks;
 using Terraria.WorldBuilding;
+using Microsoft.Xna.Framework;
+using Roguelike.Common.General;
+using System.Collections.Generic;
 using Roguelike.Common.Subworlds;
+using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Systems.ObjectSystem;
 
 namespace Roguelike.Common.RoguelikeMode;
 /// <summary>
@@ -94,7 +94,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public override void OnModLoad() {
 		Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
 		Color[] color = new Color[65025];
-
+		StaticNoise255x255 = new bool[65025];
 		Main.RunOnMainThread(() => {
 			sprite.Value.GetData(color);
 		}).Wait();
@@ -153,6 +153,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		dict_BiomeBundle = null;
 		BiomeZone = null;
 		BiomeGroup = null;
+		StaticNoise255x255 = null;
 	}
 	public override void Load() {
 	}
@@ -353,7 +354,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// The array of string have a size of 24x24, because we are using grid of 24x24 system<br/>
 	/// The biome ID <see cref="Bid"/> is stored as a char data
 	/// </summary>
-	private void InitializeBiomeWorld() {
+	public void InitializeBiomeWorld() {
 		//Initialize Space biome
 		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 15);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
@@ -481,29 +482,33 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
 
 	}
-	/// <summary>
-	/// This is mainly for initialization, so it is safe to use in anywhere that need initialize
-	/// </summary>
 	[Task]
-	public void SetUp() {
+	public void ResetValue() {
 		ZoneToBeIgnored.Clear();
+		ForestZone.Clear();
+		CursedKingdomArea = new Rectangle();
+		MainForestZone = new Rectangle();
+		MainTundraForestZone = new Rectangle();
 		WatchTracker = TimeSpan.Zero;
 		Biome = new();
+		Main.spawnTileX = GridPart_X * 11;
+		Main.spawnTileY = GridPart_Y * 14;
+		FieldInfo[] field = typeof(Main).GetFields();
+		foreach (var item in field) {
+			if (item.IsStatic && item.Name == "UnderworldLayer") {
+				item.SetValue(null, Main.maxTilesY);
+			}
+		}
 		GridPart_X = Main.maxTilesX / 24;//small world : 175
 		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
-		if (!AlreadyGenerated) {
-			Main.spawnTileX = GridPart_X * 11;
-			Main.spawnTileY = GridPart_Y * 14;
-			FieldInfo[] field = typeof(Main).GetFields();
-			foreach (var item in field) {
-				if (item.IsStatic && item.Name == "UnderworldLayer") {
-					item.SetValue(null, Main.maxTilesY);
-				}
-			}
-		}
-
+	}
+	/// <summary>
+	/// This is mainly for initialization, so it is safe to use in anywhere that need initialize of the world
+	/// </summary>
+	[Task]
+	public void SetUp() {
 		Stopwatch watch = new();
 		watch.Start();
 		InitializeBiomeWorld();

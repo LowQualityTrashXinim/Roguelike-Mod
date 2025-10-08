@@ -4,6 +4,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Contents.Items;
 using Roguelike.Contents.Perks;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,7 @@ namespace Roguelike.Common.Utils {
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
 		public static bool IsThisArmorPiece(this Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
+		public static int OldItemType(this Player player) => player.GetModPlayer<SynergyModPlayer>().ItemTypeOld;
 		/// <summary>
 		/// Check whenever or not is this item a weapon or not
 		/// </summary>

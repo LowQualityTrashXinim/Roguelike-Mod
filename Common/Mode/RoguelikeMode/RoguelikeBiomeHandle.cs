@@ -31,8 +31,9 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public float strongblizzVol = 1f;
 	public override void OnEnterWorld() {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (gen.RoguelikeWorld&& SubworldSystem.Current == null) {
-			ModContent.GetInstance<RogueLikeWorldGen>().SetUp();
+		if (gen.RoguelikeWorld && SubworldSystem.Current == null) {
+			if (gen.BiomeMapping[0] == null)
+				ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
 		}
 	}
 	public override void ResetEffects() {

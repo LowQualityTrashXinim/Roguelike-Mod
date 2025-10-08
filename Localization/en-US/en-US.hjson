@@ -389,6 +389,7 @@ Mods: {
 			LauncherProjectileFragment.DisplayName: Launcher Projectile Fragment
 			Portal.DisplayName: Portal
 			TheOrbitTheProjectile.DisplayName: The Orbit The Projectile
+			Portal_CursedKingdom.DisplayName: Portal_ Cursed Kingdom
 		}
 
 		NPCs: {

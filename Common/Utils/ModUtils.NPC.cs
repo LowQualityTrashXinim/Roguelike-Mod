@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
@@ -39,7 +40,12 @@ namespace Roguelike.Common.Utils {
 			Main.projectile[HostileProjectile].friendly = false;
 			return HostileProjectile;
 		}
-
+		/// <summary>
+		/// Useful for making heal type effect
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="healAmount"></param>
+		/// <param name="texteffect"></param>
 		public static void Heal(this NPC npc, int healAmount, bool texteffect = true) {
 			int simulatehealing = npc.life + healAmount;
 			if (npc.lifeMax <= simulatehealing) {
@@ -51,6 +57,16 @@ namespace Roguelike.Common.Utils {
 			if (texteffect) {
 				CombatText.NewText(npc.Hitbox, CombatText.HealLife, healAmount);
 			}
+		}
+		/// <summary>
+		/// Useful for developer who want to do their own manual teleportation effect
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="newpos"></param>
+		public static void TeleportCommon(this NPC npc, Vector2 newpos) {
+			npc.position = newpos;
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 1, npc.whoAmI, newpos.X, newpos.Y);
 		}
 	}
 }

@@ -20,10 +20,10 @@ internal class RoguelikeHandler : ModSystem {
 		Vector2 CK_pos = ModContent.GetInstance<RogueLikeWorldGen>().CursedKingdomArea.Center().ToWorldCoordinates();
 		if (player.Center.Distance(CK_pos) < 2000) {
 			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, CK_pos, Vector2.Zero, ModContent.ProjectileType<Portal>(), 0, 0, player.whoAmI);
+				Projectile_WhoAmI = Projectile.NewProjectile(null, CK_pos, Vector2.Zero, ModContent.ProjectileType<Portal_CursedKingdom>(), 0, 0, player.whoAmI);
 			}
 			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal>()) {
+			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_CursedKingdom>()) {
 				Projectile_WhoAmI = -1;
 			}
 		}

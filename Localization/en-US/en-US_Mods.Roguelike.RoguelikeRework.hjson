@@ -89,3 +89,9 @@ Minishark:
 	While freezy buff are active, minishark shoot more bullet
 	'''
 GemStaff: Alt-click to activate special attack
+PlatinumBow:
+	'''
+	If previous weapon used is:
+	{0} : shoot out arch of 8 diamond bolts and increases arrow damage by 50%
+	{1} : Rain down Star fury projectiles along with current arrow
+	'''

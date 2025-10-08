@@ -1,4 +1,4 @@
-﻿using Roguelike.Contents.NPCs;
+﻿using Roguelike.Contents.NPCs.LootBoxLord;
 using Roguelike.Texture;
 using Terraria;
 using Terraria.ID;
