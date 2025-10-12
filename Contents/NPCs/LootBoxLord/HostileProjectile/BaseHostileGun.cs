@@ -214,7 +214,7 @@ public class HostileMinisharkDesperation : BaseHostileGun {
 			Projectile.rotation = TowardPlayer.ToRotation();
 			if (++Projectile.ai[0] >= 8) {
 				Projectile.ai[0] = 0;
-				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * 12f, ProjectileID.Bullet, Projectile.damage, 1);
+				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * 7f, ProjectileID.Bullet, Projectile.damage, 1);
 
 				for (int i = 0; i < 3; i++) {
 					int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(TowardPlayer, 10), 0, 0, DustID.Torch);

@@ -6,6 +6,7 @@ using Roguelike.Common.Subworlds;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Wrapper;
 using Roguelike.Texture;
 using StructureHelper.API;
 using StructureHelper.Models;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -185,12 +187,21 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["CursedKingdomArea"] = CursedKingdomArea;
 		tag["ForestZone"] = ForestZone;
 		tag["AlreadyGenerated"] = AlreadyGenerated;
+		tag["CrimsonEntrance"] = CrimsonEntrance;
+		tag["CorruptionEntrance"] = CorruptionEntrance;
+		tag["FleshRealmEntrance"] = FleshRealmEntrance;
+		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		AlreadyGenerated = tag.Get<bool>("AlreadyGenerated");
 		RoguelikeWorld = tag.Get<bool>("RoguelikeWorld");
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
+		//Entrance
+		SlimeWorldEntrance = tag.Get<Rectangle>("SlimeWorldEntrance");
+		CorruptionEntrance = tag.Get<Rectangle>("CorruptionEntrance");
+		CrimsonEntrance = tag.Get<Rectangle>("CrimsonEntrance");
+		FleshRealmEntrance = tag.Get<Rectangle>("FleshRealmEntrance");
 		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
 		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
 		if (Type == null || Area == null) {
@@ -911,6 +922,77 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Y = Main.rand.Next(15, 20) * GridPart_Y;
 		}
 		ModContent.GetInstance<CursedKingdom_GenSystem>().Place_CursedKingdomEntrance(X, Y);
+	}
+	Rectangle CrimsonEntrance = new();
+	Rectangle CorruptionEntrance = new();
+	Rectangle FleshRealmEntrance = new();
+	Rectangle SlimeWorldEntrance = new();
+	[Task]
+	public void Generate_CrimsonEntrance() {
+		int X = Main.rand.Next(20, 22) * GridPart_X;
+		int Y = Main.rand.Next(11, 13) * GridPart_Y;
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
+			X = Main.rand.Next(20, 22) * GridPart_X + Main.rand.Next(0, GridPart_X);
+			Y = Main.rand.Next(11, 13) * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		}
+		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CrimsonEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+		}
+	}
+	[Task]
+	public void Generate_CorruptionEntrance() {
+		int X = Main.rand.Next(5, 9) * GridPart_X;
+		int Y = Main.rand.Next(18, 20) * GridPart_Y;
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Corruption) {
+			X = Main.rand.Next(5, 9) * GridPart_X + Main.rand.Next(0, GridPart_X); ;
+			Y = Main.rand.Next(18, 20) * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		}
+		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CorruptionEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+		}
+	}
+	[Task]
+	public void Generate_FleshRealmEntrance() {
+		int X = Main.rand.Next(19, 22) * GridPart_X;
+		int Y = 19 * GridPart_Y;
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
+			X = Main.rand.Next(19, 22) * GridPart_X + Main.rand.Next(0, GridPart_X);
+			Y = 19 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		}
+		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			FleshRealmEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+		}
+	}
+	public void Generate_SlimeWorldEntrance() {
+		int X = 16 * GridPart_X;
+		int Y = 11 * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Forest && !ForestZone.Where(re => re.Contains(X,Y)).Any()) {
+			X = 16 * GridPart_X + Main.rand.Next(0, GridPart_X);
+			Y = 11 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		}
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			SlimeWorldEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+		}
 	}
 	[Task]
 	public void Generate_PostWorld() {

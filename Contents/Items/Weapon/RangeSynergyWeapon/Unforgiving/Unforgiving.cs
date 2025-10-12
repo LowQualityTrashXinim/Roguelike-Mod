@@ -234,6 +234,7 @@ public class Unforgiving_ModPlayer : ModPlayer {
 	const int AttackBucketCap = 34000;
 	int AttackBucket = 0;
 	bool OutroAttack = false;
+	bool ReachedMaxPotential = false;
 	public bool CanActivateOutroAttack() {
 		if (OutroAttack) {
 			OutroAttack = false;
@@ -247,6 +248,31 @@ public class Unforgiving_ModPlayer : ModPlayer {
 		CD = ModUtils.CountDown(CD);
 		if (++Counter >= 180) {
 			Counter = 180;
+			if (Player.IsHeldingModItem<Unforgiving>()) {
+				if (!ReachedMaxPotential) {
+					for (int i = 0; i < 150; i++) {
+						var dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Shadowflame, Scale: Main.rand.NextFloat(1f, 1.2f));
+						dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
+						var dust2 = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Granite, Scale: Main.rand.NextFloat(1, 1.1f));
+						dust2.velocity = Main.rand.NextVector2CircularEdge(8, 8);
+						dust2.noGravity = true;
+					}
+					ModUtils.DustStar(Player.Center, DustID.Granite, Color.Black);
+					ReachedMaxPotential = true;
+				}
+			}
+		}
+		else {
+			if (Player.IsHeldingModItem<Unforgiving>()) {
+				if (Counter == 120) {
+					for (int i = 0; i < 150; i++) {
+						var dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Granite, Scale: Main.rand.NextFloat(0.55f, 1f));
+						dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
+						dust.noGravity = true;
+					}
+				}
+			}
+			ReachedMaxPotential = false;
 		}
 		if (AttackCD > 0) {
 			return;
@@ -402,6 +428,9 @@ public class Unforgiving_BlastWave : ModProjectile {
 		var BetterTop = new Vector2(Projectile.Center.X, Projectile.Center.Y);
 		var dust = Dust.NewDustDirect(BetterTop, 0, 0, DustID.Shadowflame, Projectile.velocity.X, 0, 0, Color.White, Main.rand.NextFloat(0.55f, 1f));
 		dust.position += Main.rand.NextVector2Circular(Projectile.width, Projectile.width);
+	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.ScalingArmorPenetration += 1f;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Projectile.damage > 10) {

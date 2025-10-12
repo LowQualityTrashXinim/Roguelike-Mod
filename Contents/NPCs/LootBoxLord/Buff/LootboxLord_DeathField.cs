@@ -10,12 +10,13 @@ internal class LootboxLord_DeathField : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		if(!NPC.AnyNPCs(ModContent.NPCType<LootBoxLord>())) {
+		if (!NPC.AnyNPCs(ModContent.NPCType<LootBoxLord>())) {
 			player.DelBuff(buffIndex);
 			return;
 		}
-		if (player.buffTime[buffIndex] <= 0) {
+		if (player.buffTime[buffIndex] <= 2) {
 			player.EasyKillPlayer($"{player.name} has fail to kill Loot box Lord in time", 1);
+			player.buffTime[buffIndex] = 2;
 		}
 	}
 }

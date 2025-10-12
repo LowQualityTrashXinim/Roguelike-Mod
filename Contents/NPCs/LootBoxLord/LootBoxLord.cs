@@ -214,7 +214,7 @@ internal class LootBoxLord : ModNPC {
 			if (!Reached110HP) {
 				Reset(0, 240);
 				CanSlowDown = true;
-				Main.NewText("Final domain: Disable life regeneration and healing");
+				Main.NewText("Final domain: Disable life regeneration and healing", Color.DarkRed);
 				player.AddBuff<LootboxLord_FinalDomain>(3600);
 			}
 			Reached110HP = true;
@@ -371,14 +371,6 @@ internal class LootBoxLord : ModNPC {
 			CD_DefenseUp = ModUtils.ToSecond(30);
 		}
 	}
-	/*
-	 The desperate attack:
-- Continously shoot out sword in a spiral and a ring of shortswords
-- Summon a minishark to continuously shoot at player
-- Summon all of the bow to shoot arrow from the sky
-- Ring of spear is created and accelerated toward to what they are currently facing to
-- Additionally Lootbox Lord gain 40% Damage reduction, however healing effect of the boss and player are disabled
-	*/
 	int lifeCounter = 0;
 	public override void PostAI() {
 		var player = Main.player[NPC.target];

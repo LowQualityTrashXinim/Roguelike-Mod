@@ -217,3 +217,7 @@ Version 0.0.1:
 215/ Deleted config option Roguelike Mode to avoid confusion when configuring the mod.
 216/ Updated Localization for better explanation of the configuration setting.
 217/ Significantly buff Copper Bow wait mechanic.
+218/ Updated visual indicator for Unforgiving to make it feel better to play.
+219/ Fixed a infinite reclusion bug caused by Gold Armor.
+220/ Added entrance structure to Corruption, Crimson, FleshRealm and Slime World subworld.
+221/ Added new entrance structure into the world generation.
