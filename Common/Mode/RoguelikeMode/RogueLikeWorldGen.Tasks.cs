@@ -504,6 +504,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		MainTundraForestZone = new Rectangle();
 		WatchTracker = TimeSpan.Zero;
 		Biome = new();
+		GridPart_X = Main.maxTilesX / 24;//small world : 175
+		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		Main.spawnTileX = GridPart_X * 11;
 		Main.spawnTileY = GridPart_Y * 14;
 		FieldInfo[] field = typeof(Main).GetFields();
@@ -512,8 +514,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				item.SetValue(null, Main.maxTilesY);
 			}
 		}
-		GridPart_X = Main.maxTilesX / 24;//small world : 175
-		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	}
@@ -978,11 +978,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 		}
 	}
+	[Task]
 	public void Generate_SlimeWorldEntrance() {
 		int X = 16 * GridPart_X;
 		int Y = 11 * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Forest && !ForestZone.Where(re => re.Contains(X,Y)).Any()) {
+		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Forest) {
 			X = 16 * GridPart_X + Main.rand.Next(0, GridPart_X);
 			Y = 11 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
 		}

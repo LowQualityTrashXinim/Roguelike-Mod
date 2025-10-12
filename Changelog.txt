@@ -221,3 +221,4 @@ Version 0.0.1:
 219/ Fixed a infinite reclusion bug caused by Gold Armor.
 220/ Added entrance structure to Corruption, Crimson, FleshRealm and Slime World subworld.
 221/ Added new entrance structure into the world generation.
+222/ Updated Cursed Kingdom entrance structure.
