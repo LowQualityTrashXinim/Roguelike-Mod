@@ -8,7 +8,7 @@ CobaltSword:
 CopperBow:
 	'''
 	Wait 1.5s to shoot out a burst of thunder shots
-	Wait additional 1s to increases shot amount by 5
+	Wait additional 1s to increases shot amount by 15
 	Shoot out a additional thunder shot
 	Arrow shot from this bow have 15% chance to explode into electric sphere
 	'''
@@ -91,7 +91,7 @@ Minishark:
 GemStaff: Alt-click to activate special attack
 PlatinumBow:
 	'''
-	If previous weapon used is:
-	{0} : shoot out arch of 8 diamond bolts and increases arrow damage by 50%
-	{1} : Rain down Star fury projectiles along with current arrow
+	Hold down to dish out combo
+	While air born, shooting will cause player to fall down without taking fall damage
+	Alt-click to shoot out a single arrow
 	'''

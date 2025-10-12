@@ -1,25 +1,26 @@
-﻿using System;
-using Terraria;
-using System.Linq;
-using Terraria.ID;
-using ReLogic.Content;
-using Roguelike.Texture;
-using System.Reflection;
-using System.Diagnostics;
-using Terraria.Utilities;
-using Terraria.ModLoader;
-using StructureHelper.API;
-using Terraria.ModLoader.IO;
-using Roguelike.Common.Utils;
-using StructureHelper.Models;
-using System.Threading.Tasks;
-using Terraria.WorldBuilding;
-using Microsoft.Xna.Framework;
-using Roguelike.Common.General;
-using System.Collections.Generic;
-using Roguelike.Common.Subworlds;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Roguelike.Common.General;
+using Roguelike.Common.Subworlds;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
+using Roguelike.Common.Utils;
+using Roguelike.Texture;
+using StructureHelper.API;
+using StructureHelper.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using Terraria.Utilities;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.RoguelikeMode;
 /// <summary>
@@ -164,11 +165,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (ModContent.GetInstance<RogueLikeConfig>().RoguelikeMode) {
-			tasks.ForEach(g => g.Disable());
-			tasks.AddRange(((ITaskCollection)this).Tasks);
-			RoguelikeWorld = true;
+		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			return;
 		}
+		tasks.ForEach(g => g.Disable());
+		tasks.AddRange(((ITaskCollection)this).Tasks);
+		RoguelikeWorld = true;
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
 	public static List<Rectangle> TrialArea = new();

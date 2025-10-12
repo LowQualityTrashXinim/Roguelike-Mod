@@ -213,3 +213,7 @@ Version 0.0.1:
 211/ Overall work on LootBox lord to make it more playable.
 212/ Reworked Platinum Bow.
 213/ Minor code clean up.
+214/ Finish up Lootbox Lord boss fight
+215/ Deleted config option Roguelike Mode to avoid confusion when configuring the mod.
+216/ Updated Localization for better explanation of the configuration setting.
+217/ Significantly buff Copper Bow wait mechanic.

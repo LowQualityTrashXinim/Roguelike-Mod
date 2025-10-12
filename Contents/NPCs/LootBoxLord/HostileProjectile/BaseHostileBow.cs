@@ -17,7 +17,7 @@ class WoodBowAttackOne : BaseHostileBow {
 		Projectile.velocity = Projectile.velocity * .98f;
 		CanDealContactDamage = false;
 		if (++Projectile.ai[0] >= Projectile.ai[2]) {
-			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(5, 5), Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(5, 5), Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 			Projectile.ai[0] = 0;
 		}
 	}
@@ -39,7 +39,7 @@ class WoodBowAttackTwo : BaseHostileBow {
 			}
 			else {
 				Projectile.rotation = Vector2.UnitY.ToRotation();
-				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 			}
 			Projectile.ai[0] = 0;
 			Projectile.ai[1]++;
@@ -78,7 +78,7 @@ class OreBowAttackTwo : BaseHostileBow {
 		Projectile.velocity += vel;
 		Projectile.velocity.Y = 0;
 		if (++Projectile.ai[0] >= 30) {
-			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY, ProjectileID.WoodenArrowHostile, Projectile.damage, 1 );
 			Projectile.ai[0] = 0;
 		}
 	}

@@ -12,6 +12,7 @@ using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -45,6 +46,9 @@ namespace Roguelike.Common.Utils {
 		public static int DirectionFromEntityAToEntityB(float A, float B) => A > B ? -1 : 1;
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
+		}
+		public static void EasyKillPlayer(this Player player, string msg, double dmg) {
+			player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral(msg)), dmg, 1);
 		}
 
 		/// <returns>

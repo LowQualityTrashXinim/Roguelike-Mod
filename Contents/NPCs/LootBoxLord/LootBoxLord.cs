@@ -1,22 +1,25 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent;
-using Roguelike.Contents.Items;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
-using Roguelike.Texture;
 using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items;
+using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.NPCs.LootBoxLord.Buff;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord; 
+namespace Roguelike.Contents.NPCs.LootBoxLord;
 internal class LootBoxLord : ModNPC {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 	public override void SetStaticDefaults() {
@@ -25,7 +28,7 @@ internal class LootBoxLord : ModNPC {
 	}
 	public override void SetDefaults() {
 		NPC.lifeMax = 54000;
-		NPC.damage = 150;
+		NPC.damage = 100;
 		NPC.defense = 50;
 		NPC.width = 38;
 		NPC.height = 30;
@@ -40,9 +43,15 @@ internal class LootBoxLord : ModNPC {
 		NPC.strengthMultiplier = 1;
 		NPC.despawnEncouraged = false;
 		NPC.friendly = false;
+		NPC.strengthMultiplier = 0;
 		NPC.dontTakeDamageFromHostiles = true;
-		NPC.ScaleStats_UseStrengthMultiplier(1);
 		NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
+		HasCreatedDeathTimer = false;
+	}
+	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		bestiaryEntry.Info.AddRange([
+			new FlavorTextBestiaryInfoElement(ModUtils.LocalizationText("Bestiary",$"{Name}")),
+			]);
 	}
 	public override void ModifyNPCLoot(NPCLoot npcLoot) {
 		for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
@@ -93,10 +102,10 @@ internal class LootBoxLord : ModNPC {
 		if (projectile.hostile) {
 			return false;
 		}
-		return !IsTeleporting;
+		return !IsTeleporting && IframeCounter <= 0;
 	}
 	public override bool? CanBeHitByItem(Player player, Item item) {
-		return !IsTeleporting;
+		return !IsTeleporting && IframeCounter <= 0;
 	}
 	Vector2 TeleportPosition = Vector2.Zero;
 	Vector2 ChoosenPosition = Vector2.Zero;
@@ -148,20 +157,73 @@ internal class LootBoxLord : ModNPC {
 				BeforeAttack = false;
 				NPC.dontTakeDamage = false;
 				UniversalAttackCoolDown = 60;
+				int[] itemArr = [.. TerrariaArrayID.MeleePreBoss, .. TerrariaArrayID.MeleePreEoC, .. TerrariaArrayID.MeleeEvilBoss, .. TerrariaArrayID.RangePreBoss, .. TerrariaArrayID.RangePreEoC, .. TerrariaArrayID.RangeSkele, .. TerrariaArrayID.MagicPreBoss, .. TerrariaArrayID.MagicPreEoC, .. TerrariaArrayID.MagicSkele, .. TerrariaArrayID.SummonPreBoss, .. TerrariaArrayID.SummonerPreEoC, .. TerrariaArrayID.SummonSkele,];
+				for (int i = 0; i < 200; i++) {
+					Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ProjectileRing>(), NPC.damage, 0, NPC.target);
+					proj.ai[0] = 550;
+					if (proj.ModProjectile is BaseHostileProjectile hostile) {
+						hostile.IDtextureValue = Main.rand.Next(itemArr);
+						hostile.SetNPCOwner(NPC.whoAmI);
+					}
+					proj.ai[1] += Main.rand.NextFloat(0, 314);
+					proj.rotation += MathHelper.ToRadians(Main.rand.NextFloat(360));
+				}
 				break;
 		}
 		dialogCD = 120;
 		dialogNumber++;
 		ModUtils.CombatTextRevamp(NPC.Hitbox, color, dialog);
 	}
-
+	bool CanSlowDown = false;
+	bool HasCreatedDeathTimer = false;
+	public override void ResetEffects() {
+		if (Reached110HP) {
+			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .4f;
+		}
+	}
 	public override void AI() {
+		var player = Main.player[NPC.target];
+		CD_DefenseUp = ModUtils.CountDown(CD_DefenseUp);
+		IframeCounter = ModUtils.CountDown(IframeCounter);
+		if (NPC.GetLifePercent() <= .5) {
+			if (!Reached12HP) {
+				NPC.Heal((int)MathF.Ceiling(NPC.lifeMax * .25f));
+				UniversalAttackCoolDown = 120;
+				CanSlowDown = true;
+			}
+			Reached12HP = true;
+		}
+		if (NPC.GetLifePercent() <= .25) {
+			if (!Reached14HP) {
+				NPC.Heal((int)MathF.Ceiling(NPC.lifeMax * .25f));
+				UniversalAttackCoolDown = 120;
+				CanSlowDown = true;
+			}
+			Reached14HP = true;
+		}
+		if (NPC.GetLifePercent() <= .2) {
+			if (!Reached15HP) {
+				ModUtils.CombatTextRevamp(NPC.Hitbox, Color.LightBlue, "Endurance +30% for 30s");
+				NPC.AddBuff<LootBoxLord_EnduranceUp>(ModUtils.ToSecond(30));
+				UniversalAttackCoolDown = 120;
+				CanSlowDown = true;
+			}
+			Reached15HP = true;
+		}
+		if (NPC.GetLifePercent() <= .1f) {
+			if (!Reached110HP) {
+				Reset(0, 240);
+				CanSlowDown = true;
+				Main.NewText("Final domain: Disable life regeneration and healing");
+				player.AddBuff<LootboxLord_FinalDomain>(3600);
+			}
+			Reached110HP = true;
+		}
 		if (BeforeAttack) {
 			Dialog();
 			return;
 		}
 		Lighting.AddLight(NPC.Center, 1, 1, 1);
-		var player = Main.player[NPC.target];
 		if (player.dead || !player.active) {
 			NPC.FindClosestPlayer();
 			NPC.TargetClosest();
@@ -169,6 +231,11 @@ internal class LootBoxLord : ModNPC {
 			if (player.dead || !player.active) {
 				NPC.active = false;
 			}
+		}
+		if (!HasCreatedDeathTimer && !player.HasBuff<LootboxLord_DeathField>()) {
+			HasCreatedDeathTimer = true;
+			player.AddBuff<LootboxLord_DeathField>(ModUtils.ToMinute(3) + 120);
+			Main.NewText("Lootbox Lord domain : Delayed death - player have 3 minute to kill Lootbox Lord", Color.Red);
 		}
 		if (NPC.CountNPCS(Type) > 1) {
 			if (!AlreadySaidThat) {
@@ -178,10 +245,18 @@ internal class LootBoxLord : ModNPC {
 					NPC.NewNPC(NPC.GetSource_FromAI(), NPC.Hitbox.X, NPC.Hitbox.Y, ModContent.NPCType<ElderGuardian>());
 			}
 		}
+		if (CanSlowDown) {
+			NPC.velocity *= .98f;
+		}
 		if (UniversalAttackCoolDown > 0) {
 			UniversalAttackCoolDown--;
 			return;
 		}
+		if (Reached110HP) {
+			DeseperationAttack(player);
+			return;
+		}
+		CanSlowDown = false;
 		//TODO : change phase when boss hp is below 50%
 		//Move above the player
 		switch (CurrentAttack) {
@@ -224,8 +299,86 @@ internal class LootBoxLord : ModNPC {
 			case 12:
 				ShootGun2(player);
 				break;
+			case 13:
+				SpearAttack(player);
+				break;
+			case 14:
+				BulletHell(player);
+				break;
+			case 15:
+				BookAttack(player);
+				break;
+			default:
+				CurrentAttack = 0;
+				break;
 		}
 	}
+	private void DeseperationAttack(Player player) {
+		if (AttackCounter <= 0) {
+			AttackCounter++;
+			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -Vector2.UnitY * 3, ModContent.ProjectileType<HostileMinisharkDesperation>(),
+			BossDamagePercentage(.35f), 2, NPC.target);
+			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
+				projectile.SetNPCOwner(NPC.whoAmI);
+		}
+		AttackTimer++;
+		if (AttackTimer % 6 == 0) {
+			for (int i = 0; i < 2; i++) {
+				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(180 * i + AttackTimer * 2)) * 3, ModContent.ProjectileType<SwordBroadDesperation>(), BossDamagePercentage(.6f), 2, NPC.target);
+				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
+					projectile.IDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
+					projectile.Projectile.timeLeft = 180;
+				}
+			}
+		}
+		if (AttackTimer % 96 == 0) {
+			for (int i = 0; i < 32; i++) {
+				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero).Vector2DistributeEvenlyPlus(32, 360, i) * 10, ModContent.ProjectileType<ShortSwordDesperation>(), BossDamagePercentage(.75f), 2, NPC.target);
+				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
+					projectile.IDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreShortSword);
+					projectile.Projectile.timeLeft = 90;
+				}
+			}
+		}
+
+	}
+	int CD_DefenseUp = 0;
+	bool Reached12HP = false;
+	bool Reached14HP = false;
+	bool Reached15HP = false;
+	bool Reached110HP = false;
+	int IframeCounter = 0;
+	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(10)) {
+			IframeCounter = 30;
+		}
+	}
+	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(10)) {
+			IframeCounter = 30;
+		}
+	}
+	public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers) {
+		Ability_DefenseUP(ref modifiers, player.GetWeaponDamage(item));
+	}
+	public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers) {
+		Ability_DefenseUP(ref modifiers, projectile.damage);
+	}
+	private void Ability_DefenseUP(ref NPC.HitModifiers modifiers, int damage) {
+		if (CD_DefenseUp == 0 && modifiers.GetDamage(damage, false) >= 100) {
+			modifiers.SetMaxDamage(1);
+			NPC.AddBuff<LootBoxLord_DefenseUp>(ModUtils.ToSecond(10));
+			CD_DefenseUp = ModUtils.ToSecond(30);
+		}
+	}
+	/*
+	 The desperate attack:
+- Continously shoot out sword in a spiral and a ring of shortswords
+- Summon a minishark to continuously shoot at player
+- Summon all of the bow to shoot arrow from the sky
+- Ring of spear is created and accelerated toward to what they are currently facing to
+- Additionally Lootbox Lord gain 40% Damage reduction, however healing effect of the boss and player are disabled
+	*/
 	int lifeCounter = 0;
 	public override void PostAI() {
 		var player = Main.player[NPC.target];
@@ -267,22 +420,29 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		AttackTimer = 0;
-		var vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
+		var vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 12f;
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(),
 			BossDamagePercentage(.75f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-			projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+			projectile.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+		proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -vec, ModContent.ProjectileType<ShortSwordAttackOne>(),
+			BossDamagePercentage(.75f), 2, NPC.target);
+		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile2)
+			projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
 		AttackCounter++;
 	}
 	private void ShootShortSword2(Player player) {
 		//Custom boss movement oooohhh
-		ChoosenPosition = player.Center.Add(0, 100);
+		ChoosenPosition = player.Center.Add(0, 300);
 		if (CanTeleport) {
 			if (Teleporting(ChoosenPosition)) {
 				CanTeleport = false;
 			}
 			return;
 		}
+		CanSlowDown = true;
+		Vector2 distance = player.Center - NPC.Center;
+		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
 		if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length - 1) {
 			CurrentAttack++;
 			AttackCounter = 0;
@@ -297,10 +457,16 @@ internal class LootBoxLord : ModNPC {
 		var vec = Vector2.UnitX * 20 * Main.rand.NextBool(2).ToDirectionInt();
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackTwo>(), BossDamagePercentage(.75f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-			projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)AttackCounter];
+			projectile.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)AttackCounter];
 		Main.projectile[proj].ai[1] = -20;
 		Main.projectile[proj].ai[0] = 2;
 		Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
+		int proj2 = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -Vector2.UnitY * 20, ModContent.ProjectileType<ShortSwordAttackTwo>(), BossDamagePercentage(.75f), 2, NPC.target);
+		if (Main.projectile[proj2].ModProjectile is BaseHostileProjectile projectile2)
+			projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)AttackCounter];
+		Main.projectile[proj2].ai[1] = -20;
+		Main.projectile[proj2].ai[0] = 2;
+		Main.projectile[proj2].rotation = Main.projectile[proj2].velocity.ToRotation() + MathHelper.PiOver4;
 		AttackCounter++;
 	}
 	private void ShootBroadSword(Player player) {
@@ -323,7 +489,7 @@ internal class LootBoxLord : ModNPC {
 				lastPlayerPosition = player.Center;
 				var distance2 = player.Center.Add(0, 300) - NPC.Center;
 				if (distance2.LengthSquared() > 100 * 100) {
-					NPC.velocity = distance2.SafeNormalize(Vector2.Zero) * distance2.Length() / 4f;
+					NPC.velocity = distance2.SafeNormalize(Vector2.Zero) * distance2.Length() / 8f;
 					return;
 				}
 			}
@@ -339,12 +505,12 @@ internal class LootBoxLord : ModNPC {
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), BossDamagePercentage(.85f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is SwordBroadAttackOne swordProj) {
 			swordProj.SetNPCOwner(NPC.whoAmI);
-			swordProj.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)AttackCounter];
+			swordProj.IDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)AttackCounter];
 		}
 		AttackCounter++;
 	}
 	private void ShootBroadSword2(Player player) {
-		ChoosenPosition = player.Center.Add(0, 100);
+		ChoosenPosition = player.Center.Add(0, 200);
 		if (CanTeleport) {
 			if (Teleporting(ChoosenPosition)) {
 				CanTeleport = false;
@@ -361,16 +527,16 @@ internal class LootBoxLord : ModNPC {
 				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), BossDamagePercentage(.85f), 2, NPC.target);
 				Main.projectile[proj].ai[1] = 35;
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
+					projectile.IDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
 			}
 		}
 		else {
 			for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++) {
 				var vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 90, i) * 20f;
 				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), BossDamagePercentage(.85f), 2, NPC.target);
-				Main.projectile[proj].ai[1] = 50;
+				Main.projectile[proj].ai[1] = 35;
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
+					projectile.IDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
 			}
 		}
 		UniversalAttackCoolDown = 60;
@@ -393,7 +559,7 @@ internal class LootBoxLord : ModNPC {
 		AttackTimer = 0;
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.One.InverseVector2DistributeEvenly(TerrariaArrayID.AllWoodBowPHM.Length, 360, AttackCounter) * 3, ModContent.ProjectileType<WoodBowAttackOne>(), BossDamagePercentage(.65f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
-			projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)AttackCounter];
+			projectile.IDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)AttackCounter];
 			Main.projectile[proj].ai[0] = -10;
 			Main.projectile[proj].ai[2] = 5;
 			Main.projectile[proj].timeLeft = 120 + 12 * (int)(TerrariaArrayID.AllWoodBowPHM.Length - AttackCounter);
@@ -407,7 +573,7 @@ internal class LootBoxLord : ModNPC {
 			var vec = Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllWoodBowPHM.Length, 120, i) * -30f;
 			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<WoodBowAttackTwo>(), BossDamagePercentage(.45f), 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-				projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
+				projectile.IDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
 		}
 		CurrentAttack++;
 		AttackCounter = 0;
@@ -430,17 +596,13 @@ internal class LootBoxLord : ModNPC {
 		}
 		AttackTimer = 0;
 		if (AttackCounter >= TerrariaArrayID.AllGemStaffPHM.Length) {
-			CurrentAttack++;
-			AttackCounter = 0;
-			AttackTimer = 0;
-			UniversalAttackCoolDown = 165;
-			ChoosenPosition = Vector2.Zero;
+			Reset(CurrentAttack + 1, 165);
 			return;
 		}
 		var vec = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(MathHelper.Lerp(0, 360, percent)));
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<GemStaffAttackOne>(), BossDamagePercentage(.75f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileGemStaff gemstaffProj) {
-			gemstaffProj.ItemIDtextureValue = TerrariaArrayID.AllGemStaffPHM[(int)NPC.ai[2]];
+			gemstaffProj.IDtextureValue = TerrariaArrayID.AllGemStaffPHM[(int)NPC.ai[2]];
 			gemstaffProj.ProjectileType = TerrariaArrayID.AllGemStafProjectilePHM[(int)NPC.ai[2]];
 		}
 		AttackCounter++;
@@ -454,6 +616,9 @@ internal class LootBoxLord : ModNPC {
 			}
 			return;
 		}
+		CanSlowDown = true;
+		Vector2 distance = player.Center - NPC.Center;
+		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
 		if (++AttackTimer <= 40) {
 			return;
 		}
@@ -463,7 +628,7 @@ internal class LootBoxLord : ModNPC {
 			Main.projectile[proj].rotation = MathHelper.PiOver4 + MathHelper.PiOver2;
 			if (Main.projectile[proj].ModProjectile is BaseHostileGemStaff gemstaffProj) {
 				gemstaffProj.SetNPCOwner(NPC.whoAmI);
-				gemstaffProj.ItemIDtextureValue = TerrariaArrayID.AllGemStaffPHM[i];
+				gemstaffProj.IDtextureValue = TerrariaArrayID.AllGemStaffPHM[i];
 				gemstaffProj.ProjectileType = TerrariaArrayID.AllGemStafProjectilePHM[i];
 			}
 		}
@@ -489,7 +654,7 @@ internal class LootBoxLord : ModNPC {
 		var vec = Vector2.UnitY.Vector2DistributeEvenly(8, 360, (int)NPC.ai[2]) * 10f;
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<OreBowAttackOne>(), BossDamagePercentage(.55f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-			projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
+			projectile.IDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
 		Main.projectile[proj].ai[1] = 60;
 		NPC.ai[2]++;
 	}
@@ -523,7 +688,7 @@ internal class LootBoxLord : ModNPC {
 		AttackTimer = 0;
 		int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<OreBowAttackTwo>(), BossDamagePercentage(.55f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-			projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
+			projectile.IDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
 		AttackCounter++;
 	}
 	private void ShootGun(Player player) {
@@ -534,7 +699,7 @@ internal class LootBoxLord : ModNPC {
 			}
 			return;
 		}
-		if (++AttackTimer >= 360) {
+		if (++AttackTimer >= 300) {
 			Reset(CurrentAttack + 1, 30);
 			return;
 		}
@@ -550,12 +715,12 @@ internal class LootBoxLord : ModNPC {
 		}
 		int minishark = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMinishark>(), BossDamagePercentage(.25f), 2, NPC.target);
 		if (Main.projectile[minishark].ModProjectile is BaseHostileGun minisharkproj) {
-			minisharkproj.ItemIDtextureValue = ItemID.Minishark;
+			minisharkproj.IDtextureValue = ItemID.Minishark;
 			minisharkproj.SetNPCOwner(NPC.whoAmI);
 		}
 		int Musket = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMusket>(), NPC.damage, 2, NPC.target);
 		if (Main.projectile[Musket].ModProjectile is BaseHostileGun musketproj) {
-			musketproj.ItemIDtextureValue = ItemID.Musket;
+			musketproj.IDtextureValue = ItemID.Musket;
 			Main.projectile[Musket].ai[2] = direction;
 			musketproj.SetNPCOwner(NPC.whoAmI);
 		}
@@ -574,14 +739,113 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		AttackTimer = 0;
-		if (++AttackCounter >= 12) {
-			Reset(0, 120);
+		if (++AttackCounter >= 6) {
+			Reset(CurrentAttack + 1, 60);
+			return;
 		}
-		int boomStick = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<HostileBoomStick>(), NPC.damage, 2, NPC.target);
+		int boomStick = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<HostileBoomStick>(), BossDamagePercentage(.25f), 2, NPC.target);
 		if (Main.projectile[boomStick].ModProjectile is BaseHostileGun hostileGun) {
-			hostileGun.ItemIDtextureValue = ItemID.Boomstick;
+			hostileGun.IDtextureValue = ItemID.Boomstick;
 			hostileGun.SetNPCOwner(NPC.whoAmI);
 		}
+	}
+	private void SpearAttack(Player player) {
+		ChoosenPosition = player.Center.Add(0, 350);
+		if (CanTeleport) {
+			if (Teleporting(ChoosenPosition)) {
+				CanTeleport = false;
+				lastPlayerPosition = player.Center;
+			}
+			return;
+		}
+		if (AttackCounter >= 3) {
+			Reset(CurrentAttack + 1, 90);
+			return;
+		}
+		if (++AttackTimer < 32) {
+			return;
+		}
+		AttackTimer = 0;
+		for (int i = 0; i < 16; i++) {
+			int Spear = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i) * 6, ModContent.ProjectileType<SpearAttackOne>(), NPC.damage, 2, NPC.target);
+			if (Main.projectile[Spear].ModProjectile is SpearAttackOne hostileGun) {
+				hostileGun.IDtextureValue = ItemID.Spear;
+				hostileGun.SetNPCOwner(NPC.whoAmI);
+				hostileGun.TowardTo = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
+			}
+		}
+		AttackCounter++;
+	}
+	private void BookAttack(Player player) {
+		ChoosenPosition = player.Center.Add(0, 150);
+		if (CanTeleport) {
+			if (Teleporting(ChoosenPosition)) {
+				CanTeleport = false;
+				lastPlayerPosition = player.Center;
+			}
+			return;
+		}
+		if (AttackCounter <= 0) {
+			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileWaterbolt>(), NPC.damage, 1, NPC.target);
+			Projectile projectile = Main.projectile[proj];
+			if (projectile.ModProjectile is HostileWaterbolt book1) {
+				book1.SetNPCOwner(NPC.whoAmI);
+			}
+			proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileBookOfSkull>(), NPC.damage, 1, NPC.target);
+			projectile = Main.projectile[proj];
+			if (projectile.ModProjectile is HostileBookOfSkull book2) {
+				book2.SetNPCOwner(NPC.whoAmI);
+			}
+			proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileDemonScythe>(), NPC.damage, 1, NPC.target);
+			projectile = Main.projectile[proj];
+			if (projectile.ModProjectile is HostileDemonScythe book3) {
+				book3.SetNPCOwner(NPC.whoAmI);
+			}
+			AttackCounter++;
+		}
+		Reset(CurrentAttack + 1, 240);
+	}
+	private void BulletHell(Player player) {
+		ChoosenPosition = player.Center.Add(0, 250);
+		if (CanTeleport) {
+			if (Teleporting(ChoosenPosition)) {
+				CanTeleport = false;
+				lastPlayerPosition = player.Center;
+			}
+			return;
+		}
+		if (AttackCounter <= 0) {
+			for (int i = 0; i < 4; i++) {
+				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostilePistolAttackOne>(), BossDamagePercentage(.45f), 1, NPC.target);
+				Projectile projectile = Main.projectile[proj];
+				if (projectile.ModProjectile is HostilePistolAttackOne pistol) {
+					switch (i) {
+						case 0:
+							pistol.IDtextureValue = ItemID.FlintlockPistol;
+							break;
+						case 1:
+							pistol.IDtextureValue = ItemID.Revolver;
+							break;
+						case 2:
+							pistol.IDtextureValue = ItemID.Handgun;
+							break;
+						case 3:
+							pistol.IDtextureValue = ItemID.TheUndertaker;
+							break;
+					}
+					pistol.SetNPCOwner(NPC.whoAmI);
+					projectile.ai[0] = 90 * i;
+				}
+			}
+			int proj2 = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * -3, ModContent.ProjectileType<HostilePistolAttackTwo>(), NPC.damage, 1, NPC.target);
+			Projectile projectile2 = Main.projectile[proj2];
+			if (projectile2.ModProjectile is HostilePistolAttackTwo pistol2) {
+				pistol2.IDtextureValue = ItemID.PhoenixBlaster;
+				pistol2.SetNPCOwner(NPC.whoAmI);
+			}
+			AttackCounter++;
+		}
+		Reset(CurrentAttack + 1, 270);
 	}
 	public void Reset(float nextAttack, int cooldown) {
 		CurrentAttack = nextAttack;
@@ -593,6 +857,11 @@ internal class LootBoxLord : ModNPC {
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		Main.instance.LoadNPC(NPC.type);
 		Texture2D texture = TextureAssets.Npc[Type].Value;
+		if (IframeCounter > 0) {
+			if (IframeCounter % 6 >= 3) {
+				return false;
+			}
+		}
 		if (IsTeleporting) {
 			float progress = TeleportTime / (float)TeleportDuration;
 			if (progress <= .5f) {

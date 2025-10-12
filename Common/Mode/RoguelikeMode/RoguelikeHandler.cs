@@ -7,6 +7,7 @@ using SubworldLibrary;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Systems;
 
 namespace Roguelike.Common.Mode.RoguelikeMode;
 internal class RoguelikeHandler : ModSystem {
@@ -16,6 +17,9 @@ internal class RoguelikeHandler : ModSystem {
 	const int FailSafe = 9999;
 	int CD = 0;
 	public override void PreUpdateProjectiles() {
+		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			return;
+		}
 		Player player = Main.LocalPlayer;
 		Vector2 CK_pos = ModContent.GetInstance<RogueLikeWorldGen>().CursedKingdomArea.Center().ToWorldCoordinates();
 		if (player.Center.Distance(CK_pos) < 2000) {

@@ -76,3 +76,8 @@ class ShortSwordAttackTwo : BaseHostileShortSword {
 		}
 	}
 }
+class ShortSwordDesperation : BaseHostileSwordBroad {
+	public override void AI() {
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+	}
+}

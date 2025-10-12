@@ -234,14 +234,14 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (npc.HasBuff<NPC_Weakness>()) {
 			modifiers.SourceDamage -= .5f;
 		}
-		if (npc.boss) {
+		if (npc.boss && !NPC_SpecialException) {
 			if (EliteBoss) {
 				modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .15f);
 			}
 		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		if (npc.boss) {
+		if (npc.boss && !NPC_SpecialException) {
 			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
 				modifiers.SetMaxDamage(1);
 			}
@@ -273,7 +273,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 
 
-		if (npc.boss) {
+		if (npc.boss && !NPC_SpecialException) {
 			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
 				modifiers.SetMaxDamage(1);
 			}
@@ -285,7 +285,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.FinalDamage *= 1 - Endurance;
+		modifiers.FinalDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 		if (projectile.type == ProjectileID.GolemFist) {
 			if (++GolemFist_HitCount % 3 == 0) {
 				modifiers.SourceDamage += 1.5f;
@@ -295,7 +295,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
-		if (!npc.boss) {
+		if (!npc.boss || NPC_SpecialException) {
 			return;
 		}
 		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {
@@ -346,7 +346,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				}
 			}
 		}
-		if (!npc.boss) {
+		if (!npc.boss || NPC_SpecialException) {
 			return;
 		}
 		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {

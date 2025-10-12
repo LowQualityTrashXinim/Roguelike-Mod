@@ -1,5 +1,7 @@
 Mods: {
 	Roguelike: {
+		Bestiary.LootBoxLord: After our investigation, we uncovered that this entity is a ancient god whose purpose are to guard the gate of so called "World Vault", this is our first ever confirmation of there being another world, however without seeing the "world vault" there aren't any evidence would support our theory, so this can't really be reported back to our superior. However the entity is rather interesting, we had done multiple attempts of trying to neutralize the entity, even resulting to using our on broad giant rail gun which in previous record could easily pieced a super size eye ball but when against this entity it done next to no damage, as such we decided best to not engaged any further until further notice from above.
+
 		SystemTooltip: {
 			NotSupported.Warning: WARNING: Not Supported By The Terraria Roguelike Mod
 
@@ -390,6 +392,16 @@ Mods: {
 			Portal.DisplayName: Portal
 			TheOrbitTheProjectile.DisplayName: The Orbit The Projectile
 			Portal_CursedKingdom.DisplayName: Portal_ Cursed Kingdom
+			SpearAttackOne.DisplayName: Spear Attack One
+			ProjectileRing.DisplayName: Projectile Ring
+			HostileBookOfSkull.DisplayName: Hostile Book Of Skull
+			HostileDemonScythe.DisplayName: Hostile Demon Scythe
+			HostilePistolAttackOne.DisplayName: Hostile Pistol Attack One
+			HostilePistolAttackTwo.DisplayName: Hostile Pistol Attack Two
+			HostileWaterbolt.DisplayName: Hostile Waterbolt
+			HostileMinisharkDesperation.DisplayName: Hostile Minishark Desperation
+			ShortSwordDesperation.DisplayName: Short Sword Desperation
+			SwordBroadDesperation.DisplayName: Sword Broad Desperation
 		}
 
 		NPCs: {
@@ -3137,6 +3149,30 @@ Mods: {
 				DisplayName: Freezy
 				Description: significantly increases attack speed and bullet shot
 			}
+
+			LootBoxLord_DefenseUp: {
+				DisplayName: Loot Box Lord_ Defense Up
+				Description: Mods.Roguelike.Buffs.LootBoxLord_DefenseUp.Description
+			}
+
+			LootBoxLord_EnduranceUp: {
+				DisplayName: Loot Box Lord_ Endurance Up
+				Description: Mods.Roguelike.Buffs.LootBoxLord_EnduranceUp.Description
+			}
+
+			LootboxLord_DeathField: {
+				DisplayName: Delayed Death
+				Description: You will die no matter what once the timer ran out
+			}
+
+			LootboxLord_FinalDomain: {
+				DisplayName: Lootbox Lord Final Domain
+				Description:
+					'''
+					Multiply your regeneration and heal effectiveness by 0
+					and disable your natural regeneration
+					'''
+			}
 		}
 
 		Configs: {
@@ -3157,24 +3193,8 @@ Mods: {
 					Tooltip:
 						'''
 						Player are given custom starting loot
-						Boss Rush mode world setting are enable
-						Offer custom boss arena World generation
+						Custom world generation for boss rush mode
 						'''
-				}
-
-				RoguelikeMode: {
-					Label: "[WIP] Roguelike Mode"
-					Tooltip:
-						'''
-						Description for the mod:
-						Enter a brand new world waiting to be explored by you.
-						Many secret waiting to be discovered.
-						'''
-				}
-
-				RoguelikeOverhaul: {
-					Label: "[W.I.P] Roguelike Overhaul"
-					Tooltip: Soon to be merged with Roguelike mode
 				}
 
 				AutoRandomizeCharacter: {

@@ -20,7 +20,7 @@ class GemStaffAttackOne : BaseHostileGemStaff {
 			Projectile.timeLeft = 180;
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.ToRadians(Projectile.ai[1] - 70);
 		if (++Projectile.ai[0] >= 35) {
-			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 10f, ProjectileType, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+			ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 10f, ProjectileType, Projectile.damage, 1 );
 			Projectile.ai[0] = 0;
 		}
 		Projectile.ai[1] += 2;
@@ -52,7 +52,7 @@ class GemStaffAttackTwo : BaseHostileGemStaff {
 			if (Projectile.timeLeft > 300)
 				Projectile.timeLeft = 300;
 			if (++Projectile.ai[0] >= 90) {
-				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 6, ProjectileType, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 6, ProjectileType, Projectile.damage, 1 );
 				Projectile.ai[0] = 0;
 			}
 		}

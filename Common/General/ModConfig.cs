@@ -7,7 +7,6 @@ namespace Roguelike.Common.General
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header($"GameModeHeader")]
-		public bool RoguelikeMode { get; set; }
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
 		[DefaultValue(false)]
