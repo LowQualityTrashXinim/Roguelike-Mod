@@ -1,6 +1,7 @@
 ﻿using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.NPCs.LootBoxLord.Buff;
@@ -8,6 +9,7 @@ internal class LootboxLord_DeathField : ModBuff {
 	public override string Texture => ModTexture.EMPTYDEBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
+		BuffID.Sets.LongerExpertDebuff[Type] = false;
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		if (!NPC.AnyNPCs(ModContent.NPCType<LootBoxLord>())) {

@@ -28,6 +28,7 @@ namespace Roguelike.Common.General
 		public bool AutoRandomizeCharacter { get; set; }
 		[Header($"DebugHeader")]
 		public bool TemplateTest { get; set; }
+		public bool EnablePracticeMode { get; set; }
 		[Header($"GameHeader")]
 		public bool HoldShift { get; set; }
 		[DefaultValue(false)]

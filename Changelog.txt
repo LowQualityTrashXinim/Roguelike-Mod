@@ -222,3 +222,7 @@ Version 0.0.1:
 220/ Added entrance structure to Corruption, Crimson, FleshRealm and Slime World subworld.
 221/ Added new entrance structure into the world generation.
 222/ Updated Cursed Kingdom entrance structure.
+223/ Decreases maximum health of Lootbox Lord from 54k to 35k.
+224/ Added boss health bar.
+225/ Fixed a bug where DR did not apply.
+226/ Added Practice mode.

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items;
@@ -15,19 +16,22 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.NPCs.LootBoxLord;
+[AutoloadBossHead]
 internal class LootBoxLord : ModNPC {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
+	public override string BossHeadTexture => Texture;
 	public override void SetStaticDefaults() {
 		NPCID.Sets.DontDoHardmodeScaling[Type] = true;
 		NPCID.Sets.NeedsExpertScaling[Type] = false;
 	}
 	public override void SetDefaults() {
-		NPC.lifeMax = 54000;
+		NPC.lifeMax = 35000;
 		NPC.damage = 100;
 		NPC.defense = 50;
 		NPC.width = 38;
@@ -47,6 +51,7 @@ internal class LootBoxLord : ModNPC {
 		NPC.dontTakeDamageFromHostiles = true;
 		NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
 		HasCreatedDeathTimer = false;
+		NPC.BossBar = ModContent.GetInstance<LootBoxLordBossBossBar>();
 	}
 	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		bestiaryEntry.Info.AddRange([
@@ -93,7 +98,7 @@ internal class LootBoxLord : ModNPC {
 		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PowerEnergy>()));
 	}
 	public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment) {
-		NPC.lifeMax = 54000;
+		NPC.lifeMax = 35000;
 		NPC.life = NPC.lifeMax;
 		NPC.damage = 100;
 		NPC.defense = 50;
@@ -177,11 +182,11 @@ internal class LootBoxLord : ModNPC {
 	bool CanSlowDown = false;
 	bool HasCreatedDeathTimer = false;
 	public override void ResetEffects() {
+	}
+	public override void AI() {
 		if (Reached110HP) {
 			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .4f;
 		}
-	}
-	public override void AI() {
 		var player = Main.player[NPC.target];
 		CD_DefenseUp = ModUtils.CountDown(CD_DefenseUp);
 		IframeCounter = ModUtils.CountDown(IframeCounter);
@@ -881,5 +886,42 @@ internal class LootBoxLord : ModNPC {
 		float rotation = MathHelper.Lerp(0, 360, percent);
 		var rotateAroundPlayerCenter = lastPlayerPosition - Vector2.UnitY.RotatedBy(MathHelper.ToRadians(rotation)) * 350;
 		NPC.Center = rotateAroundPlayerCenter;
+	}
+}
+public class LootBoxLordBossBossBar : ModBossBar {
+	private int bossHeadIndex = -1;
+
+	public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame) {
+		// Display the previously assigned head index
+		if (bossHeadIndex != -1) {
+			return TextureAssets.NpcHeadBoss[bossHeadIndex];
+		}
+		return null;
+	}
+	public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
+		drawParams.IconScale = .56f;
+		return base.PreDraw(spriteBatch, npc, ref drawParams);
+	}
+	public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float life, ref float lifeMax, ref float shield, ref float shieldMax) {
+		// Here the game wants to know if to draw the boss bar or not. Return false whenever the conditions don't apply.
+		// If there is no possibility of returning false (or null) the bar will get drawn at times when it shouldn't, so write defensive code!
+
+		NPC npc = Main.npc[info.npcIndexToAimAt];
+		if (!npc.active)
+			return false;
+
+		// We assign bossHeadIndex here because we need to use it in GetIconTexture
+		bossHeadIndex = npc.GetBossHeadTextureIndex();
+
+		life = npc.life;
+		lifeMax = npc.lifeMax;
+
+		if (npc.ModNPC is LootBoxLord body) {
+			// We did all the calculation work on RemainingShields inside the body NPC already so we just have to fetch the value again
+			//shield = body.MinionHealthTotal;
+			//shieldMax = body.MinionMaxHealthTotal;
+		}
+
+		return true;
 	}
 }

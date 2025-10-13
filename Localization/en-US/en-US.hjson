@@ -3303,6 +3303,11 @@ Mods: {
 						WIP
 						'''
 				}
+
+				EnablePracticeMode: {
+					Label: Enable Practice Mode
+					Tooltip: ""
+				}
 			}
 		}
 

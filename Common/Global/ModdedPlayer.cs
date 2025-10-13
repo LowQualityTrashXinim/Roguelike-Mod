@@ -79,10 +79,7 @@ namespace Roguelike.Common.Global {
 		}
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
-			if (Player.IsDebugPlayer()) {
-				Player.difficulty = PlayerDifficultyID.Creative;
-			}
-			else {
+			if (!Player.IsDebugPlayer()) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
 			Player.itemAnimation = 0;

@@ -37,7 +37,7 @@ namespace Roguelike.Common.Utils {
 			player.name.Contains("Test") ||
 			player.name.Contains("Debug") ||
 			player.name == "LowQualityTrashXinim" ||
-			player.name.Contains("#Beta");
+			player.name.Contains("#Beta") || ModContent.GetInstance<RogueLikeConfig>().EnablePracticeMode;
 		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcsByNetId[NPCtype]) > 0;
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
