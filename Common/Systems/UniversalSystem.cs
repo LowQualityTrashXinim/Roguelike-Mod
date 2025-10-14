@@ -10,9 +10,6 @@ using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.RoguelikeMode;
-using Roguelike.Contents.Items.aDebugItem.RelicDebug;
-using Roguelike.Contents.Items.aDebugItem.SkillDebug;
-using Roguelike.Contents.Items.aDebugItem.UIdebug;
 using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Toggle;
 using Roguelike.Contents.NPCs;
@@ -35,6 +32,8 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
+using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -108,9 +107,11 @@ internal class UniversalSystem : ModSystem {
 	public UISystemMenu UIsystemmenu;
 	public TransmutationUIState transmutationUI;
 
+	//Debug UI
 	public RelicTransmuteUI relicUI;
 	public SkillGetterUI skillUI;
 	public SpoilGetterUI spoilUI;
+	public MainDebugUI debugUIMain;
 
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
@@ -148,6 +149,7 @@ internal class UniversalSystem : ModSystem {
 			spoilUI = new();
 			synergyWikiMenu = new();
 			enchantmentMenuWiki = new();
+			debugUIMain = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -189,6 +191,7 @@ internal class UniversalSystem : ModSystem {
 		spoilUI = null;
 		synergyWikiMenu = null;
 		enchantmentMenuWiki = null;
+		debugUIMain = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -300,6 +303,10 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateTransmutationUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(transmutationUI);
+	}
+	public void ActivateMainDebugUIMenu() {
+		DeactivateUI();
+		user2ndInterface.SetState(debugUIMain);
 	}
 	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();

@@ -4,9 +4,9 @@
 4/ Work on debuff and buff sprite.
 5/ Remove connection between spoil and lootbox. (connect with task 8)
 5.1/ Rework the entire lootbox and loot table.
-6/ Make uses of ModUtils localization universally.
+6/ Make uses of ModUtils localization universally. ( is this done ? )
 7/ Work on localization "TODO"
 8/ Add a universal loot pool.
 9/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
 10/ Refactor User info tablet
-11/ Work on Lootbox Lord 
+11/ Work on better debug UI and tool.

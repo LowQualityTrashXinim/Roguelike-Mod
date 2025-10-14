@@ -409,6 +409,7 @@ namespace Roguelike.Common.Utils {
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
 		public string HoverText = null;
+		public bool UnselectAble = false;
 		bool _CustomWeirdDraw = false;
 		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false) {
 			postTex = tex;
@@ -420,11 +421,15 @@ namespace Roguelike.Common.Utils {
 		public bool Hide = false;
 		public override sealed void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			this.IgnoresMouseInteraction = Hide;
+			this.IgnoresMouseInteraction = Hide || UnselectAble;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
 			if (HoverText != null) {
 				Main.instance.MouseText(HoverText);
 			}
+			UpdateOuter(gameTime);
+		}
+		public virtual void UpdateOuter(GameTime gametime) {
+
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {

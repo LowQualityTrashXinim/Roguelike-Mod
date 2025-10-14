@@ -120,22 +120,29 @@ namespace Roguelike.Contents.Perks {
 
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
-		public int PerkAmount = 4;
+		public int PerkrerollAmount = 1;
 		private byte perk_Reroll = 1;
-		public void Modify_RerollCount(byte amount, bool negative = false) {
-			int simulate = perk_Reroll + amount;
+		public void Modify_RerollCount(byte amount, bool? negative = false) {
+			short simulate = perk_Reroll;
+			if (negative == null) {
+				simulate = amount;
+			}
+			else if ((bool)negative) {
+				simulate -= amount;
+			}
+			else {
+				simulate += amount;
+			}
 			if (simulate < byte.MinValue) {
 				perk_Reroll = byte.MinValue;
 			}
 			else if (simulate > byte.MaxValue) {
 				perk_Reroll = byte.MaxValue;
 			}
-			if (negative) {
-				perk_Reroll -= amount;
-			}
 			else {
-				perk_Reroll += amount;
+				perk_Reroll = (byte)simulate;
 			}
+
 		}
 		public byte Reroll => perk_Reroll;
 		/// <summary>
@@ -153,13 +160,13 @@ namespace Roguelike.Contents.Perks {
 		public bool perk_EssenceExtraction = false;
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
-			PerkAmount = 4;
+			PerkrerollAmount = 1;
 		}
-		public int PerkAmountModified() {
+		public int RerollAmount() {
 			if (perks.ContainsKey(Perk.GetPerkType<BlessingOfPerk>())) {
-				return PerkAmount + perks[Perk.GetPerkType<BlessingOfPerk>()];
+				return PerkrerollAmount + perks[Perk.GetPerkType<BlessingOfPerk>()];
 			}
-			return PerkAmount;
+			return PerkrerollAmount;
 		}
 		public bool HasPerk<T>() where T : Perk => perks.ContainsKey(Perk.GetPerkType<T>());
 		public override void PostItemCheck() {
@@ -180,8 +187,8 @@ namespace Roguelike.Contents.Perks {
 			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
-			PerkAmount = 4;
-			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
+			PerkrerollAmount = 1;
+			PerkrerollAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + RerollAmount();
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).ResetEffect(Player);
 			}
@@ -517,28 +524,134 @@ namespace Roguelike.Contents.Perks {
 		public const short DefaultState = 0;
 		public const short StarterPerkState = 1;
 		public const short DebugState = 2;
-		public const short GamblerState = 3;
 		public short StateofState = 0;
-		public UIText toolTip;
 		public Roguelike_UIImageButton reroll = null;
-		List<PerkUIImageButton> list_perkbtn = new();
+
+		public Roguelike_UIPanel panel_perkSelection = null;
+		public PerkUIImageButton[] Arr_Perkbtn = null;
+		public Roguelike_UIPanel panel_perkContainer = null;
+		public Roguelike_UIPanel panel_rerollPerkContainer = null;
+		public Roguelike_UITextPanel textpanel_rerollInfo = null;
 		public override void OnInitialize() {
-			reroll = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
+			panel_perkSelection = new();
+			panel_perkSelection.UISetWidthHeight(400, 210);
+			panel_perkSelection.HAlign = .5f;
+			panel_perkSelection.VAlign = .5f;
+			Append(panel_perkSelection);
+
+			panel_perkContainer = new();
+			panel_perkContainer.UISetWidthHeight(400, 100);
+			panel_perkContainer.HAlign = .5f;
+			panel_perkContainer.VAlign = 0;
+			panel_perkSelection.Append(panel_perkContainer);
+
+			Asset<Texture2D> asset = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
+
+			Arr_Perkbtn = new PerkUIImageButton[5];
+			for (int i = 0; i < Arr_Perkbtn.Length; i++) {
+				PerkUIImageButton perkBTN = Arr_Perkbtn[i];
+				perkBTN = new PerkUIImageButton(asset);
+				perkBTN.ChangePerkType(Perk.GetPerkType<SuppliesDrop>());
+				perkBTN.HAlign = MathHelper.Lerp(.05f, .95f, i / 4f);
+				perkBTN.VAlign = .5f;
+				perkBTN.UISetWidthHeight(52, 52);
+				Arr_Perkbtn[i] = perkBTN;
+				panel_perkContainer.Append(Arr_Perkbtn[i]);
+			}
+
+			panel_rerollPerkContainer = new();
+			panel_rerollPerkContainer.Height.Pixels = 80;
+			panel_rerollPerkContainer.Width.Percent = 1f;
+			panel_rerollPerkContainer.HAlign = 0f;
+			panel_rerollPerkContainer.VAlign = 1f;
+			panel_perkSelection.Append(panel_rerollPerkContainer);
+
+			textpanel_rerollInfo = new("Reroll remain: 0");
+			textpanel_rerollInfo.UISetWidthHeight(200, 60);
+			textpanel_rerollInfo.HAlign = 1f;
+			textpanel_rerollInfo.VAlign = .5f;
+			textpanel_rerollInfo.OnUpdate += Textpanel_rerollInfo_OnUpdate;
+			panel_rerollPerkContainer.Append(textpanel_rerollInfo);
+
+			reroll = new(asset);
 			reroll.OnLeftClick += Reroll_OnLeftClick;
 			reroll.OnUpdate += Reroll_OnUpdate;
 			reroll.UISetWidthHeight(52, 52);
-			reroll.HAlign = .5f;
-			reroll.VAlign = .5f;
-			Append(reroll);
-
-			list_perkbtn = new();
-			toolTip = new UIText("");
-			Append(toolTip);
+			reroll.HAlign = 0;
+			reroll.VAlign = 1f;
+			reroll.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<PerkUIState>("perkReroll")));
+			panel_rerollPerkContainer.Append(reroll);
 		}
 
+		private void Textpanel_rerollInfo_OnUpdate(UIElement affectedElement) {
+			textpanel_rerollInfo.SetText($"Reroll remain: {Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll}");
+		}
+
+		private void PerkSelectionNormal(PerkPlayer modplayer, Player player) {
+			List<int> listOfPerk = new List<int>();
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if (!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
+				listOfPerk.Add(i);
+			}
+			AssignPerkIDtoArrBtn(listOfPerk);
+		}
+		private void PerkSelectionStarter(PerkPlayer modplayer, Player player) {
+			List<int> starterPerk = [.. PerkModSystem.StarterPerkType];
+			foreach (var item in PerkModSystem.StarterPerkType) {
+				if (modplayer.perks.ContainsKey(item)) {
+					if (!ModPerkLoader.GetPerk(item).CanBeStack && modplayer.perks[item] > 0
+						|| modplayer.perks[item] >= ModPerkLoader.GetPerk(item).StackLimit) {
+						starterPerk.Remove(item);
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(item).SelectChoosing()) {
+					starterPerk.Remove(item);
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(item).CanBeChoosen) {
+					starterPerk.Remove(item);
+				}
+			}
+			AssignPerkIDtoArrBtn(starterPerk);
+		}
+		private void AssignPerkIDtoArrBtn(List<int> list_perk) {
+			int[] Arr_PerkNumber = new int[5];
+			for (int i = 0; i < Arr_PerkNumber.Length; i++) {
+				if (Arr_PerkNumber[i] == 0) {
+					if (list_perk.Count <= 1) {
+						Arr_PerkNumber[i] = Perk.GetPerkType<SuppliesDrop>();
+						Arr_Perkbtn[i].ChangePerkType(Perk.GetPerkType<SuppliesDrop>());
+						Arr_Perkbtn[i].Info = Info;
+						continue;
+					}
+					int perkID = Main.rand.Next(list_perk);
+					if (Arr_PerkNumber.Contains(perkID)) {
+						i--;
+						continue;
+					}
+					else {
+						Arr_PerkNumber[i] = perkID;
+						Arr_Perkbtn[i].ChangePerkType(perkID);
+						Arr_Perkbtn[i].Info = Info;
+					}
+				}
+			}
+		}
 		private void Reroll_OnUpdate(UIElement affectedElement) {
-			if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll == 0) {
-				reroll.Hide = true;
+			if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll <= 0) {
+				reroll.UnselectAble = true;
 			}
 			if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 				Main.LocalPlayer.mouseInterface = true;
@@ -547,7 +660,6 @@ namespace Roguelike.Contents.Perks {
 				Main.instance.MouseText("Reroll Perk !");
 			}
 		}
-
 		private void Reroll_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
 			List<int> listOfPerk = new List<int>();
@@ -573,7 +685,7 @@ namespace Roguelike.Contents.Perks {
 			else if (StateofState == StarterPerkState) {
 				listOfPerk = [.. PerkModSystem.StarterPerkType];
 			}
-			foreach (var item in list_perkbtn) {
+			foreach (var item in Arr_Perkbtn) {
 				if (listOfPerk.Contains(item.perkType)) {
 					listOfPerk.Remove(item.perkType);
 				}
@@ -588,27 +700,21 @@ namespace Roguelike.Contents.Perks {
 			}
 			modplayer.Modify_RerollCount(1, true);
 		}
-
 		public override void OnActivate() {
-			list_perkbtn.Clear();
-			for (int i = Elements.Count - 1; i >= 0; i--) {
-				if (Elements[i].UniqueId != reroll.UniqueId) {
-					Elements[i].Remove();
-				}
-			}
 			Player player = Main.LocalPlayer;
 			if (player.TryGetModPlayer(out PerkPlayer modplayer)) {
+				modplayer.Modify_RerollCount((byte)modplayer.RerollAmount(), null);
 				if (StateofState == DefaultState) {
-					ActivateNormalPerkUI(modplayer, player);
+					reroll.UnselectAble = false;
+					PerkSelectionNormal(modplayer, player);
 				}
 				if (StateofState == StarterPerkState) {
-					ActivateStarterPerkUI(modplayer, player);
+					reroll.UnselectAble = false;
+					PerkSelectionStarter(modplayer, player);
 				}
 				if (StateofState == DebugState) {
-					ActivateDebugPerkUI(player);
-				}
-				if (StateofState == GamblerState) {
-					ActivateGamblerUI(modplayer, player);
+					reroll.UnselectAble = true;
+					//ActivateDebugPerkUI(player);
 				}
 			}
 		}
@@ -630,112 +736,11 @@ namespace Roguelike.Contents.Perks {
 				Append(btn);
 				ModPerkLoader.GetPerk(i);
 			}
-			reroll.Hide = true;
-		}
-		private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
-			reroll.Hide = false;
-			List<int> listOfPerk = new List<int>();
-			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
-				if (modplayer.perks.ContainsKey(i)) {
-					if (!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0
-						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
-						continue;
-					}
-				}
-				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
-					continue;
-				}
-				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
-					continue;
-				}
-				listOfPerk.Add(i);
-			}
-			Vector2 originDefault = new Vector2(26, 26);
-			int amount = listOfPerk.Count;
-			int perkamount = modplayer.PerkAmountModified();
-			for (int i = 0; i < perkamount; i++) {
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
-				int newperk = Main.rand.Next(listOfPerk);
-				Asset<Texture2D> texture;
-				if (ModPerkLoader.GetPerk(newperk).textureString is not null)
-					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
-				else
-					texture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-				if (i >= amount) {
-					newperk = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
-					if (ModPerkLoader.GetPerk(newperk).textureString is not null)
-						texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
-					else
-						texture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-					PerkUIImageButton buttonWeapon = new PerkUIImageButton(texture);
-					buttonWeapon.perkType = newperk;
-					buttonWeapon.UISetWidthHeight(52, 52);
-					buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
-					buttonWeapon.Info = Info;
-					list_perkbtn.Add(buttonWeapon);
-					Append(buttonWeapon);
-					continue;
-				}
-				listOfPerk.Remove(newperk);
-				//After that we assign perk
-				PerkUIImageButton btn = new PerkUIImageButton(texture);
-				btn.UISetWidthHeight(52, 52);
-				btn.UISetPosition(player.Center + offsetPos, originDefault);
-				btn.perkType = newperk;
-				btn.Info = Info;
-				list_perkbtn.Add(btn);
-				Append(btn);
-			}
-		}
-		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
-			reroll.Hide = false;
-			Vector2 originDefault = new Vector2(26, 26);
-			List<int> starterPerk = [.. PerkModSystem.StarterPerkType];
-			int limit = 3;
-			for (int i = 0; i < limit; i++) {
-				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
-				starterPerk.Remove(choosenperk.Type);
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
-				//After that we assign perk
-				if (modplayer.perks.ContainsKey(choosenperk.Type)) {
-					if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
-						continue;
-					}
-				}
-				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
-				btn.UISetWidthHeight(52, 52);
-				btn.UISetPosition(player.Center + offsetPos, originDefault);
-				btn.perkType = choosenperk.Type;
-				list_perkbtn.Add(btn);
-				Append(btn);
-			}
-		}
-		private void ActivateGamblerUI(PerkPlayer modplayer, Player player) {
-			Vector2 originDefault = new Vector2(26, 26);
-			int[] starterPerk = new int[]
-			{ Perk.GetPerkType<UncertainStrike>(),
-			Perk.GetPerkType<StrokeOfLuck>(),
-			Perk.GetPerkType<BlessingOfPerk>()
-			};
-			for (int i = 0; i < starterPerk.Length; i++) {
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
-				//After that we assign perk
-				if (modplayer.perks.ContainsKey(starterPerk[i])) {
-					if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(starterPerk[i]).StackLimit) {
-						continue;
-					}
-				}
-				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString));
-				btn.UISetWidthHeight(52, 52);
-				btn.UISetPosition(player.Center + offsetPos, originDefault);
-				btn.perkType = starterPerk[i];
-				Append(btn);
-			}
-			reroll.Hide = true;
+			reroll.UnselectAble = true;
 		}
 	}
 	//Do all the check in UI state since that is where the perk actually get create and choose
-	class PerkUIImageButton : UIImageButton {
+	class PerkUIImageButton : Roguelike_UIImageButton {
 		public int perkType;
 		public string Info = "";
 		private Asset<Texture2D> texture;
@@ -770,8 +775,7 @@ namespace Roguelike.Contents.Perks {
 				}
 			}
 		}
-		public override void Update(GameTime gameTime) {
-			base.Update(gameTime);
+		public override void UpdateOuter(GameTime gametime) {
 			if (ContainsPoint(Main.MouseScreen)) {
 				Main.LocalPlayer.mouseInterface = true;
 			}
@@ -788,7 +792,8 @@ namespace Roguelike.Contents.Perks {
 			}
 		}
 		int Switch = 0;
-		public override void Draw(SpriteBatch spriteBatch) {
+		public override void DrawImage(SpriteBatch spriteBatch) {
+			base.DrawImage(spriteBatch);
 			if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
 				UICommon.TooltipMouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
 			}

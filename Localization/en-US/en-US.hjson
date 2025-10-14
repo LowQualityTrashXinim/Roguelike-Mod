@@ -2417,6 +2417,11 @@ Mods: {
 				DisplayName: Rule Of Nature
 				Tooltip: ""
 			}
+
+			MainDebugStick: {
+				DisplayName: Main Debug Stick
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

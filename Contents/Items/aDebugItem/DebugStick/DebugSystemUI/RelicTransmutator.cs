@@ -12,22 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Roguelike.Contents.Items.aDebugItem.RelicDebug;
-internal class RelicTransmutator : ModItem {
-	public override string Texture => ModTexture.EMPTYCARD;
-	public override void SetDefaults() {
-		Item.useTime = Item.useAnimation = 30;
-		Item.useStyle = ItemUseStyleID.HoldUp;
-		Item.width = Item.height = 30;
-		Item.Set_DebugItem(true);
-	}
-	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().ActivateDebugUI();
-		}
-		return base.UseItem(player);
-	}
-}
+namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class RelicTransmuteUI : UIState {
 	UIImageButton btn_select;
 	UIPanel panel;
@@ -55,15 +40,15 @@ class RelicTransmuteUI : UIState {
 		}
 	}
 	private void Btn_select_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		UIText text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
+		var text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
 		if (text == null) {
 			return;
 		}
-		RelicTemplate template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
+		var template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
 		if (template == null) {
 			return;
 		}
-		Item item = Main.LocalPlayer.QuickSpawnItemDirect(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Relic>());
+		var item = Main.LocalPlayer.QuickSpawnItemDirect(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Relic>());
 		if (item.ModItem is Relic relic) {
 			relic.AddRelicTemplate(Main.LocalPlayer, template.Type);
 		}
@@ -73,7 +58,7 @@ class RelicTransmuteUI : UIState {
 		textlist.Clear();
 		panel.RemoveAllChildren();
 		for (int i = 0; i < RelicTemplateLoader.TotalCount; i++) {
-			UIText text = new UIText(RelicTemplateLoader.GetTemplate(i).Name);
+			var text = new UIText(RelicTemplateLoader.GetTemplate(i).Name);
 			text.OnLeftClick += Text_OnLeftClick;
 			text.OnUpdate += Text_OnUpdate;
 			text.VAlign = i / (RelicTemplateLoader.TotalCount - 1f);
@@ -83,22 +68,22 @@ class RelicTransmuteUI : UIState {
 	}
 	private void Text_OnUpdate(UIElement affectedElement) {
 		if (currentSelectTemplate == affectedElement.UniqueId) {
-			UIText text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
+			var text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
 			if (text == null) {
 				return;
 			}
-			RelicTemplate template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
+			var template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
 			if (template == null) {
 				return;
 			}
 			text.SetText($"[c/{Color.Yellow.Hex3()}:{template.Name}]");
 		}
 		else {
-			UIText text = textlist.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
+			var text = textlist.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
 			if (text == null) {
 				return;
 			}
-			RelicTemplate template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
+			var template = RelicTemplateLoader.GetTemplate(textlist.IndexOf(text));
 			if (template == null) {
 				return;
 			}

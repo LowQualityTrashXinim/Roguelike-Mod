@@ -70,7 +70,7 @@ namespace Roguelike.Contents.Items.Consumable.SpecialReward
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "NoHitReward",
 				"A small reward for displaying skill\n" +
-				"Increase perk range by 1\n" +
+				"Increase perk reroll by 1\n" +
 				"Can only be used once\n"
 				));
 			foreach (var line in tooltips)

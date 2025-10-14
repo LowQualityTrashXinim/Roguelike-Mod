@@ -8,28 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Contents.Items.Chest;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.aDebugItem.UIdebug;
-internal class SpoilGetter : ModItem {
-	public override string Texture => ModTexture.MissingTexture_Default;
-	public override void SetDefaults() {
-		Item.BossRushDefaultToConsume(32, 32);
-		Item.Set_DebugItem(true);
-	}
-	public override bool AltFunctionUse(Player player) {
-		return true;
-	}
-	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(ModContent.ItemType<WoodenLootBox>());
-			ModContent.GetInstance<UniversalSystem>().ActivateDebugUI("spoil");
-		}
-		return base.UseItem(player);
-	}
-}
+namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class SpoilGetterUI : UIState {
 	UIPanel panel;
 	int currentSelectTemplate = -1;

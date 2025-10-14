@@ -226,3 +226,9 @@ Version 0.0.1:
 224/ Added boss health bar.
 225/ Fixed a bug where DR did not apply.
 226/ Added Practice mode.
+227/ Reworked perk UI and perk reroll mechanic.
+228/ Added Main debug UI for easier time to manage debug item.
+229/ Deleted 3 of the system debug item as it is no longer needed.
+230/ Deleted BiomeToggle as it is no longer needed.
+231/ Moved SpriteTracker into Utils and turn it into a class instead of struct.
+232/ Added perk reroll icon.

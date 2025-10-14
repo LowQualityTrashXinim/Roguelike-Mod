@@ -673,5 +673,19 @@ namespace Roguelike.Common.Utils {
 			return UnitApply(origin, x, y, args);
 		}
 	}
+	public class SpriteTracker {
+		public Vector2 position = Vector2.Zero;
+		public Vector2 velocity = Vector2.Zero;
+		public float rotation = 0;
+		public float scale = 1;
+		public float rotationSp = 0;
+		public int TimeLeft = 0;
+
+		public SpriteTracker(Vector2 vel, float rotationSpeed, int time) {
+			velocity = vel;
+			rotationSp = rotationSpeed;
+			TimeLeft = time;
+		}
+	}
 }
 

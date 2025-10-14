@@ -297,7 +297,7 @@ BlessingOfPerk: {
 	DisplayName: Blessing Of Opportunity
 	Description:
 		'''
-		+ Increases perk range amount by 1
+		+ Increases perk reroll amount by 1
 		+ Increases lootbox drop amount by 1
 		+ Rare spoils are more common ( applied only once )
 		'''

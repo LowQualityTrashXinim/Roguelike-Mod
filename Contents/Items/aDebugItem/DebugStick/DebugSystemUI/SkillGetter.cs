@@ -11,28 +11,12 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
- 
+
 using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.aDebugItem.SkillDebug;
-internal class SkillGetter : ModItem {
-	public override string Texture => ModTexture.MissingTexture_Default;
-	public override void SetDefaults() {
-		Item.BossRushDefaultToConsume(32, 32);
-		Item.Set_DebugItem(true);
-	}
-	public override bool AltFunctionUse(Player player) {
-		return true;
-	}
-	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().ActivateDebugUI("skill");
-		}
-		return base.UseItem(player);
-	}
-}
+namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class btn_Skill : UIImageButton {
 	public int ModSkillID = -1;
 	Texture2D texture = null;
@@ -44,12 +28,12 @@ class btn_Skill : UIImageButton {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-		Vector2 drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
+		var drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
 		if (ModSkillID < 0 || ModSkillID >= SkillModSystem.TotalCount) {
 			return;
 		}
-		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(ModSkillID).Texture).Value;
-		Vector2 origin = skilltexture.Size() * .5f;
+		var skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(ModSkillID).Texture).Value;
+		var origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(texture.Size(), skilltexture.Size());
 		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
 	}
@@ -112,11 +96,11 @@ class SkillGetterUI : UIState {
 	}
 
 	private void Btn_select_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		btn_Skill text = btn_list.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
+		var text = btn_list.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
 		if (text == null) {
 			return;
 		}
-		ModSkill template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
+		var template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
 		if (template == null) {
 			return;
 		}
@@ -143,11 +127,11 @@ class SkillGetterUI : UIState {
 	}
 	private void Text_OnUpdate(UIElement affectedElement) {
 		if (affectedElement.IsMouseHovering) {
-			btn_Skill text = btn_list.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
+			var text = btn_list.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
 			if (text == null) {
 				return;
 			}
-			ModSkill template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
+			var template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
 			if (template == null) {
 				return;
 			}

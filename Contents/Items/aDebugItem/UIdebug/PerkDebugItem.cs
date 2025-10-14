@@ -2,7 +2,6 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Perks;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
@@ -16,13 +15,9 @@ internal class PerkDebugItem : ModItem {
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {
-		var modplayer = player.GetModPlayer<PerkPlayer>();
 		if (player.altFunctionUse != 2) {
 			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.ActivatePerkUI(PerkUIState.DebugState);
-		}
-		else if (player.IsDebugPlayer()) {
-			modplayer.perks.Clear();
 		}
 		return true;
 	}
