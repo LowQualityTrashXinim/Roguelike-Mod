@@ -15,6 +15,7 @@ internal class MainDebugUI : UIState {
 	UIText open_SpoilUI;
 	UIText open_SkillUI;
 	UIText open_RelicUI;
+	UIText open_ArtifactUI;
 	UIText exit_Menu;
 	public override void OnInitialize() {
 		Roguelike_Panel = new();
@@ -55,6 +56,13 @@ internal class MainDebugUI : UIState {
 		open_RelicUI.MarginTop = open_SkillUI.MarginTop + open_SkillUI.Height.Pixels + 40;
 		panel.Append(open_RelicUI);
 
+		open_ArtifactUI = new("Artifact menu", 1.5f);
+		open_ArtifactUI.OnLeftClick += Open_ArtifactUI_OnLeftClick;
+		open_ArtifactUI.OnUpdate += Universal_OnUpdate;
+		open_ArtifactUI.OnMouseOver += Universal_MouseOver;
+		open_ArtifactUI.MarginTop = open_SpoilUI.Height.Pixels + open_RelicUI.MarginTop + 40;
+		panel.Append(open_ArtifactUI);
+
 		exit_Menu = new("Back", 1.5f);
 		exit_Menu.OnLeftClick += Exit_Menu_OnLeftClick;
 		exit_Menu.OnUpdate += Exit_Menu_OnUpdate;
@@ -64,6 +72,10 @@ internal class MainDebugUI : UIState {
 		panel.Append(exit_Menu);
 	}
 
+	private void Open_ArtifactUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		ModContent.GetInstance<UniversalSystem>().ActivateDebugUI("artifact");
+	}
 
 	private void open_RelicUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -103,6 +115,14 @@ internal class MainDebugUI : UIState {
 			}
 			else {
 				open_SkillUI.TextColor = Color.White;
+			}
+		}
+		else if (affectedElement.UniqueId == open_ArtifactUI.UniqueId) {
+			if (affectedElement.IsMouseHovering) {
+				open_ArtifactUI.TextColor = Color.Yellow;
+			}
+			else {
+				open_ArtifactUI.TextColor = Color.White;
 			}
 		}
 	}

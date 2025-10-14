@@ -232,3 +232,4 @@ Version 0.0.1:
 230/ Deleted BiomeToggle as it is no longer needed.
 231/ Moved SpriteTracker into Utils and turn it into a class instead of struct.
 232/ Added perk reroll icon.
+233/ Added artifact debug UI.

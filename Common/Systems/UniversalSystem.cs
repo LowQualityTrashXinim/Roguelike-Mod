@@ -112,6 +112,7 @@ internal class UniversalSystem : ModSystem {
 	public SkillGetterUI skillUI;
 	public SpoilGetterUI spoilUI;
 	public MainDebugUI debugUIMain;
+	public ArtifactDebugMenu artifactUI;
 
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
@@ -150,6 +151,7 @@ internal class UniversalSystem : ModSystem {
 			synergyWikiMenu = new();
 			enchantmentMenuWiki = new();
 			debugUIMain = new();
+			artifactUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -192,6 +194,7 @@ internal class UniversalSystem : ModSystem {
 		synergyWikiMenu = null;
 		enchantmentMenuWiki = null;
 		debugUIMain = null;
+		artifactUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -318,6 +321,9 @@ internal class UniversalSystem : ModSystem {
 		}
 		if (context.Trim() == "spoil") {
 			user2ndInterface.SetState(spoilUI);
+		}
+		if(context.Trim() == "artifact") {
+			user2ndInterface.SetState(artifactUI);
 		}
 	}
 	public void ActivateAchievementUI() {

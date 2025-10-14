@@ -239,6 +239,7 @@ namespace Roguelike.Common.Utils {
 
 				yOffset += scale * 25f;
 			}
+			SetText(cachedText);
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {
