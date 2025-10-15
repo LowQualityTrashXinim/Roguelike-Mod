@@ -233,3 +233,5 @@ Version 0.0.1:
 231/ Moved SpriteTracker into Utils and turn it into a class instead of struct.
 232/ Added perk reroll icon.
 233/ Added artifact debug UI.
+234/ Added perk debug UI.
+235/ Added Main debug stick ( which can be accessed via debug player condition ).

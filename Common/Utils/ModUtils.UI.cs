@@ -424,7 +424,7 @@ namespace Roguelike.Common.Utils {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide || UnselectAble;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
-			if (HoverText != null) {
+			if (IsMouseHovering && HoverText != null) {
 				Main.instance.MouseText(HoverText);
 			}
 			UpdateOuter(gameTime);

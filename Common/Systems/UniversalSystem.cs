@@ -113,6 +113,7 @@ internal class UniversalSystem : ModSystem {
 	public SpoilGetterUI spoilUI;
 	public MainDebugUI debugUIMain;
 	public ArtifactDebugMenu artifactUI;
+	public PerkDebugUI debugperkUI;
 
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
@@ -152,6 +153,7 @@ internal class UniversalSystem : ModSystem {
 			enchantmentMenuWiki = new();
 			debugUIMain = new();
 			artifactUI = new();
+			debugperkUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -195,6 +197,7 @@ internal class UniversalSystem : ModSystem {
 		enchantmentMenuWiki = null;
 		debugUIMain = null;
 		artifactUI = null;
+		debugperkUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -313,17 +316,20 @@ internal class UniversalSystem : ModSystem {
 	}
 	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();
-		if (context.Trim() == "relic") {
+		if (context == "relic") {
 			user2ndInterface.SetState(relicUI);
 		}
-		if (context.Trim() == "skill") {
+		else if (context == "skill") {
 			user2ndInterface.SetState(skillUI);
 		}
-		if (context.Trim() == "spoil") {
+		else if (context == "spoil") {
 			user2ndInterface.SetState(spoilUI);
 		}
-		if(context.Trim() == "artifact") {
+		else if (context== "artifact") {
 			user2ndInterface.SetState(artifactUI);
+		}
+		else if(context == "perk") {
+			user2ndInterface.SetState(debugperkUI);
 		}
 	}
 	public void ActivateAchievementUI() {

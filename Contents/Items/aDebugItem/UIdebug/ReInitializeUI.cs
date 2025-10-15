@@ -17,9 +17,9 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			//ModContent.GetInstance<UniversalSystem>().artifactUI.RemoveAllChildren();
-			//ModContent.GetInstance<UniversalSystem>().artifactUI.OnInitialize();
-			//ModContent.GetInstance<UniversalSystem>().artifactUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().debugperkUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().debugperkUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().debugperkUI.Activate();
 		}
 		return false;
 	}

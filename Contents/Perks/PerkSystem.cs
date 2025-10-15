@@ -523,7 +523,6 @@ namespace Roguelike.Contents.Perks {
 		public string Info = "";
 		public const short DefaultState = 0;
 		public const short StarterPerkState = 1;
-		public const short DebugState = 2;
 		public short StateofState = 0;
 		public Roguelike_UIImageButton reroll = null;
 
@@ -712,31 +711,7 @@ namespace Roguelike.Contents.Perks {
 					reroll.UnselectAble = false;
 					PerkSelectionStarter(modplayer, player);
 				}
-				if (StateofState == DebugState) {
-					reroll.UnselectAble = true;
-					//ActivateDebugPerkUI(player);
-				}
 			}
-		}
-		private void ActivateDebugPerkUI(Player player) {
-			int amount = ModPerkLoader.TotalCount;
-			Vector2 originDefault = new Vector2(26, 26);
-			for (int i = 0; i < amount; i++) {
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenlyPlus(amount + 1, 360, i) * Math.Clamp(amount * 20, 0, 460);
-				Asset<Texture2D> texture;
-				if (ModPerkLoader.GetPerk(i).textureString is not null)
-					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(i).textureString);
-				else
-					texture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-				//After that we assign perk
-				PerkUIImageButton btn = new PerkUIImageButton(texture);
-				btn.UISetWidthHeight(52, 52);
-				btn.UISetPosition(player.Center + offsetPos, originDefault);
-				btn.perkType = i;
-				Append(btn);
-				ModPerkLoader.GetPerk(i);
-			}
-			reroll.UnselectAble = true;
 		}
 	}
 	//Do all the check in UI state since that is where the perk actually get create and choose

@@ -27,7 +27,9 @@ internal class ArtifactDebugMenu : UIState {
 	public Roguelike_UIText text_ArtifactName;
 	public Roguelike_WrapTextUIPanel textpanel_ArtifactDesc;
 	public Btn_Artifact[] arr_artifactbtn = new Btn_Artifact[10];
+	public Roguelike_UIImageButton btn_confirmSelection;
 	ExitUI exit;
+	int currentSelectedArtifact_Uni = -1;
 	public override void OnInitialize() {
 		panel_MainPanel = new();
 		panel_MainPanel.UISetWidthHeight(600, 600);
@@ -90,7 +92,25 @@ internal class ArtifactDebugMenu : UIState {
 		exit.UISetWidthHeight(52, 52);
 		exit.HAlign = 1f;
 		panel_ArtifactHeader.Append(exit);
+
+		btn_confirmSelection = new(TextureAssets.InventoryBack);
+		btn_confirmSelection.UISetWidthHeight(52, 52);
+		btn_confirmSelection.HoverText = "confirm selection ?";
+		btn_confirmSelection.SetVisibility(.6f, 1f);
+		btn_confirmSelection.HAlign = .8f;
+		btn_confirmSelection.OnLeftClick += Btn_confirmSelection_OnLeftClick;
+		panel_ArtifactHeader.Append(btn_confirmSelection);
 	}
+
+	private void Btn_confirmSelection_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Artifact artifact = Artifact.GetArtifact(currentSelectedArtifact_Uni);
+		if (artifact == null) {
+			return;
+		}
+		Main.NewText($"You have just changed to [c/{artifact.DisplayNameColor.Hex3()}:{artifact.DisplayName}]");
+		Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact = artifact.Type;
+	}
+
 	int currentStarterIndex = 0;
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		currentStarterIndex -= MathF.Sign(evt.ScrollWheelValue);
@@ -111,7 +131,7 @@ internal class ArtifactDebugMenu : UIState {
 				if (artifact == null) {
 					return;
 				}
-				Main.NewText($"You have just changed to [c/{artifact.DisplayNameColor.Hex3()}:{artifact.DisplayName}]");
+				currentSelectedArtifact_Uni = artifact.Type;
 				img_ArtifactIcon.SetArtifactType(artifact.Type);
 				SetArtifactInfo(Main.LocalPlayer, artifact.Type);
 				//Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact = artifact.Type;

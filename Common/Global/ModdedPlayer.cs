@@ -25,6 +25,7 @@ using Roguelike.Contents.Skill;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -185,6 +186,9 @@ namespace Roguelike.Common.Global {
 			}
 			if (Player.name.ToLower().Trim() == "drugaddict") {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
+			}
+			if (Player.IsDebugPlayer()) {
+				yield return new Item(ModContent.ItemType<MainDebugStick>());
 			}
 			if (Player.name.Contains("Ninja")) {
 				yield return new Item(ItemID.Katana);

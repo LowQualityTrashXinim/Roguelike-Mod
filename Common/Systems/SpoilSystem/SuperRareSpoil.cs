@@ -44,9 +44,6 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			int type = ModContent.ItemType<WorldEssence>();
-			if (Main.rand.NextFloat() <= .01f) {
-				type = ModContent.ItemType<PerkDebugItem>();
-			}
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), type);
 		}
 	}
