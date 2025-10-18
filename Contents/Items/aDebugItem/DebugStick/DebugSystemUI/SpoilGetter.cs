@@ -7,7 +7,6 @@ using Terraria.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.SpoilSystem;
-using Roguelike.Contents.Items.Chest;
 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;

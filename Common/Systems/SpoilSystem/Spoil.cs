@@ -14,10 +14,10 @@ using Terraria.UI;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Items.Chest;
- 
+
 using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {

@@ -1,6 +1,5 @@
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.Weapon;
 using System;
 using Terraria;
@@ -9,6 +8,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike;
 public partial class Roguelike : Mod {

@@ -18,7 +18,6 @@ using Roguelike.Contents.Perks;
 using Roguelike.Common.Systems;
 using System.Collections.Generic;
 using Roguelike.Common.ChallengeMode;
-using Roguelike.Contents.Items.Chest;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.IOhandle;
@@ -28,6 +27,7 @@ using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using Terraria.ModLoader.IO;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -396,9 +396,9 @@ namespace Roguelike.Contents.Items.Weapon {
 			return base.PreDrawTooltip(item, lines, ref x, ref y);
 		}
 		public override bool? UseItem(Item item, Player player) {
-			if (AdvancedBuffItem && !UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
-				player.AddBuff(ModContent.BuffType<Drawback>(), ModUtils.ToMinute(6));
-			}
+			//if (AdvancedBuffItem && !UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
+			//	player.AddBuff(ModContent.BuffType<Drawback>(), ModUtils.ToMinute(6));
+			//}
 			return base.UseItem(item, player);
 		}
 		public override void SaveData(Item item, TagCompound tag) {

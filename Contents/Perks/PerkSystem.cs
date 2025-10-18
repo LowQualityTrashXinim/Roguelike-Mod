@@ -45,6 +45,7 @@ namespace Roguelike.Contents.Perks {
 			if (perkplayer.perk_ImprovedPotion) {
 				healingPotionstat += .7f;
 			}
+			healingPotionstat = healingPotionstat.CombineWith(player.ModPlayerStats().HealEffectiveness);
 			healValue = (int)healingPotionstat.ApplyTo(healValue);
 		}
 

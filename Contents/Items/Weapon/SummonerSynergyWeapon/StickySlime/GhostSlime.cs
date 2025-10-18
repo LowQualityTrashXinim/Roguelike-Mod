@@ -22,9 +22,9 @@ namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
 			Projectile.height = 52;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Summon;
-			Projectile.minion = true;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
+			Projectile.minion = true;
 			Projectile.minionSlots = 1;
 		}
 

@@ -58,6 +58,7 @@ public class AshwoodPlayer : ModPlayer {
 	public bool FlameWalker = false;
 	public override void ResetEffects() {
 		Multiplier = 1;
+		FlameWalker = false;
 	}
 	public override void UpdateEquips() {
 		var tile = Player.position.ToTileCoordinates();

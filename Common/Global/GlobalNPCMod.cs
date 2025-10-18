@@ -11,9 +11,9 @@ using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Consumable;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike.Common.Global
 {

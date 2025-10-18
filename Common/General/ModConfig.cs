@@ -29,6 +29,7 @@ namespace Roguelike.Common.General
 		[Header($"DebugHeader")]
 		public bool TemplateTest { get; set; }
 		public bool EnablePracticeMode { get; set; }
+		public bool SkipCutscene { get; set; }
 		[Header($"GameHeader")]
 		public bool HoldShift { get; set; }
 		[DefaultValue(false)]

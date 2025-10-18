@@ -402,6 +402,30 @@ Mods: {
 			HostileMinisharkDesperation.DisplayName: Hostile Minishark Desperation
 			ShortSwordDesperation.DisplayName: Short Sword Desperation
 			SwordBroadDesperation.DisplayName: Sword Broad Desperation
+			BaseSpear.DisplayName: Base Spear
+			LBL_BookOfSkull.DisplayName: L B L_ Book Of Skull
+			LBL_BoomStick.DisplayName: L B L_ Boom Stick
+			LBL_DemonScythe.DisplayName: L B L_ Demon Scythe
+			LBL_GemStaffAttackOne.DisplayName: L B L_ Gem Staff Attack One
+			LBL_GemStaffAttackTwo.DisplayName: L B L_ Gem Staff Attack Two
+			LBL_HostileMinisharkDesperation.DisplayName: L B L_ Hostile Minishark Desperation
+			LBL_Minishark.DisplayName: L B L_ Minishark
+			LBL_Musket.DisplayName: L B L_ Musket
+			LBL_OreBowAttackOne.DisplayName: L B L_ Ore Bow Attack One
+			LBL_OreBowAttackTwo.DisplayName: L B L_ Ore Bow Attack Two
+			LBL_PistolAttackOne.DisplayName: L B L_ Pistol Attack One
+			LBL_PistolAttackTwo.DisplayName: L B L_ Pistol Attack Two
+			LBL_ShortSwordAttackOne.DisplayName: L B L_ Short Sword Attack One
+			LBL_ShortSwordAttackTwo.DisplayName: L B L_ Short Sword Attack Two
+			LBL_ShortSwordDesperation.DisplayName: L B L_ Short Sword Desperation
+			LBL_SpearAttackOne.DisplayName: L B L_ Spear Attack One
+			LBL_SwordBroadAttackOne.DisplayName: L B L_ Sword Broad Attack One
+			LBL_SwordBroadAttackTwo.DisplayName: L B L_ Sword Broad Attack Two
+			LBL_SwordBroadDesperation.DisplayName: L B L_ Sword Broad Desperation
+			LBL_Waterbolt.DisplayName: L B L_ Waterbolt
+			LBL_WoodBowAttackOne.DisplayName: L B L_ Wood Bow Attack One
+			LBL_WoodBowAttackTwo.DisplayName: L B L_ Wood Bow Attack Two
+			LootBoxLord_Minion.DisplayName: Loot Box Lord_ Minion
 		}
 
 		NPCs: {
@@ -2422,6 +2446,11 @@ Mods: {
 				DisplayName: Main Debug Stick
 				Tooltip: ""
 			}
+
+			LootBoxLordSummon: {
+				DisplayName: Loot Box Lord Summon
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2802,7 +2831,7 @@ Mods: {
 
 			MaterializeSpell: {
 				DisplayName: Materialize Spell
-				Description: Hitting enemy have 1 in 15 chance to drop heart of mana
+				Description: Hitting enemy have 1 in 15 chance to drop heart or mana
 			}
 
 			InvincibilitySpell: {
@@ -3178,6 +3207,11 @@ Mods: {
 					and disable your natural regeneration
 					'''
 			}
+
+			LootBoxLordProtection: {
+				DisplayName: Loot Box Lord Protection
+				Description: Mods.Roguelike.Buffs.LootBoxLordProtection.Description
+			}
 		}
 
 		Configs: {
@@ -3311,6 +3345,11 @@ Mods: {
 
 				EnablePracticeMode: {
 					Label: Enable Practice Mode
+					Tooltip: ""
+				}
+
+				SkipCutscene: {
+					Label: Skip Cutscene
 					Tooltip: ""
 				}
 			}

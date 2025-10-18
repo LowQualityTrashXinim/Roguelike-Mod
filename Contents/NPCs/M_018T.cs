@@ -7,8 +7,8 @@ using Roguelike.Common.Systems;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Perks;
-using Roguelike.Contents.Items.Chest;
 using Roguelike.Texture;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike.Contents.NPCs;
 internal class M_018T : ModNPC {

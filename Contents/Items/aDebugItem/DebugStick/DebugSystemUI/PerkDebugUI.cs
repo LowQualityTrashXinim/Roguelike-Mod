@@ -137,7 +137,7 @@ internal class PerkDebugUI : UIState {
 	private void Btn_ConfirmSelectino_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		PerkPlayer perkplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
 		for (int i = 0; i < list_perkSelection.Count; i++) {
-			int perkType = i;
+			int perkType = list_perkSelection[i];
 			Perk perk = ModPerkLoader.GetPerk(perkType);
 			if (perk != null) {
 				if (perk.StackLimit == -1 && perk.CanBeStack) {

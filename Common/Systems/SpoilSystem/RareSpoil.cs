@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Humanizer;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems;

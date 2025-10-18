@@ -148,6 +148,7 @@ namespace Roguelike.Common.Utils {
 				//item.shoot = itemA.shoot;
 				//item.shootSpeed = itemA.shootSpeed;
 				int type = item.type;
+				int prefix = item.prefix;
 				Set_ItemCriticalDamage(item, 0f);
 				if (ItemID.Sets.IsFood[type]) {
 					continue;
@@ -179,6 +180,7 @@ namespace Roguelike.Common.Utils {
 					//Run through global
 					globalitem.SetDefaults(item);
 				}
+				item.Prefix(prefix);
 			}
 		}
 		/// <summary>

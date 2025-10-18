@@ -13,7 +13,6 @@ using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Contents.Items.Chest;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Consumable.Potion;
@@ -26,6 +25,7 @@ using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.aDebugItem.DebugStick;
+using Roguelike.Contents.Items.Chest;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

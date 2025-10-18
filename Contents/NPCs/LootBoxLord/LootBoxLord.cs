@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items;
@@ -52,6 +53,9 @@ internal class LootBoxLord : ModNPC {
 		NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
 		HasCreatedDeathTimer = false;
 		NPC.BossBar = ModContent.GetInstance<LootBoxLordBossBossBar>();
+		if (!Main.dedServ) {
+			Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LootboxLord_BossMusic");
+		}
 	}
 	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 		bestiaryEntry.Info.AddRange([
@@ -146,6 +150,11 @@ internal class LootBoxLord : ModNPC {
 		}
 		string dialog = "";
 		var color = Color.White;
+		if (ModContent.GetInstance<RogueLikeConfig>().SkipCutscene) {
+			if (dialogNumber < 3) {
+				dialogNumber = 3;
+			}
+		}
 		switch (dialogNumber) {
 			case 0:
 				dialog = "I recognize you";
@@ -327,7 +336,7 @@ internal class LootBoxLord : ModNPC {
 				projectile.SetNPCOwner(NPC.whoAmI);
 		}
 		AttackTimer++;
-		if (AttackTimer % 6 == 0) {
+		if (AttackTimer % 12 == 0) {
 			for (int i = 0; i < 2; i++) {
 				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(180 * i + AttackTimer * 2)) * 3, ModContent.ProjectileType<SwordBroadDesperation>(), BossDamagePercentage(.6f), 2, NPC.target);
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
@@ -337,8 +346,8 @@ internal class LootBoxLord : ModNPC {
 			}
 		}
 		if (AttackTimer % 96 == 0) {
-			for (int i = 0; i < 32; i++) {
-				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero).Vector2DistributeEvenlyPlus(32, 360, i) * 10, ModContent.ProjectileType<ShortSwordDesperation>(), BossDamagePercentage(.75f), 2, NPC.target);
+			for (int i = 0; i < 16; i++) {
+				int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero).Vector2DistributeEvenlyPlus(16, 360, i) * 10, ModContent.ProjectileType<ShortSwordDesperation>(), BossDamagePercentage(.75f), 2, NPC.target);
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile) {
 					projectile.IDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreShortSword);
 					projectile.Projectile.timeLeft = 90;
@@ -439,7 +448,7 @@ internal class LootBoxLord : ModNPC {
 		}
 		CanSlowDown = true;
 		Vector2 distance = player.Center - NPC.Center;
-		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
+		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 64f;
 		if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length - 1) {
 			CurrentAttack++;
 			AttackCounter = 0;
@@ -741,7 +750,7 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		int boomStick = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<HostileBoomStick>(), BossDamagePercentage(.25f), 2, NPC.target);
-		if (Main.projectile[boomStick].ModProjectile is BaseHostileGun hostileGun) {
+		if (Main.projectile[boomStick].ModProjectile is BaseGun hostileGun) {
 			hostileGun.IDtextureValue = ItemID.Boomstick;
 			hostileGun.SetNPCOwner(NPC.whoAmI);
 		}

@@ -25,14 +25,15 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 		int Counter = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter;
 		if (++player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter >= 5) {
 			player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter = 0;
-			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * 1.5f), knockback, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * .34f), knockback, player.whoAmI);
 		}
 		if (Counter >= 90) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.DD2PhoenixBowShot, damage * 3, knockback * 3, player.whoAmI);
 			Counter -= 90;
-			Counter = Counter / 10;
+			Counter = Counter / 15;
 			for (int i = 0; i < Counter; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * 1.5f), knockback, player.whoAmI);
+				int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * .34f), knockback, player.whoAmI);
+				Main.projectile[proj].penetrate = 1;
 			}
 		}
 		player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter = -player.itemAnimationMax;

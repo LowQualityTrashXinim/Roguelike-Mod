@@ -235,3 +235,13 @@ Version 0.0.1:
 233/ Added artifact debug UI.
 234/ Added perk debug UI.
 235/ Added Main debug stick ( which can be accessed via debug player condition ).
+236/ Disable Drawback debuff activation condition.
+237/ Added custom boss fight music for Loot box Lord.
+238/ Nerf flamelash projectile damage shot from Phoenix Blaster from 1.5x to .34x and reduce the amount of flamelash projectile created from charged up and reduce their penetrate value.
+239/ Fixed a prefix effect disappearing after exit and entering the world.
+240/ Make it so that healing effectiveness also apply to potion.
+241/ Nerf Lootbox Lord desperation attack.
+242/ Nerf Lootbox Lord bullet hell attack.
+243/ Added in a secert.
+244/ Nerf Self Explosion regeneration 22 -> 15.
+245/ Fixed Ashwood boot effect still active after being taken off.

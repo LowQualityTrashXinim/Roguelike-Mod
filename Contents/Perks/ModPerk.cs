@@ -168,7 +168,7 @@ public class SelfExplosion : Perk {
 			this.BossRushSetDefaultBuff();
 		}
 		public override void Update(Player player, ref int buffIndex) {
-			player.lifeRegen += 22;
+			player.lifeRegen += 15;
 		}
 	}
 }
