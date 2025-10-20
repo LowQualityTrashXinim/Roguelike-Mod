@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class UncommonSpoil {

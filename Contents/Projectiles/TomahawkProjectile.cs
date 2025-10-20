@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
- 
+
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Projectiles;
@@ -24,7 +24,7 @@ public class TomahawkProjectile : ModProjectile {
 			intialvelocity = Projectile.velocity.Length();
 		}
 		Player player = Main.player[Projectile.owner];
-		if (++Projectile.ai[0] >= ModUtils.ToSecond(3) || !player.ItemAnimationActive && (player.altFunctionUse == 2 || Main.mouseRight && Projectile.owner == Main.myPlayer)) {
+		if (++Projectile.ai[0] >= ModUtils.ToSecond(6) || !player.ItemAnimationActive && (Main.mouseRight && Projectile.owner == Main.myPlayer)) {
 			Projectile.ai[1] = 1;
 		}
 		if (Projectile.ai[1] == 1) {
@@ -36,6 +36,7 @@ public class TomahawkProjectile : ModProjectile {
 		}
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0] * Projectile.direction * 10);
+		Projectile.velocity *= .97f;
 	}
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.ai[1] = 1;

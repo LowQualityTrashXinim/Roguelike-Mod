@@ -5,7 +5,7 @@ using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.NPCs.LootBoxLord.Buff;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;

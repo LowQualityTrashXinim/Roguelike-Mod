@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using System.Linq;

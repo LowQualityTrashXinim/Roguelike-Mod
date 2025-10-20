@@ -27,7 +27,7 @@ using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using Terraria.ModLoader.IO;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {

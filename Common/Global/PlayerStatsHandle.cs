@@ -264,6 +264,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier RangeAtkSpeed = StatModifier.Default;
 	public StatModifier MagicAtkSpeed = StatModifier.Default;
 	public StatModifier SummonAtkSpeed = StatModifier.Default;
+	public StatModifier TrueDamage = StatModifier.Default;
+	public float PercentageDamage = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
@@ -304,6 +306,10 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
+
+		modifiers.FinalDamage.Flat = target.lifeMax * PercentageDamage;
+
+		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		int value = AlwaysCritValue;
@@ -355,6 +361,10 @@ public class PlayerStatsHandle : ModPlayer {
 	public const short Default_EnergyCap = 1500;
 	public const short Default_RelicActivationCap = 10;
 	public override void ResetEffects() {
+		if (!Player.active) {
+			return;
+		}
+
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
@@ -474,6 +484,9 @@ public class PlayerStatsHandle : ModPlayer {
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
 		TransmutationPowerMaximum = 1000;
+
+		PercentageDamage = 0;
+		TrueDamage = StatModifier.Default;
 
 		Request_AddMelee.Clear();
 		Request_AddRange.Clear();
@@ -701,6 +714,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.LootDropIncrease:
 				DropModifier = DropModifier.CombineWith(StatMod);
 				break;
+			case PlayerStats.TrueDamage:
+				TrueDamage = TrueDamage.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -879,7 +895,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0 ) {
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
 	}
 	/// <summary>

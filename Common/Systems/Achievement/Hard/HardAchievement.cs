@@ -1,6 +1,6 @@
 ﻿using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.NPCs.LootBoxLord;
 using Terraria;
 using Terraria.ID;

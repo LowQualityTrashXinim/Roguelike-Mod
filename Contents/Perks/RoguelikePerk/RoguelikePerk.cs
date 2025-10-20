@@ -1,7 +1,7 @@
 ﻿using Roguelike.Common.ChallengeMode;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;

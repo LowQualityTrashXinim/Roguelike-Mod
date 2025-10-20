@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Contents.Perks.WeaponUpgrade.Content;
 internal class TripletShot_GlobalItem : GlobalItem {

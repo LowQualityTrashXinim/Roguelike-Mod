@@ -8,7 +8,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Consumable.Potion;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike;
 public partial class Roguelike : Mod {

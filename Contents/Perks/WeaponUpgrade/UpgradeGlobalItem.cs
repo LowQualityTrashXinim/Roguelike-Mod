@@ -10,16 +10,9 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Contents.Perks.WeaponUpgrade;
 public enum WeaponUpgradeID : short {
 	None,
-	ShortSwordThrown,
 	UnlimitedThrowable,
-	NaturalUpgrade,
-	TomahawkUpgrade,
-	RefinedUpgrade,
 	WindSlash,
-	HunterInstinct,
-	EnhancedMagicStaff,
 	TripletShot,
-	LegendaryWoodSword,
 }
 public class UpgradePlayer : ModPlayer {
 	public HashSet<WeaponUpgradeID> Upgrades = new();

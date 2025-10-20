@@ -8,7 +8,7 @@ using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Contents.Items.aDebugItem.UIdebug;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SSRspoil {

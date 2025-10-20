@@ -76,7 +76,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public override bool InstancePerEntity => true;
 		public override void SetDefaults(Item item) {
 			SwordWeaponOverhaul(item);
-			AxeWeaponOverhaul(item);
 			scaleWarp = new(item.scale);
 			if (AnimationEndTime != 0) {
 				item.useAnimation += AnimationEndTime;
@@ -198,46 +197,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					ShaderOffSetLength = 5;
 					break;
 				default:
-					break;
-			}
-		}
-		public void AxeWeaponOverhaul(Item item) {
-			if (item.axe <= 0 || item.noMelee) {
-				return;
-			}
-			//Attempt to fix weapon size
-			switch (item.type) {
-				//common ore axe
-				case ItemID.CopperAxe:
-				case ItemID.TinAxe:
-				case ItemID.IronAxe:
-				case ItemID.LeadAxe:
-				case ItemID.SilverAxe:
-				case ItemID.TungstenAxe:
-				case ItemID.GoldAxe:
-				case ItemID.PlatinumAxe:
-				//uncommon ore axe
-				case ItemID.BloodLustCluster:
-				case ItemID.WarAxeoftheNight:
-				case ItemID.MoltenPickaxe:
-				case ItemID.MeteorHamaxe:
-				//Hardmode ore axe
-				case ItemID.CobaltWaraxe:
-				case ItemID.PalladiumWaraxe:
-				case ItemID.MythrilWaraxe:
-				case ItemID.OrichalcumWaraxe:
-				case ItemID.AdamantiteWaraxe:
-				case ItemID.TitaniumWaraxe:
-					item.useTime = item.useAnimation = 40;
-					item.damage += 13;
-					item.scale += .25f;
-					item.useTurn = false;
-					item.Set_ItemCriticalDamage(1.5f);
-					item.DamageType = DamageClass.Melee;
-					SwingType = BossRushUseStyle.SwipeDown;
-					SwingDegree = 155;
-					Ignore_AttackSpeed = true;
-					AnimationEndTime = 25;
 					break;
 			}
 		}

@@ -15,7 +15,7 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Perks;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.Arguments;

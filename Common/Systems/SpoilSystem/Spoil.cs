@@ -17,7 +17,8 @@ using Roguelike.Common.Systems;
 
 using Roguelike.Contents.Perks.BlessingPerk;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {

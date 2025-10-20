@@ -8,7 +8,7 @@ using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.aDebugItem.UIdebug;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {

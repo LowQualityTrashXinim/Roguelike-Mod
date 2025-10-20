@@ -392,8 +392,9 @@ namespace Roguelike.Common.Utils {
 		MeleeAtkSpeed,
 		RangeAtkSpeed,
 		MagicAtkSpeed,
-		SummonAtkSpeed
+		SummonAtkSpeed,
 		//Luck
+		TrueDamage
 	}
 	public class DataStorer : ModSystem {
 		public static Dictionary<string, DrawCircleAuraContext> dict_drawCircleContext = new();

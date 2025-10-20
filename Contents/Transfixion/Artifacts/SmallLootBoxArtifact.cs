@@ -2,7 +2,7 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Perks;
 using Roguelike.Texture;

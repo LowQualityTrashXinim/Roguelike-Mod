@@ -245,3 +245,10 @@ Version 0.0.1:
 243/ Added in a secert.
 244/ Nerf Self Explosion regeneration 22 -> 15.
 245/ Fixed Ashwood boot effect still active after being taken off.
+246/ Added 2 new damage stats.
+247/ Ram usages optimization, reduce heavy load on RAM by making use more of CPU power when opening up a Lootbox.
+248/ Changed how item loot pool worked.
+249/ Deleted Refined axe, hunter instinct perk.
+250/ Merged TomahawkUpgrade with Axe overhaul.
+251/ Slightly buffed Axe size to be more viable.
+252/ Reworked Chik yoyo.

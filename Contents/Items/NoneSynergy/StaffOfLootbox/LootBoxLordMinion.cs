@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;
 using System;
@@ -130,24 +130,25 @@ internal class LootBoxLord_Minion : ModProjectile {
 	//Use NPC.ai[3] to do movement
 	bool CanSlowDown = false;
 	public override void AI() {
-		Projectile.Center.LookForHostileNPC(out NPC player, 1000, true);
+		Player truePlayer = Main.player[Projectile.owner];
+		NPC player = null;
+		if (truePlayer.HasMinionAttackTargetNPC) {
+			player = Main.npc[truePlayer.MinionAttackTargetNPC];
+		}
+		else {
+			Projectile.Center.LookForHostileNPC(out player, 1000, true);
+		}
 		if (player == null) {
-			Player truePlayer = Main.player[Projectile.owner];
-			if (truePlayer.HasMinionAttackTargetNPC) {
-				player = Main.npc[truePlayer.MinionAttackTargetNPC];
+			var positionAbovePlayer = new Vector2(truePlayer.Center.X, truePlayer.Center.Y - 30);
+			Vector2 distance = positionAbovePlayer - Projectile.Center;
+			if (distance.Length() <= 50f) {
+				Projectile.velocity = Vector2.Zero;
+				CurrentAttack++;
 			}
 			else {
-				var positionAbovePlayer = new Vector2(truePlayer.Center.X, truePlayer.Center.Y - 30);
-				Vector2 distance = positionAbovePlayer - Projectile.Center;
-				if (distance.Length() <= 50f) {
-					Projectile.velocity = Vector2.Zero;
-					CurrentAttack++;
-				}
-				else {
-					Projectile.velocity = distance.SafeNormalize(Vector2.Zero) * 30f;
-				}
-					return;
+				Projectile.velocity = distance.SafeNormalize(Vector2.Zero) * 30f;
 			}
+			return;
 		}
 		Lighting.AddLight(Projectile.Center, 1, 1, 1);
 		if (CanSlowDown) {

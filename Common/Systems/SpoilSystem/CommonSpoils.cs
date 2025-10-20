@@ -4,9 +4,9 @@ using Terraria.ID;
 using System.Linq;
 using System.Collections.Generic;
 using Roguelike.Common.Utils;
-
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 

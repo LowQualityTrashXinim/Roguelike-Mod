@@ -13,7 +13,7 @@ using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
-using Roguelike.Contents.Items.Chest;
+using Roguelike.Contents.Items.Lootbox;
 
 namespace Roguelike.Common.Global
 {
