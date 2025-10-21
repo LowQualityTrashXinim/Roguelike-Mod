@@ -13,7 +13,6 @@ class ScrollOfHellspawn : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);
 	}
-	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
 		Item.maxStack = 99;

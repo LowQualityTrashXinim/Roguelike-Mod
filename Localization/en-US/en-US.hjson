@@ -426,6 +426,7 @@ Mods: {
 			LBL_WoodBowAttackOne.DisplayName: L B L_ Wood Bow Attack One
 			LBL_WoodBowAttackTwo.DisplayName: L B L_ Wood Bow Attack Two
 			LootBoxLord_Minion.DisplayName: Loot Box Lord_ Minion
+			Roguelike_Chik_ModProjectile.DisplayName: Roguelike_ Chik_ Mod Projectile
 		}
 
 		NPCs: {

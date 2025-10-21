@@ -252,3 +252,6 @@ Version 0.0.1:
 250/ Merged TomahawkUpgrade with Axe overhaul.
 251/ Slightly buffed Axe size to be more viable.
 252/ Reworked Chik yoyo.
+253/ Added 3 new sprites for skill.
+254/ Added 4 new sprite for scroll.
+255/ This usually is not mention due to how insignificant it is but updated build number from 0.0.13 -> 0.0.14.

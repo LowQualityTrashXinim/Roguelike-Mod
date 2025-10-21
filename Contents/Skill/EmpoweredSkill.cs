@@ -86,7 +86,7 @@ public class Increases_3xDamage : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 4);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 3);
 	}
 }
 public class SpeedDemon : ModSkill {

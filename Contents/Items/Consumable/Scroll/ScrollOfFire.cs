@@ -10,7 +10,6 @@ internal class ScrollOfFire : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);
 	}
-	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.Item_DefaultToConsume(32, 32, 30, 30);
 		Item.DamageType = DamageClass.Magic;
