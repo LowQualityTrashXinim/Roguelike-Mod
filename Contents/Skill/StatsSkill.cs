@@ -62,6 +62,7 @@ public class FastForward : ModSkill {
 	}
 }
 public class Skip1 : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<Skip1>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 0;
@@ -118,5 +119,6 @@ public class Weaken : ModSkill {
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.skilldamage -= .5f;
+		skillplayer.ProjectileSpeedMultiplier += .4f;
 	}
 }

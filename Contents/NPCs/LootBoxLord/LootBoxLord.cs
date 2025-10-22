@@ -750,7 +750,7 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		int boomStick = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<HostileBoomStick>(), BossDamagePercentage(.25f), 2, NPC.target);
-		if (Main.projectile[boomStick].ModProjectile is BaseGun hostileGun) {
+		if (Main.projectile[boomStick].ModProjectile is BaseHostileGun hostileGun) {
 			hostileGun.IDtextureValue = ItemID.Boomstick;
 			hostileGun.SetNPCOwner(NPC.whoAmI);
 		}

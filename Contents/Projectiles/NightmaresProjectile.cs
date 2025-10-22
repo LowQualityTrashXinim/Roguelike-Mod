@@ -56,6 +56,9 @@ namespace Roguelike.Contents.Projectiles
 				Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
 			}
 		}
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			modifiers.ScalingArmorPenetration += .5f;
+		}
 		public void DrawTrail1(Texture2D texture, Vector2 origin) {
 			for (int k = 0; k < Projectile.oldPos.Length; k++) {
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);

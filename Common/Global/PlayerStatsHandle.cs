@@ -1232,8 +1232,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
 			else {
-				int time = (int)modplayer.DebuffBuffTime.ApplyTo(timeToAdd);
-				orig(self, type, time, quiet, foodHack);
+				if (!ModItemLib.TrueDebuff.Contains(type)) {
+					timeToAdd = (int)modplayer.DebuffBuffTime.ApplyTo(timeToAdd);
+				}
+				orig(self, type, timeToAdd, quiet, foodHack);
 			}
 		}
 		else {

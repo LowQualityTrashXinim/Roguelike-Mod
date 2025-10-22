@@ -80,6 +80,7 @@ public class Procrastination : ModSkill {
 	}
 }
 public class Increases_3xDamage : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<Increases_3xDamage>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 400;
 		Skill_Duration = 120;
@@ -139,6 +140,7 @@ public class Overclock : ModSkill {
 }
 
 public class TerrorForm : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<TerrorForm>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 900;
 		Skill_Duration = ModUtils.ToSecond(4);
@@ -263,20 +265,41 @@ public class AllOrNothing : ModSkill {
 	}
 }
 public class CoinFlip : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<CoinFlip>();
 	public override void SetDefault() {
-		Skill_EnergyRequire = 0;
+		Skill_EnergyRequire = 200;
 		Skill_Duration = 600;
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (Main.rand.NextBool()) {
-			int chanceDecider = Main.rand.Next(10);
-			//Positive effect
+			player.AddBuff<CoinFlipBuff>(duration * 10);
 		}
 		else {
-			int chanceDecider = Main.rand.Next(10);
-			//Negative effect
+			player.AddBuff<CoinFlipDebuff>(duration * 10);
+		}
+	}
+	public class CoinFlipBuff : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			if (player.buffTime[buffIndex] <= 0) {
+				player.Heal(400);
+			}
+			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 2);
+		}
+	}
+	public class CoinFlipDebuff : ModBuff {
+		public override string Texture => ModTexture.EMPTYDEBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.PureDamage, Additive: .1f);
+			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.Defense, Additive: .1f);
 		}
 	}
 }

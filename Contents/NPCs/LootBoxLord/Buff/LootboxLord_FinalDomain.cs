@@ -9,6 +9,7 @@ internal class LootboxLord_FinalDomain : ModBuff {
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 		Main.buffNoTimeDisplay[Type] = true;
+		ModItemLib.Add_TrueDebuff(Type);
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		if (!NPC.AnyNPCs(ModContent.NPCType<LootBoxLord>())) {

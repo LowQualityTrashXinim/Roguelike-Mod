@@ -9,6 +9,7 @@ internal class LootboxLord_DeathField : ModBuff {
 	public override string Texture => ModTexture.EMPTYDEBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
+		ModItemLib.Add_TrueDebuff(Type);
 		BuffID.Sets.LongerExpertDebuff[Type] = false;
 	}
 	public override void Update(Player player, ref int buffIndex) {

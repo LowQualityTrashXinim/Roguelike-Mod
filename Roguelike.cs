@@ -33,6 +33,13 @@ public class ModItemLib : ModSystem {
 			ItemID.AnkhShield,
 			ItemID.FrozenShield,
 			ItemID.HeroShield};
+	/// <summary>
+	/// Explanation: True debuff referred to debuff that won't be affected by debuff duration extend stat.
+	/// </summary>
+	public static HashSet<int> TrueDebuff { get; private set; }
+	public static void Add_TrueDebuff(int buffType) {
+		TrueDebuff.Add(buffType);
+	}
 	public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
 	public static Dictionary<int, List<int>> AccRarityDB { get; private set; }
 	public static Dictionary<int, List<int>> HeadArmorRarityDB { get; private set; }
@@ -78,6 +85,7 @@ public class ModItemLib : ModSystem {
 		return ItemID.None;
 	}
 	public override void OnModLoad() {
+		TrueDebuff = new();
 		SynergyItem = new();
 		WeaponRarityDB = new();
 		ListLootboxType = new();
@@ -91,6 +99,7 @@ public class ModItemLib : ModSystem {
 		FireDeBuff = new();
 	}
 	public override void OnModUnload() {
+		TrueDebuff = null;
 		SynergyItem = null;
 		ListLootboxType = null;
 		WeaponRarityDB = null;

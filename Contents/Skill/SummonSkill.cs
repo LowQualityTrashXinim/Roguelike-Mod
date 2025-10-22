@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System.Collections.Generic;
@@ -137,7 +137,7 @@ public class DebugStatus : ModBuff {
 	public override void Update(Player player, ref int buffIndex) {
 		for (int i = 0; i < player.buffImmune.Length; i++) {
 			int buffType = i;
-			if (Main.debuff[i]) {
+			if (Main.debuff[buffType] && !ModItemLib.TrueDebuff.Contains(buffType)) {
 				player.buffImmune[buffIndex] = true;
 			}
 		}
@@ -156,6 +156,17 @@ public class LucidNightmares : ModSkill {
 		for (int i = 0; i < 3; i++) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
 		}
+		player.AddBuff<AbyssalAbsorption>(duration);
+
+	}
+	public class AbyssalAbsorption : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.ModPlayerStats().TrueDamage.Flat += 10;
+		}
 	}
 }
 
@@ -170,5 +181,14 @@ public class SacrificialWormhole : ModSkill {
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
 			ModContent.ProjectileType<SacrificialWormholeProjectile>(), damage, 0, player.whoAmI);
 		player.AddBuff<LifeLoss>(ModUtils.ToSecond(60));
+	}
+	public class LifeLoss : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, .5f);
+		}
 	}
 }

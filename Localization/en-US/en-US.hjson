@@ -3162,7 +3162,7 @@ Mods: {
 
 			Unforgiving_BoltFury: {
 				DisplayName: Fury of Bolt
-				Description: Mods.Roguelike.Buffs.Unforgiving_BoltFury.Description
+				Description: Releases unforgiving bolt.
 			}
 
 			Unforgiving_Curse: {
@@ -3176,8 +3176,8 @@ Mods: {
 			}
 
 			Unforgiving_OutroAttack: {
-				DisplayName: Unforgiving Outro Attack
-				Description: Mods.Roguelike.Buffs.Unforgiving_OutroAttack.Description
+				DisplayName: Unforgiving
+				Description: Your follow attack are accompany with power of Unforgiving.
 			}
 
 			Freezy: {
@@ -3212,6 +3212,21 @@ Mods: {
 			LootBoxLordProtection: {
 				DisplayName: Loot Box Lord Protection
 				Description: Mods.Roguelike.Buffs.LootBoxLordProtection.Description
+			}
+
+			CoinFlipBuff: {
+				DisplayName: Good Coin Flip
+				Description: Increases your damage by 100% and at the end of the buff, heal you for 400 hp
+			}
+
+			CoinFlipDebuff: {
+				DisplayName: Bad Coin Flip
+				Description: Decreases your damage and your defenses by 90% and
+			}
+
+			AbyssalAbsorption: {
+				DisplayName: Abyssal Absorption
+				Description: Increases flat true damage by 10
 			}
 		}
 

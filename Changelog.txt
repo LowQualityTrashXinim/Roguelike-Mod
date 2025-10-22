@@ -255,3 +255,14 @@ Version 0.0.1:
 253/ Added 3 new sprites for skill.
 254/ Added 4 new sprite for scroll.
 255/ This usually is not mention due to how insignificant it is but updated build number from 0.0.13 -> 0.0.14.
+256/ Added sprite for skill orb.
+257/ Added sprite for Terror Form.
+258/ Added new property for buff.
+259/ Augmentation now uses universal localization.
+260/ Slightly buff Unforgiving which supposely make it feel better to play.
+261/ Fixed Lootbox Lord shoot out disappearing boomstick.
+262/ Buff LucidNightmares by adding additional buff effect and the summon projectile stronger.
+263/ Weaken skill will make the projectile fly a lot faster.
+264/ Added some fixes toward player ability to bypass Lootbox Lord Death field.
+265/ Added sprite and finish up coin flip skill.
+266/ Work on some localization.

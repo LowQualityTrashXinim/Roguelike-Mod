@@ -711,9 +711,12 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 }
 public class SkillOrb : ModItem {
-	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetStaticDefaults() {
+		ItemID.Sets.AnimatesAsSoul[Type] = true;
+		Main.RegisterItemAnimation(Type, new DrawAnimationVertical(3, 10));
+	}
 	public override void SetDefaults() {
-		Item.width = Item.height = 32;
+		Item.width = Item.height = 50;
 		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;

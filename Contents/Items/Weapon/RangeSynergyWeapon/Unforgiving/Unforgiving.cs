@@ -103,7 +103,7 @@ public class Unforgiving : SynergyModItem {
 			unforgive.AttackCD = 30;
 		}
 		if (GlobalCounter >= 24) {
-			player.AddBuff<Unforgiving_BoltFury>(ModUtils.ToSecond(2));
+			player.AddBuff<Unforgiving_BoltFury>(ModUtils.ToSecond(1));
 		}
 		if (CD <= 0) {
 			unforgive.CD = 60;
@@ -281,7 +281,7 @@ public class Unforgiving_ModPlayer : ModPlayer {
 	public override void UpdateEquips() {
 		if (Player.HasBuff<Unforgiving_BoltFury>()) {
 			int bufftime = Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<Unforgiving_BoltFury>())];
-			if (bufftime % 20 == 0) {
+			if (bufftime % 5 == 0) {
 				var newPos = Player.Center + (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * 50 + Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.9f, 1.4f);
 				var vel = (newPos - Player.Center).SafeNormalize(Vector2.Zero) * 2;
 				int damage = 5;
@@ -364,7 +364,7 @@ public class Unforgiving_Bolt : ModProjectile {
 			return;
 		}
 		var npc = getNPC();
-		Projectile.ai[1] += .001f;
+		Projectile.ai[1] += .005f;
 		if (Projectile.ai[1] > 2) {
 			Projectile.ai[1] = 2;
 		}
@@ -391,7 +391,9 @@ public class Unforgiving_Bolt : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 30; i++) {
-
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemAmethyst);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
 		}
 	}
 }

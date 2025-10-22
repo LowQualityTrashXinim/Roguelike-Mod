@@ -33,6 +33,7 @@ public class Skill_BoneArrow : ModSkill {
 	}
 }
 public class WoodenArrowRain : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenArrowRain>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 445;
 		Skill_Duration = ModUtils.ToSecond(5);

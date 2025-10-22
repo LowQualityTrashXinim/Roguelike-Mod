@@ -212,7 +212,11 @@ DebugCommand: {
 
 LucidNightmares: {
 	DisplayName: Lucid Nightmares
-	Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
+	Description:
+		'''
+		Summons 3 abyssal to attack enemies, dealing 53 true damage per attack
+		Player will also gain "Abyssal absorption"
+		'''
 }
 
 SacrificialWormhole: {
@@ -242,5 +246,9 @@ ProtectiveOnslaught: {
 
 Weaken: {
 	DisplayName: Weaken
-	Description: Decreases skill projectile damage by 50%
+	Description:
+		'''
+		Decreases skill projectile damage by 50%
+		Increases skill projectile velocity by 40%
+		'''
 }
