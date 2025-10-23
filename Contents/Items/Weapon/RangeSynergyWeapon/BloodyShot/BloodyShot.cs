@@ -1,8 +1,5 @@
-﻿
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;

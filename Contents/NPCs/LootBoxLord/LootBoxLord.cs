@@ -190,11 +190,17 @@ internal class LootBoxLord : ModNPC {
 	}
 	bool CanSlowDown = false;
 	bool HasCreatedDeathTimer = false;
+	bool CanScream = true;
 	public override void ResetEffects() {
 	}
 	public override void AI() {
 		if (Reached110HP) {
 			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .4f;
+			SpawnUltiOnce = true;
+			if (CanScream) {
+				CanScream = false;
+				SoundEngine.PlaySound(SoundID.NPCDeath10 with { Pitch = -1 }, NPC.Center);
+			}
 		}
 		var player = Main.player[NPC.target];
 		CD_DefenseUp = ModUtils.CountDown(CD_DefenseUp);
@@ -860,12 +866,27 @@ internal class LootBoxLord : ModNPC {
 		UniversalAttackCoolDown = cooldown;
 		CanTeleport = true;
 	}
+	bool SpawnUltiOnce = false;
+	int AuraCounter = 0;
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		Main.instance.LoadNPC(NPC.type);
 		Texture2D texture = TextureAssets.Npc[Type].Value;
 		if (IframeCounter > 0) {
 			if (IframeCounter % 6 >= 3) {
 				return false;
+			}
+		}
+		if (SpawnUltiOnce) {
+			Texture2D ShadingCircle = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+			Vector2 origin = texture.Size() * .5f;
+			float percentalge = Math.Clamp(1 - AuraCounter / 180f, 0, 1f);
+			spriteBatch.Draw(ShadingCircle, NPC.position - Main.screenPosition + origin, null, Color.Red * percentalge, 0, ShadingCircle.Size() * .5f ,15 * ModUtils.OutExpo(AuraCounter/ 180f), SpriteEffects.None, 0);
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+			if (++AuraCounter >= 180) {
+				SpawnUltiOnce = false;
 			}
 		}
 		if (IsTeleporting) {

@@ -17,6 +17,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\BossArena\" />
+	  <Folder Include="Contents\Items\NoneSynergy\Support\" />
 	</ItemGroup>
 
 	<!-- References -->

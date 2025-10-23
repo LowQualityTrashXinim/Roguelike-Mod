@@ -266,3 +266,7 @@ Version 0.0.1:
 264/ Added some fixes toward player ability to bypass Lootbox Lord Death field.
 265/ Added sprite and finish up coin flip skill.
 266/ Work on some localization.
+267/ Fixed swing visual problem still showing after player has died.
+268/ Added Anti-immunity debuff.
+269/ Update visual for Lootbox lord.
+270/ Added sprite for Annihiliation buff.

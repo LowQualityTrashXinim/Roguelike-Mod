@@ -160,7 +160,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrailWithoutAlpha(lightColor, .04f);
-
 			return base.PreDraw(ref lightColor);
 		}
 	}

@@ -4,6 +4,7 @@ using Roguelike.Common.General;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
 using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
@@ -122,6 +123,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		return (1 + counter * .5f + extraMultiply) * scale;
 	}
 	public override void ResetEffects(NPC npc) {
+		npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		StatDefense = new();
 		if (IsAGhostEnemy) {
 			npc.dontTakeDamage = true;

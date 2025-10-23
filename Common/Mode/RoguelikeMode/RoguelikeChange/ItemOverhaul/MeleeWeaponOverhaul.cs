@@ -649,5 +649,10 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				startSwordSwingAngle = 0;
 			}
 		}
+		public override void UpdateDead() {
+			Array.Fill(swordTipPositions, Vector2.Zero);
+			Array.Fill(swordRotations, 0);
+			startSwordSwingAngle = 0;
+		}
 	}
 }

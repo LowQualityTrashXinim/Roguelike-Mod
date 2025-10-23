@@ -2452,6 +2452,11 @@ Mods: {
 				DisplayName: Loot Box Lord Summon
 				Tooltip: ""
 			}
+
+			ScrollOfVulnerable: {
+				DisplayName: Scroll Of Vulnerable
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3227,6 +3232,11 @@ Mods: {
 			AbyssalAbsorption: {
 				DisplayName: Abyssal Absorption
 				Description: Increases flat true damage by 10
+			}
+
+			Anti_Immunity: {
+				DisplayName: Anti Immunity
+				Description: You become vulnerable to all debuff
 			}
 		}
 

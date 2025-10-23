@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Systems.ObjectSystem;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Perks;
 using Roguelike.Contents.Skill;
@@ -15,7 +17,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Global;
 /// <summary>
@@ -364,7 +365,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
-
+		Player.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
@@ -510,6 +511,13 @@ public class PlayerStatsHandle : ModPlayer {
 		LootboxCanDropSpecialPotion = false;
 
 		AlwaysCritValue = 0;
+	}
+	public override void PostUpdateBuffs() {
+		if (Player.HasBuff<Anti_Immunity>()) {
+			Array.Fill(Player.buffImmune, false);
+		}
+	}
+	public override void PreUpdateBuffs() {
 	}
 	public bool RelicActivation = true;
 	public int RelicPoint = 0;
@@ -1048,6 +1056,8 @@ public class PlayerStatsHandleSystem : ModSystem {
 	public override void Load() {
 		On_NPC.AddBuff += HookBuffTimeModify;
 		On_Player.AddBuff += IncreasesPlayerBuffTime;
+		On_Player.DelBuff += On_Player_DelBuff;
+		On_NPC.DelBuff += On_NPC_DelBuff;
 		On_Player.Heal += On_Player_Heal;
 		On_Player.AddImmuneTime += On_Player_AddImmuneTime;
 		On_Projectile.NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float;
@@ -1058,6 +1068,27 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Player.GetItemGrabRange += On_Player_GetItemGrabRange;
 		On_NPC.HitModifiers.GetDamage += HitModifiers_GetDamage;
 	}
+
+	private void On_NPC_DelBuff(On_NPC.orig_DelBuff orig, NPC self, int buffIndex) {
+		if (self.HasBuff<Anti_Immunity>()) {
+			if (self.buffImmune[self.buffType[buffIndex]]) {
+				Array.Fill(self.buffImmune, false);
+				return;
+			}
+		}
+		orig(self, buffIndex);
+	}
+
+	private void On_Player_DelBuff(On_Player.orig_DelBuff orig, Player self, int b) {
+		if (self.HasBuff<Anti_Immunity>()) {
+			if (self.buffImmune[self.buffType[b]]) {
+				Array.Fill(self.buffImmune, false);
+				return;
+			}
+		}
+		orig(self, b);
+	}
+
 	private int HitModifiers_GetDamage(On_NPC.HitModifiers.orig_GetDamage orig, ref NPC.HitModifiers self, float baseDamage, bool crit, bool damageVariation, float luck) {
 		int fixedDamage = 0;
 		if (self.FinalDamage.Flat > 0) {
@@ -1228,6 +1259,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			if (self.HasBuff<Anti_Immunity>()) {
+				Array.Fill(self.buffImmune, false);
+			}
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
@@ -1245,6 +1279,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
 		var player = Main.player[self.lastInteraction];
+		if (self.HasBuff<Anti_Immunity>()) {
+			Array.Fill(self.buffImmune, false);
+		}
 		if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, type, (int)modplayer.DebuffTime.ApplyTo(time), quiet);
 		}

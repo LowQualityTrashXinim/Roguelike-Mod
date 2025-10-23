@@ -56,7 +56,6 @@ internal class Annihiliation : SynergyModItem {
 	}
 }
 public class Epilogue_Ishboshet : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}
