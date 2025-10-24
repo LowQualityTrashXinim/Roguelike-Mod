@@ -427,6 +427,7 @@ Mods: {
 			LBL_WoodBowAttackTwo.DisplayName: L B L_ Wood Bow Attack Two
 			LootBoxLord_Minion.DisplayName: Loot Box Lord_ Minion
 			Roguelike_Chik_ModProjectile.DisplayName: Roguelike_ Chik_ Mod Projectile
+			LBL_HealingProjectile.DisplayName: L B L_ Healing Projectile
 		}
 
 		NPCs: {
@@ -2100,32 +2101,56 @@ Mods: {
 
 			ScrollOfHellspawn: {
 				DisplayName: Scroll: Hellspawn
-				Tooltip: Summon a portal from underworld for demonic energy swept through
+				Tooltip:
+					'''
+					Summon a portal from underworld for demonic energy swept through
+					Portal will spawn in highly dangerous mobs
+					'''
 			}
 
 			ScrollofStrike: {
 				DisplayName: Scroll: Strike
-				Tooltip: Grant user strike spell
+				Tooltip:
+					'''
+					Grant user strike spell
+					Strike spelll: Make your next hit do additional 5 strike.
+					'''
 			}
 
 			ScrollofEvasive: {
 				DisplayName: Scroll: Evasive
-				Tooltip: Grant user envasion spell
+				Tooltip:
+					'''
+					Grant user envasion spell
+					Envasion spell: Grant guaranteed dodge, upon dodge delete the buff
+					'''
 			}
 
 			ScrollOfMaterialize: {
 				DisplayName: Scroll: Materialize
-				Tooltip: Grant user materialize spell
+				Tooltip:
+					'''
+					Grant user materialize spell
+					Materialize spell: 1 in 15 chance to drop heart or mana upon hitting enemy
+					'''
 			}
 
 			ScrollOfInvincibility: {
 				DisplayName: Scroll: Invincibility
-				Tooltip: Grant user invincibility spell
+				Tooltip:
+					'''
+					Grant user invincibility spell
+					Invincibility spell: For the duration of the spell, complete immune to taking hit
+					'''
 			}
 
 			ScrollOfProtection: {
 				DisplayName: Scroll: Protection
-				Tooltip: Grant user protection spell
+				Tooltip:
+					'''
+					Grant user protection spell
+					Protection spell: Taken hit are set to 1 regardless of damage, upon hit delete the buff
+					'''
 			}
 
 			TwilightNight: {
@@ -2172,17 +2197,6 @@ Mods: {
 					'''
 			}
 
-			MechanicalLens: {
-				DisplayName: Mechanical Lens
-				Tooltip:
-					'''
-					Critical Strike Damage reduced By %15
-					Critical Strike Gained increased By 25%
-					Critical Strike Increased By 5%
-					Damage Variation Is less Randomized
-					'''
-			}
-
 			Toolbelt: {
 				DisplayName: Toolbelt
 				Tooltip: For Each Owned Nearby Minions Gain +4 Defense
@@ -2197,23 +2211,8 @@ Mods: {
 					'''
 			}
 
-			DepthMeter: {
-				DisplayName: Depth Meter
-				Tooltip: ""
-			}
-
-			DpsMeter: {
-				DisplayName: Dps Meter
-				Tooltip: ""
-			}
-
 			LuckyCoin: {
 				DisplayName: Lucky Coin
-				Tooltip: ""
-			}
-
-			StingerNecklace: {
-				DisplayName: Stinger Necklace
 				Tooltip: ""
 			}
 
@@ -2233,7 +2232,7 @@ Mods: {
 
 			BottleOfUrine: {
 				DisplayName: Bottle Of Urine
-				Tooltip: ""
+				Tooltip: ew
 			}
 
 			DrainingVeil: {
@@ -3191,13 +3190,13 @@ Mods: {
 			}
 
 			LootBoxLord_DefenseUp: {
-				DisplayName: Loot Box Lord_ Defense Up
-				Description: Mods.Roguelike.Buffs.LootBoxLord_DefenseUp.Description
+				DisplayName: LootBox Lord Defense Up
+				Description: Increases defenses by 200 and damage reduction by 10%
 			}
 
 			LootBoxLord_EnduranceUp: {
-				DisplayName: Loot Box Lord_ Endurance Up
-				Description: Mods.Roguelike.Buffs.LootBoxLord_EnduranceUp.Description
+				DisplayName: LootBox Lord Endurance Up
+				Description: Increases damage reduction by 30%
 			}
 
 			LootboxLord_DeathField: {
@@ -3216,7 +3215,7 @@ Mods: {
 
 			LootBoxLordProtection: {
 				DisplayName: Loot Box Lord Protection
-				Description: Mods.Roguelike.Buffs.LootBoxLordProtection.Description
+				Description: Protection from the Guardian of World vault.
 			}
 
 			CoinFlipBuff: {

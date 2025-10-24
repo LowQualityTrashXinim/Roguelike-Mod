@@ -270,3 +270,6 @@ Version 0.0.1:
 268/ Added Anti-immunity debuff.
 269/ Update visual for Lootbox lord.
 270/ Added sprite for Annihiliation buff.
+271/ Further improved Lootbox Lord fight visual, indicator and the fight itself.
+272/ Deleted bunch of accessory rework and reimplement mechanical lens rework.
+273/ Added better explanation of what the scroll effect do.

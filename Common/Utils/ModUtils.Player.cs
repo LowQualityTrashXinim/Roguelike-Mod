@@ -6,6 +6,7 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Perks;
+using Roguelike.Contents.Transfixion.Arguments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,12 @@ namespace Roguelike.Common.Utils {
 		public static int BuffAmount(this Player player) {
 			int buffamount = player.buffType.Where(b => b != 0 && b != -1 && !Main.debuff[b] && !Main.vanityPet[b] && !Main.lightPet[b] && !ModItemLib.MinionPetMountBuff.Contains(b)).Count();
 			return buffamount;
+		}
+		public static bool HasAcc(this Player player, int accType) {
+			if (player.TryGetModPlayer(out AugmentsPlayer modplayer)) {
+				return modplayer.accItemUpdate.Where(a => a.type == accType).Any();
+			}
+			return false;
 		}
 		/// <summary>
 		/// The following method attempt to return amount of current player debuff<br/>

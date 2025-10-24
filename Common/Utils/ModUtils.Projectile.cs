@@ -11,10 +11,10 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
-		public static void DustStar(Vector2 pos, int dustID, Color color,int thiccness = 20, int thiccness2 = 8, float rotationOff = 0) {
+		public static void DustStar(Vector2 pos, int dustID, Color color,int thiccness = 20, int thiccness2 = 8, float rotationOff = 0, float speed = 5) {
 			for (int o = 0; o < thiccness; o++) {
 				for (int i = 0; i < 4; i++) {
-					var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(rotationOff + 90 * i)) * (3 + Main.rand.NextFloat()) * 5;
+					var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(rotationOff + 90 * i)) * (3 + Main.rand.NextFloat()) * speed;
 					for (int l = 0; l < thiccness2; l++) {
 						float multiplier = Main.rand.NextFloat();
 						float scale = MathHelper.Lerp(1.1f, .1f, multiplier);

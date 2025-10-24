@@ -207,7 +207,17 @@ internal class LootBoxLord : ModNPC {
 		IframeCounter = ModUtils.CountDown(IframeCounter);
 		if (NPC.GetLifePercent() <= .5) {
 			if (!Reached12HP) {
-				NPC.Heal((int)MathF.Ceiling(NPC.lifeMax * .25f));
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(NPC.Center, 0, 0, DustID.GemEmerald);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.7f, 1.35f);
+				}
+				for (int i = 0; i < 25; i++) {
+					int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.7f, 1.35f), ModContent.ProjectileType<LBL_HealingProjectile>(), 0, 2, NPC.target);
+					if (Main.projectile[proj].ModProjectile is LBL_HealingProjectile projectile2)
+						projectile2.SetNPCOwner(NPC.whoAmI);
+					Main.projectile[proj].ai[2] = NPC.lifeMax * .01f + 1;
+				}
 				UniversalAttackCoolDown = 120;
 				CanSlowDown = true;
 			}
@@ -215,7 +225,17 @@ internal class LootBoxLord : ModNPC {
 		}
 		if (NPC.GetLifePercent() <= .25) {
 			if (!Reached14HP) {
-				NPC.Heal((int)MathF.Ceiling(NPC.lifeMax * .25f));
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(NPC.Center, 0, 0, DustID.GemEmerald);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.7f, 1.35f);
+				}
+				for (int i = 0; i < 25; i++) {
+					int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.7f, 1.35f), ModContent.ProjectileType<LBL_HealingProjectile>(), 0, 2, NPC.target);
+					if (Main.projectile[proj].ModProjectile is LBL_HealingProjectile projectile2)
+						projectile2.SetNPCOwner(NPC.whoAmI);
+					Main.projectile[proj].ai[2] = NPC.lifeMax * .01f + 1;
+				}
 				UniversalAttackCoolDown = 120;
 				CanSlowDown = true;
 			}
@@ -419,14 +439,16 @@ internal class LootBoxLord : ModNPC {
 	public float AttackCounter { get => NPC.ai[2]; set => NPC.ai[2] = value; }
 	public int UniversalAttackCoolDown = 0;
 	public bool CanTeleport = true;
+	public bool AttackIndicator = true;
 	private void ShootShortSword() {
 		if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length) {
-			CurrentAttack++;
-			AttackCounter = 0;
-			AttackTimer = 0;
-			UniversalAttackCoolDown = 30;
-			CanTeleport = true;
+			Reset(CurrentAttack + 1, 30);
 			return;
+		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+			UniversalAttackCoolDown = 20;
 		}
 		if (++AttackTimer < 10) {
 			return;
@@ -453,13 +475,16 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		CanSlowDown = true;
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+			UniversalAttackCoolDown = 20;
+			return;
+		}
 		Vector2 distance = player.Center - NPC.Center;
 		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 64f;
 		if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length - 1) {
-			CurrentAttack++;
-			AttackCounter = 0;
-			UniversalAttackCoolDown = 90;
-			CanTeleport = true;
+			Reset(CurrentAttack + 1, 90);
 			return;
 		}
 		if (++AttackTimer < 20) {
@@ -488,10 +513,7 @@ internal class LootBoxLord : ModNPC {
 				NPC.velocity *= .8f;
 			}
 			else {
-				UniversalAttackCoolDown = 35;
-				AttackTimer = 0;
-				AttackCounter = 0;
-				CurrentAttack++;
+				Reset(CurrentAttack + 1, 35);
 				NPC.velocity = Vector2.Zero;
 			}
 			return;
@@ -509,6 +531,11 @@ internal class LootBoxLord : ModNPC {
 			NPC.velocity = distance.SafeNormalize(Vector2.Zero) * 20;
 			NPC.velocity = NPC.velocity.RotatedBy(MathHelper.ToRadians(90));
 		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+			UniversalAttackCoolDown = 20;
+		}
 		if (++AttackTimer < 10) {
 			return;
 		}
@@ -522,12 +549,16 @@ internal class LootBoxLord : ModNPC {
 		AttackCounter++;
 	}
 	private void ShootBroadSword2(Player player) {
-		ChoosenPosition = player.Center.Add(0, 200);
+		ChoosenPosition = player.Center.Add(0, 100);
 		if (CanTeleport) {
 			if (Teleporting(ChoosenPosition)) {
 				CanTeleport = false;
 			}
 			return;
+		}
+		if (AttackTimer == 10 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
 		}
 		if (++AttackTimer < 30) {
 			return;
@@ -559,11 +590,12 @@ internal class LootBoxLord : ModNPC {
 	}
 	private void ShootWoodBow(Player player) {
 		if (AttackCounter >= TerrariaArrayID.AllWoodBowPHM.Length) {
-			CurrentAttack++;
-			AttackCounter = 0;
-			AttackTimer = 0;
-			UniversalAttackCoolDown = 45;
+			Reset(CurrentAttack + 1, 45);
 			return;
+		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
 		}
 		if (++AttackTimer <= 12) {
 			return;
@@ -601,6 +633,10 @@ internal class LootBoxLord : ModNPC {
 			}
 			return;
 		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+		}
 		BossCircleMovement(5, TerrariaArrayID.AllGemStaffPHM.Length, out float percent);
 		if (++AttackTimer <= 5) {
 			NPC.velocity = Vector2.Zero;
@@ -620,7 +656,7 @@ internal class LootBoxLord : ModNPC {
 		AttackCounter++;
 	}
 	private void ShootStaff2(Player player) {
-		ChoosenPosition = player.Center.Add(0, 150);
+		ChoosenPosition = player.Center.Add(150, 0);
 		if (CanTeleport) {
 			if (Teleporting(ChoosenPosition)) {
 				CanTeleport = false;
@@ -629,8 +665,10 @@ internal class LootBoxLord : ModNPC {
 			return;
 		}
 		CanSlowDown = true;
-		Vector2 distance = player.Center - NPC.Center;
-		NPC.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
+		if (AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+		}
 		if (++AttackTimer <= 40) {
 			return;
 		}
@@ -654,6 +692,10 @@ internal class LootBoxLord : ModNPC {
 				lastPlayerPosition = player.Center;
 			}
 			return;
+		}
+		if (AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
 		}
 		if (++AttackTimer <= 20) {
 			NPC.velocity = Vector2.Zero;
@@ -684,16 +726,17 @@ internal class LootBoxLord : ModNPC {
 				NPC.velocity *= .8f;
 			}
 			else {
+				Reset(CurrentAttack + 1, 145);
 				NPC.velocity = Vector2.Zero;
-				AttackCounter = 0;
-				AttackTimer = 0;
-				UniversalAttackCoolDown = 145;
-				CurrentAttack++;
 			}
 			return;
 		}
 		var positionAbovePlayer = Main.player[NPC.target].Center + new Vector2(0, -350);
 		NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+		}
 		if (++AttackTimer < 10) {
 			return;
 		}
@@ -711,11 +754,15 @@ internal class LootBoxLord : ModNPC {
 			}
 			return;
 		}
-		if (++AttackTimer >= 300) {
+		if (++AttackTimer >= 330) {
 			Reset(CurrentAttack + 1, 30);
 			return;
 		}
-		if (AttackCounter >= 1) {
+		if (AttackTimer == 1 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+		}
+		if (AttackTimer >= 30 || AttackCounter >= 1) {
 			return;
 		}
 		int direction;
@@ -736,7 +783,7 @@ internal class LootBoxLord : ModNPC {
 			Main.projectile[Musket].ai[2] = direction;
 			musketproj.SetNPCOwner(NPC.whoAmI);
 		}
-		NPC.ai[2]++;
+		AttackCounter++;
 	}
 	private void ShootGun2(Player player) {
 		ChoosenPosition = player.Center.Add(0, 350);
@@ -746,6 +793,11 @@ internal class LootBoxLord : ModNPC {
 				lastPlayerPosition = player.Center;
 			}
 			return;
+		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+			UniversalAttackCoolDown = 12;
 		}
 		if (++AttackTimer < 12) {
 			return;
@@ -769,6 +821,10 @@ internal class LootBoxLord : ModNPC {
 				lastPlayerPosition = player.Center;
 			}
 			return;
+		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
 		}
 		if (AttackCounter >= 3) {
 			Reset(CurrentAttack + 1, 90);
@@ -797,6 +853,10 @@ internal class LootBoxLord : ModNPC {
 			}
 			return;
 		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+		}
 		if (AttackCounter <= 0) {
 			int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileWaterbolt>(), NPC.damage, 1, NPC.target);
 			Projectile projectile = Main.projectile[proj];
@@ -815,7 +875,7 @@ internal class LootBoxLord : ModNPC {
 			}
 			AttackCounter++;
 		}
-		Reset(CurrentAttack + 1, 240);
+		Reset(CurrentAttack + 1, 270);
 	}
 	private void BulletHell(Player player) {
 		ChoosenPosition = player.Center.Add(0, 250);
@@ -825,6 +885,10 @@ internal class LootBoxLord : ModNPC {
 				lastPlayerPosition = player.Center;
 			}
 			return;
+		}
+		if (AttackTimer == 0 && AttackIndicator) {
+			AttackIndicator = false;
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
 		}
 		if (AttackCounter <= 0) {
 			for (int i = 0; i < 4; i++) {
@@ -865,9 +929,13 @@ internal class LootBoxLord : ModNPC {
 		AttackTimer = 0;
 		UniversalAttackCoolDown = cooldown;
 		CanTeleport = true;
+		AttackIndicator = true;
 	}
 	bool SpawnUltiOnce = false;
 	int AuraCounter = 0;
+	int DefenseUp_EnterFrame = 90;
+	int DefenseUp_PulseFrame = 0;
+	bool Switch = false;
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		Main.instance.LoadNPC(NPC.type);
 		Texture2D texture = TextureAssets.Npc[Type].Value;
@@ -876,13 +944,14 @@ internal class LootBoxLord : ModNPC {
 				return false;
 			}
 		}
+		Vector2 whereNPCKnowItNot = NPC.position;
 		if (SpawnUltiOnce) {
 			Texture2D ShadingCircle = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
 			Vector2 origin = texture.Size() * .5f;
 			float percentalge = Math.Clamp(1 - AuraCounter / 180f, 0, 1f);
-			spriteBatch.Draw(ShadingCircle, NPC.position - Main.screenPosition + origin, null, Color.Red * percentalge, 0, ShadingCircle.Size() * .5f ,15 * ModUtils.OutExpo(AuraCounter/ 180f), SpriteEffects.None, 0);
+			spriteBatch.Draw(ShadingCircle, NPC.position - Main.screenPosition + origin, null, Color.Red * percentalge, 0, ShadingCircle.Size() * .5f, 15 * ModUtils.OutExpo(AuraCounter / 180f), SpriteEffects.None, 0);
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 			if (++AuraCounter >= 180) {
@@ -896,6 +965,7 @@ internal class LootBoxLord : ModNPC {
 				spriteBatch.Draw(texture, NPC.position - screenPos, drawColor.ScaleRGB(progress1sthalf) with { A = (byte)(255 * progress1sthalf) });
 			}
 			else {
+				whereNPCKnowItNot = TeleportPosition;
 				float progresshalf = 1 - (TeleportTime - 30) * 2 / (float)TeleportDuration;
 				drawColor = drawColor.ScaleRGB(1 - progresshalf) with { A = (byte)(255 * (1 - progresshalf)) };
 				for (int i = 0; i < 4; i++) {
@@ -906,6 +976,50 @@ internal class LootBoxLord : ModNPC {
 		}
 		else {
 			spriteBatch.Draw(texture, NPC.position - screenPos, drawColor);
+		}
+		//For drawing glow
+		float multi = 1f;
+		float scale = 1f;
+		if (NPC.HasBuff<LootBoxLord_DefenseUp>()) {
+			if (--DefenseUp_EnterFrame > 0) {
+				multi *= 1 - DefenseUp_EnterFrame / 90f;
+				scale += DefenseUp_EnterFrame / 90f;
+			}
+			else {
+				if (DefenseUp_PulseFrame < 100 && !Switch) {
+					DefenseUp_PulseFrame++;
+				}
+				if (DefenseUp_PulseFrame > 0 && Switch) {
+					DefenseUp_PulseFrame--;
+				}
+				if (DefenseUp_PulseFrame >= 100) {
+					Switch = true;
+				}
+				if (DefenseUp_PulseFrame <= 0) {
+					Switch = false;
+				}
+				multi -= DefenseUp_PulseFrame / 100f * .75f;
+				scale += DefenseUp_PulseFrame / 300f;
+			}
+		}
+		else {
+			DefenseUp_EnterFrame = 90;
+			if (DefenseUp_PulseFrame >= 0) {
+				DefenseUp_PulseFrame--;
+			}
+			multi *= DefenseUp_PulseFrame / 100f;
+			scale += DefenseUp_PulseFrame / 300f;
+		}
+		if (multi > 0) {
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+			Texture2D ShadingCircle = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
+			Vector2 origin = texture.Size() * .5f;
+			Color color = Color.Yellow;
+			color.A = (byte)(255 * multi);
+			spriteBatch.Draw(ShadingCircle, whereNPCKnowItNot - Main.screenPosition + origin, null, color, 0, ShadingCircle.Size() * .5f, scale, SpriteEffects.None, 0);
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 		}
 		return false;
 	}
@@ -942,15 +1056,22 @@ public class LootBoxLordBossBossBar : ModBossBar {
 
 		// We assign bossHeadIndex here because we need to use it in GetIconTexture
 		bossHeadIndex = npc.GetBossHeadTextureIndex();
-
-		life = npc.life;
-		lifeMax = npc.lifeMax;
-
 		if (npc.ModNPC is LootBoxLord body) {
+			if (npc.HasBuff<LootBoxLord_DefenseUp>()) {
+				shieldMax = (float)ModUtils.ToSecond(10);
+				shield = npc.buffTime[npc.FindBuffIndex(ModContent.BuffType<LootBoxLord_DefenseUp>())];
+			}
+			else {
+				shield = 0;
+				shieldMax = 0;
+			}
 			// We did all the calculation work on RemainingShields inside the body NPC already so we just have to fetch the value again
 			//shield = body.MinionHealthTotal;
 			//shieldMax = body.MinionMaxHealthTotal;
 		}
+		life = npc.life;
+		lifeMax = npc.lifeMax;
+
 
 		return true;
 	}

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -139,9 +140,10 @@ public class HostilePistolAttackOne : BaseHostileGun {
 	public override void AI() {
 		if (IsNPCActive(out var npc)) {
 			Vector2 TowardTo = Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + Projectile.timeLeft * 4));
-			Projectile.Center = npc.Center + TowardTo * 50;
+			Projectile.Center = npc.Center + TowardTo * Projectile.ai[1];
 			Projectile.rotation = TowardTo.ToRotation();
-			if (++Projectile.ai[1] <= 40) {
+			Projectile.ai[1] = Math.Clamp(++Projectile.ai[1], 0, 80);
+			if (Projectile.ai[1] < 80) {
 				return;
 			}
 			if (++Projectile.ai[2] >= 6) {
@@ -172,8 +174,8 @@ public class HostilePistolAttackTwo : BaseHostileGun {
 			Projectile.direction = ModUtils.DirectionFromEntityAToEntityB(Projectile.Center.X, player.Center.X);
 			Projectile.spriteDirection = Projectile.direction;
 			Projectile.rotation = TowardPlayer.ToRotation();
-			if (++Projectile.ai[0] >= 20) {
-				Projectile.ai[0] = 0;
+			if (++Projectile.ai[0] >= 80) {
+				Projectile.ai[0] = 60;
 				SoundEngine.PlaySound(SoundID.Item38 with {
 					Pitch = 1f
 				}, Projectile.Center);
@@ -212,8 +214,8 @@ public class HostileMinisharkDesperation : BaseHostileGun {
 			Projectile.direction = ModUtils.DirectionFromEntityAToEntityB(Projectile.Center.X, player.Center.X);
 			Projectile.spriteDirection = Projectile.direction;
 			Projectile.rotation = TowardPlayer.ToRotation();
-			if (++Projectile.ai[0] >= 8) {
-				Projectile.ai[0] = 0;
+			if (++Projectile.ai[0] >= 68) {
+				Projectile.ai[0] = 60;
 				ModUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * 7f, ProjectileID.Bullet, Projectile.damage, 1);
 
 				for (int i = 0; i < 3; i++) {

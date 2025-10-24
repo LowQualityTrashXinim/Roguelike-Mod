@@ -101,3 +101,8 @@ Chik:
 	After 12 yoyo hits, the next 3 hit shoot out ring of crystal
 	A illusion yoyo follow the main yoyo.
 	'''
+MechanicalLens:
+	'''
+	Decreases critical strike damage by 15%
+	Increases critical strike chance effectiveness by 33% and flat chance by 5%
+	'''
