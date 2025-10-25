@@ -278,3 +278,4 @@ Version 0.0.1:
 276/ Significantly buff wood armor set.
 277/ Fixed axe rework not interactable with tree.
 278/ Slightly make shortsword a little bit smarter.
+279/ Reduce radius of Eternal wealth from 500 -> 300.

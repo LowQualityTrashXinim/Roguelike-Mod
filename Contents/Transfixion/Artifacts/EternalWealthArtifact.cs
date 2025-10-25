@@ -32,9 +32,13 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			EternalWealth = Player.HasArtifact<EternalWealthArtifact>();
 			Midas_IsInField = false;
 		}
+		public override void UpdateEquips() {
+			if(EternalWealth) {
+				Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= 3;
+			}
+		}
 		public override void PostUpdate() {
 			if (EternalWealth) {
-				Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= 3;
 				timer = ModUtils.CountDown(timer);
 				if (timer <= 0) {
 					counterOldPos = ModUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
@@ -45,7 +49,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 					objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
 					timer = 120;
 				}
-				float distance = 500;
+				float distance = 300;
 				foreach (EternalWealth_ModObject obj in objs) {
 					if (obj == null) {
 						continue;
@@ -70,7 +74,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			timeLeft = 3000;
 		}
 		public override void AI() {
-			float distance = 500;
+			float distance = 300;
 			for (int i = 0; i < 25; i++) {
 				int dust = Dust.NewDust(position + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
 				Main.dust[dust].noGravity = true;
