@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	internal class MoonLootBox : ModItem {
 		public override void SetDefaults() {
 			Item.width = 38;

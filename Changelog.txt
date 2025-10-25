@@ -279,3 +279,9 @@ Version 0.0.1:
 277/ Fixed axe rework not interactable with tree.
 278/ Slightly make shortsword a little bit smarter.
 279/ Reduce radius of Eternal wealth from 500 -> 300.
+280/ Add in spawn condition for portal to subworld.
+281/ Nerf EoC boss fight to be much more fair.
+282/ Slightly changed Manafury.
+283/ Added Master wood bow.
+284/ Added Snowstorm.
+285/ Organize lootbox folder for near future implementation.

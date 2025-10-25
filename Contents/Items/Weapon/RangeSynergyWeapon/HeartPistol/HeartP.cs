@@ -14,18 +14,16 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.friendly = true;
 			Projectile.penetrate = 1;
 			Projectile.light = 0.45f;
-			Projectile.timeLeft = 35;
+			Projectile.timeLeft = 45;
 		}
 		Vector2 startingVelocity = Vector2.Zero;
+		Vector2 initialMouseAim = Vector2.Zero;
 		public override void OnSpawn(IEntitySource source) {
 			startingVelocity = Projectile.velocity;
+			initialMouseAim = Main.MouseWorld;
 		}
 		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
-			if (Projectile.Center.LookForHostileNPC(out NPC npc, 1100)) {
-				Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-				Projectile.velocity = Projectile.velocity.LimitedVelocity(startingVelocity.Length());
-			}
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.Vilethorn)) {
@@ -75,24 +73,20 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.tileCollide = true;
-			Projectile.timeLeft = 30;
+			Projectile.timeLeft = 40;
 			Projectile.light = .25f;
 		}
 		Vector2 startingVelocity = Vector2.Zero;
+		Vector2 initialMouseAim = Vector2.Zero;
 		public override void OnSpawn(IEntitySource source) {
 			startingVelocity = Projectile.velocity;
+			initialMouseAim = Main.MouseWorld;
 		}
 		public override void AI() {
 			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.WhiteTorch, newColor: new(255, 0, 100, 0));
 			dust.noGravity = true;
 			if (Projectile.ai[0] == 0) {
 				Projectile.velocity -= Projectile.velocity * 0.1f;
-			}
-			else {
-				if (Projectile.Center.LookForHostileNPC(out NPC npc, 1100)) {
-					Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-					Projectile.velocity = Projectile.velocity.LimitedVelocity(startingVelocity.Length());
-				}
 			}
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 			if (Projectile.timeLeft < 10)
@@ -112,6 +106,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.LifeCrystalBoulder);
 			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 30;
 			Projectile.hostile = false;
 			Projectile.friendly = true;
 			Projectile.aiStyle = -1;

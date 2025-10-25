@@ -14,6 +14,8 @@ using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.BossLootBox;
+using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 
 namespace Roguelike.Common.Global
 {

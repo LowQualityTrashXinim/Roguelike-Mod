@@ -3,7 +3,7 @@ using Terraria.ID;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	internal class EmpressLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 37;

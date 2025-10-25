@@ -15,6 +15,7 @@ using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
+using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	public abstract class LootBoxBase : ModItem {

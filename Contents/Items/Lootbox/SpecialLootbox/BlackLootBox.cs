@@ -1,10 +1,11 @@
 ﻿using Roguelike.Common.Systems;
+using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.SpecialLootbox {
 	class BlackLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;

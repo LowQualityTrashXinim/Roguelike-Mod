@@ -3,7 +3,7 @@ using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	class DeerclopTreasureChest : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 42;

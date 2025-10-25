@@ -498,17 +498,17 @@ public class EoC_Projectile : AIState {
 
 		if (ChangeStateIfTargetNull(StateType<Boss_Despawn>()))
 			return;
-		if (counter < 20)
+		if (counter < 60)
 			npc.rotation = npc.DirectionTo(Target.Center).ToRotation();
 
-		if (counter == 20) {
+		if (counter == 60) {
 			npc.velocity = npc.rotation.ToRotationVector2().RotatedBy(MathHelper.Pi) * 5;
 			if (Main.netMode != NetmodeID.MultiplayerClient)
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < 2; i++)
 					Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedByRandom(0.2f) * 15, ModContent.ProjectileType<EvilFlamesProj>(), (int)(npc.damage * 0.15f), 0);
 		}
 
-		if (counter == 50) {
+		if (counter == 70) {
 			if (tpCounter < 5) {
 				ChangeState(StateType<EoC_RandomTeleport>());
 				tpCounter++;
@@ -635,7 +635,7 @@ public class EoC_DashAndFire : AIState {
 
 		if (counter == 30) {
 			if (Main.netMode != NetmodeID.MultiplayerClient)
-				for (int i = 0; i < 4; i++) {
+				for (int i = 0; i < 2; i++) {
 
 					Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(MathHelper.TwoPi + MathHelper.Pi / 6 * i) * 6, ModContent.ProjectileType<EvilFlamesProj>(), (int)(npc.damage * 0.15f), 0, -1, 2, npc.rotation);
 					Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(MathHelper.TwoPi - MathHelper.Pi / 6 * i) * 6, ModContent.ProjectileType<EvilFlamesProj>(), (int)(npc.damage * 0.15f), 0, -1, 2, npc.rotation);
@@ -688,18 +688,18 @@ public class EoC_CircleAroundTarget : AIState {
 		if (ChangeStateIfTargetNull(StateType<Boss_Despawn>()))
 			return;
 
-		if (counter == 30) {
+		if (counter == 60) {
 			npc.Center = targetPos + new Vector2(0, 450);
 			ModObject.NewModObject(npc.Center, Vector2.Zero, ModObject.GetModObjectType<EyeRiftObject>());
 		}
 
-		if (counter > 30) {
+		if (counter > 60) {
 			Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<LingeringEvilFlames>(), (int)(npc.damage * 0.15f), 0, -1);
-			npc.Center = npc.Center.RotatedBy(0.2f * -dir * ((float)counter / 60), targetPos);
+			npc.Center = npc.Center.RotatedBy(0.2f * -dir * ((float)counter / 180), targetPos);
 			npc.rotation = npc.position.DirectionFrom(npc.oldPosition).ToRotation();
 		}
 
-		if (counter == 60) {
+		if (counter == 120) {
 			ChangeState(StateType<EoC_Idle>());
 		}
 	}
@@ -725,7 +725,7 @@ public class EoC_SwarmShield : AIState {
 			npc.velocity = npc.rotation.ToRotationVector2() * 30;
 		}
 		if (counter > 120) {
-			if (Main.netMode != NetmodeID.MultiplayerClient && counter % 5 == 0) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && counter % 25 == 0) {
 				Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(MathHelper.PiOver2) * 5, ModContent.ProjectileType<EvilFlamesProj>(), (int)(npc.damage * 0.15f), 0, -1, 0, 0);
 				Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 5, ModContent.ProjectileType<EvilFlamesProj>(), (int)(npc.damage * 0.15f), 0, -1, 0, 0);
 			}

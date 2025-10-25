@@ -20,11 +20,11 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Musket);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(26, 52, 11, 3f, 10, 50, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
+			Item.BossRushDefaultRange(26, 52, 11, 3f, 5, 25, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
-			Item.reuseDelay = 18;
+			Item.reuseDelay = 22;
 		}
 		int counter = 0, spreadDifferent = 0;
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
@@ -59,7 +59,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 					Main.projectile[proj].velocity *= 1.4f;
 				}
 				counter = 0;
-				if (player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket >= 200) {
+				if (player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket >= 1000) {
 					player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket = 0;
 					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartPistol_LifeCrystal>(), damage * 5, knockback, player.whoAmI);
 				}

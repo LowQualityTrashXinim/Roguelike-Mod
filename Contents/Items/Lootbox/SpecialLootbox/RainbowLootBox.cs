@@ -1,11 +1,12 @@
 ﻿using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Accessories;
+using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.SpecialLootbox {
 	internal class RainbowLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 		}

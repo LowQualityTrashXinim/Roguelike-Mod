@@ -2468,6 +2468,16 @@ Mods: {
 				DisplayName: Test Spear Animation
 				Tooltip: ""
 			}
+
+			MasterWoodBow: {
+				DisplayName: Master Wood Bow
+				Tooltip: A rip off of Natural Selection
+			}
+
+			Snowstorm: {
+				DisplayName: Snowstorm
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
