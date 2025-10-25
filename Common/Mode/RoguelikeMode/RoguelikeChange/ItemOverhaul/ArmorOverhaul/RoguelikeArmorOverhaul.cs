@@ -109,11 +109,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 public class RoguelikeArmorPlayer : ModPlayer {
 	public float MidasChance = 0;
 	public float ElectricityChance = 0;
-	public float AcornSpawnChance = 0;
-	//These are hardcoded since there are no way this gonna be reused right ?
-	public bool AcornCriticalStrike = false;
-	public bool AcornDamagePlus = false;
-	public bool AcornVelocity = false;
 	public float FrostBurnChance = 0;
 	public float SnowSpawnChance = 0;
 	public bool SnowBallDamage = false;
@@ -147,10 +142,6 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		MidasChance = 0;
 		ElectricityChance = 0;
-		AcornSpawnChance = 0;
-		AcornCriticalStrike = false;
-		AcornDamagePlus = false;
-		AcornVelocity = false;
 		FrostBurnChance = 0;
 		SnowSpawnChance = 0;
 		SnowBallDamage = false;
@@ -195,35 +186,6 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		}
 		if (Main.rand.NextFloat() <= FrostBurnChance) {
 			target.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(Main.rand.Next(4, 7)));
-		}
-	}
-	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= AcornSpawnChance) {
-			SpawnAcorn(target);
-		}
-	}
-	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= AcornSpawnChance && (proj.ModProjectile == null || proj.ModProjectile is not AcornProjectile)) {
-			SpawnAcorn(target);
-		}
-	}
-	private void SpawnAcorn(NPC target) {
-		int damage = Player.GetWeaponDamage(Player.HeldItem);
-
-		int proj = Projectile.NewProjectile(Player.GetSource_FromThis(),
-				target.Center - new Vector2(0, 400),
-				Vector2.UnitY * 10,
-				ModContent.ProjectileType<AcornProjectile>(), 10 + damage / 5, 1f, Player.whoAmI);
-
-		var projectile = Main.projectile[proj];
-		if (AcornDamagePlus) {
-			projectile.damage += (int)(damage * .2f);
-		}
-		if (AcornCriticalStrike) {
-			projectile.CritChance += 15;
-		}
-		if (AcornVelocity) {
-			projectile.velocity *= 1.35f;
 		}
 	}
 }

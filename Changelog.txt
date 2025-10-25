@@ -273,3 +273,8 @@ Version 0.0.1:
 271/ Further improved Lootbox Lord fight visual, indicator and the fight itself.
 272/ Deleted bunch of accessory rework and reimplement mechanical lens rework.
 273/ Added better explanation of what the scroll effect do.
+274/ Change the build version from 0.0.14 to 0.0.15
+275/ Significantly buff Heart pistol.
+276/ Significantly buff wood armor set.
+277/ Fixed axe rework not interactable with tree.
+278/ Slightly make shortsword a little bit smarter.

@@ -7,8 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 	internal class HeartPistol : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Vilethorn, $"[i:{ItemID.Vilethorn}] Heart projectile inflict venom");
@@ -28,6 +27,9 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 			Item.reuseDelay = 18;
 		}
 		int counter = 0, spreadDifferent = 0;
+		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+			player.AddBuff<HeartPistolPassive>(ModUtils.ToSecond(10));
+		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			bool CheckMusketSynergy = SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket);
 			if (player.ItemAnimationJustStarted && player.ItemAnimationActive) {
@@ -57,6 +59,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 					Main.projectile[proj].velocity *= 1.4f;
 				}
 				counter = 0;
+				if (player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket >= 200) {
+					player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket = 0;
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartPistol_LifeCrystal>(), damage * 5, knockback, player.whoAmI);
+				}
 			}
 			else {
 				int proj = Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<smallerHeart>(), damage, knockback, player.whoAmI, 1);
@@ -77,6 +83,22 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 			.AddIngredient(ItemID.FlintlockPistol)
 			.AddIngredient(ItemID.BandofRegeneration)
 			.Register();
+		}
+	}
+	public class HeartPistol_ModPlayer : ModPlayer {
+		public int DamageBucket = 0;
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.Check_ItemTypeSource<HeartPistol>()) {
+				DamageBucket += hit.Damage;
+			}
+		}
+	}
+	public class HeartPistolPassive : ModBuff {
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.ModPlayerStats().UpdateHPRegen += .25f;
 		}
 	}
 }

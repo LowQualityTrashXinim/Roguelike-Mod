@@ -160,13 +160,13 @@ internal class LootBoxLord : ModNPC {
 				dialog = "I recognize you";
 				break;
 			case 1:
-				dialog = "... I see";
+				dialog = "... I see, if that is what you wish for";
 				break;
 			case 2:
-				dialog = "Very well, I will entertain you";
+				dialog = "I will entertain you";
 				break;
 			case 3:
-				dialog = "Don't die too soon";
+				dialog = "Don't die too soon my grace.";
 				color = Color.Red;
 				BeforeAttack = false;
 				NPC.dontTakeDamage = false;
@@ -179,7 +179,7 @@ internal class LootBoxLord : ModNPC {
 						hostile.IDtextureValue = Main.rand.Next(itemArr);
 						hostile.SetNPCOwner(NPC.whoAmI);
 					}
-					proj.ai[1] += Main.rand.NextFloat(0, 314);
+					proj.ai[1] += MathHelper.ToRadians(MathHelper.Lerp(0, 360, i / 199f));
 					proj.rotation += MathHelper.ToRadians(Main.rand.NextFloat(360));
 				}
 				break;

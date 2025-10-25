@@ -428,6 +428,13 @@ Mods: {
 			LootBoxLord_Minion.DisplayName: Loot Box Lord_ Minion
 			Roguelike_Chik_ModProjectile.DisplayName: Roguelike_ Chik_ Mod Projectile
 			LBL_HealingProjectile.DisplayName: L B L_ Healing Projectile
+			Portal_Corruption.DisplayName: Portal_ Corruption
+			Portal_Crimson.DisplayName: Portal_ Crimson
+			Portal_DeepIce.DisplayName: Portal_ Deep Ice
+			Portal_FleshRealm.DisplayName: Portal_ Flesh Realm
+			Portal_SlimeWorld.DisplayName: Portal_ Slime World
+			HeartPistol_LifeCrystal.DisplayName: Heart Pistol_ Life Crystal
+			TestSpearAnimationP.DisplayName: Test Spear Animation P
 		}
 
 		NPCs: {
@@ -2456,6 +2463,11 @@ Mods: {
 				DisplayName: Scroll Of Vulnerable
 				Tooltip: ""
 			}
+
+			TestSpearAnimation: {
+				DisplayName: Test Spear Animation
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3236,6 +3248,11 @@ Mods: {
 			Anti_Immunity: {
 				DisplayName: Anti Immunity
 				Description: You become vulnerable to all debuff
+			}
+
+			HeartPistolPassive: {
+				DisplayName: Heart Pistol Passive
+				Description: +25% life regeneration
 			}
 		}
 

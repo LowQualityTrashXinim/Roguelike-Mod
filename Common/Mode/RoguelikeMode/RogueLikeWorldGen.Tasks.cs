@@ -91,9 +91,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, List<Rectangle>> BiomeZone = new();
 	public static Dictionary<short, List<short>> BiomeGroup = new();
 	public static bool[] StaticNoise255x255 = new bool[65025];
-	ModObject DungeonPortal = null;
-	ModObject JungleTemplePortale = null;
-	ModObject SlimePortal = null;
 	public override void OnModLoad() {
 		Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
 		Color[] color = new Color[65025];
@@ -145,7 +142,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Space, new BiomeDataBundle(TileID.Stone, WallID.None, "Space", 18) },
 			{ Bid.Caven, new BiomeDataBundle(TileID.Stone, WallID.Stone, "") },
 			{ Bid.Underworld, new BiomeDataBundle(TileID.Ash, WallID.None, "") },
-			{ Bid.JungleTemple, new BiomeDataBundle(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
+			{ Bid.JungleTemple, new BiomeDataBundle(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "")},
+			{ Bid.Slime, new BiomeDataBundle(TileID.SlimeBlock, WallID.Slime,"")},
+			{ Bid.FleshRealm, new BiomeDataBundle(TileID.FleshBlock, WallID.Flesh,"")}
 		};
 
 		BiomeGroup = new();
@@ -923,10 +922,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		ModContent.GetInstance<CursedKingdom_GenSystem>().Place_CursedKingdomEntrance(X, Y);
 	}
-	Rectangle CrimsonEntrance = new();
-	Rectangle CorruptionEntrance = new();
-	Rectangle FleshRealmEntrance = new();
-	Rectangle SlimeWorldEntrance = new();
+	public Rectangle CrimsonEntrance = new();
+	public Rectangle CorruptionEntrance = new();
+	public Rectangle FleshRealmEntrance = new();
+	public Rectangle SlimeWorldEntrance = new();
 	[Task]
 	public void Generate_CrimsonEntrance() {
 		int X = Main.rand.Next(20, 22) * GridPart_X;

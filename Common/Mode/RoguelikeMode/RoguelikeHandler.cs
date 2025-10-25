@@ -31,6 +31,46 @@ internal class RoguelikeHandler : ModSystem {
 				Projectile_WhoAmI = -1;
 			}
 		}
+		Vector2 Slime_pos = ModContent.GetInstance<RogueLikeWorldGen>().SlimeWorldEntrance.Center().ToWorldCoordinates();
+		if (player.Center.Distance(Slime_pos) < 2000) {
+			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
+				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_SlimeWorld>(), 0, 0, player.whoAmI);
+			}
+			Projectile proj = Main.projectile[Projectile_WhoAmI];
+			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_SlimeWorld>()) {
+				Projectile_WhoAmI = -1;
+			}
+		}
+		Vector2 Flesh_pos = ModContent.GetInstance<RogueLikeWorldGen>().FleshRealmEntrance.Center().ToWorldCoordinates();
+		if (player.Center.Distance(Flesh_pos) < 2000) {
+			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
+				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_FleshRealm>(), 0, 0, player.whoAmI);
+			}
+			Projectile proj = Main.projectile[Projectile_WhoAmI];
+			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_FleshRealm>()) {
+				Projectile_WhoAmI = -1;
+			}
+		}
+		Vector2 Corruption_pos = ModContent.GetInstance<RogueLikeWorldGen>().CorruptionEntrance.Center().ToWorldCoordinates();
+		if (player.Center.Distance(Corruption_pos) < 2000) {
+			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
+				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_Corruption>(), 0, 0, player.whoAmI);
+			}
+			Projectile proj = Main.projectile[Projectile_WhoAmI];
+			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_Corruption>()) {
+				Projectile_WhoAmI = -1;
+			}
+		}
+		Vector2 Crimson_pos = ModContent.GetInstance<RogueLikeWorldGen>().CrimsonEntrance.Center().ToWorldCoordinates();
+		if (player.Center.Distance(Crimson_pos) < 2000) {
+			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
+				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_Crimson>(), 0, 0, player.whoAmI);
+			}
+			Projectile proj = Main.projectile[Projectile_WhoAmI];
+			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_Crimson>()) {
+				Projectile_WhoAmI = -1;
+			}
+		}
 	}
 	public override void PreUpdateNPCs() {
 		return;

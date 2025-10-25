@@ -3,10 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Projectiles;
-
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using System.Linq;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class WoodArmor : ModArmorSet {
@@ -25,8 +24,9 @@ class WoodHelmet : ModArmorPiece {
 		TypeEquipment = Type_Head;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().AcornSpawnChance += .02f;
-		player.GetCritChance<RangedDamageClass>() += 5;
+		player.GetModPlayer<WoodArmorPublicPlayer>().IncreasesWoodWeaponDamage = true;
+		player.GetModPlayer<WoodArmorPublicPlayer>().AcornSpawnChance += .02f;
+		player.GetCritChance<GenericDamageClass>() += 5;
 	}
 }
 class WoodBreastplate : ModArmorPiece {
@@ -38,8 +38,9 @@ class WoodBreastplate : ModArmorPiece {
 		TypeEquipment = Type_Body;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().AcornSpawnChance += .03f;
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RangeDMG, Multiplicative: 1.1f);
+		player.GetModPlayer<WoodArmorPublicPlayer>().AcornSpawnChance += .03f;
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, Multiplicative: 1.1f);
+		player.GetModPlayer<WoodArmorPublicPlayer>().IncreasesWoodWeaponCritChance = true;
 	}
 }
 class WoodGreaves : ModArmorPiece {
@@ -51,7 +52,52 @@ class WoodGreaves : ModArmorPiece {
 		TypeEquipment = Type_Leg;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().AcornSpawnChance += .01f;
+		player.GetModPlayer<WoodArmorPublicPlayer>().AcornSpawnChance += .01f;
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MovementSpeed, 1.15f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.JumpBoost, 1.15f);
+	}
+}
+public class WoodArmorPublicPlayer : ModPlayer {
+	public bool IncreasesWoodWeaponDamage = false;
+	public bool IncreasesWoodWeaponCritChance = false;
+	public float AcornSpawnChance = 0;
+	public override void ResetEffects() {
+		IncreasesWoodWeaponDamage = false;
+		IncreasesWoodWeaponCritChance = false;
+		AcornSpawnChance = 0;
+	}
+	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		if (WoodWeaponCheck(item.type) && IncreasesWoodWeaponDamage) {
+			damage += .2f;
+		}
+	}
+	public override void ModifyWeaponCrit(Item item, ref float crit) {
+		if (WoodWeaponCheck(item.type) && IncreasesWoodWeaponCritChance) {
+			crit += 15;
+		}
+	}
+	private bool WoodWeaponCheck(int type) => TerrariaArrayID.AllWoodBowPHM.Contains(type) || TerrariaArrayID.AllWoodSword.Contains(type);
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= AcornSpawnChance) {
+			SpawnAcorn(target);
+		}
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= AcornSpawnChance && (proj.ModProjectile == null || proj.ModProjectile is not AcornProjectile)) {
+			SpawnAcorn(target);
+		}
+	}
+	private void SpawnAcorn(NPC target) {
+		int damage = Player.GetWeaponDamage(Player.HeldItem);
+
+		int proj = Projectile.NewProjectile(Player.GetSource_FromThis(),
+				target.Center - new Vector2(0, 400),
+				Vector2.UnitY * 1.35f,
+				ModContent.ProjectileType<AcornProjectile>(), 10 + damage / 5, 1f, Player.whoAmI);
+
+		var projectile = Main.projectile[proj];
+		projectile.damage += (int)(damage * .2f);
+		projectile.CritChance += 15;
 	}
 }
 class WoodArmorPlayer : PlayerArmorHandle {
@@ -61,7 +107,7 @@ class WoodArmorPlayer : PlayerArmorHandle {
 	public override void Armor_UpdateEquipsSet() {
 		Player.statDefense += 5;
 		Player.moveSpeed += .25f;
-		Player.GetModPlayer<RoguelikeArmorPlayer>().AcornSpawnChance += .1f;
+		Player.GetModPlayer<WoodArmorPublicPlayer>().AcornSpawnChance += .1f;
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		int typeProjectile = ModContent.ProjectileType<SunflowerProjectile>();

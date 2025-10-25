@@ -2,9 +2,8 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.Weapon;
-
 using Roguelike.Common.Utils;
+using Terraria.DataStructures;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 	class HeartP : ModProjectile {
@@ -17,8 +16,16 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.light = 0.45f;
 			Projectile.timeLeft = 35;
 		}
+		Vector2 startingVelocity = Vector2.Zero;
+		public override void OnSpawn(IEntitySource source) {
+			startingVelocity = Projectile.velocity;
+		}
 		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+			if (Projectile.Center.LookForHostileNPC(out NPC npc, 1100)) {
+				Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+				Projectile.velocity = Projectile.velocity.LimitedVelocity(startingVelocity.Length());
+			}
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.Vilethorn)) {
@@ -71,11 +78,21 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.timeLeft = 30;
 			Projectile.light = .25f;
 		}
+		Vector2 startingVelocity = Vector2.Zero;
+		public override void OnSpawn(IEntitySource source) {
+			startingVelocity = Projectile.velocity;
+		}
 		public override void AI() {
 			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.WhiteTorch, newColor: new(255, 0, 100, 0));
 			dust.noGravity = true;
 			if (Projectile.ai[0] == 0) {
 				Projectile.velocity -= Projectile.velocity * 0.1f;
+			}
+			else {
+				if (Projectile.Center.LookForHostileNPC(out NPC npc, 1100)) {
+					Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+					Projectile.velocity = Projectile.velocity.LimitedVelocity(startingVelocity.Length());
+				}
 			}
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 			if (Projectile.timeLeft < 10)
@@ -87,6 +104,32 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			}
 			if (Main.rand.NextBool(150) || SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.CandyCaneSword) && Main.rand.NextBool(50)) {
 				Item.NewItem(Projectile.GetSource_OnHit(target), target.Hitbox, ItemID.Heart);
+			}
+		}
+	}
+	public class HeartPistol_LifeCrystal : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.LifeCrystalBoulder);
+		public override void SetDefaults() {
+			Projectile.CloneDefaults(ProjectileID.LifeCrystalBoulder);
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.hostile = false;
+			Projectile.friendly = true;
+			Projectile.aiStyle = -1;
+			Projectile.timeLeft = 240;
+			Main.projFrames[Type] = 11;
+		}
+		public override void AI() {
+			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+			if(++Projectile.frameCounter >= 4) {
+				Projectile.frameCounter = 0;
+				Projectile.frame = ModUtils.Safe_SwitchValue(Projectile.frame, 10);
+			}
+		}
+		public override void OnKill(int timeLeft) {
+			Item.NewItem(Projectile.GetSource_FromAI(), Projectile.Hitbox, ItemID.Heart);
+			for (int i = 0; i < 20; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.LifeCrystal);
+				dust.position += Main.rand.NextVector2Circular(Projectile.width, Projectile.height);
 			}
 		}
 	}

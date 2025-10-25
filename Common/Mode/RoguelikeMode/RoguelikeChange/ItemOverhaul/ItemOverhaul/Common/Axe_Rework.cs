@@ -64,6 +64,16 @@ public class Roguelike_Axe : GlobalItem {
 		}
 		return base.AltFunctionUse(item, player);
 	}
+	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
+		if (CheckAxeCommon(item.type)) {
+			if (player.altFunctionUse == 2) {
+				item.noUseGraphic = true;
+			}
+			else {
+				item.noUseGraphic = false;
+			}
+		}
+	}
 	public override bool CanUseItem(Item item, Player player) {
 		if (CheckAxeCommon(item.type)) {
 			if (player.altFunctionUse == 2) {
@@ -76,14 +86,12 @@ public class Roguelike_Axe : GlobalItem {
 		}
 		return base.CanUseItem(item, player);
 	}
-	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (!CheckAxeCommon(item.type)) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+	public override void HoldItem(Item item, Player player) {
+		if (CheckAxeCommon(item.type)) {
+			if (player.altFunctionUse == 2 && player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax) {
+				Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, velocity * 17, ModContent.ProjectileType<TomahawkProjectile>(), player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI, ai2: item.type);
+			}
 		}
-		if (player.altFunctionUse == 2) {
-			velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-			Projectile.NewProjectile(source, position, velocity * 17, type, damage, knockback, player.whoAmI, ai2: item.type);
-		}
-		return false;
 	}
 }
