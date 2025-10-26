@@ -92,7 +92,7 @@ public class WoodArmorPublicPlayer : ModPlayer {
 
 		int proj = Projectile.NewProjectile(Player.GetSource_FromThis(),
 				target.Center - new Vector2(0, 400),
-				Vector2.UnitY * 1.35f,
+				Vector2.UnitY * 15.35f,
 				ModContent.ProjectileType<AcornProjectile>(), 10 + damage / 5, 1f, Player.whoAmI);
 
 		var projectile = Main.projectile[proj];

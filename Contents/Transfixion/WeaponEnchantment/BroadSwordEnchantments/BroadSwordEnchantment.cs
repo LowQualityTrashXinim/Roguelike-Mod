@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Projectiles;
- 
+
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 

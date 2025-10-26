@@ -102,9 +102,8 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of accessory augmentated by 10%
-		+ Increases the chance of weapon enchanted by 10%
 		+ Increases the chance of getting extra item from loot drop by 10%
+		+ Increases loot drop by 1
 		'''
 }
 
@@ -481,12 +480,7 @@ TitanPower: {
 
 GreedPrivilage: {
 	DisplayName: Greed Privilage
-	Description:
-		'''
-		+ Increases your drop loot by 1
-		+ Increases the chance of getting augmentation by 20%
-		+ Increases the chance of getting enchantment by 5%
-		'''
+	Description: + Increases your drop loot by 2
 }
 
 TheBigMoment: {
@@ -535,7 +529,6 @@ PridefulPossession: {
 	DisplayName: Prideful Possession
 	Description:
 		'''
-		+ Increases the chance getting augmentation by 10%
 		+ Increases your defense per augmentation you have
 		+ For each enchantment, increases your weapon critical strike chance by 1, weapon damage by 10%
 		'''
@@ -723,7 +716,7 @@ AncientKnowledge: {
 		'''
 		+ Increases debuff duration on inflicting enemy by 10%
 		+ Decreases your debuff duration by 10%
-		+ Increases transmutation success by 20% ( not stackable )
+		+ Increases transmutation recharge by 20% ( not stackable )
 		'''
 }
 

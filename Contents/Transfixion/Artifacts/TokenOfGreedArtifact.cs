@@ -41,10 +41,8 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			return Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
 		}
 		public override void UpdateEquip(Player player) {
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.LootDropIncrease, Base: StackAmount(player));
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.LootDropIncrease, Base: StackAmount(player) * 2);
 			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
-			handle.AugmentationChance += .2f * StackAmount(player);
-			handle.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
 	public class TheBigMoment : Perk {

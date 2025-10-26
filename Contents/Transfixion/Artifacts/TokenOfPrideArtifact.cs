@@ -25,15 +25,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			if (Pride) {
 				PlayerStatsHandle handle = Player.GetModPlayer<PlayerStatsHandle>();
 				float multiplier = 0;
-				if (Player.HasPerk<TokenOfPride_Upgrade1>()) {
-					multiplier += .5f;
-				}
-				Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= multiplier;
-				handle.AugmentationChance += .65f;
-				if (Player.HasPerk<TokenOfPride_Upgrade2>()) {
-					handle.AugmentationChance += .2f;
-					handle.RandomizeChanceEnchantment += .2f;
-				}
+				handle.DropModifier *= multiplier;
 			}
 		}
 		public override void PreUpdate() {
@@ -65,24 +57,6 @@ TokenOfPride_Upgrade2: {
 		'''
 }
 */
-	public class TokenOfPride_Upgrade1 : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			list_category.Add(PerkCategory.ArtifactExclusive);
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-	}
-	public class TokenOfPride_Upgrade2 : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			list_category.Add(PerkCategory.ArtifactExclusive);
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-	}
 	public class BlindPride : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -118,7 +92,6 @@ TokenOfPride_Upgrade2: {
 			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AugmentationChance += .1f;
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: player.GetModPlayer<AugmentsPlayer>().valid * StackAmount(player));
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {

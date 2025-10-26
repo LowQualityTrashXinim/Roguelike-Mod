@@ -24,7 +24,6 @@ namespace Roguelike.Contents.Items {
 			handle.AddStatsToPlayer(PlayerStats.MovementSpeed, Multiplicative: 1.01f);
 			handle.AddStatsToPlayer(PlayerStats.JumpBoost, Multiplicative: 1.01f);
 			handle.Iframe += 1.1f;
-			handle.RandomizeChanceEnchantment += .01f;
 			handle.BuffTime *= 1.01f;
 			handle.DebuffTime *= 1.01f;
 			handle.DebuffBuffTime *= .99f;

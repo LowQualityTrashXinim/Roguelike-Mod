@@ -13,4 +13,3 @@
 12/ Rework rarity system and tranmutation system.
 13/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
 14/ Draw sprite for many minssing sprite in the mod.
-15/ Change wood armor set effect to strengthen the wooden weapon.

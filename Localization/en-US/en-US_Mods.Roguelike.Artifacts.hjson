@@ -180,9 +180,9 @@ AlchemistKnowledgeArtifact: {
 		'''
 		"Knowledge of the ancient"
 		[c/ffff00:Positive effect] :
-			+ Increases buff duration by 35%
 			+ Having active buff will increase your stats
 			+ Healing and Mana potion now heal for double the amount
+			+ Increases transmutation recharge by 20%
 		[c/ab3e43:Negative effect] : 
 			- Debuff duration increases by 100% and are much more lethal
 		'''

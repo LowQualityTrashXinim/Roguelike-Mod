@@ -32,6 +32,9 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 				}
 				if (!Main.debuff[buffType]) {
 					lengthpositive++;
+					if(lengthpositive >= 3) {
+						break;
+					}
 				}
 				else {
 					lengthpositive -= 2;
@@ -40,7 +43,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.BuffTime += .35f;
 			modplayer.DebuffBuffTime += 1f;
-			modplayer.Transmutation_SuccessChance += .2f;
+			modplayer.TransmutationModifier += .2f;
 			if (lengthpositive != 0) {
 				if (lengthpositive > 0) {
 					modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: lengthpositive * .25f);
@@ -102,7 +105,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.Transmutation_SuccessChance += .2f;
+			modplayer.TransmutationModifier += .2f;
 			modplayer.DebuffTime += .1f * StackAmount(player);
 			modplayer.DebuffBuffTime -= .1f * StackAmount(player);
 		}

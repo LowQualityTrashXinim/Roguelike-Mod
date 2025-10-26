@@ -28,8 +28,8 @@ internal class Sword_Rework : GlobalItem{
 			case ItemID.EbonwoodSword:
 			case ItemID.RichMahoganySword:
 			case ItemID.WoodenSword:
-			case ItemID.CactusSword:
 			case ItemID.AshWoodSword:
+			case ItemID.CactusSword:
 			//OrebroadSword
 			case ItemID.BeeKeeper:
 			case ItemID.CopperBroadsword:

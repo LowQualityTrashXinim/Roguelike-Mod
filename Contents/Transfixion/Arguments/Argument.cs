@@ -65,7 +65,6 @@ public class AugmentsWeapon : GlobalItem {
 				}
 			}
 			AugmentsPlayer modplayer = player.GetModPlayer<AugmentsPlayer>();
-			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 			chance += modplayer.Request_ChanceAugments;
 			limit += modplayer.Request_LimitAugments;
 			if (modplayer.Request_Decayable != null)
@@ -74,7 +73,7 @@ public class AugmentsWeapon : GlobalItem {
 			int currentEmptySlot = 0;
 			bool passException = false;
 
-			float chanceDecay = handle.AugmentationChance + chance;
+			float chanceDecay = chance;
 			ModAugments modAugments = null;
 			float augmentChance = 0;
 			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
@@ -107,7 +106,6 @@ public class AugmentsWeapon : GlobalItem {
 		if (!item.accessory) {
 			return;
 		}
-		float chance = player.ModPlayerStats().AugmentationChance;
 		int type = ModAugments.GetAugmentType<T>();
 		ModAugments aug = AugmentsLoader.GetAugments(type);
 		if (aug == null) {
@@ -126,7 +124,6 @@ public class AugmentsWeapon : GlobalItem {
 		if (!item.accessory) {
 			return;
 		}
-		float chance = player.ModPlayerStats().AugmentationChance;
 		ModAugments aug = AugmentsLoader.GetAugments(type);
 		if (aug == null) {
 			Main.NewText($"Augmentation not found ! Look up type: {type}");

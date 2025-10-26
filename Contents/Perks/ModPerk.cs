@@ -132,8 +132,6 @@ public class Dirt : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
-		handle.AugmentationChance += .1f * StackAmount(player);
-		handle.RandomizeChanceEnchantment += .1f * StackAmount(player);
 		handle.ChanceDropModifier += .1f * StackAmount(player);
 		handle.DropModifier.Base += 1;
 	}

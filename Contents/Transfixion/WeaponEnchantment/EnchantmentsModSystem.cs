@@ -22,35 +22,8 @@ using Terraria.UI;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
-	public static void EnchantmentRNG(Player self, ref Item item) {
-		if (item == null || !EnchantmentGlobalItem.CanBeEnchanted(item)) {
-			return;
-		}
-		EnchantmentModplayer modplayer = self.GetModPlayer<EnchantmentModplayer>();
-		PlayerStatsHandle handle = self.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.Request_EnchantedItem > 0) {
-			int length = modplayer.Request_EnchantedAmount;
-			for (int i = 0; i < length; i++) {
-				EnchantItem(ref item, i);
-			}
-			modplayer.Request_EnchantedItem--;
-		}
-		float randomizedchance = 0f;
-		if (UniversalSystem.Check_TotalRNG()) {
-			randomizedchance += .2f;
-		}
-		for (int i = 0; i < 3; i++) {
-			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				if (globalitem.EnchantmenStlot[i] != 0) {
-					continue;
-				}
-			}
-			if (Main.rand.NextFloat() <= randomizedchance + handle.RandomizeChanceEnchantment) {
-				EnchantItem(ref item, i);
-				continue;
-			}
-			break;
-		}
+	public static void EnchantmentRNG(Player player, ref Item item) {
+
 	}
 	public static void EnchantItem(ref Item item, int slot = -1, int enchantmentType = -1) {
 		if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {

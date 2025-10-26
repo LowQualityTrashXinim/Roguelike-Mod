@@ -187,16 +187,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public int TemporaryLife_Counter = 0;
 	public int TemporaryLife_Limit = 0;
 	public int TemporaryLife_CounterLimit = 120;
-	public float Transmutation_SuccessChance = 0;
 	public ulong DPStracker = 0;
-	public float RandomizeChanceEnchantment = 0;
 	public int NPC_HitCount = 0;
 	public float ItemRangeMultiplier = 1;
-	/// <summary>
-	/// This chance will decay for each success roll <br/>
-	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
-	/// </summary>
-	public float AugmentationChance = 0;
 	/// <summary>
 	/// Uses for enchantment cool down effect
 	/// </summary>
@@ -466,9 +459,6 @@ public class PlayerStatsHandle : ModPlayer {
 		ModifyHit_Before_Crit = false;
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
-		Transmutation_SuccessChance = 0;
-		RandomizeChanceEnchantment = 0f;
-		AugmentationChance = 0;
 		ItemRangeMultiplier = 1;
 		Reset_ShootRequest();
 		EnergyRegen_Count = (int)Math.Ceiling(EnergyRegenCount.ApplyTo(EnergyRegen_Count));

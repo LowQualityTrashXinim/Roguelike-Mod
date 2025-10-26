@@ -4,9 +4,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Terraria.DataStructures;
 
 namespace Roguelike.Contents.Projectiles;
 internal class SwordProjectile : ModProjectile {
@@ -26,6 +26,11 @@ internal class SwordProjectile : ModProjectile {
 	float outrotation = 0;
 	int directionLooking = 1;
 	Vector2 oldCenter = Vector2.Zero;
+	public override void OnSpawn(IEntitySource source) {
+		if (Projectile.ai[2] == 0) {
+			Projectile.ai[2] = 60f;
+		}
+	}
 	public override void AI() {
 		EnergySword_Code1AI();
 	}
@@ -54,7 +59,7 @@ internal class SwordProjectile : ModProjectile {
 		outrotation = rotation;
 		Projectile.rotation = rotation + MathHelper.PiOver4;
 		Projectile.velocity.X = directionLooking;
-		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * 60f;
+		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * Projectile.ai[2];
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[Projectile.owner];
@@ -63,7 +68,7 @@ internal class SwordProjectile : ModProjectile {
 		modifiers.HitDirectionOverride = directionTo;
 	}
 	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
-		ModUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, 10f);
+		ModUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, Projectile.ai[2]);
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);
@@ -95,6 +100,14 @@ internal class SwordProjectile2 : ModProjectile {
 	public override bool? CanDamage() {
 		return State != 1;
 	}
+	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+		if (Projectile.Center.Y >= Main.MouseWorld.Y - 50) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	public override void AI() {
 		if (State == 1) {
 			if (Projectile.timeLeft > 30) {
@@ -104,11 +117,13 @@ internal class SwordProjectile2 : ModProjectile {
 			Projectile.velocity = Vector2.Zero;
 			return;
 		}
-		if (Projectile.timeLeft > 900 && Counter >= 0) {
+		if (Projectile.timeLeft > 900) {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			vel = Projectile.velocity;
 			Projectile.timeLeft = 900;
-			Counter = 120 + Projectile.ai[2];
+			if (Counter == 0) {
+				Counter = 120 + Projectile.ai[2];
+			}
 			Projectile.velocity = Vector2.Zero;
 		}
 		if (--Counter < 0) {

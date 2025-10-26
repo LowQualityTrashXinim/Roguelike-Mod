@@ -438,9 +438,6 @@ namespace Roguelike.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {statshandle.DropModifier.ApplyTo(1)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().RandomizeChanceEnchantment)}");
-						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().AugmentationChance)}");
 						for (int i = 0; i < list_info.Count; i++) {
 							float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
 							list_info[i].SetAlign(0, Y);
