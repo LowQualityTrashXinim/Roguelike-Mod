@@ -2478,6 +2478,16 @@ Mods: {
 				DisplayName: Snowstorm
 				Tooltip: ""
 			}
+
+			GoldComplexBow: {
+				DisplayName: Gold Complex Bow
+				Tooltip: There are actually nothing complex, you just pull the string like normal
+			}
+
+			PlatinumComplexBow: {
+				DisplayName: Platinum Complex Bow
+				Tooltip: There are actually nothing complex, you just pull the string like normal
+			}
 		}
 
 		Buffs: {
@@ -3263,6 +3273,16 @@ Mods: {
 			HeartPistolPassive: {
 				DisplayName: Heart Pistol Passive
 				Description: +25% life regeneration
+			}
+
+			Guard_Buff: {
+				DisplayName: Guard_ Buff
+				Description: Mods.Roguelike.Buffs.Guard_Buff.Description
+			}
+
+			Parry_Buff: {
+				DisplayName: Parry_ Buff
+				Description: Mods.Roguelike.Buffs.Parry_Buff.Description
 			}
 		}
 

@@ -331,7 +331,7 @@ SilverArmor: {
 		Dealing first strike cause enemy to move slower
 		During the day : increases defense by 10
 		During the night : increases damage by 10%
-		While above 75% health, day and night effects are multiply by 2
+		While above 75% health, day and night effects are multiply by 2.0x
 		'''
 }
 

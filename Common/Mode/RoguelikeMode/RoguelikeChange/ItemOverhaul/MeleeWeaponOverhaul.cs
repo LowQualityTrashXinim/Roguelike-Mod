@@ -73,9 +73,12 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
 		public bool Ignore_AttackSpeed = false;
+		/// <summary>
+		/// This will temporary disable attack animation during player item animation active
+		/// </summary>
+		public bool TemporaryDisableAttackAnimation = false;
 		public override bool InstancePerEntity => true;
 		public override void SetDefaults(Item item) {
-			SwordWeaponOverhaul(item);
 			scaleWarp = new(item.scale);
 			if (AnimationEndTime != 0) {
 				item.useAnimation += AnimationEndTime;
@@ -83,121 +86,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 			if (Ignore_AttackSpeed) {
 				ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = 0;
-			}
-		}
-		public void SwordWeaponOverhaul(Item item) {
-			if (item.noMelee || item.noUseGraphic) {
-				return;
-			}
-			switch (item.type) {
-				//Sword that have even end
-				//WoodSword
-				case ItemID.PearlwoodSword:
-				case ItemID.BorealWoodSword:
-				case ItemID.PalmWoodSword:
-				case ItemID.ShadewoodSword:
-				case ItemID.EbonwoodSword:
-				case ItemID.RichMahoganySword:
-				case ItemID.WoodenSword:
-				case ItemID.CactusSword:
-				case ItemID.AshWoodSword:
-				//OrebroadSword
-				case ItemID.BeeKeeper:
-				case ItemID.CopperBroadsword:
-				case ItemID.TinBroadsword:
-				case ItemID.IronBroadsword:
-				case ItemID.LeadBroadsword:
-				case ItemID.SilverBroadsword:
-				case ItemID.TungstenBroadsword:
-				case ItemID.GoldBroadsword:
-				case ItemID.Flymeal:
-				case ItemID.PlatinumBroadsword:
-				//Misc PreHM sword
-				case ItemID.PurpleClubberfish:
-				case ItemID.StylistKilLaKillScissorsIWish:
-				case ItemID.BladeofGrass:
-				case ItemID.FieryGreatsword:
-				case ItemID.LightsBane:
-				//HardmodeSword
-				case ItemID.MythrilSword:
-				case ItemID.AdamantiteSword:
-				case ItemID.OrichalcumSword:
-				case ItemID.TitaniumSword:
-				case ItemID.Excalibur:
-				case ItemID.TheHorsemansBlade:
-				case ItemID.Bladetongue:
-				case ItemID.DD2SquireDemonSword:
-				//Sword That shoot projectile
-				case ItemID.BeamSword:
-				case ItemID.EnchantedSword:
-				case ItemID.Starfury:
-				case ItemID.InfluxWaver:
-				case ItemID.ChlorophyteClaymore:
-				case ItemID.ChlorophyteSaber:
-				case ItemID.ChristmasTreeSword:
-					SwingType = BossRushUseStyle.Swipe;
-					item.useTurn = false;
-					item.Set_ItemCriticalDamage(1f);
-					break;
-				//Poke Sword
-				//Pre HM Sword
-				case ItemID.DyeTradersScimitar:
-				case ItemID.CandyCaneSword:
-				case ItemID.Muramasa:
-				case ItemID.BloodButcherer:
-				case ItemID.Katana:
-				case ItemID.FalconBlade:
-				case ItemID.BoneSword:
-				//HM sword
-				case ItemID.CobaltSword:
-				case ItemID.PalladiumSword:
-				case ItemID.IceBlade:
-				case ItemID.BreakerBlade:
-				case ItemID.Frostbrand:
-				case ItemID.Cutlass:
-				case ItemID.Seedler:
-				case ItemID.Keybrand:
-				case ItemID.AntlionClaw:
-				case ItemID.StarWrath:
-				case ItemID.Meowmere:
-					SwingType = BossRushUseStyle.Swipe;
-					UseSwipeTwo = true;
-					item.useTurn = false;
-					item.Set_ItemCriticalDamage(1f);
-					break;
-				case ItemID.ZombieArm:
-				case ItemID.BatBat:
-				case ItemID.TentacleSpike:
-				case ItemID.SlapHand:
-				case ItemID.HamBat:
-				case ItemID.PsychoKnife:
-				case ItemID.DD2SquireBetsySword:
-					SwingType = BossRushUseStyle.SwipeDown;
-					item.useTurn = false;
-					item.Set_ItemCriticalDamage(1f);
-					break;
-				case ItemID.PurplePhaseblade:
-				case ItemID.BluePhaseblade:
-				case ItemID.GreenPhaseblade:
-				case ItemID.YellowPhaseblade:
-				case ItemID.OrangePhaseblade:
-				case ItemID.RedPhaseblade:
-				case ItemID.WhitePhaseblade:
-				case ItemID.PurplePhasesaber:
-				case ItemID.BluePhasesaber:
-				case ItemID.GreenPhasesaber:
-				case ItemID.YellowPhasesaber:
-				case ItemID.OrangePhasesaber:
-				case ItemID.RedPhasesaber:
-				case ItemID.WhitePhasesaber:
-					SwingType = BossRushUseStyle.Swipe;
-					item.useTurn = false;
-					item.Set_ItemCriticalDamage(1f);
-					IframeDivision = 3;
-					ShaderOffSetLength = 5;
-					break;
-				default:
-					break;
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -292,7 +180,10 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (item.type == player.HeldItem.type || item.type == Main.mouseItem.type) {
 				if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-					if (player.itemAnimation <= AnimationEndTime) {
+					if (TemporaryDisableAttackAnimation) {
+						return;
+					}
+					if (player.itemAnimation <= AnimationEndTime && player.altFunctionUse != 2) {
 						if (Main.mouseLeftRelease) {
 							player.itemAnimation = 0;
 							player.SetItemTime(0);
@@ -319,6 +210,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public void ModdedUseStyle(Item item, Player player) {
+			if (TemporaryDisableAttackAnimation) {
+				return;
+			}
 			SwingStrength = 7;
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
@@ -618,13 +512,13 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			if (Player.ItemAnimationActive) {
-				float scale = Player.GetAdjustedItemScale(item);
-				swordLength = item.Size.Length() * .55f * scale;
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
 				var overhaul = item.GetGlobalItem<MeleeWeaponOverhaul>();
-				if (overhaul.HideSwingVisual) {
+				if (overhaul.HideSwingVisual || overhaul.TemporaryDisableAttackAnimation) {
 					return;
 				}
+				float scale = Player.GetAdjustedItemScale(item);
+				swordLength = item.Size.Length() * .55f * scale;
 				swordLength += overhaul.ShaderOffSetLength;
 				float extraAdd = MathHelper.ToRadians(2) * Player.direction;
 				float customAddByXinim = startSwordSwingAngle;
@@ -641,6 +535,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					ModUtils.Push(ref swordTipPositions, insertPos);
 					ModUtils.Push(ref swordRotations, dir.ToRotation() - MathHelper.PiOver2);
 				}
+			}
+			else {
+				item.GetGlobalItem<MeleeWeaponOverhaul>().TemporaryDisableAttackAnimation = false;
 			}
 			//can't believe we have to do this
 			if (Player.ItemAnimationEndingOrEnded) {

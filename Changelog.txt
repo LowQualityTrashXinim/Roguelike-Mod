@@ -284,4 +284,8 @@ Version 0.0.1:
 282/ Slightly changed Manafury.
 283/ Added Master wood bow.
 284/ Added Snowstorm.
-285/ Organize lootbox folder for near future implementation.
+285/ Organized lootbox folder for near future implementation.
+286/ Added Gold/Platinum Complex Bow.
+287/ Implemented test guard mechanic for sword.
+288/ Follow up with 287 changes, add in a small parry mechanic.
+289/ Organized code.
