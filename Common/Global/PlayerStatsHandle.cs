@@ -258,7 +258,13 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier RangeAtkSpeed = StatModifier.Default;
 	public StatModifier MagicAtkSpeed = StatModifier.Default;
 	public StatModifier SummonAtkSpeed = StatModifier.Default;
+	/// <summary>
+	/// True damage will always deal damage to enemy regardless of defense or DR
+	/// </summary>
 	public StatModifier TrueDamage = StatModifier.Default;
+	/// <summary>
+	/// This percentage damage will always deal NPC% health as true damage
+	/// </summary>
 	public float PercentageDamage = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		var item = Player.HeldItem;

@@ -293,3 +293,6 @@ Version 0.0.1:
 291/ Deleted 2 Token of Pride upgrade perk.
 292/ Deleted Agumentation chance, enchantment chance and transmutation chance from PlayerStatsHandler.
 293/ Nerf Alchemist's Book, capped the "Having active buff will increase your stats" effect to 3 buffs.
+294/ Added Soul Breaker perk.
+295/ Changed how DR work on NPC side.
+296/ Organized Mod perk.

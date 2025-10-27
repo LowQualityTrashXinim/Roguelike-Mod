@@ -95,13 +95,17 @@ internal class SwordProjectile2 : ModProjectile {
 	}
 	public int ItemIDtextureValue = ItemID.WoodenSword;
 	Vector2 vel = Vector2.Zero;
+	Vector2 mousePos = Vector2.Zero;
+	public override void OnSpawn(IEntitySource source) {
+		mousePos = Main.MouseWorld;
+	}
 	public float Counter { get => Projectile.ai[0]; set => Projectile.ai[0] = value; }
 	public float State { get => Projectile.ai[1]; set => Projectile.ai[1] = value; }
 	public override bool? CanDamage() {
 		return State != 1;
 	}
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
-		if (Projectile.Center.Y >= Main.MouseWorld.Y - 50) {
+		if (Projectile.Center.Y >= mousePos.Y - 50) {
 			return true;
 		}
 		else {

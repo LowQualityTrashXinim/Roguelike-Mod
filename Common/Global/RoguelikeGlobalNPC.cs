@@ -252,7 +252,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			}
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.FinalDamage *= 1 - Endurance;
+		modifiers.SourceDamage *= 1 - Endurance;
 	}
 	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
@@ -287,7 +287,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.FinalDamage *= Math.Clamp(1 - Endurance, 0, 1f);
+		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 		if (projectile.type == ProjectileID.GolemFist) {
 			if (++GolemFist_HitCount % 3 == 0) {
 				modifiers.SourceDamage += 1.5f;

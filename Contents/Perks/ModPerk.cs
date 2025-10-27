@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items;
@@ -17,114 +16,9 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Roguelike.Contents.Perks.BlessingPerk;
+using Roguelike.Contents.Perks.PerkContents;
 
 namespace Roguelike.Contents.Perks;
-public class MarkOfSpectre : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<MarkOfSpectre>();
-		CanBeStack = false;
-	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.35f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.JumpBoost, 1.65f);
-	}
-	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
-		ModifyHit(ref modifiers);
-	}
-	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		ModifyHit(ref modifiers);
-	}
-	private static void ModifyHit(ref Player.HurtModifiers modifiers) {
-		modifiers.FinalDamage += .25f;
-		modifiers.Knockback *= .35f;
-	}
-	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
-		if (!player.immune && Main.rand.NextFloat() <= .6f) {
-			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
-			player.immune = true;
-			return true;
-		}
-		return base.FreeDodge(player, hurtInfo);
-	}
-}
-public class LethalKnockBack : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<LethalKnockBack>();
-		list_category.Add(PerkCategory.WeaponUpgrade);
-		CanBeStack = false;
-	}
-	public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
-		if (item.DamageType == DamageClass.Melee) {
-			knockback += .15f;
-		}
-	}
-	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		damage -= .11f;
-	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
-	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
-	}
-}
-public class PowerUp : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<PowerUp>();
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		damage += .25f * StackAmount(player);
-	}
-	public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-		crit += 10 * StackAmount(player);
-	}
-	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-		useSpeed -= .25f + .1f * StackAmount(player);
-	}
-}
-public class LifeForceOrb : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<LifeForceOrb>();
-		CanBeStack = false;
-	}
-	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		LifeForceSpawn(player, target);
-	}
-	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		LifeForceSpawn(player, target);
-	}
-	private static void LifeForceSpawn(Player player, NPC target) {
-		if (Main.rand.NextBool(10))
-			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(target.width + 100, target.height + 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
-	}
-}
-public class BackUpMana : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<BackUpMana>();
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
-		mana.Base += 67 * StackAmount(player);
-	}
-	public override void OnMissingMana(Player player, Item item, int neededMana) {
-		if (!player.HasBuff<BackUpMana_CoolDown>()) {
-			player.statMana = player.statManaMax2;
-			player.AddBuff(ModContent.BuffType<BackUpMana_CoolDown>(), ModUtils.ToSecond(Math.Clamp(37 - 7 * StackAmount(player), 1, 9999)));
-		}
-	}
-	class BackUpMana_CoolDown : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultDeBuff(true);
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenMana, -.5f);
-		}
-	}
-}
 public class Dirt : Perk {
 	public override void SetDefaults() {
 		CanBeStack = false;
@@ -134,113 +28,6 @@ public class Dirt : Perk {
 		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 		handle.ChanceDropModifier += .1f * StackAmount(player);
 		handle.DropModifier.Base += 1;
-	}
-}
-public class SelfExplosion : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<SelfExplosion>();
-		CanBeStack = true;
-		StackLimit = 2;
-	}
-	public override void OnHitByAnything(Player player) {
-		player.Center.LookForHostileNPC(out List<NPC> npclist, 500);
-		foreach (NPC npc in npclist) {
-			int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-			npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount(player), direction, false, 10));
-		}
-		for (int i = 0; i < 150; i++) {
-			int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
-			Main.dust[smokedust].noGravity = true;
-			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(500 / 12f, 500 / 12f);
-			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
-			int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(500 / 12f, 500 / 12f);
-			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-		}
-		player.AddBuff(ModContent.BuffType<ExplosionHealing>(), ModUtils.ToSecond(5 + StackAmount(player)));
-	}
-	class ExplosionHealing : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			player.lifeRegen += 15;
-		}
-	}
-}
-public class ProjectileProtection : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<ProjectileProtection>();
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override void UpdateEquip(Player player) {
-		player.endurance += .05f * StackAmount(player);
-	}
-	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		modifiers.SourceDamage += -.3f * StackAmount(player);
-	}
-}
-public class ProjectileDuplication : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage -= (StackLimit - StackAmount(player) + 1) * .15f;
-	}
-	public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (type != ModContent.ProjectileType<ArenaMakerProj>()
-			|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
-			|| type == ModContent.ProjectileType<TowerDestructionProjectile>()
-			|| !ContentSamples.ProjectilesByType[type].minion) {
-			player.GetModPlayer<PlayerStatsHandle>().Request_ShootExtra(StackAmount(player), 5 + 5 * StackAmount(player));
-		}
-	}
-}
-public class ScatterShot : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<ScatterShot>();
-		CanBeStack = false;
-	}
-	public override void ResetEffect(Player player) {
-		player.GetModPlayer<PerkPlayer>().perk_ScatterShot = true;
-	}
-}
-public class BloodStrike : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<BloodStrike>();
-		CanBeStack = false;
-	}
-	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		damage *= 1.36f;
-		damage.Flat += 7;
-	}
-	public override void OnUseItem(Player player, Item item) {
-		if (item.IsAWeapon() && player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
-			int damage = (int)Math.Round(player.GetWeaponDamage(player.HeldItem) * .05f);
-			player.statLife = Math.Clamp(player.statLife - damage, 0, player.statLifeMax2);
-			ModUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10, 40));
-		}
-	}
-}
-public class SpeedArmor : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<SpeedArmor>();
-		CanBeStack = true;
-		StackLimit = 2;
-	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1 + .45f * StackAmount(player));
-		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, Additive: 1 + .2f * StackAmount(player));
-		modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: (int)Math.Round(player.velocity.Length()) * StackAmount(player));
-	}
-	public override void PostUpdateRun(Player player) {
-		player.runAcceleration += .5f;
-		player.runSlowdown += .25f;
 	}
 }
 public class CelestialRage : Perk {
@@ -859,49 +646,6 @@ public class EnchantmentSmith : Perk {
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;
-	}
-}
-public class ArcaneMaster : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 2;
-		textureString = ModUtils.GetTheSameTextureAsEntity<ArcaneMaster>();
-	}
-	public override void UpdateEquip(Player player) {
-		player.ModPlayerStats().AddStatsToPlayer(PlayerStats.MagicDMG, Multiplicative: 1.1f);
-		float addition = (StackAmount(player) - 1) * .05f;
-		player.manaCost -= .15f + addition;
-		player.GetModPlayer<ArcaneMasterPlayer>().ArcaneMaster = true;
-	}
-	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		ArcaneMasterPlayer modplayer = player.GetModPlayer<ArcaneMasterPlayer>();
-		if (modplayer.ArcaneMaster && item.DamageType == DamageClass.Magic) {
-			float addition = (StackAmount(player) - 1) * .005f;
-			damage += modplayer.ManaCostIncreases * .01f + addition;
-		}
-	}
-	class ArcaneMasterPlayer : ModPlayer {
-		public bool ArcaneMaster = false;
-		public int ManaCostIncreases = 0;
-		public int Decay_ManaCostIncreases = 0;
-		public override void ResetEffects() {
-			ArcaneMaster = false;
-			if (ManaCostIncreases <= 0 || Player.ItemAnimationActive) return;
-			if (++Decay_ManaCostIncreases >= 10) {
-				ManaCostIncreases--;
-				Decay_ManaCostIncreases = 0;
-			}
-		}
-		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .01f;
-		}
-		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-			if (ArcaneMaster) mult += ManaCostIncreases * .02f;
-		}
-		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (ArcaneMaster) ManaCostIncreases = Math.Clamp(ManaCostIncreases + 1, 0, 60);
-			return base.Shoot(item, source, position, velocity, type, damage, knockback);
-		}
 	}
 }
 public class Stimulation : Perk {

@@ -825,3 +825,13 @@ ElementalProtection: {
 		Getting hit may resulting you do a elemental explosion
 		'''
 }
+
+SoulBreaker: {
+	DisplayName: Soul Breaker
+	Description:
+		'''
+		Multiply damage by 0.25x
+		Increases true damage by 50%
+		Increases percentage damage by 0.1%
+		'''
+}
