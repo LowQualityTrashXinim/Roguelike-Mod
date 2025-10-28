@@ -27,6 +27,7 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
+using Roguelike.Contents.Items.Lootbox.BossLootBox;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

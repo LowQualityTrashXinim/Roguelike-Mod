@@ -1,5 +1,4 @@
-﻿using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
-using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 
@@ -60,6 +59,7 @@ class BorealWoodArmorPlayer : PlayerArmorHandle {
 	public override void SetStaticDefaults() {
 		ArmorLoader.SetModPlayer("BorealwoodArmor", this);
 	}
+	int CD_Heal = 0;
 	public override void Armor_UpdateEquipsSet() {
 		Player.statDefense += 5;
 		Player.moveSpeed += .20f;
@@ -68,13 +68,14 @@ class BorealWoodArmorPlayer : PlayerArmorHandle {
 		var rougelike = Player.GetModPlayer<RoguelikeArmorPlayer>();
 		rougelike.FrostBurnChance += .07f;
 		rougelike.SnowSpawnChance += .1f;
-
+		CD_Heal = ModUtils.CountDown(CD_Heal);
 	}
-	public override void Armor_OnHitByNPC(NPC target, Player.HurtInfo hurtInfo) {
+	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
-			Player.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(10));
+			if(CD_Heal <= 0) {
+				Player.Heal(1);
+				CD_Heal = 60;
+			}
 		}
-	}
-	public override void Armor_ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 	}
 }

@@ -296,3 +296,10 @@ Version 0.0.1:
 294/ Added Soul Breaker perk.
 295/ Changed how DR work on NPC side.
 296/ Organized Mod perk.
+297/ Slightly changed Boreal Wood armor to be more fun to play.
+298/ Add in extra function for world vault item.
+299/ Minor optimization in code.
+300/ Lootbox no longer can activate spoil.
+301/ Deleted item graveyard and request item add into lootbox due to better solution were found.
+302/ Deleted item rng selector for lootbox because it was never used, and a better solution is found instead.
+303/ Added EoC, KingSlime, Plantera, Skeletron lootbox and also changed some lootbox to become boss lootbox ( note this may changed in the future ).

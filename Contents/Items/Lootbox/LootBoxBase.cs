@@ -30,6 +30,21 @@ namespace Roguelike.Contents.Items.Lootbox {
 
 		}
 		public virtual bool ChestUseOwnLogic => false;
+		public virtual List<int> ItemPool() {
+			return new();
+		}
+		public HashSet<int> LootboxItemPool() {
+			var poollist = ItemPool();
+			HashSet<int> itemList = new();
+			foreach (var item in poollist) {
+				var pool = LootboxSystem.GetItemPool(item);
+				if (pool == null) {
+					continue;
+				}
+				itemList.UnionWith(pool.AllItemPool());
+			}
+			return itemList;
+		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			if (!ChestUseOwnLogic) {
 				if (LootboxSystem.GetItemPool(Type) == null)
@@ -54,21 +69,13 @@ namespace Roguelike.Contents.Items.Lootbox {
 			PostModifyTooltips(ref tooltips);
 		}
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
-		private static int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
-			if (influence != -1) {
-				if (Main.rand.NextFloat() <= chance && chance != 0) {
-					return influence;
-				}
-			}
+		protected static int RNGManage(Player player, int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 25) {
 			int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
 			if (DrugValue > 0) {
 				if (Main.rand.Next(100 + DrugValue * 5) <= DrugValue * 10) {
 					return 6;
 				}
 			}
-			return rng;
-		}
-		protected static int RNGManage(Player player, int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 25) {
 			var modplayer = player.ModPlayerStats();
 			meleeChance = (int)(modplayer.UpdateMeleeChanceMutilplier * meleeChance);
 			rangeChance = (int)(modplayer.UpdateRangeChanceMutilplier * rangeChance);
@@ -100,13 +107,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 				ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Add(Type);
 			}
 			var modplayer = player.ModPlayerStats();
-			if (modplayer.ItemGraveYard.Count > 0) {
-				int RemoveAmount = 1 + modplayer.ItemGraveYard.Count / 10;
-				for (int i = 0; i < RemoveAmount; i++) {
-					int index = Main.rand.Next(modplayer.ItemGraveYard.Count);
-					modplayer.ItemGraveYard.Remove(modplayer.ItemGraveYard.ElementAt(index));
-				}
-			}
 			for (int i = 0; i < player.inventory.Length; i++) {
 				var item = player.inventory[i];
 				if (item.ammo == AmmoID.None
@@ -132,19 +132,13 @@ namespace Roguelike.Contents.Items.Lootbox {
 			if (modplayer.CanDropSynergyEnergy) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			}
-			//Lootbox basic behavior
-			if (CanActivateSpoil) {
-				var system = ModContent.GetInstance<UniversalSystem>();
-				system.ActivateSpoilsUI(Type);
-			}
 			AbsoluteRightClick(player);
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 				if (Main.rand.NextBool()) {
 					var item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
 					var ticket = item.ModItem as WeaponTicket;
-					var pool = LootboxSystem.GetItemPool(Type);
 					int amount = Main.rand.Next(4, 9);
-					HashSet<int> p = [.. pool.AllItemPool()];
+					HashSet<int> p = [.. LootboxItemPool()];
 					if (p.Count <= amount) {
 						ticket.Add_HashSet(p);
 					}
@@ -181,82 +175,49 @@ namespace Roguelike.Contents.Items.Lootbox {
 		/// <param name="player"></param>
 		/// <param name="LoopAmount"></param>
 		/// <param name="rng"></param>
-		public void GetWeapon(IEntitySource entitySource, Player player, int LoopAmount, int rng = 0) {
-			int SpecialAmount = 200;
-			int ReturnWeapon = ItemID.None;
-			//adding stuff here
-			if (Main.masterMode) {
-				SpecialAmount += 150;
+		public void GetWeapon(IEntitySource entitySource, Player player, int LoopAmount) {
+			int ReturnWeapon;
+			var AllLootID = LootboxItemPool().ToArray();
+			List<int> Melee = new(), Range = new(), Magic = new(), Summon = new();
+
+			for (int i = 0; i < AllLootID.Length; i++) {
+				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
+				Melee.AddRange(pool.MeleeLoot());
+				Range.AddRange(pool.MagicLoot());
+				Magic.AddRange(pool.RangeLoot());
+				Summon.AddRange(pool.SummonLoot());
 			}
-			//actual choosing item
-			var modplayer = player.ModPlayerStats();
-			var DummyMeleeData = LootboxSystem.GetItemPool(Type).MeleeLoot().Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			var DummyRangeData = LootboxSystem.GetItemPool(Type).RangeLoot().Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			var DummyMagicData = LootboxSystem.GetItemPool(Type).MagicLoot().Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			var DummySummonData = LootboxSystem.GetItemPool(Type).SummonLoot().Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
-			DummyMeleeData.UnionWith(modplayer.Request_AddMelee);
-			DummyRangeData.UnionWith(modplayer.Request_AddRange);
-			DummyMagicData.UnionWith(modplayer.Request_AddMagic);
-			DummySummonData.UnionWith(modplayer.Request_AddSummon);
+			int rng;
 			for (int i = 0; i < LoopAmount; i++) {
 				rng = RNGManage(player);
-				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
 				switch (rng) {
 					case 0:
+						rng = Main.rand.Next(1, 5);
+						i--;
 						break;
 					case 1:
-						if (DummyMeleeData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							break;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
+						ReturnWeapon = Main.rand.Next(Melee);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyMeleeData.Remove(ReturnWeapon);
+						Melee.Remove(ReturnWeapon);
 						break;
 					case 2:
-						if (DummyRangeData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							AmmoForWeapon(entitySource, player, Weapon);
-							break;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
+						ReturnWeapon = Main.rand.Next(Range);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						AmmoForWeapon(entitySource, player, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyRangeData.Remove(ReturnWeapon);
+						Range.Remove(ReturnWeapon);
 						break;
 					case 3:
-						if (DummyMagicData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							AmmoForWeapon(entitySource, player, Weapon);
-							break;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						ReturnWeapon = Main.rand.Next(Magic);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummyMagicData.Remove(ReturnWeapon);
-						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						Magic.Remove(ReturnWeapon);
 						break;
 					case 4:
-						if (DummySummonData.Count <= 0) {
-							GetWeapon(out int Weapon, out int Amount, rng);
-							player.QuickSpawnItem(entitySource, Weapon, Amount);
-							AmmoForWeapon(entitySource, player, Weapon);
-							break;
-						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummySummonData);
+						ReturnWeapon = Main.rand.Next(Summon);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						modplayer.ItemGraveYard.Add(ReturnWeapon);
-						DummySummonData.Remove(ReturnWeapon);
+						Summon.Remove(ReturnWeapon);
 						break;
-					case 5:
 					case 6:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>());
-						break;
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>(), LoopAmount);
+						return;
 				}
 			}
 		}
@@ -653,7 +614,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			var modplayer = player.ModPlayerStats();
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
-			item.GetWeapon(player.GetSource_OpenItem(lootbox.type), player, weaponAmount, rng);
+			item.GetWeapon(player.GetSource_OpenItem(lootbox.type), player, weaponAmount);
 		}
 		/// <summary>
 		/// Use this if you only care about getting ammo for weapon

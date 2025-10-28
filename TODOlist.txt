@@ -1,7 +1,7 @@
 1/ Make world generation process much more easy to work with.
 2/ Assign NPC and Item to EF (ElemFac).
 3/ Work on more Trial NPC and Trial Projectile
-4/ Work on debuff and buff sprite.
+4/ Work on debuff and buff sprite and many minssing sprite in the mod.
 5/ Remove connection between spoil and lootbox. (connect with task 8)
 5.1/ Rework the entire lootbox and loot table.
 6/ Make uses of ModUtils localization universally. ( is this done ? )
@@ -12,4 +12,3 @@
 11/ Work on better debug UI and tool. // Missing relic, augmentation debug UI.
 12/ Rework rarity system and tranmutation system.
 13/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-14/ Draw sprite for many minssing sprite in the mod.

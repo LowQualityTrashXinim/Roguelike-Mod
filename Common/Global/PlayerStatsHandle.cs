@@ -27,15 +27,6 @@ namespace Roguelike.Common.Global;
 public class PlayerStatsHandle : ModPlayer {
 	public bool CanDropSynergyEnergy = true;
 	public bool LootboxCanDropSpecialPotion = false;
-	public HashSet<int> ItemGraveYard = new HashSet<int>();
-	public HashSet<int> Request_AddMelee = new();
-	public HashSet<int> Request_AddRange = new();
-	public HashSet<int> Request_AddMagic = new();
-	public HashSet<int> Request_AddSummon = new();
-	public HashSet<int> Request_AddMisc = new();
-	public int InfluenceableRNGselector = -1;
-	public float Chance_4RNGselector { get; set; } = 0;
-
 	public int counterShow = 0;
 	public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
 	public float ChanceLootDrop = 0;
@@ -485,13 +476,6 @@ public class PlayerStatsHandle : ModPlayer {
 		PercentageDamage = 0;
 		TrueDamage = StatModifier.Default;
 
-		Request_AddMelee.Clear();
-		Request_AddRange.Clear();
-		Request_AddMagic.Clear();
-		Request_AddSummon.Clear();
-		Request_AddMisc.Clear();
-		InfluenceableRNGselector = -1;
-		Chance_4RNGselector = 0;
 		DropModifier = StatModifier.Default;
 		ChanceDropModifier = StatModifier.Default;
 		ChanceLootDrop = 0;

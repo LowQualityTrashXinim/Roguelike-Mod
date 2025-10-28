@@ -4,7 +4,7 @@ using Roguelike.Common.Utils;
 
 using Roguelike.Common.Global;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	class HoneyLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 		}

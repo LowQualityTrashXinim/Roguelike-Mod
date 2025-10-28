@@ -1,8 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using System.Collections.Generic;
-using Roguelike.Common.Utils;
-
 using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Items.Lootbox {
@@ -26,10 +24,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		}
 		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (NPC.downedQueenBee) {
-				int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace });
-				player.QuickSpawnItem(entitySource, OneRareBeeItem);
-			}
 			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
 			player.QuickSpawnItem(entitySource, GetAccessory());
 			GetWeapon(entitySource, player, 5);

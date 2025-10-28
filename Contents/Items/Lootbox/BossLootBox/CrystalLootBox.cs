@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	class CrystalLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;

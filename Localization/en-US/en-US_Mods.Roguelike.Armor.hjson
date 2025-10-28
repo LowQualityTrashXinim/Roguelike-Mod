@@ -64,8 +64,8 @@ BorealwoodArmor: {
 		Increase defense by 5 and movement speed by 20%
 		You are immune to Chilled, Slow
 		+ 7% chance to inflict frost burn
-		+ 20% chance to shoot snowball
-		Frost burn now grant massive boost in regeneration
+		+ 10% chance to shoot snowball
+		Hitting enemy with Frost burn heal you for 1 hp (CD:1s)
 		'''
 }
 

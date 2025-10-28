@@ -6,7 +6,7 @@ using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	class CorruptionLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;

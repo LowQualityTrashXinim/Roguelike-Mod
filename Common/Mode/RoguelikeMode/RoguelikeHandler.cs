@@ -21,53 +21,20 @@ internal class RoguelikeHandler : ModSystem {
 			return;
 		}
 		Player player = Main.LocalPlayer;
-		Vector2 CK_pos = ModContent.GetInstance<RogueLikeWorldGen>().CursedKingdomArea.Center().ToWorldCoordinates();
-		if (player.Center.Distance(CK_pos) < 2000) {
+		RogueLikeWorldGen system = ModContent.GetInstance<RogueLikeWorldGen>();
+		SpawnPortalWithCondition(player, system.CursedKingdomArea.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_CursedKingdom>());
+		SpawnPortalWithCondition(player, system.SlimeWorldEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_SlimeWorld>());
+		SpawnPortalWithCondition(player, system.FleshRealmEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_FleshRealm>());
+		SpawnPortalWithCondition(player, system.CorruptionEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Corruption>());
+		SpawnPortalWithCondition(player, system.CrimsonEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Crimson>());
+	}
+	private void SpawnPortalWithCondition(Player player, Vector2 pos, int portalType) {
+		if (player.Center.Distance(pos) < 2000) {
 			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, CK_pos, Vector2.Zero, ModContent.ProjectileType<Portal_CursedKingdom>(), 0, 0, player.whoAmI);
+				Projectile_WhoAmI = Projectile.NewProjectile(null, pos, Vector2.Zero, portalType, 0, 0, player.whoAmI);
 			}
 			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_CursedKingdom>()) {
-				Projectile_WhoAmI = -1;
-			}
-		}
-		Vector2 Slime_pos = ModContent.GetInstance<RogueLikeWorldGen>().SlimeWorldEntrance.Center().ToWorldCoordinates();
-		if (player.Center.Distance(Slime_pos) < 2000) {
-			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_SlimeWorld>(), 0, 0, player.whoAmI);
-			}
-			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_SlimeWorld>()) {
-				Projectile_WhoAmI = -1;
-			}
-		}
-		Vector2 Flesh_pos = ModContent.GetInstance<RogueLikeWorldGen>().FleshRealmEntrance.Center().ToWorldCoordinates();
-		if (player.Center.Distance(Flesh_pos) < 2000) {
-			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_FleshRealm>(), 0, 0, player.whoAmI);
-			}
-			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_FleshRealm>()) {
-				Projectile_WhoAmI = -1;
-			}
-		}
-		Vector2 Corruption_pos = ModContent.GetInstance<RogueLikeWorldGen>().CorruptionEntrance.Center().ToWorldCoordinates();
-		if (player.Center.Distance(Corruption_pos) < 2000) {
-			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_Corruption>(), 0, 0, player.whoAmI);
-			}
-			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_Corruption>()) {
-				Projectile_WhoAmI = -1;
-			}
-		}
-		Vector2 Crimson_pos = ModContent.GetInstance<RogueLikeWorldGen>().CrimsonEntrance.Center().ToWorldCoordinates();
-		if (player.Center.Distance(Crimson_pos) < 2000) {
-			if (Projectile_WhoAmI < 0 || Projectile_WhoAmI > Main.maxProjectiles) {
-				Projectile_WhoAmI = Projectile.NewProjectile(null, Slime_pos, Vector2.Zero, ModContent.ProjectileType<Portal_Crimson>(), 0, 0, player.whoAmI);
-			}
-			Projectile proj = Main.projectile[Projectile_WhoAmI];
-			if (!proj.active || proj.type != ModContent.ProjectileType<Portal_Crimson>()) {
+			if (!proj.active || proj.type != portalType) {
 				Projectile_WhoAmI = -1;
 			}
 		}

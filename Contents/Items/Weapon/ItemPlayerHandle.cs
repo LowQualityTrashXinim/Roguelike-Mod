@@ -1,33 +1,34 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using System.Linq;
-using ReLogic.Graphics;
-using Terraria.UI.Chat;
-using Roguelike.Texture;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Localization;
-using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent.UI;
-using Roguelike.Contents.NPCs;
-using Roguelike.Common.Global;
-using Roguelike.Contents.Perks;
-using Roguelike.Common.Systems;
-using System.Collections.Generic;
-using Roguelike.Common.ChallengeMode;
-using System.Collections.ObjectModel;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Systems.IOhandle;
-using Roguelike.Contents.Transfixion.Arguments;
+using Mono.Cecil;
+using ReLogic.Graphics;
+using Roguelike.Common.ChallengeMode;
+using Roguelike.Common.Global;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
+using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.IOhandle;
+using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
-using Roguelike.Contents.Transfixion.WeaponEnchantment;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using Terraria.ModLoader.IO;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using Roguelike.Contents.NPCs;
+using Roguelike.Contents.Perks;
+using Roguelike.Contents.Transfixion.Arguments;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.UI;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using Terraria.UI.Chat;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -219,6 +220,8 @@ namespace Roguelike.Contents.Items.Weapon {
 			Variant = WorldVaultSystem.Register(this);
 		}
 		public virtual void SetDefault(Item item) { }
+		public virtual void Shoot(Item item, Player player, IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
+		public virtual void UpdateInv(Item item, Player player) { }
 	}
 	/// <summary>
 	/// This class hold mainly tooltip information<br/>
@@ -255,6 +258,23 @@ namespace Roguelike.Contents.Items.Weapon {
 				}
 				WorldVaultSystem.Set_Variant = 0;
 			}
+		}
+		public override void HoldItem(Item item, Player player) {
+			if (VariantType != -1) {
+				var variant = WorldVaultSystem.GetVariant(item.type, VariantType);
+				if (variant != null) {
+					variant.UpdateInv(item, player);
+				}
+			}
+		}
+		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (VariantType != -1) {
+				var variant = WorldVaultSystem.GetVariant(item.type, VariantType);
+				if (variant != null) {
+					variant.Shoot(item, player, source, position, velocity, type, damage, knockback);
+				}
+			}
+			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public float CriticalDamage;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
