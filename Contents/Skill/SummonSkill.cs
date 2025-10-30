@@ -126,6 +126,7 @@ public class DebugCommand : ModSkill {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
 		}
 		player.AddImmuneTime(-1, duration / 10);
+		player.immune = true;
 		player.AddBuff<DebugStatus>(ModUtils.ToSecond(duration / 10));
 	}
 }

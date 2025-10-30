@@ -103,6 +103,11 @@ Chik:
 	'''
 MechanicalLens:
 	'''
-	Decreases critical strike damage by 15%
-	Increases critical strike chance effectiveness by 33% and flat chance by 5%
+	Increases critical strike damage by 55%
+	Multiply critical strike chance by 1.33x and flat chance by 5%
+	'''
+Aglet:
+	'''
+	Increases dodge chance by 15% and jump boost by 35%
+	Upon dodge, player gain 35% movement speed for 30s
 	'''

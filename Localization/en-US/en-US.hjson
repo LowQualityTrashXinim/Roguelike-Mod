@@ -3286,8 +3286,13 @@ Mods: {
 			}
 
 			DefenseMK1_Buff: {
-				DisplayName: Defense M K1_ Buff
-				Description: Mods.Roguelike.Buffs.DefenseMK1_Buff.Description
+				DisplayName: Defense MK1
+				Description: Increases damage by 20%
+			}
+
+			Aglet_Buff: {
+				DisplayName: Aglet
+				Description: +35% movement speed
 			}
 		}
 

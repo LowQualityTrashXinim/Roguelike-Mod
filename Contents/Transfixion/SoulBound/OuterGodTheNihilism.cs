@@ -87,6 +87,7 @@ internal class OuterGodTheNihilism : ModSoulBound {
 					player.StrikeNPCDirect(npc, hitinfo);
 				}
 			}
+			player.immune = true;
 			player.AddImmuneTime(info.CooldownCounter, 44);
 		}
 		return base.FreeDodge(player, info, acc);

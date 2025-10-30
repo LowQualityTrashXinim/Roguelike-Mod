@@ -31,6 +31,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier ChanceDropModifier = new();
 
 	public StatModifier DropModifier = new();
+	public bool Get_DidPlayerDodge = false;
 
 	//This is inner modifier ( aka amount modifier to x stuff )
 	/// <summary>
@@ -145,7 +146,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <summary>
 	/// This is the universal dodge timer
 	/// </summary>
-	public int DodgeTimer = 44;
+	public int DodgeTimer = 66;
 	/// <summary>
 	/// This is a universal life steal that work depend on weapon damage <br/>
 	/// This have a forced cool down so that it is not OP <br/>
@@ -320,6 +321,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
+			Player.immune = true;
 			Player.AddImmuneTime(info.CooldownCounter, DodgeTimer);
 			return true;
 		}
@@ -352,6 +354,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
+		}
+		if (!Player.immune) {
+			Get_DidPlayerDodge = false;
 		}
 		Player.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
@@ -1045,8 +1050,15 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
 		On_Player.GetItemGrabRange += On_Player_GetItemGrabRange;
 		On_NPC.HitModifiers.GetDamage += HitModifiers_GetDamage;
+		On_Player.Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float += On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float;
 	}
-
+	private double On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float(On_Player.orig_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float orig, Player self, PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp, bool quiet, bool Crit, int cooldownCounter, bool dodgeable, float armorPenetration) {
+		double dmg = orig(self, damageSource, Damage, hitDirection, pvp, quiet, Crit, cooldownCounter, dodgeable, armorPenetration);
+		if (dmg == 0.0) {
+			self.ModPlayerStats().Get_DidPlayerDodge = true;
+		}
+		return dmg;
+	}
 	private void On_NPC_DelBuff(On_NPC.orig_DelBuff orig, NPC self, int buffIndex) {
 		if (self.HasBuff<Anti_Immunity>()) {
 			if (self.buffImmune[self.buffType[buffIndex]]) {

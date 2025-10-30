@@ -794,6 +794,7 @@ public class Ghost : ModAugments {
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (!player.immune) {
+			player.immune = true;
 			player.AddImmuneTime(-1, 8);
 		}
 	}

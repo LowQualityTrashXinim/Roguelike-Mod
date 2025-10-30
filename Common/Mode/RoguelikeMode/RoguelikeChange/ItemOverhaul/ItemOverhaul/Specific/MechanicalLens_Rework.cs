@@ -11,7 +11,7 @@ internal class Roguelike_MechanicalLens : GlobalItem {
 		if (item.type == ItemID.MechanicalLens) {
 			PlayerStatsHandle handler = player.ModPlayerStats();
 			handler.AddStatsToPlayer(PlayerStats.CritChance, 1, 1.33f, 5);
-			handler.UpdateCritDamage -= .15f;
+			handler.UpdateCritDamage += .55f;
 		}
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

@@ -306,3 +306,5 @@ Version 0.0.1:
 304/ Changed how tooltip is display in spoil and lootbox.
 305/ Added DefenseMK1 relic set.
 306/ Buff Copper armor.
+307/ Fixed universal dodge not working.
+308/ Reworked Aglet

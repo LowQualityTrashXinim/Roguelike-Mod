@@ -24,6 +24,7 @@ public class ScrollOfEnvasionPlayer : ModPlayer {
 		if (Player.HasBuff(ModContent.BuffType<EvasionSpell>())) {
 			Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<EvasionSpell>()));
 			Player.AddImmuneTime(info.CooldownCounter, 60);
+			Player.immune = true;
 			return true;
 		}
 		return base.FreeDodge(info);
