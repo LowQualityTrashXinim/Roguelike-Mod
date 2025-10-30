@@ -307,4 +307,6 @@ Version 0.0.1:
 305/ Added DefenseMK1 relic set.
 306/ Buff Copper armor.
 307/ Fixed universal dodge not working.
-308/ Reworked Aglet
+308/ Reworked Aglet.
+309/ Reworked Climbing Claws.
+310/ Reworked Lava Charm.

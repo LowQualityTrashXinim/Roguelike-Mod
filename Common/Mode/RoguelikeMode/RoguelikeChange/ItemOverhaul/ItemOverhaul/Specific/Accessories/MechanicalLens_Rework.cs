@@ -5,11 +5,11 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific.Accessories;
 internal class Roguelike_MechanicalLens : GlobalItem {
 	public override void UpdateEquip(Item item, Player player) {
 		if (item.type == ItemID.MechanicalLens) {
-			PlayerStatsHandle handler = player.ModPlayerStats();
+			var handler = player.ModPlayerStats();
 			handler.AddStatsToPlayer(PlayerStats.CritChance, 1, 1.33f, 5);
 			handler.UpdateCritDamage += .55f;
 		}

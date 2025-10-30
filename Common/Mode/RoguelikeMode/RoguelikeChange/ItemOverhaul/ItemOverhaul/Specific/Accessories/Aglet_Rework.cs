@@ -6,13 +6,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
+namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific.Accessories;
 internal class Roguelike_Aglet : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.Aglet;
 	}
 	public override void UpdateEquip(Item item, Player player) {
-		PlayerStatsHandle handler = player.ModPlayerStats();
+		var handler = player.ModPlayerStats();
 		handler.DodgeChance += .15f;
 		handler.UpdateJumpBoost += .35f;
 		if (handler.Get_DidPlayerDodge) {
