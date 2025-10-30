@@ -60,12 +60,7 @@ public class UncommonSpoil {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
 		public override string FinalDisplayName() {
-			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			if (chestplayer.accShowID == 0 || --chestplayer.counterShow <= 0) {
-				chestplayer.accShowID = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
-				chestplayer.counterShow = 6;
-			}
-			return DisplayName.FormatWith(chestplayer.accShowID);
+			return DisplayName.FormatWith(ItemID.SpectreBoots);
 		}
 		public override string FinalDescription() {
 			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));

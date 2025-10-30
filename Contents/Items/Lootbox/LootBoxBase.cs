@@ -22,10 +22,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		public override void SetStaticDefaults() {
 			LootPoolSetStaticDefaults();
 		}
-		/// <summary>
-		/// Set your lootbox loot pool here<br/>
-		/// Add loot pool into this <see cref="LootboxSystem.LootBoxDropPool"/> and use <see cref="LootBoxItemPool"/> to add your pool in, all of them is hashset
-		/// </summary>
 		public virtual void LootPoolSetStaticDefaults() {
 
 		}
@@ -41,34 +37,22 @@ namespace Roguelike.Contents.Items.Lootbox {
 				if (pool == null) {
 					continue;
 				}
-				itemList.UnionWith(pool.AllItemPool());
+				itemList.Add(pool.Type);
 			}
 			return itemList;
 		}
+		public virtual int WeaponShowForTooltip() => ItemID.IronBroadsword;
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			if (!ChestUseOwnLogic) {
-				if (LootboxSystem.GetItemPool(Type) == null)
-					return;
-				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
-					return;
 				var chestplayer = Main.LocalPlayer.ModPlayerStats();
-				//absolutely not recommend to do this
-				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
-				if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
-					chestplayer.weaponShowID = Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(Type).AllItemPool());
-					chestplayer.potionShowID = Main.rand.Next(potiontotal);
-					chestplayer.counterShow = 6;
-				}
 				chestplayer.GetAmount();
 				var chestline = new TooltipLine(Mod, "ChestLoot",
-					$"Weapon : [i:{chestplayer.weaponShowID}] x {chestplayer.weaponAmount}\n" +
-					$"Potion type : [i:{chestplayer.potionShowID}] x {chestplayer.potionTypeAmount}\n" +
+					$"Weapon : [i:{WeaponShowForTooltip()}] x {chestplayer.weaponAmount}\n" +
+					$"Potion type : [i:{ItemID.WrathPotion}] x {chestplayer.potionTypeAmount}\n" +
 					$"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
 				tooltips.Add(chestline);
 			}
-			PostModifyTooltips(ref tooltips);
 		}
-		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
 		protected static int RNGManage(Player player, int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 25) {
 			int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
 			if (DrugValue > 0) {
@@ -103,9 +87,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		public virtual bool CanActivateSpoil => true;
 		public sealed override void RightClick(Player player) {
 			RoguelikeData.Lootbox_AmountOpen = Math.Clamp(RoguelikeData.Lootbox_AmountOpen + 1, 0, int.MaxValue);
-			if (!ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Contains(Type)) {
-				ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Add(Type);
-			}
 			var modplayer = player.ModPlayerStats();
 			for (int i = 0; i < player.inventory.Length; i++) {
 				var item = player.inventory[i];
@@ -138,7 +119,11 @@ namespace Roguelike.Contents.Items.Lootbox {
 					var item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
 					var ticket = item.ModItem as WeaponTicket;
 					int amount = Main.rand.Next(4, 9);
-					HashSet<int> p = [.. LootboxItemPool()];
+					var AllLootID = LootboxItemPool().ToArray();
+					HashSet<int> p = new();
+					for (int i = 0; i < AllLootID.Length; i++) {
+						p.UnionWith(LootboxSystem.GetItemPool(AllLootID[i]).AllItemPool());
+					}
 					if (p.Count <= amount) {
 						ticket.Add_HashSet(p);
 					}
@@ -475,17 +460,14 @@ namespace Roguelike.Contents.Items.Lootbox {
 			var DropItemRange = new List<int>();
 			var DropItemMagic = new List<int>();
 			var DropItemSummon = new List<int>();
-			var DropItemMisc = new List<int>();
 			DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
 			DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
 			DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
 			DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
-			DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
 			DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
 			DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
 			DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
 			DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-			DropItemMisc.AddRange(TerrariaArrayID.Special);
 			if (NPC.downedBoss1) {
 				DropItemMelee.Add(ItemID.Code1);
 				DropItemMagic.Add(ItemID.ZapinatorGray);
@@ -510,7 +492,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 				DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
 				DropItemMagic.Add(ItemID.BeeGun);
 				DropItemSummon.Add(ItemID.HornetStaff);
-				DropItemMisc.Add(ItemID.Beenade);
 			}
 			if (NPC.downedDeerclops) {
 				DropItemRange.Add(ItemID.PewMaticHorn);

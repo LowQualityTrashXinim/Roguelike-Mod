@@ -108,7 +108,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 /// </summary>
 public class RoguelikeArmorPlayer : ModPlayer {
 	public float MidasChance = 0;
-	public float ElectricityChance = 0;
 	public float FrostBurnChance = 0;
 	public float SnowSpawnChance = 0;
 	public bool SnowBallDamage = false;
@@ -141,7 +140,6 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		ForceActive.Clear();
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		MidasChance = 0;
-		ElectricityChance = 0;
 		FrostBurnChance = 0;
 		SnowSpawnChance = 0;
 		SnowBallDamage = false;
@@ -180,9 +178,6 @@ public class RoguelikeArmorPlayer : ModPlayer {
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextFloat() <= MidasChance) {
 			target.AddBuff(BuffID.Midas, ModUtils.ToSecond(Main.rand.Next(4, 7)));
-		}
-		if (Main.rand.NextFloat() <= ElectricityChance) {
-			target.AddBuff(BuffID.Electrified, ModUtils.ToSecond(Main.rand.Next(4, 7)));
 		}
 		if (Main.rand.NextFloat() <= FrostBurnChance) {
 			target.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(Main.rand.Next(4, 7)));

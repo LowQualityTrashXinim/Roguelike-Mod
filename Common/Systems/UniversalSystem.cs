@@ -373,17 +373,14 @@ internal class UniversalSystem : ModSystem {
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
-	public List<int> LootBoxOpen = new();
 	public string UniqueWorldPlayerID = "";
 	public override void ClearWorld() {
 		GivenBossSpawnItem = new List<int>();
 		ListOfBossKilled = new();
-		LootBoxOpen = new();
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 		tag["ListOfBossKilled"] = ListOfBossKilled;
-		tag["LootBoxOpen"] = LootBoxOpen;
 		if (timeBeatenTheGame != TimeSpan.Zero) {
 			tag["TimeBeaten"] = timeBeatenTheGame;
 		}
@@ -391,7 +388,6 @@ internal class UniversalSystem : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
-		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
 		UniqueWorldPlayerID = tag.Get<string>("UniqueID");
 		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
 			timeBeatenTheGame = time;

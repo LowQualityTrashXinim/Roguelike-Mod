@@ -303,3 +303,6 @@ Version 0.0.1:
 301/ Deleted item graveyard and request item add into lootbox due to better solution were found.
 302/ Deleted item rng selector for lootbox because it was never used, and a better solution is found instead.
 303/ Added EoC, KingSlime, Plantera, Skeletron lootbox and also changed some lootbox to become boss lootbox ( note this may changed in the future ).
+304/ Changed how tooltip is display in spoil and lootbox.
+305/ Added DefenseMK1 relic set.
+306/ Buff Copper armor.

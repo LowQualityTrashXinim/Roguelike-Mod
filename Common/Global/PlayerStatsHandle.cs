@@ -27,8 +27,6 @@ namespace Roguelike.Common.Global;
 public class PlayerStatsHandle : ModPlayer {
 	public bool CanDropSynergyEnergy = true;
 	public bool LootboxCanDropSpecialPotion = false;
-	public int counterShow = 0;
-	public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
 	public float ChanceLootDrop = 0;
 	public StatModifier ChanceDropModifier = new();
 

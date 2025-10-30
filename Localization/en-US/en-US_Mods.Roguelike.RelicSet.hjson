@@ -96,8 +96,7 @@ RelicSet_StellaCharm: {
 	Description:
 		'''
 		Increases your summon damage by 12%
-		Minion attacking will have a chance shooting down star onto your enemy
-		During night, the chance are accelerate
+		Minion attack will have a chance shooting down star onto your enemy
 		'''
 }
 
@@ -109,4 +108,9 @@ RelicSet_DamageUp: {
 RelicSet_DefensesUp: {
 	DisplayName: Defenses UP
 	Description: +6 defenses
+}
+
+RelicSet_DefenseMK1: {
+	DisplayName: Defense MK1
+	Description: Have 20% chance to halve taken damage, after halving increases damage by 20% for 15s
 }

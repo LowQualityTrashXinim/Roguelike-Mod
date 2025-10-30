@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class CopperArmor : ModArmorSet {
@@ -14,13 +15,14 @@ internal class CopperArmor : ModArmorSet {
 public class CopperHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperHelmet;
-		Add_Defense = 2; 
+		Add_Defense = 2;
 		TypeEquipment = Type_Head;
 		ArmorName = "CopperArmor";
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .02f;
+		player.GetModPlayer<CopperArmorModPlayer>().CritDmgAgainstElec = true;
+		player.GetModPlayer<CopperArmorModPlayer>().ElectricityChance += .02f;
 	}
 }
 public class CopperChainmail : ModArmorPiece {
@@ -32,7 +34,8 @@ public class CopperChainmail : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .03f;
+		player.GetModPlayer<CopperArmorModPlayer>().ONHitEffect = true;
+		player.GetModPlayer<CopperArmorModPlayer>().ElectricityChance += .03f;
 	}
 }
 public class CopperGreaves : ModArmorPiece {
@@ -44,7 +47,41 @@ public class CopperGreaves : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .01f;
+		player.GetModPlayer<CopperArmorModPlayer>().DmgAgainstElec = true;
+		player.GetModPlayer<CopperArmorModPlayer>().ElectricityChance += .01f;
+	}
+}
+public class CopperArmorModPlayer : ModPlayer {
+	public bool CritDmgAgainstElec = false;
+	public bool DmgAgainstElec = false;
+	public bool ONHitEffect = false;
+	public float ElectricityChance = 0;
+	public override void ResetEffects() {
+		CritDmgAgainstElec = false;
+		DmgAgainstElec = false;
+		ONHitEffect = false;
+		ElectricityChance = 0;
+	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (!target.HasBuff(BuffID.Electrified)) {
+			return;
+		}
+		if (CritDmgAgainstElec) {
+			modifiers.CritDamage += .25f;
+		}
+		if (DmgAgainstElec) {
+			modifiers.SourceDamage += .12f;
+		}
+	}
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		if (ONHitEffect) {
+			npc.AddBuff(BuffID.Electrified, ModUtils.ToSecond(3));
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= ElectricityChance) {
+			target.AddBuff(BuffID.Electrified, ModUtils.ToSecond(Main.rand.Next(4, 7)));
+		}
 	}
 }
 public class CopperArmorPlayer : PlayerArmorHandle {

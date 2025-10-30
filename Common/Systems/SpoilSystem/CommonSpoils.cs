@@ -1,24 +1,16 @@
 ﻿using Terraria;
 using Humanizer;
 using Terraria.ID;
-using System.Linq;
 using System.Collections.Generic;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Lootbox;
-using Roguelike.Contents.Items.Lootbox.Lootpool;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 
 public class WeaponSpoil : ModSpoil {
 	public override string FinalDisplayName() {
-		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		SpoilsPlayer spoilsplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
-		if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
-			chestplayer.weaponShowID = Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(spoilsplayer.LootBoxSpoilThatIsNotOpen.First()).AllItemPool());
-			chestplayer.counterShow = 6;
-		}
-		return DisplayName.FormatWith(chestplayer.weaponShowID);
+		return DisplayName.FormatWith(ItemID.IronBroadsword);
 	}
 	public override string FinalDescription() {
 		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
@@ -32,12 +24,7 @@ public class WeaponSpoil : ModSpoil {
 
 public class AccessorySpoil : ModSpoil {
 	public override string FinalDisplayName() {
-		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		if (chestplayer.accShowID == 0 || --chestplayer.counterShow <= 0) {
-			chestplayer.accShowID = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
-			chestplayer.counterShow = 6;
-		}
-		return DisplayName.FormatWith(chestplayer.accShowID);
+		return DisplayName.FormatWith(ItemID.HermesBoots);
 	}
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
@@ -61,13 +48,7 @@ public class ArmorSpoil : ModSpoil {
 
 public class PotionSpoil : ModSpoil {
 	public override string FinalDisplayName() {
-		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		if (--chestplayer.counterShow <= 0 || chestplayer.potionShowID == ItemID.None) {
-			List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
-			chestplayer.potionShowID = Main.rand.Next(potiontotal);
-			chestplayer.counterShow = 6;
-		}
-		return DisplayName.FormatWith(chestplayer.potionShowID);
+		return DisplayName.FormatWith(ItemID.WrathPotion);
 	}
 	public override string FinalDescription() {
 		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
@@ -97,12 +78,7 @@ public class SkillSpoil : ModSpoil {
 }
 public class FoodSpoil : ModSpoil {
 	public override string FinalDisplayName() {
-		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		if (--chestplayer.counterShow <= 0 || chestplayer.foodshowID == ItemID.None) {
-			chestplayer.foodshowID = Main.rand.Next(TerrariaArrayID.AllFood);
-			chestplayer.counterShow = 6;
-		}
-		return DisplayName.FormatWith(chestplayer.foodshowID);
+		return DisplayName.FormatWith(ItemID.Burger);
 	}
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6));
@@ -112,30 +88,5 @@ public class FoodSpoil : ModSpoil {
 		for (int i = 0; i < amount; i++) {
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.Next(TerrariaArrayID.AllFood));
 		}
-	}
-}
-public class WeaponUpgrade : ModSpoil {
-	public override bool IsSelectable(Player player, Item itemsource) {
-		return false;
-	}
-	public override void SetStaticDefault() {
-		RareValue = SpoilDropRarity.Rare;
-	}
-}
-
-public class ArtifactUpgrade : ModSpoil {
-	public override bool IsSelectable(Player player, Item itemsource) {
-		return false;
-	}
-	public override void SetStaticDefault() {
-		RareValue = SpoilDropRarity.SSR;
-	}
-}
-public class Curses : ModSpoil {
-	public override bool IsSelectable(Player player, Item itemsource) {
-		return false;
-	}
-	public override void SetStaticDefault() {
-		RareValue = SpoilDropRarity.SuperRare;
 	}
 }
