@@ -2,9 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Perks;
- 
+
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Projectiles;
 internal class AdventureSpirit : ModProjectile {

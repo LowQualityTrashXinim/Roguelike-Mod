@@ -4,11 +4,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Contents.Items.aDebugItem.UIdebug;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SSRspoil {

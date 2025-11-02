@@ -6,7 +6,6 @@ using Terraria.DataStructures;
 using System;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.ItemVariant;
 using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {
@@ -142,7 +142,7 @@ VampirismCrystal_Upgrade2: {
 			StackLimit = 3;
 		}
 		public override void UpdateEquip(Player player) {
-			if (player.IsHealthAbovePercentage(.4f)) {
+			if (player.IsHealthAbovePercentage(.6f)) {
 				return;
 			}
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();

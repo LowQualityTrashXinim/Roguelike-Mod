@@ -3,9 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Skill;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Common.General
 {

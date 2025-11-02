@@ -11,10 +11,9 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
-
-using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class btn_Skill : UIImageButton {

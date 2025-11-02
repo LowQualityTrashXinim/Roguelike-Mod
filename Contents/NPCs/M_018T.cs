@@ -6,9 +6,9 @@ using Terraria.Localization;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Perks;
 using Roguelike.Texture;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.NPCs;
 internal class M_018T : ModNPC {

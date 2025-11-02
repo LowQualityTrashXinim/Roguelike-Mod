@@ -5,8 +5,8 @@ using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Perks;
-using Roguelike.Contents.Skill;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +21,7 @@ using Terraria.ModLoader.IO;
 namespace Roguelike.Common.Global;
 /// <summary>
 /// Offer powerful stats modify tool<br/>
-/// Direct stats increases is much more efficient than using <see cref="AddStatsToPlayer(PlayerStats, StatModifier, float, float)"/> or any of the relate<br/>
+/// Direct stats increases is much more efficient than using <see cref="AddStatsToPlayer(PlayerStats, StatModifier)"/> or any of the relate<br/>
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {

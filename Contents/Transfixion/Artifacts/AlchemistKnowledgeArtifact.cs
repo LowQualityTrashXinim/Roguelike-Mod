@@ -2,12 +2,12 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Perks;
 using Roguelike.Common.Systems.Achievement;
- 
+
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Transfixion.Artifacts
 {

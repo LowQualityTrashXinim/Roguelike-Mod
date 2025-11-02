@@ -9,13 +9,12 @@ using Terraria.Localization;
 using Terraria.ID;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Perks;
 using Roguelike.Common.Systems.Achievement;
- 
-using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class GamblerSoulArtifact : Artifact {

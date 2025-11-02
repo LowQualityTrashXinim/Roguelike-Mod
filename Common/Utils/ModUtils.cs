@@ -16,6 +16,45 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static string Convert_NumberToRomanNumerals(int num) {
+			if (num <= 0 || num >= int.MaxValue) {
+				return "";
+			}
+			string R = "";
+			int remainder2 = num - num / 5 * 5;
+			switch (remainder2) {
+				case 1:
+					R = "I";
+					break;
+				case 2:
+					R = "II";
+					break;
+				case 3:
+					R = "III";
+					break;
+			}
+			int length = num / 10;
+			int remainder = num - length * 10;
+			if (remainder > 5) {
+				if (remainder % 5 == 4) {
+					R = "IX";
+				}
+				else {
+					R = "V" + R;
+				}
+			}
+			else {
+				if (remainder % 5 == 4) {
+					R = "IV";
+				}
+			}
+			if (num >= 10) {
+				char[] c = new char[length];
+				Array.Fill(c, 'X');
+				return new string(c) + R;
+			}
+			return R;
+		}
 		public static bool Check_PositionValid(int X, int Y) {
 			if (!WorldGen.InWorld(X, Y)) {
 				return false;

@@ -5,11 +5,11 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
-using Roguelike.Contents.Perks;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -61,26 +61,18 @@ TokenOfPride_Upgrade2: {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
-			DataStorer.AddContext("Perk_BlindPride", new(400, Vector2.Zero, false, Color.Yellow));
 		}
 		public override bool SelectChoosing() {
 			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
 		}
-		public override void Update(Player player) {
-			DataStorer.ActivateContext(player, "Perk_BlindPride");
-			DataStorer.ModifyContextDistance("Perk_BlindPride", 300 + 100 * StackAmount(player));
+		public override void UpdateEquip(Player player) {
+			player.AddBuff(BuffID.Blackout, 2);
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage += .24f + .1f * StackAmount(player);
+			damage += .55f + .2f * StackAmount(player);
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-			crit += 5 + 5 * StackAmount(player);
-		}
-		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Vector2.DistanceSquared(player.Center, target.Center) <= MathF.Pow(300f + 100 * StackAmount(player), 2)) {
-				return;
-			}
-			modifiers.FinalDamage *= .5f;
+			crit += 25 + 5 * StackAmount(player);
 		}
 	}
 	public class PridefulPossession : Perk {

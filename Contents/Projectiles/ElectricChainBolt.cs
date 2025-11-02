@@ -2,9 +2,9 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
-using Roguelike.Contents.Skill;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Projectiles;
 internal class ElectricChainBolt : ModProjectile {

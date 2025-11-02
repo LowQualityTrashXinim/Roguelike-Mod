@@ -13,8 +13,6 @@ using Roguelike.Common.RoguelikeMode;
 using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Toggle;
 using Roguelike.Contents.NPCs;
-using Roguelike.Contents.Perks;
-using Roguelike.Contents.Skill;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;
@@ -34,6 +32,8 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Common.Systems;
 /// <summary>

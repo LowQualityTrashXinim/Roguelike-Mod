@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Skill;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 {

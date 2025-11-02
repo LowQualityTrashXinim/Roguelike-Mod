@@ -2,14 +2,14 @@
 using Roguelike.Texture;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Skill;
-using Roguelike.Contents.Perks;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Items.aDebugItem.StatsInform;
 internal class ContentTracker : ModItem {

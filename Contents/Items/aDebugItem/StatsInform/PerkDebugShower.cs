@@ -2,8 +2,8 @@
 using Roguelike.Texture;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Perks;
 using System.Collections.Generic;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Items.aDebugItem.StatsInform;
 internal class PerkDebugShower : ModItem {

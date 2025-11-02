@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Perks;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Transfixion.Artifacts;
@@ -20,7 +19,6 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using Roguelike.Contents.Items.BossRushItem;
 using Roguelike.Contents.Items.Toggle;
 using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Skill;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Systems.ArtifactSystem;
@@ -28,6 +26,8 @@ using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

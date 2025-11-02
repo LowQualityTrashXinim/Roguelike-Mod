@@ -3,8 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Linq;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Skill;
 using Roguelike.Texture;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Items.Lootbox;
 internal class WeaponLootBox : ModItem {

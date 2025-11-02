@@ -200,12 +200,14 @@ public abstract class ModAugments : ModType {
 	public Color tooltipColor = Color.White;
 	public string DisplayName => ModUtils.LocalizationText("ModAugments", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("ModAugments", $"{Name}.Description");
-	protected string DisplayName2(string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.DisplayName{Extra}");
 	protected string Description2(string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.Description{Extra}");
 	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) => new(Mod, "", Description);
 	public string ColorWrapper(string Name) => $"[c/{tooltipColor.Hex3()}:{Name}]";
 	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc, int index) { }
-	public virtual string ModifyName(Player player, AugmentsWeapon acc, int index, Item item, int stack) => ColorWrapper(DisplayName);
+	public virtual string ModifyName(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
+		string name = DisplayName;
+		return ColorWrapper(name + ModUtils.Convert_NumberToRomanNumerals(stack));
+	}
 	public virtual void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) { }

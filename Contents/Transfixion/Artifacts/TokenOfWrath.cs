@@ -7,10 +7,10 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Perks;
 using System.Collections.Generic;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfWrathArtifact : Artifact {

@@ -6,12 +6,12 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Perks;
 using System.Collections.Generic;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.ItemVariant;
+using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {

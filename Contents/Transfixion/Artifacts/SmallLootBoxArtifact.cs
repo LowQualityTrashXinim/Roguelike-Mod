@@ -4,7 +4,7 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Perks;
+using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;

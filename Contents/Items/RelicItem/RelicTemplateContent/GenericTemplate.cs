@@ -4,8 +4,8 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Perks;
-using Roguelike.Contents.Perks.BlessingPerk;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 /// <summary>

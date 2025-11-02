@@ -480,7 +480,11 @@ TitanPower: {
 
 GreedPrivilage: {
 	DisplayName: Greed Privilage
-	Description: + Increases your drop loot by 2
+	Description:
+		'''
+		+ Increases your chance for extra loot by 35%
+		+ For each weapon in player inventory, increases damage by 0.1%
+		'''
 }
 
 TheBigMoment: {
@@ -519,9 +523,9 @@ BlindPride: {
 	DisplayName: Blind Pride
 	Description:
 		'''
-		+ Increases your weapon damage by 34% ( next stack only increases by 10 )
-		+ Increases your weapon critical strike chance by 10 ( next stack only increases by 5 )
-		+ If your projectile is out of range, deal 0.5x damage
+		+ Increases your weapon damage by 55% ( next stack only increases by 20 )
+		+ Increases your weapon critical strike chance by 25% ( next stack only increases by 5 )
+		- Permanent black out debuff
 		'''
 }
 
@@ -559,7 +563,7 @@ BloodVoodoo: {
 	DisplayName: Blood Voodoo
 	Description:
 		'''
-		+ Hitting enemy will over heal you
+		+ Hitting enemy will over-heal you
 		+ Upon enemy damaging you, you spew out damaging blood
 		+ Rare chance to also release blood rose thorn
 		'''
@@ -569,7 +573,7 @@ NightTerror: {
 	DisplayName: Night Terror
 	Description:
 		'''
-		While your health is below 40%:
+		While your health is below 60%:
 		+ Increases your life regeneration by 25% and flat 10
 		+ Critical damage by 1.4x, movement and jump boost by 55%
 		( Note : effect above are stack differently )
@@ -605,37 +609,6 @@ UnlimitedThrowable: {
 		+ Throwable become unconsumable
 		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
 		+ Item now can be prefixed
-		'''
-}
-
-TomahawkUpgrade: {
-	DisplayName: Tomahawk
-	Description:
-		'''
-		+ Gain ability to throw the axe and pull it back at will or when reached maximum travel distance 
-		+ Increases Damage by 20
-		+ Increases penetrating value by 10
-		'''
-}
-
-RefinedUpgrade: {
-	DisplayName: Refined ( Axe )
-	Description:
-		'''
-		+ Axe critical hit damage are increased by 200%
-		+ Base damage increases by 10
-		+ Axe delay reuses are decrease by 50%
-		+ Hitting enemy with axe can causes them to bleed
-		'''
-}
-
-HunterInstinct: {
-	DisplayName: Hunter Instinct ( Axe )
-	Description:
-		'''
-		+ Common axe gain a huge buff to their stats
-		+ While using axe weapon, you have 15% to dodge an attack
-		+ Hitting enemy have chance to increase your attack speed briefly
 		'''
 }
 

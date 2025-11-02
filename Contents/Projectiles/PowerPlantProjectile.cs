@@ -4,8 +4,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Roguelike.Contents.Skill;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Projectiles;
 internal class PowerPlantProjectile : ModProjectile {

@@ -310,3 +310,8 @@ Version 0.0.1:
 308/ Reworked Aglet.
 309/ Reworked Climbing Claws.
 310/ Reworked Lava Charm.
+311/ Changed Token of Greed along with GreedPrivilage perk.
+312/ Changed Blind Pride perk.
+313/ Fixed Stimulation perk not working.
+314/ Slightly buffed some perk.
+315/ Various adjustment to augmentation and organize.

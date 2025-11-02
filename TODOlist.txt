@@ -12,3 +12,8 @@
 11/ Work on better debug UI and tool. // Missing relic, augmentation debug UI.
 12/ Rework rarity system and tranmutation system.
 13/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+14/ Listing problematic content that need adjustment:
+- Essence Lantern ( artifact )
+- Uncertain Strike ( perk )
+- Stroke Of Luck ( perk )
+- 

@@ -1,63 +1,49 @@
 Fire: {
-	DisplayName: Fire I
-	DisplayName1: Fire II
-	DisplayName2: Fire III
+	DisplayName: Fire
 	Description: Inflict on fire upon enemy hit
 	Description1: Enemy with on fire debuff receive 20% more damage
 	Description2: Enemy with on fire debuff receive 40% more knockback
 }
 
 FrostBurn: {
-	DisplayName: FrostBurn I
-	DisplayName1: FrostBurn II
-	DisplayName2: FrostBurn III
+	DisplayName: FrostBurn
 	Description: Inflict frost burn upon enemy hit
 	Description1: Enemy with frost burn debuff receive 20% more damage
 	Description2: Enemy with frost burn debuff receive 40% more knockback
 }
 
 ShadowFlame: {
-	DisplayName: ShadowFlame I
+	DisplayName: ShadowFlame
 	Description: Inflict ShadowFlame upon enemy hit
-	DisplayName1: ShadowFlame II
 	Description1: Enemy with ShadowFlame debuff receive 20% more damage
-	DisplayName2: ShadowFlame III
 	Description2: Enemy with ShadowFlame debuff receive 40% more knockback
 }
 
 CursedFlame: {
-	DisplayName: CursedFlame I
+	DisplayName: CursedFlame
 	Description: Inflict cursed flame upon enemy hit
-	DisplayName1: CursedFlame II
 	Description1: Enemy with cursed flame debuff receive 20% more damage
-	DisplayName2: CursedFlame III
 	Description2: Enemy with cursed flame debuff receive 40% more knockback
 }
 
 Poison: {
-	DisplayName: Poison I
+	DisplayName: Poison
 	Description: Inflict poisoned upon enemy hit
-	DisplayName1: Poison II
 	Description1: Enemy with poisoned debuff receive 20% more damage
-	DisplayName2: Poison III
 	Description2: Enemy with poisoned debuff receive 40% more knockback
 }
 
 Venom: {
-	DisplayName: Venom I
+	DisplayName: Venom
 	Description: Inflict venom upon enemy hit
-	DisplayName1: Venom II
 	Description1: Enemy with venom debuff receive 20% more damage
-	DisplayName2: Venom III
 	Description2: Enemy with venom debuff receive 40% more knockback
 }
 
 PaperDefense: {
-	DisplayName: Paper defense I
+	DisplayName: Paper defense
 	Description: +1 defense
-	DisplayName1: Paper defense II
 	Description1: On getting hit, decreases defenses by 5% for 5s ( capped at 50% )
-	DisplayName2: Paper defense III
 	Description2: Afterward you gain 5 defenses as compensation that last for 1 min
 }
 
@@ -87,41 +73,25 @@ TitanII: {
 }
 
 Critical: {
-	DisplayName: Critical I
+	DisplayName: Critical
 	Description: Increases critical chance by 5 but reduce critical damage by 10%
-	DisplayName1: Critical II
 	Description1: Critical strike ignore 50% of enemy defense
-	DisplayName2: Critical III
 	Description2: Critically strike a enemy will heal player for 1% of player health
-	DisplayName3: Critical IV
 	Description3: Critical strike will roll again increasing critical strike damage by 100%
 }
 
 VampireI: {
-	DisplayName: Vampire I
+	DisplayName: Vampire
 	Description: Increase Life steal by 1%
-}
-
-VampireII: {
-	DisplayName: Vampire II
-	Description: During the night, your critical hit is more fatal
-}
-
-VampireIII: {
-	DisplayName: Vampire III
-	Description: During the night, your regeneration is increases by 25%
+	Description1: Below 60% health, your critical hit is more fatal
+	Description2: Below 60% health, your regeneration is increases by 25%
 }
 
 AlchemistI: {
-	DisplayName: Alchemist I
+	DisplayName: Alchemist
 	Description: Increases debuff damage by 6%
-}
-
-AlchemistII: {
-	DisplayName: Alchemist II
 	Description: For each debuff/buff you have, increases life regeneration by 1
 }
-
 Light: {
 	DisplayName: Light
 	Description: Deal 150% more damage to enemy above 80% max hp

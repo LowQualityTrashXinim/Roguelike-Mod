@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Roguelike.Contents.Skill;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.BuilderItem;
@@ -14,6 +13,7 @@ using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {

@@ -53,22 +53,6 @@ internal class PaperDefense : ModAugments {
 		TooltipLine line = new(Mod, Name, desc);
 		return line;
 	}
-	public override string ModifyName(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
-		string name = DisplayName;
-		switch (stack) {
-			case 1:
-				name = DisplayName2("1");
-				break;
-			case 2:
-				name = DisplayName2("2");
-				break;
-			case 3:
-			case 4:
-			case 5:
-				break;
-		}
-		return ColorWrapper(name);
-	}
 }
 public class PaperDefense_ModPlayer : ModPlayer {
 	public bool PaperDefenseII = false;
