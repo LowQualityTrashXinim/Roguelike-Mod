@@ -500,16 +500,17 @@ public class DivineHammerUIState : UIState {
 		AccAugmentResult.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccAugmentResult);
 
-		AugmentationSelection_Text = new("", .8f);
+		AugmentationSelection_Text = new("click on this panel to select", .8f);
 		AugmentationSelection_Text.Width.Percent = 1f;
 		AugmentationSelection_Text.Height.Pixels = 30;
 		AugmentationSelection_Text.TextHAlign = .5f;
 		AugmentationSelection_Text.Hide = true;
+		AugmentationSelection_Text.OnLeftClick += AugmentationSelection_Text_OnLeftClick;
 		BodyPanel.Append(AugmentationSelection_Text);
 
 		Vector2 position = Mainpanel.GetOuterDimensions().Position();
 		AugmentationSelection_Container = new();
-		AugmentationSelection_Container.UISetWidthHeight(400, 500);
+		AugmentationSelection_Container.UISetWidthHeight(480, 450);
 		AugmentationSelection_Container.Hide = true;
 		AugmentationSelection_Container.HAlign = .5f;
 		AugmentationSelection_Container.VAlign = .5f;
@@ -529,32 +530,34 @@ public class DivineHammerUIState : UIState {
 		AugmentationSelection_Body.VAlign = 1f;
 		AugmentationSelection_Container.Append(AugmentationSelection_Body);
 
+		auglist.Clear();
+		auglist.AddRange(AugmentsLoader.ReturnListOfAugment());
 		float num = 4;
 		for (int x = 0; x < num; x++) {
 			for (int y = 0; y < num + 2; y++) {
-				int counter = (int)(x * num) + y + 1;
-				ModAugments aug = AugmentsLoader.GetAugments(counter);
+				int counter = (int)(x * (num + 2)) + y + 1;
+				ModAugments aug = auglist[counter];
 				string augText = "";
 				Color color = Color.White;
 				if (aug != null) {
 					augText = aug.DisplayName;
 					color = aug.tooltipColor;
 				}
-				AugmentationText btn = new(counter, augText, .7f);
+				AugmentationText btn = new(aug.Type, augText, .7f);
 				btn.BorderColor = color;
+				btn.BackgroundColor = btn.BackgroundColor with { A = 255 };
 				btn.VAlign = MathHelper.Lerp(0f, 1f, y / (num + 1));
 				btn.HAlign = MathHelper.Lerp(0f, 1f, x / (num - 1f));
-				btn.UISetWidthHeight(100, 10);
+				btn.UISetWidthHeight(110, 10);
 				btn.OnLeftClick += Btn_OnLeftClick;
 				btn.OnUpdate += Btn_OnUpdate;
 				btn.TextHAlign = .5f;
-				btn.SetPadding(10);
+				btn.PaddingBottom = 15;
+				btn.PaddingTop = 15;
 				AugmentationSelection_Body.Append(btn);
 				textlist.Add(btn);
 			}
 		}
-		auglist.Clear();
-		auglist.AddRange(AugmentsLoader.ReturnListOfAugment());
 		maxPage = AugmentsLoader.TotalCount / 24;
 		if (AugmentsLoader.TotalCount % 24 != 0) {
 			maxPage++;
@@ -583,6 +586,11 @@ public class DivineHammerUIState : UIState {
 		AugmentationSelection_Forward.OnLeftClick += AugmentationSelection_OnLeftClick;
 		AugmentationSelection_Head.Append(AugmentationSelection_Forward);
 	}
+
+	private void AugmentationSelection_Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Visual_AugmentationSelection();
+	}
+
 	List<ModAugments> auglist = new();
 	int maxPage = 0;
 	int currentPage = 0;
@@ -645,15 +653,12 @@ public class DivineHammerUIState : UIState {
 	List<AugmentationText> textlist = new();
 	private void ConfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (SelectedAugmentationType == 0) {
-			Visual_AugmentationSelection();
 			return;
 		}
 		if (AccAugmentSlot.item == null || AccAugmentSlot.item.type == ItemID.None) {
-			Visual_AugmentationSelection();
 			return;
 		}
 		if (AccSacrificeAugmentSlot.item == null || AccSacrificeAugmentSlot.item.type == ItemID.None) {
-			Visual_AugmentationSelection();
 			return;
 		}
 		if (AccAugmentResult.item != null && AccAugmentResult.item.type != ItemID.None) {

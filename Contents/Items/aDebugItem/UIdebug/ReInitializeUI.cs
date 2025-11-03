@@ -13,13 +13,13 @@ class ReInitializeUI : ModItem {
 		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize :  UI"));
+		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : Divine UI"));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().debugperkUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().debugperkUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().debugperkUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.Activate();
 		}
 		return false;
 	}
