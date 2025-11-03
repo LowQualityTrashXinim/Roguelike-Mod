@@ -11,20 +11,6 @@ class LihzahrdLootBox : LootBoxBase {
 		Item.height = 38;
 		Item.rare = ItemRarityID.Red;
 	}
-	public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-	public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
-		var entitySource = player.GetSource_OpenItem(Type);
-		for (int i = 0; i < 2; i++) {
-			int Accessory = Main.rand.Next(new int[] { ItemID.MasterNinjaGear, ItemID.FireGauntlet, ItemID.NecromanticScroll, ItemID.CelestialEmblem, ItemID.CelestialShell, ItemID.AvengerEmblem, ItemID.CharmofMyths, ItemID.DestroyerEmblem, ItemID.SniperScope, ItemID.StarCloak, ItemID.StarVeil, ItemID.CelestialCuffs });
-			player.QuickSpawnItem(entitySource, Accessory);
-		}
-		modplayer.GetAmount();
-		GetWeapon(entitySource, player, modplayer.weaponAmount);
-		for (int i = 0; i < 3; i++) {
-			player.QuickSpawnItem(entitySource, GetAccessory());
-		}
-		GetArmorForPlayer(entitySource, player);
-	}
 	public override void AbsoluteRightClick(Player player) {
 		var entitySource = player.GetSource_OpenItem(Type);
 		int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });

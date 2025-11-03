@@ -48,26 +48,23 @@ public abstract class ItemPool : ModType {
 	/// Return the index of <see cref="ItemPool"/> that current at
 	/// </summary>
 	public int Type = -1;
+	public virtual HashSet<int> AccessoryLoot() => new();
+	public virtual HashSet<int> ArmorLoot() => new();
+	public virtual HashSet<int> PotionPool() => new();
+	public virtual HashSet<int> FoodPool() => new();
 	public virtual HashSet<int> MeleeLoot() => new();
 	public virtual HashSet<int> RangeLoot() => new();
 	public virtual HashSet<int> MagicLoot() => new();
 	public virtual HashSet<int> SummonLoot() => new();
-
-	private HashSet<int> _cachedAllItems = null;
 	/// <summary>
 	/// Call this when you know it will get update 
 	/// </summary>
-	public void UpdateAllItemPool() {
-		_cachedAllItems = new HashSet<int>();
-		_cachedAllItems.UnionWith(MeleeLoot());
-		_cachedAllItems.UnionWith(RangeLoot());
-		_cachedAllItems.UnionWith(MagicLoot());
-		_cachedAllItems.UnionWith(SummonLoot());
-	}
-	public HashSet<int> AllItemPool() {
-		if (_cachedAllItems == null) {
-			UpdateAllItemPool();
-		}
-		return _cachedAllItems;
+	public HashSet<int> AllWeaponPool() {
+		HashSet<int> _cachedAllWeapon = new HashSet<int>();
+		_cachedAllWeapon.UnionWith(MeleeLoot());
+		_cachedAllWeapon.UnionWith(RangeLoot());
+		_cachedAllWeapon.UnionWith(MagicLoot());
+		_cachedAllWeapon.UnionWith(SummonLoot());
+		return _cachedAllWeapon;
 	}
 }

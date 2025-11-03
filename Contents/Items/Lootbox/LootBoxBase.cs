@@ -16,6 +16,7 @@ using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	public abstract class LootBoxBase : ModItem {
@@ -109,7 +110,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			}
 			//Lootbox basic behavior
-			OnRightClick(player, modplayer);
 			if (modplayer.CanDropSynergyEnergy) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			}
@@ -122,7 +122,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 					var AllLootID = LootboxItemPool().ToArray();
 					HashSet<int> p = new();
 					for (int i = 0; i < AllLootID.Length; i++) {
-						p.UnionWith(LootboxSystem.GetItemPool(AllLootID[i]).AllItemPool());
+						p.UnionWith(LootboxSystem.GetItemPool(AllLootID[i]).AllWeaponPool());
 					}
 					if (p.Count <= amount) {
 						ticket.Add_HashSet(p);
@@ -147,12 +147,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		/// </summary>
 		/// <param name="player"></param>
 		public virtual void AbsoluteRightClick(Player player) { }
-		/// <summary>
-		/// This only active if legacy setting is true
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="modplayer"></param>
-		public virtual void OnRightClick(Player player, PlayerStatsHandle modplayer) { }
 		/// <summary>
 		/// Return weapon
 		/// </summary>
@@ -308,27 +302,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 			player.QuickSpawnItem(source, Ammo, Amount);
 		}
 		/// <summary>
-		///      Allow user to return a list of number that contain different data to insert into chest <br/>
-		///      0 : Tier 1 Combat acc <br/>
-		///      1 : Tier 1 Health and Mana acc<br/>
-		///      2 : Tier 1 Movement acc<br/>
-		///      3 : Post evil Combat acc<br/>
-		///      4 : Post evil Health and Mana acc<br/>
-		///      5 : Post evil Movement acc<br/>
-		///      6 : Queen bee acc<br/>
-		///      7 : Cobalt Shield<br/>
-		///      8 : Anhk shield sub acc (not include the shield itself)<br/>
-		///      9 : Hardmode acc<br/>
-		///      10 : PhilosophersStone<br/>
-		/// </summary>
-		public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-		/// <summary>
-		/// Allow for safely add in a list of accessory that specific to a situation
-		/// </summary>
-		/// <returns></returns>
-		public virtual List<int> SafePostAddAcc() => new List<int>() { };
-		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
 		public static void GetArmorForPlayer(IEntitySource entitySource, Player player, bool returnOnlyPiece = false) {
@@ -386,63 +359,26 @@ namespace Roguelike.Contents.Items.Lootbox {
 		/// Return a random accessory 
 		/// </summary>
 		public int GetAccessory() {
-			var flag = FlagNumAcc();
 			var Accessories = new List<int>();
-			for (int i = 0; i < flag.Count; i++) {
-				switch (flag[i]) {
-					case 0:
-						Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
-						break;
-					case 1:
-						Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
-						break;
-					case 2:
-						Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
-						break;
-					case 3:
-						Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
-						break;
-					case 4:
-						Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
-						break;
-					case 5:
-						Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
-						break;
-					case 6:
-						Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
-						break;
-					case 7:
-						Accessories.Add(ItemID.CobaltShield);
-						break;
-					case 8:
-						Accessories.AddRange(TerrariaArrayID.AnhkCharm);
-						break;
-					case 9:
-						Accessories.AddRange(TerrariaArrayID.HMAccessory);
-						break;
-					case 10:
-						Accessories.Add(ItemID.PhilosophersStone);
-						break;
-				}
+			var AllLootID = LootboxItemPool().ToArray();
+			for (int i = 0; i < AllLootID.Length; i++) {
+				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
+				Accessories.AddRange(pool.AccessoryLoot());
 			}
-			if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
 			return Main.rand.Next(Accessories);
 		}
 		/// <summary>
 		/// Return random potion
 		/// </summary>
 		/// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
-		public int GetPotion(bool MovementPotionOnly = false) {
-			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. ModItemLib.LootboxPotion.Select(i => i.type)];
-			if (Main.hardMode) {
-				DropItemPotion.Add(ItemID.LifeforcePotion);
-				DropItemPotion.Add(ItemID.InfernoPotion);
+		public int GetPotion() {
+			var Potion = new List<int>();
+			var AllLootID = LootboxItemPool().ToArray();
+			for (int i = 0; i < AllLootID.Length; i++) {
+				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
+				Potion.AddRange(pool.PotionPool());
 			}
-			if (MovementPotionOnly) {
-				DropItemPotion.Clear();
-			}
-			DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
-			return Main.rand.NextFromCollection(DropItemPotion);
+			return Main.rand.NextFromCollection(Potion);
 		}
 		/// <summary>
 		/// Return weapon base on world/player progression
@@ -559,24 +495,21 @@ namespace Roguelike.Contents.Items.Lootbox {
 				DropItemSummon.Add(ItemID.RainbowCrystalStaff);
 				DropItemSummon.Add(ItemID.MoonlordTurretStaff);
 			}
-			ChooseWeapon(rng, ref ReturnWeapon, ref Amount, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon);
-		}
-		private static void ChooseWeapon(int rng, ref int weapon, ref int amount, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon) {
 			switch (rng) {
 				case 0:
-					weapon = ItemID.None;
+					ReturnWeapon = ItemID.None;
 					break;
 				case 1:
-					weapon = Main.rand.NextFromCollection(DropItemMelee);
+					ReturnWeapon = Main.rand.NextFromCollection(DropItemMelee);
 					break;
 				case 2:
-					weapon = Main.rand.NextFromCollection(DropItemRange);
+					ReturnWeapon = Main.rand.NextFromCollection(DropItemRange);
 					break;
 				case 3:
-					weapon = Main.rand.NextFromCollection(DropItemMagic);
+					ReturnWeapon = Main.rand.NextFromCollection(DropItemMagic);
 					break;
 				case 4:
-					weapon = Main.rand.NextFromCollection(DropItemSummon);
+					ReturnWeapon = Main.rand.NextFromCollection(DropItemSummon);
 					break;
 			}
 		}
@@ -759,15 +692,12 @@ namespace Roguelike.Contents.Items.Lootbox {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
 			}
 		}
-		Color color1, color2, color3, color4;
-		private void ColorHandle() {
+		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+			Color color1, color2, color3, color4;
 			color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 20);
 			color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 20);
 			color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 20);
 			color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 20);
-		}
-		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-			ColorHandle();
 			Main.instance.LoadItem(Type);
 			var texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
@@ -779,7 +709,11 @@ namespace Roguelike.Contents.Items.Lootbox {
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			ColorHandle();
+			Color color1, color2, color3, color4;
+			color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 20);
+			color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 20);
+			color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 20);
+			color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 20);
 			Main.instance.LoadItem(Type);
 			Main.GetItemDrawFrame(Type, out var texture, out var itemFrame);
 			var origin = itemFrame.Size() / 2;

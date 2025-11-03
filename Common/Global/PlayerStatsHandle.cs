@@ -92,7 +92,7 @@ public class PlayerStatsHandle : ModPlayer {
 			potionTypeAmount = 1;
 			potionNumAmount = 1;
 		}
-		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
+		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 200);
 		potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
 		potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
 	}

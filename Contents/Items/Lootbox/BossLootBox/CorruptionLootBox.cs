@@ -15,17 +15,6 @@ namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 		}
 		public override void LootPoolSetStaticDefaults() {
 		}
-		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
-		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
-			var entitySource = player.GetSource_OpenItem(Type);
-			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
-			modplayer.GetAmount();
-			GetWeapon(entitySource, player, modplayer.weaponAmount);
-			player.QuickSpawnItem(entitySource, GetAccessory());
-			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
-				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
-			}
-		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedBoss2) {

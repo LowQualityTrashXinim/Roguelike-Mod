@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	class WoodenLootBox : LootBoxBase {
@@ -15,22 +16,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		}
 		public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
 		public override void LootPoolSetStaticDefaults() {
-		}
-		public override List<int> FlagNumAcc() => new List<int> { 2 };
-		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
-			if (CanActivateSpoil) {
-				return;
-			}
-			var entitySource = player.GetSource_OpenItem(Type);
-			modplayer.GetAmount();
-			GetWeapon(entitySource, player, modplayer.weaponAmount);
-			player.QuickSpawnItem(entitySource, GetAccessory());
-			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
-				player.QuickSpawnItem(entitySource, GetPotion(true), modplayer.potionNumAmount);
-			}
-			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
-			int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
-			player.QuickSpawnItem(entitySource, RandomAssArmor);
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);

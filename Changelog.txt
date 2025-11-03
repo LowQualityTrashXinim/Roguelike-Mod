@@ -317,3 +317,4 @@ Version 0.0.1:
 315/ Various adjustment to augmentation and organize.
 316/ Added in fail safe for localization text getter in ModUtils.
 317/ Made augmentation UI easier to understand.
+318/ More work on Lootbox.

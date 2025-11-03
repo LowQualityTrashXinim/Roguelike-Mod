@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 			Item.height = 36;
 			Item.rare = ItemRarityID.Pink;
 		}
-		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
+		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			player.QuickSpawnItem(entitySource, ItemID.SnowGlobe);
 			for (int i = 0; i < 4; i++) {

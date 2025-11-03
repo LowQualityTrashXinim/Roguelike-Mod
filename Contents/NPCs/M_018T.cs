@@ -7,8 +7,8 @@ using Roguelike.Common.Systems;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 
 namespace Roguelike.Contents.NPCs;
 internal class M_018T : ModNPC {

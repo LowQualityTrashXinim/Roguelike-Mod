@@ -12,24 +12,8 @@ namespace Roguelike.Contents.Items.Lootbox {
 		}
 		public override void LootPoolSetStaticDefaults() {
 		}
-		public override List<int> FlagNumAcc() {
-			var list = new List<int>() { 0, 1, 2, 3, 4, 5 };
-			if (NPC.downedQueenBee) {
-				list.Add(6);
-			}
-			if (NPC.downedBoss3) {
-				list.Add(7);
-			}
-			return list;
-		}
-		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
-			var entitySource = player.GetSource_OpenItem(Type);
-			GetArmorForPlayer(entitySource, player, Main.rand.NextBool(5));
-			player.QuickSpawnItem(entitySource, GetAccessory());
-			GetWeapon(entitySource, player, 5);
-			for (int i = 0; i < 5; i++) {
-				player.QuickSpawnItem(entitySource, GetPotion(), 3);
-			}
+		public override void AbsoluteRightClick(Player player) {
+			
 		}
 	}
 }

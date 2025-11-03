@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;

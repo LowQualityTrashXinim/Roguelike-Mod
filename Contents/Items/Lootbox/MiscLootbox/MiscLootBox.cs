@@ -6,7 +6,7 @@ using Roguelike.Common.Systems;
 using Roguelike.Texture;
 using Roguelike.Contents.Transfixion.Skill;
 
-namespace Roguelike.Contents.Items.Lootbox;
+namespace Roguelike.Contents.Items.Lootbox.MiscLootbox;
 internal class WeaponLootBox : ModItem {
 	public override string Texture => ModTexture.PLACEHOLDERCHEST;
 	public override void SetDefaults() {

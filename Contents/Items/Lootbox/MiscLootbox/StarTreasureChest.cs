@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.MiscLootbox {
 	class StarTreasureChest : ModItem {
 		public override void SetDefaults() {
 			Item.width = 54;

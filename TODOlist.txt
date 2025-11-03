@@ -16,4 +16,4 @@
 - Essence Lantern ( artifact )
 - Uncertain Strike ( perk )
 - Stroke Of Luck ( perk )
-- 
+15/ Added content based on biome.

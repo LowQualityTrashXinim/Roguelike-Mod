@@ -14,15 +14,8 @@ namespace Roguelike.Contents.Items.Lootbox {
 		}
 		public override void LootPoolSetStaticDefaults() {
 		}
-		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
-			var entitySource = player.GetSource_OpenItem(Type);
-			modplayer.GetAmount();
-			GetWeapon(entitySource, player, modplayer.weaponAmount);
-			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
-				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
-			}
-			player.QuickSpawnItem(entitySource, GetAccessory());
+		public override void AbsoluteRightClick(Player player) {
+			base.AbsoluteRightClick(player);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.MiscLootbox {
 	internal class HardModeBossBundle : ModItem {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
