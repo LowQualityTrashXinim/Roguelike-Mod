@@ -1,10 +1,5 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +12,7 @@ public class Poison : ModAugments {
 	public override TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
 		string desc = Description;
 		for (int i = 0; i < stack; i++) {
-			switch (stack) {
+			switch (i) {
 				case 1:
 					desc += "\n" + Description2("1");
 					break;

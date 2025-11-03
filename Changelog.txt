@@ -315,3 +315,4 @@ Version 0.0.1:
 313/ Fixed Stimulation perk not working.
 314/ Slightly buffed some perk.
 315/ Various adjustment to augmentation and organize.
+316/ Added in fail safe for localization text getter in ModUtils.

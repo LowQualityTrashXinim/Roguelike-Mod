@@ -96,10 +96,18 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 		public static string LocalizationText(string text, string extra = null) {
+			string localizationKey;
 			if (string.IsNullOrEmpty(extra)) {
-				return Language.GetTextValue($"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}");
+				localizationKey = $"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}";
 			}
-			return Language.GetTextValue($"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}");
+			else {
+				localizationKey = $"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}";
+			}
+			string localizationText = Language.GetTextValue(localizationKey);
+			if (localizationText == localizationKey) {
+				return "";
+			}
+			return localizationText;
 		}
 		//Taken from chatGPT
 		public static Color FakeHueShift(Color original, float hueShiftDegrees) {

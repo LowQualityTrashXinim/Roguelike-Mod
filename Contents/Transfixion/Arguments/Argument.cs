@@ -201,7 +201,22 @@ public abstract class ModAugments : ModType {
 	public string DisplayName => ModUtils.LocalizationText("ModAugments", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("ModAugments", $"{Name}.Description");
 	protected string Description2(string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.Description{Extra}");
-	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) => new(Mod, "", Description);
+	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
+		string desc = Description;
+		for (int i = 0; i < stack; i++) {
+			string num = i.ToString();
+			if (i == 0) {
+				num = "";
+			}
+			string text = Description2(num);
+			if(text == "") {
+				break;
+			}
+			desc += "\n" + Description2(num);
+		}
+		TooltipLine line = new(Mod, Name, desc);
+		return line;
+	}
 	public string ColorWrapper(string Name) => $"[c/{tooltipColor.Hex3()}:{Name}]";
 	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc, int index) { }
 	public virtual string ModifyName(Player player, AugmentsWeapon acc, int index, Item item, int stack) {

@@ -44,7 +44,7 @@ PaperDefense: {
 	DisplayName: Paper defense
 	Description: +1 defense
 	Description1: On getting hit, decreases defenses by 5% for 5s ( capped at 50% )
-	Description2: Afterward you gain 5 defenses as compensation that last for 1 min
+	Description2: After your defenses decreases you gain 5 defenses as compensation that last for 1 min
 }
 
 BerserkI: {
@@ -62,14 +62,10 @@ Terra: {
 	Description: Your strike have 5% to deal 2nd strike as True damage
 }
 
-TitanI: {
-	DisplayName: Titan I
+Titan: {
+	DisplayName: Titan
 	Description: Knock back value are added into base damage
-}
-
-TitanII: {
-	DisplayName: Titan II
-	Description: Knock back strength are increased by 5% of weapon damage
+	Description1: Knock back strength are increased by 5% of weapon damage
 }
 
 Critical: {
@@ -80,18 +76,19 @@ Critical: {
 	Description3: Critical strike will roll again increasing critical strike damage by 100%
 }
 
-VampireI: {
+Vampire: {
 	DisplayName: Vampire
 	Description: Increase Life steal by 1%
 	Description1: Below 60% health, your critical hit is more fatal
-	Description2: Below 60% health, your regeneration is increases by 25%
+	Description2: Below 80% health, your regeneration is increases by 25%
 }
 
-AlchemistI: {
+Alchemist: {
 	DisplayName: Alchemist
 	Description: Increases debuff damage by 6%
-	Description: For each debuff/buff you have, increases life regeneration by 1
+	Description1: For each debuff/buff you have, increases life regeneration by 1
 }
+
 Light: {
 	DisplayName: Light
 	Description: Deal 150% more damage to enemy above 80% max hp
@@ -109,7 +106,11 @@ Union: {
 
 Strengthen: {
 	DisplayName: Strengthen
-	Description: Grant various minor increases in stats
+	Description: Grant minor increases in various stats
+	Description1: Strengthen the 1st effect by small amount
+	Description2: Strengthen the 1st effect by another small amount
+	Description3: Strengthen the 1st effect by medium amount
+	Description4: Combined all the previous boost and increases stats by that amount
 }
 
 Ghost: {
@@ -122,64 +123,36 @@ ExtraLife: {
 	Description: Grant you 1 extra life at the cost of this item
 }
 
-IntoxicateI: {
-	DisplayName: Intoxicate I
+Intoxicate: {
+	DisplayName: Intoxicate
 	Description: While under a debuff effect, gain 10% damage reduction
+	Description1: While under a debuff effect, gain 15% regeneration and flat 5 hp/s
 }
 
-IntoxicateII: {
-	DisplayName: Intoxicate II
-	Description: While under a debuff effect, gain 15% regeneration and flat 5 hp/s
-}
-
-ReactiveHealingI: {
-	DisplayName: Reactive Healing I
+ReactiveDefenses: {
+	DisplayName: Reactive Healing
 	Description: Upon hit, have 33% chance to heal back 5% of your maximum life
+	Description1: Upon hit, have 15% chance to regenerate 10hp/s
+	Description2: Upon hit, have 25% chance to gain 10% damage reduction
+	Description3: Upon hit, have 10% chance to gain 10% defenses and flat 6 defenses
 }
 
-ReactiveHealingII: {
-	DisplayName: Reactive Healing II
-	Description: Upon hit, have 33% chance to regenerate 10hp/s
-}
-
-ReactiveDefenseI: {
-	DisplayName: Reactive Defense I
-	Description: Upon hit, have 25% chance to gain 10% damage reduction
-}
-
-ReactiveDefenseII: {
-	DisplayName: Reactive Defense II
-	Description: Upon hit, have 25% chance to gain 10% defenses and flat 6 defenses
-}
-
-VitalityStrikeI: {
-	DisplayName: Vitality Strike I
+VitalityStrike: {
+	DisplayName: Vitality Strike
 	Description: Your maximum life contribute to your output damage
+	Description1: Increases your critical strike chance base on your maximum health
 }
 
-ArcaneStrikeI: {
-	DisplayName: Arcane Strike I
+ArcaneStrike: {
+	DisplayName: Arcane Strike
 	Description: Your maximum mana contribute to your output damage
+	Description1: Increases your critical strike chance base on your maximum mana
 }
 
-VitalityStrikeII: {
-	DisplayName: Vitality Strike II
-	Description: Increases your critical strike chance base on your maximum health
-}
-
-ArcaneStrikeII: {
-	DisplayName: Arcane Strike II
-	Description: Increases your critical strike chance base on your maximum mana
-}
-
-StealthStrikeI: {
-	DisplayName: Stealth Strike I
-	Description: While invisible, you deal 25% more damage
-}
-
-StealthStrikeII: {
-	DisplayName: Stealth Strike II
-	Description: 200% First strike damage
+StealthStrike: {
+	DisplayName: Stealth Strike
+	Description: +200% First strike damage
+	Description1: While invisible, you deal 25% more damage
 }
 
 DryadBlessing: {

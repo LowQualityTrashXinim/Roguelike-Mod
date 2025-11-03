@@ -14,25 +14,6 @@ public class Fire : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.Red;
 	}
-	public override TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
-		string desc = Description;
-		for (int i = 0; i < stack; i++) {
-			switch (stack) {
-				case 1:
-					desc += "\n" + Description2("1");
-					break;
-				case 2:
-					desc += "\n" + Description2("2");
-					break;
-				case 3:
-				case 4:
-				case 5:
-					break;
-			}
-		}
-		TooltipLine line = new(Mod, Name, desc);
-		return line;
-	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
