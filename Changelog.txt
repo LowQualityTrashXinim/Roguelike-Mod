@@ -318,3 +318,7 @@ Version 0.0.1:
 316/ Added in fail safe for localization text getter in ModUtils.
 317/ Made augmentation UI easier to understand.
 318/ More work on Lootbox.
+319/ Reworked Ashwood sword, Pearlwood sword.
+320/ Deleted the audio that play when player used Cursed doll because that deafen player.
+321/ Tooltip fixed for cobalt sword.
+322/ Reworked Warrior, Ranger and Soccerer Emblem.

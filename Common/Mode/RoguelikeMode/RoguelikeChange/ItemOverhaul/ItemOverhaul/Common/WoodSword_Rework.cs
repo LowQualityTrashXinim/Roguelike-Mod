@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Microsoft.Xna.Framework;
+using Roguelike.Contents.Projectiles;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Common;
 internal class Roguelike_WoodSword : GlobalItem {
@@ -13,14 +13,12 @@ internal class Roguelike_WoodSword : GlobalItem {
 	}
 	private bool CheckItem(int type) {
 		switch (type) {
-			case ItemID.PearlwoodSword:
 			case ItemID.BorealWoodSword:
 			case ItemID.PalmWoodSword:
 			case ItemID.ShadewoodSword:
 			case ItemID.EbonwoodSword:
 			case ItemID.RichMahoganySword:
 			case ItemID.WoodenSword:
-			case ItemID.AshWoodSword:
 				return true;
 		}
 		return false;
@@ -33,25 +31,39 @@ internal class Roguelike_WoodSword : GlobalItem {
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
-			int damage = player.GetWeaponDamage(item);
-			float knockback = player.GetWeaponKnockback(item);
 			if (++swingCount >= 5) {
 				swingCount = 0;
-				int direction = ModUtils.DirectionFromEntityAToEntityB(player.Center.X, Main.MouseWorld.X);
-				for (int i = 0; i < 40; i++) {
-					Vector2 pos = new Vector2(player.Center.X + (50 * i + 100) * direction, player.Center.Y - 1000 - 100 * i);
-					Vector2 vel = Vector2.UnitY.Vector2RotateByRandom(5) * 20;
-					int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI, 1);
-					if (Main.projectile[projec].ModProjectile is SwordProjectile2 spear) {
-						spear.ItemIDtextureValue = item.type;
-					}
-				}
+				WoodSwordAttack(item, player);
 			}
 			Vector2 toward = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 100;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + toward, Vector2.Zero, ModContent.ProjectileType<SwordProjectile>(), player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile woodproj)
 				woodproj.ItemIDtextureValue = item.type;
 			Main.projectile[proj].ai[2] = 120;
+		}
+	}
+	private void WoodSwordAttack(Item item, Player player) {
+		int damage = player.GetWeaponDamage(item);
+		float knockback = player.GetWeaponKnockback(item);
+		int direction = ModUtils.DirectionFromEntityAToEntityB(player.Center.X, Main.MouseWorld.X);
+		for (int i = 0; i < 40; i++) {
+			Vector2 pos = new Vector2(player.Center.X + (50 * i + 100) * direction, player.Center.Y - 1000 - 100 * i);
+			Vector2 vel = Vector2.UnitY.Vector2RotateByRandom(5) * 20;
+			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI, 1);
+			if (Main.projectile[projec].ModProjectile is SwordProjectile2 spear) {
+				spear.ItemIDtextureValue = item.type;
+			}
+			if (item.type == ItemID.AshWoodSword) {
+				Main.projectile[projec].scale += 2;
+				Main.projectile[projec].damage *= 2;
+				if (i == 10) {
+					int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage * 5, knockback, player.whoAmI, 1);
+					if (Main.projectile[proj2].ModProjectile is SwordProjectile2 spear2) {
+						spear2.ItemIDtextureValue = item.type;
+					}
+					Main.projectile[proj2].scale += 10;
+				}
+			}
 		}
 	}
 }

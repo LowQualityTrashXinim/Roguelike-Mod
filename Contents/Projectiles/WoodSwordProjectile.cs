@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 using Terraria.DataStructures;
+using Terraria.Audio;
 
 namespace Roguelike.Contents.Projectiles;
 internal class SwordProjectile : ModProjectile {

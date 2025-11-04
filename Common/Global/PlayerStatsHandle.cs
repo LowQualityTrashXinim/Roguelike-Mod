@@ -1076,7 +1076,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 				return;
 			}
 		}
-		orig(self, b);
+		if (b < self.buffType.Length) {
+			orig(self, b);
+		}
 	}
 
 	private int HitModifiers_GetDamage(On_NPC.HitModifiers.orig_GetDamage orig, ref NPC.HitModifiers self, float baseDamage, bool crit, bool damageVariation, float luck) {

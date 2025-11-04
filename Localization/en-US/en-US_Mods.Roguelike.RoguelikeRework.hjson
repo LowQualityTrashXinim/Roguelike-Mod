@@ -121,3 +121,18 @@ LavaCharm:
 	Enemy that is on fire take 100% more damage.
 	While enemy is near you, deal 42 damage every 1s and inflict on fire debuff.
 	'''
+WarriorEmblem:
+	'''
+	Increases melee critical strike chance by 5%
+	Increases melee critical strike damage by 30%
+	'''
+RangerEmblem:
+	'''
+	Increases range critical strike chance by 5%
+	Increases range critical strike damage by 30%
+	'''
+SorcererEmblem:
+	'''
+	Increases magic critical strike chance by 5%
+	Increases magic critical strike damage by 30%
+	'''

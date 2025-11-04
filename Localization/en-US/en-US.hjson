@@ -435,6 +435,7 @@ Mods: {
 			Portal_SlimeWorld.DisplayName: Portal_ Slime World
 			HeartPistol_LifeCrystal.DisplayName: Heart Pistol_ Life Crystal
 			TestSpearAnimationP.DisplayName: Test Spear Animation P
+			AshwoodSwordProjectile.DisplayName: Ashwood Sword Projectile
 		}
 
 		NPCs: {
