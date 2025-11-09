@@ -16,6 +16,8 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
+		public static string ItemIcon<T>() where T : ModItem => "[i:" + ModContent.ItemType<T>() + "]";
 		public static string Convert_NumberToRomanNumerals(int num) {
 			if (num <= 0 || num >= int.MaxValue) {
 				return "";

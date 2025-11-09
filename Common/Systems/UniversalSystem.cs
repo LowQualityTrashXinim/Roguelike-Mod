@@ -11,7 +11,6 @@ using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Contents.Items.Toggle;
 using Roguelike.Contents.NPCs;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
@@ -34,6 +33,8 @@ using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Contents.Items.Toggle.UserInfo;
+using Roguelike.Contents.Items.Toggle.Transmutation;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -227,8 +228,7 @@ internal class UniversalSystem : ModSystem {
 			InfoUI.InfoShowToItem = string.Empty;
 			foreach (var item in infoUI.list_info) {
 				if (item.StatePressed) {
-					if (item.action != null) {
-						item.action.Invoke();
+					if (item.info != null) {
 						InfoUI.InfoShowToItem += item.text.Text + "\n";
 					}
 				}
@@ -325,10 +325,10 @@ internal class UniversalSystem : ModSystem {
 		else if (context == "spoil") {
 			user2ndInterface.SetState(spoilUI);
 		}
-		else if (context== "artifact") {
+		else if (context == "artifact") {
 			user2ndInterface.SetState(artifactUI);
 		}
-		else if(context == "perk") {
+		else if (context == "perk") {
 			user2ndInterface.SetState(debugperkUI);
 		}
 	}

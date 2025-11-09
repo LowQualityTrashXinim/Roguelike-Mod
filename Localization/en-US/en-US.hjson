@@ -436,6 +436,9 @@ Mods: {
 			HeartPistol_LifeCrystal.DisplayName: Heart Pistol_ Life Crystal
 			TestSpearAnimationP.DisplayName: Test Spear Animation P
 			AshwoodSwordProjectile.DisplayName: Ashwood Sword Projectile
+			WinterKnight_IceMist.DisplayName: Winter Knight_ Ice Mist
+			WinterKnight_IceShards.DisplayName: Winter Knight_ Ice Shards
+			KnifeRevolverThrown_Projectile.DisplayName: Knife Revolver Thrown_ Projectile
 		}
 
 		NPCs: {
@@ -578,7 +581,9 @@ Mods: {
 				Tooltip:
 					'''
 					"A British-American fusion cuisine!"
-					Alt-Click improvises the gun into a knife which upon contact hypercharges your next shot
+					Every 3rd shot will be imblued with Deathshot marked for 2s
+					Hitting enemy while having Deathshot marked will hypercharges your next shot and delete the debuff
+					Alt-Click throw the gun toward cursor, upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -738,8 +743,24 @@ Mods: {
 			}
 
 			EverlastingCold: {
-				Tooltip: Perhaps the coldest realization is the friends we lost along the way...
 				DisplayName: Everlasting Cold
+				Tooltip:
+					'''
+					"Oath of the Winter Knight"
+					Hitting the enemy will rain down frost bolt and ice bolt toward the enemy
+					Upon 20 strike, generate a field that grant user "Winter Knight" buff for 60s
+					While user have "Winter Knight" buff, every strike that count toward the buff is ingore
+					'''
+				ExtraInfo:
+					'''
+					Winter Knight:
+					+ Grant user 30% damage reduction and create a field (The field will die after this buff end)
+					While in the field: 
+					+ Every strike will spawn piercing ice shards and inflict Frost Inferno
+					+ Every damage taken will be reduce from 40% up to 90%
+					+ Striking up to 30 time will spawn Ice Mist (There can only be 1 present)
+					Ice Mist will continously shoot ice shard toward enemy, on kill will explode into many ice shard
+					'''
 			}
 
 			Katahanced: {
@@ -2263,7 +2284,7 @@ Mods: {
 				Guide:
 					'''
 					Gun mode : shoot a dark bolt deal 300% of weapon damage (CD: 1s)
-					Bow mode : attack is accompany with 3 dark wisps (CD: 1s)
+					Bow mode : shoot out 3 shadow flame arrows (CD: 1s)
 					Every attack have a chance to inflict shadow flame debuff
 
 					At 25th attacks, releases shadow homing bolts that deal 50% of weapon damage which mark target that got hit.
@@ -2957,11 +2978,6 @@ Mods: {
 				Description: " "
 			}
 
-			Axe_BleedDebuff: {
-				DisplayName: Axe_ Bleed Debuff
-				Description: TODO
-			}
-
 			ReactiveDefenseBuff: {
 				DisplayName: Reactive Endurance
 				Description: Increases your damage reduction by 10%
@@ -2977,14 +2993,9 @@ Mods: {
 				Description: Increases your defenses by 10% and 6 flat
 			}
 
-			SwiftStrike_Axe: {
-				DisplayName: Swift Strike (Axe)
-				Description: Increases attack speed by 15%
-			}
-
 			DryadBlessing_Buff: {
 				DisplayName: Dryad Blessing
-				Description: +8 defenses & + 5 hp/s
+				Description: +8 defenses & +5 hp/s
 			}
 
 			GrimTouch: {
@@ -3295,6 +3306,25 @@ Mods: {
 				DisplayName: Aglet
 				Description: +35% movement speed
 			}
+
+			FrostInferno: {
+				DisplayName: Frost Inferno
+				Description: Rapidly losing life
+			}
+
+			WinterKnight: {
+				DisplayName: Winter Knight
+				Description:
+					'''
+					"To protect my motherland"
+					+30% damage reduction
+					'''
+			}
+
+			DeathshotMark: {
+				DisplayName: Deathshot Mark
+				Description: Mods.Roguelike.Buffs.DeathshotMark.Description
+			}
 		}
 
 		Configs: {
@@ -3441,12 +3471,6 @@ Mods: {
 		Keybinds: {
 			"Skill activation.DisplayName": Skill Activation
 			"Weapon action.DisplayName": Alternative Weapon Action
-		}
-
-		DamageClasses: {
-			RangeMageHybridDamageClass.DisplayName: arcane ranger damage
-			MeleeMageHybridDamageClass.DisplayName: arcane warrior damage
-			MeleeRangerHybridDamageClass.DisplayName: ranged melee damage
 		}
 
 		Prefixes: {

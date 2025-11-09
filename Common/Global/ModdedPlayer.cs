@@ -17,7 +17,6 @@ using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using Roguelike.Contents.Items.BossRushItem;
-using Roguelike.Contents.Items.Toggle;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
@@ -28,6 +27,8 @@ using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Contents.Items.Toggle.UserInfo;
+using Roguelike.Contents.Items.Toggle.Transmutation;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

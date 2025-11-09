@@ -119,7 +119,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			}
 			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-			return base.PreAI();
+			return false;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<AmberBoneSpear>(), ItemID.AntlionClaw))

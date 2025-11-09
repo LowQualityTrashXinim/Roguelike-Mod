@@ -17,3 +17,9 @@
 - Uncertain Strike ( perk )
 - Stroke Of Luck ( perk )
 15/ Added content based on biome.
+16/ Synergy damage changes:
+- Intro damage and outro damage are affected by synergy damage
+- Synergy damage is now more of a intro buff and outro buff depend on which item grant intro and outro buff.
+- Synergy weapon still get increases by synergy damage regardless
+- Synergy damage still increases weapon damage regardless of class type.
+- Only intro buff and outro buff can stack.

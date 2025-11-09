@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common;
 using Roguelike.Common.RoguelikeMode;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -13,8 +11,6 @@ using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-
 namespace Roguelike.Common.Utils;
 
 internal static partial class GenerationHelper {
@@ -81,7 +77,6 @@ internal static partial class GenerationHelper {
 	public static void ForEachInRectangle(int i, int j, int width, int height, Action<int, int> action) {
 		ForEachInRectangle(new Rectangle(i, j, width, height), action);
 	}
-
 	public static void ForEachInCircle(int i, int j, int width, int height, Action<int, int> action) {
 		ForEachInRectangle(
 			i - width / 2,
@@ -96,42 +91,6 @@ internal static partial class GenerationHelper {
 				action(iLocal, jLocal);
 			}
 		);
-	}
-	public static Point RandomizePossibleGridSelection(this UnifiedRandom r, HashSet<Point> selectionList, int limitX = 24, int limitY = 24) {
-		if (selectionList.Count < 1) {
-			return new Point(-1, -1);
-		}
-		Point currentPos = selectionList.ElementAt(selectionList.Count - 1);
-		if (selectionList.Count == 1) {
-			currentPos.X += r.NextBool().ToDirectionInt();
-			currentPos.Y += r.NextBool().ToDirectionInt();
-			return currentPos;
-		}
-		HashSet<Point> getallPosition = new HashSet<Point>();
-		if (!selectionList.Contains(currentPos + new Point(1, 0)) && currentPos.X > 0 && currentPos.X < limitX) {
-			getallPosition.Add(currentPos + new Point(1, 0));
-		}
-		if (!selectionList.Contains(currentPos - new Point(1, 0)) && currentPos.X > 0 && currentPos.X < limitX) {
-			getallPosition.Add(currentPos - new Point(1, 0));
-		}
-		if (!selectionList.Contains(currentPos + new Point(1, 0)) && currentPos.Y > 0 && currentPos.Y < limitY) {
-			getallPosition.Add(currentPos + new Point(0, -1));
-		}
-		if (!selectionList.Contains(currentPos - new Point(1, 0)) && currentPos.Y > 0 && currentPos.Y < limitY) {
-			getallPosition.Add(currentPos - new Point(1, -1));
-		}
-		if (getallPosition.Count < 1) {
-			return new Point(-1, -1);
-		}
-		else if (getallPosition.Count == 1) {
-			return getallPosition.ElementAt(0);
-		}
-		return r.NextFromHashSet(getallPosition);
-	}
-	public static Rectangle Clone_AddX(Rectangle re, int X) {
-		Rectangle rect = new(re.X, re.Y, re.Width, re.Height);
-		rect.X += X;
-		return rect;
 	}
 	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
@@ -244,163 +203,6 @@ internal static partial class GenerationHelper {
 				break;
 		}
 	}
-	/// <summary>
-	/// Use this to place the structure in world gen code
-	/// </summary>
-	public static void PlaceStructure(string FileName, Rectangle rect, Action<int, int, Action> tileGen, GenerateStyle style = GenerateStyle.None) {
-		List<GenPassData> datalist;
-		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-		if (modsystem.dict_Struture.ContainsKey(FileName)) {
-			datalist = modsystem.dict_Struture[FileName];
-		}
-		else {
-			Console.WriteLine("Structure not found !");
-			return;
-		}
-		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-
-		switch (style) {
-			case GenerateStyle.None:
-				for (int i = 0; i < datalist.Count; i++) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = 0; l < gdata.Count; l++) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, ref tiledata));
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipHorizon:
-				for (int i = 0; i < datalist.Count; i++) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, ref tiledata));
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipVertical:
-				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = 0; l < gdata.Count; l++) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, ref tiledata));
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipBoth:
-				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, ref tiledata));
-						offsetY++;
-					}
-				}
-				break;
-		}
-	}
-	/// <summary>
-	/// Use this to place the structure in world gen code but attempt to override tile data before placing
-	/// </summary>
-	/// <param name="method">the method that was uses to optimize the file</param>
-	public static void PlaceStructure(string FileName, Rectangle rect, Action<int, int, TileData> tileGen, GenerateStyle style = GenerateStyle.None) {
-		List<GenPassData> datalist;
-		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-		if (modsystem.dict_Struture.ContainsKey(FileName)) {
-			datalist = modsystem.dict_Struture[FileName];
-		}
-		else {
-			Console.WriteLine("Structure not found !");
-			return;
-		}
-		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-
-		switch (style) {
-			case GenerateStyle.None:
-				for (int i = 0; i < datalist.Count; i++) {
-					GenPassData gdata = datalist[i];
-					TileData data = gdata.tileData;
-					for (int l = 0; l < gdata.Count; l++) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, data);
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipHorizon:
-				for (int i = 0; i < datalist.Count; i++) {
-					GenPassData gdata = datalist[i];
-					TileData data = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, data);
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipVertical:
-				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData data = gdata.tileData;
-					for (int l = 0; l < gdata.Count; l++) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, data);
-						offsetY++;
-					}
-				}
-				break;
-			case GenerateStyle.FlipBoth:
-				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData data = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
-						if (offsetY >= rect.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						tileGen(holdX, holdY, data);
-						offsetY++;
-					}
-				}
-				break;
-		}
-	}
 	public static void Structure_PlaceTileXY(int holdX, int holdY, TileData data) {
 		if (!data.Tile_Air) {
 			data.PlaceTile(holdX, holdY);
@@ -408,16 +210,6 @@ internal static partial class GenerationHelper {
 		else {
 			FastRemoveTile(holdX, holdY);
 			Main.tile[holdX, holdY].WallType = data.Tile_WallData;
-		}
-	}
-	public static void Structure_PlaceTile(int holdX, int holdY, TileData data) {
-		Tile tile = Main.tile[holdX, holdY];
-		if (!data.Tile_Air) {
-			data.PlaceTile(tile);
-		}
-		else {
-			FastRemoveTile(holdX, holdY);
-			tile.WallType = data.Tile_WallData;
 		}
 	}
 	public static void Structure_PlaceTile(int holdX, int holdY, ref TileData data) {
@@ -496,47 +288,6 @@ internal static partial class GenerationHelper {
 			Detailed_SaveStructure(target, path, name);
 		}
 		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
-	}
-	/// <summary>
-	/// Attempt to save a structure into a file
-	/// </summary>
-	/// <param name="target">The region to transform</param>
-	/// <param name="path">Path to save</param>
-	/// <param name="name">File's name</param>
-	public static void SaveStructure(Rectangle target, string path, string name) {
-		try {
-			using FileStream file = File.Create(Path.Combine(path, name));
-			using StreamWriter m = new(file);
-
-			Tile outSideLoop = new();
-			outSideLoop.TileType = ushort.MaxValue;
-			int distance = 0;
-			for (int x = target.X; x <= target.X + target.Width; x++) {
-				for (int y = target.Y; y <= target.Y + target.Height; y++) {
-					//Since this just saving, it is completely fine to be slow
-					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType || tile.TileFrameX != outSideLoop.TileFrameX && tile.TileType >= TileID.Count) {
-						if (distance != 0) {
-							m.Write(distance);
-						}
-						outSideLoop = tile;
-						TileData td = new(tile);
-						m.Write(td.ToString());
-						distance = 1;
-					}
-					else {
-						distance++;
-					}
-				}
-			}
-			if (distance != 0) {
-				m.Write(distance);
-			}
-		}
-		catch (Exception ex) {
-			Console.WriteLine(ex.ToString());
-			throw;
-		}
 	}
 	private static Dictionary<TileData, char> dict_TileData = new();
 	private static readonly HashSet<char> Character = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -748,6 +499,7 @@ internal static partial class GenerationHelper {
 				}
 			}
 			int length;
+			int noiseCounter = 0;
 			switch (Main.rand.Next(RogueLikeWorldGen.styles)) {
 				case GenerateStyle.None:
 					length = structure.Get_TotalLength();
@@ -759,9 +511,10 @@ internal static partial class GenerationHelper {
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
 						if (WorldGen.InWorld(holdX, holdY)) {
-							Structure_PlaceTile(holdX, holdY, ref data);
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, bundle, ref data);
 						}
 						offsetY++;
+						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, RogueLikeWorldGen.StaticNoise255x255.Length - 1);
 					}
 					break;
 				case GenerateStyle.FlipHorizon:
@@ -775,9 +528,10 @@ internal static partial class GenerationHelper {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							if (WorldGen.InWorld(holdX, holdY)) {
-								Structure_PlaceTile(holdX, holdY, ref data);
+								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, bundle, ref data);
 							}
 							offsetY++;
+							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, RogueLikeWorldGen.StaticNoise255x255.Length - 1);
 						}
 					}
 					break;
@@ -792,9 +546,10 @@ internal static partial class GenerationHelper {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							if (WorldGen.InWorld(holdX, holdY)) {
-								Structure_PlaceTile(holdX, holdY, ref data);
+								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, bundle, ref data);
 							}
 							offsetY++;
+							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, RogueLikeWorldGen.StaticNoise255x255.Length - 1);
 						}
 					}
 					break;
@@ -808,9 +563,10 @@ internal static partial class GenerationHelper {
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
 						if (WorldGen.InWorld(holdX, holdY)) {
-							Structure_PlaceTile(holdX, holdY, ref data);
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, bundle, ref data);
 						}
 						offsetY++;
+						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, RogueLikeWorldGen.StaticNoise255x255.Length - 1);
 					}
 					break;
 			}
@@ -825,6 +581,22 @@ internal static partial class GenerationHelper {
 				additionaloffset = -1;
 			}
 		}
+	}
+	private static void Place_Tile_CreateBiome(int holdX, int holdY, int noiseCounter, BiomeDataBundle val, ref TileData data) {
+		int noiseCounter2nd = ModUtils.Safe_SwitchValue(noiseCounter + 200, RogueLikeWorldGen.StaticNoise255x255.Length - 1);
+		if (val.tile2 != ushort.MaxValue && RogueLikeWorldGen.StaticNoise255x255[noiseCounter] && Main.rand.NextFloat() <= val.weight2) {
+			data.Tile_Type = val.tile2;
+		}
+		else {
+			data.Tile_Type = val.tile;
+		}
+		if (RogueLikeWorldGen.StaticNoise255x255[noiseCounter2nd] || Main.rand.NextBool(5)) {
+			data.Tile_WallData = val.wall;
+		}
+		else {
+			data.Tile_WallData = WallID.None;
+		}
+		Structure_PlaceTile(holdX, holdY, ref data);
 	}
 }
 public enum GenerateStyle : byte {

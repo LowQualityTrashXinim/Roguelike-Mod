@@ -343,8 +343,18 @@ public class PlayerStatsHandle : ModPlayer {
 		TemporaryLife_CounterLimit += counterlimit;
 	}
 	public float CurrentMinionAmount = 0;
-	public StatModifier EnergyRegen = StatModifier.Default - 1;
+	/// <summary>
+	/// Player stats for energy regeneration
+	/// </summary>
+	public StatModifier EnergyRegen = StatModifier.Default;
+	/// <summary>
+	/// Player stats for energy regeneration count, this is to count the time so that player can regenerate energy<bt/> 
+	/// once the time is equal or greater <see cref="EnergyRegen_CountLimit"/> then player will regen energy
+	/// </summary>
 	public StatModifier EnergyRegenCount = StatModifier.Default;
+	/// <summary>
+	/// Player stats for modify energy regen count cap, useful for either making the cap longer or shorter
+	/// </summary>
 	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
 	public int EnergyRegen_Count = 0;
 	public int EnergyRegen_CountLimit = 60;

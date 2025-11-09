@@ -117,3 +117,13 @@ PerfectStatusTemplate: {
 	DisplayName: Perfect Status
 	Description: While you have no buff or debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
+
+RangeFocusTemplate: {
+	DisplayName: True Ranger
+	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] but decreases [c/{0}:{3}] by [c/{0}:{4}]
+}
+
+PowerTemplate: {
+	DisplayName: Power : [c/{0}:{1}] Edition
+	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] but decreases slowly drain your energy
+}

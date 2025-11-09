@@ -74,6 +74,13 @@ public class Unforgiving : SynergyModItem {
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
+		for (int i = 0; i < 30; i++) {
+			Vector2 rotate = Main.rand.NextVector2CircularEdge(10, 2.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2);
+			int dust3 = Dust.NewDust(position.PositionOFFSET(velocity, 30), 0, 0, DustID.Shadowflame);
+			Main.dust[dust3].noGravity = true;
+			Main.dust[dust3].velocity = rotate;
+			Main.dust[dust3].fadeIn = 1f;
+		}
 		GlobalCounter = ModUtils.Safe_SwitchValue(GlobalCounter, 24);
 		var unforgive = player.GetModPlayer<Unforgiving_ModPlayer>();
 		int counter = unforgive.Counter;
@@ -111,9 +118,12 @@ public class Unforgiving : SynergyModItem {
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
 			}
 			else {
-				var vel = velocity.SafeNormalize(Vector2.Zero);
 				for (int i = 0; i < 3; i++) {
-					Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, player.whoAmI);
+					proj = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(3, 40, i), ProjectileID.ShadowFlameArrow, damage, knockback, player.whoAmI);
+					if (counter >= 120) {
+						proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().CustomDataValue = 1;
+						proj.extraUpdates += 2;
+					}
 				}
 			}
 		}
@@ -250,6 +260,7 @@ public class Unforgiving_ModPlayer : ModPlayer {
 			Counter = 180;
 			if (Player.IsHeldingModItem<Unforgiving>()) {
 				if (!ReachedMaxPotential) {
+					SoundEngine.PlaySound(SoundID.MaxMana with { Pitch = 1 });
 					for (int i = 0; i < 150; i++) {
 						var dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Shadowflame, Scale: Main.rand.NextFloat(1f, 1.2f));
 						dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
@@ -265,6 +276,7 @@ public class Unforgiving_ModPlayer : ModPlayer {
 		else {
 			if (Player.IsHeldingModItem<Unforgiving>()) {
 				if (Counter == 120) {
+					SoundEngine.PlaySound(SoundID.MaxMana with { Pitch = -1 });
 					for (int i = 0; i < 150; i++) {
 						var dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Granite, Scale: Main.rand.NextFloat(0.55f, 1f));
 						dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
@@ -313,9 +325,9 @@ public class Unforgiving_ModPlayer : ModPlayer {
 				int time = ModUtils.ToSecond(Main.rand.Next(1, 3));
 				target.AddBuff(BuffID.ShadowFlame, time);
 			}
-		}
-		if (proj.type == ModContent.ProjectileType<Unforgiving_Bolt>() && target.HasBuff(BuffID.ShadowFlame)) {
-			Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center + Main.rand.NextVector2CircularEdge(100, 100), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), 1 + hit.Damage / 3, 5, Player.whoAmI);
+			if ((proj.type == ModContent.ProjectileType<Unforgiving_Bolt>() || target.HasBuff<Unforgiving_Mark>()) && target.HasBuff(BuffID.ShadowFlame)) {
+				Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center + Main.rand.NextVector2CircularEdge(100, 100), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), 1 + hit.Damage / 3, 5, Player.whoAmI);
+			}
 		}
 	}
 }
@@ -380,7 +392,7 @@ public class Unforgiving_Bolt : ModProjectile {
 		Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		target.AddBuff<Unforgiving_Mark>(ModUtils.ToSecond(Main.rand.Next(1, 5)));
+		target.AddBuff<Unforgiving_Mark>(ModUtils.ToSecond(Main.rand.Next(5, 10)));
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		lightColor.R = 255;

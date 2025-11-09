@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.General;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Subworlds;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
@@ -23,6 +24,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Common.RoguelikeMode;
 /// <summary>
@@ -273,6 +275,26 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		return assign;
 	}
+	public static StructureData Get_RandomizeAbandonStructure(Mod mod, short b_id = Bid.Forest) {
+		StructureData data = Generator.GetStructureData("Assets/ShrineOfOffering", mod);
+		string[] arr_stringpath = null;
+		switch (b_id) {
+			case Bid.Forest:
+				arr_stringpath = new string[] {
+					"AbandonHouse1",
+					"AbandonHouse2",
+					"AbandonHouse3",
+					"AbandonHouse4",
+					"AbandonHouse5",
+					"AbandonHouse6",
+					"AbandonHouse7",
+					"AbandonHouse8",
+				};
+				data = Generator.GetStructureData($"Assets/{Main.rand.Next(arr_stringpath)}", mod);
+				break;
+		}
+		return data;
+	}
 	public void ResetTemplate_GenerationValue() {
 		rect = new();
 		counter = OffSetPoint;
@@ -306,6 +328,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public Rectangle CursedKingdomArea = new Rectangle();
 	Rectangle MainForestZone = new Rectangle();
 	Rectangle MainTundraForestZone = new Rectangle();
+	/// <summary>
+	/// Common list of rectangle for ignoring zone that should be ingored to place structure
+	/// </summary>
 	public List<Rectangle> ZoneToBeIgnored = new();
 	public List<Rectangle> ForestZone = new();
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
@@ -652,16 +677,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 						}
 						if (!ignored && WorldGen.InWorld(holdX, holdY)) {
-							if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
-								if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
-									data.Tile_Type = val.tile2;
-								}
-								else {
-									data.Tile_Type = val.tile;
-								}
-								data.Tile_WallData = val.wall;
-							}
-							GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref data);
 						}
 						ignored = false;
 						offsetY++;
@@ -684,16 +700,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 								}
 							}
 							if (!ignored && WorldGen.InWorld(holdX, holdY)) {
-								if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
-									if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
-										data.Tile_Type = val.tile2;
-									}
-									else {
-										data.Tile_Type = val.tile;
-									}
-									data.Tile_WallData = val.wall;
-								}
-								GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref data);
 							}
 							ignored = false;
 							offsetY++;
@@ -717,16 +724,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 								}
 							}
 							if (!ignored && WorldGen.InWorld(holdX, holdY)) {
-								if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
-									if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
-										data.Tile_Type = val.tile2;
-									}
-									else {
-										data.Tile_Type = val.tile;
-									}
-									data.Tile_WallData = val.wall;
-								}
-								GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref data);
 							}
 							ignored = false;
 							offsetY++;
@@ -749,16 +747,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 						}
 						if (!ignored && WorldGen.InWorld(holdX, holdY)) {
-							if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
-								if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
-									data.Tile_Type = val.tile2;
-								}
-								else {
-									data.Tile_Type = val.tile;
-								}
-								data.Tile_WallData = val.wall;
-							}
-							GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref data);
 						}
 						ignored = false;
 						offsetY++;
@@ -784,6 +773,24 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		WatchTracker += watch.Elapsed;
 		ResetTemplate_GenerationValue();
 		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
+	}
+	private void Place_Tile_CreateBiome(int holdX, int holdY, int noiseCounter, ref TileData data) {
+		int noiseCounter2nd = ModUtils.Safe_SwitchValue(noiseCounter + 200, StaticNoise255x255.Length - 1);
+		if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+			if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
+				data.Tile_Type = val.tile2;
+			}
+			else {
+				data.Tile_Type = val.tile;
+			}
+			if (StaticNoise255x255[noiseCounter2nd] || Main.rand.NextBool(5)) {
+				data.Tile_WallData = val.wall;
+			}
+			else {
+				data.Tile_WallData = WallID.None;
+			}
+		}
+		GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 	}
 	[Task]
 	public void Generate_StarterForest() {
@@ -833,7 +840,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				&& i < RightPos - datawidth || i > RightPos + datawidth) {
 				WorldGen.GrowTree(i, CurrentPosY);
 			}
-
 		}
 	}
 	[Task]
@@ -874,7 +880,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				&& i < RightPos - datawidth || i > RightPos + datawidth) {
 				WorldGen.GrowTree(i, CurrentPosY);
 			}
-
 		}
 	}
 	[Task]
@@ -941,6 +946,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (ModWrapper.IsInBound(data, point)) {
 			CrimsonEntrance = new(point.X, point.Y, data.width, data.height);
 			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CrimsonEntrance);
 		}
 	}
 	[Task]
@@ -958,6 +964,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (ModWrapper.IsInBound(data, point)) {
 			CorruptionEntrance = new(point.X, point.Y, data.width, data.height);
 			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CorruptionEntrance);
 		}
 	}
 	[Task]
@@ -975,6 +982,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (ModWrapper.IsInBound(data, point)) {
 			FleshRealmEntrance = new(point.X, point.Y, data.width, data.height);
 			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(FleshRealmEntrance);
 		}
 	}
 	[Task]
@@ -992,7 +1000,79 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (ModWrapper.IsInBound(data, point)) {
 			SlimeWorldEntrance = new(point.X, point.Y, data.width, data.height);
 			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(SlimeWorldEntrance);
 		}
+	}
+	[Task]
+	public void Generate_AbandonStructureAllOverThePlace() {
+		List<Rectangle> placed = new();
+		for (int i = 0; i < 200; i++) {
+			StructureData data = Get_RandomizeAbandonStructure(Mod);
+			int xdex = Main.rand.Next(1, 23);
+			int ydex = Main.rand.Next(1, 22);
+			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
+			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven) {
+				i--;
+				continue;
+			}
+			Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
+			Rectangle re = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, data.width, data.height);
+			bool canBeAdded = true;
+			foreach (var item in ZoneToBeIgnored) {
+				if (item.Intersects(re)) {
+					canBeAdded = false;
+					break;
+				}
+			}
+			foreach (var item in placed) {
+				if (item.Intersects(re)) {
+					canBeAdded = false;
+					break;
+				}
+			}
+			short centralID = Get_BiomeIDViaPos(re.Center, 0);
+			short topleftID = Get_BiomeIDViaPos(re.TopLeft().ToPoint(), 0);
+			short toprightID = Get_BiomeIDViaPos(re.TopRight().ToPoint(), 0);
+			short bottomleftID = Get_BiomeIDViaPos(re.BottomLeft().ToPoint(), 0);
+			short bottomrightID = Get_BiomeIDViaPos(re.BottomRight().ToPoint(), 0);
+			if (!canBeAdded || centralID != topleftID || centralID != toprightID || centralID != bottomleftID || centralID != bottomrightID) {
+				i--;
+				continue;
+			}
+			ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
+			bool chestplaced = false;
+			int chestAttempt = 200;
+			for (int a = 0; a < chestAttempt; a++) {
+				Point randomPoint = new Point(Main.rand.Next(re.X, re.X + re.Width), Main.rand.Next(re.Y, re.Y + re.Height));
+				int chest = WorldGen.PlaceChest(randomPoint.X, randomPoint.Y);
+				if (chest == -1) {
+					continue;
+				}
+				chestplaced = true;
+				AddLoot(Main.chest[chest]);
+				//Add loot here
+				break;
+			}
+			for (int x = re.X; x < re.X + re.Width; x++) {
+				if (chestplaced) {
+					break;
+				}
+				for (int y = re.Y; y < re.Y + re.Height; y++) {
+					int chest = WorldGen.PlaceChest(x, y);
+					if (chest == -1) {
+						continue;
+					}
+					chestplaced = true;
+					AddLoot(Main.chest[chest]);
+					//Add loot here
+					break;
+				}
+			}
+			placed.Add(re);
+		}
+	}
+	private void AddLoot(Chest chest) {
+
 	}
 	[Task]
 	public void Generate_PostWorld() {

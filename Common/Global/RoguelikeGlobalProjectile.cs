@@ -9,11 +9,11 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Consumable.Ammo;
-using Roguelike.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {

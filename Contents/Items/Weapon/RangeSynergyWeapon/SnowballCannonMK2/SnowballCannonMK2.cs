@@ -7,17 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using System.Collections.Generic;
 using System;
-using Roguelike.Contents.Items.Weapon;
-
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SnowballCannonMK2;
-//SnowballCannonMK2
-//Uses snowball as ammo, shoot out snowball faster
-//After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
-//Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
-//Alt attack to do melee attack, melee attack will shoot out Ice bolt
 internal class SnowballCannonMK2 : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Minishark, $"[i:{ItemID.Minishark}] Decreases shot requirement for giant snowball to 3, increases attack speed by 25%");

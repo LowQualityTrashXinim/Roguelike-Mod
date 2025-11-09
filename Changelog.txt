@@ -322,3 +322,11 @@ Version 0.0.1:
 320/ Deleted the audio that play when player used Cursed doll because that deafen player.
 321/ Tooltip fixed for cobalt sword.
 322/ Reworked Warrior, Ranger and Soccerer Emblem.
+323/ Reworked User info function.
+324/ Added 2 new relic templates.
+325/ Massively reworked relic creative UI.
+326/ Some polishing on synergy weapon.
+327/ Removed synergy status of Overgrown Minishark, Rectangle shotgun.
+328/ Improved World generation by adding more abandon structure.
+329/ Added some small explanation in code.
+330/ Improved Roguelike_TextBox.
