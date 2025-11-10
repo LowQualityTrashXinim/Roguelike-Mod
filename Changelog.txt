@@ -330,3 +330,4 @@ Version 0.0.1:
 328/ Improved World generation by adding more abandon structure.
 329/ Added some small explanation in code.
 330/ Improved Roguelike_TextBox.
+331/ Reworked pre HM ore broadsword.

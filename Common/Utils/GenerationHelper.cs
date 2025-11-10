@@ -15,7 +15,6 @@ namespace Roguelike.Common.Utils;
 
 internal static partial class GenerationHelper {
 	public static bool CoordinatesOutOfBounds(int i, int j) => i >= Main.maxTilesX || j >= Main.maxTilesY || i < 0 || j < 0;
-
 	public static void FastPlaceTile(int i, int j, ushort tileType) {
 		if (CoordinatesOutOfBounds(i, j) || tileType < 0 || tileType >= TileID.Count) {
 			return;

@@ -35,25 +35,28 @@ internal class TestAnimationSwingMeleeSword : ModItem {
 				player.AddBuff<Guard_Buff>(player.itemAnimationMax);
 				player.velocity *= .1f;
 			}
-			if (player.ItemAnimationActive) {
-				Item.GetGlobalItem<MeleeWeaponOverhaul>().TemporaryDisableAttackAnimation = true;
-			}
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().HideSwingVisual = true;
+		}
+		else {
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().HideSwingVisual = false;
 		}
 	}
 	public override void UseStyle(Player player, Rectangle heldItemFrame) {
 		if (player.altFunctionUse == 2) {
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().DisableAttackAnimation = true;
 			player.itemLocation = player.Center;
 			if (player.direction == 1) {
-				player.itemRotation = MathHelper.PiOver4 / 2f + MathHelper.PiOver2;
+				player.itemRotation = -MathHelper.PiOver4;
 				player.itemLocation += Vector2.UnitX * 10;
 			}
 			else {
-				player.itemRotation = MathHelper.Pi;
+				player.itemRotation = MathHelper.PiOver4;
 				player.itemLocation += Vector2.UnitX * -10;
 			}
-			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, player.itemRotation);
+			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, player.itemRotation - MathHelper.PiOver2 * player.direction);
 		}
 		else {
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().DisableAttackAnimation = false;
 			float rotation = MathHelper.ToRadians(50) * player.direction;
 			if (player.itemAnimation <= 5) {
 				player.itemRotation = Item.GetGlobalItem<MeleeWeaponOverhaul>().RotationAfterMainAnimationEnd + rotation;

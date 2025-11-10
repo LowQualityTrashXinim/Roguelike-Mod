@@ -2900,7 +2900,7 @@ Mods: {
 
 			Penetrating: {
 				DisplayName: Penetrating
-				Description: TODO: ADD DESCRIPTION
+				Description: Increases armor penetration by 10
 			}
 
 			Drawback: {
@@ -2914,8 +2914,8 @@ Mods: {
 			}
 
 			RejuvenatePotionBuff: {
-				DisplayName: Rejuvenate Potion Buff
-				Description: TODO: ADD DESCRIPTION
+				DisplayName: Rejuvenate
+				Description: Rapidly healing life
 			}
 
 			ChaosBuff: {
@@ -3145,12 +3145,12 @@ Mods: {
 
 			DodgeJutsu: {
 				DisplayName: Dodge Jutsu
-				Description: TODO
+				Description: The next hit taken is a guaranteed dodge
 			}
 
 			DodgeJutsuCoolDown: {
 				DisplayName: Dodge Jutsu Cool Down
-				Description: TODO
+				Description: You can't do another dodge
 			}
 
 			Buff_VortexBlessing: {
@@ -3160,7 +3160,7 @@ Mods: {
 
 			DebugStatus: {
 				DisplayName: Debug Status
-				Description: TODO
+				Description: Admin privilege granted
 			}
 
 			CursedStatus: {
@@ -3324,6 +3324,11 @@ Mods: {
 			DeathshotMark: {
 				DisplayName: Deathshot Mark
 				Description: Mods.Roguelike.Buffs.DeathshotMark.Description
+			}
+
+			BroadSword_Guard: {
+				DisplayName: Broad Sword_ Guard
+				Description: Mods.Roguelike.Buffs.BroadSword_Guard.Description
 			}
 		}
 

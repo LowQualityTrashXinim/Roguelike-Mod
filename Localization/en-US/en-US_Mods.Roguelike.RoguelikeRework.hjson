@@ -89,6 +89,11 @@ Minishark:
 	While freezy buff are active, minishark shoot more bullet
 	'''
 GemStaff: Alt-click to activate special attack
+BroadSword:
+	'''
+	Alt-click to guard against any attack which reduce 95% of damage
+	Wait 1s to deal 3x damage and increases critical strike chance by 30%
+	'''
 PlatinumBow:
 	'''
 	Hold down to dish out combo

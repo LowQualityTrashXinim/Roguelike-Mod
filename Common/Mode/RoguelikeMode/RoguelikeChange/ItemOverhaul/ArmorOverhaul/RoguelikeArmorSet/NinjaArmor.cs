@@ -66,6 +66,8 @@ public class NinjaArmorPlayer : PlayerArmorHandle {
 		if (Player.HasBuff<DodgeJutsu>()) {
 			Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<DodgeJutsu>()));
 			Player.AddBuff<DodgeJutsuCoolDown>(ModUtils.ToSecond(20));
+			Player.AddImmuneTime(info.CooldownCounter, 44);
+			Player.immune = true;
 			return true;
 		}
 		return false;

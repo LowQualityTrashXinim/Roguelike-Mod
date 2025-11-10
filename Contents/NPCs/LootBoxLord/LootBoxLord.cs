@@ -459,10 +459,12 @@ internal class LootBoxLord : ModNPC {
 			BossDamagePercentage(.75f), 2, NPC.target);
 		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 			projectile.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
-		proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -vec, ModContent.ProjectileType<ShortSwordAttackOne>(),
-			BossDamagePercentage(.75f), 2, NPC.target);
-		if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile2)
-			projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+		if (Main.expertMode || Main.masterMode) {
+			proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -vec, ModContent.ProjectileType<ShortSwordAttackOne>(),
+				BossDamagePercentage(.75f), 2, NPC.target);
+			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile2)
+				projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+		}
 		AttackCounter++;
 	}
 	private void ShootShortSword2(Player player) {
@@ -498,12 +500,14 @@ internal class LootBoxLord : ModNPC {
 		Main.projectile[proj].ai[1] = -20;
 		Main.projectile[proj].ai[0] = 2;
 		Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
-		int proj2 = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -Vector2.UnitY * 20, ModContent.ProjectileType<ShortSwordAttackTwo>(), BossDamagePercentage(.75f), 2, NPC.target);
-		if (Main.projectile[proj2].ModProjectile is BaseHostileProjectile projectile2)
-			projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)AttackCounter];
-		Main.projectile[proj2].ai[1] = -20;
-		Main.projectile[proj2].ai[0] = 2;
-		Main.projectile[proj2].rotation = Main.projectile[proj2].velocity.ToRotation() + MathHelper.PiOver4;
+		if (Main.expertMode || Main.masterMode) {
+			int proj2 = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -Vector2.UnitY * 20, ModContent.ProjectileType<ShortSwordAttackTwo>(), BossDamagePercentage(.75f), 2, NPC.target);
+			if (Main.projectile[proj2].ModProjectile is BaseHostileProjectile projectile2)
+				projectile2.IDtextureValue = TerrariaArrayID.AllOreShortSword[(int)AttackCounter];
+			Main.projectile[proj2].ai[1] = -20;
+			Main.projectile[proj2].ai[0] = 2;
+			Main.projectile[proj2].rotation = Main.projectile[proj2].velocity.ToRotation() + MathHelper.PiOver4;
+		}
 		AttackCounter++;
 	}
 	private void ShootBroadSword(Player player) {

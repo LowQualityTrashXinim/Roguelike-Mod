@@ -1,12 +1,10 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
-{
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
 	public class YinYangP : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 25f;
@@ -16,7 +14,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
 			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 15;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
-			Projectile.aiStyle = 99;
+			Projectile.aiStyle = ProjAIStyleID.Yoyo;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.width = 24;
 			Projectile.height = 24;
@@ -66,30 +64,21 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
 			Projectile.localNPCHitCooldown = 20;
 		}
 		public virtual int Offset() => 0;
-		int Counter = 0;
-		int frame = 0;
 		int distance = 1;
 		Vector2 projCenter;
 		public override void AI() {
-			if (Projectile.ai[0] == 0) {
-				Projectile.penetrate = 1;
-				return;
-			}
-			if (frame == 0) {
+			if (Projectile.timeLeft == 999) {
 				projCenter = Projectile.Center;
 			}
-			distance += frame % 6 == 0 ? 1 : 0;
-			frame++;
-			Counter++;
-			Projectile.alpha = (int)MathHelper.Lerp(0, 255, (999 - Projectile.timeLeft) / 999f);
-			Projectile.Center = getPosToReturn(Offset(), Counter, projCenter, distance);
+			distance += ++Projectile.ai[2] % 6 == 0 ? 1 : 0;
+			Projectile.Center = getPosToReturn(Offset(), (int)++Projectile.ai[1], projCenter, distance);
 		}
 		private static Vector2 getPosToReturn(float offSet, int Counter, Vector2 pos, float Distance = 50) {
 			Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
 			return pos + Rotate.RotatedBy(MathHelper.ToRadians(Counter)) * Distance;
 		}
 		public override bool PreDraw(ref Color lightColor) {
-			Projectile.DrawTrail(lightColor, .02f);
+			Projectile.DrawTrailWithoutColorAdjustment(Color.White, .02f);
 			return true;
 		}
 	}

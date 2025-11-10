@@ -76,7 +76,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		/// <summary>
 		/// This will temporary disable attack animation during player item animation active
 		/// </summary>
-		public bool TemporaryDisableAttackAnimation = false;
+		public bool DisableAttackAnimation = false;
 		public override bool InstancePerEntity => true;
 		public override void SetDefaults(Item item) {
 			scaleWarp = new(item.scale);
@@ -178,11 +178,11 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			return base.CanUseItem(item, player);
 		}
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
+			if (DisableAttackAnimation) {
+				return;
+			}
 			if (item.type == player.HeldItem.type || item.type == Main.mouseItem.type) {
 				if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-					if (TemporaryDisableAttackAnimation) {
-						return;
-					}
 					if (player.itemAnimation <= AnimationEndTime && player.altFunctionUse != 2) {
 						if (Main.mouseLeftRelease) {
 							player.itemAnimation = 0;
@@ -210,9 +210,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public void ModdedUseStyle(Item item, Player player) {
-			if (TemporaryDisableAttackAnimation) {
-				return;
-			}
 			SwingStrength = 7;
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
@@ -434,6 +431,11 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public int CountDownToResetCombo = 0;
 		public float CustomItemRotation = 0;
 		public float itemAnimationImproved = 0;
+		/// <summary>
+		/// This is to force shader to draw regardless of condition<br/>
+		/// By default this is set to false and always reset to false
+		/// </summary>
+		public bool ExtraOverride = false;
 		// sword trail fields
 		public Vector2[] swordTipPositions = new Vector2[30];
 		public float[] swordRotations = new float[30];
@@ -448,6 +450,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public float Item_LastFrameRotation = 0;
 		public Vector2 Item_LastFramePosition = Vector2.Zero;
 		public override void PreUpdate() {
+			ExtraOverride = false;
 			var item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
 				oldHeldItem = item.type;
@@ -462,7 +465,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				ComboNumber = 0;
 			}
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-				if (meleeItem.SwingType != BossRushUseStyle.Swipe) {
+				if (meleeItem.SwingType != BossRushUseStyle.Swipe || meleeItem.DisableAttackAnimation) {
 					ComboNumber = 0;
 				}
 			}
@@ -514,8 +517,10 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			if (Player.ItemAnimationActive) {
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
 				var overhaul = item.GetGlobalItem<MeleeWeaponOverhaul>();
-				if (overhaul.HideSwingVisual || overhaul.TemporaryDisableAttackAnimation) {
-					return;
+				if (overhaul.HideSwingVisual) {
+					if (!ExtraOverride) {
+						return;
+					}
 				}
 				float scale = Player.GetAdjustedItemScale(item);
 				swordLength = item.Size.Length() * .55f * scale;
@@ -535,9 +540,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					ModUtils.Push(ref swordTipPositions, insertPos);
 					ModUtils.Push(ref swordRotations, dir.ToRotation() - MathHelper.PiOver2);
 				}
-			}
-			else {
-				item.GetGlobalItem<MeleeWeaponOverhaul>().TemporaryDisableAttackAnimation = false;
 			}
 			//can't believe we have to do this
 			if (Player.ItemAnimationEndingOrEnded) {
