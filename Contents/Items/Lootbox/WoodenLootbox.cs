@@ -1,11 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
-using System.Collections.Generic;
 using Terraria.ModLoader;
-using Roguelike.Common.Utils;
 using Roguelike.Common.General;
-using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using System.Collections.Generic;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	class WoodenLootBox : LootBoxBase {
@@ -15,7 +13,8 @@ namespace Roguelike.Contents.Items.Lootbox {
 			Item.rare = ItemRarityID.White;
 		}
 		public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
-		public override void LootPoolSetStaticDefaults() {
+		public override List<int> Set_ItemPool() {
+			return new List<int> { ItemPool.GetPoolType<UniversalPool>() };
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
@@ -23,11 +22,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 			GetArmorForPlayer(entitySource, player, true);
 			GetAccessories(Type, player);
 			GetPotion(Type, player);
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<SpecialSkillLootBox>());
-			int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
-			player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
-			player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
-			player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);
 		}
 	}
 }

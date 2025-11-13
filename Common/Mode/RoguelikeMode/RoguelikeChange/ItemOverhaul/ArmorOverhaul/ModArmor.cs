@@ -138,13 +138,13 @@ public abstract class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
-	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override sealed void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (modplayer.ArmorSetCheck(this)) {
 			Armor_ModifyHitNPCWithItem(item, target, ref modifiers);
 		}
 	}
 	public virtual void Armor_ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) { }
-	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override sealed void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (modplayer.ArmorSetCheck(this)) {
 			Armor_ModifyHitNPCWithProj(proj, target, ref modifiers);
 		}

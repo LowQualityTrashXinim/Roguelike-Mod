@@ -1,10 +1,11 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.DisableLootbox {
 	class GoldLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 
@@ -16,7 +17,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			player.QuickSpawnItem(entitySource, ItemID.CalmingPotion, 10);
 		}
 	}
 }

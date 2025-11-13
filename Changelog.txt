@@ -331,3 +331,12 @@ Version 0.0.1:
 329/ Added some small explanation in code.
 330/ Improved Roguelike_TextBox.
 331/ Reworked pre HM ore broadsword.
+332/ Improved melee swing visual
+333/ Reworked StylistScissor.
+334/ Reworked Meteor Armor.
+335/ Deleted bunch of no hit placeholder.
+336/ Slightly buff invisible potion.
+337/ Added Many First Strike perk.
+338/ Added sprite for Token of Wrath.
+339/ Deleted unused shop NPC.
+340/ Added small randomize village zone ( mainly for lootint ) gen task.

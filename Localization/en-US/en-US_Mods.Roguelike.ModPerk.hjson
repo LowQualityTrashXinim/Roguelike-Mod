@@ -808,3 +808,12 @@ SoulBreaker: {
 		Increases percentage damage by 0.1%
 		'''
 }
+
+ManyFirstStrike: {
+	DisplayName: Many first strike
+	Description:
+		'''
+		+ For each stack of this perk, the first strike damage apply condition increases
+		- Multiply first strike damage modifier by 0.33x ( unstackable )
+		'''
+}

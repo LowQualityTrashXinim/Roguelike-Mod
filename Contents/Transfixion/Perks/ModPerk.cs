@@ -869,3 +869,15 @@ public class BloodthornCore : Perk {
 		}
 	}
 }
+
+public class ManyFirstStrike : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		handler.UpdateFullHPDamage *= .33f;
+		handler.HitCountIgnore += StackAmount(player);
+	}
+}

@@ -27,11 +27,11 @@ namespace Roguelike.Contents.Items.Lootbox {
 
 		}
 		public virtual bool ChestUseOwnLogic => false;
-		public virtual List<int> ItemPool() {
+		public virtual List<int> Set_ItemPool() {
 			return new();
 		}
 		public HashSet<int> LootboxItemPool() {
-			var poollist = ItemPool();
+			var poollist = Set_ItemPool();
 			HashSet<int> itemList = new();
 			foreach (var item in poollist) {
 				var pool = LootboxSystem.GetItemPool(item);

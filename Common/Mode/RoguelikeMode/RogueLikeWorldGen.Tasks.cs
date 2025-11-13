@@ -334,6 +334,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public List<Rectangle> ZoneToBeIgnored = new();
 	public List<Rectangle> ForestZone = new();
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
+	public static Rectangle Rect_CentralizeRect(Rectangle rect) {
+		rect.X -= rect.Width / 2;
+		rect.Y -= rect.Height / 2;
+		return rect;
+	}
 	private void InitializeForestWorld() {
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
@@ -925,7 +930,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			X = Main.rand.Next(12, 16) * GridPart_X;
 			Y = Main.rand.Next(15, 20) * GridPart_Y;
 		}
-		ModContent.GetInstance<CursedKingdom_GenSystem>().Place_CursedKingdomEntrance(X, Y);
+		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CursedKingdomArea);
+		}
 	}
 	public Rectangle CrimsonEntrance = new();
 	public Rectangle CorruptionEntrance = new();
@@ -1004,9 +1017,75 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
+	public void Generate_SmallVillage() {
+		for (int b = 0; b < 12; b++) {
+			List<Rectangle> placed = new();
+			int amount = Rand.Next(10, 20);
+			int xdex = Main.rand.Next(1, 23);
+			int ydex = Main.rand.Next(1, 22);
+			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
+			Rectangle villageZone = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex, 250, 100);
+			while (!(ID != Bid.Space && ID != Bid.Ocean && ID != Bid.Desert && ID != Bid.Caven && !ZoneToBeIgnored.Where(rect => rect.Intersects(villageZone)).Any())) {
+				xdex = Main.rand.Next(1, 23);
+				ydex = Main.rand.Next(1, 22);
+				ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
+				villageZone.X = GridPart_X * xdex + Main.rand.Next(0, GridPart_X);
+				villageZone.Y = GridPart_Y * ydex + Main.rand.Next(0, GridPart_Y);
+				villageZone = Rect_CentralizeRect(villageZone);
+			}
+			ZoneToBeIgnored.Add(villageZone);
+			for (int i = 0; i < amount; i++) {
+				StructureData data = Get_RandomizeAbandonStructure(Mod);
+				Point zonecachedPoint = Rand.NextVector2FromRectangle(villageZone).ToPoint();
+				Rectangle re = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, data.width, data.height);
+				bool canBeAdded = true;
+				foreach (var item in placed) {
+					if (item.Intersects(re)) {
+						canBeAdded = false;
+						break;
+					}
+				}
+				if (!canBeAdded) {
+					i--;
+					continue;
+				}
+				ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
+				bool chestplaced = false;
+				int chestAttempt = 200;
+				for (int a = 0; a < chestAttempt; a++) {
+					Point randomPoint = new Point(Main.rand.Next(re.X, re.X + re.Width), Main.rand.Next(re.Y, re.Y + re.Height));
+					int chest = WorldGen.PlaceChest(randomPoint.X, randomPoint.Y);
+					if (chest == -1) {
+						continue;
+					}
+					chestplaced = true;
+					AddLoot(Main.chest[chest]);
+					//Add loot here
+					break;
+				}
+				for (int x = re.X; x < re.X + re.Width; x++) {
+					if (chestplaced) {
+						break;
+					}
+					for (int y = re.Y; y < re.Y + re.Height; y++) {
+						int chest = WorldGen.PlaceChest(x, y);
+						if (chest == -1) {
+							continue;
+						}
+						chestplaced = true;
+						AddLoot(Main.chest[chest]);
+						//Add loot here
+						break;
+					}
+				}
+				placed.Add(re);
+			}
+		}
+	}
+	[Task]
 	public void Generate_AbandonStructureAllOverThePlace() {
 		List<Rectangle> placed = new();
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 300; i++) {
 			StructureData data = Get_RandomizeAbandonStructure(Mod);
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
@@ -1015,7 +1094,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				i--;
 				continue;
 			}
-			Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
+			Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex + Main.rand.Next(0, GridPart_Y));
 			Rectangle re = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, data.width, data.height);
 			bool canBeAdded = true;
 			foreach (var item in ZoneToBeIgnored) {

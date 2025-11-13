@@ -16,6 +16,7 @@ using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 
 namespace Roguelike.Common.Global
 {
@@ -135,7 +136,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.QueenSlimeBoss) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalLootBox>()));
 				//Expert mode drop
@@ -143,7 +144,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>()));
 				//Expert mode drop
@@ -152,7 +153,7 @@ namespace Roguelike.Common.Global
 			else if (npc.type == NPCID.Spazmatism || npc.type == NPCID.Retinazer) {
 				var leadingConditionRule = new LeadingConditionRule(new Conditions.MissingTwin());
 				//NoHit Mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new GitGudMode(), ModContent.ItemType<MechLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsBossAndNotExpert(), ModContent.ItemType<MechLootBox>()));
 				//Expert mode drop
@@ -161,7 +162,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.Plantera) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>()));
 				//Expert mode drop
@@ -169,7 +170,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>()));
 				//Expert mode drop
@@ -177,7 +178,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.HallowBoss) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
@@ -187,7 +188,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DukeLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
@@ -199,7 +200,7 @@ namespace Roguelike.Common.Global
 			}
 			else if (npc.type == NPCID.CultistBoss) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>(), 1, 2, 2));
+
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
 				//Expert mode drop

@@ -1,5 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;

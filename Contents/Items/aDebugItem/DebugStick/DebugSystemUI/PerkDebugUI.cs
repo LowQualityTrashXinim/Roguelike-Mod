@@ -166,6 +166,20 @@ internal class PerkDebugUI : UIState {
 	private void Btn_ResetPerk_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks.Clear();
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (btn_ConfirmSelectino.IsMouseHovering) {
+			string text = "Confirm perk selection";
+			foreach (var item in list_perkSelection) {
+				Perk perk = ModPerkLoader.GetPerk(item);
+				if (perk == null) {
+					continue;
+				}
+				text += "\n - " + perk.DisplayName;
+			}
+			btn_ConfirmSelectino.HoverText = text;
+		}
+	}
 }
 class PerkDebugBtn : Roguelike_UIImageButton {
 	public int perkType;
@@ -198,7 +212,7 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 			UICommon.TooltipMouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
 		}
 		Color color = Color.White;
-		if(Info == "selected") {
+		if (Info == "selected") {
 			float size = 1.2f;
 			Vector2 origin = ahhlookingassdefaultbgsperktexture.Value.Size() * .5f;
 			Vector2 adjustment = origin - origin * size;

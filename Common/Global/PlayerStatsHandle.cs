@@ -256,6 +256,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// This percentage damage will always deal NPC% health as true damage
 	/// </summary>
 	public float PercentageDamage = 0;
+	public int HitCountIgnore = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
@@ -279,7 +280,7 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Summon_CritDamage);
 			modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(Summon_NonCritDmg);
 		}
-		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= 0) {
+		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= HitCountIgnore) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
 		bool HasDebuff = false; int count = 0;

@@ -43,7 +43,6 @@ internal class Sword_Rework : GlobalItem{
 			case ItemID.PlatinumBroadsword:
 			//Misc PreHM sword
 			case ItemID.PurpleClubberfish:
-			case ItemID.StylistKilLaKillScissorsIWish:
 			case ItemID.BladeofGrass:
 			case ItemID.FieryGreatsword:
 			case ItemID.LightsBane:

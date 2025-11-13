@@ -24,6 +24,7 @@
 		public const string Arrow_Left = CommonTextureStringPattern + "UI/LeftArrow";
 		public const string Arrow_Right = CommonTextureStringPattern + "UI/RightArrow";
 		public const string PingpongGradient = CommonTextureStringPattern + "PingpongGradient";
+		public const string PingpongGradient2 = CommonTextureStringPattern + "PingpongGradient2";
 		public const string LinesNoise = CommonTextureStringPattern + "LinesNoise";
 		public const string Gradient = CommonTextureStringPattern + "Gradient";
 		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";

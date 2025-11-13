@@ -439,6 +439,7 @@ Mods: {
 			WinterKnight_IceMist.DisplayName: Winter Knight_ Ice Mist
 			WinterKnight_IceShards.DisplayName: Winter Knight_ Ice Shards
 			KnifeRevolverThrown_Projectile.DisplayName: Knife Revolver Thrown_ Projectile
+			Roguelike_StylistScissor_ModProjectile.DisplayName: Roguelike_ Stylist Scissor_ Mod Projectile
 		}
 
 		NPCs: {
@@ -3084,7 +3085,7 @@ Mods: {
 			}
 
 			SnowballCannonMK2Projectile_CoolDown: {
-				DisplayName: SnowballCannonMK2 Cool Down
+				DisplayName: Swing Cool Down
 				Description: " "
 			}
 
@@ -3329,6 +3330,11 @@ Mods: {
 			BroadSword_Guard: {
 				DisplayName: Broad Sword_ Guard
 				Description: Mods.Roguelike.Buffs.BroadSword_Guard.Description
+			}
+
+			SpaceSuitDefenses: {
+				DisplayName: Space Suit Defenses
+				Description: Space suit remain Health : [c/{0}:{1}]
 			}
 		}
 

@@ -1,7 +1,9 @@
-﻿using Terraria;
+﻿using Roguelike.Contents.Items.Lootbox.Lootpool;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.DisableLootbox {
 	class SilverLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;

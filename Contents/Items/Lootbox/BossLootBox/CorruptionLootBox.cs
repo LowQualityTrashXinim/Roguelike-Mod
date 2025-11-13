@@ -1,10 +1,7 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Roguelike.Contents.Items.Lootbox.Lootpool;
 using System.Collections.Generic;
-using Roguelike.Common.Utils;
-
-using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox.Lootpool;
+using Terraria;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 	class CorruptionLootBox : LootBoxBase {
@@ -13,7 +10,8 @@ namespace Roguelike.Contents.Items.Lootbox.BossLootBox {
 			Item.height = 38;
 			Item.rare = ItemRarityID.Orange;
 		}
-		public override void LootPoolSetStaticDefaults() {
+		public override List<int> Set_ItemPool() {
+			return new List<int>() { ItemPool.GetPoolType<CorruptionPool>() };
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);

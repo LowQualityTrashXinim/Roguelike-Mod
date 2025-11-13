@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Roguelike.Contents.Items.Lootbox.Lootpool;
 
 public class CorruptionPool : ItemPool {
-	public override HashSet<int> MeleeLoot() => [ItemID.WarAxeoftheNight, ItemID.LightsBane, ItemID.BallOHurt, ItemID.DarkLance, ItemID.CorruptYoyo];
+	public override HashSet<int> MeleeLoot() => [ItemID.WarAxeoftheNight, ItemID.LightsBane, ItemID.BallOHurt, ItemID.DarkLance, ItemID.CorruptYoyo, ItemID.TentacleSpike];
 	public override HashSet<int> RangeLoot() => [ItemID.DemonBow, ItemID.EbonwoodBow];
 	public override HashSet<int> MagicLoot() => [ItemID.Vilethorn];
 }
@@ -45,23 +45,11 @@ public class ShadowPool : ItemPool {
 	public override HashSet<int> MagicLoot() => [ItemID.Flamelash, ItemID.FlowerofFire, ItemID.DemonScythe];
 	public override HashSet<int> SummonLoot() => [ItemID.ImpStaff, ItemID.FireWhip];
 }
-public class GoldPool : ItemPool {
-	public override HashSet<int> MeleeLoot() => [ItemID.GoldShortsword, ItemID.GoldBroadsword, ItemID.GoldAxe, ItemID.PlatinumBroadsword, ItemID.PlatinumShortsword, ItemID.PlatinumAxe];
-	public override HashSet<int> RangeLoot() => [ItemID.GoldBow, ItemID.PlatinumBow];
-	public override HashSet<int> MagicLoot() => [ItemID.RubyStaff, ItemID.DiamondStaff];
-}
-public class SilverPool : ItemPool {
-	public override HashSet<int> MeleeLoot() => [ItemID.SilverShortsword, ItemID.SilverBroadsword, ItemID.SilverAxe, ItemID.TungstenShortsword, ItemID.TungstenBroadsword, ItemID.TungstenAxe];
-	public override HashSet<int> RangeLoot() => [ItemID.SilverBow, ItemID.TungstenBow];
-	public override HashSet<int> MagicLoot() => [ItemID.SapphireStaff, ItemID.EmeraldStaff];
-}
-/// <summary>
-/// Overworld lootbox<br/>
-/// Belong in caven, underground and any variantion of those
-/// </summary>
-public class IronPool : ItemPool {
-	public override HashSet<int> MeleeLoot() => [ItemID.IronShortsword, ItemID.IronBroadsword, ItemID.IronAxe, ItemID.LeadShortsword, ItemID.LeadBroadsword, ItemID.LeadAxe];
-	public override HashSet<int> RangeLoot() => [ItemID.IronAxe, ItemID.LeadBow];
+public class BloodPool : ItemPool {
+	public override HashSet<int> MeleeLoot() => [ItemID.Bladetongue, ItemID.DripplerFlail];
+	public override HashSet<int> RangeLoot() => [ItemID.BloodRainBow];
+	public override HashSet<int> MagicLoot() => [ItemID.SharpTears];
+	public override HashSet<int> SummonLoot() => [ItemID.VampireFrogStaff, ItemID.SanguineStaff];
 }
 /// <summary>
 /// Overworld lootbox<br/>
@@ -72,4 +60,15 @@ public class WoodPool : ItemPool {
 	public override HashSet<int> RangeLoot() => [.. TerrariaArrayID.AllWoodBowPHM];
 	public override HashSet<int> MagicLoot() => [ItemID.WandofFrosting, ItemID.WandofSparking];
 	public override HashSet<int> SummonLoot() => [ItemID.SlimeStaff, ItemID.BabyBirdStaff];
+}
+public class UniversalPool : ItemPool {
+	public override HashSet<int> MeleeLoot() => [.. TerrariaArrayID.AllOreBroadSword, .. TerrariaArrayID.CommonAxe, .. TerrariaArrayID.AllOreShortSword,
+	ItemID.Mace, ItemID.FlamingMace, ItemID.Katana, ItemID.Rally, ItemID.Spear, ItemID.WoodenBoomerang, ItemID.ChainKnife, ItemID.BladedGlove, ItemID.FalconBlade
+	];
+	public override HashSet<int> RangeLoot() => [.. TerrariaArrayID.AllOreBowPHM, ItemID.FlintlockPistol, ItemID.Musket, ItemID.Revolver, ItemID.Boomstick, ItemID.Minishark,
+		ItemID.StylistKilLaKillScissorsIWish
+		];
+	public override HashSet<int> MagicLoot() => [.. TerrariaArrayID.AllGemStaffPHM];
+	public override HashSet<int> SummonLoot() => [ItemID.SlimeStaff, ItemID.BabyBirdStaff, ItemID.BlandWhip];
+	public override HashSet<int> PotionPool() => [ItemID.SwiftnessPotion, ItemID.RegenerationPotion, ItemID.IronskinPotion];
 }

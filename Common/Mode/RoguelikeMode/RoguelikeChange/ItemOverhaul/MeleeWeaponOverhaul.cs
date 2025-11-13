@@ -359,11 +359,24 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			trailShaderSettings.oldPos = modplayer.swordTipPositions;
 			trailShaderSettings.oldRot = modplayer.swordRotations;
 			trailShaderSettings.shaderType = SwordSlashTrail.GetShaderType(modplayer.Player);
-			trailShaderSettings.image1 = TextureAssets.Extra[193];
+			trailShaderSettings.image1 = ModContent.Request<Texture2D>(ModTexture.PingpongGradient2);
 			trailShaderSettings.image2 = ModContent.Request<Texture2D>(ModTexture.Gradient);
 			trailShaderSettings.image3 = ModContent.Request<Texture2D>(ModTexture.PingpongGradient);
-			trailShaderSettings.Color = SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type] * 2;
+			trailShaderSettings.Color = SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type];
 			default(GenericTrail).Draw(trailShaderSettings,
+			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
+			//Tf this do nothing ??
+			(progress) => { return new(0, 0, 0, 0); });
+
+			var trailShaderSettings2 = new TrailShaderSettings();
+			trailShaderSettings2.oldPos = modplayer.swordTipPositions;
+			trailShaderSettings2.oldRot = modplayer.swordRotations;
+			trailShaderSettings2.shaderType = SwordSlashTrail.GetShaderType(modplayer.Player);
+			trailShaderSettings2.image1 = ModContent.Request<Texture2D>(ModTexture.PingpongGradient);
+			trailShaderSettings2.image2 = ModContent.Request<Texture2D>(ModTexture.Gradient);
+			trailShaderSettings2.image3 = ModContent.Request<Texture2D>(ModTexture.PingpongGradient);
+			trailShaderSettings2.Color = SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type] * 2;
+			default(GenericTrail).Draw(trailShaderSettings2,
 			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
 			//Tf this do nothing ??
 			(progress) => { return new(0, 0, 0, 0); });
