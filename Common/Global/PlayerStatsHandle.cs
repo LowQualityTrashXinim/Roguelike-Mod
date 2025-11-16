@@ -719,6 +719,18 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.TrueDamage:
 				TrueDamage = TrueDamage.CombineWith(StatMod);
 				break;
+			case PlayerStats.MeleeAtkSpeed:
+				MeleeAtkSpeed = MeleeAtkSpeed.CombineWith(StatMod);
+				break;
+			case PlayerStats.RangeAtkSpeed:
+				RangeAtkSpeed = RangeAtkSpeed.CombineWith(StatMod);
+				break;
+			case PlayerStats.MagicAtkSpeed:
+				MagicAtkSpeed = MagicAtkSpeed.CombineWith(StatMod);
+				break;
+			case PlayerStats.SummonAtkSpeed:
+				SummonAtkSpeed = SummonAtkSpeed.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}

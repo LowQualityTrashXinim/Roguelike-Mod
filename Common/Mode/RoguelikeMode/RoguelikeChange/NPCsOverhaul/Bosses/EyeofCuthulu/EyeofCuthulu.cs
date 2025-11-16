@@ -152,7 +152,7 @@ public class ServerntOfCuthulu : NPCReworker {
 		if (state == State.ChargingUp) {
 
 			var shaderSettings = new ShaderSettings();
-			shaderSettings.image1 = TextureAssets.Extra[193];
+			shaderSettings.image1 = TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion];
 			shaderSettings.image2 = null;
 			shaderSettings.image3 = null;
 			shaderSettings.Color = Color.Cyan;
@@ -225,7 +225,7 @@ public struct EyeRift {
 	private static PrimitiveDrawer quad = new PrimitiveDrawer(PrimitiveShape.Quad);
 	public void Draw(Vector2 position, float rotation, Vector2 size) {
 		var moddedShaderHandler = EffectsLoader.shaderHandlers["Rift"];
-		moddedShaderHandler.setProperties(Color.Purple, TextureAssets.Extra[193].Value);
+		moddedShaderHandler.setProperties(Color.Purple, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		moddedShaderHandler.apply();
 		quad.Draw([position], [Color.White], [size], rotation, position);
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
@@ -235,7 +235,7 @@ public struct LingeringEvilFlamesQuad {
 	private static PrimitiveDrawer quad = new PrimitiveDrawer(PrimitiveShape.Quad);
 	public void Draw(Vector2 position, float rotation, Vector2 size, float random, float progress) {
 		var moddedShaderHandler = EffectsLoader.shaderHandlers["LingeringEvilFlames"];
-		moddedShaderHandler.setProperties(Color.Purple, TextureAssets.Extra[193].Value, shaderData: new Vector4(random, progress, 0, 0));
+		moddedShaderHandler.setProperties(Color.Purple, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value, shaderData: new Vector4(random, progress, 0, 0));
 		moddedShaderHandler.apply();
 		quad.Draw([position], [Color.White], [size], rotation, position);
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();

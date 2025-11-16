@@ -195,7 +195,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 					bool num9 = num8 <= num2 && ((b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
 					bool flag3 = tile.IsActuated && Main.tileBlockLight[tile.TileType] && (!tile.IsTileInvisible || flag);
 					bool flag4 = !WallID.Sets.Transparent[tile.WallType] && (!tile.IsWallInvisible || flag);
-					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == 0 && !tile.IsHalfBlock))
+					if (!num9 || (!flag4 && !flag3) || (!Main.drawToScreen && LiquidRenderer.Instance.HasFullWater(j, i) && tile.WallType == WallID.None && !tile.IsHalfBlock))
 						break;
 				}
 
@@ -226,31 +226,31 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			if (!Main.npc[i].active)
 				continue;
 
-			if (Main.npc[i].type == 493) {
+			if (Main.npc[i].type == NPCID.LunarTowerStardust) {
 				if (self.Distance(Main.npc[i].Center) <= 4000f) {
 					self.ZoneTowerStardust = true;
 					vector4 = Main.npc[i].Center;
 				}
 			}
-			else if (Main.npc[i].type == 507) {
+			else if (Main.npc[i].type == NPCID.LunarTowerNebula) {
 				if (self.Distance(Main.npc[i].Center) <= 4000f) {
 					self.ZoneTowerNebula = true;
 					vector3 = Main.npc[i].Center;
 				}
 			}
-			else if (Main.npc[i].type == 422) {
+			else if (Main.npc[i].type == NPCID.LunarTowerVortex) {
 				if (self.Distance(Main.npc[i].Center) <= 4000f) {
 					self.ZoneTowerVortex = true;
 					vector2 = Main.npc[i].Center;
 				}
 			}
-			else if (Main.npc[i].type == 517) {
+			else if (Main.npc[i].type == NPCID.LunarTowerSolar) {
 				if (self.Distance(Main.npc[i].Center) <= 4000f) {
 					self.ZoneTowerSolar = true;
 					vector = Main.npc[i].Center;
 				}
 			}
-			else if (Main.npc[i].type == 549 && self.Distance(Main.npc[i].Center) <= 4000f) {
+			else if (Main.npc[i].type == NPCID.DD2LanePortal && self.Distance(Main.npc[i].Center) <= 4000f) {
 				self.ZoneOldOneArmy = true;
 				vector = Main.npc[i].Center;
 			}
@@ -560,7 +560,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		self.ZonePurity = false;
 		Tile tileSafely = Framing.GetTileSafely(self.Center);
 		if (tileSafely != null)
-			self.behindBackWall = tileSafely.WallType > 0;
+			self.behindBackWall = tileSafely.WallType > WallID.None;
 		//underworldHeight.SetValue(null, Main.maxTilesY - 200);
 		RoguelikeBiomeHandle_ModPlayer modplayer = self.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
 		Point toTile = self.Center.ToTileCoordinates();

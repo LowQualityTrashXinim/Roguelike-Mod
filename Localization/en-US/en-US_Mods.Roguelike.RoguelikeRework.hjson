@@ -106,6 +106,22 @@ Chik:
 	After 12 yoyo hits, the next 3 hit shoot out ring of crystal
 	A illusion yoyo follow the main yoyo.
 	'''
+AshWoodSword:
+	'''
+	Your swing are accompany with a ghost version of itself
+	Every 5th swing, Rain down hellish sword attack
+	'''
+PearlwoodSword:
+	'''
+	Your swing are accompany with a ghost version of itself
+	Every 3rd swing, shoot out a 6 copy of itself toward the cursor
+	'''
+WoodenSword:
+	'''
+	Your swing are accompany with ghost version of itself
+	Every 3rd swing, you instead swing out 6 ghost version of itself
+	Every 5th swing, rain down wooden sword 
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

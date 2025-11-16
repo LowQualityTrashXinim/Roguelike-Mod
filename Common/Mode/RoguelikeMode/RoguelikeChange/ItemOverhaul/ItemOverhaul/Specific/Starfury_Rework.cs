@@ -82,7 +82,7 @@ public class Roguelike_Starfury_ModPlayer : ModPlayer {
 					var vector7 = Vector2.Lerp(value, value2, num14);
 					var vector8 = Vector2.Lerp(vector7, center3, 0.9f);
 					var vector9 = (vector7 - vector8).SafeNormalize(Vector2.Zero);
-					var dust5 = Dust.NewDustPerfect(vector8, 267, Vector2.Zero, 0, celeb2Color3, 0.5f);
+					var dust5 = Dust.NewDustPerfect(vector8, DustID.RainbowMk2, Vector2.Zero, 0, celeb2Color3, 0.5f);
 					dust5.fadeIn = 1.2f;
 					dust5.noGravity = true;
 					dust5.velocity = vector9 * Vector2.Distance(vector7, vector8) * num9;
@@ -137,7 +137,7 @@ public class Roguelike_Starfury_Projectile : ModProjectile {
 		Projectile.ProjectileDefaultDrawInfo(out var texture, out var origin);
 		origin = new Vector2(11, 11);
 
-		var value28 = TextureAssets.Extra[91].Value;
+		var value28 = TextureAssets.Extra[ExtrasID.FallingStar].Value;
 		var value29 = value28.Frame();
 		var vector43 = Projectile.Center + Projectile.velocity;
 		var spinningpoint2 = new Vector2(0f, -15f);

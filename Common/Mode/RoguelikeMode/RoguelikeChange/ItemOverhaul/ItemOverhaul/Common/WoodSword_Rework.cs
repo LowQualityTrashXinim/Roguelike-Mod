@@ -18,7 +18,6 @@ internal class Roguelike_WoodSword : GlobalItem {
 			case ItemID.ShadewoodSword:
 			case ItemID.EbonwoodSword:
 			case ItemID.RichMahoganySword:
-			case ItemID.WoodenSword:
 				return true;
 		}
 		return false;

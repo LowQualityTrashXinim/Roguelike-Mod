@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Projectiles;
+using System.Collections.Generic;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_PearlWoodSword : GlobalItem {
@@ -17,17 +18,22 @@ public class Roguelike_PearlWoodSword : GlobalItem {
 		entity.useTime = entity.useAnimation = 24;
 		entity.GetGlobalItem<MeleeWeaponOverhaul>().ShaderOffSetLength += 1;
 	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
+	}
 	int swingCount = 0;
 	public override void HoldItem(Item item, Player player) {
 		if (player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
 			int damage = player.GetWeaponDamage(item);
-			if (++swingCount >= 5) {
+			if (++swingCount >= 3) {
 				swingCount = 0;
 				Vector2 distance = Main.MouseWorld - player.Center;
 				var vel = distance.SafeNormalize(Vector2.Zero);
 				for (int i = 0; i < 6; i++) {
 					var pos = player.Center + vel.Vector2DistributeEvenlyPlus(6, 180, i) * 60;
-					Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<pearlSwordProj>(), damage, 1, player.whoAmI);
+					Projectile projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), pos, vel.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<pearlSwordProj>(), damage, 1, player.whoAmI);
+					projectile.penetrate = 10;
+					projectile.maxPenetrate = 10;
 				}
 			}
 			Vector2 toward = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 100;

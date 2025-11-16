@@ -162,7 +162,24 @@ public class EnchantmentModplayer : ModPlayer {
 		Player.GetModPlayer<PerkPlayer>().perks.TryGetValue(Perk.GetPerkType<EnchantmentSmith>(), out int value);
 		SlotUnlock = value + 1;
 	}
-	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null;
+	/// <summary>
+	/// Be aware, everything this does is the opposite
+	/// </summary>
+	/// <returns></returns>
+	private bool CommonEnchantmentCheck() {
+		bool initial = Player.HeldItem.IsAWeapon() && globalItem != null && globalItem.EnchantmenStlot != null;
+		if (!initial) {
+			return true;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			ModEnchantment enchant = EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]);
+			if (enchant == null) {
+				continue;
+			}
+			return !enchant.ApplyCondition(i, Player, globalItem, item);
+		}
+		return true;
+	}
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;

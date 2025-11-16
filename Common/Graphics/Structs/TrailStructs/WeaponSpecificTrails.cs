@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria;
 using Terraria.GameContent;
 using Roguelike.Texture;
+using Terraria.ID;
 
 namespace Roguelike.Common.Graphics.Structs.TrailStructs;
 public struct WyvernTrailMain {
@@ -66,7 +67,7 @@ public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Projectile projectile, Color color, Vector2 offset) {
 		var shader = EffectsLoader.shaderHandlers["TrailEffect"];
-		shader.setProperties(color, TextureAssets.Extra[193].Value);
+		shader.setProperties(color, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		shader.setupTextures();
 		shader.apply();
 
@@ -88,7 +89,7 @@ public struct FlameThrowerFrost {
 	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
 
-		shader.setProperties(Color.CornflowerBlue, TextureAssets.Extra[193].Value);
+		shader.setProperties(Color.CornflowerBlue, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		shader.setupTextures();
 		shader.apply();
 
@@ -116,7 +117,7 @@ public struct FlameThrowerFire {
 		//miscShaderData.UseColor(Color.Orange);
 		//miscShaderData.UseShaderSpecificData(new Vector4(progress, maxProgress, 0, 0));
 		//miscShaderData.Apply();
-		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value);
+		shader.setProperties(Color.Orange, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		shader.setupTextures();
 		shader.apply();
 		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
@@ -144,7 +145,7 @@ public struct StarTrail {
 		//miscShaderData.Apply();
 
 
-		shader.setProperties(Color.SkyBlue, TextureAssets.Extra[193].Value);
+		shader.setProperties(Color.SkyBlue, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		shader.setupTextures();
 		shader.apply();
 
@@ -167,7 +168,7 @@ public struct StarTrailEmpowered {
 	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
-		shader.setProperties(Color.Gold, TextureAssets.Extra[193].Value);
+		shader.setProperties(Color.Gold, TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion].Value);
 		shader.setupTextures();
 		shader.apply();
 

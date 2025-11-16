@@ -68,7 +68,7 @@ internal class Roguelike_PlatinumBow : GlobalItem {
 				break;
 			case 4:
 				player.velocity -= velocity.SafeNormalize(Vector2.Zero) * 3;
-				damage = (int)(damage);
+				//damage = (int)(damage);
 				break;
 		}
 		player.velocity.Y = 0;

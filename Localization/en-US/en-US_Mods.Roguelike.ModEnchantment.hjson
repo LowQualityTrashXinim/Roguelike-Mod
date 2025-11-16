@@ -1,46 +1,33 @@
 Musket.Description:
 	'''
-	Increases range critical strike damage by 50% and weapon critical strike chance by 5%
-	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
+	+50% critical damage, 5% critical chance
+	Your attack deal 50% more damage (CD: 2s)
+	If weapon use ammo type : Bullet
+	For every 15 attack, shoot out a critical bullet
 	'''
-/*
-Musket.Description:
-'''
-+50% critical damage, 5% critical chance
-If the weapon are the following: {0}
-For every 15 attack, shoot out a critical bullet
-'''
-*/
 RedRyder.Description:
 	'''
-	Increases range critical strike damage by 15% and weapon critical strike chance by 5%
-	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
+	Shoot out a high velocity bullet that deal 125% weapon damage (CD: 0.5s)
+	Every 5th high velocity shot, make the next high velocity shot deal 500% weapon damage instead
 	'''
-/*
-RedRyder.Description:
-'''
-+5% critical chance
-If the weapon are the following: {0}
-While airborn, increases damage by 25%
-'''
-*/
 FlintlockPistol.Description:
 	'''
-	Weapon that can shoot :
-	+ Have 25% to shoot out additional bullet dealing the same damage
-	Increases damage by 10%
-	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
+	Increases weapon damage by 10%
+	Have 75% to shoot out additional bullet dealing the same damage
+	If weapon is {0}: The above effect will happen 5 times
 	'''
 Handgun.Description:
 	'''
+	Increases damage by 10%, critical damage by 25% and critical strike chance by 5
+	If weapon use ammo type : Bullet
 	Have 50% to shoot out a additional bullet dealing the same damage
-	Increases damage by 10%
-	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
+	Have 25% chance to replace normal shot bullet with high velocity bullet
 	'''
 Revolver.Description:
 	'''
-	Have 1 in 5 chance to shoot out a additional bullet dealing the same damage
-	For each hit dealt onto NPC, increases crit chance by and damage by 5% ( CD : 1s )
+	Have 20% to shoot out a additional bullet dealing the same damage
+	For each hit dealt onto NPC, increases crit chance and damage by 5% ( CD : 1s )
+	The above effect capped at 6 stacks
 	Getting hit will reset the buff
 	'''
 Minishark.Description:
@@ -51,10 +38,9 @@ Minishark.Description:
 	'''
 TheUndertaker.Description:
 	'''
-	Weapon that can shoot projectile have 25% to shoot out a bullet
-	+ Weapon that use bullet ammo will instead shoot the current uses type of bullet
-	Projectile that shoot from this weapon have 10% to heal player
-	Normal bullet will inflict CrimsonAbsorbtion
+	Weapon that can shoot projectile have 25% to shoot out 6 bullets
+	Projectile that shoot from this weapon have 10% to heal player for 1 hp
+	Projectile inflict CrimsonAbsorbtion for 2s
 	'''
 Boomstick.Description:
 	'''
@@ -77,13 +63,16 @@ WoodenSword.Description:
 	'''
 AshWoodSword.Description:
 	'''
-	Increases damage by 1
+	Only applied to: {0}
 	Hitting a enemy create a sword rise from below ( CD : 1s )
+	Every 5 swing, summon 1 AshwoodSword from the sky deal 125% of weapon damage
+	if weapon is {1}:
+	Sword will always rise from below from each swing (CD : 0.5s )
+	Every swing summon 1 AshwoodSword from the sky deal 125% of weapon damage
 	'''
 BorealWoodSword.Description:
 	'''
-	Increases damage by 1
-	Increases weapon size by 10%
+	Increases damage by 1 and weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 PalmWoodSword.Description:

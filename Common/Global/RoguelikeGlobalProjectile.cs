@@ -166,13 +166,13 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.hostile
 			|| !projectile.friendly
 			|| projectile.minion
-			|| projectile.aiStyle == 4
-			|| projectile.aiStyle == 19
-			|| projectile.aiStyle == 39
-			|| projectile.aiStyle == 46
-			|| projectile.aiStyle == 75
-			|| projectile.aiStyle == 99
-			|| projectile.aiStyle == 101
+			|| projectile.aiStyle == ProjAIStyleID.Vilethorn
+			|| projectile.aiStyle == ProjAIStyleID.Spear
+			|| projectile.aiStyle == ProjAIStyleID.MechanicalPiranha
+			|| projectile.aiStyle == ProjAIStyleID.Rainbow
+			|| projectile.aiStyle == ProjAIStyleID.HeldProjectile
+			|| projectile.aiStyle == ProjAIStyleID.Yoyo
+			|| projectile.aiStyle == ProjAIStyleID.HorizontalRay
 			|| projectile.minion
 			|| projectile.sentry
 			|| projectile.type == ProjectileID.PhantasmArrow

@@ -1,13 +1,12 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Localization;
+using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Roguelike.Contents.Transfixion.WeaponEnchantment
-{
+namespace Roguelike.Contents.Transfixion.WeaponEnchantment {
 	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
@@ -20,11 +19,23 @@ namespace Roguelike.Contents.Transfixion.WeaponEnchantment
 		/// This will clean your counter automatically upon changing weapon
 		/// </summary>
 		public bool ForcedCleanCounter = false;
-		public string Description => Language.GetTextValue($"Mods.Roguelike.ModEnchantment.{Name}.Description");
+		public string Description => ModifyDesc(ModUtils.LocalizationText("ModEnchantment", $"{Name}.Description"));
+		public virtual string ModifyDesc(string desc) {
+			return desc;
+		}
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);
 		}
+		/// <summary>
+		/// This is if you want to make enchantment only applied its effect when certain condition reached
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="player"></param>
+		/// <param name="globalItem"></param>
+		/// <param name="item"></param>
+		/// <returns></returns>
+		public virtual bool ApplyCondition(int index, Player player, EnchantmentGlobalItem globalItem, Item item) => true;
 		/// <summary>
 		/// This will run whenever the item is being enchanted <br/>
 		/// Use <see cref="Main.LocalPlayer"/> as this will always run client side
@@ -54,7 +65,7 @@ namespace Roguelike.Contents.Transfixion.WeaponEnchantment
 		/// Use this if you want the item effect to be active just by having in your inventory 
 		/// </summary>
 		/// <param name="player"></param>
-		public virtual void Update(int index,  Item item, EnchantmentGlobalItem globalItem, Player player) { }
+		public virtual void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) { }
 		/// <summary>
 		/// This shall make it so that it update when you held the item
 		/// </summary>

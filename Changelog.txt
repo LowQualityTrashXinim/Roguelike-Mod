@@ -340,3 +340,8 @@ Version 0.0.1:
 338/ Added sprite for Token of Wrath.
 339/ Deleted unused shop NPC.
 340/ Added small randomize village zone ( mainly for lootint ) gen task.
+341/ Reworked AshwoodSword enchantment.
+342/ Reworked Musket, Handgun, RedRyder, The Undertaker and FlintlockPistol enchantment.
+343/ Slightly reorganized enchantment.
+344/ Forgot to wrote but changed build number to 0.0.16.1
+345/ Reworked Wooden Sword.

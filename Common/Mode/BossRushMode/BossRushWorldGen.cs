@@ -48,7 +48,7 @@ namespace Roguelike.Common.ChallengeMode {
 			self.ZoneBeach = false;
 			Tile tileSafely = Framing.GetTileSafely(self.Center);
 			if (tileSafely != null)
-				self.behindBackWall = tileSafely.WallType > 0;
+				self.behindBackWall = tileSafely.WallType > WallID.None;
 
 			if (IsInBiome(self, Bid.Corruption, Room)) {
 				self.ZoneCorrupt = true;

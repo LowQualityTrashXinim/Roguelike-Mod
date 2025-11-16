@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -22,6 +23,9 @@ internal class Roguelike_AshWoodSword : GlobalItem {
 		entity.useTime = entity.useAnimation = 33;
 		entity.GetGlobalItem<MeleeWeaponOverhaul>().ShaderOffSetLength += 1;
 	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
+	}
 	int swingCount = 0;
 	public override void HoldItem(Item item, Player player) {
 		if (player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
@@ -40,9 +44,8 @@ internal class Roguelike_AshWoodSword : GlobalItem {
 	private void AshSwordAttack(Item item, Player player) {
 		int damage = player.GetWeaponDamage(item);
 		float knockback = player.GetWeaponKnockback(item);
-		int direction = ModUtils.DirectionFromEntityAToEntityB(player.Center.X, Main.MouseWorld.X);
 		for (int i = 0; i < 20; i++) {
-			Vector2 pos = new Vector2(player.Center.X + (300 + Main.rand.Next(-150, 150)) * direction, player.Center.Y - 1000 - 200 * i);
+			Vector2 pos = new Vector2(Main.MouseWorld.X + Main.rand.Next(-150, 150), player.Center.Y - 1000 - 200 * i);
 			Vector2 vel = Vector2.UnitY.Vector2RotateByRandom(5) * 20;
 			float scale = 2;
 			int projec;
@@ -73,6 +76,8 @@ internal class AshwoodSwordProjectile : ModProjectile {
 		Projectile.tileCollide = true;
 		Projectile.DamageType = DamageClass.Melee;
 		Projectile.extraUpdates = 5;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 15;
 	}
 	public int ItemIDtextureValue = ItemID.WoodenSword;
 	Vector2 vel = Vector2.Zero;
@@ -140,6 +145,16 @@ internal class AshwoodSwordProjectile : ModProjectile {
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Projectile.ai[2] == 0) {
 			State = 1;
+		}
+		SoundEngine.PlaySound(SoundID.Item88 with { MaxInstances = 0 });
+		int amount = (int)Math.Ceiling(50 * Projectile.scale);
+		float scale = Projectile.scale;
+		for (int i = 0; i < amount; i++) {
+			Dust lava = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Lava);
+			lava.position += Main.rand.NextVector2Circular(32, 32);
+			lava.velocity = -Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(1, 15) * scale;
+			lava.noGravity = true;
+			lava.scale = Main.rand.NextFloat(.5f, 2) + scale * .2f;
 		}
 	}
 	public override bool OnTileCollide(Vector2 oldVelocity) {

@@ -12,6 +12,10 @@ using Terraria.Audio;
 namespace Roguelike.Contents.Projectiles;
 internal class SwordProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 25;
+		ProjectileID.Sets.TrailingMode[Type] = 2;
+	}
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.penetrate = -1;
@@ -25,8 +29,13 @@ internal class SwordProjectile : ModProjectile {
 	Player player;
 	Vector2 directionToMouse = Vector2.Zero;
 	float outrotation = 0;
-	int directionLooking = 1;
+	public int directionLooking = 0;
 	Vector2 oldCenter = Vector2.Zero;
+	public float rotationSwing = 150;
+	public float delay = 0;
+	public int Set_TimeLeft = 30;
+	public int Set_AnimationTimeEnd = -1;
+	public bool FollowPlayer = false;
 	public override void OnSpawn(IEntitySource source) {
 		if (Projectile.ai[2] == 0) {
 			Projectile.ai[2] = 60f;
@@ -36,24 +45,35 @@ internal class SwordProjectile : ModProjectile {
 		EnergySword_Code1AI();
 	}
 	private void EnergySword_Code1AI() {
-		if (Projectile.timeLeft > 30) {
+		if (Projectile.timeLeft > Set_TimeLeft) {
 			player = Main.player[Projectile.owner];
 			directionToMouse = Projectile.velocity;
 			if (directionToMouse == Vector2.Zero) {
 				directionToMouse = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
 			}
 			oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
-			Projectile.timeLeft = 30;
-			directionLooking = Main.rand.NextBool().ToDirectionInt();
+			Projectile.timeLeft = Set_TimeLeft;
+			if (directionLooking == 0)
+				directionLooking = Main.rand.NextBool().ToDirectionInt();
+			if (Set_AnimationTimeEnd == -1) {
+				Set_AnimationTimeEnd = Set_TimeLeft;
+			}
+		}
+		if (FollowPlayer) {
+			oldCenter = player.Center;
+		}
+		if (--delay > 0) {
+			Projectile.timeLeft = Set_TimeLeft;
+			return;
 		}
 		if (Projectile.timeLeft <= 10) {
 			Projectile.ProjectileAlphaDecay(10);
 		}
-		float percentDone = Projectile.timeLeft / 30f;
+		float percentDone = (Projectile.timeLeft - (Set_TimeLeft - Set_AnimationTimeEnd)) / (float)Set_AnimationTimeEnd;
 		percentDone = Math.Clamp(ModUtils.InExpo(percentDone), 0, 1);
 		Projectile.spriteDirection = directionLooking;
 		float baseAngle = directionToMouse.ToRotation();
-		float angle = MathHelper.ToRadians(150) * directionLooking;
+		float angle = MathHelper.ToRadians(rotationSwing) * directionLooking;
 		float start = baseAngle + angle;
 		float end = baseAngle - angle;
 		float rotation = MathHelper.Lerp(start, end, percentDone);
@@ -75,8 +95,13 @@ internal class SwordProjectile : ModProjectile {
 		Main.instance.LoadProjectile(Projectile.type);
 		Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
 		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		for (int k = 0; k < Projectile.oldPos.Length; k++) {
+			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) * .25f;
+			Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], origin, Projectile.scale, SpriteEffects.None, 0);
+		}
+		Vector2 drawPosMain = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		Main.EntitySpriteDraw(texture, drawPosMain, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
 	}
 }
