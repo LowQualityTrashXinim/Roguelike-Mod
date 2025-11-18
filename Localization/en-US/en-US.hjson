@@ -440,6 +440,8 @@ Mods: {
 			WinterKnight_IceShards.DisplayName: Winter Knight_ Ice Shards
 			KnifeRevolverThrown_Projectile.DisplayName: Knife Revolver Thrown_ Projectile
 			Roguelike_StylistScissor_ModProjectile.DisplayName: Roguelike_ Stylist Scissor_ Mod Projectile
+			SmallBloodStar_ModProjectile.DisplayName: Small Blood Star_ Mod Projectile
+			BloodStarProjectile.DisplayName: Blood Star Projectile
 		}
 
 		NPCs: {
@@ -799,8 +801,21 @@ Mods: {
 			}
 
 			BloodStar: {
-				Tooltip: It's bloody small, that's what! Shorty...
-				DisplayName: Bloodstar
+				Tooltip:
+					'''
+					"The star is crying out blood"
+					Summon a mini version of itself that will strike down, when it hit a tile, shoot upward blood and star
+					Every swing shoot down a fast bloody star that inflict [c/ff003d:Infectious Stella]
+					At 5th swing, you summon a circle of bloody star that inflict [c/ff003d:Infectious Stella]
+					'''
+				ExtraInfo:
+					'''
+					[c/ff003d:Infectious Stella] :
+					Reduce enemy life 20hp/s
+					On hitting enemy that have the debuff:
+					explode out blood that deal 50% of original damage within a radius
+					'''
+				DisplayName: Bloody Stella
 			}
 
 			ZapSnapper: {
@@ -3335,6 +3350,11 @@ Mods: {
 			SpaceSuitDefenses: {
 				DisplayName: Space Suit Defenses
 				Description: Space suit remain Health : [c/{0}:{1}]
+			}
+
+			InfectiousStella: {
+				DisplayName: Infectious Stella
+				Description: Mods.Roguelike.Buffs.InfectiousStella.Description
 			}
 		}
 

@@ -548,16 +548,12 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			orig(self);
 			return;
 		}
-		self.ZoneSkyHeight = false;
-		self.ZoneCorrupt = false;
-		self.ZoneCrimson = false;
-		self.ZoneJungle = false;
-		self.ZoneSnow = false;
-		self.ZoneHallow = false;
-		self.ZoneUnderworldHeight = false;
-		self.ZoneBeach = false;
-		self.ZoneOverworldHeight = false;
-		self.ZonePurity = false;
+		self.zone1 = new BitsByte();
+		self.zone2 = new BitsByte();
+		self.zone3 = new BitsByte();
+		self.zone4 = new BitsByte();
+		self.zone5 = new BitsByte();
+
 		Tile tileSafely = Framing.GetTileSafely(self.Center);
 		if (tileSafely != null)
 			self.behindBackWall = tileSafely.WallType > WallID.None;
@@ -601,6 +597,10 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		}
 		if (modplayer.CurrentBiome.Contains(Bid.Space)) {
 			self.ZoneSkyHeight = true;
+
+		}
+		else {
+			self.gravity = Player.defaultGravity;
 		}
 		if (ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
 			Main.hardMode = true;

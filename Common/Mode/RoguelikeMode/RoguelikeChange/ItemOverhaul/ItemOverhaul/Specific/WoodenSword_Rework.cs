@@ -41,6 +41,8 @@ public class Roguelike_WoodenSword : GlobalItem {
 						woodproj.Set_TimeLeft = 60;
 						woodproj.Set_AnimationTimeEnd = 30;
 					}
+					Main.projectile[proj].usesLocalNPCImmunity = true;
+					Main.projectile[proj].localNPCHitCooldown = 5;
 					Main.projectile[proj].ai[2] = 120;
 				}
 			}
@@ -58,24 +60,12 @@ public class Roguelike_WoodenSword : GlobalItem {
 	private void WoodSwordAttack(Item item, Player player) {
 		int damage = player.GetWeaponDamage(item);
 		float knockback = player.GetWeaponKnockback(item);
-		int direction = ModUtils.DirectionFromEntityAToEntityB(player.Center.X, Main.MouseWorld.X);
 		for (int i = 0; i < 40; i++) {
-			Vector2 pos = new Vector2(player.Center.X + (50 * i + 100) * direction, player.Center.Y - 1000 - 100 * i);
+			Vector2 pos = new Vector2(Main.MouseWorld.X + Main.rand.NextFloat(-100, 100), player.Center.Y - 1000 - 100 * i);
 			Vector2 vel = Vector2.UnitY.Vector2RotateByRandom(5) * 20;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI, 1);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 spear) {
 				spear.ItemIDtextureValue = item.type;
-			}
-			if (item.type == ItemID.AshWoodSword) {
-				Main.projectile[projec].scale += 2;
-				Main.projectile[projec].damage *= 2;
-				if (i == 10) {
-					int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage * 5, knockback, player.whoAmI, 1);
-					if (Main.projectile[proj2].ModProjectile is SwordProjectile2 spear2) {
-						spear2.ItemIDtextureValue = item.type;
-					}
-					Main.projectile[proj2].scale += 10;
-				}
 			}
 		}
 	}

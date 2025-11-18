@@ -120,7 +120,7 @@ WoodenSword:
 	'''
 	Your swing are accompany with ghost version of itself
 	Every 3rd swing, you instead swing out 6 ghost version of itself
-	Every 5th swing, rain down wooden sword 
+	Every 5th swing, rain down wooden sword at cursor position
 	'''
 MechanicalLens:
 	'''

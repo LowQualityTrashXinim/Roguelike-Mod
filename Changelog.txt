@@ -345,3 +345,5 @@ Version 0.0.1:
 343/ Slightly reorganized enchantment.
 344/ Forgot to wrote but changed build number to 0.0.16.1
 345/ Reworked Wooden Sword.
+346/ Massively reworked Blood Star, also renamed the weapon to Bloody Stella
+347/ Bloody Stella is now a synergy weapon.
