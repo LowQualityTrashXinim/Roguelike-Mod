@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Texture;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar;
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodyStella;
 
 internal class BloodyStella : SynergyModItem {
 	public override void SetDefaults() {

@@ -442,6 +442,9 @@ Mods: {
 			Roguelike_StylistScissor_ModProjectile.DisplayName: Roguelike_ Stylist Scissor_ Mod Projectile
 			SmallBloodStar_ModProjectile.DisplayName: Small Blood Star_ Mod Projectile
 			BloodStarProjectile.DisplayName: Blood Star Projectile
+			DrainingVeilBladeWave_Projectile.DisplayName: Draining Veil Blade Wave_ Projectile
+			DrainingVeilBlade_Hidden_Projectile.DisplayName: Draining Veil Blade_ Hidden_ Projectile
+			DrainingVeilBlade_Wave_Projectile.DisplayName: Draining Veil Blade_ Wave_ Projectile
 		}
 
 		NPCs: {
@@ -800,7 +803,7 @@ Mods: {
 				DisplayName: Burning Passion
 			}
 
-			BloodStar: {
+			BloodyStella: {
 				Tooltip:
 					'''
 					"The star is crying out blood"
@@ -2526,6 +2529,7 @@ Mods: {
 				DisplayName: Platinum Complex Bow
 				Tooltip: There are actually nothing complex, you just pull the string like normal
 			}
+
 		}
 
 		Buffs: {
