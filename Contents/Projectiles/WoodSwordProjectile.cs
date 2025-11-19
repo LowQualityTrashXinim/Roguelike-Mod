@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 using Terraria.Audio;
 
 namespace Roguelike.Contents.Projectiles;
-internal class SwordProjectile : ModProjectile {
+public class SwordProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 25;

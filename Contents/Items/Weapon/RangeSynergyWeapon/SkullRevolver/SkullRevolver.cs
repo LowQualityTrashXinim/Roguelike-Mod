@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 internal class SkullRevolver : SynergyModItem {
@@ -18,6 +17,7 @@ internal class SkullRevolver : SynergyModItem {
 		Item.crit = 15;
 		Item.value = Item.buyPrice(gold: 50);
 		Item.UseSound = SoundID.Item41;
+		Item.Set_InfoItem();
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		velocity = ModUtils.RoguelikeSpread(velocity, 5);
@@ -74,7 +74,7 @@ public class CursedStatus : ModBuff {
 		}
 		if (npc.HasBuff<CursedStatus>() && npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus > 0) {
 			npc.lifeRegen -= 10 + 5 * npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus;
-			Color[] colorArr = new Color[] { Color.Purple, Color.Red, Color.White };
+			Color[] colorArr = [Color.Purple, Color.Red, Color.White];
 			for (int i = 0; i < npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus; i++) {
 				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.WhiteTorch);
 				dust.noGravity = true;

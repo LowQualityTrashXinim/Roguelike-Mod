@@ -20,15 +20,18 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Musket);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(26, 52, 11, 3f, 5, 25, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
+			Item.BossRushDefaultRange(26, 52, 31, 3f, 5, 25, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
 			Item.reuseDelay = 22;
+			Item.Set_InfoItem();
 		}
 		int counter = 0, spreadDifferent = 0;
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			player.AddBuff<HeartPistolPassive>(ModUtils.ToSecond(10));
+			if (player.Check_SwitchedWeapon(Type)) {
+				player.AddBuff<HeartPistolPassive>(ModUtils.ToSecond(5));
+			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			bool CheckMusketSynergy = SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket);
@@ -58,10 +61,23 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 					Main.projectile[proj].timeLeft += 20;
 					Main.projectile[proj].velocity *= 1.4f;
 				}
+				if (player.HasBuff<HeartPistolPassive>()) {
+					for (int i = 0; i < 5; i++) {
+						if (i == 2) {
+							continue;
+						}
+						Vector2 vel = velocity.Vector2DistributeEvenlyPlus(5, 120, i);
+						proj = Projectile.NewProjectile(source, position.PositionOFFSET(vel, 20), vel, ModContent.ProjectileType<HeartP>(), damage * 2, knockback, player.whoAmI);
+						if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket)) {
+							Main.projectile[proj].timeLeft += 20;
+							Main.projectile[proj].velocity *= 1.4f;
+						}
+					}
+				}
 				counter = 0;
-				if (player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket >= 1000) {
+				if (player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket >= 5000) {
 					player.GetModPlayer<HeartPistol_ModPlayer>().DamageBucket = 0;
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartPistol_LifeCrystal>(), damage * 5, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartPistol_LifeCrystal>(), 100 + damage * 5, knockback, player.whoAmI);
 				}
 			}
 			else {
@@ -69,6 +85,19 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 				Main.projectile[proj].scale = 1.5f;
 				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket)) {
 					Main.projectile[proj].timeLeft += 20;
+				}
+			}
+			if (player.HasBuff<HeartPistolPassive>()) {
+				Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
+				for (int i = 0; i < 3; i++) {
+					if (i == 1) {
+						continue;
+					}
+					int proj = Projectile.NewProjectile(source, position, vel.Vector2DistributeEvenlyPlus(3, 50, i), ModContent.ProjectileType<smallerHeart>(), damage, knockback, player.whoAmI, 1);
+					Main.projectile[proj].scale = 1.5f;
+					if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket)) {
+						Main.projectile[proj].timeLeft += 20;
+					}
 				}
 			}
 			CanShootItem = false;

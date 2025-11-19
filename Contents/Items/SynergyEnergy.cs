@@ -35,28 +35,25 @@ namespace Roguelike.Contents.Items {
 		public int ItemTypeOld = 0;
 		public bool acc_SynergyEnergy = false;
 		public bool IsTheItemInQuestionASynergyItem = false;
+		public bool JustSwitched = false;
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
 			Item item = Player.HeldItem;
 			IsTheItemInQuestionASynergyItem = item.ModItem is SynergyModItem;
-			if(item.type == ItemID.None) {
+			if (item.type == ItemID.None) {
 				return;
 			}
-			if (ItemTypeCurrent != item.type) {
-				ItemTypeCurrent = item.type;
-				itemOld = item;
-			}
-			if (Player.itemAnimation == 1) {
+			if (Player.itemAnimation == Player.itemAnimationMax) {
+				if (ItemTypeCurrent != item.type) {
+					ItemTypeCurrent = item.type;
+					itemOld = item;
+					JustSwitched = true;
+				}
 				ItemTypeOld = ItemTypeCurrent;
 			}
 		}
-		public override void UpdateEquips() {
-			if (Player.itemAnimation == 1) {
-				if (IsTheItemInQuestionASynergyItem && ItemTypeCurrent != ItemTypeOld) {
-					SynergyModItem moditem = (SynergyModItem)itemOld.ModItem;
-					moditem.OutroAttack(Player);
-				}
-			}
+		public override void PostUpdate() {
+			JustSwitched = false;
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {

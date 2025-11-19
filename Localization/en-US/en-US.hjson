@@ -445,6 +445,8 @@ Mods: {
 			DrainingVeilBladeWave_Projectile.DisplayName: Draining Veil Blade Wave_ Projectile
 			DrainingVeilBlade_Hidden_Projectile.DisplayName: Draining Veil Blade_ Hidden_ Projectile
 			DrainingVeilBlade_Wave_Projectile.DisplayName: Draining Veil Blade_ Wave_ Projectile
+			DrainingVeilBlade_AfterImage_Projectile.DisplayName: Draining Veil Blade_ After Image_ Projectile
+			PulseRifle_Gun_Projectile.DisplayName: Pulse Rifle_ Gun_ Projectile
 		}
 
 		NPCs: {
@@ -491,8 +493,22 @@ Mods: {
 			}
 
 			SkullRevolver: {
-				Tooltip: For piercing through your funny bone.
 				DisplayName: Skull Revolver
+				Tooltip:
+					'''
+					"For piercing through your funny bone."
+					Your shot are imblued with [c/680096:Cursed Status]
+					Every 10th shot, summon a shadowflame portal that summon shadowflame skull toward enemy
+					Have 2% chance to summon a cursed skull portal that mass summon cursed skull
+					'''
+				ExtraInfo:
+					'''
+					[c/680096:Cursed Status]
+					+ Can stack up to 3 times, For each stack, DoT become stronger
+					+ If reapply [c/680096:Cursed Status] at max stack, you summon 3 nearby cursed skull
+					+ While enemy have cursed status, when enemy take damage from cursed skull,
+					increases taken damage by 100%
+					'''
 			}
 
 			SharpBoomerang: {
@@ -608,9 +624,24 @@ Mods: {
 				Tooltip:
 					'''
 					"Suffocate your enemies with love!~"
-					Steals the enemy's life by channeling your inner charm
+					Small heart projectile have very small chance to spawn a heart on hitting enemy
+					Heart projectile heal you on hitting enemy 
+					and have small chance to spawn a heart on hitting enemy
 					'''
-				DisplayName: Heartstol
+				ExtraInfo:
+					'''
+					Dealing combination of 5000 damage will create a life crystal on your next attack
+					Life Crystal will always drop a heart and always deal 100 + weapon damage * 5
+
+					After you attack using different weapon and then use this weapon
+					you gain Heart Pistol passive for 5s
+
+					[c/ff9bc4: Heart pistol passive]
+					+ 25% life regeneration
+					Your normal attack will be accompany with a arch of 2 smaller hearts
+					At peak of your normal attack, you will shot out 5 hearts
+					'''
+				DisplayName: Heart pistol
 			}
 
 			Gunmerang: {
@@ -1469,7 +1500,6 @@ Mods: {
 				Tooltip:
 					'''
 					"Uwaaaa"
-					Will knock you back slightly when using it
 					Shooting it enough time will generate a shield
 					The shield greatly increases defensive potential
 					'''
@@ -2283,11 +2313,6 @@ Mods: {
 				Tooltip: ew
 			}
 
-			DrainingVeil: {
-				DisplayName: Draining Veil
-				Tooltip: ""
-			}
-
 			HeartBreak: {
 				DisplayName: Heart Break
 				Tooltip: ""
@@ -2300,7 +2325,7 @@ Mods: {
 					 "A gun and a bow at the same time, master craft of range combat"
 					Every 5th attack of the weapon will switch mode
 					'''
-				Guide:
+				ExtraInfo:
 					'''
 					Gun mode : shoot a dark bolt deal 300% of weapon damage (CD: 1s)
 					Bow mode : shoot out 3 shadow flame arrows (CD: 1s)
@@ -2482,7 +2507,13 @@ Mods: {
 
 			DrainingVeilBlade: {
 				DisplayName: Draining Veil Blade
-				Tooltip: ""
+				Tooltip:
+					'''
+					Each swing is accompany with a red wave that upon hitting enemy heal you for 1hp
+					The red wave leave a hidden trail of cursed flame, that after a short while, burst into a wall of flame
+					Summon a shadow version of itself near the player (CD: 5s)
+					The shadow version will swing out a weaker version of red wave
+					'''
 			}
 
 			RuleOfNature: {
@@ -2529,7 +2560,6 @@ Mods: {
 				DisplayName: Platinum Complex Bow
 				Tooltip: There are actually nothing complex, you just pull the string like normal
 			}
-
 		}
 
 		Buffs: {
@@ -3304,7 +3334,11 @@ Mods: {
 
 			HeartPistolPassive: {
 				DisplayName: Heart Pistol Passive
-				Description: +25% life regeneration
+				Description:
+					'''
+					+25% life regeneration
+					Enhanced your shot
+					'''
 			}
 
 			Guard_Buff: {

@@ -34,6 +34,17 @@ namespace Roguelike.Common.Utils {
 		/// True if health is above or equal said percentage
 		/// </returns>
 		public static bool IsHealthAbovePercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
+		/// <summary>
+		/// Used to check for intro skill weapon<br/>
+		/// Recommand to place it in any update function/hook that happen before <see cref="ModPlayer.PostUpdate()"/>
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="Type"></param>
+		/// <returns></returns>
+		public static bool Check_SwitchedWeapon(this Player player, int Type) {
+			SynergyModPlayer modplayer = player.GetModPlayer<SynergyModPlayer>();
+			return modplayer.JustSwitched;
+		}
 		public static bool IsDebugPlayer(this Player player) =>
 			player.name.Contains("Test") ||
 			player.name.Contains("Debug") ||

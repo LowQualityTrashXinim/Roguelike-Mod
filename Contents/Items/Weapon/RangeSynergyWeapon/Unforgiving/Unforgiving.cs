@@ -16,7 +16,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 public class Unforgiving : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(114, 46, 34, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
-		Item.Set_RequiredWeaponGuide();
+		Item.Set_InfoItem();
 		Item.scale = .67f;
 	}
 	public override Vector2? HoldoutOffset() {

@@ -236,7 +236,6 @@ namespace Roguelike.Contents.Items.Weapon {
 		public override bool InstancePerEntity => true;
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
-		public bool RequiredWeaponGuide = false;
 		public bool AdvancedBuffItem = false;
 		public bool OverrideVanillaEffect = false;
 		public int Counter = 0;
@@ -318,11 +317,6 @@ namespace Roguelike.Contents.Items.Weapon {
 					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
-			if (RequiredWeaponGuide && item.ModItem != null) {
-				if (!moddedplayer.Shift_Option()) {
-					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for weapon guide]") { OverrideColor = Color.Gray });
-				}
-			}
 			if (AdvancedBuffItem && NameLine != null) {
 				NameLine.Text += " [Advanced]";
 			}
@@ -384,9 +378,6 @@ namespace Roguelike.Contents.Items.Weapon {
 				string value = null;
 				if (ExtraInfo) {
 					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
-				}
-				if (RequiredWeaponGuide) {
-					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.Guide");
 				}
 				if (value == null) {
 					return base.PreDrawTooltip(item, lines, ref x, ref y); ;

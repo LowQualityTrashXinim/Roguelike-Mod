@@ -6,7 +6,7 @@ using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
-	class HeartP : ModProjectile {
+	public class HeartP : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 22;
 			Projectile.DamageType = DamageClass.Ranged;
@@ -14,16 +14,28 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.friendly = true;
 			Projectile.penetrate = 1;
 			Projectile.light = 0.45f;
-			Projectile.timeLeft = 45;
+			Projectile.timeLeft = 175;
 		}
 		Vector2 startingVelocity = Vector2.Zero;
-		Vector2 initialMouseAim = Vector2.Zero;
 		public override void OnSpawn(IEntitySource source) {
 			startingVelocity = Projectile.velocity;
-			initialMouseAim = Main.MouseWorld;
 		}
 		public override void AI() {
-			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+			Projectile.rotation = startingVelocity.ToRotation() - MathHelper.PiOver2;
+			if (++Projectile.ai[0] < 30) {
+				Projectile.velocity = Vector2.Zero;
+				return;
+			}
+			if (Projectile.ai[0] == 30) {
+				for (int i = 0; i < 30; i++) {
+					Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.WhiteTorch);
+					dust.noGravity = true;
+					dust.color = Color.Pink with { A = 0 };
+					dust.velocity = Main.rand.NextVector2CircularEdge(5, 5);
+					dust.scale = 1.5f;
+				}
+			}
+			Projectile.velocity = startingVelocity;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.Vilethorn)) {
@@ -37,7 +49,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			}
 		}
 		public override void OnKill(int timeLeft) {
-			Projectile.position += new Vector2(11, 11);
 			int projectileType = ModContent.ProjectileType<smallerHeart>();
 			int damage = (int)(Projectile.damage * 0.5f);
 			float knockback = Projectile.knockBack;
@@ -62,7 +73,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape3.RotatedBy(Rotation), projectileType, damage, knockback, Projectile.owner);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape4.RotatedBy(Rotation), projectileType, damage, knockback, Projectile.owner);
 			}
-
 		}
 	}
 	internal class smallerHeart : ModProjectile {
@@ -75,12 +85,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.tileCollide = true;
 			Projectile.timeLeft = 40;
 			Projectile.light = .25f;
-		}
-		Vector2 startingVelocity = Vector2.Zero;
-		Vector2 initialMouseAim = Vector2.Zero;
-		public override void OnSpawn(IEntitySource source) {
-			startingVelocity = Projectile.velocity;
-			initialMouseAim = Main.MouseWorld;
 		}
 		public override void AI() {
 			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.WhiteTorch, newColor: new(255, 0, 100, 0));
@@ -115,7 +119,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
-			if(++Projectile.frameCounter >= 4) {
+			if (++Projectile.frameCounter >= 4) {
 				Projectile.frameCounter = 0;
 				Projectile.frame = ModUtils.Safe_SwitchValue(Projectile.frame, 10);
 			}

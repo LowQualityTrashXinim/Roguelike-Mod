@@ -210,7 +210,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public void ModdedUseStyle(Item item, Player player) {
-			SwingStrength = 7;
+			if (SwingStrength == 0) {
+				SwingStrength = 7;
+			}
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
 			switch (SwingType) {

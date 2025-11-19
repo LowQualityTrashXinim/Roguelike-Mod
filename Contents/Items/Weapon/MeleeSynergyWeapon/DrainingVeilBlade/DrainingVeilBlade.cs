@@ -1,20 +1,21 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Roguelike.Texture;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Roguelike.Common.Utils;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Projectiles;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Projectiles;
+using Roguelike.Texture;
+using System;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DrainingVeilBlade;
 
 public class DrainingVeilBlade : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultMeleeShootCustomProjectile(80, 83, 100, 1, 50, 50, ItemUseStyleID.Swing, ModContent.ProjectileType<DrainingVeilBlade_Wave_Projectile>(), 10, false);
+		Item.BossRushDefaultMeleeShootCustomProjectile(80, 83, 145, 1, 50, 50, ItemUseStyleID.Swing, ModContent.ProjectileType<DrainingVeilBlade_Wave_Projectile>(), 10, false);
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul melee)) {
 			melee.SwingType = BossRushUseStyle.Swipe;
 		}
@@ -22,12 +23,128 @@ public class DrainingVeilBlade : SynergyModItem {
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 20);
 	}
+	int cooldown = 120;
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
+		cooldown = ModUtils.CountDown(cooldown);
+	}
+	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+		if (cooldown <= 0) {
+			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(300, 300) * Main.rand.NextFloat(1, 1.5f), Vector2.Zero, ModContent.ProjectileType<DrainingVeilBlade_AfterImage_Projectile>(), damage, knockback, player.whoAmI);
+			cooldown = 300 + player.itemAnimationMax;
+		}
+		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+	}
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.SoulDrain)
 			.AddIngredient(ItemID.ClingerStaff)
 			.AddRecipeGroup("Wood Sword")
 			.Register();
+	}
+}
+public class DrainingVeilBlade_AfterImage_Projectile : ModProjectile {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<DrainingVeilBlade>();
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 25;
+		ProjectileID.Sets.TrailingMode[Type] = 2;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.DamageType = DamageClass.Melee;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.timeLeft = 1200;
+	}
+	public int ItemIDtextureValue = ItemID.WoodenSword;
+	Player player;
+	Vector2 directionToMouse = Vector2.Zero;
+	public int directionLooking = 0;
+	Vector2 oldCenter = Vector2.Zero;
+	public float rotationSwing = 150;
+	public float delay = 0;
+	public int Set_AnimationTimeEnd = -1;
+	public int AttackAinimationTime = 0;
+	float outrotation = 0;
+	public override void OnSpawn(IEntitySource source) {
+		if (Projectile.ai[2] == 0) {
+			Projectile.ai[2] = 60f;
+		}
+	}
+	public override bool? CanDamage() {
+		if (player == null) {
+			return false;
+		}
+		return player.ItemAnimationActive;
+	}
+	public override void AI() {
+		player = Main.player[Projectile.owner];
+		if (Projectile.timeLeft == 1200) {
+			directionToMouse = Projectile.velocity;
+			if (directionToMouse == Vector2.Zero) {
+				directionToMouse = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+			}
+			oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
+			if (Set_AnimationTimeEnd == -1) {
+				Set_AnimationTimeEnd = 60;
+			}
+		}
+		if (player.dead || !player.active) {
+			Projectile.Kill();
+			return;
+		}
+		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax) {
+			AttackAinimationTime = player.itemAnimationMax;
+			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<DrainingVeilBlade_Wave_Projectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner, -600);
+		}
+		EnergySword_Code1AI();
+	}
+	private void EnergySword_Code1AI() {
+		float percentDone = AttackAinimationTime / (float)Set_AnimationTimeEnd;
+		percentDone = Math.Clamp(ModUtils.InOutExpo(percentDone), 0, 1);
+		if (--AttackAinimationTime <= 0) {
+			AttackAinimationTime = 0;
+			directionToMouse = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+			directionLooking = ModUtils.DirectionFromEntityAToEntityB(Projectile.Center.X, Main.MouseWorld.X);
+		}
+		if (Projectile.timeLeft <= 100) {
+			Projectile.ProjectileAlphaDecay(100);
+		}
+		float baseAngle = directionToMouse.ToRotation();
+		float angle = MathHelper.ToRadians(rotationSwing) * directionLooking;
+		float start = baseAngle + angle;
+		float end = baseAngle - angle;
+		float rotation = MathHelper.Lerp(start, end, percentDone);
+		outrotation = rotation;
+		Projectile.rotation = rotation - MathHelper.PiOver4 + MathHelper.Pi;
+		Projectile.velocity.X = directionLooking;
+		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * Projectile.ai[2];
+	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[Projectile.owner];
+
+		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
+		modifiers.HitDirectionOverride = directionTo;
+	}
+	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
+		ModUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, Projectile.ai[2]);
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
+		Vector2 origin = texture.Size() * .5f;
+		lightColor = new Color(179, 0, 0, 150);
+		if (player.ItemAnimationActive) {
+			for (int k = 0; k < Projectile.oldPos.Length; k++) {
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) * .25f;
+				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], origin, Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+			}
+		}
+		Vector2 drawPosMain = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		Main.EntitySpriteDraw(texture, drawPosMain, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+		return false;
 	}
 }
 public class DrainingVeilBlade_Hidden_Projectile : ModProjectile {
@@ -45,6 +162,13 @@ public class DrainingVeilBlade_Hidden_Projectile : ModProjectile {
 		return false;
 	}
 	public override void AI() {
+		for (int i = 0; i < 5; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.WhiteTorch);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(3, 3);
+			dust.color = new Color(100, 255, 100, 0);
+			dust.scale = Main.rand.NextFloat(1, 1.5f);
+		}
 		if (Projectile.timeLeft == 70) {
 			Projectile.ai[1] = Projectile.velocity.X;
 			Projectile.ai[2] = Projectile.velocity.Y;
@@ -89,8 +213,8 @@ public class DrainingVeilBlade_Wave_Projectile : ModProjectile {
 		Projectile.light = 0.5f;
 		Projectile.extraUpdates = 10;
 		Projectile.alpha = 255;
-		Projectile.usesIDStaticNPCImmunity = true;
-		Projectile.idStaticNPCHitCooldown = 20;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 25;
 	}
 	public override void AI() {
 		if (Projectile.timeLeft <= 75) {
@@ -124,3 +248,4 @@ public class DrainingVeilBlade_Wave_Projectile : ModProjectile {
 		return false;
 	}
 }
+

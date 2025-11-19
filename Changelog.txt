@@ -347,3 +347,8 @@ Version 0.0.1:
 345/ Reworked Wooden Sword.
 346/ Massively reworked Blood Star, also renamed the weapon to Bloody Stella
 347/ Bloody Stella is now a synergy weapon.
+348/ Added Draining Veil Blade synergy weapon.
+349/ Reworked Heart Pistol, slightly changed Shattered Sky.
+350/ Reworked Pulse Rifle synergy bonus.
+351/ Some localization works.
+352/ Fixed synergy switch check.

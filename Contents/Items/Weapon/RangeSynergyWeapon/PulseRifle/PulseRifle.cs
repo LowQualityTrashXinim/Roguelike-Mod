@@ -1,24 +1,20 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle, $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor");
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Have 1 in 10 chance to shoot additional magic missle");
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Shoot burst arch and missle more common");
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Summon 3 version of itself around you");
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(94, 34, 64, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
@@ -44,20 +40,28 @@ internal class PulseRifle : SynergyModItem {
 			statplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2);
 			statplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 20);
 		}
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<PulseRifle_Gun_Projectile>()] > 0) {
+				return;
+			}
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, Vector2.Zero, ModContent.ProjectileType<PulseRifle_Gun_Projectile>(), player.GetWeaponDamage(Item), player.GetWeaponKnockback(Item), player.whoAmI, 0, i);
+			}
+		}
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		Counter++;
-		if (Counter >= 30 || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle) && Counter >= 10) {
+		if (Counter >= 30) {
 			for (int i = 0; i < 4; i++) {
 				int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2DistributeEvenlyPlus(4, 40, i), type, damage, knockback, player.whoAmI);
 				Main.projectile[proj].penetrate = 1;
 			}
 			Counter = 0;
 		}
-		if (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+		if (Main.rand.NextBool(5)) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ModContent.ProjectileType<PulseHomingProjectile>(), (int)(damage * 1.25f), knockback, player.whoAmI);
 		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) && (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle))) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) && (Main.rand.NextBool(5))) {
 			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ProjectileID.MagicMissile, damage, knockback, player.whoAmI);
 			Main.projectile[proj].penetrate = 1;
 			Main.projectile[proj].maxPenetrate = 1;
@@ -69,6 +73,60 @@ internal class PulseRifle : SynergyModItem {
 			.AddIngredient(ItemID.PulseBow)
 			.AddIngredient(ItemID.Megashark)
 			.Register();
+	}
+}
+public class PulseRifle_Gun_Projectile : ModProjectile {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<PulseRifle>();
+	public override void SetDefaults() {
+		Projectile.width = 94;
+		Projectile.height = 34;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+	}
+	public override bool? CanDamage() {
+		return false;
+	}
+	public int useTime { get => (int)Projectile.ai[0]; set => Projectile.ai[0] = value; }
+	public int index { get => (int)Projectile.ai[1]; set => Projectile.ai[1] = value; }
+	public int Counter { get => (int)Projectile.ai[2]; set => Projectile.ai[2] = value; }
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
+		if (!player.active || player.dead || player.HeldItem.type != ModContent.ItemType<PulseRifle>() || !SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<PulseRifle>(), ItemID.ClockworkAssaultRifle)) {
+			Projectile.Kill();
+			return;
+		}
+		Projectile.timeLeft = 2;
+		Projectile.Center = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(120 * index)) * 100;
+		Projectile.spriteDirection = ModUtils.DirectionFromEntityAToEntityB(Projectile.Center.X, Main.MouseWorld.X);
+		Projectile.rotation = (Main.MouseWorld - Projectile.Center).ToRotation();
+		if(Projectile.spriteDirection == -1) {
+			Projectile.rotation += MathHelper.Pi;
+		}
+		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax) {
+			useTime = player.itemAnimationMax;
+		}
+		if (--useTime > 0 && useTime == player.itemAnimationMax - 1) {
+			Vector2 vel = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 16f;
+			int damage = player.GetWeaponDamage(player.HeldItem);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel, ProjectileID.PulseBolt, damage, Projectile.knockBack, player.whoAmI);
+			Counter++;
+			if (Counter >= 30) {
+				for (int i = 0; i < 4; i++) {
+					int proj = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel.Vector2DistributeEvenlyPlus(4, 40, i), ProjectileID.PulseBolt, damage, Projectile.knockBack, player.whoAmI);
+					Main.projectile[proj].penetrate = 1;
+				}
+				Counter = 0;
+			}
+			if (Main.rand.NextBool(5)) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel.Vector2RotateByRandom(30) * .1f, ModContent.ProjectileType<PulseHomingProjectile>(), (int)(damage * 1.25f), Projectile.knockBack, player.whoAmI);
+			}
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<PulseRifle>(), ItemID.MagicMissile) && Main.rand.NextBool(5)) {
+				int proj = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel, ProjectileID.MagicMissile, damage, Projectile.knockBack, player.whoAmI);
+				Main.projectile[proj].penetrate = 1;
+				Main.projectile[proj].maxPenetrate = 1;
+			}
+		}
 	}
 }
 public class PulseRifle_ModPlayer : ModPlayer {

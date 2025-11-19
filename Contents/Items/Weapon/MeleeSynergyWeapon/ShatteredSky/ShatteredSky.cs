@@ -18,7 +18,7 @@ public class ShatteredSky : SynergyModItem {
 		meleeItem.SwingType = BossRushUseStyle.SwipeDown;
 		meleeItem.SwingStrength = 11;
 		meleeItem.CircleSwingAmount = 2.6f;
-		meleeItem.DistanceThrust = 150;
+		meleeItem.DistanceThrust = 120;
 		meleeItem.OffsetThrust = 20;
 		meleeItem.Ignore_AttackSpeed = true;
 	}
@@ -115,12 +115,12 @@ public class ShatteredSky : SynergyModItem {
 		CanShootItem = false;
 		if (ComboCounter == 1 || ComboCounter == 2) {
 			for (int i = 0; i < 3; i++) {
-				Projectile projectile = Projectile.NewProjectileDirect(source, position, -velocity.Vector2RotateByRandom(90) * 5, ProjectileID.CultistBossLightningOrbArc, damage / 4, knockback, player.whoAmI, velocity.ToRotation(), Main.rand.Next(100));
+				Projectile projectile = Projectile.NewProjectileDirect(source, position, -velocity.Vector2RotateByRandom(90) * 5, ProjectileID.CultistBossLightningOrbArc, damage / 4, knockback, player.whoAmI, velocity.ToRotation());
 				projectile.friendly = true;
 				projectile.hostile = false;
-				projectile.extraUpdates = 2;
-				projectile.penetrate = 5;
-				projectile.maxPenetrate = 5;
+				projectile.extraUpdates = 10;
+				projectile.penetrate = -1;
+				projectile.maxPenetrate = -1;
 				projectile.usesIDStaticNPCImmunity = true;
 				projectile.idStaticNPCHitCooldown = 10;
 				projectile.scale = .5f;
