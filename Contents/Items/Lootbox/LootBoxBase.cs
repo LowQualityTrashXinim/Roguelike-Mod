@@ -301,6 +301,18 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			player.QuickSpawnItem(source, Ammo, Amount);
 		}
+		public void GetArmor(Player player, int loopAmount) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			var Armor = new List<int>();
+			var AllLootID = LootboxItemPool().ToArray();
+			for (int i = 0; i < AllLootID.Length; i++) {
+				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
+				Armor.AddRange(pool.ArmorLoot());
+			}
+			for (int i = 0; i < loopAmount; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(Armor));
+			}
+		}
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
@@ -358,27 +370,32 @@ namespace Roguelike.Contents.Items.Lootbox {
 		/// <summary>
 		/// Return a random accessory 
 		/// </summary>
-		public int GetAccessory() {
+		public void GetAccessories(Player player, int LoopAmount) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			var Accessories = new List<int>();
 			var AllLootID = LootboxItemPool().ToArray();
 			for (int i = 0; i < AllLootID.Length; i++) {
 				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
 				Accessories.AddRange(pool.AccessoryLoot());
 			}
-			return Main.rand.Next(Accessories);
+			for (int i = 0; i < LoopAmount; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(Accessories));
+			}
 		}
 		/// <summary>
 		/// Return random potion
 		/// </summary>
-		/// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
-		public int GetPotion() {
+		public void GetPotions(Player player, int LoopAmount, int potionAmount) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			var Potion = new List<int>();
 			var AllLootID = LootboxItemPool().ToArray();
 			for (int i = 0; i < AllLootID.Length; i++) {
 				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
 				Potion.AddRange(pool.PotionPool());
 			}
-			return Main.rand.NextFromCollection(Potion);
+			for (int i = 0; i < LoopAmount; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(Potion), potionAmount);
+			}
 		}
 		/// <summary>
 		/// Return weapon base on world/player progression

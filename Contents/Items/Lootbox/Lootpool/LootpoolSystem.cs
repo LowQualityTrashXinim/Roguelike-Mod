@@ -10,7 +10,7 @@ public class LootboxSystem : ModSystem {
 	/// </summary>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public static ItemPool GetItemPool(int type) => LootBoxDropPool.Where(i => i.PoolID == type).FirstOrDefault();
+	public static ItemPool GetItemPool(int type) => LootBoxDropPool.Where(i => i.Type == type).FirstOrDefault();
 	public static ItemPool GetItemPool<T>() where T : ItemPool {
 		foreach (var item in LootBoxDropPool) {
 			if (item.GetType() is T) {

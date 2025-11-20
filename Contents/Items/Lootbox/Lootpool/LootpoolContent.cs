@@ -71,4 +71,6 @@ public class UniversalPool : ItemPool {
 	public override HashSet<int> MagicLoot() => [.. TerrariaArrayID.AllGemStaffPHM];
 	public override HashSet<int> SummonLoot() => [ItemID.SlimeStaff, ItemID.BabyBirdStaff, ItemID.BlandWhip];
 	public override HashSet<int> PotionPool() => [ItemID.SwiftnessPotion, ItemID.RegenerationPotion, ItemID.IronskinPotion];
+	public override HashSet<int> ArmorLoot() => [ItemID.CopperHelmet, ItemID.TinHelmet, ItemID.IronHelmet, ItemID.LeadHelmet, ItemID.SilverHelmet, ItemID.TungstenHelmet, ItemID.GoldHelmet, ItemID.PlatinumHelmet, ItemID.CopperChainmail, ItemID.TinChainmail, ItemID.IronChainmail, ItemID.LeadChainmail, ItemID.SilverChainmail, ItemID.TungstenChainmail, ItemID.GoldChainmail, ItemID.PlatinumChainmail, ItemID.CopperGreaves, ItemID.TinGreaves, ItemID.IronGreaves, ItemID.LeadGreaves, ItemID.SilverGreaves, ItemID.TungstenGreaves, ItemID.GoldGreaves, ItemID.PlatinumGreaves];
+	public override HashSet<int> AccessoryLoot() => [ItemID.Aglet, ItemID.ClimbingClaws, ItemID.ShoeSpikes, ItemID.ShinyRedBalloon, ItemID.HermesBoots];
 }

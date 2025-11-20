@@ -14,7 +14,7 @@ internal class PulseRifle : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle, $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor");
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Have 1 in 10 chance to shoot additional magic missle");
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Summon 3 version of itself around you");
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Summon 3 version of itself around the player");
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(94, 34, 64, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
@@ -83,6 +83,7 @@ public class PulseRifle_Gun_Projectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.penetrate = -1;
 		Projectile.tileCollide = false;
+		Projectile.scale = .78f;
 	}
 	public override bool? CanDamage() {
 		return false;
@@ -97,10 +98,10 @@ public class PulseRifle_Gun_Projectile : ModProjectile {
 			return;
 		}
 		Projectile.timeLeft = 2;
-		Projectile.Center = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(120 * index)) * 100;
+		Projectile.Center = player.Center + Vector2.UnitY.RotatedBy(MathHelper.ToRadians(120 * index)) * 100;
 		Projectile.spriteDirection = ModUtils.DirectionFromEntityAToEntityB(Projectile.Center.X, Main.MouseWorld.X);
 		Projectile.rotation = (Main.MouseWorld - Projectile.Center).ToRotation();
-		if(Projectile.spriteDirection == -1) {
+		if (Projectile.spriteDirection == -1) {
 			Projectile.rotation += MathHelper.Pi;
 		}
 		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax) {
@@ -127,6 +128,13 @@ public class PulseRifle_Gun_Projectile : ModProjectile {
 				Main.projectile[proj].maxPenetrate = 1;
 			}
 		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+		Vector2 predraw = Projectile.Center - Main.screenPosition;
+		SpriteEffects effect = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+		Main.EntitySpriteDraw(texture, predraw, null, lightColor, Projectile.rotation, origin, Projectile.scale, effect);
+		return false;
 	}
 }
 public class PulseRifle_ModPlayer : ModPlayer {

@@ -352,3 +352,4 @@ Version 0.0.1:
 350/ Reworked Pulse Rifle synergy bonus.
 351/ Some localization works.
 352/ Fixed synergy switch check.
+353/ Some more adjustment for lootbox to make it functional ( it is functional now but still need polishing ).
