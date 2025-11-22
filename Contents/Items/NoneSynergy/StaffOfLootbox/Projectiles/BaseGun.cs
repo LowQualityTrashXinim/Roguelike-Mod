@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 public abstract class BaseGun : BaseProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void PreDrawDraw(Texture2D texture, Vector2 drawPos, Vector2 origin, ref Color lightColor, out bool DrawOrigin) {
@@ -138,7 +138,7 @@ public class LBL_PistolAttackOne : BaseGun {
 	}
 	public override void AI() {
 		if (IsNPCActive(out var npc)) {
-			Vector2 TowardTo = Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + Projectile.timeLeft * 4));
+			var TowardTo = Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + Projectile.timeLeft * 4));
 			Projectile.Center = npc.Center + TowardTo * 50;
 			Projectile.rotation = TowardTo.ToRotation();
 			if (++Projectile.ai[1] <= 40) {

@@ -5,6 +5,7 @@ using System.Linq;
 using Roguelike.Common.Systems;
 using Roguelike.Texture;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Lootbox.MiscLootbox;
 internal class WeaponLootBox : ModItem {
@@ -17,7 +18,7 @@ internal class WeaponLootBox : ModItem {
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
 		var entitySource = player.GetSource_OpenItem(Type);
-		LootBoxBase.GetWeapon(out int Weapon, out int amount);
+		ModUtils.GetWeapon(out int Weapon, out int amount);
 		if (Main.rand.NextBool(100) && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 			player.QuickSpawnItem(entitySource, Weapon, amount);
 			return;

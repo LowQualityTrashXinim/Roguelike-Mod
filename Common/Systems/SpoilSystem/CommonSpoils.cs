@@ -18,7 +18,7 @@ public class WeaponSpoil : ModSpoil {
 		return Description.FormatWith(chestplayer.weaponAmount);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
+		ModUtils.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
 	}
 }
 
@@ -32,7 +32,7 @@ public class AccessorySpoil : ModSpoil {
 	public override void OnChoose(Player player, int itemsource) {
 		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 		for (int i = 0; i < amount; i++) {
-			LootBoxBase.GetAccessories(itemsource, player);
+			ModUtils.GetAccessories(itemsource, player);
 		}
 	}
 }
@@ -42,7 +42,7 @@ public class ArmorSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player, true);
+		ModUtils.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player, true);
 	}
 }
 
@@ -56,7 +56,7 @@ public class PotionSpoil : ModSpoil {
 		return Description.FormatWith(chestplayer.potionTypeAmount);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetPotion(itemsource, player);
+		ModUtils.GetPotion(itemsource, player);
 	}
 }
 
@@ -65,7 +65,7 @@ public class RelicSpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetRelic(itemsource, player, 2);
+		ModUtils.GetRelic(itemsource, player, 2);
 	}
 }
 public class SkillSpoil : ModSpoil {
@@ -73,7 +73,7 @@ public class SkillSpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetSkillLootbox(itemsource, player, 2);
+		ModUtils.GetSkillLootbox(itemsource, player, 2);
 	}
 }
 public class FoodSpoil : ModSpoil {

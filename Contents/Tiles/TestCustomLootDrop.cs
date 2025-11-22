@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ObjectSystem;
+using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Texture;
 using Terraria;
@@ -69,7 +70,7 @@ public class TileDropModObject : ModObject {
 				dust.scale += Main.rand.NextFloat(.21f, .5f);
 			}
 			SoundEngine.PlaySound(SoundID.Item9, position);
-			LootBoxBase.GetWeapon(out int weapon, out int amount);
+			ModUtils.GetWeapon(out int weapon, out int amount);
 			int item = Item.NewItem(new EntitySource_Misc("SpawnFromModObject"), Center, weapon, amount);
 			Main.item[item].velocity = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-30, 31))) * Main.rand.NextFloat(3, 5);
 		}

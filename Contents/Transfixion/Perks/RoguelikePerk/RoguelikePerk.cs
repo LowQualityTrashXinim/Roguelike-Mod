@@ -21,7 +21,7 @@ public class SuppliesDrop : Perk {
 		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
 	}
 	public override void OnChoose(Player player) {
-		LootBoxBase.GetWeapon(out int weapon, out int amount);
+		ModUtils.GetWeapon(out int weapon, out int amount);
 		player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
 	}
 }

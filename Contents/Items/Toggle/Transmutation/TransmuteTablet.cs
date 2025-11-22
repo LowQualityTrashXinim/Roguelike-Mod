@@ -471,7 +471,7 @@ public class TransmutationUIState : UIState {
 				Main.NewText($"Detected no rarity found ! at {rareval1} rarity with {item.Name}");
 				return;
 			}
-			LootBoxBase.AmmoForWeapon(player, itemType);
+			ModUtils.AmmoForWeapon(player, itemType);
 			ItemResultSlotShift.item = new Item(itemType);
 			ItemShiftSlot.item.TurnToAir();
 		}

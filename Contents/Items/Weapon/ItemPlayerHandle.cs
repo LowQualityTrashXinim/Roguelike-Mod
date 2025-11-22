@@ -246,7 +246,7 @@ namespace Roguelike.Contents.Items.Weapon {
 				return;
 			}
 			if (item.ModItem is SynergyModItem && context is RecipeItemCreationContext) {
-				LootBoxBase.AmmoForWeapon(Main.LocalPlayer, item.type);
+				ModUtils.AmmoForWeapon(Main.LocalPlayer, item.type);
 			}
 		}
 		public override void SetDefaults(Item entity) {

@@ -2,7 +2,7 @@
 using Roguelike.Common.Utils;
 using Terraria;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 public abstract class BaseSwordBroad : BaseProjectile {
 	public override void SetHostileDefaults() {
 		Projectile.width = Projectile.height = 36;

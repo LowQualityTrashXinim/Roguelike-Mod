@@ -3394,6 +3394,16 @@ Mods: {
 				DisplayName: Infectious Stella
 				Description: Mods.Roguelike.Buffs.InfectiousStella.Description
 			}
+
+			WindDashCoolDown: {
+				DisplayName: Wind Dash Cool Down
+				Description: Recharging your wind energy
+			}
+
+			WindShield: {
+				DisplayName: Wind Shield
+				Description: Wind Shield Health : [c/{0}:{1}]
+			}
 		}
 
 		Configs: {

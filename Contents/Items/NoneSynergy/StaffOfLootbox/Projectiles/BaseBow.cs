@@ -3,7 +3,7 @@ using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 public abstract class BaseBow : BaseProjectile {
 	public override void SetHostileDefaults() {
 		Projectile.width = 16;

@@ -104,7 +104,7 @@ internal class WeaponTicket : ModItem {
 							else {
 								player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
 							}
-							LootBoxBase.AmmoForWeapon(player, type);
+							ModUtils.AmmoForWeapon(player, type);
 							return true;
 						}
 					}
@@ -115,7 +115,7 @@ internal class WeaponTicket : ModItem {
 					else {
 						player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
 					}
-					LootBoxBase.AmmoForWeapon(player, type);
+					ModUtils.AmmoForWeapon(player, type);
 					return true;
 				}
 			}

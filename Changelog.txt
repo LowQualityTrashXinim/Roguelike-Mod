@@ -353,3 +353,7 @@ Version 0.0.1:
 351/ Some localization works.
 352/ Fixed synergy switch check.
 353/ Some more adjustment for lootbox to make it functional ( it is functional now but still need polishing ).
+354/ Moved some static function outside of lootbox base class to avoid confusion.
+355/ Deleted Weapon Upgrade system as a whole due to no longer serving any purpose and have the same function as perk.
+356/ Reworked Anklet of the wind.
+357/ Added in a way for developer of the mod to tell what dash is being used.

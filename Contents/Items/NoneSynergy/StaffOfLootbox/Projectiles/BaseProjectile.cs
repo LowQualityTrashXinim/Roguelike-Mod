@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 //This code did not follow the above rule and it should be change to follow the above rule
 public abstract class BaseProjectile : ModProjectile {
 	public sealed override void SetDefaults() {

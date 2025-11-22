@@ -30,8 +30,8 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			LootBoxBase.GetSkillLootbox(itemsource, player, 2);
-			LootBoxBase.GetRelic(itemsource, player, 4);
+			ModUtils.GetSkillLootbox(itemsource, player, 2);
+			ModUtils.GetRelic(itemsource, player, 4);
 		}
 	}
 	public class ArmorAccessorySpoil : ModSpoil {
@@ -54,11 +54,11 @@ internal class RareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
-				LootBoxBase.GetAccessories(itemsource, player);
+				ModUtils.GetAccessories(itemsource, player);
 			}
 			int amount2 = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount2; i++) {
-				LootBoxBase.GetArmorPiece(itemsource, player);
+				ModUtils.GetArmorPiece(itemsource, player);
 			}
 		}
 	}
@@ -70,7 +70,7 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			LootBoxBase.GetArmorPiece(itemsource, player);
+			ModUtils.GetArmorPiece(itemsource, player);
 		}
 	}
 	public class StarterPerkSpoil : ModSpoil {

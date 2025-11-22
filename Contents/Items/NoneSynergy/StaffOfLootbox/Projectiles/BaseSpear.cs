@@ -2,11 +2,11 @@
 using Roguelike.Common.Utils;
 using Terraria;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 public class BaseSpear : BaseProjectile {
 	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		float length = Projectile.Size.Length();
-		Vector2 rotationVector = Projectile.rotation.ToRotationVector2();
+		var rotationVector = Projectile.rotation.ToRotationVector2();
 		if (ModUtils.Collision_PointAB_EntityCollide(targetHitbox, Projectile.Center.IgnoreTilePositionOFFSET(rotationVector, length / 2f), Projectile.Center.IgnoreTilePositionOFFSET(rotationVector, -length / 2))) {
 			return true;
 		}

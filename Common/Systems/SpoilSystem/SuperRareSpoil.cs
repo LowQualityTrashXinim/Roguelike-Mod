@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Humanizer;
+using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.aDebugItem.UIdebug;
+using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using System;
 using Terraria;
-using Humanizer;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Transfixion.WeaponEnchantment;
-using Roguelike.Contents.Items.aDebugItem.UIdebug;
-using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox;
-using Roguelike.Contents.Transfixion.Perks;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -28,11 +29,11 @@ internal class SuperRareSpoil {
 			return SpoilDropRarity.SuperRareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
-			LootBoxBase.GetAccessories(itemsource, player);
-			LootBoxBase.GetArmorPiece(itemsource, player, true);
-			LootBoxBase.GetSkillLootbox(itemsource, player);
-			LootBoxBase.GetRelic(itemsource, player);
+			ModUtils.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
+			ModUtils.GetAccessories(itemsource, player);
+			ModUtils.GetArmorPiece(itemsource, player, true);
+			ModUtils.GetSkillLootbox(itemsource, player);
+			ModUtils.GetRelic(itemsource, player);
 		}
 	}
 	public class PerkSpoil : ModSpoil {
@@ -70,7 +71,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
-			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, Main.rand.Next(1, 5), 0);
+			ModUtils.GetWeapon(ContentSamples.ItemsByType[itemsource], player, Main.rand.Next(1, 5), 0);
 		}
 	}
 }

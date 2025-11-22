@@ -3,26 +3,18 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-
 using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.Perks.WeaponUpgrade;
 
-namespace Roguelike.Contents.Transfixion.Perks.WeaponUpgrade.Content;
-internal class WindSlash_GlobalItem : GlobalItem {
-	public override void SetDefaults(Item entity) {
-		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.WindSlash)) {
-			return;
-		}
-		if (!entity.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckVanillaSwingWithModded) && entity.DamageType == DamageClass.Melee) {
-			entity.damage += 5;
-		}
+namespace Roguelike.Contents.Transfixion.Perks.PerkContents;
+public class WindSlash : Perk {
+	public override void SetDefaults() {
+		textureString = ModUtils.GetTheSameTextureAsEntity<WindSlash>();
+		list_category.Add(PerkCategory.WeaponUpgrade);
+		CanBeStack = false;
 	}
-	public override void HoldItem(Item item, Player player) {
-		if (!UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.WindSlash)) {
-			return;
-		}
-		if (item.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckVanillaSwingWithModded) && item.DamageType == DamageClass.Melee) {
+	public override void UpdateEquip(Player player) {
+		player.GetDamage(DamageClass.Melee).Base += 5;
+		if (player.HeldItem.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckVanillaSwingWithModded) && player.HeldItem.DamageType == DamageClass.Melee) {
 			if (Main.mouseLeft && player.itemAnimation == player.itemAnimationMax) {
 				var speed = Vector2.UnitX * player.direction;
 				if (player.HeldItem.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckOnlyModded)) {
@@ -39,23 +31,11 @@ internal class WindSlash_GlobalItem : GlobalItem {
 		}
 	}
 }
-public class WindSlash : Perk {
-	public override void SetDefaults() {
-		textureString = ModUtils.GetTheSameTextureAsEntity<WindSlash>();
-		list_category.Add(PerkCategory.WeaponUpgrade);
-		CanBeStack = false;
-	}
-	public override void OnChoose(Player player) {
-		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.WindSlash);
-		Mod.Reflesh_GlobalItem(player);
-		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(TerrariaArrayID.MeleePreBoss));
-	}
-}
 public class WindSlash_ModPlayer : ModPlayer {
 	public int OpportunityWindow = 0;
 	public bool StrikeOpportunity = false;
 	public override void PostUpdate() {
-		if (!UpgradePlayer.Check_Upgrade(Player, WeaponUpgradeID.WindSlash)) {
+		if (!Player.HasPerk<WindSlash>()) {
 			return;
 		}
 		if (Player.ItemAnimationActive) {

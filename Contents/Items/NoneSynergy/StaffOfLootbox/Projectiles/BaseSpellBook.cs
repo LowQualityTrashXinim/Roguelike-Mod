@@ -3,7 +3,7 @@ using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 public class LBL_Waterbolt : BaseProjectile {
 	public override void SetHostileDefaults() {
 		Projectile.width = Projectile.height = 36;
@@ -18,7 +18,7 @@ public class LBL_Waterbolt : BaseProjectile {
 		if (IsNPCActive(out var npc)) {
 			Projectile.velocity += (npc.Center + Vector2.One * 30 - Projectile.Center).SafeNormalize(Vector2.Zero);
 			if (Projectile.Center.LookForHostileNPC(out NPC Player, 10000)) {
-				Vector2 distance = Player.Center - Projectile.Center;
+				var distance = Player.Center - Projectile.Center;
 				Projectile.rotation = distance.ToRotation();
 				if (++Projectile.ai[1] < 30) {
 					return;
@@ -48,7 +48,7 @@ public class LBL_BookOfSkull : BaseProjectile {
 		if (IsNPCActive(out var npc)) {
 			Projectile.velocity += (npc.Center - Vector2.UnitY * 30 - Projectile.Center).SafeNormalize(Vector2.Zero);
 			if (Projectile.Center.LookForHostileNPC(out NPC Player, 10000)) {
-				Vector2 distance = Player.Center - Projectile.Center;
+				var distance = Player.Center - Projectile.Center;
 				Projectile.rotation = distance.ToRotation();
 				if (++Projectile.ai[1] < 30) {
 					return;
@@ -78,7 +78,7 @@ public class LBL_DemonScythe : BaseProjectile {
 		if (IsNPCActive(out var npc)) {
 			Projectile.velocity += (npc.Center - Vector2.One.Add(0, 2) * 30 - Projectile.Center).SafeNormalize(Vector2.Zero);
 			if (Projectile.Center.LookForHostileNPC(out NPC Player, 10000)) {
-				Vector2 distance = Player.Center - Projectile.Center;
+				var distance = Player.Center - Projectile.Center;
 				Projectile.rotation = distance.ToRotation();
 				if (++Projectile.ai[1] < 30) {
 					return;

@@ -1,14 +1,15 @@
-﻿using Terraria;
-using Humanizer;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using Humanizer;
+using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.aDebugItem.UIdebug;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
-using Roguelike.Contents.Items.aDebugItem.UIdebug;
-using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Transfixion.Perks;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SSRspoil {
@@ -29,7 +30,7 @@ internal class SSRspoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int type = ModContent.ItemType<WorldEssence>();
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), type);
-			LootBoxBase.GetSkillLootbox(itemsource, player);
+			ModUtils.GetSkillLootbox(itemsource, player);
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
@@ -38,7 +39,7 @@ internal class SSRspoil {
 					relic.AutoAddRelicTemplate(player, 3);
 				}
 			}
-			LootBoxBase.GetAccessories(itemsource, player);
+			ModUtils.GetAccessories(itemsource, player);
 		}
 	}
 	public class LegendaryRelicSpoil : ModSpoil {

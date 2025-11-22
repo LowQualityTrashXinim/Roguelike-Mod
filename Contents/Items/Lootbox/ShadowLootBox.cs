@@ -1,9 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Global;
-using Roguelike.Common.Systems;
-using System.Collections.Generic;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	class ShadowLootBox : LootBoxBase {
@@ -33,11 +30,10 @@ namespace Roguelike.Contents.Items.Lootbox {
 			int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 			player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 
-			GetArmorForPlayer(entitySource, player);
+			GetArmor(player, 1);
 			GetWeapon(entitySource, player, 2);
-			GetAccessories(Type, player);
-			GetPotion(Type, player);
-			GetSkillLootbox(Type, player, 1);
+			GetAccessories(player, 1);
+			GetPotions(player, 1, 1);
 		}
 	}
 }

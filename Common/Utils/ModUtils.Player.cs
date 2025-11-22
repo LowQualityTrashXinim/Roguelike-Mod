@@ -19,6 +19,10 @@ using Terraria.ModLoader.Config;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static bool CheckDashType(this Player player, string currentDash = "") {
+			return player.dashType == DashID.None && player.ModPlayerStats().CurrentDashType == currentDash;
+		}
+
 		/// <summary>
 		/// Basically the same as getting <code>player.GetModPlayer<![CDATA[<]]>PlayerStatsHandle<![CDATA[>]]>()</code>
 		/// </summary>

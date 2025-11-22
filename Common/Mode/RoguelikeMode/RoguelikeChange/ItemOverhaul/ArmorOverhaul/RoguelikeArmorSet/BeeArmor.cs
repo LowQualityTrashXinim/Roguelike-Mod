@@ -93,6 +93,7 @@ public class BeeArmorPlayer : PlayerArmorHandle {
 		else {
 			DashDir = -1;
 		}
+		Player.ModPlayerStats().CurrentDashType = "Bee";
 	}
 	public override void Armor_UpdateEquipsSet() {
 		Player.GetDamage(DamageClass.Melee) += .1f;
@@ -129,7 +130,7 @@ public class BeeArmorPlayer : PlayerArmorHandle {
 		}
 	}
 	private bool CanUseDash() {
-		return Player.dashType == DashID.None
+		return Player.CheckDashType("Bee")
 			&& !Player.setSolar
 			&& !Player.mount.Active;
 	}

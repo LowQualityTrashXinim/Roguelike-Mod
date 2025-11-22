@@ -2,12 +2,11 @@
 using Terraria;
 using Humanizer;
 using Terraria.ID;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox;
+using Terraria.DataStructures;
+using Roguelike.Contents.Items.RelicItem;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class UncommonSpoil {
@@ -20,9 +19,9 @@ public class UncommonSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			for (int i = 1; i <= 4; i++) {
-				LootBoxBase.GetWeapon(out int returnWeapon, out int amount, i);
+				ModUtils.GetWeapon(out int returnWeapon, out int amount, i);
 				player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), returnWeapon, amount);
-				LootBoxBase.AmmoForWeapon(itemsource, player, returnWeapon);
+				ModUtils.AmmoForWeapon(itemsource, player, returnWeapon);
 			}
 		}
 	}
@@ -45,8 +44,8 @@ public class UncommonSpoil {
 			return SpoilDropRarity.UncommonDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
-			LootBoxBase.GetPotion(itemsource, player);
+			ModUtils.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
+			ModUtils.GetPotion(itemsource, player);
 			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			chestplayer.GetAmount();
 			int amount = chestplayer.potionTypeAmount;
@@ -71,7 +70,7 @@ public class UncommonSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
-				LootBoxBase.GetAccessories(itemsource, player);
+				ModUtils.GetAccessories(itemsource, player);
 			}
 		}
 	}

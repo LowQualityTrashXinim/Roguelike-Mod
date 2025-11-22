@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;
 using System;
@@ -11,7 +12,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.NPCs.LootBoxLord;
+namespace Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox;
 internal class LootBoxLordSummon : ModItem {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 	public override void SetStaticDefaults() {
@@ -112,7 +113,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 		return true;
 	}
 	public override bool PreAI() {
-		Player owner = Main.player[Projectile.owner];
+		var owner = Main.player[Projectile.owner];
 		if (owner.dead || !owner.active) {
 			owner.ClearBuff(ModContent.BuffType<LootBoxLordProtection>());
 			return false;
@@ -130,7 +131,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 	//Use NPC.ai[3] to do movement
 	bool CanSlowDown = false;
 	public override void AI() {
-		Player truePlayer = Main.player[Projectile.owner];
+		var truePlayer = Main.player[Projectile.owner];
 		NPC player = null;
 		if (truePlayer.HasMinionAttackTargetNPC) {
 			player = Main.npc[truePlayer.MinionAttackTargetNPC];
@@ -140,7 +141,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 		}
 		if (player == null) {
 			var positionAbovePlayer = new Vector2(truePlayer.Center.X, truePlayer.Center.Y - 30);
-			Vector2 distance = positionAbovePlayer - Projectile.Center;
+			var distance = positionAbovePlayer - Projectile.Center;
 			if (distance.Length() <= 50f) {
 				Projectile.velocity = Vector2.Zero;
 				CurrentAttack++;
@@ -256,7 +257,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 
 	private void Move(Entity player) {
 		var positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 200);
-		Vector2 distance = positionAbovePlayer - Projectile.Center;
+		var distance = positionAbovePlayer - Projectile.Center;
 		if (distance.Length() <= 30f) {
 			Projectile.velocity = Vector2.Zero;
 			CurrentAttack++;
@@ -302,7 +303,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 			return;
 		}
 		CanSlowDown = true;
-		Vector2 distance = player.Center - Projectile.Center;
+		var distance = player.Center - Projectile.Center;
 		Projectile.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 64f;
 		if (AttackCounter >= TerrariaArrayID.AllOreShortSword.Length - 1) {
 			CurrentAttack++;
@@ -478,7 +479,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 			return;
 		}
 		CanSlowDown = true;
-		Vector2 distance = player.Center - Projectile.Center;
+		var distance = player.Center - Projectile.Center;
 		Projectile.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
 		if (++AttackTimer <= 40) {
 			return;
@@ -542,7 +543,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 			return;
 		}
 		var positionAbovePlayer = player.Center + new Vector2(0, -350);
-		Vector2 distance = positionAbovePlayer - Projectile.Center;
+		var distance = positionAbovePlayer - Projectile.Center;
 		if (distance.Length() <= 30) {
 			Projectile.velocity = Vector2.Zero;
 		}
@@ -723,10 +724,10 @@ internal class LootBoxLord_Minion : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Type);
-		Texture2D texture = TextureAssets.Projectile[Type].Value;
-		Vector2 screenPos = Main.screenPosition;
-		Color drawColor = lightColor;
-		Vector2 origin = Vector2.Zero;
+		var texture = TextureAssets.Projectile[Type].Value;
+		var screenPos = Main.screenPosition;
+		var drawColor = lightColor;
+		var origin = Vector2.Zero;
 		if (IsTeleporting) {
 			float progress = TeleportTime / (float)TeleportDuration;
 			if (progress <= .5f) {
@@ -737,7 +738,7 @@ internal class LootBoxLord_Minion : ModProjectile {
 				float progresshalf = 1 - (TeleportTime - 30) * 2 / (float)TeleportDuration;
 				drawColor = drawColor.ScaleRGB(1 - progresshalf) with { A = (byte)(255 * (1 - progresshalf)) };
 				for (int i = 0; i < 4; i++) {
-					Main.EntitySpriteDraw(texture, TeleportPosition + Vector2.One.RotatedBy(90 * (i + 1) * (progresshalf)) * 100 * progresshalf - screenPos, null, drawColor, 0, origin, 1f, SpriteEffects.None);
+					Main.EntitySpriteDraw(texture, TeleportPosition + Vector2.One.RotatedBy(90 * (i + 1) * progresshalf) * 100 * progresshalf - screenPos, null, drawColor, 0, origin, 1f, SpriteEffects.None);
 
 				}
 			}

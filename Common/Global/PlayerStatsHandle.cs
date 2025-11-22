@@ -25,6 +25,7 @@ namespace Roguelike.Common.Global;
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {
+	public string CurrentDashType = "";
 	public bool CanDropSynergyEnergy = true;
 	public bool LootboxCanDropSpecialPotion = false;
 	public float ChanceLootDrop = 0;
@@ -366,6 +367,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
+		CurrentDashType = "";
 		if (!Player.immune) {
 			Get_DidPlayerDodge = false;
 		}

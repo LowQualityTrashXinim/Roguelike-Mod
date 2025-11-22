@@ -157,4 +157,11 @@ SorcererEmblem:
 	Increases magic critical strike chance by 5%
 	Increases magic critical strike damage by 30%
 	'''
+AnkletoftheWind:
+	'''
+	Increases jump boost by 150% and allow directional dash toward your cursor
+	Gain a wind shield that can regenerate itself
+	Wind shield reduce damage taken directly by 20% and projectile damage by 80%
+	Wind shield multiply taken knockback taken directly by 0.7x and projectile knockback by 0x
+	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%
