@@ -3,11 +3,9 @@ using Terraria;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Localization;
+using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Transfixion.Arguments;
 internal class AugmentsLoader : ModSystem {

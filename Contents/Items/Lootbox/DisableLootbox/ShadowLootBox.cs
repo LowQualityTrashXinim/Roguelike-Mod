@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.DisableLootbox {
 	class ShadowLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 

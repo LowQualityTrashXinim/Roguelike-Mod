@@ -5,17 +5,14 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using Roguelike.Contents.Items.Weapon;
- 
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 	internal class IceStorm : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SnowballCannon, $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself");
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.FlowerofFrost, $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself");
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BlizzardStaff, $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BlizzardStaff, $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike and accelerate the charging");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 98, 50, 1f, 75, 75, ItemUseStyleID.Shoot, ProjectileID.FrostArrow, 10f, true, AmmoID.Arrow);
@@ -107,15 +104,26 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
 			CanShootItem = false;
 		}
 		private void ChargeUpHandle(Player player) {
-			if (Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier <= 8) {
-				if (player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier <= 2) {
-					player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier += 0.1f;
+			IceStormPlayer modplayer = player.GetModPlayer<IceStormPlayer>();
+			if (Main.mouseLeft && modplayer.IceStorm_SpeedMultiplier <= 8) {
+				bool synergyCheck = SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BlizzardStaff);
+				if (modplayer.IceStorm_SpeedMultiplier <= 2) {
+					if (synergyCheck) {
+						modplayer.IceStorm_SpeedMultiplier += 1f;
+					}
+					modplayer.IceStorm_SpeedMultiplier += 0.1f;
 				}
-				if (player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier <= 6) {
-					player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier += 0.1f;
+				if (modplayer.IceStorm_SpeedMultiplier <= 6) {
+					modplayer.IceStorm_SpeedMultiplier += 0.1f;
+					if (synergyCheck) {
+						modplayer.IceStorm_SpeedMultiplier += .05f;
+					}
 				}
 				else {
-					player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier += 0.02f;
+					if (synergyCheck) {
+						modplayer.IceStorm_SpeedMultiplier += .03f;
+					}
+					modplayer.IceStorm_SpeedMultiplier += 0.02f;
 				}
 			}
 		}

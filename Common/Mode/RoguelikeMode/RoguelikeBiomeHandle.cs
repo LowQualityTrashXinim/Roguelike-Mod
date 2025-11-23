@@ -28,6 +28,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public float shaderstorm = 1f;
 	public SlotId strongBlizzardSound = SlotId.Invalid;
 	public SlotId insideBlizzardSound = SlotId.Invalid;
+	public float shaderdeerclop = 0;
 	public float strongblizzVol = 1f;
 	public override void OnEnterWorld() {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
@@ -332,7 +333,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			}
 		}
 		Point point = self.Center.ToTileCoordinates();
-		//bool flag8 = self.ZoneRain && self.ZoneSnow;
+		bool flag8 = self.ZoneRain && self.ZoneSnow;
 		//if (Main.remixWorld)
 		//	flag8 = (double)(self.position.Y / 16f) > Main.worldSurface && Main.raining && self.ZoneSnow;
 
@@ -348,7 +349,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		self.ManageSpecialBiomeVisuals("Solar", self.ZoneTowerSolar, vector - new Vector2(0f, 10f));
 		self.ManageSpecialBiomeVisuals("MoonLord", NPC.AnyNPCs(398));
 		self.ManageSpecialBiomeVisuals("BloodMoon", Main.bloodMoon || Main.SceneMetrics.BloodMoonMonolith || self.bloodMoonMonolithShader);
-		self.ManageSpecialBiomeVisuals("Blizzard", Main.UseStormEffects /*&& flag8*/);
+		self.ManageSpecialBiomeVisuals("Blizzard", Main.UseStormEffects && flag8);
 		self.ManageSpecialBiomeVisuals("HeatDistortion", Main.UseHeatDistortion && (flag9 || ((double)point.Y < Main.worldSurface && self.ZoneDesert && !flag10 && !Main.raining && !Filters.Scene["Sandstorm"].IsActive())));
 		if (Main.GraveyardVisualIntensity > 0f) {
 			if (!Filters.Scene["Graveyard"].IsActive()) {
@@ -416,90 +417,85 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			else
 				Filters.Scene["HeatDistortion"].IsHidden = false;
 		}
-		//bool blizset = (bool)blizzardsetting.GetValue(null);
-		//if (!blizset) {
-		//	try {
-		//		if (flag8) {
-		//			float cloudAlpha = Main.cloudAlpha;
-		//			if (Main.remixWorld)
-		//				Main.cloudAlpha = 0.4f;
+		bool blizset = (bool)blizzardsetting.GetValue(null);
+		if (!blizset) {
+			try {
+				if (flag8) {
+					float cloudAlpha = Main.cloudAlpha;
+					bool value = NPC.IsADeerclopsNearScreen();
+					modplayer.shaderdeerclop = MathHelper.Clamp(modplayer.shaderdeerclop + (float)value.ToDirectionInt() * 0.0033333334f, 0f, 1f);
+					float num18 = Math.Min(1f, Main.cloudAlpha * 2f) * modplayer.shaderstorm;
+					float num19 = modplayer.shaderstorm * 0.4f * Math.Min(1f, Main.cloudAlpha * 2f) * 0.9f + 0.1f;
+					num19 = MathHelper.Lerp(num19, num19 * 0.5f, modplayer.shaderdeerclop);
+					num18 = MathHelper.Lerp(num18, num18 * 0.5f, modplayer.shaderdeerclop);
+					Filters.Scene["Blizzard"].GetShader().UseIntensity(num19);
+					Filters.Scene["Blizzard"].GetShader().UseOpacity(num18);
+					((SimpleOverlay)Overlays.Scene["Blizzard"]).GetShader().UseOpacity(1f - num18);
+				}
+			}
+			catch {
+				blizzardsetting.SetValue(null, true);
+			}
+		}
+		bool blizsoundset = (bool)blizzardsoundset.GetValue(null);
+		if (!blizsoundset) {
+			try {
+				if (flag8) {
 
-		//			bool value = NPC.IsADeerclopsNearScreen();
-		//			modplayer.shaderdeerclop = MathHelper.Clamp(modplayer.shaderdeerclop + (float)value.ToDirectionInt() * 0.0033333334f, 0f, 1f);
-		//			float num18 = Math.Min(1f, Main.cloudAlpha * 2f) * modplayer.shaderstorm;
-		//			float num19 = modplayer.shaderstorm * 0.4f * Math.Min(1f, Main.cloudAlpha * 2f) * 0.9f + 0.1f;
-		//			num19 = MathHelper.Lerp(num19, num19 * 0.5f, modplayer.shaderdeerclop);
-		//			num18 = MathHelper.Lerp(num18, num18 * 0.5f, modplayer.shaderdeerclop);
-		//			Filters.Scene["Blizzard"].GetShader().UseIntensity(num19);
-		//			Filters.Scene["Blizzard"].GetShader().UseOpacity(num18);
-		//			((SimpleOverlay)Overlays.Scene["Blizzard"]).GetShader().UseOpacity(1f - num18);
-		//			if (Main.remixWorld)
-		//				Main.cloudAlpha = cloudAlpha;
-		//		}
-		//	}
-		//	catch {
-		//		blizzardsetting.SetValue(null, true);
-		//	}
-		//}
-		//bool blizsoundset = (bool)blizzardsoundset.GetValue(null);
-		//if (!blizsoundset) {
-		//	try {
-		//		if (flag8) {
+					ActiveSound activeSound = SoundEngine.FindActiveSound(SoundID.BlizzardStrongLoop);
+					ActiveSound activeSound2 = SoundEngine.FindActiveSound(SoundID.BlizzardInsideBuildingLoop);
+					if (activeSound == null)
+						modplayer.strongBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardStrongLoop);
 
-		//			ActiveSound activeSound = SoundEngine.FindActiveSound(SoundID.BlizzardStrongLoop);
-		//			ActiveSound activeSound2 = SoundEngine.FindActiveSound(SoundID.BlizzardInsideBuildingLoop);
-		//			if (activeSound == null)
-		//				modplayer.strongBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardStrongLoop);
+					if (activeSound2 == null)
+						modplayer.insideBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardInsideBuildingLoop);
 
-		//			if (activeSound2 == null)
-		//				modplayer.insideBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardInsideBuildingLoop);
+					SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out _);
+					SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound sound);
 
-		//			SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out _);
-		//			SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound sound);
+					activeSound2 = sound;
+				}
 
-		//			activeSound2 = sound;
-		//		}
+				if (flag8)
+					modplayer.strongblizzVol = Math.Min(modplayer.strongblizzVol + 0.01f, 1f);
+				else
+					modplayer.strongblizzVol = Math.Max(modplayer.strongblizzVol - 0.01f, 0f);
 
-		//		if (flag8)
-		//			modplayer.strongblizzVol = Math.Min(modplayer.strongblizzVol + 0.01f, 1f);
-		//		else
-		//			modplayer.strongblizzVol = Math.Max(modplayer.strongblizzVol - 0.01f, 0f);
+				float num20 = Math.Min(1f, Main.cloudAlpha * 2f) * modplayer.shaderstorm;
+				SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out ActiveSound activeSound3);
+				SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound activeSound4);
+				if (modplayer.strongblizzVol > 0f) {
+					if (activeSound3 == null) {
+						modplayer.strongBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardStrongLoop);
+						SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out ActiveSound soundResult);
+						activeSound3 = soundResult;
+					}
 
-		//		float num20 = Math.Min(1f, Main.cloudAlpha * 2f) * modplayer.shaderstorm;
-		//		SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out ActiveSound activeSound3);
-		//		SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound activeSound4);
-		//		if (modplayer.strongblizzVol > 0f) {
-		//			if (activeSound3 == null) {
-		//				modplayer.strongBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardStrongLoop);
-		//				SoundEngine.TryGetActiveSound(modplayer.strongBlizzardSound, out ActiveSound soundResult);
-		//				activeSound3 = soundResult;
-		//			}
+					activeSound3.Volume = num20 * modplayer.strongblizzVol;
+					if (activeSound4 == null) {
+						modplayer.insideBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardInsideBuildingLoop);
+						SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound soundResult);
+						activeSound4 = soundResult;
+					}
 
-		//			activeSound3.Volume = num20 * modplayer.strongblizzVol;
-		//			if (activeSound4 == null) {
-		//				modplayer.insideBlizzardSound = SoundEngine.PlaySound(SoundID.BlizzardInsideBuildingLoop);
-		//				SoundEngine.TryGetActiveSound(modplayer.insideBlizzardSound, out ActiveSound soundResult);
-		//				activeSound4 = soundResult;
-		//			}
+					activeSound4.Volume = (1f - num20) * modplayer.strongblizzVol;
+				}
+				else {
+					if (activeSound3 != null)
+						activeSound3.Volume = 0f;
+					else
+						modplayer.strongBlizzardSound = SlotId.Invalid;
 
-		//			activeSound4.Volume = (1f - num20) * modplayer.strongblizzVol;
-		//		}
-		//		else {
-		//			if (activeSound3 != null)
-		//				activeSound3.Volume = 0f;
-		//			else
-		//				modplayer.strongBlizzardSound = SlotId.Invalid;
-
-		//			if (activeSound4 != null)
-		//				activeSound4.Volume = 0f;
-		//			else
-		//				modplayer.insideBlizzardSound = SlotId.Invalid;
-		//		}
-		//	}
-		//	catch {
-		//		blizzardsoundset.SetValue(null, true);
-		//	}
-		//}
+					if (activeSound4 != null)
+						activeSound4.Volume = 0f;
+					else
+						modplayer.insideBlizzardSound = SlotId.Invalid;
+				}
+			}
+			catch {
+				blizzardsoundset.SetValue(null, true);
+			}
+		}
 
 		// Added by TML.
 		//self.ZonePurity = self.InZonePurity();

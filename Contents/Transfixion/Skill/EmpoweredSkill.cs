@@ -18,7 +18,7 @@ public class BloodToPower : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int blood = player.statLife / 2;
 		player.statLife -= blood;
 		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
@@ -170,7 +170,7 @@ public class ProtectiveOnslaught : ModSkill {
 		Skill_Duration = 10;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration,  int energy) {
 		player.AddBuff(ModContent.BuffType<ProtectiveOnslaught_Buff>(), ModUtils.ToSecond(10));
 	}
 	class ProtectiveOnslaught_ModPlayer : ModPlayer {
@@ -238,7 +238,7 @@ public class AllOrNothing : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), ModUtils.ToSecond(5));
 	}
 	public class AllOrNothingBuff : ModBuff {
@@ -272,7 +272,7 @@ public class CoinFlip : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (Main.rand.NextBool()) {
 			player.AddBuff<CoinFlipBuff>(duration * 10);
 		}
@@ -310,7 +310,7 @@ public class DiceRoll : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int chance = Main.rand.Next(7);//0 , 1 , 2, 3, 4, 5
 		switch (chance) {
 			case 0:

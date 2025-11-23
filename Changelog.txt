@@ -357,3 +357,9 @@ Version 0.0.1:
 355/ Deleted Weapon Upgrade system as a whole due to no longer serving any purpose and have the same function as perk.
 356/ Reworked Anklet of the wind.
 357/ Added in a way for developer of the mod to tell what dash is being used.
+358/ Slightly changed how boss drop lootbox in boss rush mode.
+359/ Some fixes to Synergy bonus handler and make some synergy bonus more benefitial.
+360/ Fixed skill not showing skill duration and also entirely deleted cool down from the skill system.
+361/ Basic implementation of Lootbox appearing in roguelike world chest.
+362/ Fixed blizzard storm effect always active.
+363/ Change build number to 0.0.17

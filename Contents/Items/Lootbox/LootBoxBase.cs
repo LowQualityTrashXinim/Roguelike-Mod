@@ -16,6 +16,7 @@ using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using Roguelike.Contents.Items.Weapon;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	public abstract class LootBoxBase : ModItem {
@@ -83,6 +84,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			return 0;
 		}
+		public virtual int WeaponLevelRangeRandomizer(Player player) => 0;
 		public override bool CanRightClick() => true;
 		public virtual bool CanActivateSpoil => true;
 		public sealed override void RightClick(Player player) {
@@ -167,6 +169,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			int rng;
 			for (int i = 0; i < LoopAmount; i++) {
+				int whoAmI = 0;
 				rng = RNGManage(player);
 				switch (rng) {
 					case 0:
@@ -175,27 +178,32 @@ namespace Roguelike.Contents.Items.Lootbox {
 						break;
 					case 1:
 						ReturnWeapon = Main.rand.Next(Melee);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Melee.Remove(ReturnWeapon);
 						break;
 					case 2:
 						ReturnWeapon = Main.rand.Next(Range);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Range.Remove(ReturnWeapon);
 						break;
 					case 3:
 						ReturnWeapon = Main.rand.Next(Magic);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Magic.Remove(ReturnWeapon);
 						break;
 					case 4:
 						ReturnWeapon = Main.rand.Next(Summon);
-						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Summon.Remove(ReturnWeapon);
 						break;
 					case 6:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>(), LoopAmount);
+						whoAmI = player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>(), LoopAmount);
 						return;
+				}
+				int level = WeaponLevelRangeRandomizer(player);
+				Item item = Main.item[whoAmI];
+				if (level > 0 && item != null && item.IsAWeapon()) {
+					item.GetGlobalItem<GlobalItemHandle>().ItemLevel = level;
 				}
 			}
 		}

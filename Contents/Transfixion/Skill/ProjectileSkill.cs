@@ -102,7 +102,7 @@ public class SpiritBurst : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		for (int i = 0; i < 5; i++) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44);
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);

@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Common.ChallengeMode;
 using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Common.Mode.BossRushMode;

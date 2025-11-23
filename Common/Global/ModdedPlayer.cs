@@ -29,7 +29,6 @@ using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
-using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

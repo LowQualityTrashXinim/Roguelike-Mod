@@ -1,5 +1,4 @@
 ﻿using Terraria.ID;
-using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 

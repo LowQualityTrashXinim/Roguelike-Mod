@@ -6,9 +6,21 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Mode.BossRushMode;
 
-namespace Roguelike.Common.General
-{
+namespace Roguelike.Common.General {
+	public class IsInBossRushMode : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
+				return ModContent.GetInstance<RogueLikeConfig>().BossRushMode && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+			}
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
 	public class DenyYouFromLoot : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
@@ -16,7 +28,7 @@ namespace Roguelike.Common.General
 			}
 			return false;
 		}
-		public bool CanShowItemDropInUI() => true;
+		public bool CanShowItemDropInUI() => false;
 		public string GetConditionDescription() => "deny you from loot regardless";
 	}
 	public class Droprule_GhostNPC : IItemDropRuleCondition {
@@ -125,7 +137,7 @@ namespace Roguelike.Common.General
 	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1 
+				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1
 					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5;
 			}
 			return false;

@@ -18,7 +18,7 @@ using Roguelike.Common.RoguelikeMode;
 using StructureHelper.Models;
 using StructureHelper.API;
 
-namespace Roguelike.Common.ChallengeMode {
+namespace Roguelike.Common.Mode.BossRushMode {
 	public partial class BossRushWorldGen : ModSystem {
 		public override void Load() {
 			On_Player.UpdateBiomes += On_Player_UpdateBiomes;

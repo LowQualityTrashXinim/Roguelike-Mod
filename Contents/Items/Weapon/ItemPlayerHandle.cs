@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
 using ReLogic.Graphics;
-using Roguelike.Common.ChallengeMode;
+using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Global;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using Roguelike.Contents.NPCs;
 using Roguelike.Contents.Transfixion.Arguments;
@@ -25,7 +22,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
@@ -99,6 +95,9 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public static void Write_SynergyTooltip(ref List<TooltipLine> lines, SynergyModItem moditem, int itemID) {
 			int SynergyItemID = moditem.Type;
+			if (Main.LocalPlayer.HeldItem.type != moditem.Type) {
+				return;
+			}
 			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
 				return;
 			}
@@ -285,6 +284,11 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (item.IsAWeapon(true)) {
 				for (int i = 0; i < tooltips.Count; i++) {
 					TooltipLine line = tooltips[i];
+					if (tooltips[i].Name == "ItemName") {
+						if (ItemLevel > 0) {
+							tooltips[i].Text = $"+{ItemLevel} {tooltips[i].Text}";
+						}
+					}
 					if (line.Name == "CritChance") {
 						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
 						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
@@ -577,7 +581,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
 			ColorHandle();
-			if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1) {
+			if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1 || Main.LocalPlayer.HeldItem.type != Type) {
 				return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 			}
 			Main.instance.LoadItem(Type);

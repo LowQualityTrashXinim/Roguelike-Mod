@@ -3,7 +3,6 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,7 +13,7 @@ public class BroadSwordSpirit : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(1);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
 			for (int i = 0; i < 3; i++) {
 				int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(34));
@@ -32,7 +31,7 @@ public class WoodSwordSpirit : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SoulWoodSword>()] < 1) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(24));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(5);
@@ -50,7 +49,7 @@ public class WilloFreeze : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(4);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<WilloFreezeProjectile>()] < 1) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(skillplayer.SkillDamage(36));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(5);
@@ -91,7 +90,7 @@ public class OrbOfPurity : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(4);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1) {
 			int damage = skillplayer.SkillDamage(10);
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DiamondSwotaffOrb>(), damage, 0, player.whoAmI);
@@ -105,7 +104,7 @@ public class PhoenixBlazingTornado : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
 			int damage = skillplayer.SkillDamage(120);
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), damage, 0, player.whoAmI);
@@ -119,7 +118,7 @@ public class DebugCommand : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(10);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(2000);
 		player.Center.LookForHostileNPC(out var npclist, 2500);
 		foreach (var npc in npclist) {
@@ -152,7 +151,7 @@ public class LucidNightmares : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(4);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(53);
 		for (int i = 0; i < 3; i++) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
@@ -177,7 +176,7 @@ public class SacrificialWormhole : ModSkill {
 		Skill_Duration = ModUtils.ToSecond(14);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(50);
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
 			ModContent.ProjectileType<SacrificialWormholeProjectile>(), damage, 0, player.whoAmI);

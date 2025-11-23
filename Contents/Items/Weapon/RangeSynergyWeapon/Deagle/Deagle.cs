@@ -41,11 +41,13 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PhoenixBlaster)) {
 				Vector2 position2 = ModUtils.SpawnRanPositionThatIsNotIntoTile(position, 300, 300);
 				if (player.GetModPlayer<DeaglePlayer>().Deagle_PhoenixBlaster_Critical) {
-					Projectile.NewProjectile(source, position, (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 4, knockback, player.whoAmI);
-					int proj = Projectile.NewProjectile(source, position2, (Main.MouseWorld - position2).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 2, knockback, player.whoAmI);
+					int proj = Projectile.NewProjectile(source, position, (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 4, knockback, player.whoAmI);
+					Main.projectile[proj].extraUpdates = 3;
+					proj = Projectile.NewProjectile(source, position2, (Main.MouseWorld - position2).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 2, knockback, player.whoAmI);
 					Main.projectile[proj].scale = .5f;
 					Main.projectile[proj].width = (int)(Main.projectile[proj].width * .5f);
 					Main.projectile[proj].height = (int)(Main.projectile[proj].height * .5f);
+					Main.projectile[proj].extraUpdates = 3;
 					player.GetModPlayer<DeaglePlayer>().Deagle_PhoenixBlaster_Critical = false;
 					CanShootItem = false;
 					return;
@@ -75,6 +77,9 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (Player.HeldItem.type != ModContent.ItemType<Deagle>()) {
+				return;
+			}
 			if (hit.Crit) {
 				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.PhoenixBlaster)) {
 					Deagle_PhoenixBlaster_Critical = true;

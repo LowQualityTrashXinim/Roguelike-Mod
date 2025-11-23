@@ -85,7 +85,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <br/><see cref="potionNumAmount"/>
 	/// </summary>
 	public void GetAmount() {
-		weaponAmount = 3;
+		weaponAmount = 1;
 		potionTypeAmount = 1;
 		potionNumAmount = 2;
 		if (Main.getGoodWorld) {
@@ -134,7 +134,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier SynergyDamage = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
 	public StatModifier SkillDuration = new();
-	public StatModifier SkillCoolDown = new();
 	public StatModifier DirectItemDamage = new();
 	public float Hostile_ProjectileVelocityAddition = 0;
 	//public float LuckIncrease = 0; 
@@ -460,7 +459,6 @@ public class PlayerStatsHandle : ModPlayer {
 		Iframe = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
 		SkillDuration = StatModifier.Default;
-		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;
 		TransmutationModifier = StatModifier.Default;

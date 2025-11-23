@@ -8,6 +8,7 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Wrapper;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Texture;
 using StructureHelper.API;
 using StructureHelper.Models;
@@ -1018,7 +1019,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_SmallVillage() {
-		for (int b = 0; b < 12; b++) {
+		for (int b = 0; b < 24; b++) {
 			List<Rectangle> placed = new();
 			int amount = Rand.Next(10, 20);
 			int xdex = Main.rand.Next(1, 23);
@@ -1151,7 +1152,18 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	private void AddLoot(Chest chest) {
-
+		if (Main.rand.NextBool(50)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
+		}
+		else if (Main.rand.NextBool(25)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<SilverLootBox>()));
+		}
+		else if (Main.rand.NextBool(10)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<IronLootBox>()));
+		}
+		else {
+			chest.AddItemToShop(new Item(ModContent.ItemType<WoodenLootBox>()));
+		}
 	}
 	[Task]
 	public void Generate_PostWorld() {

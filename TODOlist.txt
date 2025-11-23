@@ -1,25 +1,24 @@
 1/ Make world generation process much more easy to work with.
-2/ Assign NPC and Item to EF (ElemFac).
-3/ Work on more Trial NPC and Trial Projectile
-4/ Work on debuff and buff sprite and many minssing sprite in the mod.
-5/ Remove connection between spoil and lootbox. (connect with task 8)
-5.1/ Rework the entire lootbox and loot table.
-6/ Make uses of ModUtils localization universally. ( is this done ? )
-7/ Work on localization "TODO"
-8/ Add a universal loot pool.
-9/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
-10/ Refactor User info tablet
-11/ Work on better debug UI and tool. // Missing relic, augmentation debug UI.
-12/ Rework rarity system and tranmutation system.
-13/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-14/ Listing problematic content that need adjustment:
+2/ Work on more Trial NPC and Trial Projectile
+3/ Work on debuff and buff sprite and many minssing sprite in the mod.
+4/ Remove connection between spoil and lootbox. (connect with task 8)
+4.1/ Rework the entire lootbox and loot table.
+5/ Make uses of ModUtils localization universally. ( is this done ? )
+6/ Work on localization "TODO"
+7/ Work more on universal loot pool.
+8/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
+9/ Refactor User info tablet
+10/ Rework rarity system and tranmutation system.
+11/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+12/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
 - Uncertain Strike ( perk )
 - Stroke Of Luck ( perk )
-15/ Added content based on biome.
-16/ Synergy damage changes:
+13/ Added content based on biome.
+14/ Synergy damage changes:
 - Intro damage and outro damage are affected by synergy damage
 - Synergy damage is now more of a intro buff and outro buff depend on which item grant intro and outro buff.
 - Synergy weapon still get increases by synergy damage regardless
 - Synergy damage still increases weapon damage regardless of class type.
 - Only intro buff and outro buff can stack.
+15/ Work on level item system ( not actual leveling system ).

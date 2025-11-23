@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
-using Roguelike.Common.ChallengeMode;
+using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.Achievement;

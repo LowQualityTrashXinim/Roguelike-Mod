@@ -5,8 +5,8 @@ using Roguelike.Texture;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
-using Roguelike.Common.ChallengeMode;
 using Roguelike.Common.RoguelikeMode;
+using Roguelike.Common.Mode.BossRushMode;
 
 namespace Roguelike.Contents.Items.aDebugItem;
 internal class TestTeleporter : ModItem {

@@ -21,12 +21,6 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Transfixion.Skill;
-/// <summary>
-/// <b>Guideline on how to set Skill Type: </b><br/>
-/// If a skill doesn't spawn any projectile, it should be consider as <see cref="Skill_Stats"/><br/>
-/// Otherwise if the projectile is not dependent on skill duration, then it should be <see cref="Skill_Summon"/><br/>
-/// Else the skill in question is <see cref="Skill_Projectile"/><br/>
-/// </summary>
 public static class SkillTypeID {
 	public const byte Skill_None = 0;
 	public const byte Skill_Projectile = 1;
@@ -56,8 +50,8 @@ public abstract class ModSkill : ModType {
 	public float EnergyRequirePercentage { get => Skill_EnergyRequirePercentage; }
 	public bool CanBeSelect { get => Skill_CanBeSelect; }
 	public int Type { get; private set; }
-	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.ModSkill.{Name}.DisplayName");
-	public string Description => Language.GetTextValue($"Mods.Roguelike.ModSkill.{Name}.Description");
+	public string DisplayName => ModUtils.LocalizationText("ModSkill", $"{Name}.DisplayName");
+	public string Description => ModUtils.LocalizationText("ModSkill", $"{Name}.Description");
 	public ModSkill() {
 		SetDefault();
 	}
@@ -93,7 +87,7 @@ public abstract class ModSkill : ModType {
 	/// This is called before cool down, duration of the skill and energy subtraction is set
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) { }
+	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) { }
 	/// <summary>
 	/// This only run when the duration of the skill is equal or below 1
 	/// </summary>
@@ -313,11 +307,10 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		return (int)(energy * percentageEnergy) + seperateEnergy;
 	}
-	public void SkillStatTotal(bool simulated, out int energy, out int duration, out int cooldown) {
+	public void SkillStatTotal(bool simulated, out int energy, out int duration) {
 		int[] active = GetCurrentActiveSkillHolder();
 		energy = 0;
 		duration = 0;
-		cooldown = 0;
 		float percentageEnergy = 1;
 		StatModifier energyS = new(), durationS = new();
 		int seperateEnergy = 0;
@@ -341,7 +334,6 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
-		cooldown = Math.Clamp((int)modplayer.SkillCoolDown.ApplyTo(cooldown - modplayer.SkillCoolDown.Base * 2), 0, int.MaxValue);
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
@@ -480,7 +472,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (SkillModSystem.SkillActivation.JustReleased && !Activate) {
 			Activate = true;
-			SkillStatTotal(false, out int energy, out int duration, out int cooldown);
+			SkillStatTotal(false, out int energy, out int duration);
 			Duration += duration;
 			MaximumDuration = 0;
 			if (energy > Energy) {
@@ -492,7 +484,7 @@ public class SkillHandlePlayer : ModPlayer {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
 				Skill_PlayerLastPositionBeforeSkillActivation = Player.Center;
 				foreach (var item in activeskill) {
-					item.OnTrigger(Player, this, duration, cooldown, energy);
+					item.OnTrigger(Player, this, duration, energy);
 				}
 				MaximumDuration += Duration;
 				Energy -= energy;
@@ -756,10 +748,10 @@ internal class SkillUI : UIState {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		var modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		modplayer.SkillStatTotal(true,out int energy, out int duration, out int cooldown);
+		modplayer.SkillStatTotal(true, out int energy, out int duration);
 		var color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
-		durationText.SetText($"Duration = {MathF.Round(modplayer.MaximumDuration / 60f, 2)}s");
+		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
 	}
 
 	private void ActivateSkillUI(Player player) {

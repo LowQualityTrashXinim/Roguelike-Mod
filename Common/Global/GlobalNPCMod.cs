@@ -18,8 +18,7 @@ using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 
-namespace Roguelike.Common.Global
-{
+namespace Roguelike.Common.Global {
 	class GlobalNPCMod : GlobalNPC {
 		public override void OnSpawn(NPC npc, IEntitySource source) {
 			if (!npc.boss && Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1 && npc.type != NPCID.Creeper) {
@@ -44,78 +43,58 @@ namespace Roguelike.Common.Global
 			var noHit = new LeadingConditionRule(new GitGudMode());
 			var dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
-			if(npc.boss) {
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new LootBoxLordDrop(), ModContent.ItemType<LootboxLordSummon>()));
+			if (npc.boss) {
+				npcLoot.Add(ItemDropRule.ByCondition(new LootBoxLordDrop(), ModContent.ItemType<LootboxLordSummon>()));
 			}
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IronLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.EyeofCthulhu) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SilverLootBox>()));
-				//Expert Mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
-			else if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1) {
+			else if (Array.IndexOf([NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail], npc.type) > -1) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWDonHitReward>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CorruptionLootBox>()));
-				//normal drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCDonHitReward>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrimsonLootBox>()));
-				//Normal mode dro
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.QueenBee) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyLootBox>()));
-				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new QueenBeeEnranged(), ModContent.ItemType<HoneyLootBox>()));
-				//Expert drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<HoneyLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.SkeletronHead) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GoldLootBox>()));
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new NoHitAndIsRakan(), ItemID.Handgun));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.Deerclops) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceLootBox>()));
-				//Enraged boss drop
-				var hateyoulol = new LeadingConditionRule(new DeerclopHateYou());
-				hateyoulol.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DeerclopTreasureChest>()));
-				npcLoot.Add(hateyoulol);
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IceLootBox>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop
@@ -123,12 +102,9 @@ namespace Roguelike.Common.Global
 				noHit.OnSuccess(ItemDropRule.ByCondition(new NoHitAndIsRakan(), ModContent.ItemType<WeaponBluePrint>())).OnFailedConditions(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WeaponBluePrint>(), 100));
 
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowLootBox>()));
-				//npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowLootBox>()));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WorldEssence>()));
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.BloodNautilus) {
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodLootBox>()));
@@ -137,66 +113,47 @@ namespace Roguelike.Common.Global
 			else if (npc.type == NPCID.QueenSlimeBoss) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrystalLootBox>()));
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MechLootBox>()));
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.Spazmatism || npc.type == NPCID.Retinazer) {
 				var leadingConditionRule = new LeadingConditionRule(new Conditions.MissingTwin());
 				//NoHit Mode drop
 
-				//Normal mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsBossAndNotExpert(), ModContent.ItemType<MechLootBox>()));
 				//Expert mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<MechLootBox>()));
+				leadingConditionRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>()));
 				npcLoot.Add(leadingConditionRule);
 			}
 			else if (npc.type == NPCID.Plantera) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureLootBox>()));
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LihzahrdLootBox>()));
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.HallowBoss) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressLootBox>()));
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
+
+				//Normal boss drop
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop
 
-				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
-				var rule = new LeadingConditionRule(new DukeIsEnrage());
-				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DukeLootBox>()));
-				npcLoot.Add(rule);
-				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
+
+
+				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.CultistBoss) {
 				//NoHit mode drop
@@ -204,7 +161,7 @@ namespace Roguelike.Common.Global
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LunaticLootBox>()));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
 			}
 			else if (npc.type == NPCID.MoonLordCore) {
 				//NoHit mode drop
