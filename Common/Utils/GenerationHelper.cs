@@ -632,9 +632,6 @@ public enum SaverOptimizedMethod : byte {
 	/// </summary>
 	Template
 }
-public struct InfoTemplateData {
-
-}
 public struct TileData : ICloneable {
 	public ushort Tile_Type = 0;
 	public short Tile_FrameX = 0;

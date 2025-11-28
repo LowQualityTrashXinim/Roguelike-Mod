@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
@@ -11,20 +11,20 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 	public class ZapSnapper : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain, $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot");
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff, $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt");
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMagic(56, 16, 12, 2f, 50, 50, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
+			Item.BossRushDefaultMagic(56, 16, 12, 2f, 5, 5, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
 
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item9;
 		}
+		public int Counter = 0;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WeatherPain);
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.ThunderStaff);
@@ -33,6 +33,16 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
 			position = position.PositionOFFSET(velocity, 30);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+			Counter += Main.rand.Next(1, 3);
+			CanShootItem = true;
+			if (Counter < 15) {
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff)) {
+					int projectile = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+					Main.projectile[projectile].extraUpdates += 3;
+				}
+				return;
+			}
+			Counter = 0;
 			int amount = Main.rand.Next(20, 30);
 			for (int i = 0; i < amount; i++) {
 				Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
@@ -50,7 +60,6 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
 				variant[0] = 1f;
 				SoundEngine.PlaySound(SoundID.Thunder with { Pitch = -1, MaxInstances = 5, VariantsWeights = variant.AsSpan() }, player.Center);
 			}
-			CanShootItem = false;
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-10, 2);

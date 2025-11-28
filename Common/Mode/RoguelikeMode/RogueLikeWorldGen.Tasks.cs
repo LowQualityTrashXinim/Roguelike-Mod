@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Roguelike.Common.General;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
-using Roguelike.Common.Subworlds;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
@@ -25,7 +22,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Common.RoguelikeMode;
 /// <summary>
@@ -160,6 +156,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeGroup = null;
 		StaticNoise255x255 = null;
 	}
+	public override void PreSaveAndQuit() {
+		PlayerPos_WorldCood = Main.LocalPlayer.Center;
+	}
 	public override void Load() {
 	}
 	public bool AlreadyGenerated = false;
@@ -178,7 +177,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
 	public static List<Rectangle> TrialArea = new();
+	public Vector2 PlayerPos_WorldCood = Vector2.Zero;
 	public override void SaveWorldData(TagCompound tag) {
+		tag["PlayerPos_WorldCood"] = PlayerPos_WorldCood;
 		if (Biome == null) {
 			return;
 		}
@@ -195,6 +196,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
 	}
 	public override void LoadWorldData(TagCompound tag) {
+		tag.Remove("PlayerPos_TileCood");
+		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
 		AlreadyGenerated = tag.Get<bool>("AlreadyGenerated");
 		RoguelikeWorld = tag.Get<bool>("RoguelikeWorld");
 		var Type = tag.Get<List<short>>("BiomeType");

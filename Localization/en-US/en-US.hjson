@@ -853,7 +853,12 @@ Mods: {
 			}
 
 			ZapSnapper: {
-				Tooltip: I'm sure a wizard out there is deeply offended at the underwhelming shape of this...
+				Tooltip:
+					'''
+					"I'm sure a wizard out there is deeply offended at the underwhelming shape of this..."
+					Shoot out constant thunder shot
+					After a short while shoot out a burst of thundershot
+					'''
 				DisplayName: Zap Snapper
 			}
 

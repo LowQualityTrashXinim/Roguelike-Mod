@@ -22,3 +22,4 @@
 - Synergy damage still increases weapon damage regardless of class type.
 - Only intro buff and outro buff can stack.
 15/ Work on level item system ( not actual leveling system ).
+16/ Implement save spawn and randomize spawn location mechanic.

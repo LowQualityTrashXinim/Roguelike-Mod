@@ -363,3 +363,8 @@ Version 0.0.1:
 361/ Basic implementation of Lootbox appearing in roguelike world chest.
 362/ Fixed blizzard storm effect always active.
 363/ Change build number to 0.0.17
+364/ Fixed Boss Rush mode ( but also downgrade ).
+365/ Implemented remember on exit position.
+366/ Slight buff to pearl wood sword.
+367/ Buff Synergy weapon Zap Snapper.
+368/ Added in general gen pass for ease of subworld creation.

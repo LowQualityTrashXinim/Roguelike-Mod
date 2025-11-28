@@ -115,6 +115,7 @@ PearlwoodSword:
 	'''
 	Your swing are accompany with a ghost version of itself
 	Every 3rd swing, shoot out a 6 copy of itself toward the cursor
+	After successful 60 strike, for 2s unleash sword dance
 	'''
 WoodenSword:
 	'''

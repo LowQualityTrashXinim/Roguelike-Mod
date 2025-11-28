@@ -33,8 +33,16 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		if (gen.RoguelikeWorld && SubworldSystem.Current == null) {
-			if (gen.BiomeMapping[0] == null)
+			if (gen.PlayerPos_WorldCood != Vector2.Zero) {
+				Player.Center = gen.PlayerPos_WorldCood;
+				Player.fallStart = (int)(gen.PlayerPos_WorldCood.X / 16f);
+				Player.oldPosition = Player.Center;
+				Player.teleportTime = 1f;
+				Player.ForceUpdateBiomes();
+			}
+			if (gen.BiomeMapping[0] == null) {
 				ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
+			}
 		}
 	}
 	public override void ResetEffects() {

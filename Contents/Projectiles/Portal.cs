@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeBiome;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Subworlds;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
@@ -79,7 +80,7 @@ namespace Roguelike.Contents.Projectiles {
 				localPlayer.tileInteractAttempted = true;
 				localPlayer.tileInteractionHappened = true;
 				localPlayer.releaseUseTile = false;
-
+				ModContent.GetInstance<RogueLikeWorldGen>().PlayerPos_WorldCood = localPlayer.Center;
 				Subworld_ToEnter();
 			}
 		}

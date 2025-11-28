@@ -1,15 +1,15 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Projectiles
-{
+namespace Roguelike.Contents.Projectiles {
 	internal class pearlSwordProj : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.PearlwoodSword);
 		public override void SetDefaults() {
@@ -20,10 +20,11 @@ namespace Roguelike.Contents.Projectiles
 			Projectile.penetrate = 1;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
-			Projectile.timeLeft = 80;
+			Projectile.timeLeft = 240;
 			Projectile.aiStyle = -1;
 			Projectile.alpha = 250;
 			Projectile.ArmorPenetration = 10;
+			Projectile.extraUpdates = 2;
 		}
 
 		float flare = 0;
@@ -34,7 +35,7 @@ namespace Roguelike.Contents.Projectiles
 		}
 
 		private static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
-			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
+			Texture2D sparkleTexture = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
 			bigColor.A = 0;
 			Vector2 origin = sparkleTexture.Size() / 2f;
@@ -54,24 +55,22 @@ namespace Roguelike.Contents.Projectiles
 		public override void AI() {
 
 			if (flare < 1f)
-				flare += 0.03f;
+				flare += 0.01f;
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			Projectile.ai[0]++;
 			if (Projectile.alpha > 0)
-				Projectile.alpha -= 10;
+				Projectile.alpha -= 4;
 
-			if (Projectile.ai[0] >= 28) {
+			if (Projectile.ai[0] >= 84) {
 				Vector2 dir = Projectile.velocity.SafeNormalize(Vector2.UnitY);
-				Projectile.velocity = dir * 45;
+				Projectile.velocity = dir * 15;
+			}
+			if (Main.rand.NextBool(3)) {
 				for (int i = 0; i < 5; i++) {
-
 					var dust = Dust.NewDust(Projectile.Center + Projectile.velocity, 4, 4, DustID.PinkTorch);
 					Main.dust[dust].noGravity = true;
-
 				}
-
-
 			}
 		}
 
