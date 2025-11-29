@@ -23,3 +23,13 @@
 - Only intro buff and outro buff can stack.
 15/ Work on level item system ( not actual leveling system ).
 16/ Implement save spawn and randomize spawn location mechanic.
+17/ Implement special characteristic for material :
+- Copper : Related to electricity and the debuff electricified
+- Tin : Strengthen using tin item related.
+- Iron : Defenses focus
+- Lead : General DoT focus
+- Silver : First strike focus
+- Tungsten : ????
+- Gold : Midas theme focus
+- Platinum : ???
+18/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.

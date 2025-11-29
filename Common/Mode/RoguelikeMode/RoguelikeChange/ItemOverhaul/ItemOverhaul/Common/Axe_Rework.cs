@@ -50,7 +50,6 @@ public class Roguelike_Axe : GlobalItem {
 			item.useTurn = false;
 			item.Set_ItemCriticalDamage(1.5f);
 			item.DamageType = DamageClass.Melee;
-			item.shoot = ModContent.ProjectileType<TomahawkProjectile>();
 			var global = item.GetGlobalItem<MeleeWeaponOverhaul>();
 			global.SwingType = BossRushUseStyle.SwipeDown;
 			global.SwingDegree = 155;
@@ -82,7 +81,8 @@ public class Roguelike_Axe : GlobalItem {
 			else {
 				item.noUseGraphic = false;
 			}
-			return player.ownedProjectileCounts[ModContent.ProjectileType<TomahawkProjectile>()] < 1;
+			int amount = player.ownedProjectileCounts[ModContent.ProjectileType<TomahawkProjectile>()];
+			return amount < 1;
 		}
 		return base.CanUseItem(item, player);
 	}

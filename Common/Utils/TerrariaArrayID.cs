@@ -1,4 +1,19 @@
 ﻿using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Items.NoneSynergy;
+using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
+using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
+using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
+using Roguelike.Contents.Items.NoneSynergy.GuideToMasterNinja;
+using Roguelike.Contents.Items.NoneSynergy.Gunmerang;
+using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
+using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
+using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
+using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
+using Roguelike.Contents.Items.NoneSynergy.RectangleShotgun;
+using Roguelike.Contents.Items.NoneSynergy.RifleShotgun;
+using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
+using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
+using Roguelike.Contents.Items.NoneSynergy.SnowballShotgunCannon;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using System.Collections.Generic;
@@ -127,6 +142,31 @@ public static class TerrariaArrayID {
 	public readonly static int[] RangePreLuna = { ItemID.Tsunami, ItemID.FairyQueenRangedItem };
 	public readonly static int[] MagicPreLuna = { ItemID.RazorbladeTyphoon, ItemID.BubbleGun, ItemID.FairyQueenMagicItem, ItemID.SparkleGuitar };
 	public readonly static int[] SummonPreLuna = { ItemID.TempestStaff, ItemID.RainbowWhip };
+
+	public readonly static int[] RandomAssortment =
+		{ ModContent.ItemType<FrozenEnchantedSword>(),
+	ModContent.ItemType<FrozenShark>(),
+	ModContent.ItemType<GenericBlackSword>(),
+	ModContent.ItemType<GuideToMasterNinja>(),
+	ModContent.ItemType<Gunmerang>(),
+	ModContent.ItemType<HuntingRifle>(),
+	ModContent.ItemType<LongerMusket>(),
+	ModContent.ItemType<ManaStarFury>(),
+	ModContent.ItemType<OvergrownMinishark>(),
+	ModContent.ItemType<RectangleShotgun>(),
+	ModContent.ItemType<RifleShotgun>(),
+	ModContent.ItemType<SingleBarrelMinishark>(),
+	ModContent.ItemType<SnowballRifle>(),
+	ModContent.ItemType<SnowballShotgunCannon>(),
+	ModContent.ItemType<BlueMinishark>(),
+	ModContent.ItemType<EnchantedCopperSword>(),
+	ModContent.ItemType<GoldComplexBow>(),
+	ModContent.ItemType<PlatinumComplexBow>(),
+	ModContent.ItemType<MasterWoodBow>(),
+	ModContent.ItemType<OldFlamingWoodSword>(),
+	ModContent.ItemType<OldSkullRevolver>(),
+	ModContent.ItemType<Snowstorm>(),
+	};
 
 	public readonly static int[] NonMovementPotion = { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
 	public readonly static int[] MovementPotion = { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };

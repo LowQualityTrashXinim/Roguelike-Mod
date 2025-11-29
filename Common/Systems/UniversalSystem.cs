@@ -474,6 +474,7 @@ public class UniversalModPlayer : ModPlayer {
 		else {
 			if (UniqueWorldID == string.Empty) {
 				UniqueWorldID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, Player.name + Main.worldName);
+				uiSystemInstance.UniqueWorldPlayerID = UniqueWorldID;
 				RoguelikeData.Run_Amount++;
 			}
 		}

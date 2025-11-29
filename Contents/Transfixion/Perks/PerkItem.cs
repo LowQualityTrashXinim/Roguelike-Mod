@@ -6,6 +6,8 @@ using Roguelike.Common.Systems;
 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks.RoguelikePerk;
+using Terraria.ModLoader.IO;
 
 namespace Roguelike.Contents.Transfixion.Perks;
 class WorldEssence : ModItem {
@@ -18,6 +20,28 @@ class WorldEssence : ModItem {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.ActivatePerkUI(PerkUIState.DefaultState);
 		return true;
+	}
+}
+class PerkEssence : ModItem {
+	public override string Texture => ModTexture.Get_MissingTexture("Perk");
+	public int PerkToGive = -1;
+	public override void SetDefaults() {
+		Item.BossRushDefaultToConsume(32, 23);
+		Item.maxStack = 999;
+	}
+	public override bool? UseItem(Player player) {
+		if (PerkToGive == -1) {
+			PerkToGive = Perk.GetPerkType<SuppliesDrop>();
+		}
+		UniversalSystem.AddPerk(PerkToGive);
+		ModUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(PerkToGive).DisplayName);
+		return true;
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["PerkToGive"] = PerkToGive;
+	}
+	public override void LoadData(TagCompound tag) {
+		PerkToGive = tag.Get<int>("PerkToGive");
 	}
 }
 class GlitchWorldEssence : ModItem {

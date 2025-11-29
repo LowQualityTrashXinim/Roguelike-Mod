@@ -368,3 +368,10 @@ Version 0.0.1:
 366/ Slight buff to pearl wood sword.
 367/ Buff Synergy weapon Zap Snapper.
 368/ Added in general gen pass for ease of subworld creation.
+369/ A lot of work put into slime subworld and king slime spawning method.
+370/ Fix Abandon House 6 have a misleading chest.
+371/ Deleted code that check for getGoodWorld that is responsible for item drop increases.
+372/ Fixed axe being broken for a while.
+373/ A lot of more utility added for ease of use when creating subworld and world gen.
+374/ Added secret structure into world gen.
+375/ Added Perk essence which will give specific perk.

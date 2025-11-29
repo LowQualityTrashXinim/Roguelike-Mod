@@ -16,12 +16,16 @@ public class TomahawkProjectile : ModProjectile {
 		Projectile.penetrate = -1;
 		Projectile.timeLeft = 999;
 		Projectile.aiStyle = 2;
-		Projectile.tileCollide = true;
+		Projectile.tileCollide = false;
 	}
 	float intialvelocity;
 	public override void AI() {
 		if (Projectile.timeLeft == 999) {
 			intialvelocity = Projectile.velocity.Length();
+		}
+		if (++Projectile.localAI[2] >= 30) {
+			Projectile.tileCollide = true;
+			Projectile.localAI[2] = -999;
 		}
 		Player player = Main.player[Projectile.owner];
 		if (++Projectile.ai[0] >= ModUtils.ToSecond(6) || !player.ItemAnimationActive && (Main.mouseRight && Projectile.owner == Main.myPlayer)) {

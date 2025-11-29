@@ -12,12 +12,6 @@ internal class BossRushGlobalItem : GlobalItem {
 		if (!UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
 			return base.UseItem(item, player);
 		}
-		if (item.type == ItemID.SlimeCrown) {
-			Rectangle rect = ModContent.GetInstance<BossRushWorldGen>().Room[Bid.Slime][0];
-			Point spawnPosotion = rect.Center().ToPoint();
-			NPC.SpawnBoss(spawnPosotion.X * 16, spawnPosotion.Y * 16, NPCID.KingSlime, player.whoAmI);
-			return true;
-		}
 		return base.UseItem(item, player);
 	}
 

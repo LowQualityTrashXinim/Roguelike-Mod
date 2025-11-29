@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
+using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
 using SubworldLibrary;
@@ -117,6 +118,13 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		On_Main.DrawBlack += On_Main_DrawBlack;
 		On_Player.UpdateBiomes += On_Player_UpdateBiomes;
 		On_WorldGen.UpdateWorld_Inner += On_WorldGen_UpdateWorld_Inner;
+		On_Player.ItemCheck_UseBossSpawners += On_Player_ItemCheck_UseBossSpawners;
+	}
+
+	private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
+		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld && !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			orig(self, onWhichPlayer, sItem);
+		}
 	}
 
 	private void On_WorldGen_UpdateWorld_Inner(On_WorldGen.orig_UpdateWorld_Inner orig) {

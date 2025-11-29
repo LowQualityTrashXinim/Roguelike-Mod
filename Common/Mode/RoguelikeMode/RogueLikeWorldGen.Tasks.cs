@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.Mode.RoguelikeMode;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Wrapper;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Texture;
 using StructureHelper.API;
 using StructureHelper.Models;
@@ -196,7 +199,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
 	}
 	public override void LoadWorldData(TagCompound tag) {
-		tag.Remove("PlayerPos_TileCood");
 		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
 		AlreadyGenerated = tag.Get<bool>("AlreadyGenerated");
 		RoguelikeWorld = tag.Get<bool>("RoguelikeWorld");
@@ -333,7 +335,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	Rectangle MainForestZone = new Rectangle();
 	Rectangle MainTundraForestZone = new Rectangle();
 	/// <summary>
-	/// Common list of rectangle for ignoring zone that should be ingored to place structure
+	/// Contain list of rectangle for ignoring special zone that should be ingored for place structure
 	/// </summary>
 	public List<Rectangle> ZoneToBeIgnored = new();
 	public List<Rectangle> ForestZone = new();
@@ -802,6 +804,28 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 	}
 	[Task]
+	public void Generate_Secret() {
+		List<Item> itemlist = new();
+		int amount = Rand.Next(3, 6);
+		for (int i = 0; i < amount; i++) {
+			Item item_relic = new Item(ModContent.ItemType<Relic>());
+			Relic relic = item_relic.ModItem as Relic;
+			relic.AddRelicTemplate(Main.LocalPlayer, RelicTemplate.GetRelicType<GenericTemplate>(), 1.1f);
+			relic.AddRelicTemplate(Main.LocalPlayer, RelicTemplate.GetRelicType<GenericTemplate>(), 1.1f);
+			relic.AddRelicTemplate(Main.LocalPlayer, RelicTemplate.GetRelicType<GenericTemplate>(), 1.1f);
+			itemlist.Add(item_relic);
+		}
+		amount = Rand.Next(1, 4);
+		for (int i = 0; i < amount; i++) {
+			Item potion = new Item(Rand.Next(TerrariaArrayID.SpecialPotion));
+			itemlist.Add(potion);
+		}
+		int X = 5 * GridPart_X + Main.rand.Next(0, GridPart_X);
+		int Y = 1 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		GeneralWorldGenTask.Generate_Container(Rand, Mod, X, Y, out Rectangle re, itemlist);
+		ZoneToBeIgnored.Add(re);
+	}
+	[Task]
 	public void Generate_StarterForest() {
 		Rectangle forestArea = MainForestZone;
 		//We are using standard generation for this one
@@ -850,6 +874,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				WorldGen.GrowTree(i, CurrentPosY);
 			}
 		}
+		ForestZone.Add(MainForestZone);
 	}
 	[Task]
 	public void Generate_SnowForest() {
@@ -890,6 +915,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				WorldGen.GrowTree(i, CurrentPosY);
 			}
 		}
+		ForestZone.Add(MainTundraForestZone);
 	}
 	[Task]
 	public void Generate_SmallForest() {
@@ -1021,6 +1047,43 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
+	public void Generate_GoldRoom() {
+		Rectangle goldRoomSize = new(0, 0, 150, 150);
+		for (int i = 0; i < Main.maxTilesX; i++) {
+			for (int j = 0; j < Main.maxTilesY; j++) {
+				if (i > 100 && i < Main.maxTilesX - 100 && j > 100 && j < Main.maxTilesY - 100) {
+					//This is where we generate our gold room via code
+					if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
+						goldRoomSize.X = i;
+						goldRoomSize.Y = j;
+					}
+					else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
+						goldRoomSize.X = i;
+						goldRoomSize.Y = j;
+					}
+					if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
+						if (goldRoomSize.Contains(i, j)) {
+							if (i == goldRoomSize.Left
+							|| j == goldRoomSize.Top
+							|| i == goldRoomSize.Right - 1
+							|| j == goldRoomSize.Bottom - 1) {
+								GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
+							}
+							else {
+								GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
+							}
+							if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
+								ZoneToBeIgnored.Add(goldRoomSize);
+								goldRoomSize.X = 0;
+								goldRoomSize.Y = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	[Task]
 	public void Generate_SmallVillage() {
 		for (int b = 0; b < 24; b++) {
 			List<Rectangle> placed = new();
@@ -1029,7 +1092,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
 			Rectangle villageZone = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex, 250, 100);
-			while (!(ID != Bid.Space && ID != Bid.Ocean && ID != Bid.Desert && ID != Bid.Caven && !ZoneToBeIgnored.Where(rect => rect.Intersects(villageZone)).Any())) {
+			while (!(ID != Bid.Space && ID != Bid.Ocean && ID != Bid.Desert && ID != Bid.Caven && ID != Bid.Underworld && !ZoneToBeIgnored.Where(rect => rect.Intersects(villageZone)).Any())) {
 				xdex = Main.rand.Next(1, 23);
 				ydex = Main.rand.Next(1, 22);
 				ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
@@ -1094,7 +1157,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven) {
+			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Underworld) {
 				i--;
 				continue;
 			}
@@ -1136,25 +1199,24 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				//Add loot here
 				break;
 			}
-			for (int x = re.X; x < re.X + re.Width; x++) {
-				if (chestplaced) {
-					break;
-				}
-				for (int y = re.Y; y < re.Y + re.Height; y++) {
-					int chest = WorldGen.PlaceChest(x, y);
-					if (chest == -1) {
-						continue;
+			if (!chestplaced) {
+				for (int x = re.X; x < re.X + re.Width; x++) {
+					for (int y = re.Y; y < re.Y + re.Height; y++) {
+						int chest = WorldGen.PlaceChest(x, y);
+						if (chest == -1) {
+							continue;
+						}
+						chestplaced = true;
+						AddLoot(Main.chest[chest]);
+						//Add loot here
+						break;
 					}
-					chestplaced = true;
-					AddLoot(Main.chest[chest]);
-					//Add loot here
-					break;
 				}
 			}
 			placed.Add(re);
 		}
 	}
-	private void AddLoot(Chest chest) {
+	public static void AddLoot(Chest chest) {
 		if (Main.rand.NextBool(50)) {
 			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
 		}
@@ -1170,55 +1232,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_PostWorld() {
-		for (int i = 0; i < Main.maxTilesX; i++) {
-			for (int j = 0; j < Main.maxTilesY; j++) {
-				if (CanGenerateGoldRoom(i, j)) {
-					continue;
-				}
-			}
-		}
-		ForestZone.Add(MainTundraForestZone);
-		ForestZone.Add(MainForestZone);
-	}
-
-	Rectangle goldRoomSize = new(0, 0, 150, 150);
-	/// <summary>
-	/// Return true if the method successfully generated gold room
-	/// </summary>
-	/// <param name="i"></param>
-	/// <param name="j"></param>
-	/// <returns></returns>
-	public bool CanGenerateGoldRoom(int i, int j) {
-		if (i > 100 && i < Main.maxTilesX - 100 && j > 100 && j < Main.maxTilesY - 100) {
-			//This is where we generate our gold room via code
-			if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
-				goldRoomSize.X = i;
-				goldRoomSize.Y = j;
-			}
-			else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
-				goldRoomSize.X = i;
-				goldRoomSize.Y = j;
-			}
-			if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
-				if (goldRoomSize.Contains(i, j)) {
-					if (i == goldRoomSize.Left
-					|| j == goldRoomSize.Top
-					|| i == goldRoomSize.Right - 1
-					|| j == goldRoomSize.Bottom - 1) {
-						GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
-					}
-					else {
-						GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
-					}
-					if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
-						goldRoomSize.X = 0;
-						goldRoomSize.Y = 0;
-					}
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 	[Task]
 	public void FinalTask() {
