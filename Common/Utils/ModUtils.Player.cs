@@ -226,9 +226,9 @@ namespace Roguelike.Common.Utils {
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public static bool CheckFirstStrike(this NPC npc) {
+		public static bool CheckFirstStrike(this NPC npc, Player player) {
 			if (npc.TryGetGlobalNPC(out RoguelikeGlobalNPC roguelike)) {
-				return roguelike.HitCount <= 0;
+				return roguelike.HitCount <= player.ModPlayerStats().HitCountIgnore;
 			}
 			return false;
 		}

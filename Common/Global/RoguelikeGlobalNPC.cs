@@ -1,22 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
-using Roguelike.Common.Systems;
-using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
 using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
-using Roguelike.Contents.Items.Weapon.UnfinishedItem;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,7 +33,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public const int BossHP = 8000;
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
-	public bool EliteBoss = false;
 	/// <summary>
 	/// Use this for always update velocity
 	/// </summary>
@@ -62,74 +57,12 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-			return;
-		}
-		if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
-			if (!NPC_SpecialException) {
-				entity.lifeMax = (int)(BossHP * GetValueMulti());
-				entity.damage = (int)(BossDMG * GetValueMulti());
-				entity.defense = (int)(BossDef * GetValueMulti(.5f));
-			}
-		}
-		else {
-			float adjustment = 1;
-			if (Main.expertMode)
-				adjustment = 2;
-			else if (Main.masterMode)
-				adjustment = 3;
-
-			entity.lifeMax += (int)(entity.lifeMax / adjustment * GetValueMulti() * .1f);
-			entity.life = entity.lifeMax;
-			entity.damage += (int)(entity.damage / adjustment * GetValueMulti() * .1f);
-			entity.defense += (int)(entity.defense / adjustment * GetValueMulti(.5f) * .1f);
-		}
-	}
-	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-			return;
-		}
-		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye
-			&& npc.type != NPCID.MoonLordCore && npc.type != NPCID.MoonLordHand && npc.type != NPCID.MoonLordHead && npc.type != NPCID.MoonLordLeechBlob) {
-			if (!NPC_SpecialException) {
-				npc.lifeMax = (int)(BossHP * GetValueMulti());
-				npc.life = npc.lifeMax;
-				npc.damage = (int)(BossDMG * GetValueMulti());
-				npc.defense = (int)(BossDef * GetValueMulti(.5f));
-			}
-		}
-		else {
-			npc.lifeMax += (int)(npc.lifeMax * GetValueMulti() * .1f);
-			npc.life = npc.lifeMax;
-			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
-			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
-		}
-	}
-	public float GetValueMulti(float scale = 1) {
-		float extraMultiply = 0;
-		if (Main.expertMode) {
-			extraMultiply += .15f;
-		}
-		if (Main.masterMode) {
-			extraMultiply += .3f;
-		}
-		if (Main.getGoodWorld) {
-			extraMultiply += 1;
-		}
-		if (EliteBoss) {
-			extraMultiply += 2;
-		}
-		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
-		return (1 + counter * .5f + extraMultiply) * scale;
 	}
 	public override void ResetEffects(NPC npc) {
 		npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		StatDefense = new();
 		if (IsAGhostEnemy) {
 			npc.dontTakeDamage = true;
-		}
-		if (!npc.boss) {
-			EliteBoss = false;
 		}
 		if (--DRTimer <= 0) {
 			DRFromFatalAttack = false;
@@ -156,11 +89,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			return false;
 		}
 		return base.CanBeHitByProjectile(npc, projectile);
-	}
-	public override void ModifyTypeName(NPC npc, ref string typeName) {
-		if (EliteBoss) {
-			typeName = "Elite " + typeName;
-		}
 	}
 	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());
@@ -236,21 +164,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (npc.HasBuff<NPC_Weakness>()) {
 			modifiers.SourceDamage -= .5f;
 		}
-		if (npc.boss && !NPC_SpecialException) {
-			if (EliteBoss) {
-				modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .15f);
-			}
-		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		if (npc.boss && !NPC_SpecialException) {
-			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
-				modifiers.SetMaxDamage(1);
-			}
-			if (DRFromFatalAttack) {
-				modifiers.FinalDamage *= .35f;
-			}
-		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.SourceDamage *= 1 - Endurance;
 	}
@@ -273,16 +188,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				}
 			}
 		}
-
-
-		if (npc.boss && !NPC_SpecialException) {
-			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
-				modifiers.SetMaxDamage(1);
-			}
-			if (DRFromFatalAttack) {
-				modifiers.FinalDamage *= .35f;
-			}
-		}
 		if (projectile.type == ProjectileID.HeatRay) {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
 		}
@@ -297,25 +202,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
-		if (!npc.boss || NPC_SpecialException) {
-			return;
-		}
-		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {
-			if (EliteBoss) {
-				npc.Heal(npc.lifeMax);
-			}
-			else {
-				npc.Heal(npc.lifeMax / 10);
-			}
-			OneTimeDR = true;
-			DRTimer = ModUtils.ToMinute(1);
-			DRFromFatalAttack = true;
-		}
-		if (hit.Crit || EliteBoss) {
-			if (Main.rand.NextBool(10)) {
-				npc.Heal(Main.rand.Next(hit.Damage));
-			}
-		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
@@ -348,25 +234,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				}
 			}
 		}
-		if (!npc.boss || NPC_SpecialException) {
-			return;
-		}
-		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {
-			if (EliteBoss) {
-				npc.Heal(npc.lifeMax);
-			}
-			else {
-				npc.Heal(npc.lifeMax / 10);
-			}
-			OneTimeDR = true;
-			DRTimer = ModUtils.ToMinute(1);
-			DRFromFatalAttack = true;
-		}
-		if (hit.Crit || EliteBoss) {
-			if (Main.rand.NextBool(10)) {
-				npc.Heal(Main.rand.Next(hit.Damage));
-			}
-		}
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;
@@ -376,10 +243,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		var player = Main.player[playerIndex];
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
-		if (EliteBoss) {
-			player.GetModPlayer<PlayerStatsHandle>().EliteKillCount++;
-			RoguelikeData.EliteKill++;
-		}
 		if (npc.boss && player.GetModPlayer<GamblePlayer>().GodDice) {
 			player.GetModPlayer<GamblePlayer>().Roll++;
 		}

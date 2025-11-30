@@ -857,7 +857,6 @@ public class PlayerStatsHandle : ModPlayer {
 			TransmutationPower = TransmutationPowerA;
 		}
 	}
-	public int EliteKillCount = 0;
 	public int successfullyKillNPCcount = 0;
 	public int request_ShootExtra { get; private set; } = 0;
 	public int request_ShootSpreadExtra { get; private set; } = 0;

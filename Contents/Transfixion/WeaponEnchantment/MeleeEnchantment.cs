@@ -1,5 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Roguelike.Common.Global;
@@ -15,7 +14,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Roguelike.Contents.Transfixion.WeaponEnchantment.SwordFish;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class CactusSword : ModEnchantment {
@@ -27,7 +25,7 @@ public class CactusSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(6, 8), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3, item.knockBack, player.whoAmI);
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(6, 8), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3 + 100, item.knockBack, player.whoAmI);
 			Main.projectile[projectile].friendly = true;
 			Main.projectile[projectile].hostile = false;
 			Main.projectile[projectile].penetrate = -1;
@@ -299,11 +297,6 @@ public class LightsBane : ModEnchantment {
 public class BladeOfGrass : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BladeofGrass;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		if (player.ZoneJungle) {
-			damage *= 1.2f;
-		}
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (Main.rand.NextBool()) {

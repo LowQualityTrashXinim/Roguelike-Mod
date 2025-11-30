@@ -20,15 +20,6 @@ internal class Roguelike_Minishark : GlobalItem {
 		if (Main.rand.NextBool(6)) {
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10) * Main.rand.NextFloat(.9f, 1), type, damage, knockback, player.whoAmI);
 		}
-		if (player.HasBuff<Freezy>()) {
-			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.8f, 1), type, damage, knockback, player.whoAmI);
-			if (Main.rand.NextBool(3)) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20) * Main.rand.NextFloat(.7f, 1), type, damage, knockback, player.whoAmI);
-			}
-			if (Main.rand.NextBool(6)) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.7f, 1), type, damage, knockback, player.whoAmI);
-			}
-		}
 		if (Main.rand.NextBool(100) || counter >= 200) {
 			player.GetModPlayer<Roguelike_Minishark_ModPlayer>().FreezyCounter = 0;
 			ModUtils.CombatTextRevamp(player.Hitbox, Color.Aquamarine, "Freezy!!");
@@ -39,18 +30,33 @@ internal class Roguelike_Minishark : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_Minishark", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
-	class Freezy : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
+}
+public class Freezy : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		if (player.HeldItem.type == ItemID.Minishark) {
+			player.ModPlayerStats().AttackSpeed += .5f;
 		}
-		public override void Update(Player player, ref int buffIndex) {
-			if (player.HeldItem.type == ItemID.Minishark) {
-				player.ModPlayerStats().AttackSpeed += .5f;
-			}
+		else {
+			player.ModPlayerStats().AttackSpeed += .15f;
 		}
 	}
 }
 public class Roguelike_Minishark_ModPlayer : ModPlayer {
 	public int FreezyCounter = 0;
+	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Player.HasBuff<Freezy>()) {
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.8f, 1), type, damage, knockback, Player.whoAmI);
+			if (Main.rand.NextBool(3)) {
+				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20) * Main.rand.NextFloat(.7f, 1), type, damage, knockback, Player.whoAmI);
+			}
+			if (Main.rand.NextBool(6)) {
+				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.7f, 1), type, damage, knockback, Player.whoAmI);
+			}
+		}
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+	}
 }

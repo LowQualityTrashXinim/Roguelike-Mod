@@ -66,7 +66,7 @@ public class SilverArmorPlayer : PlayerArmorHandle {
 		}
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (target.CheckFirstStrike()) {
+		if (target.CheckFirstStrike(Player)) {
 			target.AddBuff<SilverPurification>(ModUtils.ToSecond(Main.rand.Next(5, 10)));
 		}
 	}

@@ -375,3 +375,10 @@ Version 0.0.1:
 373/ A lot of more utility added for ease of use when creating subworld and world gen.
 374/ Added secret structure into world gen.
 375/ Added Perk essence which will give specific perk.
+376/ Added condition for most recipe if player are in roguelike world.
+377/ Nerf item maximum stack amount for specific type of item.
+378/ Deleted special mechanic that is exclusive to boss.
+379/ Deleted Elite boss because it is not being used.
+380/ Changed some enchantments effect.
+381/ Experiment with custom skeletron archer ai.
+382/ Small fix toward first strike check not compatible with perk.

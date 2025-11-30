@@ -13,7 +13,6 @@ namespace Roguelike.Common.Systems.IOhandle;
 public static class RoguelikeData {
 	public static int Lootbox_AmountOpen = 0;
 	public static int Run_Amount = 0;
-	public static int EliteKill = 0;
 	//currently there are no winning goal so this is not implemented
 	public static int Win_Streak = 0;
 	public static int Win_StreakRecord = 0;
@@ -75,6 +74,7 @@ class ModIO : ModSystem {
 	}
 	private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
 		SavingModData();
+		orig(self, sender, e);
 	}
 	public void SavingModData() {
 		if (!File.Exists(DataFilePath)) {

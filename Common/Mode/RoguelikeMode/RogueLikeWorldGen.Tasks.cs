@@ -562,7 +562,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		InitializeBiomeWorld();
 		InitializeForestWorld();
 		watch.Stop();
-		Mod.Logger.Info(watch.ToString());
+		Mod.Logger.Info("Setup step: " + watch.ToString());
 
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		foreach (var item in modsystem.list_Structure) {
@@ -783,7 +783,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
 		ResetTemplate_GenerationValue();
-		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
+		Mod.Logger.Info("Create biome step :" + watch.ToString());
 	}
 	private void Place_Tile_CreateBiome(int holdX, int holdY, int noiseCounter, ref TileData data) {
 		int noiseCounter2nd = ModUtils.Safe_SwitchValue(noiseCounter + 200, StaticNoise255x255.Length - 1);
@@ -805,6 +805,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_Secret() {
+		Stopwatch watch = new();
+		watch.Start();
 		List<Item> itemlist = new();
 		int amount = Rand.Next(3, 6);
 		for (int i = 0; i < amount; i++) {
@@ -824,9 +826,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		int Y = 1 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
 		GeneralWorldGenTask.Generate_Container(Rand, Mod, X, Y, out Rectangle re, itemlist);
 		ZoneToBeIgnored.Add(re);
+		watch.Stop();
+		Mod.Logger.Info("Secret step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_StarterForest() {
+		Stopwatch watch = new();
+		watch.Start();
 		Rectangle forestArea = MainForestZone;
 		//We are using standard generation for this one
 		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
@@ -875,9 +881,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 		ForestZone.Add(MainForestZone);
+		watch.Stop();
+		Mod.Logger.Info("Forest step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_SnowForest() {
+		Stopwatch watch = new();
+		watch.Start();
 		Rectangle forestArea = MainTundraForestZone;
 		//We are using standard generation for this one
 		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
@@ -916,9 +926,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 		ForestZone.Add(MainTundraForestZone);
+		watch.Stop();
+		Mod.Logger.Info("Snow step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_SmallForest() {
+		Stopwatch watch = new();
+		watch.Start();
 		foreach (Rectangle zone in ForestZone) {
 			//We are using standard generation for this one
 			int startingPoint = zone.Height - zone.Height / 8 + zone.Y;
@@ -951,9 +965,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+		watch.Stop();
+		Mod.Logger.Info("Small forest step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_CursedKingdomStructure() {
+		Stopwatch watch = new();
+		watch.Start();
 		int X = Main.rand.Next(12, 16) * GridPart_X;
 		int Y = Main.rand.Next(15, 20) * GridPart_Y;
 		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Caven) {
@@ -969,6 +987,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 			ZoneToBeIgnored.Add(CursedKingdomArea);
 		}
+		watch.Stop();
+		Mod.Logger.Info("CK_entrance step: " + watch.ToString());
 	}
 	public Rectangle CrimsonEntrance = new();
 	public Rectangle CorruptionEntrance = new();
@@ -976,6 +996,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public Rectangle SlimeWorldEntrance = new();
 	[Task]
 	public void Generate_CrimsonEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
 		int X = Main.rand.Next(20, 22) * GridPart_X;
 		int Y = Main.rand.Next(11, 13) * GridPart_Y;
 		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
@@ -991,9 +1013,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 			ZoneToBeIgnored.Add(CrimsonEntrance);
 		}
+		watch.Stop();
+		Mod.Logger.Info("Crimson step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_CorruptionEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
 		int X = Main.rand.Next(5, 9) * GridPart_X;
 		int Y = Main.rand.Next(18, 20) * GridPart_Y;
 		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Corruption) {
@@ -1009,9 +1035,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 			ZoneToBeIgnored.Add(CorruptionEntrance);
 		}
+		watch.Stop();
+		Mod.Logger.Info("Corruption step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_FleshRealmEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
 		int X = Main.rand.Next(19, 22) * GridPart_X;
 		int Y = 19 * GridPart_Y;
 		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
@@ -1027,9 +1057,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 			ZoneToBeIgnored.Add(FleshRealmEntrance);
 		}
+		watch.Stop();
+		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_SlimeWorldEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
 		int X = 16 * GridPart_X;
 		int Y = 11 * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
@@ -1045,9 +1079,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ModWrapper.GenerateFromData(data, point);
 			ZoneToBeIgnored.Add(SlimeWorldEntrance);
 		}
+		watch.Stop();
+		Mod.Logger.Info("Slime world step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_GoldRoom() {
+		Stopwatch watch = new();
+		watch.Start();
 		Rectangle goldRoomSize = new(0, 0, 150, 150);
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
@@ -1082,9 +1120,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+		watch.Stop();
+		Mod.Logger.Info("Gold room step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_SmallVillage() {
+		Stopwatch watch = new();
+		watch.Start();
 		for (int b = 0; b < 24; b++) {
 			List<Rectangle> placed = new();
 			int amount = Rand.Next(10, 20);
@@ -1148,9 +1190,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				placed.Add(re);
 			}
 		}
+		watch.Stop();
+		Mod.Logger.Info("Small village step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_AbandonStructureAllOverThePlace() {
+		Stopwatch watch = new();
+		watch.Start();
 		List<Rectangle> placed = new();
 		for (int i = 0; i < 300; i++) {
 			StructureData data = Get_RandomizeAbandonStructure(Mod);
@@ -1215,6 +1261,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			placed.Add(re);
 		}
+		watch.Stop();
+		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
 	}
 	public static void AddLoot(Chest chest) {
 		if (Main.rand.NextBool(50)) {

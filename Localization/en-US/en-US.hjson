@@ -1,5 +1,6 @@
 Mods: {
 	Roguelike: {
+		Conditions.RoguelikeModeCursed: The recipe is locked while you are playing this mod.
 		Bestiary.LootBoxLord: After our investigation, we uncovered that this entity is a ancient god whose purpose are to guard the gate of so called "World Vault", this is our first ever confirmation of there being another world, however without seeing the "world vault" there aren't any evidence would support our theory, so this can't really be reported back to our superior. However the entity is rather interesting, we had done multiple attempts of trying to neutralize the entity, even resulting to using our on broad giant rail gun which in previous record could easily pieced a super size eye ball but when against this entity it done next to no damage, as such we decided best to not engaged any further until further notice from above.
 
 		SystemTooltip: {

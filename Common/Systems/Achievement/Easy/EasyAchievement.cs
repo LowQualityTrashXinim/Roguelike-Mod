@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
@@ -135,16 +135,5 @@ public class AlchemistKnowledge : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() && UniversalSystem.NotNormalMode();
-	}
-}
-public class Elite : RoguelikeAchievement {
-	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Easy;
-	}
-	public override bool Condition() {
-		if (Main.CurrentPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
-			return modplayer.EliteKillCount > 0;
-		}
-		return false;
 	}
 }

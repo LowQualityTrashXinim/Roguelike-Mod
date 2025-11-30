@@ -77,10 +77,10 @@ public abstract class BiomeData : ModType {
 	protected override void Register() {
 		Type = RoguelikeBiomeHandle_ModSystem.Register(this);
 	}
-	public List<spawnInfo> SpawningInfo(NPCSpawnInfo spawnInfo) {
+	public List<RoguelikeSpawnInfo> SpawningInfo(NPCSpawnInfo spawnInfo) {
 		return new();
 	}
-	public struct spawnInfo {
+	public struct RoguelikeSpawnInfo {
 		/// <summary>
 		/// Type of NPC to be spawned
 		/// </summary>
@@ -90,7 +90,7 @@ public abstract class BiomeData : ModType {
 		/// </summary>
 		public float Weight = 1f;
 
-		public spawnInfo() {
+		public RoguelikeSpawnInfo() {
 		}
 	}
 }
@@ -572,8 +572,8 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		//underworldHeight.SetValue(null, Main.maxTilesY - 200);
 		RoguelikeBiomeHandle_ModPlayer modplayer = self.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
 		Point toTile = self.Center.ToTileCoordinates();
-		Main.worldSurface = (toTile.Y - Main.screenHeight);
-		Main.rockLayer = (toTile.Y - Main.screenHeight);
+		Main.worldSurface = 0;
+		Main.rockLayer = 0;
 		if (modplayer.CurrentBiome.Contains(Bid.Forest)) {
 			self.ZonePurity = true;
 			self.ZoneOverworldHeight = true;
@@ -622,7 +622,9 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 }
 internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		base.EditSpawnPool(pool, spawnInfo);
+		if (ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+			pool.Clear();
+		}
 	}
 	public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
 		base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);

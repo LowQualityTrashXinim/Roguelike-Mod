@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -52,6 +53,15 @@ public class Roguelike_CopperBow_ModPlayer : ModPlayer {
 		}
 		if (++CopperBow_Counter > 150) {
 			CopperBow_Counter = 150;
+		}
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.Check_ItemTypeSource(ItemID.CopperBow) && proj.type != ProjectileID.Electrosphere) {
+			if (Main.rand.NextFloat() <= .15f) {
+				int min = Math.Max(proj.damage / 4, 1);
+				Projectile projectile = Projectile.NewProjectileDirect(proj.GetSource_FromAI(), proj.Center, Vector2.Zero, ProjectileID.Electrosphere, min, proj.knockBack, proj.owner);
+				projectile.timeLeft = 30;
+			}
 		}
 	}
 }

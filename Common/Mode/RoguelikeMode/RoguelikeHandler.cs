@@ -39,8 +39,7 @@ internal class RoguelikeHandler : ModSystem {
 			}
 		}
 	}
-	public override void PreUpdateNPCs() {
-		return;
+	private void CursedKingdomSpawn() {
 		if (!SubworldSystem.IsActive<CursedKingdomSubworld>()) {
 			return;
 		}
@@ -56,7 +55,7 @@ internal class RoguelikeHandler : ModSystem {
 		}
 		if (counter < MaxNPCcanBeOnScreen) {
 			if (++CD >= SpawnCD) {
-				Point spawnPos = Main.LocalPlayer.position.ToPoint() + new Point(Main.rand.Next(-1000, 1000), Main.rand.Next(-500, 500));
+				Point spawnPos;
 				int failsafeCheck = 0;
 				do {
 					failsafeCheck++;
@@ -65,10 +64,14 @@ internal class RoguelikeHandler : ModSystem {
 				if (failsafeCheck >= FailSafe) {
 					return;
 				}
-				CD = Main.rand.Next(420, 540);
+				CD = Main.rand.Next(120, 240);
 				spawnPos = spawnPos.ToWorldCoordinates().ToPoint();
 				NPC.NewNPC(Entity.GetSource_NaturalSpawn(), spawnPos.X, spawnPos.Y - 1, NPCID.SkeletonArcher);
+				NPC.NewNPC(Entity.GetSource_NaturalSpawn(), spawnPos.X, spawnPos.Y - 1, NPCID.ArmoredSkeleton);
 			}
 		}
+	}
+	public override void PreUpdateNPCs() {
+		CursedKingdomSpawn();
 	}
 }

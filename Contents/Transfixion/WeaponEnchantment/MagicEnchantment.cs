@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Roguelike.Contents.Projectiles;
- 
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -428,9 +427,6 @@ public class Vilethorn : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Vilethorn;
 	}
-	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
-		multi -= .05f;
-	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 		if (player.ItemAnimationActive && player.ItemAnimationJustStarted) {
@@ -466,6 +462,12 @@ public class CrimsonRod : ModEnchantment {
 		ItemIDType = ItemID.CrimsonRod;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (globalItem.Item_Counter2[index] > 0) {
+			for (int i = 0; i < 5; i++) {
+				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.Add(Main.rand.NextFloat(-500, 500), 1000), Vector2.UnitY * Main.rand.NextFloat(4, 12), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
+			}
+		}
+		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] <= 0) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld.Add(Main.rand.NextFloat(-30, 30), 500), Vector2.UnitY * Main.rand.NextFloat(4, 12), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
@@ -474,6 +476,11 @@ public class CrimsonRod : ModEnchantment {
 	}
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		multi -= .08f;
+	}
+	public override void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) {
+		if (globalItem.Item_Counter2[index] <= 0) {
+			globalItem.Item_Counter2[index] = ModUtils.ToSecond(3);
+		}
 	}
 }
 public class MagicMissile : ModEnchantment {

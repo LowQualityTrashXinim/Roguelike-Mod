@@ -10,6 +10,7 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class Musket : ModEnchantment {
@@ -115,6 +116,9 @@ public class Minishark : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 		if (player.ItemAnimationActive) {
+			if (player.itemAnimation == player.itemAnimationMax && item.useAmmo == AmmoID.Bullet && Main.rand.NextFloat() <= .01f) {
+				player.AddBuff<Freezy>(ModUtils.ToSecond(5));
+			}
 			if (globalItem.Item_Counter1[index] <= 0) {
 				int type = ProjectileID.Bullet;
 				if (player.PickAmmo(item, out int proj, out float speed, out int damage, out float knockback, out int ammoID)) {
@@ -130,9 +134,6 @@ public class Minishark : ModEnchantment {
 				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 8);
 			}
 		}
-	}
-	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
-		useSpeed += .05f;
 	}
 }
 public class TheUndertaker : ModEnchantment {
@@ -244,11 +245,6 @@ public class DemonBow : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.FullHPDamage, Additive: 2.5f);
 	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (player.ZoneCorrupt) {
-			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<CorruptionTrail>(), damage, knockback, player.whoAmI);
-		}
-	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.type == ProjectileID.UnholyArrow && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type && Main.rand.NextFloat() <= .15f) {
 			target.AddBuff(BuffID.ShadowFlame, ModUtils.ToSecond(4));
@@ -275,7 +271,6 @@ public class TendonBow : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 		globalItem.Item_Counter3[index] = ModUtils.CountDown(globalItem.Item_Counter3[index]);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.FullHPDamage, Additive: 2.5f);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.minion) {
@@ -301,6 +296,11 @@ public class SnowballCannon : ModEnchantment {
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(3), ProjectileID.SnowBallFriendly, (int)(damage * .55f), knockback, player.whoAmI);
 	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.SnowBallFriendly && proj.Check_ItemTypeSource(player.HeldItem.type) && Main.rand.NextBool()) {
+			target.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(3));
+		}
+	}
 }
 public class Blowpipe : ModEnchantment {
 	public override void SetDefaults() {
@@ -317,6 +317,11 @@ public class Blowpipe : ModEnchantment {
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(4));
 		Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(3), ProjectileID.Seed, (int)(damage * .35f), knockback, player.whoAmI);
+		if (++globalItem.Item_Counter2[index] >= 5) {
+			globalItem.Item_Counter2[index] = 0;
+			Projectile proj = Projectile.NewProjectileDirect(source, position, velocity.Vector2RotateByRandom(3), ProjectileID.Seed, damage, knockback, player.whoAmI);
+			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().SetCrit++;
+		}
 	}
 }
 public class PainterPaintballGun : ModEnchantment {
@@ -399,15 +404,12 @@ public class MoltenFury : ModEnchantment {
 			int proj = Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(40, 40), velocity, ProjectileID.FireArrow, damage, knockback, player.whoAmI);
 			Main.projectile[proj].extraUpdates += 1;
 		}
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(3));
 	}
 }
 public class BeeKnees : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BeesKnees;
-	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RangeDMG, 1.12f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Base: 3);
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (type == ProjectileID.WoodenArrowFriendly) {

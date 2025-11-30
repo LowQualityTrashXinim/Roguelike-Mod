@@ -136,13 +136,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
 		}
-		if (Source_ItemType == ItemID.CopperBow && projectile.type != ProjectileID.Electrosphere) {
-			if (Main.rand.NextFloat() <= .15f) {
-				int min = Math.Max(projectile.damage / 4, 1);
-				Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ProjectileID.Electrosphere, min, projectile.knockBack, projectile.owner);
-				proj.timeLeft = 30;
-			}
-		}
 	}
 	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 		if (projectile.type == ProjectileID.StarCannonStar

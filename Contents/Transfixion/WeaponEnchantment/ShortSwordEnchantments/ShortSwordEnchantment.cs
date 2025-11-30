@@ -261,15 +261,17 @@ public class SilverShortSword : ModEnchantment {
 		player.GetModPlayer<PlayerStatsHandle>().UpdateFullHPDamage += .4f;
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (target.CheckFirstStrike()) {
+		if (target.CheckFirstStrike(player)) {
 			var vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
+			int damage = (int)(player.GetWeaponDamage(item) * 6.5f) + 10;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (target.CheckFirstStrike()) {
+		if (target.CheckFirstStrike(player)) {
 			var vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
+			int damage = (int)(player.GetWeaponDamage(player.HeldItem) * 6.5f) + 10;
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
 		}
 	}
 }

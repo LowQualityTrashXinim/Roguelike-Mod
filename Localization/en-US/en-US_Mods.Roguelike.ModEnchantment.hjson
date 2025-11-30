@@ -34,7 +34,8 @@ Minishark.Description:
 	'''
 	During item animation, weapon will shoot bullet toward cursor position
 	+ If player in their inventory have ammo then it will use that ammo ( CD : 8 frame )
-	Increases attack speed by 5%
+	If weapon use ammo type : Bullet
+	Have 1% chance to gain Freezy buff
 	'''
 TheUndertaker.Description:
 	'''
@@ -145,7 +146,7 @@ PlatinumBroadsword.Description:
 CactusSword.Description:
 	'''
 	Hitting a enemy on critical strike with a sword will shoot out a friendly rolling cactus ( CD : 3s )
-	+ Rolling cactus deal equal to 300% weapon damage 
+	+ Rolling cactus deal equal to 300% weapon damage + 100 base damage
 	'''
 EnchantedSword.Description:
 	'''
@@ -202,7 +203,6 @@ LightsBane.Description:
 	'''
 BladeOfGrass.Description:
 	'''
-	Increases damage by 1.2x when in jungle
 	Have 50% chance to either :
 	+ Shoot a leaf like Blade of Grass
 	+ Shoot a leaf toward cursor
@@ -211,7 +211,7 @@ BladeOfGrass.Description:
 Volcano.Description:
 	'''
 	Inflict On Fire onto target for 2s
-	Hitting a enemy with a projectile will crete a explosion 55% weapon damage ( CD : 4s)
+	Hitting a enemy with a projectile will create a explosion 55% weapon damage ( CD : 4s)
 	Hitting a enemy with a sword will create a explosion dealing 55% weapon damage( CD : 1s)
 	'''
 NightsEdge.Description:
@@ -246,7 +246,7 @@ LeadShortSword.Description:
 SilverShortSword.Description:
 	'''
 	Increases first strike damage by 40%
-	On first strike, throw out a silver shortsword toward that NPC
+	On first strike, throw out a silver shortsword deal 650% weapon damage
 	'''
 TungstenShortSword.Description:
 	'''
@@ -311,13 +311,13 @@ PalmWoodBow.Description:
 	'''
 CopperBow.Description:
 	'''
-	Increases damage by 1
 	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	Arrow shot from this weapon have 10% to inflict electrified for 1 to 4s
 	'''
 TinBow.Description:
 	'''
-	Increases damage by 1
 	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	Sometime wooden arrow is replaced with tin bar which deal 200% damage
 	'''
 IronBow.Description:
 	'''
@@ -352,7 +352,6 @@ PlatinumBow.Description:
 DemonBow.Description:
 	'''
 	Bow that are using wooden arrow will convert wooden arrow to unholy arrow
-	While player are in corruption, shoot out Corruption Trail
 	Unholy arrow that is shot from this weapon have 15% to inflict shadow flame for 4s
 	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
@@ -361,12 +360,10 @@ TendonBow.Description:
 	When shoot, consumes 5 hps to increases damage by 35% 
 	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( CD : 1s )
 	Hitting any enemy 4 times will heal player for 1 hp ( Note : projectile that is a minion is not accepted )
-	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
 BeeKnees.Description:
 	'''
 	Convert wooden arrow to bee arrow
-	Increases range damage by 12% and crit chance by 3%
 	Hitting enemy with projectile will poisoned the enemy
 	Have 1 in 3 chance to spawn bee when hitting enemy
 	Hive pack will strengthen the above effect
@@ -375,17 +372,18 @@ MoltenFury.Description:
 	'''
 	Increases range damage by 15%
 	Wooden arrow will be converted into Fire arrow
-	Weapon will shoot 2 additional fire arrow
+	Weapon will shoot 2 additional fire arrow (CD: 3s)
 	'''
 SnowballCannon.Description:
 	'''
-	Increases weapon attack speed by 5%
 	Shoot a additional snowball that deal 55% of original damage
+	Snowball shoot from this weapon have 50% chance to inflict frost burn for 3s
 	'''
 Blowpipe.Description:
 	'''
 	Increases critical strike chance by 15% for your next shot ( CD : 4s )
 	Shoot a additional seed that deal 35% of original damage
+	Every 10th shot, shoot out always critical strike seed deal 100% weapon damage
 	'''
 PainterPaintballGun.Description: shot will be accompany with a arch of 3 paint ball that deal 45% of original damage ( CD : 1s )
 AmethystStaff.Description:
@@ -493,7 +491,6 @@ BeeGun.Description:
 	'''
 Vilethorn.Description:
 	'''
-	Reduce mana cost by 5%
 	Create vilethorn from the enemy on strike ( CD : 1s )
 	Every 5th attack, summon a circle of vilethorn
 	'''
@@ -501,6 +498,7 @@ CrimsonRod.Description:
 	'''
 	Reduce mana cost by 8%
 	Create blood rain that rain down above cursor ( CD : 0.12s )
+	When missing mana, rain down blood rain for 3s
 	'''
 MagicMissile.Description:
 	'''
