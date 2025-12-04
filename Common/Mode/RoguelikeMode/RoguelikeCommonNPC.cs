@@ -2,6 +2,7 @@
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -53,6 +54,12 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 			npc.life = npc.lifeMax;
 			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
 			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
+		}
+	}
+	public override void ResetEffects(NPC npc) {
+		Player player = Main.player[npc.target];
+		if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
+			npc.timeLeft = 600;
 		}
 	}
 	public float GetValueMulti(float scale = 1) {

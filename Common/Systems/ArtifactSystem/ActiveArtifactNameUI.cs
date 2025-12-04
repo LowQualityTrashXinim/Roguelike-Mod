@@ -1,5 +1,4 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Roguelike.Common.Systems;
@@ -14,7 +13,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using UtfUnknown.Core.Models.SingleByte.German;
 
 namespace Roguelike.Common.Systems.ArtifactSystem
 {

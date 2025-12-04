@@ -23,12 +23,8 @@ public class TomahawkProjectile : ModProjectile {
 		if (Projectile.timeLeft == 999) {
 			intialvelocity = Projectile.velocity.Length();
 		}
-		if (++Projectile.localAI[2] >= 30) {
-			Projectile.tileCollide = true;
-			Projectile.localAI[2] = -999;
-		}
 		Player player = Main.player[Projectile.owner];
-		if (++Projectile.ai[0] >= ModUtils.ToSecond(6) || !player.ItemAnimationActive && (Main.mouseRight && Projectile.owner == Main.myPlayer)) {
+		if (++Projectile.ai[0] >= ModUtils.ToSecond(5) || !player.ItemAnimationActive && (Main.mouseRight && Projectile.owner == Main.myPlayer)) {
 			Projectile.ai[1] = 1;
 		}
 		if (Projectile.ai[1] == 1) {
@@ -40,7 +36,6 @@ public class TomahawkProjectile : ModProjectile {
 		}
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0] * Projectile.direction * 10);
-		Projectile.velocity *= .97f;
 	}
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.ai[1] = 1;

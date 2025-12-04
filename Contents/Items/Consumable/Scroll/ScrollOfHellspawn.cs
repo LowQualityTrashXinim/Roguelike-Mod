@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
@@ -53,7 +52,6 @@ public class HellSpawnObject : ModObject {
 				dust.scale += 1;
 			}
 			int NPCToSpawn = Main.rand.Next([NPCID.FireImp, NPCID.Lavabat, NPCID.LavaSlime, NPCID.Demon]);
-			MutationSystem.AddMutation(ModMutation.GetMutationType<Elite>());
 			NPC.NewNPC(GetSource_NaturalSpawn(), (int)Center.X, (int)Center.Y, NPCToSpawn);
 		}
 	}

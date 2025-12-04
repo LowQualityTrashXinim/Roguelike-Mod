@@ -123,6 +123,18 @@ WoodenSword:
 	Every 3rd swing, you instead swing out 6 ghost version of itself
 	Every 5th swing, rain down wooden sword at cursor position
 	'''
+WarAxeoftheNight:
+	'''
+	"Night full of scream and blood"
+	Hitting enemy have 50% to inflict [c/6f00ab:Night Infection] debuff
+	While enemy have the debuff, hitting enemy again will create shadow flame around them
+	and deal 50% more damage and ignore 30 defenses on that strikes
+	'''
+BloodLustCluster:
+	'''
+	Inflict excessive bleeding
+	May spawn additional sentient blood during swing
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

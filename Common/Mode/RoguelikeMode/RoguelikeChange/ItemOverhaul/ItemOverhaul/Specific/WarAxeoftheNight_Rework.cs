@@ -1,12 +1,11 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Roguelike.Texture;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-
-using Roguelike.Texture;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 internal class Roguelike_WarAxeoftheNight : GlobalItem {
@@ -14,12 +13,15 @@ internal class Roguelike_WarAxeoftheNight : GlobalItem {
 		return entity.type == ItemID.WarAxeoftheNight;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.scale += .25f;
+		entity.scale += .45f;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.WarAxeoftheNight) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, item.type + "_Rework",
-				"\"Night full of scream and blood\""));
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
+	}
+	public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff<NightInfection>()) {
+			modifiers.SourceDamage += .5f;
+			modifiers.ArmorPenetration += 30;
 		}
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -27,16 +29,13 @@ internal class Roguelike_WarAxeoftheNight : GlobalItem {
 			target.DelBuff(target.FindBuffIndex(ModContent.BuffType<NightInfection>()));
 			var vec = Vector2.UnitX;
 			for (int i = 0; i < 3; i++) {
-				var vec2 = vec.Vector2DistributeEvenly(3, 360, i);
+				var vec2 = vec.Vector2DistributeEvenly(3, 360, i) * 3;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center, vec2, ProjectileID.ShadowFlame, item.damage, 3f, player.whoAmI, Main.rand.NextFloat(-.05f, .05f), Main.rand.NextFloat(-.1f, .1f));
 			}
 		}
-		if (Main.rand.NextBool(10)) {
+		if (Main.rand.NextBool()) {
 			target.AddBuff<NightInfection>(ModUtils.ToSecond(10));
 		}
-	}
-	public override void MeleeEffects(Item item, Player player, Rectangle hitbox) {
-		base.MeleeEffects(item, player, hitbox);
 	}
 }
 public class NightInfection : ModBuff {

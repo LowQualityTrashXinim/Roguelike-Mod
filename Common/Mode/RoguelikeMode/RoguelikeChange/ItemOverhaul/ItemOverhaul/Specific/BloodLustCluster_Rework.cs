@@ -16,12 +16,15 @@ internal class Roguelike_BloodLustCluster : GlobalItem {
 		entity.scale += .25f;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		ModUtils.AddTooltip(ref tooltips, new(Mod, item.type + "_Rework", "Inflict extreme bleeding\nMay spawn additional sentient blood"));
+		ModUtils.AddTooltip(ref tooltips, new(Mod, item.type + "_Rework", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff<BloodButchererEnchantmentDebuff>(ModUtils.ToSecond(Main.rand.Next(3, 7)));
 	}
 	public override void MeleeEffects(Item item, Player player, Rectangle hitbox) {
+		if (player.altFunctionUse == 2) {
+			return;
+		}
 		if (player.itemAnimation == player.itemAnimationMax / 2 || player.itemAnimation == player.itemAnimationMax / 3 * 2 || player.itemAnimation == player.itemAnimationMax / 3) {
 			if (!Main.rand.NextBool(5)) {
 				return;

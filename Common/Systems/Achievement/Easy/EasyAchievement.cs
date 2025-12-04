@@ -105,14 +105,6 @@ public class HeartOfEarth : RoguelikeAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class GamblerSoul : RoguelikeAchievement {
-	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Easy;
-	}
-	public override bool Condition() {
-		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>() && UniversalSystem.NotNormalMode();
-	}
-}
 public class ManaOverloader : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;

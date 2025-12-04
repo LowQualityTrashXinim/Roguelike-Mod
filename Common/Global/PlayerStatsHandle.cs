@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
@@ -366,9 +365,6 @@ public class PlayerStatsHandle : ModPlayer {
 			Get_DidPlayerDodge = false;
 		}
 		Player.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
-		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
-			Debuff_LifeStruct = 0;
-		}
 		CurrentMinionAmount = 0;
 		for (int i = 0; i < Main.projectile.Length; i++) {
 			if (Main.projectile[i].minion && Main.projectile[i].active) {

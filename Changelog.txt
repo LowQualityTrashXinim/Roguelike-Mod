@@ -382,3 +382,9 @@ Version 0.0.1:
 380/ Changed some enchantments effect.
 381/ Experiment with custom skeletron archer ai.
 382/ Small fix toward first strike check not compatible with perk.
+383/ Some minor polishing on weapon rework.
+384/ Removed Element, Mutation system.
+385/ Replaced Skill "All or Nothing" with "Dice Roll"
+386/ Deleted Soul Bind system, Guardian Angel and Outer God : The Nihilism are merged and converted into artifact.
+387/ Deleted Gambler's Soul due to unable to balance the artifact to be fun to play.
+388/ Deleted Small Lootbox artifact, Stella Card Deck because it doesn't fit the design of the mod.

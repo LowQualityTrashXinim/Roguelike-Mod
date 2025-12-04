@@ -3,7 +3,9 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,12 +49,53 @@ public class Roguelike_CopperBow : GlobalItem {
 }
 public class Roguelike_CopperBow_ModPlayer : ModPlayer {
 	public int CopperBow_Counter = 0;
+	public bool PeakShot = false;
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
 		}
 		if (++CopperBow_Counter > 150) {
 			CopperBow_Counter = 150;
+		}
+		else {
+			PeakShot = false;
+		}
+		if (Player.HeldItem.type != ItemID.CopperBow) {
+			return;
+		}
+		if (CopperBow_Counter == 90) {
+			for (int i = 0; i < 60; i++) {
+				Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Electric);
+				dust.noGravity = true;
+				dust.velocity = -Vector2.UnitY.Vector2RotateByRandom(10) * Main.rand.NextFloat(1, 10);
+				dust.scale += Main.rand.NextFloat(.5f);
+			}
+		}
+		if (!PeakShot && CopperBow_Counter == 150) {
+			SoundEngine.PlaySound(SoundID.Thunder);
+			PeakEffect();
+			PeakShot = true;
+		}
+	}
+	private void PeakEffect() {
+		Vector2[] lightningPreSetPath = new Vector2[10];
+		Vector2 velocity = -Vector2.UnitY * 10;
+		Vector2 path = Player.Center;
+		for (int i = 0; i < lightningPreSetPath.Length; i++) {
+			lightningPreSetPath[i] = path;
+			velocity = velocity.Vector2RotateByRandom(Main.rand.NextFloat(60, 80) * Main.rand.NextBool().ToDirectionInt());
+			if (velocity.Y >= 0) {
+				velocity.Y -= 10f;
+			}
+			path = path.PositionOFFSET(velocity, Main.rand.NextFloat(75, 150));
+			float length = Vector2.Distance(lightningPreSetPath[i], path);
+			for (int l = 0; l < 50; l++) {
+				int dust = Dust.NewDust(lightningPreSetPath[i].PositionOFFSET(velocity, Main.rand.NextFloat(length)), 0, 0, DustID.Electric);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
+				Main.dust[dust].fadeIn = .1f;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(1, 1);
+			}
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {

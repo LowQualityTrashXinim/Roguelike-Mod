@@ -160,6 +160,7 @@ public static partial class ModUtils {
 			return;
 		}
 		var modplayer = player.ModPlayerStats();
+		modplayer.GetAmount();
 		int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 		item.GetWeapon(player.GetSource_OpenItem(lootbox.type), player, weaponAmount);
 	}

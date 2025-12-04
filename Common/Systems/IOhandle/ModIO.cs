@@ -1,13 +1,16 @@
-﻿using System;
-using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems.Achievement;
+using Roguelike.Contents.Items.Weapon;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using System.Collections.Generic;
-using Roguelike.Contents.Items.Weapon;
-using Roguelike.Common.Systems.Achievement;
 
 namespace Roguelike.Common.Systems.IOhandle;
 public static class RoguelikeData {
@@ -31,7 +34,41 @@ class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RoguelikeMode_Data");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
+	private static string GetThisFilePath([CallerFilePath] string path = null) {
+		return path;
+	}
 	public override void Load() {
+		//string projectPath2 = GetThisFilePath();
+		//string[] strArr = projectPath2.Split("\\");
+		//string truePath = "";
+		//foreach (var item in strArr) {
+		//	if (item == "Roguelike") {
+		//		int index = Array.IndexOf(strArr, item);
+		//		if (index == -1) {
+		//			break;
+		//		}
+		//		for (int i = 0; i <= index; i++) {
+		//			truePath += strArr[i] + "\\";
+		//		}
+		//		break;
+		//	}
+		//}
+		//string[] filesPath = Directory.GetFiles(truePath);
+		//foreach (string path in filesPath) {
+		//	try {
+		//		Assembly asm = Assembly.LoadFrom(path);
+		//		if (asm == null) {
+		//			continue;
+		//		}
+		//		Type[] types = asm.GetTypes().Where(a => !a.IsAbstract).ToArray();
+		//		if (types == null) {
+		//			continue;
+		//		}
+		//	}
+		//	catch {
+		//		continue;
+		//	}
+		//}
 		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(RoguelikeAchievement)))) {
 			var achievement = (RoguelikeAchievement)Activator.CreateInstance(type);
 			AchievementSystem.Achievements.Add(achievement);

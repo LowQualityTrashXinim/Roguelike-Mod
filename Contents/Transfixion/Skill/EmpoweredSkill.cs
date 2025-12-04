@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Systems.Mutation;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
@@ -170,7 +169,7 @@ public class ProtectiveOnslaught : ModSkill {
 		Skill_Duration = 10;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration,  int energy) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		player.AddBuff(ModContent.BuffType<ProtectiveOnslaught_Buff>(), ModUtils.ToSecond(10));
 	}
 	class ProtectiveOnslaught_ModPlayer : ModPlayer {
@@ -230,40 +229,6 @@ public class ProtectiveOnslaught : ModSkill {
 		}
 	}
 }
-public class AllOrNothing : ModSkill {
-	public override string Texture => ModUtils.GetTheSameTextureAsEntity<AllOrNothing>();
-	public override void SetDefault() {
-		Skill_EnergyRequirePercentage = 1;
-		Skill_Duration = 1;
-		Skill_CanBeSelect = false;
-		Skill_Type = SkillTypeID.Skill_Empowered;
-	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
-		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), ModUtils.ToSecond(5));
-	}
-	public class AllOrNothingBuff : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultDeBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			if (player.buffTime[buffIndex] <= 0) {
-				player.Center.LookForHostileNPC(out var npclist, 1000);
-				foreach (var npc in npclist) {
-					int direction = player.Center.X > npc.Center.X ? 1 : -1;
-					int originDmg = (int)(npc.lifeMax * .1f);
-					int dmg = originDmg;
-					for (int i = 2; i < 17; i++) {
-						if (Main.rand.NextBool(i)) {
-							dmg += (int)(originDmg * Main.rand.NextFloat(.85f, 1.15f));
-						}
-					}
-					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
-				}
-			}
-		}
-	}
-}
 public class CoinFlip : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<CoinFlip>();
 	public override void SetDefault() {
@@ -304,6 +269,7 @@ public class CoinFlip : ModSkill {
 	}
 }
 public class DiceRoll : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<DiceRoll>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 600;
@@ -340,7 +306,6 @@ public class DiceRoll : ModSkill {
 			case 4:
 				Main.NewText("World smile with malice");
 				for (int i = 0; i < 10; i++) {
-					MutationSystem.AddMutation(ModMutation.GetMutationType<Tanky>());
 					var npc = NPC.NewNPCDirect(player.GetSource_FromThis("Skill"), player.Center + Vector2.One.Vector2DistributeEvenlyPlus(10, 360, i) * 600, NPCID.Ghost);
 					npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
 				}

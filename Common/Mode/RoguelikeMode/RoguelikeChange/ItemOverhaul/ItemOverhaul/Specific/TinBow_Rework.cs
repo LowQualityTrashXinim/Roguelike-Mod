@@ -56,12 +56,71 @@ public class Roguelike_TinBow : GlobalItem {
 }
 public class Roguelike_TinBow_ModPlayer : ModPlayer {
 	public int Counter = 0;
+	public bool PeakShot = false;
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
 		}
 		if (++Counter >= 240) {
 			Counter = 240;
+		}
+		else {
+			PeakShot = false;
+		}
+		if (Player.HeldItem.type == ItemID.TinBow) {
+			if (Counter == 120) {
+				SemiPeakShotEffect();
+			}
+			if (Counter == 240 && !PeakShot) {
+				PeakShot = true;
+				PeakShotEffect();
+			}
+		}
+	}
+	private void SemiPeakShotEffect() {
+		for (int i = 0; i < 120; i++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(1, 5);
+			dust.color = Color.White with { A = 0 };
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
+		}
+		for (int j = 0; j < 120; j++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(5, 1);
+			dust.color = Color.White with { A = 0 };
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
+		}
+	}
+	private void PeakShotEffect() {
+		for (int i = 0; i < 120; i++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(1.6f, 8).RotatedBy(MathHelper.PiOver4);
+			dust.color = Color.Black;
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
+		}
+		for (int j = 0; j < 120; j++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(8, 1.6f).RotatedBy(MathHelper.PiOver4);
+			dust.color = Color.Black;
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
+		}
+		for (int i = 0; i < 120; i++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(2, 10);
+			dust.color = Color.White with { A = 0 };
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
+		}
+		for (int j = 0; j < 120; j++) {
+			Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(10, 2);
+			dust.color = Color.White with { A = 0 };
+			dust.scale += Main.rand.NextFloat(.1f, .2f);
 		}
 	}
 }

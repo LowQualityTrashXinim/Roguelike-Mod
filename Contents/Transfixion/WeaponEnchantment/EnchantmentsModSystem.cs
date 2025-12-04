@@ -6,7 +6,6 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.SoulBound;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
@@ -388,7 +387,6 @@ public class DivineHammerUIState : UIState {
 	UIPanel BodyPanel;
 	Roguelike_UIImage enchantment;
 	Roguelike_UIImage augmentation;
-	Roguelike_UIImage soulBind;
 	public WeaponEnchantmentUIslot weaponEnchantmentUIslot;
 	ExitUI exit;
 
@@ -396,11 +394,6 @@ public class DivineHammerUIState : UIState {
 	public ItemHolderSlot AccSacrificeAugmentSlot;
 	public ConfirmButton confirmButton;
 	public ItemHolderSlot AccAugmentResult;
-
-	public ItemHolderSlot armorholderSlot;
-	public ItemHolderSlot soulBindUIslot;
-	public ConfirmButton SoulBindconfirmButton;
-	public ItemHolderSlot armorResultBindUIslot;
 
 	public EnchantmentUIslot slot1, slot2, slot3;
 	Asset<Texture2D> tex = TextureAssets.InventoryBack;
@@ -759,97 +752,6 @@ public class DivineHammerUIState : UIState {
 		AugmentationSelection_Head.Hide = false;
 		AugmentationSelection_Body.Hide = false;
 	}
-	public void SoulBindInit() {
-		soulBind = new(tex);
-		soulBind.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<DivineHammerUIState>("SoulBound")), true);
-		soulBind.UISetWidthHeight(52, 52);
-		soulBind.OnLeftClick += Universal_OnLeftClick;
-		soulBind.MarginLeft = augmentation.Width.Pixels + enchantment.Width.Pixels + 20;
-		soulBind.HighlightColor = soulBind.Color.ScaleRGB(0.5f);
-		HeaderPanel.Append(soulBind);
-
-		armorholderSlot = new(tex);
-		armorholderSlot.HAlign = 0;
-		armorholderSlot.Hide = true;
-		armorholderSlot.OnLeftClick += ArmorholderSlot_OnLeftClick;
-		armorholderSlot.VAlign = .5f;
-		BodyPanel.Append(armorholderSlot);
-
-		soulBindUIslot = new(tex);
-		soulBindUIslot.HAlign = .33f;
-		soulBindUIslot.Hide = true;
-		soulBindUIslot.OnLeftClick += ArmorholderSlot_OnLeftClick;
-		soulBindUIslot.VAlign = .5f;
-		BodyPanel.Append(soulBindUIslot);
-
-		SoulBindconfirmButton = new(tex);
-		SoulBindconfirmButton.HAlign = .66f;
-		SoulBindconfirmButton.Hide = true;
-		SoulBindconfirmButton.OnLeftClick += SoulBindconfirmButton_OnLeftClick;
-		SoulBindconfirmButton.VAlign = .5f;
-		SoulBindconfirmButton.SetVisibility(.7f, 1f);
-		BodyPanel.Append(SoulBindconfirmButton);
-
-		armorResultBindUIslot = new(tex);
-		armorResultBindUIslot.HAlign = 1;
-		armorResultBindUIslot.Hide = true;
-		armorResultBindUIslot.OnLeftClick += ArmorholderSlot_OnLeftClick;
-		armorResultBindUIslot.VAlign = .5f;
-		BodyPanel.Append(armorResultBindUIslot);
-	}
-	private void SoulBindconfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (armorholderSlot.item == null || armorholderSlot.item.type == ItemID.None) {
-			return;
-		}
-		if (soulBindUIslot.item == null || soulBindUIslot.item.type == ItemID.None) {
-			return;
-		}
-		if (armorResultBindUIslot.item != null && armorResultBindUIslot.item.type != ItemID.None) {
-			return;
-		}
-		if (soulBindUIslot.item.ModItem is BaseSoulBoundItem moditem) {
-			if (SoulBoundGlobalItem.AddSoulBound(ref armorholderSlot.item, moditem.SoulBoundType)) {
-				soulBindUIslot.item.TurnToAir();
-				armorResultBindUIslot.item = armorholderSlot.item.Clone();
-				armorholderSlot.item.TurnToAir();
-			}
-		}
-	}
-	private void ArmorholderSlot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		Player player = Main.LocalPlayer;
-		if (listeningElement.UniqueId == armorholderSlot.UniqueId) {
-			Item item = Main.mouseItem;
-			if (!item.IsThisArmorPiece() && item.type != ItemID.None) {
-				return;
-			}
-			ModUtils.SimpleItemMouseExchange(player, ref armorholderSlot.item);
-		}
-		else if (listeningElement.UniqueId == soulBindUIslot.UniqueId) {
-			Item item = Main.mouseItem;
-			if ((item.ModItem == null || item.ModItem is not BaseSoulBoundItem) && item.type != ItemID.None) {
-				return;
-			}
-			ModUtils.SimpleItemMouseExchange(Main.LocalPlayer, ref soulBindUIslot.item);
-		}
-		else if (listeningElement.UniqueId == armorResultBindUIslot.UniqueId) {
-			Item item = Main.mouseItem;
-			if (item.type != ItemID.None) {
-				return;
-			}
-			if (armorResultBindUIslot.item.type == ItemID.None) {
-				return;
-			}
-			Main.mouseItem = armorResultBindUIslot.item.Clone();
-			player.inventory[58] = armorResultBindUIslot.item.Clone();
-			armorResultBindUIslot.item.TurnToAir();
-		}
-	}
-	public void Visual_SoulBound(bool hide) {
-		armorholderSlot.Hide = hide;
-		soulBindUIslot.Hide = hide;
-		SoulBindconfirmButton.Hide = hide;
-		armorResultBindUIslot.Hide = hide;
-	}
 	public override void OnInitialize() {
 		GeneralInit();
 
@@ -857,15 +759,12 @@ public class DivineHammerUIState : UIState {
 
 		AugmentationInit();
 
-		SoulBindInit();
 	}
 	private void Universal_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		enchantment.Highlight = false;
 		augmentation.Highlight = false;
-		soulBind.Highlight = false;
 		Visual_Augmentation(true);
 		Visual_Enchantment(true);
-		Visual_SoulBound(true);
 		if (listeningElement.UniqueId == enchantment.UniqueId) {
 			enchantment.Highlight = true;
 			Visual_Enchantment(false);
@@ -873,10 +772,6 @@ public class DivineHammerUIState : UIState {
 		else if (listeningElement.UniqueId == augmentation.UniqueId) {
 			augmentation.Highlight = true;
 			Visual_Augmentation(false);
-		}
-		else if (listeningElement.UniqueId == soulBind.UniqueId) {
-			soulBind.Highlight = true;
-			Visual_SoulBound(false);
 		}
 	}
 

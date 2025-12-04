@@ -40,6 +40,9 @@ public class Roguelike_CobaltSword : GlobalItem {
 					modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 					Swordprojectile.scale += .2f;
 				}
+				Swordprojectile.usesIDStaticNPCImmunity = false;
+				Swordprojectile.usesLocalNPCImmunity = true;
+				Swordprojectile.localNPCHitCooldown = 60;
 			}
 			return false;
 		}

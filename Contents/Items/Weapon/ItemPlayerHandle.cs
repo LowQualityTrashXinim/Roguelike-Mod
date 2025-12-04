@@ -259,6 +259,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
+			UpdateCriticalDamage = 0;
 			if (VariantType != -1) {
 				var variant = WorldVaultSystem.GetVariant(item.type, VariantType);
 				if (variant != null) {
@@ -276,6 +277,21 @@ namespace Roguelike.Contents.Items.Weapon {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public float CriticalDamage;
+		public float UpdateCriticalDamage;
+		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
+			if (ItemLevel <= 0) {
+				return;
+			}
+			damage += .02f * ItemLevel;
+			damage.Base += (int)(ItemLevel * .5f);
+		}
+		public override void ModifyWeaponCrit(Item item, Player player, ref float crit) {
+			if (ItemLevel <= 0) {
+				return;
+			}
+			crit += ItemLevel / 3;
+			UpdateCriticalDamage += .05f * (ItemLevel / 4);
+		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (UniversalSystem.EnchantingState) {
 				return;
