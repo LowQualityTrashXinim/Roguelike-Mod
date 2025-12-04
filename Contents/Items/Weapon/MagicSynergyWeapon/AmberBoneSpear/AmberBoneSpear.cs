@@ -5,14 +5,16 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Common.Utils;
+using Terraria.DataStructures;
 
 namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 	public class AmberBoneSpear : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
+			ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AntlionClaw, $"[i:{ItemID.AntlionClaw}] Your spear attack sometime will shoot out mandible blade, hitting enemies with your spear will spawn a mandible blade immediately");
 		}
 		public override void SetDefaults() {
-			Item.BossRushSetDefault(42, 42, 30, 5, 20, 20, ItemUseStyleID.Shoot, true);
+			Item.BossRushSetDefault(42, 42, 30, 5, 17, 17, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<AmberBoneSpearProjectile>(), 25);
 			Item.UseSound = SoundID.Item1;
 			Item.DamageType = DamageClass.Magic;
@@ -22,11 +24,29 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.AntlionClaw);
 		}
+		int Counter = 0;
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {
 				type = ModContent.ProjectileType<AmberBoneProjectile>();
 				velocity *= .5f;
 				damage = (int)(damage * .75f);
+			}
+		}
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+			CanShootItem = true;
+			if(player.altFunctionUse == 2) {
+				return;
+			}
+			if (++Counter >= 3) {
+				Counter = 0;
+				Vector2 vel = velocity.SafeNormalize(Vector2.Zero);
+				Vector2 pos = position.PositionOFFSET(vel, 30);
+				for (int i = 0; i < 3; i++) {
+					if (i == 1) {
+						continue;
+					}
+					Projectile.NewProjectile(source, pos, vel.Vector2DistributeEvenlyPlus(3, 30, i) * 10f, ProjectileID.AmberBolt, damage, knockback, player.whoAmI);
+				}
 			}
 		}
 		public override bool? UseItem(Player player) {
@@ -109,7 +129,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 				progress = Projectile.timeLeft / halfDuration;
 				Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(chooseRotation));
 				if (!boltFired) {
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 10f, ProjectileID.AmberBolt, Projectile.damage, 5);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 10f, ProjectileID.AmberBolt, Projectile.damage, 5, Projectile.owner);
 					boltFired = true;
 				}
 			}

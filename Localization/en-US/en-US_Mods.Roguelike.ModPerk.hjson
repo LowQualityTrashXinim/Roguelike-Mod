@@ -8,16 +8,14 @@ GiftOfRelic: {
 	Description: Grant you a relic
 }
 
-StrokeOfLuck: {
-	DisplayName: Stroke Of Luck
+LuckyStrike: {
+	DisplayName: Lucky Strike
 	Description:
 		'''
-		Everytime you receive loot, have 30% chance to increases loot drop by 1
 		Your attack have 20% chance to do the following
 		+ Your damage increases range from 15% to 100% when striking enemy
-		Taking hit have 20% chance to 
-		+ Reduce damage dealt onto you from 15% to 100%
-		+ Have 35% to dodge a attack
+		+ Multiply your damage by 2.0x
+		+ Healing you from 1 to 50 health
 		'''
 }
 
@@ -27,9 +25,7 @@ UncertainStrike: {
 		'''
 		Your strike have
 		+ 33% chance to vary your damage from -15% to 55%
-		+ 15% chance to ignore 20 defenses
-		+ 5% chance to multiply damage by 2.0x
-		+ 1% chance to heal player
+		+ 15% chance to ignore 20 defenses or reduce damage by 20
 		( note : all of this effect can happen all at once )
 		'''
 }

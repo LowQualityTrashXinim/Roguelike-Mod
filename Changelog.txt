@@ -388,3 +388,9 @@ Version 0.0.1:
 386/ Deleted Soul Bind system, Guardian Angel and Outer God : The Nihilism are merged and converted into artifact.
 387/ Deleted Gambler's Soul due to unable to balance the artifact to be fun to play.
 388/ Deleted Small Lootbox artifact, Stella Card Deck because it doesn't fit the design of the mod.
+389/ Slight buff all to synergy weapon and some change to certain synergy weapon which are these following:
+- Amber Bone Spear: Every 3rd attack will shoot out arch of 3 amber bolt
+- Bloody Stella: Blood Star circle are instead move behind a synergy bonus of enchanted sword
+- Starlight Distributer: Area dependance effects are removed and instead it is a count shot effect.
+- Natural Selection: The ghost bow now handler its own arrow shooting and shot 3 arrow in rapid succession instead of 1.
+390/ Changed perk Stroke of Luck to Lucky Strike and Uncertain strike effect

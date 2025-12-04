@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class DiamondSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
-			damage = 17;
+			damage = 20;
 			ProjectileType = ModContent.ProjectileType<DiamondSwotaffP>();
 			ShootType = ProjectileID.DiamondBolt;
 		}

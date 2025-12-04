@@ -1,18 +1,22 @@
 ﻿using Terraria;
 using Mono.Cecil;
 using Terraria.ID;
+using Roguelike.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Roguelike.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
-using Roguelike.Texture;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodyStella;
 
 internal class BloodyStella : SynergyModItem {
+	public override void Synergy_SetStaticDefaults() {
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword, $"[i:{ItemID.EnchantedSword}] Every 5th swing, you summon a circle of bloody star that inflict [c/ff003d:Infectious Stella]");
+	}
 	public override void SetDefaults() {
 		Item.BossRushSetDefault(52, 52, 37, 5f, 17, 17, ItemUseStyleID.Swing, false);
 		Item.DamageType = DamageClass.Melee;
@@ -27,15 +31,20 @@ internal class BloodyStella : SynergyModItem {
 		Item.Set_InfoItem();
 	}
 	int counter = 0;
+	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.EnchantedSword);
+	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		if (player.ownedProjectileCounts[type] < 1) {
 			Projectile.NewProjectileDirect(source, position, -Vector2.UnitY * 30, type, damage, knockback, player.whoAmI);
 		}
-		if (++counter >= 5) {
-			counter = 0;
-			for (int i = 0; i < 20; i++) {
-				var vel = velocity.Vector2DistributeEvenlyPlus(20, 360, i);
-				Projectile.NewProjectile(source, position.PositionOFFSET(vel, 70), vel, ModContent.ProjectileType<BloodStarProjectile>(), damage, knockback, player.whoAmI);
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedSword)) {
+			if (++counter >= 5) {
+				counter = 0;
+				for (int i = 0; i < 20; i++) {
+					var vel = velocity.Vector2DistributeEvenlyPlus(20, 360, i);
+					Projectile.NewProjectile(source, position.PositionOFFSET(vel, 70), vel, ModContent.ProjectileType<BloodStarProjectile>(), damage, knockback, player.whoAmI);
+				}
 			}
 		}
 		var pos = position.Add(Main.rand.NextFloat(-200, 200) + 1000 * player.direction, Main.rand.Next(300, 1000));

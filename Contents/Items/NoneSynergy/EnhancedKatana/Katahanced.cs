@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana {
+namespace Roguelike.Contents.Items.NoneSynergy.EnhancedKatana {
 	internal class Katahanced : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultMeleeShootCustomProjectile(50, 52, 43, 4, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<KatanaSlash>(), 3, true);
@@ -48,7 +48,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana {
 		public override void AI() {
 			SelectFrame();
 			Projectile.ai[1]++;
-			Player player = Main.player[Projectile.owner];
+			var player = Main.player[Projectile.owner];
 			player.heldProj = Projectile.whoAmI;
 			int duration = player.itemAnimationMax;
 			if (Projectile.timeLeft > duration) {

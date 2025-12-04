@@ -8,8 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
-{
+namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 	internal class NatureSelection : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>(),
@@ -34,9 +33,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
 					else Projectile.NewProjectile(source, RandomPos, Aimto, ProjectileID.StarCannonStar, damage, knockback, player.whoAmI);
 				}
 			}
-			Vector2 RotatePos = Main.rand.NextVector2Circular(75f, 75f) * 2 + position;
-			Vector2 AimPos = Main.MouseWorld - RotatePos;
-			Vector2 safeAim = AimPos.SafeNormalize(Vector2.UnitX) * Main.rand.Next(14, 21);
+			Vector2 RotatePos = Main.rand.NextVector2CircularEdge(150, 150) * Main.rand.NextFloat(.5f, 1f) + position;
 			int bowType = 0;
 			switch (counter) {
 				case 0:
@@ -58,8 +55,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
 					bowType = ModContent.ProjectileType<ShadewoodBowP>();
 					break;
 			}
-			Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-			Projectile.NewProjectile(source, RotatePos, Vector2.Zero, bowType, damage, knockback, player.whoAmI);
+			Projectile.NewProjectile(source, RotatePos, Vector2.Zero, bowType, damage, knockback, player.whoAmI, 0, 0, type);
 			counter++;
 			if (counter > 5) {
 				counter = 0;

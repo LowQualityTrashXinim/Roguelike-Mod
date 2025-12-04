@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
 	internal class AmethystSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
-			damage = 15;
+			damage = 20;
 			ProjectileType = ModContent.ProjectileType<AmethystSwotaffP>();
 			ShootType = ProjectileID.AmethystBolt;
 		}

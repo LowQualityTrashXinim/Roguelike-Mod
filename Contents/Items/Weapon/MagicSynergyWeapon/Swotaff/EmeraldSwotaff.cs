@@ -6,7 +6,7 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class EmeraldSwotaff : SwotaffGemItem {
 		public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
-			damage = 16;
+			damage = 20;
 			ProjectileType = ModContent.ProjectileType<EmeraldSwotaffP>();
 			ShootType = ProjectileID.EmeraldBolt;
 		}

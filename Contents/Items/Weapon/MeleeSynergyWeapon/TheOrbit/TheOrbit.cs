@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TheOrbit;
 internal class TheOrbit : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultMeleeCustomProjectile(32, 32, 21, 4f, 40, 40, ItemUseStyleID.Swing, ModContent.ProjectileType<TheOrbitProjectile>(), true);
+		Item.BossRushDefaultMeleeCustomProjectile(32, 32, 23, 4f, 38, 38, ItemUseStyleID.Swing, ModContent.ProjectileType<TheOrbitProjectile>(), true);
 		Item.noUseGraphic = true;
 		Item.shootSpeed = 16;
 		Item.UseSound = SoundID.Item1;

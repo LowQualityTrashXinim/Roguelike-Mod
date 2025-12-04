@@ -38,21 +38,6 @@ HeartOfEarthArtifact: {
 		'''
 }
 
-MagicalCardDeckArtifact: {
-	DisplayName: Stella card deck
-	Description:
-		'''
-		"The card shows the star and its meaning"
-		Banned for many reason
-		[c/ffff00:Positive effect] : 
-			+ Card packet can drop potentially more cards ( up to 3 )
-		[c/ab3e43:Negative effect] :
-			- Increase the chance to get faulty card
-		[c/9b9c76:Neutral effect] :
-			= Accelerate card luck stats
-		'''
-}
-
 SkillIssuedArtifact: {
 	DisplayName: Skill Issued
 	Description:

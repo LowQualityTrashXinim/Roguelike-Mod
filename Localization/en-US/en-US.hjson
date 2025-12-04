@@ -841,7 +841,6 @@ Mods: {
 					"The star is crying out blood"
 					Summon a mini version of itself that will strike down, when it hit a tile, shoot upward blood and star
 					Every swing shoot down a fast bloody star that inflict [c/ff003d:Infectious Stella]
-					At 5th swing, you summon a circle of bloody star that inflict [c/ff003d:Infectious Stella]
 					'''
 				ExtraInfo:
 					'''
@@ -867,7 +866,6 @@ Mods: {
 				Tooltip:
 					'''
 					"It's so beautiful under the night sky...!"
-					Effects may depend on when and where it's used
 					'''
 				DisplayName: Starlight Distributor
 			}

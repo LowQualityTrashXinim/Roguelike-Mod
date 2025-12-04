@@ -12,32 +12,16 @@ public class UncertainStrike : Perk {
 		if (Main.rand.NextFloat() <= .33f) {
 			modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
 		}
-		if (Main.rand.NextFloat() <= .05f) {
-			modifiers.SourceDamage *= 2;
-		}
 		if (Main.rand.NextFloat() <= .15f) {
-			modifiers.ArmorPenetration += 20;
+			modifiers.ArmorPenetration += 20 * (!Main.rand.NextBool(4)).ToDirectionInt();
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (Main.rand.NextFloat() <= .33f) {
 			modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
 		}
-		if (Main.rand.NextFloat() <= .05f) {
-			modifiers.SourceDamage *= 2;
-		}
 		if (Main.rand.NextFloat() <= .15f) {
-			modifiers.ArmorPenetration += 20;
-		}
-	}
-	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= .01f) {
-			player.Heal(Main.rand.Next(hit.Damage));
-		}
-	}
-	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= .01f) {
-			player.Heal(Main.rand.Next(hit.Damage));
+			modifiers.ArmorPenetration += 20 * (!Main.rand.NextBool(4)).ToDirectionInt();
 		}
 	}
 }

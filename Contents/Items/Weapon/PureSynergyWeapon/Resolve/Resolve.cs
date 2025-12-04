@@ -1,8 +1,6 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -14,7 +12,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 {
 	internal class Resolve : SynergyModItem {
 		public override void SetDefaults() {
-			Item.BossRushSetDefault(34, 54, 14, 7f, 25, 25, ItemUseStyleID.Shoot, false);
+			Item.BossRushSetDefault(34, 54, 16, 7f, 23, 23, ItemUseStyleID.Shoot, false);
 			Item.DamageType = DamageClass.Generic;
 			Item.crit = 15;
 			Item.rare = ItemRarityID.Blue;
@@ -35,7 +33,6 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 			type = ResolveProjectileBundle[ChangeProjectile];
 			if (type == ModContent.ProjectileType<GhostShortsword>())
 				damage *= 2;
-			velocity = velocity.Vector2RotateByRandom(5);
 		}
 		int counter = 0;
 		int ChangeProjectile = 0;

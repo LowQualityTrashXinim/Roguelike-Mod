@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
 using System;
 using Terraria;
 using Terraria.ModLoader;
