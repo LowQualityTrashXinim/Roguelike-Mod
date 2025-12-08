@@ -9,12 +9,13 @@ using Terraria.ID;
 
 namespace Roguelike.Contents.Items.Weapon.UnfinishedItem;
 
-class HeartBreak : SynergyModItem {
+class HeartBreakInstrument : SynergyModItem {
 	public override string Texture => ModTexture.Get_MissingTexture("Synergy");
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.MagicalHarp)
 			.AddIngredient(ItemID.Anchor)
+			.AddIngredient(ItemID.BeamSword)
 			.Register();
 	}
 }

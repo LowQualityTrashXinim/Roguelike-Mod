@@ -29,5 +29,13 @@ namespace Roguelike.Common.Utils {
 		}
 		public static float Scale_OuterTextureWithInnerTexture(Vector2 size1, Vector2 size2, float adjustment) => size1.Length() / size2.Length() * adjustment;
 		public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
+		public static void Draw_SetUpToDrawGlow(SpriteBatch spriteBatch) {
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+		}
+		public static void Draw_ResetToNormal(SpriteBatch spriteBatch) {
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+		}
 	}
 }

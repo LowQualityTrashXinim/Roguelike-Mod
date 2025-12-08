@@ -1063,8 +1063,14 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
 		On_Player.GetItemGrabRange += On_Player_GetItemGrabRange;
 		On_NPC.HitModifiers.GetDamage += HitModifiers_GetDamage;
+		On_Player.StrikeNPCDirect += On_Player_StrikeNPCDirect;
 		On_Player.Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float += On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float;
 	}
+
+	private void On_Player_StrikeNPCDirect(On_Player.orig_StrikeNPCDirect orig, Player self, NPC npc, NPC.HitInfo hit) {
+		orig(self, npc, hit);
+	}
+
 	private double On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float(On_Player.orig_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float orig, Player self, PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp, bool quiet, bool Crit, int cooldownCounter, bool dodgeable, float armorPenetration) {
 		double dmg = orig(self, damageSource, Damage, hitDirection, pvp, quiet, Crit, cooldownCounter, dodgeable, armorPenetration);
 		if (dmg == 0.0) {

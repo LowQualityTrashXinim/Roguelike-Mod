@@ -448,6 +448,8 @@ Mods: {
 			DrainingVeilBlade_Wave_Projectile.DisplayName: Draining Veil Blade_ Wave_ Projectile
 			DrainingVeilBlade_AfterImage_Projectile.DisplayName: Draining Veil Blade_ After Image_ Projectile
 			PulseRifle_Gun_Projectile.DisplayName: Pulse Rifle_ Gun_ Projectile
+			AkaiHanbunNoHasami_Slash_Projectile.DisplayName: Akai Hanbun No Hasami_ Slash_ Projectile
+			AkaiHanbunNoHasami_SawMode_Projectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile
 		}
 
 		NPCs: {
@@ -863,10 +865,7 @@ Mods: {
 			}
 
 			StarLightDistributer: {
-				Tooltip:
-					'''
-					"It's so beautiful under the night sky...!"
-					'''
+				Tooltip: '''"It's so beautiful under the night sky...!"'''
 				DisplayName: Starlight Distributor
 			}
 
@@ -2569,6 +2568,43 @@ Mods: {
 				DisplayName: Perk Essence
 				Tooltip: ""
 			}
+
+			AkaiHanbunNoHasami: {
+				DisplayName: Akai Hanbun No Hasami
+				Tooltip:
+					'''
+					At 3rd combo attack will create a large forward slash that deal 250% more damage
+					Alt-click will inflict all enemy near cursor with "Thread of Fate"
+					Dealing damage to build up "Thread Cuter"
+					After succeeding in building up "Thread Cuter", alt-click will enhanced the next 3 attack
+					'''
+				ExtraInfo:
+					'''
+					Every attack create a red slash that completely ignore enemy def
+
+					Thread of Fate:
+					Dealing damage to enemy with "Thread of Fate" will also connect the damage
+					to all of other enemy that have "Thread of Fate" 
+
+					The enhanced attack are follow: 
+					Turn the weapon into a saw that pull nearby enemy closer
+					- 1st attack: deal 34% weapon damage
+					- 2nd attack: deal 45% weapon damage
+					- 3rd attack: enhanced the attack further and deal 115% weapon daamge
+
+					During enhanced attack animation, you will completely ignore any contact damage hit
+					'''
+			}
+
+			HeartBreakInstrument: {
+				DisplayName: Heart Break Instrument
+				Tooltip: ""
+			}
+
+			StellarSymphony: {
+				DisplayName: Stellar Symphony
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3412,6 +3448,16 @@ Mods: {
 			WindShield: {
 				DisplayName: Wind Shield
 				Description: Wind Shield Health : [c/{0}:{1}]
+			}
+
+			AkaiHanbunNoHasami_ThreadOfFate: {
+				DisplayName: Thread Of Fate
+				Description: Connected all together by a string of fate...
+			}
+
+			AkaiHanbunNoHasami_ThreadOfFate_CoolDown: {
+				DisplayName: Thread Of Fate Cool Down
+				Description: On cool down
 			}
 		}
 

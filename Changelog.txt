@@ -394,3 +394,6 @@ Version 0.0.1:
 - Starlight Distributer: Area dependance effects are removed and instead it is a count shot effect.
 - Natural Selection: The ghost bow now handler its own arrow shooting and shot 3 arrow in rapid succession instead of 1.
 390/ Changed perk Stroke of Luck to Lucky Strike and Uncertain strike effect
+391/ Setting up tool for glow draw and setting up for custom dust.
+392/ Fixed a stupid bugs that make specific melee weapon hit every enemy.
+393/ Added Akai Hanbun No Hasami

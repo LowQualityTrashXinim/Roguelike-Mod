@@ -64,7 +64,10 @@ public class Roguelike_Axe : GlobalItem {
 		return base.AltFunctionUse(item, player);
 	}
 	public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
-		return player.altFunctionUse != 2;
+		if (CheckAxeCommon(item.type)) {
+			return player.altFunctionUse != 2;
+		}
+		return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 	}
 	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 		if (CheckAxeCommon(item.type)) {

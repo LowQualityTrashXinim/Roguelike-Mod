@@ -25,6 +25,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public const byte SwipeDown = 252;
 		public const byte SwipeUp = 251;
 		public const byte RapidThurst = 250;
+		public const byte Thrust_Style1 = 249;
 		/// <summary>
 		/// Use this so that you can implement custom useStyle
 		/// </summary>
@@ -89,8 +90,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0)
-				ModUtils.AddTooltip(ref tooltips, new(Mod, "", "This weapon use speed doesn't get affected by attack speed stats"));
+			if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0) {
+				tooltips.Add(new(Mod, "", "This weapon use speed doesn't get affected by attack speed stats"));
+			}
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
 			//Since we are using entirely new collision detection, we no longer need this
@@ -241,6 +243,9 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 				case BossRushUseStyle.Thrust:
 					Thrust(player, modPlayer, OffsetThrust, DistanceThrust, SwingStrength);
 					break;
+				case BossRushUseStyle.Thrust_Style1:
+					Thrust(player, modPlayer, OffsetThrust, DistanceThrust, SwingStrength, 1);
+					break;
 				case BossRushUseStyle.RapidThurst:
 					RapidThrust(item, player, modPlayer, ThrustAmount, OffsetThrust, DistanceThrust, SwingStrength);
 					break;
@@ -253,12 +258,17 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public float DistanceThrust = 30;
 		public float OffsetThrust = 0;
 		public bool HideSwingVisual = false;
-		private static void Thrust(Player player, MeleeOverhaulPlayer modPlayer, float offset = 0, float distance = 30, float swingStr = 11) {
+		private static void Thrust(Player player, MeleeOverhaulPlayer modPlayer, float offset = 0, float distance = 30, float swingStr = 11, int extra = 0) {
 			float percentDone = 1 - player.itemAnimation / (float)player.itemAnimationMax;
-			if (player.itemAnimation <= player.itemAnimationMax / 2) {
-				percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+			if (extra == 0) {
+				if (player.itemAnimation <= player.itemAnimationMax / 2) {
+					percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+				}
+				percentDone = ModUtils.InOutExpo(percentDone, swingStr);
 			}
-			percentDone = ModUtils.InOutExpo(percentDone, swingStr);
+			else if (extra == 1) {
+				percentDone = ModUtils.InOutExpo(1 - percentDone, swingStr);
+			}
 			Poke2(player, modPlayer, percentDone, offset, distance);
 		}
 		/// <summary>
@@ -289,13 +299,11 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		private static void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone, float offset, float distance) {
-			float rotation = player.GetModPlayer<ModUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation();
-			var tomouse = modPlayer.PlayerToMouseDirection;
-			var poke = Vector2.Lerp(tomouse.PositionOFFSET(tomouse, -offset), tomouse.PositionOFFSET(tomouse, distance), percentDone).RotatedBy(rotation);
-			player.itemRotation = tomouse.ToRotation();
+			Vector2 mouse = modPlayer.PlayerToMouseDirection;
+			player.itemRotation = mouse.ToRotation();
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, tomouse.ToRotation() - MathHelper.PiOver2);
-			player.itemLocation = player.Center + poke;
+			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, mouse.ToRotation() - MathHelper.PiOver2);
+			player.itemLocation = player.Center.PositionOFFSET(mouse, MathHelper.Lerp(-offset, distance, percentDone));
 		}
 		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float animationSpeedMulti = 1) {
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();

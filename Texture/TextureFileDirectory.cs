@@ -41,6 +41,23 @@
 		public const string BackIcon = CommonTextureStringPattern + "UI/BackIcon";
 		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
 		public const string Wave = CommonTextureStringPattern + "Wave";
+
+		/// <summary>
+		/// The texture is 38x38 in size
+		/// </summary>
+		public const string Glow_Big = CommonTextureStringPattern + "Glow";
+		/// <summary>
+		/// The texture is 19x19 in size
+		/// </summary>
+		public const string Glow_Medium = CommonTextureStringPattern + "SmallGlow";
+		/// <summary>
+		/// The texture is 10x10 in size
+		/// </summary>
+		public const string Glow_Small = CommonTextureStringPattern + "SmallerGlow";
+
+		public const string dust_3x3 = CommonTextureStringPattern + "3x3dust";
+		public const string dust_5x5Type1 = CommonTextureStringPattern + "5x5dust";
+		public const string dust_5x5Type2 = CommonTextureStringPattern + "5x5dustType2";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 	}
