@@ -785,7 +785,14 @@ namespace Roguelike.Contents.Transfixion.Perks {
 				var adjustment = origin - origin * size;
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, GetInnerDimensions().Position() + adjustment, null, Color.White * alpha, 0, Vector2.Zero, size, SpriteEffects.None, 0f);
 			}
-			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
+			Vector2 size1 = texture.Size();
+			Vector2 size2 = ahhlookingassdefaultbgsperktexture.Size();
+			if (size1.X <= size2.X && size1.Y <= size2.Y) {
+				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
+			}
+			else {
+				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size1, size2, .8f), SpriteEffects.None, 0);
+			}
 		}
 	}
 }

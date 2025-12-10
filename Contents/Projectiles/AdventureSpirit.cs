@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Perks.PerkContents;
 
 namespace Roguelike.Contents.Projectiles;
 internal class AdventureSpirit : ModProjectile {

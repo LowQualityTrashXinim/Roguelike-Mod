@@ -186,7 +186,7 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 	public string Info = "";
 	private Asset<Texture2D> texture;
 	private Asset<Texture2D> ahhlookingassdefaultbgsperktexture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-	public PerkDebugBtn(Asset<Texture2D> texture) : base(texture) {
+	public PerkDebugBtn(Asset<Texture2D> texture) : base(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT)) {
 		this.texture = texture;
 	}
 	public void ChangePerkType(int type) {
@@ -219,6 +219,13 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 			spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, GetInnerDimensions().Position() + adjustment, null, color * .9f, 0, Vector2.Zero, size, SpriteEffects.None, 0f);
 		}
 		spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, GetInnerDimensions().Position(), null, color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-		spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
+		Vector2 size1 = texture.Size();
+		Vector2 size2 = ahhlookingassdefaultbgsperktexture.Size();
+		if (size1.X <= size2.X && size1.Y <= size2.Y) {
+			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
+		}
+		else {
+			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size1, size2, .8f), SpriteEffects.None, 0);
+		}
 	}
 }

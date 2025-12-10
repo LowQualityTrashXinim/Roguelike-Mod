@@ -397,3 +397,4 @@ Version 0.0.1:
 391/ Setting up tool for glow draw and setting up for custom dust.
 392/ Fixed a stupid bugs that make specific melee weapon hit every enemy.
 393/ Added Akai Hanbun No Hasami
+394/ Added sprite for Arena Blessing and Celestial Rage, also slightly reworked the Perk UI system rendering.

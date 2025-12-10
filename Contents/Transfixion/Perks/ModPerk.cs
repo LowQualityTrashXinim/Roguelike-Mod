@@ -28,38 +28,6 @@ public class Dirt : Perk {
 		handle.DropModifier.Base += 1;
 	}
 }
-public class CelestialRage : Perk {
-	public override void SetDefaults() {
-		CanBeStack = false;
-	}
-	public override void OnChoose(Player player) {
-		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
-	}
-	public override void UpdateEquip(Player player) {
-		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2f);
-		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 5);
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 1.1f);
-	}
-}
-public class ArenaBlessing : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 4;
-	}
-	public override string ModifyToolTip() {
-		int stack = StackAmount(Main.LocalPlayer);
-		if (stack > 0) {
-			return DescriptionIndex(stack);
-		}
-		return Description;
-	}
-	public override void Update(Player player) {
-		if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<AdventureSpirit>(), 0, 0, player.whoAmI);
-		}
-	}
-}
 public class StellarRetirement : Perk {
 	public override void SetDefaults() {
 		CanBeStack = false;

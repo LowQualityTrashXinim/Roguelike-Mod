@@ -3,25 +3,22 @@
 3/ Work on debuff and buff sprite and many minssing sprite in the mod.
 4/ Remove connection between spoil and lootbox. (connect with task 7)
 5/ Work on localization "TODO"
-6/ Work more on universal loot pool.
-7/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
-8/ Refactor User info tablet
-9/ Rework rarity system and tranmutation system.
-10/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-11/ Listing problematic content that need adjustment:
+6/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
+7/ Refactor User info tablet
+8/ Rework rarity system and tranmutation system.
+9/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+10/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
-- Uncertain Strike ( perk )
-- Stroke Of Luck ( perk )
-12/ Added content based on biome.
-13/ Synergy damage changes:
+11/ Added content based on biome.
+12/ Synergy damage changes:
 - Intro damage and outro damage are affected by synergy damage
 - Synergy damage is now more of a intro buff and outro buff depend on which item grant intro and outro buff.
 - Synergy weapon still get increases by synergy damage regardless
 - Synergy damage still increases weapon damage regardless of class type.
 - Only intro buff and outro buff can stack.
-14/ Work on level item system ( not actual leveling system ).
-15/ Implement randomize spawn location mechanic.
-16/ Implement special characteristic for material :
+13/ Work on level item system ( not actual leveling system ).
+14/ Implement randomize spawn location mechanic.
+15/ Implement special characteristic for material :
 - Copper : Related to electricity and the debuff electricified
 - Tin : Strengthen using tin item related.
 - Iron : Defenses focus
@@ -30,4 +27,4 @@
 - Tungsten : ????
 - Gold : Midas theme focus
 - Platinum : ???
-17/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.
+16/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.

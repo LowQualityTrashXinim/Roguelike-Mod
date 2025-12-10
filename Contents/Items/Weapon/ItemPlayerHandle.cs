@@ -240,6 +240,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public int Counter = 0;
 		public short VariantType = -1;
 		public int ItemLevel = 0;
+		public bool IsASword = false;
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.ModItem == null) {
 				return;
