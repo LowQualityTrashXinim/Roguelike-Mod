@@ -623,7 +623,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			bundle = val;
 		}
-		GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+		GenerationHelper.Structure_SimplePlaceTile(holdX, holdY, ref data);
 	}
 	[Task]
 	public void Generate_Secret() {
@@ -1122,6 +1122,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		string horizontal = TemplatePath + "Horizontal";
 		string vertical = TemplatePath + "Vertical";
 		string file = "";
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		BiomeDataBundle bundle = new();
 		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
 			bundle = value;
@@ -1150,7 +1151,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, bundle.Range);
 					}
 				}
-				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 				foreach (var item in modsystem.list_Structure) {
 					if (item.Get_FilePath == file) {
 						structure = item;
@@ -1164,7 +1164,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 				if (bundle.FormatFile == "") {
 					file = vertical + Rand.Next(1, 10);
 				}

@@ -221,6 +221,16 @@ internal static partial class GenerationHelper {
 			tile.WallType = data.Tile_WallData;
 		}
 	}
+	public static void Structure_SimplePlaceTile(int holdX, int holdY, ref TileData data) {
+		Tile tile = Main.tile[holdX, holdY];
+		if (!data.Tile_Air) {
+			data.PlaceTileSimple(tile);
+		}
+		else {
+			FastRemoveTile(holdX, holdY);
+			tile.WallType = data.Tile_WallData;
+		}
+	}
 	/// <summary>
 	/// Offer slightly slower structure placing, but ensure safety<br/>
 	/// Use this to place the structure in world gen code
@@ -788,7 +798,15 @@ public struct TileData : ICloneable {
 		}
 		Tile_Slope = Slope_Parser(c);
 		Tile_WireData *= ParseStringToWireData(c);
-
+	}
+	/// <summary>
+	/// Use this method during world gen is highly not advised<br/>
+	/// Only use this if you know what you are doing
+	/// </summary>
+	public void PlaceTileSimple(Tile tile) {
+		tile.TileType = Tile_Type;
+		tile.HasTile = true;
+		tile.WallType = Tile_WallData;
 	}
 	/// <summary>
 	/// Use this method during world gen is advised<br/>
