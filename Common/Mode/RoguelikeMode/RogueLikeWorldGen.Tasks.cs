@@ -631,7 +631,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		bundle = new();
 		return false;
 	}
-	public bool Get_BiomeData(int X, int Y, int BiomeIndex, out BiomeDataBundle bundle) {
+	public bool Get_BiomeDataOptimized(int X, int Y, out BiomeDataBundle bundle) {
 		if (dict_BiomeBundle.TryGetValue(Arr_ZoneIgnored[Y * Main.maxTilesX + X].bid, out BiomeDataBundle value1)) {
 			bundle = value1;
 			return true;
@@ -642,7 +642,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	Structure_XinimVer WatcherStructure = null;
 	private void Place_Tile_CreateBiome(int holdX, int holdY, int noiseCounter, ref BiomeDataBundle bundle, ref TileData data) {
 		int noiseCounter2nd = ModUtils.Safe_SwitchValue(noiseCounter + 200, StaticNoise255x255.Length - 1);
-		if (Get_BiomeData(holdX, holdY, 0, out BiomeDataBundle val)) {
+		if (Get_BiomeDataOptimized(holdX, holdY, out BiomeDataBundle val)) {
 			if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
 				data.Tile_Type = val.tile2;
 			}
