@@ -28,3 +28,12 @@
 - Gold : Midas theme focus
 - Platinum : ???
 16/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.
+17/ Work on a in game text coord editor
+- The editor is meant for precise placement of Mod Object for structure or precise coord for portal placement.
+- The editor will required a UI for selecting mode, the following mode are to be included:
++ Focus area mode
+Allow user to focus onto a structure
++ Marker mode
+Allow user to mark position.
++ Save mode
+Upon press, generate a text file base on marker.
