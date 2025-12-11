@@ -348,7 +348,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
 	public bool[] Arr_ZoneIgnored = { };
 	public void Set_MapIgnoredZoneIntoWorldGen(int X, int Y, int width, int height) {
-		for (int i = 1; i <= height; i++) {
+		for (int i = 1; i < height; i++) {
 			int bound = (Y + i) * Main.maxTilesX + X;
 			if (Arr_ZoneIgnored.Length <= bound) {
 				continue;
@@ -596,7 +596,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 	}
-	public static bool Get_BiomeData(Point positions, int BiomeIndex, out BiomeDataBundle bundle) {
+	public bool Get_BiomeData(Point positions, int BiomeIndex, out BiomeDataBundle bundle) {
 		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(GetStringDataBiomeMapping(positions.X / GridPart_X, positions.Y / GridPart_Y)[BiomeIndex]), out BiomeDataBundle value1)) {
 			bundle = value1;
 			return true;
@@ -604,11 +604,19 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		bundle = new();
 		return false;
 	}
-
+	public bool Get_BiomeData(int X, int Y, int BiomeIndex, out BiomeDataBundle bundle) {
+		string assign = BiomeMapping[X / GridPart_X + Y / GridPart_Y * 24];
+		if (dict_BiomeBundle.TryGetValue((short)assign[BiomeIndex], out BiomeDataBundle value1)) {
+			bundle = value1;
+			return true;
+		}
+		bundle = new();
+		return false;
+	}
 	Structure_XinimVer WatcherStructure = null;
 	private void Place_Tile_CreateBiome(int holdX, int holdY, int noiseCounter, ref BiomeDataBundle bundle, ref TileData data) {
 		int noiseCounter2nd = ModUtils.Safe_SwitchValue(noiseCounter + 200, StaticNoise255x255.Length - 1);
-		if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+		if (Get_BiomeData(holdX, holdY, 0, out BiomeDataBundle val)) {
 			if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
 				data.Tile_Type = val.tile2;
 			}
@@ -1127,6 +1135,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
 			bundle = value;
 		}
+		//Since the length of the template won't changed since they all use the same size, it is completely fine to cached this 
+		int length = modsystem.list_Structure.Where(item => item.Get_FilePath == horizontal + 1).FirstOrDefault().Get_TotalLength();
 		int noiseCounter = 0;
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
@@ -1185,11 +1195,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					continue;
 				}
 			}
-			int length;
-			bool ignored = false;
 			switch (Main.rand.Next(styles)) {
+				//Because implementing Flip Horizontal is very costly and we currently have no good way of doing it, it is better to just make it act the same as none
 				case GenerateStyle.None:
-					length = structure.Get_TotalLength();
+				case GenerateStyle.FlipHorizon:
 					for (int i = 0; i < length; i++) {
 						TileData data = structure.Get_CurrentTileData(i);
 						if (offsetY >= re.Height) {
@@ -1197,37 +1206,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						if (!WorldGen.InWorld(holdX, holdY) || !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
-							ignored = true;
-						}
-						if (!ignored) {
+						if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
 							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 						}
-						ignored = false;
 						offsetY++;
 						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
-					}
-					break;
-				case GenerateStyle.FlipHorizon:
-					for (int i = 0; i < structure.Get_Data.Length; i++) {
-						GenPassData gdata = structure.Get_Data[i];
-						TileData data = gdata.tileData;
-						for (int l = 0; l < gdata.Count; l++) {
-							if (offsetY >= re.Height) {
-								offsetY = 0;
-								offsetX++;
-							}
-							holdX = X + offsetX; holdY = Y + offsetY;
-							if (!WorldGen.InWorld(holdX, holdY) || !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
-								ignored = true;
-							}
-							if (!ignored) {
-								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
-							}
-							ignored = false;
-							offsetY++;
-							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
-						}
 					}
 					break;
 				case GenerateStyle.FlipVertical:
@@ -1240,20 +1223,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 								offsetX++;
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
-							if (!WorldGen.InWorld(holdX, holdY) || !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
-								ignored = true;
-							}
-							if (!ignored) {
+							if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
 								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 							}
-							ignored = false;
 							offsetY++;
 							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 						}
 					}
 					break;
 				case GenerateStyle.FlipBoth:
-					length = structure.Get_TotalLength();
 					for (int i = length; i >= 0; i--) {
 						TileData data = structure.Get_CurrentTileData(i);
 						if (offsetY >= re.Height) {
@@ -1261,13 +1239,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						if (!WorldGen.InWorld(holdX, holdY) || !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
-							ignored = true;
-						}
-						if (!ignored) {
+						if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
 							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 						}
-						ignored = false;
 						offsetY++;
 						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 					}

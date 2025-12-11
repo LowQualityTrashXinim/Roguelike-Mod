@@ -227,7 +227,8 @@ internal static partial class GenerationHelper {
 			data.PlaceTileSimple(tile);
 		}
 		else {
-			FastRemoveTile(holdX, holdY);
+			tile.ClearTile();
+			tile.Get<TileWallWireStateData>().HasTile = false;
 			tile.WallType = data.Tile_WallData;
 		}
 	}
@@ -805,7 +806,7 @@ public struct TileData : ICloneable {
 	/// </summary>
 	public void PlaceTileSimple(Tile tile) {
 		tile.TileType = Tile_Type;
-		tile.HasTile = true;
+		tile.Get<TileWallWireStateData>().HasTile = true;
 		tile.WallType = Tile_WallData;
 	}
 	/// <summary>
