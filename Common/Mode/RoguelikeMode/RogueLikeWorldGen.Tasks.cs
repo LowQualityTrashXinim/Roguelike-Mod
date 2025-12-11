@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Mode.RoguelikeMode;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
@@ -84,6 +85,23 @@ public struct BiomeDataBundle {
 		wall = w;
 		FormatFile = file;
 		Range = r;
+	}
+}
+public struct MapData {
+	public bool ignored = false;
+	public short bid = Bid.None;
+	public static MapData Default = new(false, 0);
+	public MapData() {
+	}
+	public MapData(bool Ignore) {
+		ignored = Ignore;
+	}
+	public MapData(short BiomeId) {
+		bid = BiomeId;
+	}
+	public MapData(bool Ignore, short BiomeId) {
+		ignored = Ignore;
+		bid = BiomeId;
 	}
 }
 public partial class RogueLikeWorldGen : ModSystem {
@@ -346,17 +364,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// </summary>
 	public List<Rectangle> ForestZone = new();
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
-	public bool[] Arr_ZoneIgnored = { };
+	public MapData[] Arr_ZoneIgnored = { };
 	public void Set_MapIgnoredZoneIntoWorldGen(int X, int Y, int width, int height) {
 		for (int i = 1; i < height; i++) {
 			int bound = (Y + i) * Main.maxTilesX + X;
 			if (Arr_ZoneIgnored.Length <= bound) {
 				continue;
 			}
-			Array.Fill(Arr_ZoneIgnored, false, bound, width);
+			Array.Fill(Arr_ZoneIgnored, new(true), bound, width);
 		}
 	}
-	public bool Get_MapIgnoredZoneInWorldGen(int X, int Y) => Arr_ZoneIgnored[Y * Main.maxTilesX + X];
+	public bool Get_MapIgnoredZoneInWorldGen(int X, int Y) => Arr_ZoneIgnored[Y * Main.maxTilesX + X].ignored;
 	public void Set_MapIgnoredZoneIntoWorldGen(Rectangle rect) {
 		Set_MapIgnoredZoneIntoWorldGen(rect.X, rect.Y, rect.Width, rect.Height);
 	}
@@ -552,6 +570,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 21), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
 
+		for (int i = 0; i < BiomeMapping.Length; i++) {
+			for (int j = 0; j < GridPart_Y; j++) {
+				int bound = i % 24 * GridPart_X + (i / 24 * GridPart_Y + j) * Main.maxTilesX;
+				if (Arr_ZoneIgnored.Length <= bound) {
+					continue;
+				}
+				Array.Fill(Arr_ZoneIgnored, new MapData(CharToBid(BiomeMapping[i])), bound, GridPart_X);
+			}
+		}
 	}
 	[Task]
 	public void ResetValue() {
@@ -562,18 +589,18 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		MainTundraForestZone = new Rectangle();
 		WatchTracker = TimeSpan.Zero;
 		Biome = new();
-		GridPart_X = Main.maxTilesX / 24;//small world : 175
-		GridPart_Y = Main.maxTilesY / 24;//small world : 50
-		Main.spawnTileX = GridPart_X * 11;
-		Main.spawnTileY = GridPart_Y * 14;
+		GridPart_X = Main.maxTilesX / 24;
+		GridPart_Y = Main.maxTilesY / 24;
 		Array.Resize(ref Arr_ZoneIgnored, Main.maxTilesX * Main.maxTilesY);
-		Array.Fill(Arr_ZoneIgnored, true);
+		Array.Fill(Arr_ZoneIgnored, MapData.Default);
 		FieldInfo[] field = typeof(Main).GetFields();
 		foreach (var item in field) {
 			if (item.IsStatic && item.Name == "UnderworldLayer") {
 				item.SetValue(null, Main.maxTilesY);
 			}
 		}
+		Main.spawnTileX = GridPart_X * 11;
+		Main.spawnTileY = GridPart_Y * 14;
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	}
@@ -605,8 +632,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		return false;
 	}
 	public bool Get_BiomeData(int X, int Y, int BiomeIndex, out BiomeDataBundle bundle) {
-		string assign = BiomeMapping[X / GridPart_X + Y / GridPart_Y * 24];
-		if (dict_BiomeBundle.TryGetValue((short)assign[BiomeIndex], out BiomeDataBundle value1)) {
+		if (dict_BiomeBundle.TryGetValue(Arr_ZoneIgnored[Y * Main.maxTilesX + X].bid, out BiomeDataBundle value1)) {
 			bundle = value1;
 			return true;
 		}
@@ -1206,7 +1232,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
+						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
 							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 						}
 						offsetY++;
@@ -1223,7 +1249,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 								offsetX++;
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
-							if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
+							if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
 								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 							}
 							offsetY++;
@@ -1239,7 +1265,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						if (WorldGen.InWorld(holdX, holdY) && Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX]) {
+						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
 							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
 						}
 						offsetY++;
