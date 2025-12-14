@@ -1,17 +1,18 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Roguelike.Texture;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Global;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
+using Roguelike.Common.Global;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Utils;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
 internal class AkaiHanbunNoHasami : SynergyModItem {
@@ -143,13 +144,25 @@ internal class AkaiHanbunNoHasami : SynergyModItem {
 			}
 		}
 		else {
-			projectile = Projectile.NewProjectileDirect(source, pos, Main.rand.NextVector2CircularEdge(1, 1), type, damage, knockback, player.whoAmI, 5, 5);
-			if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
-				proj.ScaleX = 3f;
-				proj.ScaleY = .5f;
-				proj.ProjectileColor = Color.Red;
-				projectile.scale = 2;
+			int amount = Main.rand.Next(1, 4);
+			for (int i = 0; i < amount; i++) {
+				projectile = Projectile.NewProjectileDirect(source, pos + Main.rand.NextVector2Circular(50, 50), velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI, 5, 5);
+				if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
+					proj.ScaleX = 3f;
+					proj.ScaleY = .5f;
+					proj.ProjectileColor = Color.Red;
+					projectile.scale = 2;
+				}
 			}
+		}
+	}
+	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
+		Projectile projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), target.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<AkaiHanbunNoHasami_Slash_Projectile>(), player.GetWeaponDamage(Item), 1, player.whoAmI, 2, 10);
+		if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
+			proj.ScaleX = 3f;
+			proj.ScaleY = 1f;
+			proj.ProjectileColor = Color.Red;
+			projectile.scale = .5f;
 		}
 	}
 	public override void AddRecipes() {
@@ -160,7 +173,6 @@ internal class AkaiHanbunNoHasami : SynergyModItem {
 	}
 }
 public class AkaiHanbunNoHasami_ThreadOfFate_CoolDown : ModBuff {
-	public override string Texture => ModTexture.EMPTYDEBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}
@@ -237,9 +249,9 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 			return;
 		}
 		if (ThreadCutter_HitCooldown <= 0) {
-			Effect();
 			ThreadCutter_HitCooldown = 60;
 			ThreadCutter_Counter++;
+			Effect();
 		}
 		if (target.HasBuff<AkaiHanbunNoHasami_ThreadOfFate>()) {
 			foreach (var npc in Main.ActiveNPCs) {
@@ -251,17 +263,17 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 	}
 	private void Effect() {
 		if (ThreadCutter_Counter == 10) {
+			ThreadCutter_Counter++;
 			for (int i = 0; i < 100; i++) {
 				var dust = Dust.NewDustDirect(Player.Center, 0, 0, ModContent.DustType<AkaiHanbunNoHasami_Dust>());
 				dust.color = Color.Red with { A = 0 };
 				dust.rotation += Main.rand.NextFloat();
-				dust.velocity = Main.rand.NextVector2CircularEdge(15, 15);
+				dust.velocity = Vector2.UnitX.RotatedBy(MathHelper.PiOver2 * (i % 5f)) * (5 + Main.rand.NextFloat(4, 17));
 				dust.scale += Main.rand.NextFloat(.5f, .7f) + .5f;
 				if (Main.rand.NextBool()) {
 					var dust2 = Dust.NewDustDirect(Player.Center, 0, 0, ModContent.DustType<AkaiHanbunNoHasami_Dust>());
 					dust2.color = Color.Black;
 					dust2.rotation += Main.rand.NextFloat();
-
 					dust2.velocity = Main.rand.NextVector2CircularEdge(15, 15);
 					dust2.scale += Main.rand.NextFloat(.5f, .7f);
 				}
@@ -352,6 +364,9 @@ public class AkaiHanbunNoHasami_SawMode_Projectile : ModProjectile {
 		Projectile.Center.LookForHostileNPC(out var listNPC, 400);
 		if (listNPC != null) {
 			foreach (var npc in listNPC) {
+				if (npc.boss) {
+					continue;
+				}
 				var distance = Projectile.Center - npc.Center;
 				npc.velocity += (Projectile.Center - npc.Center).SafeNormalize(Vector2.Zero) * distance.Length() / 64f;
 			}
@@ -482,6 +497,47 @@ public class AkaiHanbunNoHasami_SawMode_Projectile : ModProjectile {
 			Main.EntitySpriteDraw(tex, currentPos, null, Color.Red with { A = 0 }, rotation, texOri, new Vector2(length * .5f, 1f), SpriteEffects.None);
 		}
 		return false;
+	}
+	public override void OnKill(int timeLeft) {
+		if (Mode == 3) {
+			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+		}
+	}
+}
+public class AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile : ModProjectile {
+	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 1;
+		Projectile.timeLeft = 150;
+		Projectile.tileCollide = false;
+		Projectile.friendly = true;
+		Projectile.hide = true;
+	}
+	public override bool? CanDamage() => false;
+	public override void AI() {
+		if (++Projectile.ai[0] < 5) {
+			return;
+		}
+		bool decider = Main.rand.NextBool(5);
+		int damage = Projectile.damage;
+		if (decider) {
+			damage = (int)(damage * 3.5f);
+		}
+		var projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(250, 250), Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<AkaiHanbunNoHasami_Slash_Projectile>(), damage, 2, Projectile.owner, 5, 5);
+		if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
+			if (decider) {
+				proj.ScaleX = 10f;
+				proj.ScaleY = 1f;
+				proj.ProjectileColor = Color.Red;
+				projectile.scale = 2;
+			}
+			else {
+				proj.ScaleX = 3f;
+				proj.ScaleY = .5f;
+				proj.ProjectileColor = Color.Red;
+				projectile.scale = 2;
+			}
+		}
 	}
 }
 /// <summary>

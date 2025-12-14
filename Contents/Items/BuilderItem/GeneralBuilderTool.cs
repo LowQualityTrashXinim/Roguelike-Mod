@@ -207,7 +207,6 @@ public class GeneralBuilderToolUI : UIState {
 	}
 
 	private void Panel_OnUpdate(UIElement affectedElement) {
-
 		if (dragging) {
 			Panel.Left.Set(Main.mouseX - offset.X + offsetExtra.X * 2, 0f); // Main.MouseScreen.X and Main.mouseX are the same
 			Panel.Top.Set(Main.mouseY - offset.Y + offsetExtra.Y * 2, 0f);

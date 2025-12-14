@@ -399,3 +399,5 @@ Version 0.0.1:
 393/ Added Akai Hanbun No Hasami
 394/ Added sprite for Arena Blessing and Celestial Rage, also slightly reworked the Perk UI system rendering.
 395/ Optimize world generation task "Create_Biome" and other such task.
+396/ Deleted Test Teleporter debug item, Artifact debug item.
+397/ Added a pos marker for trial, structure and such.

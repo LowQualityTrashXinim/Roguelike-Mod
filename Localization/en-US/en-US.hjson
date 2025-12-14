@@ -450,6 +450,7 @@ Mods: {
 			PulseRifle_Gun_Projectile.DisplayName: Pulse Rifle_ Gun_ Projectile
 			AkaiHanbunNoHasami_Slash_Projectile.DisplayName: Akai Hanbun No Hasami_ Slash_ Projectile
 			AkaiHanbunNoHasami_SawMode_Projectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile
+			AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile_ Death Projectile
 		}
 
 		NPCs: {
@@ -2603,6 +2604,11 @@ Mods: {
 
 			StellarSymphony: {
 				DisplayName: Stellar Symphony
+				Tooltip: ""
+			}
+
+			PositionWand: {
+				DisplayName: Position Wand
 				Tooltip: ""
 			}
 		}

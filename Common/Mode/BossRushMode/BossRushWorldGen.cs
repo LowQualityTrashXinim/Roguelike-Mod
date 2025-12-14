@@ -104,48 +104,6 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			}
 			return false;
 		}
-		public static bool FindSuitablePlaceToTeleport(Mod mod, Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
-			if (Room == null) {
-				mod.Logger.Error("Room return null");
-				return false;
-			}
-			if (!Room.ContainsKey(BiomeID)) {
-				mod.Logger.Error("Biome id doesn't exist in the dictionary");
-				return false;
-			}
-			if (BiomeID == Bid.Underworld) {
-				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
-				player.AddBuff(BuffID.Featherfall, ModUtils.ToSecond(2.5f));
-				return true;
-			}
-			List<Rectangle> rect = Room[BiomeID];
-			int failsafe = 0;
-			while (failsafe <= 9999) {
-				Rectangle roomPosition = Main.rand.Next(rect);
-				Point position = new Point(
-					Main.rand.Next(roomPosition.Left, roomPosition.Right + 1),
-					Main.rand.Next(roomPosition.Top, roomPosition.Bottom));
-				if (WorldGen.TileEmpty(position.X, position.Y)) {
-					int pass = 0;
-					for (int offsetX = -1; offsetX <= 1; offsetX++) {
-						for (int offsetY = -1; offsetY <= 1; offsetY++) {
-							if (offsetX == 0 && offsetY == 0) continue;
-							if (WorldGen.TileEmpty(position.X + offsetX, position.Y + offsetY)) {
-								pass++;
-							}
-						}
-					}
-					if (pass >= 8) {
-						player.Teleport(position.ToVector2().ToWorldCoordinates());
-						player.AddBuff(BuffID.Featherfall, ModUtils.ToSecond(2.5f));
-						return true;
-					}
-					failsafe++;
-				}
-			}
-			mod.Logger.Error("Fail to find a suitable spot to teleport");
-			return false;
-		}
 		public static bool FindSuitablePlaceToTeleport(Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
 			if (Room == null) {
 				return false;

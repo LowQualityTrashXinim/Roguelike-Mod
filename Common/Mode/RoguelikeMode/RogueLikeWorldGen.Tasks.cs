@@ -1275,9 +1275,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			if (counter.X < rect.Width) {
 				counter.X += re.Width;
-				if (Get_BiomeData(counter, 0, out BiomeDataBundle value1)) {
-					bundle = value1;
-				}
 			}
 			else {
 				offsetcount++;
