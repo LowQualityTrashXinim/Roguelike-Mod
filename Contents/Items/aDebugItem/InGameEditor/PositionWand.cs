@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Core.Platforms;
 using ReLogic.Content;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
@@ -14,7 +13,6 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Contents.Items.aDebugItem.InGameEditor;
 public enum PositionWandMode : byte {

@@ -451,6 +451,7 @@ Mods: {
 			AkaiHanbunNoHasami_Slash_Projectile.DisplayName: Akai Hanbun No Hasami_ Slash_ Projectile
 			AkaiHanbunNoHasami_SawMode_Projectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile
 			AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile_ Death Projectile
+			AnnihiliationShot.DisplayName: Annihiliation Shot
 		}
 
 		NPCs: {
@@ -2002,6 +2003,7 @@ Mods: {
 					'''
 					"Belong to the most fearsome, recommend pampering"
 					Not shooting for a while will grant you [c/8715d2:Epilogue: Ishbóshet]
+					Alt-click to shoot out a power shot that pierce infinitely
 					'''
 				ExtraInfo:
 					'''
