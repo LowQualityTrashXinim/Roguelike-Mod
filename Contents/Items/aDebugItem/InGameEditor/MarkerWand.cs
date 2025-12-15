@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Roguelike.Contents.Items.aDebugItem.InGameEditor;
-public enum PositionWandMode : byte {
+public enum MarkerWandMode : byte {
 	None,
 	Selecting,
 	Marking,
@@ -34,13 +34,13 @@ public struct Marker {
 		note = Note;
 	}
 }
-public class PositionWandSystem : ModSystem {
+public class MarkerWandSystem : ModSystem {
 	public List<Marker> list_Point = new List<Marker>();
-	public static PositionWandMode mode = PositionWandMode.None;
+	public static MarkerWandMode mode = MarkerWandMode.None;
 	//These 2 point below are the position that player select to as focus area to mark the pos.
 	public Point position1 = new();
 	public Point position2 = new();
-	public PositionWandUI PosWandUI;
+	public MarkerWandUI PosWandUI;
 	internal UserInterface userInterface;
 	public override void Load() {
 		if (!Main.dedServ) {
@@ -84,7 +84,7 @@ public class PositionWandSystem : ModSystem {
 		userInterface.SetState(PosWandUI);
 	}
 }
-public class PositionWandUI : UIState {
+public class MarkerWandUI : UIState {
 	public UIPanel Panel;
 	public Roguelike_UIImage btn_SelectingPos;
 	public Roguelike_UIImage btn_MarkingPos;
@@ -264,7 +264,7 @@ public class PositionWandUI : UIState {
 		VisibilityUI(true);
 	}
 	private void saving() {
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		try {
 			Point pos1 = system.position1;
 			Point pos2 = system.position2;
@@ -276,10 +276,10 @@ public class PositionWandUI : UIState {
 			int count = 0;
 			foreach (var item in system.list_Point) {
 				if (string.IsNullOrEmpty(item.note)) {
-					m.WriteLine($"Point point{++count} = new Point({item.point.X - X},{item.point.Y - Y});");
+					m.WriteLine($"new Point({item.point.X - X},{item.point.Y - Y}),");
 				}
 				else {
-					m.WriteLine($"Point point{++count} = new Point({item.point.X - X},{item.point.Y - Y}); //{item.note}");
+					m.WriteLine($"new Point({item.point.X - X},{item.point.Y - Y}), //{item.note}");
 				}
 			}
 		}
@@ -292,7 +292,7 @@ public class PositionWandUI : UIState {
 		Main.NewText("saved position");
 	}
 	private void Btn_SavingPos_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		PositionWandSystem.mode = PositionWandMode.Saving;
+		MarkerWandSystem.mode = MarkerWandMode.Saving;
 		btn_SavingPos.Highlight = true;
 		btn_MarkingPos.Highlight = false;
 		btn_SelectingPos.Highlight = false;
@@ -302,7 +302,7 @@ public class PositionWandUI : UIState {
 	}
 
 	private void Btn_MarkingPos_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		PositionWandSystem.mode = PositionWandMode.Marking;
+		MarkerWandSystem.mode = MarkerWandMode.Marking;
 		btn_SavingPos.Highlight = false;
 		btn_MarkingPos.Highlight = true;
 		btn_SelectingPos.Highlight = false;
@@ -313,7 +313,7 @@ public class PositionWandUI : UIState {
 	}
 
 	private void Btn_SelectingPos_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		PositionWandSystem.mode = PositionWandMode.Selecting;
+		MarkerWandSystem.mode = MarkerWandMode.Selecting;
 		btn_SavingPos.Highlight = false;
 		btn_MarkingPos.Highlight = false;
 		btn_SelectingPos.Highlight = true;
@@ -324,7 +324,7 @@ public class PositionWandUI : UIState {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		Point emptyPoint = new Point(0, 0);
 		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
 		if (system.list_Point != null) {
@@ -391,7 +391,7 @@ public class PositionWandUI : UIState {
 		}
 	}
 }
-internal class PositionWand : ModItem {
+internal class MarkerWand : ModItem {
 	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.CelestialWand);
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
@@ -402,25 +402,25 @@ internal class PositionWand : ModItem {
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		if (player.ItemAnimationJustStarted) {
 			if (player.altFunctionUse == 2) {
 				system.ToggleUI();
 			}
-			if (PositionWandSystem.mode == PositionWandMode.Selecting) {
+			if (MarkerWandSystem.mode == MarkerWandMode.Selecting) {
 				return SelectFunction();
 			}
-			else if (PositionWandSystem.mode == PositionWandMode.Marking) {
+			else if (MarkerWandSystem.mode == MarkerWandMode.Marking) {
 				return MarkingFunction();
 			}
-			else if (PositionWandSystem.mode == PositionWandMode.Saving) {
+			else if (MarkerWandSystem.mode == MarkerWandMode.Saving) {
 				return SavingFunction();
 			}
 		}
 		return base.UseItem(player);
 	}
 	public bool SelectFunction() {
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		if (Main.mouseLeft) {
 			if (system.position1.X == 0 && system.position1.Y == 0) {
 				system.position1 = Main.MouseWorld.ToTileCoordinates();
@@ -441,7 +441,7 @@ internal class PositionWand : ModItem {
 		return false;
 	}
 	public bool MarkingFunction() {
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		if (Main.mouseLeft) {
 			Point point = Main.MouseWorld.ToTileCoordinates();
 			for (int i = 0; i < system.list_Point.Count; i++) {
@@ -451,14 +451,14 @@ internal class PositionWand : ModItem {
 					return false;
 				}
 			}
-			system.list_Point.Add(new Marker(Main.MouseWorld.ToTileCoordinates(), ModContent.GetInstance<PositionWandSystem>().PosWandUI.txt_note.Text));
+			system.list_Point.Add(new Marker(Main.MouseWorld.ToTileCoordinates(), ModContent.GetInstance<MarkerWandSystem>().PosWandUI.txt_note.Text));
 			Main.NewText("Added position");
 			return false;
 		}
 		return false;
 	}
 	public bool SavingFunction() {
-		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
+		MarkerWandSystem system = ModContent.GetInstance<MarkerWandSystem>();
 		if (Main.mouseLeft) {
 			system.PosWandUI.toggle_NameTextUI();
 			return false;

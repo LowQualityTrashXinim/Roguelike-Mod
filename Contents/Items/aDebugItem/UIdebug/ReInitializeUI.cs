@@ -14,13 +14,13 @@ class ReInitializeUI : ModItem {
 		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : position UI"));
+		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : divine hammer UI"));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<PositionWandSystem>().PosWandUI.RemoveAllChildren();
-			ModContent.GetInstance<PositionWandSystem>().PosWandUI.OnInitialize();
-			ModContent.GetInstance<PositionWandSystem>().PosWandUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.Activate();
 		}
 		return false;
 	}
