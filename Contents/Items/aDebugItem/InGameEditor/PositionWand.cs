@@ -7,6 +7,7 @@ using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -21,8 +22,20 @@ public enum PositionWandMode : byte {
 	Marking,
 	Saving,
 }
+public struct Marker {
+	public Point point;
+	public string note;
+	public Marker() {
+		point = new Point();
+		note = "";
+	}
+	public Marker(Point newpoint, string Note = "") {
+		point = newpoint;
+		note = Note;
+	}
+}
 public class PositionWandSystem : ModSystem {
-	public List<Point> list_Point = new List<Point>();
+	public List<Marker> list_Point = new List<Marker>();
 	public static PositionWandMode mode = PositionWandMode.None;
 	//These 2 point below are the position that player select to as focus area to mark the pos.
 	public Point position1 = new();
@@ -81,6 +94,10 @@ public class PositionWandUI : UIState {
 	public Roguelike_UITextPanel textPanel;
 	public Roguelike_TextBox txt_FileName;
 	public Roguelike_UIPanel panel;
+
+	public Roguelike_UIPanel panel_note;
+	public Roguelike_UITextPanel txtpanel_notePanel;
+	public Roguelike_TextBox txt_note;
 	public override void OnInitialize() {
 		Asset<Texture2D> thesameuitextureasvanilla = TextureAssets.InventoryBack7;
 
@@ -124,11 +141,42 @@ public class PositionWandUI : UIState {
 		btn_SavingPos.HoverText = "Saving mode";
 		Panel.Append(btn_SavingPos);
 
+
+		panel_note = new();
+		panel_note.UISetWidthHeight(450, 125);
+		panel_note.Left.Percent = .5f;
+		panel_note.Top.Percent = .5f;
+		panel_note.Hide = true;
+		panel_note.OnLeftMouseDown += panel_note_OnLeftMouseDown;
+		panel_note.OnLeftMouseUp += panel_note_OnLeftMouseUp;
+		panel_note.OnUpdate += panel_note_OnUpdate;
+		Append(panel_note);
+
+		txtpanel_notePanel = new("Use this to note marker before setting them", .77f);
+		txtpanel_notePanel.Height.Pixels = 40;
+		txtpanel_notePanel.Width.Percent = 1f;
+		txtpanel_notePanel.HAlign = .5f;
+		txtpanel_notePanel.VAlign = .1f;
+		txtpanel_notePanel.Hide = true;
+		panel_note.Append(txtpanel_notePanel);
+
+		txt_note = new("");
+		txt_note.HAlign = .5f;
+		txt_note.VAlign = 1f;
+		txt_note.Width.Set(0, 1f);
+		txt_note.Hide = true;
+		panel_note.Append(txt_note);
+
+		txtnote_offsetExtra = Vector2.Zero;
+		txtnote_lastPressedPositionDistance = Vector2.Zero;
+		txtnote_dragging = false;
+		txtnote_offset = Vector2.Zero;
+
+		//For saving
 		panel = new();
 		panel.HAlign = .5f;
 		panel.VAlign = .5f;
 		panel.UISetWidthHeight(450, 200);
-		panel.OnUpdate += panel_OnUpdate;
 		panel.Hide = true;
 		Append(panel);
 
@@ -161,12 +209,38 @@ public class PositionWandUI : UIState {
 		btn_confirm.Hide = true;
 		panel.Append(btn_confirm);
 	}
-	private void panel_OnUpdate(UIElement affectedElement) {
-		if (panel.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
+	Vector2 txtnote_offsetExtra = Vector2.Zero;
+	Vector2 txtnote_lastPressedPositionDistance = Vector2.Zero;
+	bool txtnote_dragging = false;
+	Vector2 txtnote_offset = Vector2.Zero;
+	private void panel_note_OnLeftMouseDown(UIMouseEvent evt, UIElement listeningElement) {
+		if (evt.Target != listeningElement) {
+			return;
+		}
+		if (!txtnote_dragging) {
+			txtnote_offsetExtra = (txtnote_lastPressedPositionDistance - evt.MousePosition) * 2;
+		}
+		txtnote_dragging = true;
+		Vector2 pos = panel_note.GetInnerDimensions().Position();
+		Vector2 distanceFromWhereTopLeftToMouse = pos - evt.MousePosition;
+		txtnote_offset = distanceFromWhereTopLeftToMouse;
+	}
+	private void panel_note_OnLeftMouseUp(UIMouseEvent evt, UIElement listeningElement) {
+		if (evt.Target != listeningElement) {
+			return;
+		}
+		txtnote_dragging = false;
+	}
+	private void panel_note_OnUpdate(UIElement affectedElement) {
+		if (txtnote_dragging) {
+			panel_note.Left.Set(Main.mouseX - txtnote_offset.X + txtnote_offsetExtra.X, 0f); // Main.MouseScreen.X and Main.mouseX are the same
+			panel_note.Top.Set(Main.mouseY - txtnote_offset.Y + txtnote_offsetExtra.Y, 0f);
+			panel_note.Recalculate();
+		}
+		else {
+			txtnote_lastPressedPositionDistance = panel_note.GetOuterDimensions().Position();
 		}
 	}
-
 	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		txt_FileName.SetText("");
 		VisibilityUI(true);
@@ -201,7 +275,12 @@ public class PositionWandUI : UIState {
 			using StreamWriter m = new(file);
 			int count = 0;
 			foreach (var item in system.list_Point) {
-				m.WriteLine($"Point point{++count} = new Point({item.X - X},{item.Y - Y})");
+				if (string.IsNullOrEmpty(item.note)) {
+					m.WriteLine($"Point point{++count} = new Point({item.point.X - X},{item.point.Y - Y});");
+				}
+				else {
+					m.WriteLine($"Point point{++count} = new Point({item.point.X - X},{item.point.Y - Y}); //{item.note}");
+				}
 			}
 		}
 		catch (Exception e) {
@@ -217,6 +296,9 @@ public class PositionWandUI : UIState {
 		btn_SavingPos.Highlight = true;
 		btn_MarkingPos.Highlight = false;
 		btn_SelectingPos.Highlight = false;
+		panel_note.Hide = true;
+		txtpanel_notePanel.Hide = true;
+		txt_note.Hide = true;
 	}
 
 	private void Btn_MarkingPos_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -224,6 +306,9 @@ public class PositionWandUI : UIState {
 		btn_SavingPos.Highlight = false;
 		btn_MarkingPos.Highlight = true;
 		btn_SelectingPos.Highlight = false;
+		panel_note.Hide = false;
+		txtpanel_notePanel.Hide = false;
+		txt_note.Hide = false;
 		VisibilityUI(true);
 	}
 
@@ -232,6 +317,9 @@ public class PositionWandUI : UIState {
 		btn_SavingPos.Highlight = false;
 		btn_MarkingPos.Highlight = false;
 		btn_SelectingPos.Highlight = true;
+		panel_note.Hide = true;
+		txtpanel_notePanel.Hide = true;
+		txt_note.Hide = true;
 		VisibilityUI(true);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
@@ -240,8 +328,8 @@ public class PositionWandUI : UIState {
 		Point emptyPoint = new Point(0, 0);
 		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
 		if (system.list_Point != null) {
-			foreach (Point pos in system.list_Point) {
-				spriteBatch.Draw(tex, pos.ToWorldCoordinates() - Main.screenPosition, tex.Frame(), Color.Red, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			foreach (Marker pos in system.list_Point) {
+				spriteBatch.Draw(tex, pos.point.ToWorldCoordinates() - Main.screenPosition, tex.Frame(), Color.Red, 0, tex.Frame().Size() / 2, 1, 0, 0);
 			}
 		}
 
@@ -319,7 +407,7 @@ internal class PositionWand : ModItem {
 			if (player.altFunctionUse == 2) {
 				system.ToggleUI();
 			}
-			else if (PositionWandSystem.mode == PositionWandMode.Selecting) {
+			if (PositionWandSystem.mode == PositionWandMode.Selecting) {
 				return SelectFunction();
 			}
 			else if (PositionWandSystem.mode == PositionWandMode.Marking) {
@@ -355,7 +443,15 @@ internal class PositionWand : ModItem {
 	public bool MarkingFunction() {
 		PositionWandSystem system = ModContent.GetInstance<PositionWandSystem>();
 		if (Main.mouseLeft) {
-			system.list_Point.Add(Main.MouseWorld.ToTileCoordinates());
+			Point point = Main.MouseWorld.ToTileCoordinates();
+			for (int i = 0; i < system.list_Point.Count; i++) {
+				if (system.list_Point[i].point == point) {
+					system.list_Point.RemoveAt(i);
+					Main.NewText("Removed position");
+					return false;
+				}
+			}
+			system.list_Point.Add(new Marker(Main.MouseWorld.ToTileCoordinates(), ModContent.GetInstance<PositionWandSystem>().PosWandUI.txt_note.Text));
 			Main.NewText("Added position");
 			return false;
 		}

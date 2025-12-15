@@ -1,9 +1,10 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using System.Collections.Generic;
-using Roguelike.Common.Systems;
-using Roguelike.Texture;
+﻿using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.aDebugItem.InGameEditor;
+using Roguelike.Texture;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.aDebugItem.UIdebug;
 class ReInitializeUI : ModItem {
@@ -13,13 +14,13 @@ class ReInitializeUI : ModItem {
 		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : Divine UI"));
+		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : position UI"));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().relicUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().relicUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().relicUI.Activate();
+			ModContent.GetInstance<PositionWandSystem>().PosWandUI.RemoveAllChildren();
+			ModContent.GetInstance<PositionWandSystem>().PosWandUI.OnInitialize();
+			ModContent.GetInstance<PositionWandSystem>().PosWandUI.Activate();
 		}
 		return false;
 	}

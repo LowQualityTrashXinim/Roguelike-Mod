@@ -122,6 +122,14 @@ public class ModObject : Entity, IModType, ILoadable {
 	public Mod Mod { get; internal set; }
 	public string Name => GetType().Name;
 	public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
+	/// <summary>
+	/// Use this to create new Mod Object in the world.<br/>
+	/// The position that this mod object use to be created is World Coord, not tile coord
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="velocity"></param>
+	/// <param name="type"></param>
+	/// <returns></returns>
 	public static ModObject NewModObject(Vector2 position, Vector2 velocity, int type) {
 		int whoAmI = -1;
 		for (int i = 0; i < ObjectSystem.MaxObjects; i++) {
@@ -156,7 +164,8 @@ public class ModObject : Entity, IModType, ILoadable {
 
 	}
 	/// <summary>
-	/// Kill the object from active
+	/// Kill the object from active<br/>
+	/// Active flag is actually a marker that is used to make sure that the object will be killed.
 	/// </summary>
 	public void Kill() {
 		OnKill();

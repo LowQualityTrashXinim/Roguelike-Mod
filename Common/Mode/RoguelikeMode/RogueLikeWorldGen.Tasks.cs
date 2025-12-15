@@ -1289,6 +1289,26 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ResetTemplate_GenerationValue();
 		Mod.Logger.Info("Create biome step :" + watch.ToString());
 	}
+	public Rectangle Pyramid = new Rectangle();
+	[Task]
+	public void Generate_DesertPyramid() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = 17 * GridPart_X + Main.rand.Next(GridPart_X);
+		int Y = 7 * GridPart_Y + Main.rand.Next(GridPart_Y);
+		var data = ModWrapper.Get_StructureData("Assets/DesertPyramid", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		Pyramid = new(point.X, point.Y, data.width, data.height);
+		if (ModWrapper.IsInBound(data, point)) {
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(Pyramid);
+			Set_MapIgnoredZoneIntoWorldGen(Pyramid);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
+	}
 	[Task]
 	public void Generate_PostWorld() {
 	}

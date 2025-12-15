@@ -121,15 +121,6 @@ public class KSsealed : NPCSealedObject {
 		Color color = Color.White;
 		frameCounter = Math.Clamp(frameCounter, 0, frame);
 		spritebatch.Draw(texture, drawpos, texture.Frame(1, frame, 0, frameCounter), color, 0, origin, 1f, SpriteEffects.None, 1);
-
-		Texture2D glow = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
-
-		spritebatch.End();
-		spritebatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-		float percentalge = Math.Clamp(1 - AuraCounter / 300f, .5f, 1f);
-		Vector2 offset = Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / (float)frame * .5f;
-		spritebatch.Draw(glow, position - Main.screenPosition + offset, null, Color.DodgerBlue * percentalge, 0, glow.Size() * .5f, 4 + AuraCounter * .01f, SpriteEffects.None, 0);
-		spritebatch.End();
-		spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+		BasicSealAuraEffect(spritebatch, AuraCounter, Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / (float)frame * .5f, Color.DodgerBlue, 4f);
 	}
 }

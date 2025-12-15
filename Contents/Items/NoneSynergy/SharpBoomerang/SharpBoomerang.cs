@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang;
-internal class SharpBoomerang : SynergyModItem {
-	public override void Synergy_SetStaticDefaults() {
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedBoomerang);
-	}
+namespace Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
+internal class SharpBoomerang : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(38, 72, 13, 5f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
 		Item.crit = 6;
@@ -20,29 +15,8 @@ internal class SharpBoomerang : SynergyModItem {
 		Item.rare = ItemRarityID.Orange;
 		Item.value = Item.buyPrice(platinum: 5);
 	}
-	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedBoomerang))
-			tooltips.Add(new TooltipLine(Mod, "SharpBoomerang_EnchantedBoomerang", $"[i:{ItemID.EnchantedBoomerang}] You throw out additional boomerang"));
-	}
-	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-		CanShootItem = true;
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedBoomerang)) {
-			for (int i = -1; i < 2; i++) {
-				if (i == 0)
-					continue;
-				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, i);
-			}
-			CanShootItem = false;
-		}
-	}
 	public override bool CanUseItem(Player player) {
 		return player.ownedProjectileCounts[ModContent.ProjectileType<SharpBoomerangP>()] < 1;
-	}
-	public override void AddRecipes() {
-		CreateRecipe()
-			.AddIngredient(ItemID.WoodenBoomerang)
-			.AddRecipeGroup("Ore shortsword")
-			.Register();
 	}
 }
 internal class SharpBoomerangP : ModProjectile {
@@ -66,7 +40,7 @@ internal class SharpBoomerangP : ModProjectile {
 	int maxProgress = 25;
 	int progression = 0;
 	public override void AI() {
-		Player player = Main.player[Projectile.owner];
+		var player = Main.player[Projectile.owner];
 		if (Projectile.timeLeft == 999) {
 			if (Projectile.ai[0] == 0)
 				Projectile.ai[0] = Main.rand.NextBool().ToDirectionInt();
@@ -91,7 +65,7 @@ internal class SharpBoomerangP : ModProjectile {
 		}
 		float X = MathHelper.SmoothStep(-30, MaxLengthX, progress);
 		ProgressYHandle(progression, halfmaxProgress, quadmaxProgress, out float Y);
-		Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
+		var VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
 		Projectile.Center = player.Center + VelocityPosition;
 		progression--;
 		Projectile.rotation += MathHelper.ToRadians(55);
@@ -114,8 +88,8 @@ internal class SharpBoomerangP : ModProjectile {
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		Vector2 RandomPos = Projectile.Center + Main.rand.NextVector2CircularEdge(50, 50);
-		Vector2 DistanceToAim = (target.Center - RandomPos).SafeNormalize(Vector2.UnitX) * 4f;
+		var RandomPos = Projectile.Center + Main.rand.NextVector2CircularEdge(50, 50);
+		var DistanceToAim = (target.Center - RandomPos).SafeNormalize(Vector2.UnitX) * 4f;
 		int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, DistanceToAim, ProjectileID.SuperStarSlash, Projectile.damage, 0, Projectile.owner);
 		Main.projectile[proj].usesIDStaticNPCImmunity = true;
 		target.immune[Projectile.owner] = 3;

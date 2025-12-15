@@ -402,3 +402,6 @@ Version 0.0.1:
 396/ Deleted Test Teleporter debug item, Artifact debug item.
 397/ Added a pos marker for trial, structure and such.
 398/ Added alt click attack for Annihiliation.
+399/ Removed synergy status of Sharp Boomerang.
+400/ Added Pyramid structure.
+401/ Improvement to marker wand, now you can note marker before setting them
