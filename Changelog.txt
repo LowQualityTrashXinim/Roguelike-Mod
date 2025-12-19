@@ -404,4 +404,10 @@ Version 0.0.1:
 398/ Added alt click attack for Annihiliation.
 399/ Removed synergy status of Sharp Boomerang.
 400/ Added Pyramid structure.
-401/ Improvement to marker wand, now you can note marker before setting them
+401/ Improvement to marker wand, now you can note marker before setting them.
+402/ Merged Feral craws mod item reworked into a actual rework.
+403/ Added Marble, Granite and Glowing Mushroom into world generation.
+404/ Change log not found !
+405/ Added Jungle Temple Entrance structure.
+406/ Seperate Light Saber rework from main RoguelikeItemOverhaul file for easier time of understanding the rework.
+407/ Added Jungle Temple subworld.

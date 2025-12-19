@@ -1,4 +1,4 @@
 displayName = Everlasting Unstablet Alpha
 author = Xinim
-version = 0.0.17
+version = 0.0.17.1
 modReferences  = StructureHelper@3.0, SubworldLibrary

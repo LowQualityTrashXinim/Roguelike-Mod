@@ -115,6 +115,12 @@ namespace Roguelike.Contents.Projectiles {
 			SubworldSystem.Enter<Subworld_Crimson>();
 		}
 	}
+	public class Portal_JungleTemple : Portal {
+		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Portal>();
+		public override void Subworld_ToEnter() {
+			SubworldSystem.Enter<SubWorld_JungleTemple>();
+		}
+	}
 	public class Portal_DeepIce : Portal {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Portal>();
 		public override void Subworld_ToEnter() {

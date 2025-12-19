@@ -9,7 +9,7 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeBiome;
 internal class SubWorld_JungleTemple : Subworld {
 	public override int Width => 800;
 
-	public override int Height => 2000;
+	public override int Height => 800;
 
 	public override List<GenPass> Tasks =>
 		new() {
@@ -21,6 +21,6 @@ public class GenPass_JungleTemple : GenPass {
 	}
 
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
-		GenerationHelper.Create_WorldBiome(1000, 2500, RogueLikeWorldGen.dict_BiomeBundle[Bid.JungleTemple]);
+		GenerationHelper.Create_WorldBiome(900, 900, RogueLikeWorldGen.dict_BiomeBundle[Bid.JungleTemple]);
 	}
 }

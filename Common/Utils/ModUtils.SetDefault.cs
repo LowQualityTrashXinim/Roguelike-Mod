@@ -66,6 +66,9 @@ namespace Roguelike.Common.Utils {
 		/// in more simple term, it is for weapon that consider to be lengendary
 		/// </summary>
 		Mythical,
+		/// <summary>
+		/// Lunar and moon lord weapon
+		/// </summary>
 		Celestial,
 	}
 	public static partial class ModUtils {

@@ -177,4 +177,9 @@ AnkletoftheWind:
 	Wind shield reduce damage taken directly by 20% and projectile damage by 80%
 	Wind shield multiply taken knockback taken directly by 0.7x and projectile knockback by 0x
 	'''
+FeralCraws:
+	'''
+	Increases attack speed by 5%
+	Increases attack speed the lower your health is ( up to maximum of 15% )
+	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%

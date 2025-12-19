@@ -452,6 +452,7 @@ Mods: {
 			AkaiHanbunNoHasami_SawMode_Projectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile
 			AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile_ Death Projectile
 			AnnihiliationShot.DisplayName: Annihiliation Shot
+			Portal_JungleTemple.DisplayName: Portal_ Jungle Temple
 		}
 
 		NPCs: {
@@ -2272,15 +2273,6 @@ Mods: {
 					'''
 			}
 
-			FeralClaw: {
-				DisplayName: Feral Claw
-				Tooltip:
-					'''
-					+5% Total Attack Speed
-					Gain Bonus Attack Speed (Up to 25%) based on Missing HP
-					'''
-			}
-
 			Toolbelt: {
 				DisplayName: Toolbelt
 				Tooltip: For Each Owned Nearby Minions Gain +4 Defense
@@ -2368,7 +2360,7 @@ Mods: {
 
 			MeleePotion: {
 				DisplayName: Melee Potion
-				Tooltip: Increases Melee damage by 10%, critical chance by 10, critical damage 10%
+				Tooltip: Increases melee damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			RangePotion: {
@@ -2611,6 +2603,11 @@ Mods: {
 
 			PositionWand: {
 				DisplayName: Position Wand
+				Tooltip: ""
+			}
+
+			MarkerWand: {
+				DisplayName: Marker Wand
 				Tooltip: ""
 			}
 		}

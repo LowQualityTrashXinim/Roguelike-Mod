@@ -27,6 +27,7 @@ internal class RoguelikeHandler : ModSystem {
 		SpawnPortalWithCondition(player, system.FleshRealmEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_FleshRealm>());
 		SpawnPortalWithCondition(player, system.CorruptionEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Corruption>());
 		SpawnPortalWithCondition(player, system.CrimsonEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Crimson>());
+		SpawnPortalWithCondition(player, (system.JungleTempleEntrance.Location + new Point(48, 5)).ToWorldCoordinates(), ModContent.ProjectileType<Portal_JungleTemple>());
 	}
 	private void SpawnPortalWithCondition(Player player, Vector2 pos, int portalType) {
 		if (player.Center.Distance(pos) < 2000) {

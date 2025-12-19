@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Mode.RoguelikeMode;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
@@ -164,6 +163,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Underworld, new BiomeDataBundle(TileID.Ash, WallID.None, "") },
 			{ Bid.JungleTemple, new BiomeDataBundle(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "")},
 			{ Bid.Slime, new BiomeDataBundle(TileID.SlimeBlock, WallID.Slime,"")},
+			{ Bid.Marble, new BiomeDataBundle(TileID.Marble, WallID.Marble,"")},
+			{ Bid.Granite, new BiomeDataBundle(TileID.Granite, WallID.Granite,"")},
+			{ Bid.BlueShroom, new BiomeDataBundle(TileID.MushroomGrass, WallID.Mushroom,"") with { outlineTile = TileID.MushroomGrass,tile2 = TileID.Mud, weight2 = .44f } },
 			{ Bid.FleshRealm, new BiomeDataBundle(TileID.FleshBlock, WallID.Flesh,"")}
 		};
 
@@ -215,6 +217,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["CorruptionEntrance"] = CorruptionEntrance;
 		tag["FleshRealmEntrance"] = FleshRealmEntrance;
 		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
+		tag["JungleTempleEntrance"] = JungleTempleEntrance;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
@@ -228,6 +231,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		CrimsonEntrance = tag.Get<Rectangle>("CrimsonEntrance");
 		FleshRealmEntrance = tag.Get<Rectangle>("FleshRealmEntrance");
 		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
+		JungleTempleEntrance = tag.Get<Rectangle>("JungleTempleEntrance");
 		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
 		if (Type == null || Area == null) {
 			return;
@@ -366,7 +370,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public static Rectangle Rect_CentralizeRect(int X, int Y, int W, int H) => new(X - W / 2, Y - H / 2, W, H);
 	public MapData[] Arr_ZoneIgnored = { };
 	public void Set_MapIgnoredZoneIntoWorldGen(int X, int Y, int width, int height) {
-		for (int i = 1; i < height; i++) {
+		for (int i = 0; i < height; i++) {
 			int bound = (Y + i) * Main.maxTilesX + X;
 			if (Arr_ZoneIgnored.Length <= bound) {
 				continue;
@@ -401,7 +405,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			xdex = Main.rand.Next(1, 23);
 			ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven) {
+			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Slime || ID == Bid.Marble || ID == Bid.Granite) {
 				i--;
 				continue;
 			}
@@ -569,6 +573,38 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(0, 21), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 21), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
+
+		//Inintialize Marble biome
+		BiomeMapping[MapIndex(7, 6)] = ToC(Bid.Marble);
+		Array.Fill(BiomeMapping, ToC(Bid.Marble), MapIndex(6, 7), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Marble), MapIndex(5, 8), 4);
+		BiomeMapping[MapIndex(7, 9)] = ToC(Bid.Marble);
+
+		//Initialize Granite biome
+		BiomeMapping[MapIndex(9, 7)] = ToC(Bid.Granite);
+		Array.Fill(BiomeMapping, ToC(Bid.Granite), MapIndex(8, 8), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Granite), MapIndex(8, 9), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Granite), MapIndex(8, 10), 2);
+		BiomeMapping[MapIndex(9, 11)] = ToC(Bid.Granite);
+
+		//Initialize slime world biome
+		BiomeMapping[MapIndex(12, 7)] = ToC(Bid.Slime);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(12, 8), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(13, 9), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(13, 10), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(13, 11), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(14, 12), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(14, 13), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Slime), MapIndex(13, 14), 3);
+		BiomeMapping[MapIndex(14, 15)] = ToC(Bid.Slime);
+
+		//Initialize glowing mushroom biome
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(10, 17), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(9, 18), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(8, 19), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(8, 20), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(14, 20), 3);
+
 
 		for (int i = 0; i < BiomeMapping.Length; i++) {
 			for (int j = 0; j < GridPart_Y; j++) {
@@ -831,10 +867,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Start();
 		int X = Main.rand.Next(12, 16) * GridPart_X;
 		int Y = Main.rand.Next(15, 20) * GridPart_Y;
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Caven) {
-			X = Main.rand.Next(12, 16) * GridPart_X;
-			Y = Main.rand.Next(15, 20) * GridPart_Y;
-		}
 		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
@@ -849,19 +881,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("CK_entrance step: " + watch.ToString());
 	}
 	public Rectangle CrimsonEntrance = new();
-	public Rectangle CorruptionEntrance = new();
-	public Rectangle FleshRealmEntrance = new();
-	public Rectangle SlimeWorldEntrance = new();
 	[Task]
 	public void Generate_CrimsonEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
 		int X = Main.rand.Next(20, 22) * GridPart_X;
 		int Y = Main.rand.Next(11, 13) * GridPart_Y;
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
-			X = Main.rand.Next(20, 22) * GridPart_X + Main.rand.Next(0, GridPart_X);
-			Y = Main.rand.Next(11, 13) * GridPart_Y + Main.rand.Next(0, GridPart_Y);
-		}
 		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
@@ -875,16 +900,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("Crimson step: " + watch.ToString());
 	}
+	public Rectangle CorruptionEntrance = new();
 	[Task]
 	public void Generate_CorruptionEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
 		int X = Main.rand.Next(5, 9) * GridPart_X;
 		int Y = Main.rand.Next(18, 20) * GridPart_Y;
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Corruption) {
-			X = Main.rand.Next(5, 9) * GridPart_X + Main.rand.Next(0, GridPart_X); ;
-			Y = Main.rand.Next(18, 20) * GridPart_Y + Main.rand.Next(0, GridPart_Y);
-		}
 		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
@@ -898,16 +920,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("Corruption step: " + watch.ToString());
 	}
+	public Rectangle FleshRealmEntrance = new();
 	[Task]
 	public void Generate_FleshRealmEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
 		int X = Main.rand.Next(19, 22) * GridPart_X;
 		int Y = 19 * GridPart_Y;
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Crimson) {
-			X = Main.rand.Next(19, 22) * GridPart_X + Main.rand.Next(0, GridPart_X);
-			Y = 19 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
-		}
 		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
@@ -921,6 +940,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
 	}
+	public Rectangle SlimeWorldEntrance = new();
 	[Task]
 	public void Generate_SlimeWorldEntrance() {
 		Stopwatch watch = new();
@@ -928,10 +948,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		int X = 16 * GridPart_X;
 		int Y = 11 * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
-		while (Get_BiomeIDViaPos(new Point(X, Y), 0) != Bid.Forest) {
-			X = 16 * GridPart_X + Main.rand.Next(0, GridPart_X);
-			Y = 11 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
-		}
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -943,6 +959,26 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		Mod.Logger.Info("Slime world step: " + watch.ToString());
+	}
+	public Rectangle JungleTempleEntrance = new();
+	[Task]
+	public void Generate_JungleTempleEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = (8 + Main.rand.Next(2)) * GridPart_X;
+		int Y = (3 + Main.rand.Next(2)) * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/JungleTempleEntrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			JungleTempleEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(JungleTempleEntrance);
+			Set_MapIgnoredZoneIntoWorldGen(JungleTempleEntrance);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Jungle temple entrance step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_GoldRoom() {
@@ -996,7 +1032,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
 			Rectangle villageZone = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex, 250, 100);
-			while (!(ID != Bid.Space && ID != Bid.Ocean && ID != Bid.Desert && ID != Bid.Caven && ID != Bid.Underworld && !ZoneToBeIgnored.Where(rect => rect.Intersects(villageZone)).Any())) {
+			while (!(ID != Bid.Space && ID != Bid.Ocean && ID != Bid.Desert && ID != Bid.Caven && ID != Bid.Underworld && ID != Bid.Marble && ID != Bid.Granite && ID != Bid.Slime && !ZoneToBeIgnored.Where(rect => rect.Intersects(villageZone)).Any())) {
 				xdex = Main.rand.Next(1, 23);
 				ydex = Main.rand.Next(1, 22);
 				ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
@@ -1068,7 +1104,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Underworld) {
+			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Underworld || ID == Bid.Marble || ID == Bid.Granite || ID == Bid.Slime) {
 				i--;
 				continue;
 			}

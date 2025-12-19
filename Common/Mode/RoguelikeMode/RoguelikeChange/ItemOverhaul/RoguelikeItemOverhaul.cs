@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Roguelike.Common.Global;
-using Roguelike.Common.Graphics;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Projectiles;
@@ -14,7 +13,6 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
-using Roguelike.Texture;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -76,28 +74,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;
 					break;
-				case ItemID.Starfury:
-					item.scale += .25f;
-					break;
-				case ItemID.PurplePhaseblade:
-				case ItemID.BluePhaseblade:
-				case ItemID.GreenPhaseblade:
-				case ItemID.YellowPhaseblade:
-				case ItemID.OrangePhaseblade:
-				case ItemID.RedPhaseblade:
-				case ItemID.WhitePhaseblade:
-				case ItemID.PurplePhasesaber:
-				case ItemID.BluePhasesaber:
-				case ItemID.GreenPhasesaber:
-				case ItemID.YellowPhasesaber:
-				case ItemID.OrangePhasesaber:
-				case ItemID.RedPhasesaber:
-				case ItemID.WhitePhasesaber:
-					item.shoot = ModContent.ProjectileType<StarWarSwordProjectile>();
-					item.shootSpeed = 1;
-					item.useAnimation = item.useTime = 15;
-					item.ArmorPenetration = 30;
-					break;
 			}
 		}
 		private void UpgradeVariant(Item item) {
@@ -132,27 +108,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					break;
 			}
 		}
-		public bool StarWarSword(int type) {
-			switch (type) {
-				case ItemID.PurplePhaseblade:
-				case ItemID.BluePhaseblade:
-				case ItemID.GreenPhaseblade:
-				case ItemID.YellowPhaseblade:
-				case ItemID.OrangePhaseblade:
-				case ItemID.RedPhaseblade:
-				case ItemID.WhitePhaseblade:
-				case ItemID.PurplePhasesaber:
-				case ItemID.BluePhasesaber:
-				case ItemID.GreenPhasesaber:
-				case ItemID.YellowPhasesaber:
-				case ItemID.OrangePhasesaber:
-				case ItemID.RedPhasesaber:
-				case ItemID.WhitePhasesaber:
-					return true;
-				default:
-					return false;
-			}
-		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			switch (item.type) {
 				case ItemID.Stynger:
@@ -165,19 +120,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			if (StarWarSword(item.type)) {
-				if (++modplayer.PhaseSaberBlade_Counter >= 3) {
-					modplayer.PhaseSaberBlade_Counter = 0;
-					var projectile = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 1, type, damage, knockback, player.whoAmI);
-					if (projectile.ModProjectile is StarWarSwordProjectile starwarProjectile) {
-						starwarProjectile.ColorOfSaber = SwordSlashTrail.averageColorByID[item.type] * 2;
-						starwarProjectile.ItemTextureID = item.type;
-					}
-					projectile.width = item.width;
-					projectile.height = item.height;
-				}
-				return false;
-			}
 			switch (item.type) {
 				case ItemID.GoldBow:
 					var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
