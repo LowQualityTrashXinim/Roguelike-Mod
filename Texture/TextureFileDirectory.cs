@@ -2,7 +2,6 @@
 	public static class ModTexture {
 		public const string CommonTextureStringPattern = "Roguelike/Texture/";
 		public const string MissingTexture_Folder = "MissingTexture/";
-		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";
 
 		public const string WHITEDOT = CommonTextureStringPattern + "WhiteDot";
 		public const string MISSINGTEXTUREPOTION = CommonTextureStringPattern + "MissingTexturePotion";
@@ -12,14 +11,10 @@
 		public const string WHITEBALL = CommonTextureStringPattern + "WhiteBall";
 		public const string DIAMONDSWOTAFFORB = CommonTextureStringPattern + "DiamondSwotaffOrb";
 		public const string ACCESSORIESSLOT = "Terraria/Images/Inventory_Back7";
-		public const string MENU = CommonTextureStringPattern + "UI/menu";
 		public const string SMALLWHITEBALL = CommonTextureStringPattern + "smallwhiteball";
 		public const string EMPTYCARD = CommonTextureStringPattern + "EmptyCard";
-		public const string EXAMPLEUI = CommonTextureStringPattern + "ExampleFrame";
 		public const string SUPPILESDROP = CommonTextureStringPattern + "SuppliesDrop";
 		public const string FOURSTAR = CommonTextureStringPattern + "FourStar";
-		public const string CrossSprite = CommonTextureStringPattern + "UI/Cross";
-		public const string Lock = CommonTextureStringPattern + "UI/lock";
 		public const string Perlinnoise = CommonTextureStringPattern + "roguelikePerlinNoise";
 		public const string Arrow_Left = CommonTextureStringPattern + "UI/LeftArrow";
 		public const string Arrow_Right = CommonTextureStringPattern + "UI/RightArrow";
@@ -30,6 +25,12 @@
 		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";
 		public const string Eye = CommonTextureStringPattern + "EyeOutline";
 		public const string EyePupil = CommonTextureStringPattern + "EyePupil";
+		//UI related
+		public const string EXAMPLEUI = CommonTextureStringPattern + "ExampleFrame";
+		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";
+		public const string MENU = CommonTextureStringPattern + "UI/menu";
+		public const string CrossSprite = CommonTextureStringPattern + "UI/Cross";
+		public const string Lock = CommonTextureStringPattern + "UI/lock";
 		/// <summary>
 		/// Width : 16 | Height : 16
 		/// </summary>
@@ -55,9 +56,9 @@
 		/// </summary>
 		public const string Glow_Small = CommonTextureStringPattern + "SmallerGlow";
 
-		public const string dust_3x3 = CommonTextureStringPattern + "3x3dust";
-		public const string dust_5x5Type1 = CommonTextureStringPattern + "5x5dust";
-		public const string dust_5x5Type2 = CommonTextureStringPattern + "5x5dustType2";
+		public const string dust_3x3 = CommonTextureStringPattern + "Dust/3x3dust";
+		public const string dust_5x5Type1 = CommonTextureStringPattern + "Dust/5x5dust";
+		public const string dust_5x5Type2 = CommonTextureStringPattern + "Dust/5x5dustType2";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 	}

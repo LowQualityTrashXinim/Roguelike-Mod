@@ -411,3 +411,7 @@ Version 0.0.1:
 405/ Added Jungle Temple Entrance structure.
 406/ Seperate Light Saber rework from main RoguelikeItemOverhaul file for easier time of understanding the rework.
 407/ Added Jungle Temple subworld.
+408/ Synergy updated:
+- Bundle of Grenade synergy status is removed and now turn into Fragment grenade.
+- Add some synergy bonus to various synergy weapon.
+409/ Added Greater Life Force Potion.

@@ -2610,6 +2610,16 @@ Mods: {
 				DisplayName: Marker Wand
 				Tooltip: ""
 			}
+
+			GreaterLifeForcePotion: {
+				DisplayName: Greater Life Force Potion
+				Tooltip: ""
+			}
+
+			FragmentGrenade: {
+				DisplayName: Fragment Grenade
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3463,6 +3473,11 @@ Mods: {
 			AkaiHanbunNoHasami_ThreadOfFate_CoolDown: {
 				DisplayName: Thread Of Fate Cool Down
 				Description: On cool down
+			}
+
+			GreaterLifeForceBuff: {
+				DisplayName: Greater Life Force Buff
+				Description: Mods.Roguelike.Buffs.GreaterLifeForceBuff.Description
 			}
 		}
 

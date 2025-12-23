@@ -2,35 +2,18 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria.DataStructures;
 using Roguelike.Common.Utils;
+using Terraria.Audio;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BundleOfGrenade;
-internal class BundleOfGrenade : SynergyModItem {
+namespace Roguelike.Contents.Items.NoneSynergy;
+internal class FragmentGrenade : ModItem {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<FragmentGrenadeProjectile>();
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(30, 30, 40, 10f, 40, 40, ItemUseStyleID.Swing, ModContent.ProjectileType<FragmentGrenadeProjectile>(), 15, false);
 		Item.noUseGraphic = true;
 		Item.UseSound = SoundID.Item1;
-	}
-	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		type = Main.rand.Next(new int[] { ProjectileID.Grenade, ProjectileID.BouncyGrenade, ProjectileID.StickyGrenade, ProjectileID.ClusterGrenadeI, ProjectileID.GrenadeI, ModContent.ProjectileType<FragmentGrenadeProjectile>() });
-	}
-	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
-		int amount = Main.rand.Next(0, 3) * 2;
-		if (amount < 1) {
-			return;
-		}
-		for (int i = 0; i < amount; i++) {
-			Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(amount, Main.rand.NextFloat(30, 40), i) * Main.rand.NextFloat(.67f, 1f), type, damage, knockback, player.whoAmI);
-		}
-	}
-	public override void AddRecipes() {
-		CreateRecipe()
-			.AddIngredient(ItemID.Grenade)
-			.AddIngredient(ItemID.Boomstick)
-			.Register();
+		Item.maxStack = 30;
+		Item.consumable = true;
 	}
 }
 public class FragmentGrenadeProjectile : ModProjectile {
@@ -57,6 +40,7 @@ public class FragmentGrenadeProjectile : ModProjectile {
 		}
 	}
 	public override void OnKill(int timeLeft) {
+		SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
 		for (int l = 0; l < 103; l++) {
 			if (l % 4 == 0) {
 				int smoke = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
@@ -80,10 +64,10 @@ public class FragmentGrenadeProjectile : ModProjectile {
 			Main.dust[dus1t].noGravity = true;
 			Main.dust[dus1t].velocity = Main.rand.NextVector2CircularEdge(6, 6) * Main.rand.NextFloat(.8f, 1.2f);
 		}
-		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
+		Projectile.Center.LookForHostileNPC(out var npclist, 150f);
 		if (npclist.Count > 0) {
-			Player player = Main.player[Projectile.owner];
-			foreach (NPC npc in npclist) {
+			var player = Main.player[Projectile.owner];
+			foreach (var npc in npclist) {
 				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, ModUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X), Main.rand.Next(1, 101) <= Projectile.CritChance, Projectile.knockBack));
 			}
 		}
@@ -92,7 +76,7 @@ public class FragmentGrenadeProjectile : ModProjectile {
 		int damage = (int)(Projectile.damage * .65f);
 		float knockback = Projectile.knockBack * .65f;
 		for (int i = 0; i < amount; i++) {
-			Vector2 vel = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(3, 4);
+			var vel = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(3, 4);
 			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel, type, damage, knockback, Projectile.owner);
 		}
 	}

@@ -52,6 +52,10 @@ public class Bid {
 	public const short JungleTemple = 18;
 	public const short Space = 19;
 	public const short Caven = 20;
+	public const short CorruptedTundra = 21;
+	public const short CorruptedDesert = 22;
+	public const short CrimsonTundra = 23;
+	public const short CrimsonDesert = 24;
 	//These are biome ignore char value, do not uses this in general biome mapping
 	public const short Structure_Dungeon = 996;
 	public const short Structure_JungleTemple = 997;
@@ -166,7 +170,11 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Marble, new BiomeDataBundle(TileID.Marble, WallID.Marble,"")},
 			{ Bid.Granite, new BiomeDataBundle(TileID.Granite, WallID.Granite,"")},
 			{ Bid.BlueShroom, new BiomeDataBundle(TileID.MushroomGrass, WallID.Mushroom,"") with { outlineTile = TileID.MushroomGrass,tile2 = TileID.Mud, weight2 = .44f } },
-			{ Bid.FleshRealm, new BiomeDataBundle(TileID.FleshBlock, WallID.Flesh,"")}
+			{ Bid.FleshRealm, new BiomeDataBundle(TileID.FleshBlock, WallID.Flesh,"")},
+			{ Bid.CorruptedTundra, new BiomeDataBundle(TileID.CorruptIce, WallID.IceUnsafe,"") with { tile2 = TileID.SnowBlock, weight2 = .64f } },
+			{ Bid.CorruptedDesert, new BiomeDataBundle(TileID.CorruptHardenedSand, WallID.CorruptHardenedSand,"") with { tile2 = TileID.Sandstone, weight2 = .64f } },
+			{ Bid.CrimsonTundra, new BiomeDataBundle(TileID.FleshIce, WallID.IceUnsafe,"") with { tile2 = TileID.SnowBlock, weight2 = .64f } },
+			{ Bid.CrimsonDesert, new BiomeDataBundle(TileID.CrimsonHardenedSand, WallID.CrimsonHardenedSand,"") with { tile2 = TileID.Sandstone, weight2 = .64f } },
 		};
 
 		BiomeGroup = new();
@@ -491,18 +499,31 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(20, 9), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(22, 10), 2);
 
+		//Initialize Crimson desert biome
+		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(18, 9), 2);
+		BiomeMapping[MapIndex(21, 10)] = ToC(Bid.CrimsonDesert);
+		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(22, 11), 2);
+
 		//Initialize Tundra biome
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(5, 6), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 7), 3);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 8), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 9), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 10), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 11), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 12), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 13), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 14), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 11), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 12), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 13), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(6, 14), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(5, 15), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(7, 16), 2);
+		BiomeMapping[MapIndex(8, 16)] = ToC(Bid.Tundra);
+
+		//Initialize Corrupted Tundra
+		BiomeMapping[MapIndex(2, 11)] = ToC(Bid.CorruptedTundra);
+		BiomeMapping[MapIndex(2, 12)] = ToC(Bid.CorruptedTundra);
+		BiomeMapping[MapIndex(3, 13)] = ToC(Bid.CorruptedTundra);
+		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(4, 14), 2);
+		BiomeMapping[MapIndex(5, 15)] = ToC(Bid.CorruptedTundra);
+		BiomeMapping[MapIndex(7, 16)] = ToC(Bid.CorruptedTundra);
 
 		//Initialize Forest biome
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(8, 10), 10);
@@ -552,9 +573,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 20), 3);
 
 		//Initialize crimson biome
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 9), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 11), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 11), 3);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 12), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(20, 13), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(21, 14), 3);
@@ -1010,6 +1030,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
 								Set_MapIgnoredZoneIntoWorldGen(goldRoomSize);
+								ZoneToBeIgnored.Add(goldRoomSize);
 								goldRoomSize.X = 0;
 								goldRoomSize.Y = 0;
 							}

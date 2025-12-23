@@ -239,7 +239,7 @@ public class AnnihiliationBullet : ModProjectile {
 			}
 			float progress = Projectile.timeLeft / (float)timeleft;
 			//Projectile.alpha = (int)(255 * progress);
-			Projectile.Opacity = ModUtils.InOutExpo(progress, 15);
+			Projectile.Opacity = progress;
 			if (Projectile.ai[0] < 0) {
 				return;
 			}
@@ -252,6 +252,10 @@ public class AnnihiliationBullet : ModProjectile {
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		Projectile.damage = (int)(Projectile.damage * .9f);
+		if (Projectile.damage < 0) {
+			Projectile.damage = 1;
+		}
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		for (int i = 0; i < 4; i++) {
@@ -278,11 +282,12 @@ public class AnnihiliationBullet : ModProjectile {
 			Color color = Color.Magenta * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			color.A = 0;
 			float scaling = Math.Clamp(k * .01f, 0, 10f);
-			Main.EntitySpriteDraw(texture, drawPos, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, Projectile.scale - scaling, SpriteEffects.None, 0);
+			float realscale = (Projectile.scale - scaling) * Projectile.Opacity;
+			Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], origin, realscale, SpriteEffects.None, 0);
 
 			Color color2 = Color.White * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			color2.A = 0;
-			Main.EntitySpriteDraw(texture, drawPos, null, color2 * Projectile.Opacity, Projectile.oldRot[k], origin, (Projectile.scale - scaling) * .5f, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(texture, drawPos, null, color2, Projectile.oldRot[k], origin, realscale * .5f, SpriteEffects.None, 0);
 		}
 		return false;
 	}

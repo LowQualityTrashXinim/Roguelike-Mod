@@ -4,13 +4,10 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using Roguelike.Contents.Items.Weapon;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
-{
+namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 	internal class MagicHandCannon : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Flamelash, $"[i:{ItemID.Flamelash}] When magic shadow flame is inside the ring, shoot out a home in shadow magic flame and damage dealing outside of the ring increases by 45%");

@@ -25,6 +25,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -109,6 +110,19 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			if (bonus.Active)
 				lines.Add(new(moditem.Mod, moditem.Set_TooltipName(itemID), bonus.Tooltip));
+		}
+		/// <summary>
+		/// return item id of synergy item
+		/// </summary>
+		/// <param name="SynergyItemID"></param>
+		/// <returns></returns>
+		public static int[] Get_SynergyBonus(int SynergyItemID) {
+			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
+				return null;
+			}
+			else {
+				return Dictionary_SynergyBonus[SynergyItemID].Select(sy => sy.ItemID).ToArray();
+			}
 		}
 
 		public bool GodAreEnraged = false;
@@ -241,6 +255,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public short VariantType = -1;
 		public int ItemLevel = 0;
 		public bool IsASword = false;
+		public List<WeaponTag> list_weaponTag = new();
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.ModItem == null) {
 				return;
@@ -257,6 +272,31 @@ namespace Roguelike.Contents.Items.Weapon {
 					variant.SetDefault(entity);
 				}
 				WorldVaultSystem.Set_Variant = 0;
+			}
+			ItemTag_Set(entity.type);
+		}
+		private void ItemTag_Set(int type) {
+			switch (type) {
+				case ItemID.WoodenSword:
+				case ItemID.BorealWoodSword:
+				case ItemID.RichMahoganySword:
+				case ItemID.EbonwoodSword:
+				case ItemID.ShadewoodSword:
+				case ItemID.PearlwoodSword:
+				case ItemID.CactusSword:
+				case ItemID.CopperBroadsword:
+				case ItemID.LeadBroadsword:
+				case ItemID.TinBroadsword:
+				case ItemID.IronBroadsword:
+				case ItemID.TungstenBroadsword:
+				case ItemID.SilverBroadsword:
+				case ItemID.GoldBroadsword:
+				case ItemID.PlatinumBroadsword:
+					list_weaponTag.Add(WeaponTag.Sword);
+					break;
+				case ItemID.ZombieArm:
+					list_weaponTag.Add(WeaponTag.Living);
+					break;
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
@@ -398,8 +438,15 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			if (item.ModItem != null) {
 				string value = null;
-				if (ExtraInfo) {
-					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
+				if (!Main.SmartCursorIsUsed) {
+					if (ExtraInfo) {
+						value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
+					}
+				}
+				else {
+					foreach (var itemtag in list_weaponTag) {
+						value += Enum.GetName(itemtag) + "\n";
+					}
 				}
 				if (value == null) {
 					return base.PreDrawTooltip(item, lines, ref x, ref y); ;
@@ -564,6 +611,7 @@ namespace Roguelike.Contents.Items.Weapon {
 
 		private int countX = 0;
 		private float positionRotateX = 0;
+		private int rotate = 0;
 		private void PositionHandle() {
 			if (positionRotateX < 3.5f && countX == 1) {
 				positionRotateX += .2f;
@@ -598,8 +646,22 @@ namespace Roguelike.Contents.Items.Weapon {
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
 			ColorHandle();
+			rotate = ModUtils.Safe_SwitchValue(rotate, (int)(MathHelper.Pi * 1000));
 			if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1 || Main.LocalPlayer.HeldItem.type != Type) {
 				return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			}
+			int[] synegyB = SynergyBonus_System.Get_SynergyBonus(Type);
+			if (synegyB != null) {
+				int len = synegyB.Length;
+				for (int i = 0; i < len; i++) {
+					if (!SynergyBonus_System.Dictionary_SynergyBonus[Type][i].Active) {
+						continue;
+					}
+					int type = synegyB[i];
+					Main.instance.LoadItem(type);
+					Texture2D synergyBonus = TextureAssets.Item[type].Value;
+					spriteBatch.Draw(synergyBonus, position + Vector2.One.RotatedBy(MathHelper.ToRadians(rotate) + MathHelper.Pi * MathHelper.Lerp(0, 1, i / (len - 1f))) * 10, synergyBonus.Frame(), Color.White, 0, synergyBonus.Size() * .5f, .55f, SpriteEffects.None, 0);
+				}
 			}
 			Main.instance.LoadItem(Type);
 			Texture2D texture = TextureAssets.Item[Type].Value;

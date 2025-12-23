@@ -24,8 +24,11 @@ namespace Roguelike.Contents.Projectiles {
 			Projectile.CloneDefaults(ProjectileID.FlyingPiggyBank);
 			Projectile.aiStyle = -1;
 			Projectile.hide = false;
+			Portal_SetDefaults();
 		}
+		public virtual void Portal_SetDefaults() {
 
+		}
 		public sealed override void AI() {
 			if (++Projectile.frameCounter % 2 == 0)
 				if (++Projectile.frame == 30)
@@ -116,6 +119,9 @@ namespace Roguelike.Contents.Projectiles {
 		}
 	}
 	public class Portal_JungleTemple : Portal {
+		public override void Portal_SetDefaults() {
+			Projectile.scale = .5f;
+		}
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Portal>();
 		public override void Subworld_ToEnter() {
 			SubworldSystem.Enter<SubWorld_JungleTemple>();

@@ -28,3 +28,11 @@
 - Gold : Midas theme focus
 - Platinum : ???
 16/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.
+17/ Implement Outro effect mechanic, the mechanic are to work as follow:
+- Each weapon produce their own outro point and have their own threadhold.
+- If a weapon outro point is not yet reach their threadhold and player switch to different weapon, then the outro point is reset back to 0.
+- Once player reach to the threadhold of outro point then upon switching to different weapon,
+instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
+- A player can't have more than 1 outro effect, outro effect act like a buff but is not consider to be a buff nor debuff.
+- Duplicate outro effect will instead have their timer reset and not added.
+- The following mechanic should also be implemented into Everlasting Overhaul.
