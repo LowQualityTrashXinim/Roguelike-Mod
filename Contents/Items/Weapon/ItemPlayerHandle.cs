@@ -255,7 +255,6 @@ namespace Roguelike.Contents.Items.Weapon {
 		public short VariantType = -1;
 		public int ItemLevel = 0;
 		public bool IsASword = false;
-		public List<WeaponTag> list_weaponTag = new();
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.ModItem == null) {
 				return;
@@ -272,31 +271,6 @@ namespace Roguelike.Contents.Items.Weapon {
 					variant.SetDefault(entity);
 				}
 				WorldVaultSystem.Set_Variant = 0;
-			}
-			ItemTag_Set(entity.type);
-		}
-		private void ItemTag_Set(int type) {
-			switch (type) {
-				case ItemID.WoodenSword:
-				case ItemID.BorealWoodSword:
-				case ItemID.RichMahoganySword:
-				case ItemID.EbonwoodSword:
-				case ItemID.ShadewoodSword:
-				case ItemID.PearlwoodSword:
-				case ItemID.CactusSword:
-				case ItemID.CopperBroadsword:
-				case ItemID.LeadBroadsword:
-				case ItemID.TinBroadsword:
-				case ItemID.IronBroadsword:
-				case ItemID.TungstenBroadsword:
-				case ItemID.SilverBroadsword:
-				case ItemID.GoldBroadsword:
-				case ItemID.PlatinumBroadsword:
-					list_weaponTag.Add(WeaponTag.Sword);
-					break;
-				case ItemID.ZombieArm:
-					list_weaponTag.Add(WeaponTag.Living);
-					break;
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
@@ -444,9 +418,9 @@ namespace Roguelike.Contents.Items.Weapon {
 					}
 				}
 				else {
-					foreach (var itemtag in list_weaponTag) {
-						value += Enum.GetName(itemtag) + "\n";
-					}
+					//foreach (var itemtag in list_weaponTag) {
+					//	value += Enum.GetName(itemtag) + "\n";
+					//}
 				}
 				if (value == null) {
 					return base.PreDrawTooltip(item, lines, ref x, ref y); ;

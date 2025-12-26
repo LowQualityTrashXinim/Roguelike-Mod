@@ -188,6 +188,7 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 	private Asset<Texture2D> ahhlookingassdefaultbgsperktexture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
 	public PerkDebugBtn(Asset<Texture2D> texture) : base(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT)) {
 		this.texture = texture;
+		OverrideDefaultDraw = true;
 	}
 	public void ChangePerkType(int type) {
 		perkType = type;
@@ -225,7 +226,7 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
 		}
 		else {
-			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size1, size2, .8f), SpriteEffects.None, 0);
+			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size2, size1, .8f), SpriteEffects.None, 0);
 		}
 	}
 }

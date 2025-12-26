@@ -355,11 +355,11 @@ internal class GeneralBuilderTool : ModItem {
 						else if (GeneralBuilderToolSystem.OverrideMode) {
 							if (Main.tile[x, y].TileType != item.createTile) {
 								WorldGen.KillTile(x, y, noItem: true);
-								WorldGen.PlaceTile(x, y, item.createTile, style: item.placeStyle);
+								WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
 							}
 						}
 						else {
-							WorldGen.PlaceTile(x, y, item.createTile, style: item.placeStyle);
+							WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
 						}
 					}
 				}
@@ -375,11 +375,11 @@ internal class GeneralBuilderTool : ModItem {
 						else if (GeneralBuilderToolSystem.OverrideMode) {
 							if (Main.tile[x, y].WallType != item.createWall) {
 								WorldGen.KillWall(x, y);
-								WorldGen.PlaceWall(x, y, item.createWall);
+								WorldGen.PlaceWall(x, y, item.createWall, true);
 							}
 						}
 						else {
-							WorldGen.PlaceWall(x, y, item.createWall);
+							WorldGen.PlaceWall(x, y, item.createWall, true);
 						}
 					}
 				}

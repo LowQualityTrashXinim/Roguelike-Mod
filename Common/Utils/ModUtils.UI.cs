@@ -411,6 +411,7 @@ namespace Roguelike.Common.Utils {
 		public Texture2D innerTex = null;
 		public string HoverText = null;
 		public bool UnselectAble = false;
+		public bool OverrideDefaultDraw = false;
 		bool _CustomWeirdDraw = false;
 		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false) {
 			postTex = tex;
@@ -437,7 +438,9 @@ namespace Roguelike.Common.Utils {
 			if (Hide) {
 				return;
 			}
-			base.Draw(spriteBatch);
+			if (!OverrideDefaultDraw) {
+				base.Draw(spriteBatch);
+			}
 			DrawImage(spriteBatch);
 			if (postTex != null) {
 				Vector2 origin = postTex.Size() * .5f;

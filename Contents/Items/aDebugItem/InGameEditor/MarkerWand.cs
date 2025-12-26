@@ -329,7 +329,7 @@ public class MarkerWandUI : UIState {
 		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
 		if (system.list_Point != null) {
 			foreach (Marker pos in system.list_Point) {
-				spriteBatch.Draw(tex, pos.point.ToWorldCoordinates() - Main.screenPosition, tex.Frame(), Color.Red, 0, tex.Frame().Size() / 2, 1, 0, 0);
+				spriteBatch.Draw(tex, pos.point.ToWorldCoordinates() - Main.screenPosition, tex.Frame(), Color.Red, 0, tex.Frame().Size() * .5f, 1, 0, 0);
 			}
 		}
 
@@ -342,10 +342,10 @@ public class MarkerWandUI : UIState {
 
 		Vector2 topLeft = new Vector2(X, Y);
 		if (system.position1 != emptyPoint) {
-			spriteBatch.Draw(tex, pos1 - Main.screenPosition, tex.Frame(), Color.Black, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			spriteBatch.Draw(tex, pos1 - Main.screenPosition, tex.Frame(), Color.Black, 0, tex.Frame().Size() * .5f, 1, 0, 0);
 		}
 		if (system.position2 != emptyPoint) {
-			spriteBatch.Draw(tex, pos2 - Main.screenPosition, tex.Frame(), Color.White, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			spriteBatch.Draw(tex, pos2 - Main.screenPosition, tex.Frame(), Color.White, 0, tex.Frame().Size() * .5f, 1, 0, 0);
 		}
 		if (system.position1 == emptyPoint || system.position2 == emptyPoint) {
 			return;

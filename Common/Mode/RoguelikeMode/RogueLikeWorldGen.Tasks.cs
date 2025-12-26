@@ -226,6 +226,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["FleshRealmEntrance"] = FleshRealmEntrance;
 		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
 		tag["JungleTempleEntrance"] = JungleTempleEntrance;
+		tag["KingSlimeStructure"] = KingSlimeStructure;
+		tag["DesertPyramid"] = Pyramid;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
@@ -241,6 +243,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
 		JungleTempleEntrance = tag.Get<Rectangle>("JungleTempleEntrance");
 		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
+		Pyramid = tag.Get<Rectangle>("DesertPyramid");
+		KingSlimeStructure = tag.Get<Rectangle>("KingSlimeStructure");
 		if (Type == null || Area == null) {
 			return;
 		}
@@ -1364,7 +1368,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Set_MapIgnoredZoneIntoWorldGen(Pyramid);
 		}
 		watch.Stop();
-		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
+		Mod.Logger.Info("Pyramid realm step: " + watch.ToString());
+	}
+	public Rectangle KingSlimeStructure = new Rectangle();
+	[Task]
+	public void Generate_KingSlimeStructure() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = 15 * GridPart_X + Main.rand.Next(GridPart_X);
+		int Y = 12 * GridPart_Y + Main.rand.Next(GridPart_Y);
+		var data = ModWrapper.Get_StructureData("Assets/SlimeKingStructure", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		KingSlimeStructure = new(point.X, point.Y, data.width, data.height);
+		if (ModWrapper.IsInBound(data, point)) {
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(KingSlimeStructure);
+			Set_MapIgnoredZoneIntoWorldGen(KingSlimeStructure);
+		}
+		watch.Stop();
+		Mod.Logger.Info("King Slime structure realm step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_PostWorld() {

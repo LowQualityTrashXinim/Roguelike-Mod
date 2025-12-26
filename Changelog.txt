@@ -415,3 +415,6 @@ Version 0.0.1:
 - Bundle of Grenade synergy status is removed and now turn into Fragment grenade.
 - Add some synergy bonus to various synergy weapon.
 409/ Added Greater Life Force Potion.
+410/ Added King slime structure and king slime mod object into the world gen.
+411/ Some minor fixes and adjustment.
+412/ Added Weapon tag.
