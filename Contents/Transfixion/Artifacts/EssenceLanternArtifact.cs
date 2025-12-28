@@ -4,10 +4,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
- 
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Skill;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class EssenceLanternArtifact : Artifact {
@@ -215,6 +215,7 @@ public class EssenceProjectile : ModProjectile {
 		}
 	}
 	private void OnContactWithPlayer(Player player) {
+		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(player.ModPlayerStats().EnergyCap.ApplyTo(player.GetModPlayer<SkillHandlePlayer>().EnergyCap) * .05f) + 1);
 		if (Projectile.Center.IsCloseToPosition(player.Center, 15)) {
 			switch (EssenceType) {
 				case 0:

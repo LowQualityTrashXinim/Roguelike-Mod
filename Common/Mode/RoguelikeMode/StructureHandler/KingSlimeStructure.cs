@@ -39,8 +39,8 @@ public class Fix_SlimeCrown : GlobalItem {
 		return (ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
 	}
 	public override bool? UseItem(Item item, Player player) {
-		Point spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Location;
-		NPC.SpawnBoss(spawnPosotion.X * 16, spawnPosotion.Y * 16, NPCID.KingSlime, player.whoAmI);
+		Point spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Location.ToWorldCoordinates().ToPoint();
+		NPC.SpawnBoss(spawnPosotion.X, spawnPosotion.Y, NPCID.KingSlime, player.whoAmI);
 		return true;
 	}
 }

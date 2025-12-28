@@ -477,6 +477,11 @@ public class UniversalModPlayer : ModPlayer {
 				uiSystemInstance.UniqueWorldPlayerID = UniqueWorldID;
 				RoguelikeData.Run_Amount++;
 			}
+			else {
+				if (UniqueWorldID != uiSystemInstance.UniqueWorldPlayerID) {
+					ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using different player character in adifferent world");
+				}
+			}
 		}
 		if (uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
 			ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");

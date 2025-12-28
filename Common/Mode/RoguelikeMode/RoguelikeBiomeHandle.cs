@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.RoguelikeMode;
@@ -14,7 +13,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Achievements;
-using Terraria.GameContent.Creative;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics.Effects;
@@ -34,7 +32,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		if (gen.RoguelikeWorld && SubworldSystem.Current == null) {
-			if (gen.PlayerPos_WorldCood != Vector2.Zero) {
+			if (ModContent.GetInstance<UniversalSystem>().UniqueWorldPlayerID == Player.GetModPlayer<UniversalModPlayer>().UniqueWorldID && gen.PlayerPos_WorldCood != Vector2.Zero) {
 				Player.Center = gen.PlayerPos_WorldCood;
 				Player.fallStart = (int)(gen.PlayerPos_WorldCood.X / 16f);
 				Player.oldPosition = Player.Center;
@@ -580,19 +578,30 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			Main.worldSurface = toTile.Y + Main.screenHeight / 16;
 			Main.rockLayer = toTile.Y + Main.screenHeight / 16;
 		}
-		if (modplayer.CurrentBiome.Contains(Bid.Corruption)) {
+		if (modplayer.CurrentBiome.Contains(Bid.Corruption)
+			|| modplayer.CurrentBiome.Contains(Bid.CorruptedTundra)
+			|| modplayer.CurrentBiome.Contains(Bid.CorruptedDesert)) {
 			self.ZoneCorrupt = true;
 		}
-		if (modplayer.CurrentBiome.Contains(Bid.Crimson)) {
+		if (modplayer.CurrentBiome.Contains(Bid.Crimson)
+			|| modplayer.CurrentBiome.Contains(Bid.CrimsonTundra)
+			|| modplayer.CurrentBiome.Contains(Bid.CrimsonDesert)) {
 			self.ZoneCrimson = true;
 		}
 		if (modplayer.CurrentBiome.Contains(Bid.BeeNest)) {
+			self.ZoneHive = true;
 			self.ZoneJungle = true;
 			self.ZoneRockLayerHeight = true;
-			self.ZoneHive = true;
 		}
-		if (modplayer.CurrentBiome.Contains(Bid.Tundra)) {
+		if (modplayer.CurrentBiome.Contains(Bid.Tundra)
+			|| modplayer.CurrentBiome.Contains(Bid.CorruptedTundra)
+			|| modplayer.CurrentBiome.Contains(Bid.CrimsonTundra)) {
 			self.ZoneSnow = true;
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Desert)
+			|| modplayer.CurrentBiome.Contains(Bid.CorruptedDesert)
+			|| modplayer.CurrentBiome.Contains(Bid.CrimsonDesert)) {
+			self.ZoneDesert = true;
 		}
 		if (modplayer.CurrentBiome.Contains(Bid.Underworld)) {
 			self.ZoneUnderworldHeight = true;
@@ -624,6 +633,35 @@ internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
 		if (ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
 			pool.Clear();
+		}
+		RoguelikeBiomeHandle_ModPlayer modplayer = spawnInfo.Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
+		if (spawnInfo.Player.ZoneForest) {
+			pool.Add(new(NPCID.BlueSlime, 1f));
+			pool.Add(new(NPCID.GreenSlime, 1f));
+			pool.Add(new(NPCID.PurpleSlime, 1f));
+			pool.Add(new(NPCID.RedSlime, 1f));
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Slime)) {
+			pool.Add(new(NPCID.BlueSlime, 1f));
+			pool.Add(new(NPCID.GreenSlime, 1f));
+			pool.Add(new(NPCID.PurpleSlime, 1f));
+			pool.Add(new(NPCID.RedSlime, 1f));
+			pool.Add(new(NPCID.MotherSlime, 1f));
+			pool.Add(new(NPCID.BlackSlime, 1f));
+			pool.Add(new(NPCID.JungleSlime, .1f));
+			pool.Add(new(NPCID.IceSlime, 1f));
+			pool.Add(new(NPCID.Slimer2, 1f));
+
+			pool.Add(new(NPCID.SlimeSpiked, .5f));
+			pool.Add(new(NPCID.SpikedIceSlime, .5f));
+			pool.Add(new(NPCID.SpikedJungleSlime, .5f));
+
+			pool.Add(new(NPCID.Slimeling, .1f));
+			pool.Add(new(NPCID.ToxicSludge, .1f));
+			pool.Add(new(NPCID.RainbowSlime, .1f));
+			pool.Add(new(NPCID.Pinky, .1f));
+
+			pool.Add(new(NPCID.GoldenSlime, .01f));
 		}
 	}
 	public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {

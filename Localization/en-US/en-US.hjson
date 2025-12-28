@@ -2441,7 +2441,7 @@ Mods: {
 
 			MasterSword: {
 				DisplayName: Master Sword
-				Tooltip: ""
+				Tooltip: "The ultimate wood sword"
 			}
 
 			OldSkullRevolver: {

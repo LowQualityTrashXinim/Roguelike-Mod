@@ -29,12 +29,12 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (PerpetuationCycle) {
-			modifiers.SourceDamage -= 35f;
+			modifiers.SourceDamage -= .35f;
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if(PerpetuationCycle) {
-			modifiers.SourceDamage -= 35f;
+			modifiers.SourceDamage -= .35f;
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {

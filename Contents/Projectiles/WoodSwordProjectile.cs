@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.Utils;
+using Roguelike.Texture;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Texture;
-using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Terraria.Audio;
 
 namespace Roguelike.Contents.Projectiles;
 public class SwordProjectile : ModProjectile {
@@ -30,7 +32,7 @@ public class SwordProjectile : ModProjectile {
 	Vector2 directionToMouse = Vector2.Zero;
 	float outrotation = 0;
 	public int directionLooking = 0;
-	Vector2 oldCenter = Vector2.Zero;
+	public Vector2 oldCenter = Vector2.Zero;
 	public float rotationSwing = 150;
 	public float delay = 0;
 	public int Set_TimeLeft = 30;
@@ -90,6 +92,38 @@ public class SwordProjectile : ModProjectile {
 	}
 	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
 		ModUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, Projectile.ai[2]);
+	}
+	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
+		float itemlength = Projectile.Size.Length();
+		float itemsize = itemlength * Projectile.scale;
+		int laserline = (int)itemsize;
+		if (laserline <= 0) {
+			laserline = 1;
+		}
+		Vector2 Projectile_DirectionOfLooking = Projectile.rotation.ToRotationVector2();
+		var offset = Projectile.Center - Projectile.oldPosition;
+		var directionTo = (Projectile.oldPosition + offset - Projectile.Center).SafeNormalize(Vector2.Zero);
+		bool checkComboNum = directionLooking == -1;
+		int LastCollideCheck, check;
+		float PreviousProgress = ModUtils.InExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax);
+		float CurrentProgress = ModUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax);
+		if (checkComboNum && player.direction == 1 || !checkComboNum && player.direction == -1) {
+			LastCollideCheck = (int)Math.Ceiling(MathHelper.Lerp(0, laserline, PreviousProgress));
+			check = (int)Math.Ceiling(MathHelper.Lerp(0, laserline, CurrentProgress));
+		}
+		else {
+			LastCollideCheck = (int)Math.Ceiling(MathHelper.Lerp(laserline, 0, PreviousProgress));
+			check = (int)Math.Ceiling(MathHelper.Lerp(laserline, 0, CurrentProgress));
+		}
+		int assigned = Math.Min(LastCollideCheck, check);
+		int length = Math.Max(check, LastCollideCheck);
+		for (int i = assigned; i <= length; i++) {
+			var point = player.Center + directionTo.Vector2DistributeEvenly(laserline, rotationSwing * 2, i) * itemsize;
+			if (ModUtils.Collision_PointAB_EntityCollide(targetHitbox, Projectile.Center + Projectile_DirectionOfLooking * itemsize * -.5f, point)) {
+				return true;
+			}
+		}
+		return base.Colliding(projHitbox, targetHitbox);
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

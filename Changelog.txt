@@ -418,3 +418,6 @@ Version 0.0.1:
 410/ Added King slime structure and king slime mod object into the world gen.
 411/ Some minor fixes and adjustment.
 412/ Added Weapon tag.
+413/ Fixed Perpetuated Cycle Artifact reducing player damage up to 350% instead of 35%
+414/ Slightly buff Essence Lantern artifact to be more skill base.
+415/ Added new synergy weapon Master Sword.

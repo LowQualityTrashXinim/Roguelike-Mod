@@ -53,7 +53,7 @@ public class FlintlockPistol : ModEnchantment {
 		ItemIDType = ItemID.FlintlockPistol;
 	}
 	public override string ModifyDesc(string desc) {
-		return string.Format(desc, ItemID.FlintlockPistol);
+		return string.Format(desc, $"[i:{ItemID.FlintlockPistol}]");
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int roll = 1;
@@ -68,6 +68,9 @@ public class FlintlockPistol : ModEnchantment {
 	}
 	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 		damage += .1f;
+		if (item.type == ItemID.FlintlockPistol) {
+			damage += .4f;
+		}
 	}
 }
 public class Revolver : ModEnchantment {

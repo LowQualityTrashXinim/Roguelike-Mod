@@ -181,7 +181,8 @@ EssenceLanternArtifact: {
 		[c/9b9c76:Neutral effect] :
 			= Your attack spawn essence orb every 10s
 		[c/ffff00:Positive effect] :
-			+ Essence orb have positive effect and negative effect
+			+ Collecting the orb will increases skill energy ( by 5% of your maximum skill energy battery)
+			+ The orb also provide positive and negative effect
 		[c/ab3e43:Negative effect] : 
 			- Essence of Wither orb are present which are hamrful
 		'''
