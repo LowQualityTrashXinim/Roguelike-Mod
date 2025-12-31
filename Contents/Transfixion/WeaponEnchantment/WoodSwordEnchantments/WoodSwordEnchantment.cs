@@ -50,15 +50,15 @@ public class AshWoodSword : ModEnchantment {
 				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 20;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<AshwoodSwordProjectile>(), (int)(player.GetWeaponDamage(item) * 1.25f) + 1, item.knockBack, player.whoAmI, 1);
 			}
-		}
-		if (item.type == ItemID.AshWoodSword && globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter2[index] += 5;
-			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
-			var pos = Main.MouseWorld.Subtract(Main.rand.NextFloat(-100, 100), Main.rand.NextFloat(50, 100));
-			var vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 20;
-			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectileSpear>(), (int)(player.GetWeaponDamage(item) * 1.25f) + 1, item.knockBack, player.whoAmI);
-			if (Main.projectile[projec].ModProjectile is SwordProjectileSpear woodproj)
-				woodproj.ItemIDtextureValue = ItemIDType;
+			if (item.type == ItemID.AshWoodSword && globalItem.Item_Counter1[index] <= 0) {
+				globalItem.Item_Counter2[index] += 5;
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
+				var pos = Main.MouseWorld.Subtract(Main.rand.NextFloat(-100, 100), Main.rand.NextFloat(50, 100));
+				var vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 20;
+				int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectileSpear>(), (int)(player.GetWeaponDamage(item) * 1.25f) + 1, item.knockBack, player.whoAmI);
+				if (Main.projectile[projec].ModProjectile is SwordProjectileSpear woodproj)
+					woodproj.ItemIDtextureValue = ItemIDType;
+			}
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {

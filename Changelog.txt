@@ -421,3 +421,4 @@ Version 0.0.1:
 413/ Fixed Perpetuated Cycle Artifact reducing player damage up to 350% instead of 35%
 414/ Slightly buff Essence Lantern artifact to be more skill base.
 415/ Added new synergy weapon Master Sword.
+416/ Added Weapon tag to weapon ( WIP ).

@@ -3,6 +3,7 @@ using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,8 +62,8 @@ internal class MasterSword : SynergyModItem {
 		}
 		return base.CanUseItem(player);
 	}
-	public override bool CanShoot(Player player) {
-		return false;
+	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+		CanShootItem = false;
 	}
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		if (--ComboChain_ResetTimer <= 0) {
