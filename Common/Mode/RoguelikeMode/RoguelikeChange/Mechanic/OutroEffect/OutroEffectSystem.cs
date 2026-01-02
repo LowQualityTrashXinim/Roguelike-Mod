@@ -1,77 +1,88 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using System.Linq;
-using Terraria.ModLoader;
-using System.Collections.Generic;
-using Roguelike.Contents.Items.NoneSynergy;
-using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
+﻿using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.NoneSynergy.EnhancedKatana;
-using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
-using Roguelike.Contents.Items.NoneSynergy.TrueEnchantedSword;
 using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MasterSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodyStella;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.ShatteredSky;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SakuraKatana;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TwilightNight;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DrainingVeilBlade;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang;
-using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TheOrbit;
-using Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow;
-using Roguelike.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.CorruptedRebirth;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TundraBow;
-using Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
-using Roguelike.Contents.Items.NoneSynergy.Gunmerang;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Underdog;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.LaserSniper;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
 using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
-using Roguelike.Contents.Items.NoneSynergy.RifleShotgun;
-using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
-using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
-using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
+using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
+using Roguelike.Contents.Items.NoneSynergy.Gunmerang;
 using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
 using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
+using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
+using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
+using Roguelike.Contents.Items.NoneSynergy.RectangleShotgun;
+using Roguelike.Contents.Items.NoneSynergy.RifleShotgun;
+using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
+using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
+using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
+using Roguelike.Contents.Items.NoneSynergy.TrueEnchantedSword;
+using Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow;
+using Roguelike.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.LaserSniper;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.WyvernWrath;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodyStella;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.DrainingVeilBlade;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MasterSword;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SakuraKatana;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.ShatteredSky;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TheOrbit;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TwilightNight;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang;
+using Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.CorruptedRebirth;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HandmadeLauncher;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Merciless;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SnowballCannonMK2;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TundraBow;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Underdog;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 internal class OutroEffectSystem : ModSystem {
@@ -104,6 +115,13 @@ internal class OutroEffectSystem : ModSystem {
 		Add_RepeaterTag();
 		Add_PistolTag();
 		Add_RifleTag();
+		Add_ShotgunTag();
+		Add_LauncherTag();
+		Add_MagicStaffTag();
+		Add_MagicWandTag();
+		Add_MagicBookTag();
+		Add_MagicGunTag();
+		Add_OtherTag();
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
 	}
@@ -437,6 +455,8 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<MagicHandCannon>());
 
 		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<Gunmerang>());
+
+		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.SpaceGun);
 	}
 	private void Add_RifleTag() {
 		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Musket);
@@ -470,6 +490,201 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<HuntingRifle>());
 		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<LongerMusket>());
 		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<SniperRifle>());
+
+		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.LaserRifle);
+	}
+	private void Add_ShotgunTag() {
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.TheUndertaker);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Boomstick);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.QuadBarrelShotgun);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Shotgun);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.OnyxBlaster);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.TacticalShotgun);
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Xenopopper);
+
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<Merciless>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<PaintRifle>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<HorusEye>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<UltimatePistol>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<QuadDemonBlaster>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<TundraBow>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<TheUnderdog>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<Unforgiving>());
+
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<HuntingRifle>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<RifleShotgun>());
+		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<RectangleShotgun>());
+	}
+	private void Add_LauncherTag() {
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.FlareGun);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Sandgun);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SnowballCannon);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Harpoon);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SuperStarCannon);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.StarCannon);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.StakeLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.GrenadeLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ProximityMineLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.RocketLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.NailGun);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Stynger);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.JackOLanternLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SnowmanCannon);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.FireworksLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ElectrosphereLauncher);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Celeb2);
+
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Flamethrower);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ElfMelter);
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.PiranhaGun);
+
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<WinterFlame>());
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<HandmadeLauncher>());
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<SnowballCannonMK2>());
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<SuperFlareGun>());
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<DeathBySpark>());
+
+		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<MagicHandCannon>());
+	}
+	private void Add_MagicStaffTag() {
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.AmethystStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.TopazStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.SapphireStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.EmeraldStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.RubyStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.DiamondStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.AmberStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ThunderStaff);
+
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.FrostStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.MeteorStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.BookStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.UnholyTrident);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.InfernoFork);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.PoisonStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.VenomStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.BlizzardStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ShadowbeamStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.SpectreStaff);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.StaffofEarth);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.NettleBurst);
+		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ApprenticeStaffT3);
+
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<AmethystSwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<TopazSwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<SapphireSwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EmeraldSwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<RubySwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<DiamondSwotaff>());
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<AmberBoneSpear>());
+
+		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<WyvernWrath>());
+	}
+	private void Add_MagicWandTag() {
+		int tag = (int)WeaponTag.MagicWand;
+
+		Arr_WeaponTag[tag].Add(ItemID.WandofFrosting);
+		Arr_WeaponTag[tag].Add(ItemID.WandofSparking);
+		Arr_WeaponTag[tag].Add(ItemID.CrimsonRod);
+		Arr_WeaponTag[tag].Add(ItemID.Vilethorn);
+		Arr_WeaponTag[tag].Add(ItemID.MagicMissile);
+		Arr_WeaponTag[tag].Add(ItemID.Flamelash);
+		Arr_WeaponTag[tag].Add(ItemID.AquaScepter);
+		Arr_WeaponTag[tag].Add(ItemID.WeatherPain);
+		Arr_WeaponTag[tag].Add(ItemID.FlowerofFire);
+
+		Arr_WeaponTag[tag].Add(ItemID.FlowerofFrost);
+		Arr_WeaponTag[tag].Add(ItemID.CrystalVileShard);
+		Arr_WeaponTag[tag].Add(ItemID.SoulDrain);
+		Arr_WeaponTag[tag].Add(ItemID.RainbowRod);
+		Arr_WeaponTag[tag].Add(ItemID.BatScepter);
+		Arr_WeaponTag[tag].Add(ItemID.PrincessWeapon);
+		Arr_WeaponTag[tag].Add(ItemID.Razorpine);
+
+		Arr_WeaponTag[tag].Add(ItemID.ClingerStaff);
+		Arr_WeaponTag[tag].Add(ItemID.NimbusRod);
+		Arr_WeaponTag[tag].Add(ItemID.SharpTears);
+	}
+	private void Add_MagicBookTag() {
+		int tag = (int)WeaponTag.MagicBook;
+
+		Arr_WeaponTag[tag].Add(ItemID.WaterBolt);
+		Arr_WeaponTag[tag].Add(ItemID.BookofSkulls);
+		Arr_WeaponTag[tag].Add(ItemID.DemonScythe);
+		Arr_WeaponTag[tag].Add(ItemID.CursedFlames);
+		Arr_WeaponTag[tag].Add(ItemID.GoldenShower);
+		Arr_WeaponTag[tag].Add(ItemID.CrystalStorm);
+		Arr_WeaponTag[tag].Add(ItemID.MagnetSphere);
+		Arr_WeaponTag[tag].Add(ItemID.RazorbladeTyphoon);
+		Arr_WeaponTag[tag].Add(ItemID.LunarFlareBook);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SinisterBook>());
+	}
+	private void Add_MagicGunTag() {
+		int tag = (int)WeaponTag.MagicGun;
+
+		Arr_WeaponTag[tag].Add(ItemID.SpaceGun);
+		Arr_WeaponTag[tag].Add(ItemID.ZapinatorGray);
+		Arr_WeaponTag[tag].Add(ItemID.BeeGun);
+
+		Arr_WeaponTag[tag].Add(ItemID.LaserRifle);
+		Arr_WeaponTag[tag].Add(ItemID.ZapinatorOrange);
+		Arr_WeaponTag[tag].Add(ItemID.WaspGun);
+		Arr_WeaponTag[tag].Add(ItemID.LeafBlower);
+		Arr_WeaponTag[tag].Add(ItemID.RainbowGun);
+		Arr_WeaponTag[tag].Add(ItemID.HeatRay);
+		Arr_WeaponTag[tag].Add(ItemID.LaserMachinegun);
+		Arr_WeaponTag[tag].Add(ItemID.ChargedBlasterCannon);
+		Arr_WeaponTag[tag].Add(ItemID.BubbleGun);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<LaserSniper>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MagicHandCannon>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StarLightDistributer>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ZapSnapper>());
+	}
+	private void Add_OtherTag() {
+		int tag = (int)WeaponTag.Other;
+
+		Arr_WeaponTag[tag].Add(ItemID.Blowpipe);
+		Arr_WeaponTag[tag].Add(ItemID.Blowgun);
+		Arr_WeaponTag[tag].Add(ItemID.DartPistol);
+		Arr_WeaponTag[tag].Add(ItemID.DartRifle);
+		Arr_WeaponTag[tag].Add(ItemID.Toxikarp);
+		Arr_WeaponTag[tag].Add(ItemID.BreathingReed);
+		Arr_WeaponTag[tag].Add(ItemID.BladedGlove);
+		Arr_WeaponTag[tag].Add(ItemID.StylistKilLaKillScissorsIWish);
+		Arr_WeaponTag[tag].Add(ItemID.FetidBaghnakhs);
+		Arr_WeaponTag[tag].Add(ItemID.PsychoKnife);
+
+		Arr_WeaponTag[tag].Add(ItemID.JoustingLance);
+		Arr_WeaponTag[tag].Add(ItemID.HallowJoustingLance);
+		Arr_WeaponTag[tag].Add(ItemID.ShadowJoustingLance);
+
+		Arr_WeaponTag[tag].Add(ItemID.ShadowFlameKnife);
+		Arr_WeaponTag[tag].Add(ItemID.MonkStaffT1);
+		Arr_WeaponTag[tag].Add(ItemID.ScourgeoftheCorruptor);
+		Arr_WeaponTag[tag].Add(ItemID.VampireKnives);
+		Arr_WeaponTag[tag].Add(ItemID.MonkStaffT3);
+		Arr_WeaponTag[tag].Add(ItemID.DayBreak);
+		Arr_WeaponTag[tag].Add(ItemID.SolarEruption);
+
+		Arr_WeaponTag[tag].Add(ItemID.PainterPaintballGun);
+		Arr_WeaponTag[tag].Add(ItemID.AleThrowingGlove);
+		Arr_WeaponTag[tag].Add(ItemID.CoinGun);
+
+		Arr_WeaponTag[tag].Add(ItemID.MedusaHead);
+		Arr_WeaponTag[tag].Add(ItemID.SpiritFlame);
+		Arr_WeaponTag[tag].Add(ItemID.ShadowFlameHexDoll);
+		Arr_WeaponTag[tag].Add(ItemID.MagicalHarp);
+		Arr_WeaponTag[tag].Add(ItemID.ToxicFlask);
+		Arr_WeaponTag[tag].Add(ItemID.MagicDagger);
+
+		Arr_WeaponTag[tag].Add(ItemID.FairyQueenMagicItem);
+		Arr_WeaponTag[tag].Add(ItemID.SparkleGuitar);
+		Arr_WeaponTag[tag].Add(ItemID.NebulaArcanum);
+		Arr_WeaponTag[tag].Add(ItemID.NebulaBlaze);
+
+		Arr_WeaponTag[tag].Add(ItemID.LastPrism);
 	}
 }
 public abstract class WeaponEffect : ModType {
@@ -545,4 +760,8 @@ public enum WeaponTag : byte {
 	/// Lunar and moon lord weapon
 	/// </summary>
 	Celestial,
+	/// <summary>
+	/// For weapon that is a musical instrument
+	/// </summary>
+	Musical,
 }
