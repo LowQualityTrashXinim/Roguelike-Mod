@@ -255,6 +255,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public short VariantType = -1;
 		public int ItemLevel = 0;
 		public bool IsASword = false;
+		public int OutroEffect_type = -1;
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.ModItem == null) {
 				return;
@@ -272,6 +273,15 @@ namespace Roguelike.Contents.Items.Weapon {
 				}
 				WorldVaultSystem.Set_Variant = 0;
 			}
+		}
+		public override bool CanUseItem(Item item, Player player) {
+			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
+				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
+				if (eff != null) {
+					player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(eff);
+				}
+			}
+			return base.CanUseItem(item, player);
 		}
 		public override void HoldItem(Item item, Player player) {
 			UpdateCriticalDamage = 0;
@@ -335,6 +345,26 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (ModContent.GetInstance<UniversalSystem>().user2ndInterface.CurrentState == ModContent.GetInstance<UniversalSystem>().transmutationUI) {
 				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 			}
+			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			if (item.ModItem != null) {
+				if (ExtraInfo) {
+					if (!moddedplayer.Shift_Option()) {
+						tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
+					}
+				}
+			}
+			else {
+				if (item.IsAWeapon()) {
+					if (!OutroEffectSystem.Has_WeaponTag(item.type)) {
+						ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
+					}
+					else {
+						if (Main.SmartCursorIsUsed && !moddedplayer.Shift_Option()) {
+							tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
+						}
+					}
+				}
+			}
 			if (item.ModItem == null) {
 				return;
 			}
@@ -346,12 +376,6 @@ namespace Roguelike.Contents.Items.Weapon {
 				NameLine.Text += " [Debug]";
 				NameLine.OverrideColor = Color.MediumPurple;
 				return;
-			}
-			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
-			if (ExtraInfo && item.ModItem != null) {
-				if (!moddedplayer.Shift_Option()) {
-					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
-				}
 			}
 			if (AdvancedBuffItem && NameLine != null) {
 				NameLine.Text += " [Advanced]";
@@ -403,49 +427,45 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
-			if (item.ModItem == null) {
-				return true;
-			}
 			//Prevent possible conflict, basically hardcoding to make it so that it only work for item belong to this mod
-			if (item.ModItem.Mod.Name != Mod.Name) {
-				return true;
-			}
-			if (item.ModItem != null) {
-				string value = null;
-				if (!Main.SmartCursorIsUsed) {
+			string value = null;
+			if (!Main.SmartCursorIsUsed) {
+				if (item.ModItem != null) {
+					if (item.ModItem.Mod.Name != Mod.Name) {
+						return true;
+					}
 					if (ExtraInfo) {
 						value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
 					}
 				}
+			}
+			else {
+				value = "This weapon is classified as following: \n";
+				value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
+			}
+			if (value == null) {
+				return base.PreDrawTooltip(item, lines, ref x, ref y); ;
+			}
+			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			if (moddedplayer.Shift_Option()) {
+				float width;
+				float height = -16;
+				Vector2 pos;
+				DynamicSpriteFont font = FontAssets.MouseText.Value;
+				if (Main.MouseScreen.X < Main.screenWidth / 2) {
+					string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
+					width = ChatManager.GetStringSize(font, widest, Vector2.One).X;
+					pos = new Vector2(x, y) + new Vector2(width + 30, 0);
+				}
 				else {
-					//foreach (var itemtag in list_weaponTag) {
-					//	value += Enum.GetName(itemtag) + "\n";
-					//}
-				}
-				if (value == null) {
-					return base.PreDrawTooltip(item, lines, ref x, ref y); ;
-				}
-				ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
-				if (moddedplayer.Shift_Option()) {
-					float width;
-					float height = -16;
-					Vector2 pos;
-					DynamicSpriteFont font = FontAssets.MouseText.Value;
-					if (Main.MouseScreen.X < Main.screenWidth / 2) {
-						string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
-						width = ChatManager.GetStringSize(font, widest, Vector2.One).X;
-						pos = new Vector2(x, y) + new Vector2(width + 30, 0);
-					}
-					else {
-						width = ChatManager.GetStringSize(font, value, Vector2.One).X + 20;
-						pos = new Vector2(x, y) - new Vector2(width + 30, 0);
-					}
 					width = ChatManager.GetStringSize(font, value, Vector2.One).X + 20;
-					height += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
-					Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
-					Utils.DrawBorderString(Main.spriteBatch, value, pos, Color.White);
-					pos.Y += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
+					pos = new Vector2(x, y) - new Vector2(width + 30, 0);
 				}
+				width = ChatManager.GetStringSize(font, value, Vector2.One).X + 20;
+				height += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
+				Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
+				Utils.DrawBorderString(Main.spriteBatch, value, pos, Color.White);
+				pos.Y += ChatManager.GetStringSize(font, value, Vector2.One).Y + 16;
 			}
 			return base.PreDrawTooltip(item, lines, ref x, ref y);
 		}

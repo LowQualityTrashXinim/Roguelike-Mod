@@ -13,9 +13,7 @@ using Microsoft.Xna.Framework;
 using Terraria.UI;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 
@@ -67,8 +65,8 @@ public static class SpoilDropRarity {
 public abstract class ModSpoil {
 	public string Name => GetType().Name;
 	public int RareValue = 0;
-	public string DisplayName => $"- {Language.GetTextValue($"Mods.Roguelike.Spoils.{Name}.DisplayName")} -";
-	public string Description => Language.GetTextValue($"Mods.Roguelike.Spoils.{Name}.Description");
+	public string DisplayName => $"- {ModUtils.LocalizationText("Spoils", $"{Name}.DisplayName")} -";
+	public string Description => ModUtils.LocalizationText("Spoils", $"{Name}.DisplayName");
 	public virtual void SetStaticDefault() { }
 	public virtual string FinalDisplayName() => DisplayName;
 	public virtual string FinalDescription() => Description;

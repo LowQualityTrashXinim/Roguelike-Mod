@@ -35,6 +35,7 @@ using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -531,6 +532,8 @@ public class DefaultUI : UIState {
 	private UITextBox dmgTaken;
 
 	private Roguelike_UIImage WeaponExtraction;
+
+	UIImage_WeaponEffectShower WeaponEff;
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		endofdemo_Main.Remove();
 		EndOfDemoPanel.Remove();
@@ -560,6 +563,12 @@ public class DefaultUI : UIState {
 		timer.ShowInputTicker = false;
 		timer.TextHAlign = .5f;
 		Append(timer);
+
+		WeaponEff = new();
+		WeaponEff.HAlign = .44f;
+		WeaponEff.VAlign = .02f;
+		WeaponEff.UISetWidthHeight(52, 52);
+		Append(WeaponEff);
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();

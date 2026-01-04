@@ -1,4 +1,8 @@
-﻿using Roguelike.Contents.Items.NoneSynergy;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.NoneSynergy.EnhancedKatana;
 using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
 using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
@@ -76,19 +80,26 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TundraBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Underdog;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
+using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
+using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
+using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 internal class OutroEffectSystem : ModSystem {
 	public static short OutroEffectID = -1;
 	public static List<WeaponEffect> list_effect { get; private set; } = new();
-	public static HashSet<int>[] Arr_WeaponTag = [];
+	public static WeaponEffect GetWeaponEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
+	private static HashSet<int>[] Arr_WeaponTag = [];
 	public static short Register(WeaponEffect effect) {
 		ModTypeLookup<WeaponEffect>.Register(effect);
 		effect.SetStaticDefaults();
@@ -98,9 +109,12 @@ internal class OutroEffectSystem : ModSystem {
 	public override void PostSetupContent() {
 		Stopwatch watch = new Stopwatch();
 		watch.Start();
-		int len = (int)Enum.GetValues(typeof(WeaponTag)).Cast<WeaponTag>().Last();
+		int len = (int)Enum.GetValues(typeof(WeaponTag)).Cast<WeaponTag>().Last() + 1;
 		Array.Resize(ref Arr_WeaponTag, len);
-		Array.Fill(Arr_WeaponTag, new());
+
+		for (int i = 0; i < len; i++) {
+			Arr_WeaponTag[i] = new();
+		}
 
 		Add_SwordTag();
 		Add_ShortSwordTag();
@@ -121,100 +135,136 @@ internal class OutroEffectSystem : ModSystem {
 		Add_MagicWandTag();
 		Add_MagicBookTag();
 		Add_MagicGunTag();
+		Add_SummonStaffTag();
+		Add_SummonMiscTag();
+		Add_WhipTag();
 		Add_OtherTag();
+
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
 	}
+	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		WeaponType_WeaponTag.Clear();
+	}
+	public static bool Has_WeaponTag(int type) => WeaponType_WeaponTag.ContainsKey(type);
+	private static Dictionary<int, HashSet<WeaponTag>> WeaponType_WeaponTag = new();
+	/// <summary>
+	/// Do a reverse lookup for the item and then cached the item in a hash
+	/// </summary>
+	/// <param name="type"></param>
+	/// <returns></returns>
+	public string GetWeaponTag(int type) {
+		string tag = "";
+		if (WeaponType_WeaponTag.ContainsKey(type)) {
+			foreach (WeaponTag weaponTag in WeaponType_WeaponTag[type]) {
+				tag += $"[{weaponTag.ToString()}] ";
+			}
+			return tag;
+		}
+		for (int i = 0; i < Arr_WeaponTag.Length; i++) {
+			if (Arr_WeaponTag[i].Contains(type)) {
+				tag += $"[{((WeaponTag)i).ToString()}] ";
+				if (WeaponType_WeaponTag.ContainsKey(type)) {
+					WeaponType_WeaponTag[type].Add((WeaponTag)i);
+				}
+				else {
+					WeaponType_WeaponTag.Add(type, new() { (WeaponTag)i });
+				}
+			}
+		}
+		return tag;
+	}
 	//All of this mustn't be confused with the actual Add_tag function since these below are more like initialize function
 	private void Add_SwordTag() {
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.WoodenSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BorealWoodSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.RichMahoganySword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.EbonwoodSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.ShadewoodSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.PearlwoodSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.CactusSword);
+		int tag = (int)WeaponTag.Sword;
+		Arr_WeaponTag[tag].Add(ItemID.WoodenSword);
+		Arr_WeaponTag[tag].Add(ItemID.BorealWoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganySword);
+		Arr_WeaponTag[tag].Add(ItemID.EbonwoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.ShadewoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.PearlwoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.CactusSword);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.CopperBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.LeadBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.TinBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.IronBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.TungstenBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.SilverBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.GoldBroadsword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.PlatinumBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.CopperBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.LeadBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.TinBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.IronBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.TungstenBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.SilverBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.GoldBroadsword);
+		Arr_WeaponTag[tag].Add(ItemID.PlatinumBroadsword);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Katana);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.LightsBane);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Muramasa);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BoneSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.DyeTradersScimitar);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Flymeal);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BloodButcherer);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.IceBlade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.EnchantedSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.NightsEdge);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Starfury);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.FalconBlade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BeeKeeper);
+		Arr_WeaponTag[tag].Add(ItemID.Katana);
+		Arr_WeaponTag[tag].Add(ItemID.LightsBane);
+		Arr_WeaponTag[tag].Add(ItemID.Muramasa);
+		Arr_WeaponTag[tag].Add(ItemID.BoneSword);
+		Arr_WeaponTag[tag].Add(ItemID.DyeTradersScimitar);
+		Arr_WeaponTag[tag].Add(ItemID.Flymeal);
+		Arr_WeaponTag[tag].Add(ItemID.BloodButcherer);
+		Arr_WeaponTag[tag].Add(ItemID.IceBlade);
+		Arr_WeaponTag[tag].Add(ItemID.EnchantedSword);
+		Arr_WeaponTag[tag].Add(ItemID.NightsEdge);
+		Arr_WeaponTag[tag].Add(ItemID.Starfury);
+		Arr_WeaponTag[tag].Add(ItemID.FalconBlade);
+		Arr_WeaponTag[tag].Add(ItemID.BeeKeeper);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BluePhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.RedPhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.PurplePhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.YellowPhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.OrangePhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.GreenPhaseblade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.WhitePhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.BluePhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.RedPhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.PurplePhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.YellowPhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.OrangePhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.GreenPhaseblade);
+		Arr_WeaponTag[tag].Add(ItemID.WhitePhaseblade);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BluePhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.RedPhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.PurplePhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.YellowPhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.OrangePhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.GreenPhasesaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.WhitePhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.BluePhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.RedPhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.PurplePhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.YellowPhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.OrangePhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.GreenPhasesaber);
+		Arr_WeaponTag[tag].Add(ItemID.WhitePhasesaber);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.CobaltSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.PalladiumSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.MythrilSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.OrichalcumSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Bladetongue);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Cutlass);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Frostbrand);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Excalibur);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.ChlorophyteSaber);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Seedler);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Keybrand);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.BeamSword);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.TrueExcalibur);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.TrueNightsEdge);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.TerraBlade);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.InfluxWaver);
+		Arr_WeaponTag[tag].Add(ItemID.CobaltSword);
+		Arr_WeaponTag[tag].Add(ItemID.PalladiumSword);
+		Arr_WeaponTag[tag].Add(ItemID.MythrilSword);
+		Arr_WeaponTag[tag].Add(ItemID.OrichalcumSword);
+		Arr_WeaponTag[tag].Add(ItemID.Bladetongue);
+		Arr_WeaponTag[tag].Add(ItemID.Cutlass);
+		Arr_WeaponTag[tag].Add(ItemID.Frostbrand);
+		Arr_WeaponTag[tag].Add(ItemID.Excalibur);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteSaber);
+		Arr_WeaponTag[tag].Add(ItemID.Seedler);
+		Arr_WeaponTag[tag].Add(ItemID.Keybrand);
+		Arr_WeaponTag[tag].Add(ItemID.BeamSword);
+		Arr_WeaponTag[tag].Add(ItemID.TrueExcalibur);
+		Arr_WeaponTag[tag].Add(ItemID.TrueNightsEdge);
+		Arr_WeaponTag[tag].Add(ItemID.TerraBlade);
+		Arr_WeaponTag[tag].Add(ItemID.InfluxWaver);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Arkhalis);
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ItemID.Terragrim);
+		Arr_WeaponTag[tag].Add(ItemID.Arkhalis);
+		Arr_WeaponTag[tag].Add(ItemID.Terragrim);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EnchantedCopperSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<ManaStarFury>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<GenericBlackSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<FrozenEnchantedSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<Katahanced>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<OldFlamingWoodSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<AmethystSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<TopazSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<SapphireSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EmeraldSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<RubySwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<DiamondSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedCopperSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ManaStarFury>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<GenericBlackSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrozenEnchantedSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Katahanced>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<OldFlamingWoodSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmethystSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TopazSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SapphireSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EmeraldSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RubySwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DiamondSwotaff>());
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<BloodyStella>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EnchantedOreSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EnchantedStarfury>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<FlamingWoodSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<MasterSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<MythrilBeamSword>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<SakuraKatana>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EnergyBlade>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<BloodyStella>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedOreSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedStarfury>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FlamingWoodSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MasterSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MythrilBeamSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SakuraKatana>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnergyBlade>());
 	}
 	private void Add_ShortSwordTag() {
 		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.CopperShortsword);
@@ -642,6 +692,78 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<StarLightDistributer>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<ZapSnapper>());
 	}
+	private void Add_SummonStaffTag() {
+		int tag = (int)WeaponTag.SummonStaff;
+
+		Arr_WeaponTag[tag].Add(ItemID.BabyBirdStaff);
+		Arr_WeaponTag[tag].Add(ItemID.FlinxStaff);
+		Arr_WeaponTag[tag].Add(ItemID.SlimeStaff);
+		Arr_WeaponTag[tag].Add(ItemID.HornetStaff);
+		Arr_WeaponTag[tag].Add(ItemID.VampireFrogStaff);
+		Arr_WeaponTag[tag].Add(ItemID.ImpStaff);
+		Arr_WeaponTag[tag].Add(ItemID.Smolstar);
+		Arr_WeaponTag[tag].Add(ItemID.SpiderStaff);
+		Arr_WeaponTag[tag].Add(ItemID.PirateStaff);
+		Arr_WeaponTag[tag].Add(ItemID.SanguineStaff);
+
+		Arr_WeaponTag[tag].Add(ItemID.OpticStaff);
+		Arr_WeaponTag[tag].Add(ItemID.DeadlySphereStaff);
+		Arr_WeaponTag[tag].Add(ItemID.PygmyStaff);
+		Arr_WeaponTag[tag].Add(ItemID.RavenStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StormTigerStaff);
+		Arr_WeaponTag[tag].Add(ItemID.TempestStaff);
+		Arr_WeaponTag[tag].Add(ItemID.XenoStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StardustCellStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StardustDragonStaff);
+
+		Arr_WeaponTag[tag].Add(ItemID.QueenSpiderStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StaffoftheFrostHydra);
+		Arr_WeaponTag[tag].Add(ItemID.MoonlordTurretStaff);
+		Arr_WeaponTag[tag].Add(ItemID.RainbowCrystalStaff);
+
+		Arr_WeaponTag[tag].Add(ItemID.HoundiusShootius);
+		Arr_WeaponTag[tag].Add(ItemID.DD2LightningAuraT1Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2LightningAuraT2Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2LightningAuraT3Popper);
+
+		Arr_WeaponTag[tag].Add(ItemID.DD2ExplosiveTrapT1Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2ExplosiveTrapT2Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2ExplosiveTrapT3Popper);
+
+		Arr_WeaponTag[tag].Add(ItemID.DD2FlameburstTowerT1Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2FlameburstTowerT2Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2FlameburstTowerT3Popper);
+
+		Arr_WeaponTag[tag].Add(ItemID.DD2BallistraTowerT1Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2BallistraTowerT2Popper);
+		Arr_WeaponTag[tag].Add(ItemID.DD2BallistraTowerT3Popper);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StreetLamp>());
+	}
+	private void Add_SummonMiscTag() {
+		int tag = (int)WeaponTag.SummonMisc;
+
+		Arr_WeaponTag[tag].Add(ItemID.AbigailsFlower);
+		Arr_WeaponTag[tag].Add(ItemID.EmpressBlade);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StickyFlower>());
+	}
+	private void Add_WhipTag() {
+		int tag = (int)WeaponTag.Whip;
+
+		Arr_WeaponTag[tag].Add(ItemID.BlandWhip);
+		Arr_WeaponTag[tag].Add(ItemID.IvyWhip);
+		Arr_WeaponTag[tag].Add(ItemID.BoneWhip);
+		Arr_WeaponTag[tag].Add(ItemID.FireWhip);
+		Arr_WeaponTag[tag].Add(ItemID.CoolWhip);
+		Arr_WeaponTag[tag].Add(ItemID.ThornWhip);
+		Arr_WeaponTag[tag].Add(ItemID.SwordWhip);
+		Arr_WeaponTag[tag].Add(ItemID.ScytheWhip);
+		Arr_WeaponTag[tag].Add(ItemID.MaceWhip);
+		Arr_WeaponTag[tag].Add(ItemID.RainbowWhip);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StarWhip>());
+	}
 	private void Add_OtherTag() {
 		int tag = (int)WeaponTag.Other;
 
@@ -687,12 +809,89 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.LastPrism);
 	}
 }
+public class WeaponEffect_ModPlayer : ModPlayer {
+	public int[] Arr_WeaponEffect = [];
+	public List<int> Easy_WeaponEffectFollow = new();
+	public override void Initialize() {
+		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
+	}
+	public void Add_WeaponEffect(int type) {
+		WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(type);
+		if (ef == null) {
+			return;
+		}
+		Arr_WeaponEffect[type] = ef.Duration;
+		Easy_WeaponEffectFollow.Add(type);
+	}
+	public void Add_WeaponEffect(WeaponEffect ef) {
+		Arr_WeaponEffect[ef.Type] = ef.Duration;
+		Easy_WeaponEffectFollow.Add(ef.Type);
+	}
+	public override void UpdateEquips() {
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				Easy_WeaponEffectFollow.Remove(i);
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.Update(Player);
+		}
+	}
+	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.WeaponDamage(Player, item, ref damage);
+		}
+	}
+	public override void ModifyWeaponCrit(Item item, ref float crit) {
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.WeaponCrit(Player, item, ref crit);
+		}
+	}
+	public override void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.WeaponKnockBack(Player, item, ref knockback);
+		}
+	}
+}
 public abstract class WeaponEffect : ModType {
 	public short Type = -1;
-	protected override void Register() {
+	public int Duration = 0;
+	public string DisplayName => ModUtils.LocalizationText("Outro", $"{Name}.DisplayName");
+	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
+	public int GetWeaponEffectType<T>() where T : WeaponEffect => ModContent.GetInstance<T>().Type;
+	protected sealed override void Register() {
 		Type = OutroEffectSystem.Register(this);
+		SetStaticDefaults();
 	}
-	public virtual void Update(Player player, Item item) { }
+	public virtual void OnAdd(Player player) { }
+	public virtual void Update(Player player) { }
+	public virtual void WeaponDamage(Player player, Item item, ref StatModifier damage) { }
+	public virtual void WeaponCrit(Player player, Item item, ref float crit) { }
+	public virtual void WeaponKnockBack(Player player, Item item, ref StatModifier knockback) { }
 }
 public enum WeaponAttribute : byte {
 	SoulBound,
@@ -726,7 +925,7 @@ public enum WeaponTag : byte {
 	MagicBook,
 
 	SummonStaff,
-	SummonWand,
+	SummonMisc,
 	Whip,
 
 	Other,
@@ -764,4 +963,38 @@ public enum WeaponTag : byte {
 	/// For weapon that is a musical instrument
 	/// </summary>
 	Musical,
+}
+public class UIImage_WeaponEffectShower : Roguelike_UIImage {
+	public UIImage_WeaponEffectShower() : base(TextureAssets.InventoryBack7) {
+	}
+	int Counter = 0;
+	public override void UpdateImage(GameTime gameTime) {
+		base.UpdateImage(gameTime);
+		Player player = Main.LocalPlayer;
+		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		if (modplayer.Easy_WeaponEffectFollow.Count <= 0) {
+			Counter = ModUtils.CountDown(Counter);
+		}
+		else {
+			if (++Counter >= 100) {
+				Counter = 100;
+			}
+		}
+		Color = OriginalColor * (Counter / 100f);
+	}
+	public override void DrawImage(SpriteBatch spriteBatch) {
+		if (Counter > 0 && IsMouseHovering) {
+			string textEf = "";
+			Player player = Main.LocalPlayer;
+			WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+			for (int i = 0; i < modplayer.Easy_WeaponEffectFollow.Count; i++) {
+				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(modplayer.Easy_WeaponEffectFollow[i]);
+				if (i == modplayer.Easy_WeaponEffectFollow.Count - 1) {
+					textEf += $"[{eff.DisplayName}]: \n{eff.Description}";
+				}
+				textEf += $"[{eff.DisplayName}]: \n{eff.Description} \n";
+			}
+			UICommon.TooltipMouseText(textEf);
+		}
+	}
 }

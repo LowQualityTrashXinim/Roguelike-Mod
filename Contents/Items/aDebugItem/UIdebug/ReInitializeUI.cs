@@ -18,9 +18,9 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.Activate();
+			ModContent.GetInstance<UniversalSystem>().defaultUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().defaultUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().defaultUI.Activate();
 		}
 		return false;
 	}
