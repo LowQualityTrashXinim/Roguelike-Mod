@@ -275,12 +275,6 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override bool CanUseItem(Item item, Player player) {
-			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
-				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
-				if (eff != null) {
-					player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(eff);
-				}
-			}
 			return base.CanUseItem(item, player);
 		}
 		public override void HoldItem(Item item, Player player) {
@@ -301,7 +295,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
-		public float CriticalDamage;
+		public float CriticalDamage = 0;
 		public float UpdateCriticalDamage;
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			if (ItemLevel <= 0) {
@@ -382,6 +376,12 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void UpdateInventory(Item item, Player player) {
+			if (player.GetModPlayer<SynergyModPlayer>().JustSwitched) {
+				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
+				if (eff != null) {
+					player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(eff);
+				}
+			}
 			if (++Counter >= int.MaxValue / 10) {
 				Counter = 0;
 			}
@@ -442,6 +442,12 @@ namespace Roguelike.Contents.Items.Weapon {
 			else {
 				value = "This weapon is classified as following: \n";
 				value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
+				if (OutroEffect_type != -1) {
+					WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
+					if (ef != null) {
+						value += $"\n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
+					}
+				}
 			}
 			if (value == null) {
 				return base.PreDrawTooltip(item, lines, ref x, ref y); ;

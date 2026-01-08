@@ -10,15 +10,9 @@
 10/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
 11/ Added content based on biome.
-12/ Synergy damage changes:
-- Intro damage and outro damage are affected by synergy damage
-- Synergy damage is now more of a intro buff and outro buff depend on which item grant intro and outro buff.
-- Synergy weapon still get increases by synergy damage regardless
-- Synergy damage still increases weapon damage regardless of class type.
-- Only intro buff and outro buff can stack.
-13/ Work on level item system ( not actual leveling system ).
-14/ Implement randomize spawn location mechanic.
-15/ Implement special characteristic for material :
+12/ Work on level item system ( not actual leveling system ).
+13/ Implement randomize spawn location mechanic.
+14/ Implement special characteristic for material :
 - Copper : Related to electricity and the debuff electricified
 - Tin : Strengthen using tin item related.
 - Iron : Defenses focus
@@ -27,12 +21,10 @@
 - Tungsten : ????
 - Gold : Midas theme focus
 - Platinum : ???
-16/ Implement a threadhold that need to be full fill if player want to use intro attack and gain outro buff.
-17/ Implement Outro effect mechanic, the mechanic are to work as follow:
+15/ Implement Outro effect mechanic, the mechanic are to work as follow:
 - Each weapon produce their own outro point and have their own threadhold.
 - If a weapon outro point is not yet reach their threadhold and player switch to different weapon, then the outro point is reset back to 0.
 - Once player reach to the threadhold of outro point then upon switching to different weapon,
 instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
-- A player can't have more than 1 outro effect, outro effect act like a buff but is not consider to be a buff nor debuff.
 - Duplicate outro effect will instead have their timer reset and not added.
 - The following mechanic should also be implemented into Everlasting Overhaul.

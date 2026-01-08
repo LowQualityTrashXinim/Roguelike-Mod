@@ -83,6 +83,7 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
+using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,10 +97,15 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 internal class OutroEffectSystem : ModSystem {
-	public static short OutroEffectID = -1;
 	public static List<WeaponEffect> list_effect { get; private set; } = new();
 	public static WeaponEffect GetWeaponEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
 	private static HashSet<int>[] Arr_WeaponTag = [];
+	/// <summary>
+	/// It is highly recommanded to use this if you already know what tag you want to check to see if it have the weapon
+	/// </summary>
+	public static HashSet<int>[] Get_Arr_WeaponTag => Arr_WeaponTag;
+	private static Dictionary<int, HashSet<WeaponTag>> WeaponType_WeaponTag = new();
+	public static Dictionary<int, HashSet<WeaponTag>> Get_WeaponType_WeaponTag => WeaponType_WeaponTag;
 	public static short Register(WeaponEffect effect) {
 		ModTypeLookup<WeaponEffect>.Register(effect);
 		effect.SetStaticDefaults();
@@ -127,6 +133,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_BoomerangTag();
 		Add_BowTag();
 		Add_RepeaterTag();
+		Add_GunTag();
 		Add_PistolTag();
 		Add_RifleTag();
 		Add_ShotgunTag();
@@ -139,6 +146,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_SummonMiscTag();
 		Add_WhipTag();
 		Add_OtherTag();
+		Add_ReaperMarkTag();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
@@ -146,10 +154,16 @@ internal class OutroEffectSystem : ModSystem {
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		WeaponType_WeaponTag.Clear();
 	}
-	public static bool Has_WeaponTag(int type) => WeaponType_WeaponTag.ContainsKey(type);
-	private static Dictionary<int, HashSet<WeaponTag>> WeaponType_WeaponTag = new();
 	/// <summary>
-	/// Do a reverse lookup for the item and then cached the item in a hash
+	/// Check whenever a weapon tag is even present at all for the weapon<br/>
+	/// This is for optimizing so don't bother using this at all<br/>
+	/// Instead use <see cref="Get_Arr_WeaponTag"/>
+	/// </summary>
+	/// <param name="type"></param>
+	/// <returns></returns>
+	public static bool Has_WeaponTag(int type) => WeaponType_WeaponTag.ContainsKey(type);
+	/// <summary>
+	/// Do a reverse lookup for the item and then cached the item tag in a hash
 	/// </summary>
 	/// <param name="type"></param>
 	/// <returns></returns>
@@ -163,7 +177,7 @@ internal class OutroEffectSystem : ModSystem {
 		}
 		for (int i = 0; i < Arr_WeaponTag.Length; i++) {
 			if (Arr_WeaponTag[i].Contains(type)) {
-				tag += $"[{((WeaponTag)i).ToString()}] ";
+				tag += $"[{(WeaponTag)i}] ";
 				if (WeaponType_WeaponTag.ContainsKey(type)) {
 					WeaponType_WeaponTag[type].Add((WeaponTag)i);
 				}
@@ -323,9 +337,11 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.GolemFist);
 	}
 	private void Add_SickleTag() {
-		Arr_WeaponTag[(int)WeaponTag.Sickle].Add(ItemID.Sickle);
-		Arr_WeaponTag[(int)WeaponTag.Sickle].Add(ItemID.IceSickle);
-		Arr_WeaponTag[(int)WeaponTag.Sickle].Add(ItemID.DeathSickle);
+		int tag = (int)WeaponTag.Sickle;
+		Arr_WeaponTag[tag].Add(ItemID.Sickle);
+		Arr_WeaponTag[tag].Add(ItemID.IceSickle);
+		Arr_WeaponTag[tag].Add(ItemID.DeathSickle);
+		Arr_WeaponTag[tag].Add(ItemID.ScytheWhip);
 	}
 	private void Add_SpearTag() {
 		Arr_WeaponTag[(int)WeaponTag.Spear].Add(ItemID.Spear);
@@ -484,86 +500,187 @@ internal class OutroEffectSystem : ModSystem {
 
 		Arr_WeaponTag[(int)WeaponTag.Repeater].Add(ModContent.ItemType<Unforgiving>());
 	}
+	private void Add_GunTag() {
+		int tag = (int)WeaponTag.Gun;
+		Arr_WeaponTag[tag].Add(ItemID.FlintlockPistol);
+		Arr_WeaponTag[tag].Add(ItemID.TheUndertaker);
+		Arr_WeaponTag[tag].Add(ItemID.Handgun);
+		Arr_WeaponTag[tag].Add(ItemID.Revolver);
+		Arr_WeaponTag[tag].Add(ItemID.PhoenixBlaster);
+		Arr_WeaponTag[tag].Add(ItemID.PewMaticHorn);
+		Arr_WeaponTag[tag].Add(ItemID.VenusMagnum);
+		Arr_WeaponTag[tag].Add(ItemID.Xenopopper);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<BloodyShot>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SkullRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<OldSkullRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<KnifeRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HeartPistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Deagle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<QuadDemonBlaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<UltimatePistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MagicHandCannon>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Gunmerang>());
+
+		Arr_WeaponTag[tag].Add(ItemID.SpaceGun);
+
+		Arr_WeaponTag[tag].Add(ItemID.Musket);
+		Arr_WeaponTag[tag].Add(ItemID.Minishark);
+		Arr_WeaponTag[tag].Add(ItemID.ClockworkAssaultRifle);
+		Arr_WeaponTag[tag].Add(ItemID.Megashark);
+		Arr_WeaponTag[tag].Add(ItemID.Gatligator);
+		Arr_WeaponTag[tag].Add(ItemID.Uzi);
+		Arr_WeaponTag[tag].Add(ItemID.CandyCornRifle);
+		Arr_WeaponTag[tag].Add(ItemID.ChainGun);
+		Arr_WeaponTag[tag].Add(ItemID.VortexBeater);
+		Arr_WeaponTag[tag].Add(ItemID.SniperRifle);
+		Arr_WeaponTag[tag].Add(ItemID.SDMG);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ChaosMiniShark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Annihiliation>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PulseRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AngelicSmg>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Mixmaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TheUnderdog>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Unforgiving>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PaintRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<LaserSniper>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<BlueMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrozenShark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RifleShotgun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<OvergrownMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SingleBarrelMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SnowballRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HuntingRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<LongerMusket>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SniperRifle>());
+
+		Arr_WeaponTag[tag].Add(ItemID.LaserRifle);
+
+		Arr_WeaponTag[tag].Add(ItemID.TheUndertaker);
+		Arr_WeaponTag[tag].Add(ItemID.Boomstick);
+		Arr_WeaponTag[tag].Add(ItemID.QuadBarrelShotgun);
+		Arr_WeaponTag[tag].Add(ItemID.Shotgun);
+		Arr_WeaponTag[tag].Add(ItemID.OnyxBlaster);
+		Arr_WeaponTag[tag].Add(ItemID.TacticalShotgun);
+		Arr_WeaponTag[tag].Add(ItemID.Xenopopper);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Merciless>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PaintRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HorusEye>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<UltimatePistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<QuadDemonBlaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TundraBow>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TheUnderdog>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Unforgiving>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HuntingRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RifleShotgun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RectangleShotgun>());
+
+		Arr_WeaponTag[tag].Add(ItemID.ZapinatorGray);
+		Arr_WeaponTag[tag].Add(ItemID.BeeGun);
+
+		Arr_WeaponTag[tag].Add(ItemID.LaserRifle);
+		Arr_WeaponTag[tag].Add(ItemID.ZapinatorOrange);
+		Arr_WeaponTag[tag].Add(ItemID.WaspGun);
+		Arr_WeaponTag[tag].Add(ItemID.LeafBlower);
+		Arr_WeaponTag[tag].Add(ItemID.RainbowGun);
+		Arr_WeaponTag[tag].Add(ItemID.HeatRay);
+		Arr_WeaponTag[tag].Add(ItemID.LaserMachinegun);
+		Arr_WeaponTag[tag].Add(ItemID.ChargedBlasterCannon);
+		Arr_WeaponTag[tag].Add(ItemID.BubbleGun);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MagicHandCannon>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StarLightDistributer>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ZapSnapper>());
+	}
 	private void Add_PistolTag() {
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.FlintlockPistol);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.TheUndertaker);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.Handgun);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.Revolver);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.PhoenixBlaster);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.PewMaticHorn);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.VenusMagnum);
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.Xenopopper);
+		int tag = (int)WeaponTag.Pistol;
+		Arr_WeaponTag[tag].Add(ItemID.FlintlockPistol);
+		Arr_WeaponTag[tag].Add(ItemID.TheUndertaker);
+		Arr_WeaponTag[tag].Add(ItemID.Handgun);
+		Arr_WeaponTag[tag].Add(ItemID.Revolver);
+		Arr_WeaponTag[tag].Add(ItemID.PhoenixBlaster);
+		Arr_WeaponTag[tag].Add(ItemID.PewMaticHorn);
+		Arr_WeaponTag[tag].Add(ItemID.VenusMagnum);
+		Arr_WeaponTag[tag].Add(ItemID.Xenopopper);
 
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<BloodyShot>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<SkullRevolver>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<OldSkullRevolver>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<KnifeRevolver>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<HeartPistol>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<Deagle>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<QuadDemonBlaster>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<UltimatePistol>());
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<MagicHandCannon>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<BloodyShot>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SkullRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<OldSkullRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<KnifeRevolver>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HeartPistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Deagle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<QuadDemonBlaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<UltimatePistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MagicHandCannon>());
 
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ModContent.ItemType<Gunmerang>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Gunmerang>());
 
-		Arr_WeaponTag[(int)WeaponTag.Pistol].Add(ItemID.SpaceGun);
+		Arr_WeaponTag[tag].Add(ItemID.SpaceGun);
 	}
 	private void Add_RifleTag() {
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Musket);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Minishark);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.ClockworkAssaultRifle);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Megashark);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Gatligator);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.Uzi);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.CandyCornRifle);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.ChainGun);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.VortexBeater);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.SniperRifle);
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.SDMG);
+		int tag = (int)WeaponTag.Rifle;
 
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<ChaosMiniShark>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<Annihiliation>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<PulseRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<AngelicSmg>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<Mixmaster>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<TheUnderdog>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<Unforgiving>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<PaintRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<LaserSniper>());
+		Arr_WeaponTag[tag].Add(ItemID.Musket);
+		Arr_WeaponTag[tag].Add(ItemID.Minishark);
+		Arr_WeaponTag[tag].Add(ItemID.ClockworkAssaultRifle);
+		Arr_WeaponTag[tag].Add(ItemID.Megashark);
+		Arr_WeaponTag[tag].Add(ItemID.Gatligator);
+		Arr_WeaponTag[tag].Add(ItemID.Uzi);
+		Arr_WeaponTag[tag].Add(ItemID.CandyCornRifle);
+		Arr_WeaponTag[tag].Add(ItemID.ChainGun);
+		Arr_WeaponTag[tag].Add(ItemID.VortexBeater);
+		Arr_WeaponTag[tag].Add(ItemID.SniperRifle);
+		Arr_WeaponTag[tag].Add(ItemID.SDMG);
 
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<BlueMinishark>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<FrozenShark>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<RifleShotgun>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<OvergrownMinishark>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<SingleBarrelMinishark>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<SnowballRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<HuntingRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<LongerMusket>());
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ModContent.ItemType<SniperRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ChaosMiniShark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Annihiliation>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PulseRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AngelicSmg>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Mixmaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TheUnderdog>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Unforgiving>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PaintRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<LaserSniper>());
 
-		Arr_WeaponTag[(int)WeaponTag.Rifle].Add(ItemID.LaserRifle);
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<BlueMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrozenShark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RifleShotgun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<OvergrownMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SingleBarrelMinishark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SnowballRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HuntingRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<LongerMusket>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SniperRifle>());
+
+		Arr_WeaponTag[tag].Add(ItemID.LaserRifle);
 	}
 	private void Add_ShotgunTag() {
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.TheUndertaker);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Boomstick);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.QuadBarrelShotgun);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Shotgun);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.OnyxBlaster);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.TacticalShotgun);
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ItemID.Xenopopper);
+		int tag = (int)WeaponTag.Shotgun;
+		Arr_WeaponTag[tag].Add(ItemID.TheUndertaker);
+		Arr_WeaponTag[tag].Add(ItemID.Boomstick);
+		Arr_WeaponTag[tag].Add(ItemID.QuadBarrelShotgun);
+		Arr_WeaponTag[tag].Add(ItemID.Shotgun);
+		Arr_WeaponTag[tag].Add(ItemID.OnyxBlaster);
+		Arr_WeaponTag[tag].Add(ItemID.TacticalShotgun);
+		Arr_WeaponTag[tag].Add(ItemID.Xenopopper);
 
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<Merciless>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<PaintRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<HorusEye>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<UltimatePistol>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<QuadDemonBlaster>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<TundraBow>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<TheUnderdog>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<Unforgiving>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Merciless>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<PaintRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HorusEye>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<UltimatePistol>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<QuadDemonBlaster>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TundraBow>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TheUnderdog>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Unforgiving>());
 
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<HuntingRifle>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<RifleShotgun>());
-		Arr_WeaponTag[(int)WeaponTag.Shotgun].Add(ModContent.ItemType<RectangleShotgun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HuntingRifle>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RifleShotgun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RectangleShotgun>());
 	}
 	private void Add_LauncherTag() {
 		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.FlareGun);
@@ -808,28 +925,58 @@ internal class OutroEffectSystem : ModSystem {
 
 		Arr_WeaponTag[tag].Add(ItemID.LastPrism);
 	}
+	private void Add_ReaperMarkTag() {
+		int tag = (int)WeaponTag.ReaperMark;
+
+		Arr_WeaponTag[tag].Add(ItemID.DeathSickle);
+		Arr_WeaponTag[tag].Add(ItemID.BoneSword);
+		Arr_WeaponTag[tag].Add(ItemID.ZombieArm);
+		Arr_WeaponTag[tag].Add(ItemID.SpectreStaff);
+		Arr_WeaponTag[tag].Add(ItemID.RavenStaff);
+		Arr_WeaponTag[tag].Add(ItemID.ScytheWhip);
+	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
 	public int[] Arr_WeaponEffect = [];
 	public List<int> Easy_WeaponEffectFollow = new();
+	public int IntroEffect_Duration = 0;
+	public int IntroEffect_ItemType = -1;
+	public static bool Check_ValidForINtroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
 	public override void Initialize() {
 		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
+		IntroEffect_ItemType = -1;
 	}
 	public void Add_WeaponEffect(int type) {
 		WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(type);
 		if (ef == null) {
 			return;
 		}
-		Arr_WeaponEffect[type] = ef.Duration;
-		Easy_WeaponEffectFollow.Add(type);
+		Add_WeaponEffect(ef);
 	}
 	public void Add_WeaponEffect(WeaponEffect ef) {
 		Arr_WeaponEffect[ef.Type] = ef.Duration;
-		Easy_WeaponEffectFollow.Add(ef.Type);
+		if (!Easy_WeaponEffectFollow.Contains(ef.Type)) {
+			Easy_WeaponEffectFollow.Add(ef.Type);
+			ef.OnAdd(Player);
+		}
+	}
+	public override void ResetEffects() {
+		if (--IntroEffect_Duration <= 0) {
+			IntroEffect_Duration = 0;
+			if (Player.ItemAnimationActive) {
+				IntroEffect_Duration = ModUtils.ToSecond(10);
+			}
+			IntroEffect_ItemType = Player.HeldItem.type;
+		}
 	}
 	public override void UpdateEquips() {
 		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+			if (--Arr_WeaponEffect[i] <= 0) {
+				WeaponEffect ef2 = OutroEffectSystem.GetWeaponEffect(i);
+				if (ef2 != null) {
+					ef2.OnRemove(Player);
+				}
+				Arr_WeaponEffect[i] = 0;
 				Easy_WeaponEffectFollow.Remove(i);
 				continue;
 			}
@@ -876,22 +1023,59 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 			ef.WeaponKnockBack(Player, item, ref knockback);
 		}
 	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.ModifyHit(Player, target, ref modifiers);
+		}
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (!proj.Check_ItemTypeSource(Player.HeldItem.type)) {
+			return;
+		}
+		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
+			if (Arr_WeaponEffect[i] <= 0) {
+				continue;
+			}
+			WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(i);
+			if (ef == null) {
+				continue;
+			}
+			ef.ModifyHit(Player, target, ref modifiers);
+		}
+	}
 }
 public abstract class WeaponEffect : ModType {
 	public short Type = -1;
 	public int Duration = 0;
 	public string DisplayName => ModUtils.LocalizationText("Outro", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
-	public int GetWeaponEffectType<T>() where T : WeaponEffect => ModContent.GetInstance<T>().Type;
+	protected string Tooltip => ModUtils.LocalizationText("Outro", $"{Name}.Tooltip");
+	public virtual string ModifyTooltip() => Tooltip;
+	public static int GetWeaponEffectType<T>() where T : WeaponEffect => ModContent.GetInstance<T>().Type;
 	protected sealed override void Register() {
 		Type = OutroEffectSystem.Register(this);
 		SetStaticDefaults();
 	}
 	public virtual void OnAdd(Player player) { }
+	public virtual void OnRemove(Player player) { }
 	public virtual void Update(Player player) { }
 	public virtual void WeaponDamage(Player player, Item item, ref StatModifier damage) { }
+	/// <summary>
+	/// The crit number take whole number
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="item"></param>
+	/// <param name="crit"></param>
 	public virtual void WeaponCrit(Player player, Item item, ref float crit) { }
 	public virtual void WeaponKnockBack(Player player, Item item, ref StatModifier knockback) { }
+	public virtual void ModifyHit(Player player, NPC npc, ref NPC.HitModifiers mod) { }
 }
 public enum WeaponAttribute : byte {
 	SoulBound,
@@ -914,6 +1098,7 @@ public enum WeaponTag : byte {
 
 	Bow,
 	Repeater,
+	Gun,
 	Pistol,
 	Rifle,
 	Shotgun,
@@ -963,6 +1148,7 @@ public enum WeaponTag : byte {
 	/// For weapon that is a musical instrument
 	/// </summary>
 	Musical,
+	ReaperMark,
 }
 public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 	public UIImage_WeaponEffectShower() : base(TextureAssets.InventoryBack7) {
@@ -991,6 +1177,7 @@ public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(modplayer.Easy_WeaponEffectFollow[i]);
 				if (i == modplayer.Easy_WeaponEffectFollow.Count - 1) {
 					textEf += $"[{eff.DisplayName}]: \n{eff.Description}";
+					continue;
 				}
 				textEf += $"[{eff.DisplayName}]: \n{eff.Description} \n";
 			}

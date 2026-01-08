@@ -46,7 +46,6 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			SkillHandlePlayer skillPlayer = player.GetModPlayer<SkillHandlePlayer>();
 			if (skillPlayer.Activate) {
-				float additive;
 				if (stat == PlayerStats.CritChance) {
 					modplayer.AddStatsToPlayer(stat, value);
 				}

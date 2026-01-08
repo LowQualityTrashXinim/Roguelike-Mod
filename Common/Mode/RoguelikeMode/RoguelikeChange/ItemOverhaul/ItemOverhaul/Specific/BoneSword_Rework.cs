@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Weapon;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -9,24 +12,22 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 internal class Roguelike_BoneSword : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.BoneSword;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.BoneSword) {
-			entity.damage = 23;
-			entity.crit = 4;
-			entity.ArmorPenetration = 5;
-			entity.shoot = ProjectileID.BookOfSkullsSkull;
-			entity.shootSpeed = 15;
-		}
+		entity.damage = 23;
+		entity.crit = 4;
+		entity.ArmorPenetration = 5;
+		entity.shoot = ProjectileID.BookOfSkullsSkull;
+		entity.shootSpeed = 15;
+		entity.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = WeaponEffect.GetWeaponEffectType<OutroEffect_ReaperMark>();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.BoneSword) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
-		}
+		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.BoneSword) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
+
 		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
 		if (modplayer.Counter >= 60) {
 			for (int i = 0; i < 3; i++) {
@@ -42,25 +43,21 @@ internal class Roguelike_BoneSword : GlobalItem {
 		return false;
 	}
 	public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
-		if (item.type != ItemID.BoneSword) {
-			return;
-		}
 		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
 		if (modplayer.PerfectStrike || modplayer.Counter >= 180) {
 			damage *= 1.5f;
 		}
 		else if (modplayer.Counter >= 60) {
 			damage *= 1.2f;
+
 		}
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (item.type == ItemID.BoneSword) {
-			var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), target.Center.Add(0, target.height + 5), Vector2.UnitY * (-5 + Main.rand.NextFloat(0, 2)), ProjectileID.Bone, player.GetWeaponDamage(item), 1f, player.whoAmI);
-			projectile.friendly = true;
-			projectile.hostile = false;
-			projectile.penetrate = 3;
-			projectile.maxPenetrate = 3;
-		}
+		var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), target.Center.Add(0, target.height + 5), Vector2.UnitY * (-5 + Main.rand.NextFloat(0, 2)), ProjectileID.Bone, player.GetWeaponDamage(item), 1f, player.whoAmI);
+		projectile.friendly = true;
+		projectile.hostile = false;
+		projectile.penetrate = 3;
+		projectile.maxPenetrate = 3;
 	}
 }
 public class Roguelike_BoneSword_ModPlayer : ModPlayer {

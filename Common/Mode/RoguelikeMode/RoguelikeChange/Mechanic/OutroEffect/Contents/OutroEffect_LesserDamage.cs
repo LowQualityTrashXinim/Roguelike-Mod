@@ -1,18 +1,16 @@
-﻿using Roguelike.Common.Utils;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
-internal class OutroEffect_Sword : WeaponEffect {
+internal class OutroEffect_LesserDamage : WeaponEffect {
 	public override void SetStaticDefaults() {
-		Duration = ModUtils.ToSecond(30);
+		Duration = ModUtils.ToSecond(20);
 	}
 	public override string ModifyTooltip() {
 		return string.Format(Tooltip, Duration);
 	}
 	public override void WeaponDamage(Player player, Item item, ref StatModifier damage) {
-		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Sword].Contains(item.type)) {
-			damage += .15f;
-		}
+		damage += .075f;
 	}
 }

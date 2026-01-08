@@ -421,4 +421,8 @@ Version 0.0.1:
 413/ Fixed Perpetuated Cycle Artifact reducing player damage up to 350% instead of 35%
 414/ Slightly buff Essence Lantern artifact to be more skill base.
 415/ Added new synergy weapon Master Sword.
-416/ Added Weapon tag to weapon ( WIP ).
+416/ Added Weapon tag to weapon.
+417/ Added Outro effect system.
+418/ Added bunch of basic outro effect.
+419/ Small fixes.
+420/ Added Healing Strike relic set.

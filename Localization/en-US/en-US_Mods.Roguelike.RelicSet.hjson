@@ -114,3 +114,8 @@ RelicSet_DefenseMK1: {
 	DisplayName: Defense MK1
 	Description: Have 20% chance to halve taken damage, after halving increases damage by 20% for 15s
 }
+
+RelicSet_HealingStrike: {
+	DisplayName: Healing Strike
+	Description: Striking enemy have 50% chance to heal you back for 1 to 50 hp ( CD: 2s )
+}

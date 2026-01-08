@@ -1,0 +1,52 @@
+OutroEffect_Sword: {
+	DisplayName: Sword empowerment
+	Description: +15% damage for "Sword" weapon
+	Tooltip: Increases damage for "Sword" weapon for {0} duration
+}
+
+OutroEffect_Bow: {
+	DisplayName: Bow empowerment
+	Description: +15% damage for "Bow" weapon
+	Tooltip: Increases damage for "bow" weapon for {0} duration
+}
+
+OutroEffect_Pistol: {
+	DisplayName: Pistol empowerment
+	Description: +15% damage for "Pistol" weapon
+	Tooltip: Increases damage for "Pistol" weapon for {0} duration
+}
+
+OutroEffect_Gun: {
+	DisplayName: Gun empowerment
+	Description: +15% damage for "Gun" weapon
+	Tooltip: Increases damage for "Gun" weapon for {0}s duration
+}
+
+OutroEffect_Rifle: {
+	DisplayName: Rifle empowerment
+	Description: +15% damage for "Rifle" weapon
+	Tooltip: Increases damage for "Rifle" weapon for {0}s duration
+}
+
+OutroEffect_DamageMulti: {
+	DisplayName: Damage multiplier
+	Description: +7.5% damage
+	Tooltip: Slightly increases weapon damage for {0}s duration
+}
+
+OutroEffect_ReaperMark: {
+	DisplayName: Reaper mark empowerment
+	Description:
+		'''
+		+100% first strike damage
+		+35% damage for "Reaper Mark" weapon
+		+15% crit chance for "Reaper Mark" weapon
+		"Reaper Mark" weapon will instant kill non-boss enemies below 10% health
+		'''
+	Tooltip:
+		'''
+		Massively increases first strike damage
+		Strongly increases "Reaper Mark" weapon damage and crit chance for {0}s duration
+		"Reaper Mark" weapon will instant kill non-boss enemies on low health
+		'''
+}
