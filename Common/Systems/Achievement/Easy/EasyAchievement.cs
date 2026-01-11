@@ -1,14 +1,13 @@
-﻿
-using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Global;
-using Roguelike.Common.Systems;
-using Roguelike.Common.Systems.Achievement;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
+using Roguelike.Contents.Items.Guides;
+using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Roguelike.Common.Systems.Achievement.Easy;
@@ -18,6 +17,18 @@ public class BountifulHarvest : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return RoguelikeData.Lootbox_AmountOpen >= 100;
+	}
+}
+
+public class RelicFinder : RoguelikeAchievement {
+	public override void SetStaticDefault() {
+		DifficultyTag = AchievementTag.Easy;
+	}
+	public override bool Condition() {
+		return Main.LocalPlayer.HasItem(ModContent.ItemType<Relic>());
+	}
+	public override void SpecialEffectOnAchieved() {
+		Main.LocalPlayer.QuickSpawnItem(null, ModContent.ItemType<RelicGuide>());
 	}
 }
 

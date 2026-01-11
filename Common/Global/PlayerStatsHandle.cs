@@ -354,6 +354,21 @@ public class PlayerStatsHandle : ModPlayer {
 	public int EnergyRegen_Count = 0;
 	public int EnergyRegen_CountLimit = 60;
 	public int CappedHealthAmount = -1;
+	/// <summary>
+	/// Easy check to see did player just healed
+	/// </summary>
+	/// <returns></returns>
+	public bool Check_Heal() {
+		if (Healed) {
+			Healed = false;
+			return true;
+		}
+		return false;
+	}
+	/// <summary>
+	/// This field is a easier way to check whenever a player has Healed, however you better refer to <see cref="Check_Heal"/>
+	/// </summary>
+	public bool Healed = false;
 	public const short Default_EnergyCap = 1500;
 	public const short Default_RelicActivationCap = 10;
 	public override void ResetEffects() {
@@ -1261,6 +1276,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			modplayer.Healed = true;
 			orig(self, (int)modplayer.HealEffectiveness.ApplyTo(amount));
 		}
 		else {

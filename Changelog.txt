@@ -426,3 +426,8 @@ Version 0.0.1:
 418/ Added bunch of basic outro effect.
 419/ Small fixes.
 420/ Added Healing Strike relic set.
+421/ Added a way to tell whenever or not player has heal or not
+422/ Added achievement for first time getting a relic.
+423/ Slight changed to outro effect system to be more automation when it come to tooltip.
+424/ Added a new help menu ( currently doing nothing ).
+425/ Changed build number from 0.0.17.1 -> 0.0.17.2.

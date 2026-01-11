@@ -803,6 +803,7 @@ class UISystemMenu : UIState {
 	UIText open_AchievmentUI;
 	UIText open_SynergyWikiUI;
 	UIText open_EnchantmentWIkiUI;
+	UIText open_HelpMenu;
 	UIText exit_Menu;
 	public override void OnInitialize() {
 		Roguelike_Panel = new();
@@ -846,6 +847,14 @@ class UISystemMenu : UIState {
 		open_EnchantmentWIkiUI.HAlign = .5f;
 		panel.Append(open_EnchantmentWIkiUI);
 
+		open_HelpMenu = new("Help", 1.5f);
+		open_HelpMenu.OnLeftClick += OpenHelp_OnLeftClick;
+		open_HelpMenu.OnUpdate += Universal_OnUpdate;
+		open_HelpMenu.OnMouseOver += Universal_MouseOver;
+		open_HelpMenu.MarginTop = open_EnchantmentWIkiUI.MarginTop + open_EnchantmentWIkiUI.Height.Pixels + 40;
+		open_HelpMenu.HAlign = .5f;
+		panel.Append(open_HelpMenu);
+
 		exit_Menu = new("Back", 1.5f);
 		exit_Menu.OnLeftClick += Exit_Menu_OnLeftClick;
 		exit_Menu.OnUpdate += Exit_Menu_OnUpdate;
@@ -855,7 +864,9 @@ class UISystemMenu : UIState {
 		panel.Append(exit_Menu);
 	}
 
-
+	private void OpenHelp_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+	}
 	private void Open_EnchantmentWikiUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentWikiUI();
@@ -894,6 +905,14 @@ class UISystemMenu : UIState {
 			}
 			else {
 				open_SynergyWikiUI.TextColor = Color.White;
+			}
+		}
+		else if (affectedElement.UniqueId == open_HelpMenu.UniqueId) {
+			if (affectedElement.IsMouseHovering) {
+				open_HelpMenu.TextColor = Color.Yellow;
+			}
+			else {
+				open_HelpMenu.TextColor = Color.White;
 			}
 		}
 	}

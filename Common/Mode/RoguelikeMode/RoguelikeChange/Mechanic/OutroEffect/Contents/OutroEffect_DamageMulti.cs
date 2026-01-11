@@ -7,10 +7,7 @@ internal class OutroEffect_DamageMulti : WeaponEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(20);
 	}
-	public override string ModifyTooltip() {
-		return string.Format(Tooltip, Duration);
-	}
 	public override void WeaponDamage(Player player, Item item, ref StatModifier damage) {
-		damage *= 1.15f;
+		damage *= 1.05f;
 	}
 }

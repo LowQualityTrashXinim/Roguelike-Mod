@@ -937,6 +937,8 @@ internal class OutroEffectSystem : ModSystem {
 	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
+	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
+	public int OutroEffect_RejuvinatingGlow_Counter = 0;
 	public int[] Arr_WeaponEffect = [];
 	public List<int> Easy_WeaponEffectFollow = new();
 	public int IntroEffect_Duration = 0;
@@ -961,6 +963,10 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ResetEffects() {
+		if (!Player.active) {
+			return;
+		}
+		OutroEffect_RejuvinatingGlow_Counter = ModUtils.CountDown(OutroEffect_RejuvinatingGlow_Counter);
 		if (--IntroEffect_Duration <= 0) {
 			IntroEffect_Duration = 0;
 			if (Player.ItemAnimationActive) {
@@ -1057,7 +1063,7 @@ public abstract class WeaponEffect : ModType {
 	public string DisplayName => ModUtils.LocalizationText("Outro", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
 	protected string Tooltip => ModUtils.LocalizationText("Outro", $"{Name}.Tooltip");
-	public virtual string ModifyTooltip() => Tooltip;
+	public virtual string ModifyTooltip() => string.Format(Tooltip, Duration / 60);
 	public static int GetWeaponEffectType<T>() where T : WeaponEffect => ModContent.GetInstance<T>().Type;
 	protected sealed override void Register() {
 		Type = OutroEffectSystem.Register(this);

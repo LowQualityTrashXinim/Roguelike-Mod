@@ -43,6 +43,7 @@
 		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
 		public const string Wave = CommonTextureStringPattern + "Wave";
 
+		public const string NotePaper = CommonTextureStringPattern + "Note";
 		/// <summary>
 		/// The texture is 38x38 in size
 		/// </summary>

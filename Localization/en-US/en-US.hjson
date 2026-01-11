@@ -2620,6 +2620,33 @@ Mods: {
 				DisplayName: Fragment Grenade
 				Tooltip: ""
 			}
+
+			RelicGuide: {
+				DisplayName: Relic guide note
+				Tooltip:
+					'''
+					A general guide to relic and how it work:
+
+					Relic is a passive buff item that can be activate by favoriting it in player inventory
+					A Relic have randomize template, set and prefix making every relic you find different
+					Higher tier Relics can be found or transmuted and is required to access Relic Set mechanic
+
+					Relic Tier:
+					A relic strength is determined by the tier, the higher the tier the better the relic template stats
+					If the sum of the current activate relic tier exceed the limit, then all relic is nullify
+
+					Relic template:
+					This is the main contributor to increasing stats, there are templates required certain condition to be fulfilled
+					the template has randomized stats and modifiers
+
+					Relic set:
+					Having duplicate relics of the same set will activate the set bonus of the relic, 
+					however at least 1 relic of the set must be equivalent in relic tier to the set requirement
+
+					Relic prefix:
+					These are randomized, it give certain bonuses passively when this relic is active
+					'''
+			}
 		}
 
 		Buffs: {

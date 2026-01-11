@@ -30,10 +30,21 @@ OutroEffect_Rifle: {
 
 OutroEffect_DamageMulti: {
 	DisplayName: Damage multiplier
+	Description: 1.05x damage
+	Tooltip: Slightly multiply weapon damage for {0}s duration
+}
+
+OutroEffect_LesserDamage: {
+	DisplayName: Lesser damage increases
 	Description: +7.5% damage
 	Tooltip: Slightly increases weapon damage for {0}s duration
 }
 
+OutroEffect_RejuvinatingGlow: {
+	DisplayName: Rejuvinating Glow
+	Description: 1.15x damage after getting healed
+	Tooltip: Getting healed multiply weapon damage for {0}s duration
+}
 OutroEffect_ReaperMark: {
 	DisplayName: Reaper mark empowerment
 	Description:

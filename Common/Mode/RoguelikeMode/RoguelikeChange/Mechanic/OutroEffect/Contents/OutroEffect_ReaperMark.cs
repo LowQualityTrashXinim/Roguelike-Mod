@@ -7,9 +7,6 @@ internal class OutroEffect_ReaperMark : WeaponEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(12);
 	}
-	public override string ModifyTooltip() {
-		return string.Format(Tooltip, Duration / 60);
-	}
 	public override void Update(Player player) {
 		player.ModPlayerStats().UpdateFullHPDamage += 1;
 	}
