@@ -453,6 +453,8 @@ Mods: {
 			AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile.DisplayName: Akai Hanbun No Hasami_ Saw Mode_ Projectile_ Death Projectile
 			AnnihiliationShot.DisplayName: Annihiliation Shot
 			Portal_JungleTemple.DisplayName: Portal_ Jungle Temple
+			BulletHell_Projectile.DisplayName: Bullet Hell_ Projectile
+			EnergyChainOrb.DisplayName: Energy Chain Orb
 		}
 
 		NPCs: {
@@ -485,6 +487,7 @@ Mods: {
 			KingSlimeCrown.DisplayName: King Slime Crown
 			TrialArcher.DisplayName: Trial Archer
 			TrialKnight.DisplayName: Trial Knight
+			SwordSage.DisplayName: Sword Sage
 		}
 
 		Items: {

@@ -8,6 +8,9 @@ using Terraria.DataStructures;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Projectiles;
+//This projectile is made with the purpose of being reused everywhere and anytime
+//It is expected that dev should read this projectile clearly before using it so to know the AI of the projectile
+
 
 /// <summary>
 /// Ai0 : shoot velocity<br/>

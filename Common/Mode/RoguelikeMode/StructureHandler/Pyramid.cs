@@ -7,6 +7,7 @@ using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -46,6 +47,9 @@ new Point(167,92),];
 	public Rectangle Pos_Pyramid => ModContent.GetInstance<RogueLikeWorldGen>().Pyramid;
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
+		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+			return;
+		}
 		Player player = Main.LocalPlayer;
 		if (player.Center.IsCloseToPosition(Pos_Pyramid.Center().ToWorldCoordinates(), 1500)) {
 			if (!IsWithinRange) {
@@ -99,7 +103,7 @@ public class Sealed_SandPoacher : NPCSealedObject {
 	}
 	public override void OnKill() {
 		if (BreakSeal) {
-			NPC.NewNPCDirect(GetSource_FromThis(), (int)position.X, (int)position.Y, NPCTypeToFollow);
+			NPC.NewNPCDirect(new EntitySource_WorldGen(), (int)position.X, (int)position.Y, NPCTypeToFollow);
 			BreakSeal = false;
 		}
 	}
@@ -141,7 +145,7 @@ public class Sealed_SandElemental : NPCSealedObject {
 	}
 	public override void OnKill() {
 		if (BreakSeal) {
-			NPC npc = NPC.NewNPCDirect(GetSource_FromThis(), (int)position.X, (int)position.Y, NPCTypeToFollow);
+			NPC npc = NPC.NewNPCDirect(new EntitySource_WorldGen(), (int)position.X, (int)position.Y, NPCTypeToFollow);
 			BreakSeal = false;
 		}
 	}

@@ -25,8 +25,20 @@ public class GreaterDamageUp : ModSkill {
 		skillplayer.SkillDamageWhileActive += 3f;
 	}
 }
+public class CriticalUp : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<CriticalUp>();
+	public override void SetDefault() {
+		Skill_EnergyRequire = 350;
+		Skill_Duration = 0;
+		Skill_Type = SkillTypeID.Skill_Stats;
+	}
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		skillplayer.ProjectileCritDamage += .25f;
+		skillplayer.ProjectileCritChance += 15;
+	}
+}
 public class PowerBank : ModSkill {
-	public override string Texture => ModUtils.GetTheSameTextureAs<PowerBank>();
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<PowerBank>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 0;

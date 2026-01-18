@@ -18,6 +18,9 @@ internal class KingSlimeStructure : ModSystem {
 	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure;
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
+		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+			return;
+		}
 		Player player = Main.LocalPlayer;
 		if (player.Center.IsCloseToPosition(Pos_KSstructure.Center().ToWorldCoordinates(), 1500)) {
 			if (!IsWithinRange) {

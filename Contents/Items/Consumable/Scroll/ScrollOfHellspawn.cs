@@ -3,6 +3,7 @@ using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -52,7 +53,7 @@ public class HellSpawnObject : ModObject {
 				dust.scale += 1;
 			}
 			int NPCToSpawn = Main.rand.Next([NPCID.FireImp, NPCID.Lavabat, NPCID.LavaSlime, NPCID.Demon]);
-			NPC.NewNPC(GetSource_NaturalSpawn(), (int)Center.X, (int)Center.Y, NPCToSpawn);
+			NPC.NewNPC(new EntitySource_WorldGen(), (int)Center.X, (int)Center.Y, NPCToSpawn);
 		}
 	}
 }

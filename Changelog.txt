@@ -430,4 +430,20 @@ Version 0.0.1:
 422/ Added achievement for first time getting a relic.
 423/ Slight changed to outro effect system to be more automation when it come to tooltip.
 424/ Added a new help menu ( currently doing nothing ).
-425/ Changed build number from 0.0.17.1 -> 0.0.17.2.
+425/ Changed build number from 0.0.17.1 -> 0.0.17.2 /.
+426/ Changed Bullet Hell into summon skill.
+427/ The skill are changed as follow:
+- Meteor Shower grant +20% to other skill that after it and merged Starfury skill
+- Deleted Chaos Arrow Rain skill
+- Deleted Bullet Storm skill
+- Merged Electrical chain skill into Energy bolt skill and renamed it to Energy chain reaction
+- Deleted Bone arrow skill
+- Overall increases all projectile skill duration to be above 10s and energy cost to be above 1000
+- Buffed "Tribal Ambush" skill damage output from 6 to 16
+- Merged Icicle skill into Will o'Freeze
+428/ Added CriticalPlus
+429/ Added more outro skill.
+430/ Some minor bug fixes for event check, it should check whenever or not if it in Roguelike world or not to prevent random crash.
+431/ Added ItemObject ( ModObject ) to create special event where player can pick up item.
+432/ Created event for Shrine of Offering, now a perk will always spawn along with Shrine of Offering.
+433/ Minor bug fixes to check healing.

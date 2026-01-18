@@ -281,63 +281,69 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnergyBlade>());
 	}
 	private void Add_ShortSwordTag() {
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.CopperShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.TinShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.IronShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.LeadShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.SilverShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.TungstenShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.GoldShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.PlatinumShortsword);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.Gladius);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.Ruler);
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ItemID.PiercingStarlight);
+		int tag = (int)WeaponTag.Thrustsword;
+		Arr_WeaponTag[tag].Add(ItemID.CopperShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.TinShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.IronShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.LeadShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.SilverShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.TungstenShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.GoldShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.PlatinumShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.Gladius);
+		Arr_WeaponTag[tag].Add(ItemID.Ruler);
+		Arr_WeaponTag[tag].Add(ItemID.PiercingStarlight);
 
 		//Modded weapon
-		Arr_WeaponTag[(int)WeaponTag.Thrustsword].Add(ModContent.ItemType<SuperShortSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SuperShortSword>());
 	}
 	private void Add_GreatSwordTag() {
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.AshWoodSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.CandyCaneSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.BladeofGrass);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.FieryGreatsword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.BreakerBlade);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.AdamantiteSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.TitaniumSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.DD2SquireDemonSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.ChlorophyteClaymore);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.TheHorsemansBlade);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.ChristmasTreeSword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.DD2SquireBetsySword);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.StarWrath);
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ItemID.Meowmere);
+		int tag = (int)WeaponTag.Greatsword;
 
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<TrueEnchantedSword>());
+		Arr_WeaponTag[tag].Add(ItemID.AshWoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.CandyCaneSword);
+		Arr_WeaponTag[tag].Add(ItemID.BladeofGrass);
+		Arr_WeaponTag[tag].Add(ItemID.FieryGreatsword);
+		Arr_WeaponTag[tag].Add(ItemID.BreakerBlade);
+		Arr_WeaponTag[tag].Add(ItemID.AdamantiteSword);
+		Arr_WeaponTag[tag].Add(ItemID.TitaniumSword);
+		Arr_WeaponTag[tag].Add(ItemID.DD2SquireDemonSword);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteClaymore);
+		Arr_WeaponTag[tag].Add(ItemID.TheHorsemansBlade);
+		Arr_WeaponTag[tag].Add(ItemID.ChristmasTreeSword);
+		Arr_WeaponTag[tag].Add(ItemID.DD2SquireBetsySword);
+		Arr_WeaponTag[tag].Add(ItemID.StarWrath);
+		Arr_WeaponTag[tag].Add(ItemID.Meowmere);
 
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<ShatteredSky>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<AkaiHanbunNoHasami>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<EverlastingCold>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<FrostSwordFish>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<DrainingVeilBlade>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<RelentlessAbomination>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<TwilightNight>());
-		Arr_WeaponTag[(int)WeaponTag.Greatsword].Add(ModContent.ItemType<DarkCactus>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TrueEnchantedSword>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ShatteredSky>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AkaiHanbunNoHasami>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EverlastingCold>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrostSwordFish>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DrainingVeilBlade>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RelentlessAbomination>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TwilightNight>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DarkCactus>());
 	}
 	private void Add_BluntTag() {
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.BatBat);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.TentacleSpike);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.ZombieArm);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.PurpleClubberfish);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.SlapHand);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.TaxCollectorsStickOfDoom);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.WaffleIron);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.HamBat);
+		int tag = (int)WeaponTag.Blunt;
+
+		Arr_WeaponTag[tag].Add(ItemID.BatBat);
+		Arr_WeaponTag[tag].Add(ItemID.TentacleSpike);
+		Arr_WeaponTag[tag].Add(ItemID.ZombieArm);
+		Arr_WeaponTag[tag].Add(ItemID.PurpleClubberfish);
+		Arr_WeaponTag[tag].Add(ItemID.SlapHand);
+		Arr_WeaponTag[tag].Add(ItemID.TaxCollectorsStickOfDoom);
+		Arr_WeaponTag[tag].Add(ItemID.WaffleIron);
+		Arr_WeaponTag[tag].Add(ItemID.HamBat);
 		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.AntlionClaw);
 		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.KOCannon);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.GolemFist);
+		Arr_WeaponTag[tag].Add(ItemID.GolemFist);
 	}
 	private void Add_SickleTag() {
 		int tag = (int)WeaponTag.Sickle;
+
 		Arr_WeaponTag[tag].Add(ItemID.Sickle);
 		Arr_WeaponTag[tag].Add(ItemID.IceSickle);
 		Arr_WeaponTag[tag].Add(ItemID.DeathSickle);
@@ -1038,7 +1044,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 			if (ef == null) {
 				continue;
 			}
-			ef.ModifyHit(Player, target, ref modifiers);
+			ef.ModifyHitItem(Player, target, ref modifiers);
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
@@ -1053,7 +1059,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 			if (ef == null) {
 				continue;
 			}
-			ef.ModifyHit(Player, target, ref modifiers);
+			ef.ModifyHitProj(Player, proj, target, ref modifiers);
 		}
 	}
 }
@@ -1081,7 +1087,8 @@ public abstract class WeaponEffect : ModType {
 	/// <param name="crit"></param>
 	public virtual void WeaponCrit(Player player, Item item, ref float crit) { }
 	public virtual void WeaponKnockBack(Player player, Item item, ref StatModifier knockback) { }
-	public virtual void ModifyHit(Player player, NPC npc, ref NPC.HitModifiers mod) { }
+	public virtual void ModifyHitItem(Player player, NPC npc, ref NPC.HitModifiers mod) { }
+	public virtual void ModifyHitProj(Player player, Projectile proj, NPC npc, ref NPC.HitModifiers mod) { }
 }
 public enum WeaponAttribute : byte {
 	SoulBound,

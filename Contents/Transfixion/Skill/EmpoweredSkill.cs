@@ -4,7 +4,6 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -137,7 +136,24 @@ public class Overclock : ModSkill {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, 1 + Math.Clamp(.5f * (skillplayer.MaximumDuration - skillplayer.Duration) / 50, 0, 7.5f));
 	}
 }
-
+public class FireDamageUp : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<FireDamageUp>();
+	public override void SetDefault() {
+		Skill_EnergyRequire = 150;
+		Skill_Duration = ModUtils.ToSecond(2);
+		Skill_Type = SkillTypeID.Skill_Empowered;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += 1.5f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += 1.5f;
+		}
+	}
+}
 public class TerrorForm : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<TerrorForm>();
 	public override void SetDefault() {
@@ -234,7 +250,6 @@ public class CoinFlip : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 200;
 		Skill_Duration = 600;
-		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
@@ -273,11 +288,10 @@ public class DiceRoll : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 600;
-		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
-		int chance = Main.rand.Next(7);//0 , 1 , 2, 3, 4, 5
+		int chance = Main.rand.Next(6);//0 , 1 , 2, 3, 4, 5
 		switch (chance) {
 			case 0:
 				Main.NewText("World smile upon your fate");

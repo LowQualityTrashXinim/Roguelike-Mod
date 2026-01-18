@@ -371,9 +371,16 @@ public class PlayerStatsHandle : ModPlayer {
 	public bool Healed = false;
 	public const short Default_EnergyCap = 1500;
 	public const short Default_RelicActivationCap = 10;
+	public byte Healed_timeSinceLastHeal = 0;
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
+		}
+		if(Healed_timeSinceLastHeal == 0) {
+			Healed = false;
+		}
+		else {
+			Healed_timeSinceLastHeal = (byte)Math.Clamp(Healed_timeSinceLastHeal - 1, byte.MinValue, byte.MaxValue);
 		}
 		CurrentDashType = "";
 		if (!Player.immune) {
@@ -1277,6 +1284,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			modplayer.Healed = true;
+			modplayer.Healed_timeSinceLastHeal = (byte)60;
 			orig(self, (int)modplayer.HealEffectiveness.ApplyTo(amount));
 		}
 		else {

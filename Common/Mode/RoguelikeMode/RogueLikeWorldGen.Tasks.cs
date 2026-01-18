@@ -636,7 +636,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (Arr_ZoneIgnored.Length <= bound) {
 					continue;
 				}
-				Array.Fill(Arr_ZoneIgnored, new MapData(CharToBid(BiomeMapping[i])), bound, GridPart_X);
+				if ((short)BiomeMapping[i][0] == Bid.Underworld) {
+					Array.Fill(Arr_ZoneIgnored, new MapData(true, CharToBid(BiomeMapping[i])), bound, GridPart_X);
+				}
+				else {
+					Array.Fill(Arr_ZoneIgnored, new MapData(CharToBid(BiomeMapping[i])), bound, GridPart_X);
+				}
 			}
 		}
 	}
@@ -671,6 +676,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void SetUp() {
 		Stopwatch watch = new();
 		watch.Start();
+		ResetTemplate_GenerationValue();
 		InitializeBiomeWorld();
 		InitializeForestWorld();
 		watch.Stop();
@@ -885,105 +891,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("Small forest step: " + watch.ToString());
 	}
-	[Task]
-	public void Generate_CursedKingdomStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = Main.rand.Next(12, 16) * GridPart_X;
-		int Y = Main.rand.Next(15, 20) * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CursedKingdomArea);
-			Set_MapIgnoredZoneIntoWorldGen(CursedKingdomArea);
-		}
-		watch.Stop();
-		Mod.Logger.Info("CK_entrance step: " + watch.ToString());
-	}
-	public Rectangle CrimsonEntrance = new();
-	[Task]
-	public void Generate_CrimsonEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = Main.rand.Next(20, 22) * GridPart_X;
-		int Y = Main.rand.Next(11, 13) * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CrimsonEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CrimsonEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(CrimsonEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Crimson step: " + watch.ToString());
-	}
-	public Rectangle CorruptionEntrance = new();
-	[Task]
-	public void Generate_CorruptionEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = Main.rand.Next(5, 9) * GridPart_X;
-		int Y = Main.rand.Next(18, 20) * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CorruptionEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CorruptionEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(CorruptionEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Corruption step: " + watch.ToString());
-	}
-	public Rectangle FleshRealmEntrance = new();
-	[Task]
-	public void Generate_FleshRealmEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = Main.rand.Next(19, 22) * GridPart_X;
-		int Y = 19 * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			FleshRealmEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(FleshRealmEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(FleshRealmEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
-	}
-	public Rectangle SlimeWorldEntrance = new();
-	[Task]
-	public void Generate_SlimeWorldEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 16 * GridPart_X;
-		int Y = 11 * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			SlimeWorldEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(SlimeWorldEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(SlimeWorldEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Slime world step: " + watch.ToString());
-	}
 	public Rectangle JungleTempleEntrance = new();
 	[Task]
 	public void Generate_JungleTempleEntrance() {
@@ -1045,6 +952,165 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		Mod.Logger.Info("Gold room step: " + watch.ToString());
+	}
+	public static void AddLoot(Chest chest) {
+		if (Main.rand.NextBool(50)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
+		}
+		else if (Main.rand.NextBool(25)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<SilverLootBox>()));
+		}
+		else if (Main.rand.NextBool(10)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<IronLootBox>()));
+		}
+		else {
+			chest.AddItemToShop(new Item(ModContent.ItemType<WoodenLootBox>()));
+		}
+	}
+	/// <summary>
+	/// This is a note for future development, any structure that is not completely square should be generated after this<br/>
+	/// So that the structure null wall/tile actually have a use
+	/// </summary>
+	[Task]
+	public void Create_Biome() {
+		Stopwatch watch = new();
+		watch.Start();
+		rect = GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 24);
+		string TemplatePath = "Template/WG_Template";
+		string horizontal = TemplatePath + "Horizontal";
+		string vertical = TemplatePath + "Vertical";
+		string file = "";
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		BiomeDataBundle bundle = new();
+		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
+			bundle = value;
+		}
+		//Since the length of the template won't changed since they all use the same size, it is completely fine to cached this 
+		int length = modsystem.list_Structure.Where(item => item.Get_FilePath == horizontal + 1).FirstOrDefault().Get_TotalLength();
+		int noiseCounter = 0;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+			Structure_XinimVer structure = null;
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				if (bundle.FormatFile == "") {
+					file = horizontal + Rand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, bundle.Range);
+					}
+				}
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+						break;
+					}
+				}
+				if (structure == null) {
+					continue;
+				}
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				if (bundle.FormatFile == "") {
+					file = vertical + Rand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
+					}
+				}
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+						break;
+					}
+				}
+				if (structure == null) {
+					continue;
+				}
+			}
+			switch (Main.rand.Next(styles)) {
+				//Because implementing Flip Horizontal is very costly and we currently have no good way of doing it, it is better to just make it act the same as none
+				case GenerateStyle.None:
+				case GenerateStyle.FlipHorizon:
+					for (int i = 0; i < length; i++) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
+						}
+						offsetY++;
+						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
+					}
+					break;
+				case GenerateStyle.FlipVertical:
+					for (int i = structure.Get_Data.Length - 1; i >= 0; i--) {
+						GenPassData gdata = structure.Get_Data[i];
+						TileData data = gdata.tileData;
+						for (int l = 0; l < gdata.Count; l++) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
+							}
+							holdX = X + offsetX; holdY = Y + offsetY;
+							if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
+								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
+							}
+							offsetY++;
+							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
+						}
+					}
+					break;
+				case GenerateStyle.FlipBoth:
+					for (int i = length; i >= 0; i--) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
+							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
+						}
+						offsetY++;
+						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
+					}
+					break;
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+		Mod.Logger.Info("Create biome step :" + watch.ToString());
 	}
 	[Task]
 	public void Generate_SmallVillage() {
@@ -1194,161 +1260,104 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
 	}
-	public static void AddLoot(Chest chest) {
-		if (Main.rand.NextBool(50)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
-		}
-		else if (Main.rand.NextBool(25)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<SilverLootBox>()));
-		}
-		else if (Main.rand.NextBool(10)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<IronLootBox>()));
-		}
-		else {
-			chest.AddItemToShop(new Item(ModContent.ItemType<WoodenLootBox>()));
-		}
-	}
 	[Task]
-	public void Create_Biome() {
+	public void Generate_CursedKingdomStructure() {
 		Stopwatch watch = new();
 		watch.Start();
-		rect = GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 24);
-		string TemplatePath = "Template/WG_Template";
-		string horizontal = TemplatePath + "Horizontal";
-		string vertical = TemplatePath + "Vertical";
-		string file = "";
-		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-		BiomeDataBundle bundle = new();
-		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
-			bundle = value;
-		}
-		//Since the length of the template won't changed since they all use the same size, it is completely fine to cached this 
-		int length = modsystem.list_Structure.Where(item => item.Get_FilePath == horizontal + 1).FirstOrDefault().Get_TotalLength();
-		int noiseCounter = 0;
-		while (counter.X < rect.Width || counter.Y < rect.Height) {
-			if (++additionaloffset >= 2) {
-				counter.X += 32;
-				additionaloffset = 0;
-			}
-			IsUsingHorizontal = ++count % 2 == 0;
-			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
-			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-			Structure_XinimVer structure = null;
-			if (IsUsingHorizontal) {
-				re.Width = 64;
-				re.Height = 32;
-				if (bundle.FormatFile == "") {
-					file = horizontal + Rand.Next(1, 10);
-				}
-				else {
-					if (bundle.Range == -1) {
-						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, 10);
-					}
-					else {
-						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, bundle.Range);
-					}
-				}
-				foreach (var item in modsystem.list_Structure) {
-					if (item.Get_FilePath == file) {
-						structure = item;
-						break;
-					}
-				}
-				if (structure == null) {
-					continue;
-				}
-			}
-			else {
-				re.Width = 32;
-				re.Height = 64;
-				if (bundle.FormatFile == "") {
-					file = vertical + Rand.Next(1, 10);
-				}
-				else {
-					if (bundle.Range == -1) {
-						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, 10);
-					}
-					else {
-						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
-					}
-				}
-				foreach (var item in modsystem.list_Structure) {
-					if (item.Get_FilePath == file) {
-						structure = item;
-						break;
-					}
-				}
-				if (structure == null) {
-					continue;
-				}
-			}
-			switch (Main.rand.Next(styles)) {
-				//Because implementing Flip Horizontal is very costly and we currently have no good way of doing it, it is better to just make it act the same as none
-				case GenerateStyle.None:
-				case GenerateStyle.FlipHorizon:
-					for (int i = 0; i < length; i++) {
-						TileData data = structure.Get_CurrentTileData(i);
-						if (offsetY >= re.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
-							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
-						}
-						offsetY++;
-						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
-					}
-					break;
-				case GenerateStyle.FlipVertical:
-					for (int i = structure.Get_Data.Length - 1; i >= 0; i--) {
-						GenPassData gdata = structure.Get_Data[i];
-						TileData data = gdata.tileData;
-						for (int l = 0; l < gdata.Count; l++) {
-							if (offsetY >= re.Height) {
-								offsetY = 0;
-								offsetX++;
-							}
-							holdX = X + offsetX; holdY = Y + offsetY;
-							if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
-								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
-							}
-							offsetY++;
-							noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
-						}
-					}
-					break;
-				case GenerateStyle.FlipBoth:
-					for (int i = length; i >= 0; i--) {
-						TileData data = structure.Get_CurrentTileData(i);
-						if (offsetY >= re.Height) {
-							offsetY = 0;
-							offsetX++;
-						}
-						holdX = X + offsetX; holdY = Y + offsetY;
-						if (WorldGen.InWorld(holdX, holdY) && !Arr_ZoneIgnored[holdY * Main.maxTilesX + holdX].ignored) {
-							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
-						}
-						offsetY++;
-						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
-					}
-					break;
-			}
-			if (counter.X < rect.Width) {
-				counter.X += re.Width;
-			}
-			else {
-				offsetcount++;
-				counter.X = 0 - 32 * offsetcount;
-				counter.Y += 32;
-				count = 1;
-				additionaloffset = -1;
-			}
+		int X = Main.rand.Next(16, 18) * GridPart_X;
+		int Y = Main.rand.Next(16, 18) * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CursedKingdomArea);
+			Set_MapIgnoredZoneIntoWorldGen(CursedKingdomArea);
 		}
 		watch.Stop();
-		WatchTracker += watch.Elapsed;
-		ResetTemplate_GenerationValue();
-		Mod.Logger.Info("Create biome step :" + watch.ToString());
+		Mod.Logger.Info("CK_entrance step: " + watch.ToString());
+	}
+	public Rectangle CrimsonEntrance = new();
+	[Task]
+	public void Generate_CrimsonEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = Main.rand.Next(20, 22) * GridPart_X;
+		int Y = Main.rand.Next(11, 13) * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CrimsonEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CrimsonEntrance);
+			Set_MapIgnoredZoneIntoWorldGen(CrimsonEntrance);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Crimson step: " + watch.ToString());
+	}
+	public Rectangle CorruptionEntrance = new();
+	[Task]
+	public void Generate_CorruptionEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = Main.rand.Next(5, 9) * GridPart_X;
+		int Y = Main.rand.Next(18, 20) * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			CorruptionEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(CorruptionEntrance);
+			Set_MapIgnoredZoneIntoWorldGen(CorruptionEntrance);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Corruption step: " + watch.ToString());
+	}
+	public Rectangle FleshRealmEntrance = new();
+	[Task]
+	public void Generate_FleshRealmEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = Main.rand.Next(19, 22) * GridPart_X;
+		int Y = 19 * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			FleshRealmEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(FleshRealmEntrance);
+			Set_MapIgnoredZoneIntoWorldGen(FleshRealmEntrance);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
+	}
+	public Rectangle SlimeWorldEntrance = new();
+	[Task]
+	public void Generate_SlimeWorldEntrance() {
+		Stopwatch watch = new();
+		watch.Start();
+		int X = 16 * GridPart_X;
+		int Y = 11 * GridPart_Y;
+		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			SlimeWorldEntrance = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			ZoneToBeIgnored.Add(SlimeWorldEntrance);
+			Set_MapIgnoredZoneIntoWorldGen(SlimeWorldEntrance);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Slime world step: " + watch.ToString());
 	}
 	public Rectangle Pyramid = new Rectangle();
 	[Task]

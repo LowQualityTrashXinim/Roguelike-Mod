@@ -23,7 +23,6 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Contents.Transfixion.Skill;
 public static class SkillTypeID {
 	public const byte Skill_None = 0;
-	public const byte Skill_Projectile = 1;
 	public const byte Skill_Stats = 2;
 	public const byte Skill_Summon = 3;
 	public const byte Skill_Empowered = 4;
@@ -151,7 +150,6 @@ public class SkillModSystem : ModSystem {
 }
 public class SkillHandlePlayer : ModPlayer {
 	public float ProjectileSpeedMultiplier = 1;
-	public int ProjectileAmount = 1;
 	public int ProjectileCritChance = 0;
 	public int ProjectileEnergyRegain = 0;
 	public float ProjectileCritDamage = 0;
@@ -169,28 +167,22 @@ public class SkillHandlePlayer : ModPlayer {
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <returns></returns>
-	public List<Projectile> NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
-		List<Projectile> projList = new();
+	public Projectile NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
 		speed *= ProjectileSpeedMultiplier;
 
-		for (int i = 0; i < ProjectileAmount; i++) {
-			Vector2 vel;
-			if (ProjectileAmount > 1) {
-				vel = velNormalize.Vector2DistributeEvenly(ProjectileSpreadAmount, 360, i) * speed;
-			}
-			else {
-				float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier * i;
-				vel = (velNormalize * speed).Vector2RotateByRandom(modifierSpread);
-			}
-			var projectile = Projectile.NewProjectileDirect(source, position, vel, type, SkillDamage(damage), knockback, Player.whoAmI);
-			projectile.CritChance += ProjectileCritChance;
-			var roguelikeProj = projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>();
-			roguelikeProj.CritDamage += ProjectileEnergyRegain;
-			roguelikeProj.EnergyRegainOnHit += ProjectileEnergyRegain;
-			projectile.timeLeft += ProjectileTimeLeft;
-			projList.Add(projectile);
-		}
-		return projList;
+		Vector2 vel;
+
+		float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier;
+		vel = (velNormalize * speed).Vector2RotateByRandom(modifierSpread);
+
+		var projectile = Projectile.NewProjectileDirect(source, position, vel, type, SkillDamage(damage), knockback, Player.whoAmI);
+		projectile.CritChance += ProjectileCritChance;
+		var roguelikeProj = projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>();
+		roguelikeProj.CritDamage += ProjectileCritDamage;
+		roguelikeProj.EnergyRegainOnHit += ProjectileEnergyRegain;
+		projectile.timeLeft += ProjectileTimeLeft;
+
+		return projectile;
 	}
 	public int SkillDamage(int damage) {
 		var modifier = skilldamage.CombineWith(SkillDamageWhileActive);
@@ -337,6 +329,9 @@ public class SkillHandlePlayer : ModPlayer {
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
+		if (Activate) {
+			return;
+		}
 		if (whoAmIskill >= AvailableSkillActiveSlot) {
 			return;
 		}
@@ -366,6 +361,9 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public void ReplaceSkillFromSkillHolderToInv(int whoAmIskill, int whoAmIInv) {
+		if (Activate) {
+			return;
+		}
 		if (whoAmIskill >= AvailableSkillActiveSlot) {
 			return;
 		}
@@ -416,6 +414,9 @@ public class SkillHandlePlayer : ModPlayer {
 		return SkillModSystem.GetSkill(active[currentIndex]);
 	}
 	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
+		if (Activate) {
+			return;
+		}
 		if (whoAmIsource >= AvailableSkillActiveSlot) {
 			return;
 		}
@@ -448,6 +449,9 @@ public class SkillHandlePlayer : ModPlayer {
 	/// </summary>
 	/// <param name="whoAmI"></param>
 	public void RequestSkillRemoval_SkillHolder(int whoAmI) {
+		if (Activate) {
+			return;
+		}
 		switch (CurrentActiveHolder) {
 			case 1:
 				SkillHolder1[whoAmI] = -1;
@@ -512,7 +516,6 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public override void ResetEffects() {
 		ProjectileCritChance = 0;
-		ProjectileAmount = 1;
 		ProjectileCritDamage = 0;
 		ProjectileEnergyRegain = 0;
 		ProjectileSpeedMultiplier = 1;

@@ -43,19 +43,9 @@ TranquilMind: {
 	Description: Increases skill duration by 5 seconds
 }
 
-Skill_BoneArrow: {
-	DisplayName: Bonefide Shower
-	Description: Casts a ring of 16 bone arrows, dealing 10 damage each
-}
-
 WoodenArrowRain: {
 	DisplayName: Tribal Ambush
-	Description: Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
-}
-
-ChaosArrowRain: {
-	DisplayName: Chaos Arrow Rain
-	Description: Rain down random arrow each dealing damage range from 8 to 16
+	Description: Casts an ambush of Arrows that phases through blocks, dealing 16 damage each
 }
 
 Increases_3xDamage: {
@@ -79,25 +69,30 @@ Icicle: {
 }
 
 MeteorShower: {
-	DisplayName: Meteor Shower
-	Description: Rains down several meteors, dealing 44 base damage within a large radius
+	DisplayName: Stella Shower
+	Description:
+		'''
+		Rains down several meteors and star, dealing 44 base damage within a large radius
+		+ 20% skill damage after this skill
+		'''
 }
 
 SpiritBurst: {
 	DisplayName: Spirit Burst
 	Description:
 		'''
-		Bursts out a powerful spirit that homes in on the nearest enemy.
-		On triggering this skill, burst out 5 powerful spirit
+		Bursts out a spirit that homes in on the nearest enemy.
+		On triggering this skill, burst out 8 spirits
 		'''
 }
 
-EnergyBolt: {
-	DisplayName: Energy Bolt
+EnergyChainReaction: {
+	DisplayName: Energy chain reaction
 	Description:
 		'''
-		Shoot out fast moving energy orb
-		Increases skill cost and damage for each active skill after this skill
+		Shoot out fast moving energy orb deals 30 damage
+		Releases a zap that deals 33 damage, inflicting the 'Electrified' debuff and returning 5 Energy each time it hit
+		Increases skill cost and damage by 10% for each active skill after this skill
 		'''
 }
 
@@ -114,11 +109,6 @@ GuaranteedCrit: {
 RapidHealing: {
 	DisplayName: Rapid Overflow
 	Description: Rapidly regenerate your health
-}
-
-StarFury: {
-	DisplayName: Starfall Blast
-	Description: Rain down Star Wrath
 }
 
 WoodSwordSpirit: {
@@ -146,9 +136,9 @@ AdAstra: {
 	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed, and defense by 90% for 15 seconds.
 }
 
-BulletStorm: {
-	DisplayName: Bullet Whirlwind
-	Description: Rains down various bullets that deal 14 ranged damage
+FireDamageUp: {
+	DisplayName: Fire damage UP
+	Description: Increases damage against target with OnFire debuff by 150%
 }
 
 TerrorForm: {
@@ -156,19 +146,18 @@ TerrorForm: {
 	Description: Offers major improvements to several stats, but rapidly drains your life
 }
 
-IceAge: {
-	DisplayName: Ice Age
-	Description: Casts out a large glacier from the sky towards your cursor, dealing 24 base damage in a large radius
-}
-
-ElectricChain: {
-	DisplayName: Electric Chain
-	Description: Releases a zap that deals 33 damage, inflicting the 'Electrified' debuff and returning 5 Energy each time it hit
-}
-
 WilloFreeze: {
 	DisplayName: Will o' Freeze
-	Description: Summons 4 frost spriti that spin around spawn position, dealing 36 damage and inflicting the 'Frostburn' debuff
+	Description: Summons 4 frost spriti that spin around, dealing 36 damage and inflicting the 'Frostburn' debuff
+}
+
+CriticalUp: {
+	DisplayName: Critical Up
+	Description:
+		'''
+		+15% skill critical strike chance
+		+25% skill critical damage
+		'''
 }
 
 PowerPlant: {
@@ -193,7 +182,7 @@ PhoenixBlazingTornado: {
 
 BulletHell: {
 	DisplayName: Bullet Hell
-	Description: Create a vortex of bullet [Base: 22 damage]
+	Description: Summon a vortex of bullet [Base: 22 damage]
 }
 
 DebugCommand: {

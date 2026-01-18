@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
 internal class OutroEffect_ReaperMark : WeaponEffect {
@@ -20,8 +21,15 @@ internal class OutroEffect_ReaperMark : WeaponEffect {
 			crit += 15f;
 		}
 	}
-	public override void ModifyHit(Player player, NPC npc, ref NPC.HitModifiers mod) {
+	public override void ModifyHitItem(Player player, NPC npc, ref NPC.HitModifiers mod) {
 		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.ReaperMark].Contains(player.HeldItem.type)) {
+			if (npc.GetLifePercent() <= .1f && !npc.boss) {
+				npc.StrikeInstantKill();
+			}
+		}
+	}
+	public override void ModifyHitProj(Player player, Projectile proj, NPC npc, ref NPC.HitModifiers mod) {
+		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.ReaperMark].Contains(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType)) {
 			if (npc.GetLifePercent() <= .1f && !npc.boss) {
 				npc.StrikeInstantKill();
 			}
