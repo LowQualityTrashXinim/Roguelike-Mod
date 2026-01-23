@@ -1,10 +1,9 @@
 ﻿using Terraria;
 using Humanizer;
 using Terraria.ID;
-using System.Collections.Generic;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Items.Lootbox;
+using Terraria.DataStructures;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 
@@ -17,8 +16,10 @@ public class WeaponSpoil : ModSpoil {
 		chestplayer.GetAmount();
 		return Description.FormatWith(chestplayer.weaponAmount);
 	}
-	public override void OnChoose(Player player, int itemsource) {
-		ModUtils.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
+	public override void OnChoose(Player player) {
+		PlayerStatsHandle chestplayer = player.GetModPlayer<PlayerStatsHandle>();
+		chestplayer.GetAmount();
+		ModUtils.GetWeaponSpoil(new EntitySource_Misc("Spoil"), chestplayer.weaponAmount);
 	}
 }
 
@@ -29,11 +30,9 @@ public class AccessorySpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 	}
-	public override void OnChoose(Player player, int itemsource) {
+	public override void OnChoose(Player player) {
 		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
-		for (int i = 0; i < amount; i++) {
-			ModUtils.GetAccessories(itemsource, player);
-		}
+		ModUtils.GetAccessories(new EntitySource_Misc("Spoil"), player, amount);
 	}
 }
 
@@ -41,8 +40,8 @@ public class ArmorSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
-	public override void OnChoose(Player player, int itemsource) {
-		ModUtils.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player, true);
+	public override void OnChoose(Player player) {
+		ModUtils.GetArmorForPlayer(new EntitySource_Misc("Spoil"), player, true);
 	}
 }
 
@@ -55,8 +54,8 @@ public class PotionSpoil : ModSpoil {
 		chestplayer.GetAmount();
 		return Description.FormatWith(chestplayer.potionTypeAmount);
 	}
-	public override void OnChoose(Player player, int itemsource) {
-		ModUtils.GetPotion(itemsource, player);
+	public override void OnChoose(Player player) {
+		ModUtils.GetPotion(new EntitySource_Misc("Spoil"), player);
 	}
 }
 
@@ -64,16 +63,16 @@ public class RelicSpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
 	}
-	public override void OnChoose(Player player, int itemsource) {
-		ModUtils.GetRelic(itemsource, player, 2);
+	public override void OnChoose(Player player) {
+		ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 2);
 	}
 }
 public class SkillSpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
 	}
-	public override void OnChoose(Player player, int itemsource) {
-		ModUtils.GetSkillLootbox(itemsource, player, 2);
+	public override void OnChoose(Player player) {
+		ModUtils.GetSkillLootbox(new EntitySource_Misc("Spoil"), player, 2);
 	}
 }
 public class FoodSpoil : ModSpoil {
@@ -83,10 +82,10 @@ public class FoodSpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6));
 	}
-	public override void OnChoose(Player player, int itemsource) {
+	public override void OnChoose(Player player) {
 		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6);
 		for (int i = 0; i < amount; i++) {
-			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.Next(TerrariaArrayID.AllFood));
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), Main.rand.Next(TerrariaArrayID.AllFood));
 		}
 	}
 }

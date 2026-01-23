@@ -2650,6 +2650,11 @@ Mods: {
 					These are randomized, it give certain bonuses passively when this relic is active
 					'''
 			}
+
+			BossRushModeActivation: {
+				DisplayName: Boss Rush Mode Activation
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

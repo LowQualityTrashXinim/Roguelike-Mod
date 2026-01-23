@@ -2,7 +2,6 @@
 using System.IO;
 using Terraria.ID;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.Artifacts;
@@ -22,7 +21,6 @@ namespace Roguelike {
 			Perk,
 			Skill,
 			Artifact,
-			SpoilsThatYetToChoose,
 			PlayerStatsHandle
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
@@ -83,13 +81,6 @@ namespace Roguelike {
 					artifactPlayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
 						artifactPlayer.SyncPlayer(-1, whoAmI, false);
-					}
-					break;
-				case MessageType.SpoilsThatYetToChoose:
-					SpoilsPlayer spoilplayer = Main.player[playernumber].GetModPlayer<SpoilsPlayer>();
-					spoilplayer.ReceivePlayerSync(reader);
-					if (Main.netMode == NetmodeID.Server) {
-						spoilplayer.SyncPlayer(-1, whoAmI, false);
 					}
 					break;
 				case MessageType.PlayerStatsHandle:

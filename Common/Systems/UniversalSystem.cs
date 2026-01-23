@@ -118,7 +118,6 @@ internal class UniversalSystem : ModSystem {
 	public PerkDebugUI debugperkUI;
 
 	public SpoilsUIState spoilsState;
-	public TeleportUI teleportUI;
 	public InfoUI infoUI;
 	public AchievementUI achievementUI;
 	public StructureUI structUI;
@@ -146,7 +145,6 @@ internal class UniversalSystem : ModSystem {
 			relicUI = new();
 			skillUI = new();
 			spoilsState = new();
-			teleportUI = new();
 			infoUI = new();
 			achievementUI = new();
 			structUI = new();
@@ -190,7 +188,6 @@ internal class UniversalSystem : ModSystem {
 		relicUI = null;
 		skillUI = null;
 		spoilsState = null;
-		teleportUI = null;
 		infoUI = null;
 		achievementUI = null;
 		structUI = null;
@@ -346,28 +343,20 @@ internal class UniversalSystem : ModSystem {
 	/// </summary>
 	/// <param name="lootboxType">the lootbox item ID</param>
 	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
-	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
+	public void ActivateSpoilsUI() {
 		DeactivateUI();
 		if (Check_TotalRNG()) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[lootboxType])) {
+				if (!spoil.IsSelectable(Main.LocalPlayer)) {
 					SpoilList.Remove(spoil);
 				}
 			}
-			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer, lootboxType);
+			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer);
 			return;
 		}
-		if (!IsReopening) {
-			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
-		}
-
 		user2ndInterface.SetState(spoilsState);
-	}
-	public void ActivateTeleportUI() {
-		DeactivateUI();
-		user2ndInterface.SetState(teleportUI);
 	}
 	public void DeactivateUI() {
 		user2ndInterface.SetState(null);
@@ -575,10 +564,6 @@ public class DefaultUI : UIState {
 		if (system.user2ndInterface.CurrentState != null) {
 			return;
 		}
-		if (Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
-			system.ActivateSpoilsUI(Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First(), true);
-			return;
-		}
 		if (system.user2ndInterface.CurrentState == null) {
 			system.DeactivateUI();
 			system.user2ndInterface.SetState(system.UIsystemmenu);
@@ -662,14 +647,7 @@ public class DefaultUI : UIState {
 		}
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
-			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
-				SpoilsPlayer spoilplayer = player.GetModPlayer<SpoilsPlayer>();
-				string text = string.Format(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Tooltip"), spoilplayer.LootBoxSpoilThatIsNotOpen.Count);
-				Main.instance.MouseText(text);
-			}
-			else {
-				Main.instance.MouseText("Roguelike Menu");
-			}
+			Main.instance.MouseText("Roguelike Menu");
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		base.Update(gameTime);
@@ -1420,149 +1398,4 @@ public class WeaponEnchantmentUIImg : Roguelike_UIImage {
 		spriteBatch.Draw(item, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
 	}
 	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / textureSize.Length();
-}
-public class TeleportUI : UIState {
-	public List<btn_Teleport> btn_List;
-	public UITextPanel<string> panel;
-	public override void OnInitialize() {
-		panel = new UITextPanel<string>("Select place to teleport below");
-		panel.HAlign = .5f;
-		panel.VAlign = .3f;
-		panel.UISetWidthHeight(150, 53);
-		Append(panel);
-
-		btn_List = new List<btn_Teleport>();
-		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
-			{ ItemID.SlimeCrown, Bid.Slime },
-			{ ItemID.SuspiciousLookingEye, Bid.FleshRealm },
-			{ ItemID.WormFood, Bid.Corruption },
-			{ ItemID.BloodySpine, Bid.Crimson },
-			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
-			{ ItemID.Abeemination, Bid.BeeNest },
-			{ ItemID.DeerThing, Bid.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underworld }
-		};
-
-		for (int i = 0; i < stuffPreHM.Count; i++) {
-			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
-			int keyvalue = stuffPreHM.Keys.ElementAt(i);
-			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffPreHM[keyvalue]);
-			btn.VAlign = .4f;
-			btn.HAlign = Hvalue;
-			btn_List.Add(btn);
-			Append(btn);
-		}
-		if (Main.hardMode) {
-			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
-				{ ItemID.QueenSlimeCrystal, Bid.Hallow },
-				{ ItemID.MechanicalSkull, Bid.Hallow },
-				{ ItemID.MechanicalWorm, Bid.Hallow },
-				{ ItemID.MechanicalEye, Bid.Hallow },
-				{ ModContent.ItemType<PlanteraSpawn>(), Bid.Jungle },
-				{ ItemID.LihzahrdPowerCell, Bid.Jungle },
-				{ ModContent.ItemType<LunaticTablet>(), Bid.Dungeon },
-				{ ItemID.EmpressButterfly, Bid.Hallow },
-				{ ItemID.TruffleWorm, Bid.Ocean }
-			};
-			for (int i = 8; i < stuffHM.Count; i++) {
-				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
-				int keyvalue = stuffHM.Keys.ElementAt(i);
-				btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffHM[keyvalue]);
-				btn.VAlign = .6f;
-				btn.HAlign = Hvalue;
-				btn_List.Add(btn);
-				Append(btn);
-			}
-		}
-	}
-	public override void OnActivate() {
-		foreach (var item in btn_List) {
-			item.Remove();
-		}
-		btn_List.Clear();
-		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
-			{ ItemID.SlimeCrown, Bid.Slime },
-			{ ItemID.SuspiciousLookingEye, Bid.FleshRealm },
-			{ ItemID.WormFood, Bid.Corruption },
-			{ ItemID.BloodySpine, Bid.Crimson },
-			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
-			{ ItemID.Abeemination, Bid.BeeNest },
-			{ ItemID.DeerThing, Bid.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underworld }
-		};
-		for (int i = 0; i < stuffPreHM.Count; i++) {
-			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
-			int keyvalue = stuffPreHM.Keys.ElementAt(i);
-			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffPreHM[keyvalue]);
-			btn.VAlign = .4f;
-			btn.HAlign = Hvalue;
-			btn_List.Add(btn);
-			Append(btn);
-		}
-		if (Main.hardMode) {
-			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
-				{ ItemID.QueenSlimeCrystal, Bid.Hallow },
-				{ ItemID.MechanicalSkull, Bid.Hallow },
-				{ ItemID.MechanicalWorm, Bid.Hallow },
-				{ ItemID.MechanicalEye, Bid.Hallow },
-				{ ModContent.ItemType<PlanteraSpawn>(), Bid.Jungle },
-				{ ItemID.LihzahrdPowerCell, Bid.Jungle },
-				{ ModContent.ItemType<LunaticTablet>(), Bid.Dungeon },
-				{ ItemID.EmpressButterfly, Bid.Hallow },
-				{ ItemID.TruffleWorm, Bid.Ocean }
-			};
-			for (int i = 0; i < stuffHM.Count; i++) {
-				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuffHM.Count - 1));
-				int keyvalue = stuffHM.Keys.ElementAt(i);
-				btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffHM[keyvalue]);
-				btn.VAlign = .6f;
-				btn.HAlign = Hvalue;
-				btn_List.Add(btn);
-				Append(btn);
-			}
-		}
-	}
-}
-public class btn_Teleport : UIImageButton {
-	Texture2D tex;
-	int bossitemid;
-	short biomeid;
-	public string ZoneText = "";
-	public btn_Teleport(Asset<Texture2D> texture, int BossItemID, short biomeID) : base(texture) {
-		bossitemid = BossItemID;
-		biomeid = biomeID;
-		tex = texture.Value;
-	}
-
-	public override void LeftClick(UIMouseEvent evt) {
-		Player player = Main.LocalPlayer;
-		BossRushWorldGen.FindSuitablePlaceToTeleport(player, biomeid, ModContent.GetInstance<BossRushWorldGen>().Room);
-		if (!ModContent.GetInstance<UniversalSystem>().GivenBossSpawnItem.Contains(bossitemid)) {
-			ModContent.GetInstance<UniversalSystem>().GivenBossSpawnItem.Add(bossitemid);
-			player.QuickSpawnItem(player.GetSource_FromThis(), bossitemid);
-		}
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		Main.instance.LoadItem(bossitemid);
-		Texture2D texture1 = TextureAssets.Item[bossitemid].Value;
-		Vector2 origin = texture1.Size() * .5f;
-		Vector2 drawpos = GetInnerDimensions().Position() + tex.Size() * .5f;
-		spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (IsMouseHovering) {
-			Main.instance.MouseText(RogueLikeWorldGen.BiomeID[biomeid]);
-		}
-		else {
-			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-				Main.instance.MouseText("");
-			}
-		}
-	}
 }

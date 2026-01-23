@@ -2,18 +2,17 @@ Implementation TODO:
 1/ Make world generation process much more easy to work with.
 2/ Work on more Trial NPC and Trial Projectile
 3/ Work on debuff and buff sprite and many minssing sprite in the mod.
-4/ Remove connection between spoil and lootbox.
-5/ Work on localization "TODO"
-6/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
-7/ Refactor User info tablet
-8/ Rework rarity system and tranmutation system.
-9/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-10/ Listing problematic content that need adjustment:
+4/ Work on localization "TODO"
+5/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
+6/ Refactor User info tablet
+7/ Rework rarity system and tranmutation system.
+8/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+9/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
-11/ Added content based on biome.
-12/ Work on level item system ( not actual leveling system ).
-13/ Implement randomize spawn location mechanic.
-14/ Implement special characteristic for material :
+10/ Added content based on biome.
+11/ Work on level item system ( not actual leveling system ).
+12/ Implement randomize spawn location mechanic.
+13/ Implement special characteristic for material :
 - Copper : Related to electricity and the debuff electricified
 - Tin : Strengthen using tin item related.
 - Iron : Defenses focus
@@ -22,13 +21,13 @@ Implementation TODO:
 - Tungsten : ????
 - Gold : Midas theme focus
 - Platinum : ???
-15/ Implement Outro effect mechanic, the mechanic are to work as follow:
+14/ Implement Outro effect mechanic, the mechanic are to work as follow:
 - Each weapon produce their own outro point and have their own threadhold.
 - If a weapon outro point is not yet reach their threadhold and player switch to different weapon, then the outro point is reset back to 0.
 - Once player reach to the threadhold of outro point then upon switching to different weapon,
 instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
 - Duplicate outro effect will instead have their timer reset and not added.
 - The following mechanic should also be implemented into Everlasting Overhaul.
-16/ Remove or rework projectile skill to replace them all with summon skill.
+15/ Remove or rework projectile skill to replace them all with summon skill.
 
 Testing TODO:

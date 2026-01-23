@@ -4,8 +4,6 @@ using Roguelike.Contents.Items.RelicItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -37,97 +35,84 @@ public static partial class ModUtils {
 		DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
 		DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
 		DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-		if (NPC.downedBoss1) {
-			DropItemMelee.Add(ItemID.Code1);
-			DropItemMagic.Add(ItemID.ZapinatorGray);
-		}
-		if (NPC.downedBoss2) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
-			DropItemRange.Add(ItemID.MoltenFury);
-			DropItemRange.Add(ItemID.StarCannon);
-			DropItemRange.Add(ItemID.AleThrowingGlove);
-			DropItemRange.Add(ItemID.Harpoon);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
-			DropItemSummon.Add(ItemID.ImpStaff);
-		}
-		if (NPC.downedBoss3) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
-			DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
-		}
-		if (NPC.downedQueenBee) {
-			DropItemMelee.Add(ItemID.BeeKeeper);
-			DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
-			DropItemMagic.Add(ItemID.BeeGun);
-			DropItemSummon.Add(ItemID.HornetStaff);
-		}
-		if (NPC.downedDeerclops) {
-			DropItemRange.Add(ItemID.PewMaticHorn);
-			DropItemMagic.Add(ItemID.WeatherPain);
-			DropItemSummon.Add(ItemID.HoundiusShootius);
-		}
-		if (Main.hardMode) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
-			DropItemRange.AddRange(TerrariaArrayID.RangeHM);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
-		}
-		if (NPC.downedQueenSlime) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
-			DropItemSummon.Add(ItemID.Smolstar);
-		}
-		if (NPC.downedMechBossAny) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
-			DropItemRange.Add(ItemID.SuperStarCannon);
-			DropItemRange.Add(ItemID.DD2PhoenixBow);
-			DropItemMagic.Add(ItemID.UnholyTrident);
-		}
-		if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
-			DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
-		}
-		if (NPC.downedPlantBoss) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
-			DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
-		}
-		if (NPC.downedGolemBoss) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
-			DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
-		}
-		if (NPC.downedEmpressOfLight) {
-			DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
-			DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
-			DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
-			DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
-		}
-		if (NPC.downedAncientCultist) {
-			DropItemMelee.Add(ItemID.DayBreak);
-			DropItemMelee.Add(ItemID.SolarEruption);
-			DropItemRange.Add(ItemID.Phantasm);
-			DropItemRange.Add(ItemID.VortexBeater);
-			DropItemMagic.Add(ItemID.NebulaArcanum);
-			DropItemMagic.Add(ItemID.NebulaBlaze);
-			DropItemSummon.Add(ItemID.StardustCellStaff);
-			DropItemSummon.Add(ItemID.StardustDragonStaff);
-		}
-		if (NPC.downedMoonlord) {
-			DropItemMelee.Add(ItemID.StarWrath);
-			DropItemMelee.Add(ItemID.Meowmere);
-			DropItemMelee.Add(ItemID.Terrarian);
-			DropItemRange.Add(ItemID.SDMG);
-			DropItemRange.Add(ItemID.Celeb2);
-			DropItemMagic.Add(ItemID.LunarFlareBook);
-			DropItemMagic.Add(ItemID.LastPrism);
-			DropItemSummon.Add(ItemID.RainbowCrystalStaff);
-			DropItemSummon.Add(ItemID.MoonlordTurretStaff);
-		}
+
+		DropItemMelee.Add(ItemID.Code1);
+		DropItemMagic.Add(ItemID.ZapinatorGray);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
+		DropItemRange.Add(ItemID.MoltenFury);
+		DropItemRange.Add(ItemID.StarCannon);
+		DropItemRange.Add(ItemID.AleThrowingGlove);
+		DropItemRange.Add(ItemID.Harpoon);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
+		DropItemSummon.Add(ItemID.ImpStaff);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
+		DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
+
+		DropItemMelee.Add(ItemID.BeeKeeper);
+		DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
+		DropItemMagic.Add(ItemID.BeeGun);
+		DropItemSummon.Add(ItemID.HornetStaff);
+
+		DropItemRange.Add(ItemID.PewMaticHorn);
+		DropItemMagic.Add(ItemID.WeatherPain);
+		DropItemSummon.Add(ItemID.HoundiusShootius);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
+		DropItemRange.AddRange(TerrariaArrayID.RangeHM);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
+		DropItemSummon.Add(ItemID.Smolstar);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
+		DropItemRange.Add(ItemID.SuperStarCannon);
+		DropItemRange.Add(ItemID.DD2PhoenixBow);
+		DropItemMagic.Add(ItemID.UnholyTrident);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
+
+		//DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
+		//DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
+		//DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
+		//DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
+
+		//DropItemMelee.Add(ItemID.DayBreak);
+		//DropItemMelee.Add(ItemID.SolarEruption);
+		//DropItemRange.Add(ItemID.Phantasm);
+		//DropItemRange.Add(ItemID.VortexBeater);
+		//DropItemMagic.Add(ItemID.NebulaArcanum);
+		//DropItemMagic.Add(ItemID.NebulaBlaze);
+		//DropItemSummon.Add(ItemID.StardustCellStaff);
+		//DropItemSummon.Add(ItemID.StardustDragonStaff);
+
+		//DropItemMelee.Add(ItemID.StarWrath);
+		//DropItemMelee.Add(ItemID.Meowmere);
+		//DropItemMelee.Add(ItemID.Terrarian);
+		//DropItemRange.Add(ItemID.SDMG);
+		//DropItemRange.Add(ItemID.Celeb2);
+		//DropItemMagic.Add(ItemID.LunarFlareBook);
+		//DropItemMagic.Add(ItemID.LastPrism);
+		//DropItemSummon.Add(ItemID.RainbowCrystalStaff);
+		//DropItemSummon.Add(ItemID.MoonlordTurretStaff);
+
 		switch (rng) {
 			case 0:
 				ReturnWeapon = ItemID.None;
@@ -147,6 +132,116 @@ public static partial class ModUtils {
 		}
 	}
 	/// <summary>
+	/// Return weapon
+	/// </summary>
+	public static void GetWeaponSpoil(IEntitySource source, int amount) {
+		var DropItemMelee = new List<int>();
+		var DropItemRange = new List<int>();
+		var DropItemMagic = new List<int>();
+		var DropItemSummon = new List<int>();
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
+		DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
+		DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
+
+		DropItemMelee.Add(ItemID.Code1);
+		DropItemMagic.Add(ItemID.ZapinatorGray);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
+		DropItemRange.Add(ItemID.MoltenFury);
+		DropItemRange.Add(ItemID.StarCannon);
+		DropItemRange.Add(ItemID.AleThrowingGlove);
+		DropItemRange.Add(ItemID.Harpoon);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
+		DropItemSummon.Add(ItemID.ImpStaff);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
+		DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
+
+		DropItemMelee.Add(ItemID.BeeKeeper);
+		DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
+		DropItemMagic.Add(ItemID.BeeGun);
+		DropItemSummon.Add(ItemID.HornetStaff);
+
+		DropItemRange.Add(ItemID.PewMaticHorn);
+		DropItemMagic.Add(ItemID.WeatherPain);
+		DropItemSummon.Add(ItemID.HoundiusShootius);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
+		DropItemRange.AddRange(TerrariaArrayID.RangeHM);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
+		DropItemSummon.Add(ItemID.Smolstar);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
+		DropItemRange.Add(ItemID.SuperStarCannon);
+		DropItemRange.Add(ItemID.DD2PhoenixBow);
+		DropItemMagic.Add(ItemID.UnholyTrident);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
+
+		DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
+		DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
+		DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
+		DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
+
+		//DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
+		//DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
+		//DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
+		//DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
+
+		//DropItemMelee.Add(ItemID.DayBreak);
+		//DropItemMelee.Add(ItemID.SolarEruption);
+		//DropItemRange.Add(ItemID.Phantasm);
+		//DropItemRange.Add(ItemID.VortexBeater);
+		//DropItemMagic.Add(ItemID.NebulaArcanum);
+		//DropItemMagic.Add(ItemID.NebulaBlaze);
+		//DropItemSummon.Add(ItemID.StardustCellStaff);
+		//DropItemSummon.Add(ItemID.StardustDragonStaff);
+
+		//DropItemMelee.Add(ItemID.StarWrath);
+		//DropItemMelee.Add(ItemID.Meowmere);
+		//DropItemMelee.Add(ItemID.Terrarian);
+		//DropItemRange.Add(ItemID.SDMG);
+		//DropItemRange.Add(ItemID.Celeb2);
+		//DropItemMagic.Add(ItemID.LunarFlareBook);
+		//DropItemMagic.Add(ItemID.LastPrism);
+		//DropItemSummon.Add(ItemID.RainbowCrystalStaff);
+		//DropItemSummon.Add(ItemID.MoonlordTurretStaff);
+		for (int i = 0; i < amount; i++) {
+			switch (Main.rand.Next(1, 5)) {
+				case 1:
+					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemMelee));
+					break;
+				case 2:
+					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemRange));
+					break;
+				case 3:
+					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemMagic));
+					break;
+				case 4:
+					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemSummon));
+					break;
+			}
+		}
+	}
+	/// <summary>
 	/// This is a static function version of GetWeapon in LootBoxBase<br/>
 	/// Lootbox check is already presented in this function and as such it is not needed to check if the item a lootboxbase or not<br/>
 	/// it is also important to remember that this function will automatically handle dropping item
@@ -155,7 +250,7 @@ public static partial class ModUtils {
 	/// <param name="player">The player</param>
 	/// <param name="rng">rng number</param>
 	/// <param name="additiveModify">additive direct modify to amount of weapons can be given</param>
-	public static void GetWeapon(Item lootbox, Player player, int rng = 0, float additiveModify = 1) {
+	public static void GetWeapon(Item lootbox, Player player, float additiveModify = 1) {
 		if (lootbox.ModItem is not LootBoxBase item) {
 			return;
 		}
@@ -279,51 +374,46 @@ public static partial class ModUtils {
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="player"></param>
-	public static void GetAccessories(int type, Player player) {
-		var entitySource = player.GetSource_OpenItem(type);
-		int acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
-		player.QuickSpawnItem(entitySource, acc);
+	public static void GetAccessories(IEntitySource source, Player player, int loopamount = 1) {
+		for (int i = 0; i < loopamount; i++) {
+			int acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
+			player.QuickSpawnItem(source, acc);
+		}
 	}
 	/// <summary>
 	/// This function will automatically handle drop for you so no need to do it yourself
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="player"></param>
-	public static void GetPotion(int type, Player player) {
+	public static void GetPotion(IEntitySource source, Player player) {
 		List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion, .. ModItemLib.LootboxPotion.Select(i => i.type)];
 		DropItemPotion.Add(ItemID.LifeforcePotion);
 		DropItemPotion.Add(ItemID.InfernoPotion);
 		var modplayer = player.ModPlayerStats();
 		modplayer.GetAmount();
-		var entitySource = player.GetSource_OpenItem(type);
 		for (int i = 0; i < modplayer.potionTypeAmount; i++) {
-			player.QuickSpawnItem(entitySource, Main.rand.Next(DropItemPotion), modplayer.potionNumAmount);
+			player.QuickSpawnItem(source, Main.rand.Next(DropItemPotion), modplayer.potionNumAmount);
 		}
 	}
-	public static void GetArmorPiece(int type, Player player, bool randomized = false) {
-		var entitySource = player.GetSource_OpenItem(type);
+	public static void GetArmorPiece(IEntitySource source, Player player, bool randomized = false) {
 		if (randomized) {
-			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.EveryArmorPiece));
+			player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.EveryArmorPiece));
 			return;
 		}
-		player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.HeadAllPiece));
-		player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.BodyAllPiece));
-		player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.LegsAllPiece));
+		player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.HeadAllPiece));
+		player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.BodyAllPiece));
+		player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.LegsAllPiece));
 	}
-	public static void GetRelic(int type, Player player, int amount = 1) {
-		var entitySource = player.GetSource_OpenItem(type);
+	public static void GetRelic(IEntitySource source, Player player, int amount = 1) {
 		amount = player.ModPlayerStats().ModifyGetAmount(amount);
-
 		for (int i = 0; i < amount; i++) {
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			player.QuickSpawnItem(source, ModContent.ItemType<Relic>());
 		}
 	}
-	public static void GetSkillLootbox(int type, Player player, int amount = 1) {
-		var entitySource = player.GetSource_OpenItem(type);
+	public static void GetSkillLootbox(IEntitySource source, Player player, int amount = 1) {
 		amount = player.ModPlayerStats().ModifyGetAmount(amount);
-
 		for (int i = 0; i < amount; i++) {
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
+			player.QuickSpawnItem(source, ModContent.ItemType<SkillLootBox>());
 		}
 	}
 	/// <summary>
@@ -336,41 +426,35 @@ public static partial class ModUtils {
 		HeadArmor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
 		BodyArmor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
 		LegArmor.AddRange(TerrariaArrayID.LegArmorPreBoss);
-		if (NPC.downedBoss2) {
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
-		}
-		if (NPC.downedBoss3) {
-			HeadArmor.Add(ItemID.NecroHelmet);
-			BodyArmor.Add(ItemID.NecroBreastplate);
-			LegArmor.Add(ItemID.NecroGreaves);
-		}
-		if (NPC.downedQueenBee) {
-			HeadArmor.Add(ItemID.BeeHeadgear);
-			BodyArmor.Add(ItemID.BeeBreastplate);
-			LegArmor.Add(ItemID.BeeGreaves);
-		}
-		if (Main.hardMode) {
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorHardMode);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorHardMode);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorHardMode);
-		}
-		if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostMech);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostMech);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorPostMech);
-		}
-		if (NPC.downedPlantBoss) {
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostPlant);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostPlant);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorPostPlant);
-		}
-		if (NPC.downedGolemBoss) {
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostGolem);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
-		}
+
+		HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
+		BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
+		LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
+
+		HeadArmor.Add(ItemID.NecroHelmet);
+		BodyArmor.Add(ItemID.NecroBreastplate);
+		LegArmor.Add(ItemID.NecroGreaves);
+
+		HeadArmor.Add(ItemID.BeeHeadgear);
+		BodyArmor.Add(ItemID.BeeBreastplate);
+		LegArmor.Add(ItemID.BeeGreaves);
+
+		HeadArmor.AddRange(TerrariaArrayID.HeadArmorHardMode);
+		BodyArmor.AddRange(TerrariaArrayID.BodyArmorHardMode);
+		LegArmor.AddRange(TerrariaArrayID.LegArmorHardMode);
+
+		HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostMech);
+		BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostMech);
+		LegArmor.AddRange(TerrariaArrayID.LegArmorPostMech);
+
+		HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostPlant);
+		BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostPlant);
+		LegArmor.AddRange(TerrariaArrayID.LegArmorPostPlant);
+
+		HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostGolem);
+		BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
+		LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
+
 		if (!returnOnlyPiece) {
 			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
 			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));

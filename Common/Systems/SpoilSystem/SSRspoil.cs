@@ -1,8 +1,6 @@
 ﻿using Humanizer;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.aDebugItem.UIdebug;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Contents.Transfixion.Perks;
@@ -24,33 +22,33 @@ internal class SSRspoil {
 			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			return Description.FormatWith(chestplayer.ModifyGetAmount(1), chestplayer.ModifyGetAmount(2));
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.SSRDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
+		public override void OnChoose(Player player) {
+			IEntitySource source = new EntitySource_Misc("Spoil");
 			int type = ModContent.ItemType<WorldEssence>();
-			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), type);
-			ModUtils.GetSkillLootbox(itemsource, player);
-			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			player.QuickSpawnItem(source, type);
+			ModUtils.GetSkillLootbox(source, player);
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
-				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+				Item relicitem = player.QuickSpawnItemDirect(source, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {
 					relic.AutoAddRelicTemplate(player, 3);
 				}
 			}
-			ModUtils.GetAccessories(itemsource, player);
+			ModUtils.GetAccessories(source, player);
 		}
 	}
 	public class LegendaryRelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SSR;
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.SSRDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
-			Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+		public override void OnChoose(Player player) {
+			Item item = player.QuickSpawnItemDirect(new EntitySource_Misc("Spoil"), ModContent.ItemType<Relic>());
 			if (item.ModItem is Relic relic) {
 				if (Main.rand.NextBool(20)) {
 					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<GenericTemplate>(), 3);

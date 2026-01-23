@@ -5,8 +5,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Collections.Generic;
-using System.IO;
-using Terraria.ModLoader.IO;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
@@ -70,58 +68,23 @@ public abstract class ModSpoil {
 	public virtual void SetStaticDefault() { }
 	public virtual string FinalDisplayName() => DisplayName;
 	public virtual string FinalDescription() => Description;
-	public virtual bool IsSelectable(Player player, Item itemsource) {
+	public virtual bool IsSelectable(Player player) {
 		return true;
 	}
-	public virtual void OnChoose(Player player, int itemsource) { }
+	public virtual void OnChoose(Player player) { }
 	public sealed override string ToString() {
 		return base.ToString();
 	}
 }
 public class SpoilsPlayer : ModPlayer {
-	public List<int> LootBoxSpoilThatIsNotOpen = new List<int>();
 	public List<string> SpoilsGift = new();
 	public override void Initialize() {
-		LootBoxSpoilThatIsNotOpen = new();
 		SpoilsGift = new();
-	}
-	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-		ModPacket packet = Mod.GetPacket();
-		packet.Write((byte)Roguelike.MessageType.Perk);
-		packet.Write((byte)Player.whoAmI);
-		packet.Write(LootBoxSpoilThatIsNotOpen.Count);
-		foreach (int item in LootBoxSpoilThatIsNotOpen) {
-			packet.Write(LootBoxSpoilThatIsNotOpen[item]);
-		}
-		packet.Send(toWho, fromWho);
-	}
-	public void ReceivePlayerSync(BinaryReader reader) {
-		LootBoxSpoilThatIsNotOpen.Clear();
-		int count = reader.ReadInt32();
-		for (int i = 0; i < count; i++)
-			LootBoxSpoilThatIsNotOpen.Add(reader.ReadInt32());
-	}
-
-	public override void CopyClientState(ModPlayer targetCopy) {
-		SpoilsPlayer clone = (SpoilsPlayer)targetCopy;
-		clone.LootBoxSpoilThatIsNotOpen = LootBoxSpoilThatIsNotOpen;
-	}
-
-	public override void SendClientChanges(ModPlayer clientPlayer) {
-		SpoilsPlayer clone = (SpoilsPlayer)clientPlayer;
-		if (LootBoxSpoilThatIsNotOpen != clone.LootBoxSpoilThatIsNotOpen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-	}
-	public override void SaveData(TagCompound tag) {
-		tag["LootBoxSpoilThatIsNotOpen"] = LootBoxSpoilThatIsNotOpen;
-	}
-	public override void LoadData(TagCompound tag) {
-		LootBoxSpoilThatIsNotOpen = tag.Get<List<int>>("LootBoxSpoilThatIsNotOpen");
 	}
 }
 public class SpoilsUIState : UIState {
 	public int Limit_Spoils = 5;
 	public List<SpoilsUIButton> btn_List;
-	public int lootboxItem = -1;
 	public UITextPanel<string> panel;
 	public override void OnInitialize() {
 		panel = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Header"));
@@ -135,13 +98,9 @@ public class SpoilsUIState : UIState {
 	public override void OnActivate() {
 		btn_List.Clear();
 		SpoilsPlayer modplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
-		lootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.FirstOrDefault();
-		if (lootboxItem <= 0) {
-			return;
-		}
 		Player player = Main.LocalPlayer;
 		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
-		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1 && modplayer.LootBoxSpoilThatIsNotOpen.Count > 0) {
+		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1) {
 			SpoilList.Clear();
 			SpoilList = modplayer.SpoilsGift.Select(ModSpoilSystem.GetSpoils).ToList();
 			modplayer.SpoilsGift.Clear();
@@ -150,7 +109,7 @@ public class SpoilsUIState : UIState {
 			modplayer.SpoilsGift.Clear();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
+				if (!spoil.IsSelectable(player)) {
 					SpoilList.Remove(spoil);
 				}
 			}
@@ -191,32 +150,24 @@ public class SpoilsUIButton : UIImageButton {
 	int LootboxItem = 0;
 	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
 		spoil = Spoil;
-		if (Main.LocalPlayer.TryGetModPlayer(out SpoilsPlayer spoilplayer)) {
-			if (spoilplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
-				LootboxItem = spoilplayer.LootBoxSpoilThatIsNotOpen.First();
-		}
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
-		if (modplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
-			LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
 		if (spoil == null || LootboxItem == 0) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[LootboxItem])) {
+				if (!spoil.IsSelectable(player)) {
 					SpoilList.Remove(spoil);
 				}
 			}
-			Main.rand.Next(SpoilList).OnChoose(player, LootboxItem);
-			modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+			Main.rand.Next(SpoilList).OnChoose(player);
 			modplayer.SpoilsGift.Clear();
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			return;
 		}
-		spoil.OnChoose(player, LootboxItem);
-		modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+		spoil.OnChoose(player);
 		modplayer.SpoilsGift.Clear();
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}

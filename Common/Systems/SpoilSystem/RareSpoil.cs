@@ -26,12 +26,12 @@ internal class RareSpoil {
 				chestplayer.ModifyGetAmount(4)
 				);
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.RareDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
-			ModUtils.GetSkillLootbox(itemsource, player, 2);
-			ModUtils.GetRelic(itemsource, player, 4);
+		public override void OnChoose(Player player) {
+			ModUtils.GetSkillLootbox(new EntitySource_Misc("Spoil"), player, 2);
+			ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 4);
 		}
 	}
 	public class ArmorAccessorySpoil : ModSpoil {
@@ -48,17 +48,17 @@ internal class RareSpoil {
 				chestplayer.ModifyGetAmount(2)
 				);
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.RareDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
+		public override void OnChoose(Player player) {
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
-				ModUtils.GetAccessories(itemsource, player);
+				ModUtils.GetAccessories(new EntitySource_Misc("Spoil"), player);
 			}
 			int amount2 = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount2; i++) {
-				ModUtils.GetArmorPiece(itemsource, player);
+				ModUtils.GetArmorPiece(new EntitySource_Misc("Spoil"), player);
 			}
 		}
 	}
@@ -66,37 +66,36 @@ internal class RareSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.RareDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
-			ModUtils.GetArmorPiece(itemsource, player);
+		public override void OnChoose(Player player) {
+			ModUtils.GetArmorPiece(new EntitySource_Misc("Spoil"), player);
 		}
 	}
 	public class StarterPerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.RareDrop();
 		}
-		public override void OnChoose(Player player, int itemsource) {
-			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<CelestialEssence>());
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<CelestialEssence>());
 		}
 	}
 	public class RareRelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
-		public override bool IsSelectable(Player player, Item itemsource) {
+		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override string FinalDescription() {
 			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
-		public override void OnChoose(Player player, int itemsource) {
-			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+		public override void OnChoose(Player player) {
+			IEntitySource entitySource = new EntitySource_Misc("Spoil");
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
 				Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());

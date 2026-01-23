@@ -16,7 +16,6 @@ using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
-using Roguelike.Contents.Items.BossRushItem;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
@@ -163,7 +162,6 @@ namespace Roguelike.Common.Global {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			yield return new Item(ModContent.ItemType<LunchBox>());
 			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				yield return new Item(ModContent.ItemType<ExoticTeleporter>());
 				LifeCrystal += 5;
 				ManaCrystal += 4;
 				if (UniversalSystem.CanEnchantmentBeAccess()) {

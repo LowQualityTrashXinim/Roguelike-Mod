@@ -447,3 +447,5 @@ Version 0.0.1:
 431/ Added ItemObject ( ModObject ) to create special event where player can pick up item.
 432/ Created event for Shrine of Offering, now a perk will always spawn along with Shrine of Offering.
 433/ Minor bug fixes to check healing.
+434/ Changed generation of boss rush mode world.
+435/ Completely disassociate Spoil with Lootbox.
