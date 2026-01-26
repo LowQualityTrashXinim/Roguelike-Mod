@@ -339,10 +339,8 @@ internal class UniversalSystem : ModSystem {
 		user2ndInterface.SetState(enchantmentMenuWiki);
 	}
 	/// <summary>
-	/// Activate spoils ui state, it is required that lootboxtype come from lootbox item ID
-	/// </summary>
-	/// <param name="lootboxType">the lootbox item ID</param>
-	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
+	/// Activate spoils ui state
+	/// <summary>
 	public void ActivateSpoilsUI() {
 		DeactivateUI();
 		if (Check_TotalRNG()) {
@@ -363,6 +361,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
+	public int Count_BossKill = 0;
 	public string UniqueWorldPlayerID = "";
 	public override void ClearWorld() {
 		GivenBossSpawnItem = new List<int>();
@@ -371,6 +370,7 @@ internal class UniversalSystem : ModSystem {
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 		tag["ListOfBossKilled"] = ListOfBossKilled;
+		tag["Count_BossKill"] = Count_BossKill;
 		if (timeBeatenTheGame != TimeSpan.Zero) {
 			tag["TimeBeaten"] = timeBeatenTheGame;
 		}
@@ -378,6 +378,7 @@ internal class UniversalSystem : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
+		Count_BossKill = tag.Get<int>("Count_BossKill");
 		UniqueWorldPlayerID = tag.Get<string>("UniqueID");
 		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
 			timeBeatenTheGame = time;
@@ -626,24 +627,21 @@ public class DefaultUI : UIState {
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-		if (system.timeBeatenTheGame == TimeSpan.Zero) {
-			if (UniversalSystem.DidPlayerBeatTheMod()) {
-				ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
-			}
-			string ToTimer =
-				$"{time.Hours}" +
-				$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
-				$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
-				$":{(time.Milliseconds >= 100 ? time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds : "0" + time.Milliseconds)}";
-			timer.SetText(ToTimer);
+		if (ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			timer.SetText(TimerText(ModContent.GetInstance<BossRushStructureHandler>().Get_Timer));
 		}
 		else {
-			string ToTimer =
-			$"{system.timeBeatenTheGame.Hours}" +
-			$":{(system.timeBeatenTheGame.Minutes >= 10 ? system.timeBeatenTheGame.Minutes : "0" + system.timeBeatenTheGame.Minutes)}" +
-			$":{(system.timeBeatenTheGame.Seconds >= 10 ? system.timeBeatenTheGame.Seconds : "0" + time.Seconds)}" +
-			$":{(system.timeBeatenTheGame.Milliseconds >= 100 ? system.timeBeatenTheGame.Milliseconds >= 10 ? system.timeBeatenTheGame.Milliseconds : system.timeBeatenTheGame.Milliseconds : "0" + system.timeBeatenTheGame.Milliseconds)}";
-			timer.SetText(ToTimer);
+			if (system.timeBeatenTheGame == TimeSpan.Zero) {
+				if (UniversalSystem.DidPlayerBeatTheMod()) {
+					ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+				}
+				string ToTimer = TimerText(time);
+				timer.SetText(ToTimer);
+			}
+			else {
+				string ToTimer = TimerText(time);
+				timer.SetText(ToTimer);
+			}
 		}
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
@@ -652,6 +650,10 @@ public class DefaultUI : UIState {
 		}
 		base.Update(gameTime);
 	}
+	public string TimerText(TimeSpan time) => $"{time.Hours}" +
+				$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
+				$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
+				$":{(time.Milliseconds >= 100 ? time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds : "0" + time.Milliseconds)}";
 	int itemlimit = 10;
 	UIPanel weaponPanel_Main;
 	UIPanel endofdemo_Main;

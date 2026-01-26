@@ -28,6 +28,5 @@ Implementation TODO:
 instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
 - Duplicate outro effect will instead have their timer reset and not added.
 - The following mechanic should also be implemented into Everlasting Overhaul.
-15/ Remove or rework projectile skill to replace them all with summon skill.
 
 Testing TODO:

@@ -34,6 +34,32 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			if (ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
 				Main.hardMode = true;
 			}
+			IsABossAlive = false;
+			for (int i = 0; i < 200; i++) {
+				NPC npc = Main.npc[i];
+				if (!npc.active) {
+					continue;
+				}
+				if (npc.boss) {
+					IsABossAlive = true;
+				}
+				if (npc.type == NPCID.DukeFishron) {
+					self.ZoneBeach = true;
+				}
+				if (npc.type == NPCID.BrainofCthulhu) {
+					self.ZoneCrimson = true;
+				}
+				if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
+					IsABossAlive = true;
+					self.ZoneCorrupt = true;
+				}
+				if (npc.type == NPCID.SkeletronHead || npc.type == NPCID.SkeletronPrime || npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) {
+					Main.dayTime = false;
+				}
+				if (npc.type == NPCID.QueenBee || npc.type == NPCID.Plantera) {
+					self.ZoneJungle = true;
+				}
+			}
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
@@ -43,6 +69,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 			BossRushWorld = true;
 		}
+		public bool IsABossAlive = false;
 		public bool BossRushWorld = false;
 		public override void SaveWorldData(TagCompound tag) {
 			tag["BossRushWorld"] = BossRushWorld;

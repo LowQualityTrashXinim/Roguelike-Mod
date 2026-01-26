@@ -225,20 +225,23 @@ public static partial class ModUtils {
 		//DropItemSummon.Add(ItemID.RainbowCrystalStaff);
 		//DropItemSummon.Add(ItemID.MoonlordTurretStaff);
 		for (int i = 0; i < amount; i++) {
+			int type = 0;
 			switch (Main.rand.Next(1, 5)) {
 				case 1:
-					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemMelee));
+					type = Main.rand.NextFromCollection(DropItemMelee);
 					break;
 				case 2:
-					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemRange));
+					type = Main.rand.NextFromCollection(DropItemRange);
 					break;
 				case 3:
-					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemMagic));
+					type = Main.rand.NextFromCollection(DropItemMagic);
 					break;
 				case 4:
-					Main.LocalPlayer.QuickSpawnItem(source, Main.rand.NextFromCollection(DropItemSummon));
+					type = Main.rand.NextFromCollection(DropItemSummon);
 					break;
 			}
+			Main.LocalPlayer.QuickSpawnItem(source, type);
+			AmmoForWeapon(Main.LocalPlayer, type);
 		}
 	}
 	/// <summary>

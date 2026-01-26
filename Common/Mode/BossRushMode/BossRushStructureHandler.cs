@@ -1,17 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Toggle;
+using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Roguelike.Common.Mode.BossRushMode;
-internal class BossRushStructureHandler : ModSystem {
+public class BossRushStructureHandler : ModSystem {
 	public override void Load() {
 		On_NPC.EncourageDespawn += On_NPC_EncourageDespawn;
 	}
@@ -37,14 +41,18 @@ internal class BossRushStructureHandler : ModSystem {
 	}
 	public Rectangle Rect_BossRushStructure() => ModContent.GetInstance<BossRushWorldGen>().BossRushStructure;
 	Stopwatch _timer = new Stopwatch();
+	public TimeSpan Get_Timer => _timer.Elapsed;
+
 	bool Initialize = false;
 	int SpawnTime = 0;
 	int SpawnTimeLimit = 600;
 	int SpawnAmount = 0;
-	public void Start_BossRush() {
+	bool NGplus = false;
+	public void Start_BossRush(bool NGplus = false) {
 		Active = true;
 		Initialize = true;
 		_timer.Start();
+		this.NGplus = NGplus;
 	}
 	public int[] NPCspawnPool = [
 		NPCID.DemonEye,
@@ -69,11 +77,10 @@ internal class BossRushStructureHandler : ModSystem {
 		NPCID.CultistArcherWhite,
 		NPCID.IceElemental,
 		NPCID.IcyMerman,
-		NPCID.Necromancer,
-		NPCID.RuneWizard,
 		NPCID.Tim,
 		];
 	public int[] MiniBossspawnPool = [
+		NPCID.RuneWizard,
 		NPCID.Paladin,
 		NPCID.RockGolem,
 		NPCID.Medusa,
@@ -86,7 +93,7 @@ internal class BossRushStructureHandler : ModSystem {
 		NPCID.GoblinSummoner,
 		];
 	public bool Active { get; private set; } = false;
-	List<int> BossList = [
+	public readonly int[] Arr_BossID = [
 		NPCID.KingSlime,
 		NPCID.EyeofCthulhu,
 		NPCID.SkeletronHead,
@@ -101,40 +108,139 @@ internal class BossRushStructureHandler : ModSystem {
 		NPCID.Golem,
 		NPCID.DukeFishron,
 		NPCID.QueenSlimeBoss,
-		NPCID.DD2Betsy,
 		NPCID.HallowBoss,
 		NPCID.CultistBoss,
-		NPCID.Pumpking,
-		NPCID.IceQueen,
-		NPCID.MartianSaucer,
 	];
+	List<int> BossList = new();
+	public int BossSpawnCD = 0;
 	public override void PostUpdateEverything() {
-		if (!Active || !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!Main.LocalPlayer.active || Main.LocalPlayer.dead || !Active || !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
 			return;
 		}
+		if (BossSpawnCD > 0 && BossSpawnCD <= ModUtils.ToSecond(10))
+			if (BossSpawnCD % 60 == 0) {
+				Main.NewText($"{BossSpawnCD / 60}", Color.Red);
+			}
 		if (Initialize) {
+			if (BossList == null || BossList.Count < 1) {
+				BossList = [.. Arr_BossID];
+			}
 			Initialize = false;
 		}
-
 		SpawnTimeLimit = Math.Clamp(600 - SpawnAmount / 100, 60, 900);
 		if (++SpawnTime >= SpawnTimeLimit) {
+			SpawnTime = 0;
 			SpawnAmount++;
 			Rectangle zone = Rect_BossRushStructure();
 			Vector2 pos = (zone.Location + Main.rand.NextFromHashSet(MobsSpawningPos())).ToWorldCoordinates();
 			NPC npc = NPC.NewNPCDirect(new EntitySource_SpawnNPC(), (int)pos.X, (int)pos.Y, Main.rand.Next(NPCspawnPool));
 			npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
-			npc.timeLeft = 99999;
+			npc.timeLeft = 9999999;
 		}
-		if (ModUtils.IsAnyVanillaBossAlive()) {
-
+		if (!ModContent.GetInstance<BossRushWorldGen>().IsABossAlive) {
+			if (--BossSpawnCD > 0) {
+				return;
+			}
+			if (BossList == null || BossList.Count < 1) {
+				if (!NGplus) {
+					Active = false;
+					Main.NewText("Congratulation, you beaten boss rush mode");
+					Main.NewText("If you want to continue to see how far you can push yourself, activate the boss rush item again");
+					_timer.Stop();
+					return;
+				}
+				else {
+					BossList = [.. Arr_BossID];
+				}
+			}
+			int type = Main.rand.Next(BossList);
+			BossList.Remove(type);
+			BossSpawnCD = ModUtils.ToSecond(30);
+			Vector2 pos = Rect_BossRushStructure().Center.ToWorldCoordinates();
+			Player self = Main.LocalPlayer;
+			NPC.SpawnBoss((int)pos.X, (int)pos.Y, type, self.whoAmI);
+			if (type == NPCID.Spazmatism) {
+				NPC.SpawnBoss((int)pos.X, (int)pos.Y, NPCID.Retinazer, self.whoAmI);
+			}
+			else if (type == NPCID.Retinazer) {
+				NPC.SpawnBoss((int)pos.X, (int)pos.Y, NPCID.Spazmatism, self.whoAmI);
+			}
+			if (type == NPCID.DukeFishron) {
+				self.ZoneBeach = true;
+			}
+			if (type == NPCID.BrainofCthulhu) {
+				self.ZoneCrimson = true;
+			}
+			if (type == NPCID.EaterofWorldsBody || type == NPCID.EaterofWorldsHead || type == NPCID.EaterofWorldsTail) {
+				self.ZoneCorrupt = true;
+			}
+			if (type == NPCID.SkeletronHead || type == NPCID.SkeletronPrime || type == NPCID.Retinazer || type == NPCID.Spazmatism || type == NPCID.HallowBoss) {
+				Main.dayTime = false;
+			}
+			if (type == NPCID.QueenBee || type == NPCID.Plantera) {
+				self.ZoneJungle = true;
+			}
 		}
-
-
+	}
+	public override void PreSaveAndQuit() {
+		Active = false;
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		base.SaveWorldData(tag);
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		base.LoadWorldData(tag);
+	}
+}
+public class BossRushModeGlobalNPC : GlobalNPC {
+	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			return;
+		}
+		pool.Clear();
+	}
+	public override void OnKill(NPC npc) {
+		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			return;
+		}
+		if (npc.boss) {
+			ModContent.GetInstance<BossRushStructureHandler>().BossSpawnCD = ModUtils.ToSecond(30);
+			Main.NewText("A boss have been killed, 30s until a new boss is spawn", Color.Red);
+		}
+	}
+}
+internal class BossRushModeActivation : ModItem {
+	public override void SetStaticDefaults() {
+		Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
+		ItemID.Sets.AnimatesAsSoul[Item.type] = true;
+	}
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<CursedSkull>();
+	public override void SetDefaults() {
+		Item.height = 60;
+		Item.width = 56;
+		Item.value = 0;
+		Item.rare = ItemRarityID.Purple;
+		Item.useAnimation = 30;
+		Item.useTime = 30;
+		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.scale = .5f;
+		Item.consumable = true;
+	}
+	public override bool CanUseItem(Player player) {
+		return !ModUtils.IsAnyVanillaBossAlive();
+	}
+	public override bool? UseItem(Player player) {
+		if (player.whoAmI == Main.myPlayer) {
+			SoundEngine.PlaySound(SoundID.Roar, player.position);
+			if (ModContent.GetInstance<UniversalSystem>().Count_BossKill > 1) {
+				Main.NewText("Restart boss rush !");
+				ModContent.GetInstance<BossRushStructureHandler>().Start_BossRush();
+			}
+			else {
+				Main.NewText("Boss rush mode start !");
+				ModContent.GetInstance<BossRushStructureHandler>().Start_BossRush();
+			}
+		}
+		return true;
 	}
 }

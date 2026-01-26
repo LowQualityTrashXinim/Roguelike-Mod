@@ -1,19 +1,22 @@
-﻿using System;
-using Terraria;
-using System.Linq;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.Localization;
-using System.Collections.Generic;
-using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using Terraria.UI;
-using ReLogic.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {
@@ -64,7 +67,7 @@ public abstract class ModSpoil {
 	public string Name => GetType().Name;
 	public int RareValue = 0;
 	public string DisplayName => $"- {ModUtils.LocalizationText("Spoils", $"{Name}.DisplayName")} -";
-	public string Description => ModUtils.LocalizationText("Spoils", $"{Name}.DisplayName");
+	public string Description => ModUtils.LocalizationText("Spoils", $"{Name}.Description");
 	public virtual void SetStaticDefault() { }
 	public virtual string FinalDisplayName() => DisplayName;
 	public virtual string FinalDescription() => Description;
@@ -154,7 +157,7 @@ public class SpoilsUIButton : UIImageButton {
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
-		if (spoil == null || LootboxItem == 0) {
+		if (spoil == null) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
@@ -191,6 +194,26 @@ public class SpoilsUIButton : UIImageButton {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
 				Main.instance.MouseText("");
 			}
+		}
+	}
+}
+internal class SpoilBag : ModItem {
+	public override string Texture => ModTexture.PLACEHOLDERCHEST;
+	public override void SetDefaults() {
+		Item.height = 60;
+		Item.width = 56;
+		Item.value = 0;
+		Item.rare = ItemRarityID.Purple;
+		Item.useAnimation = 30;
+		Item.useTime = 30;
+		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.scale = .5f;
+		Item.maxStack = 9999;
+	}
+	public override bool CanRightClick() => true;
+	public override void RightClick(Player player) {
+		if (player.whoAmI == Main.myPlayer) {
+			ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
 		}
 	}
 }

@@ -51,6 +51,9 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 		else {
 			npc.lifeMax += (int)(npc.lifeMax * GetValueMulti() * .1f);
+			if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) {
+				npc.lifeMax = (int)(npc.lifeMax * .7f);
+			}
 			npc.life = npc.lifeMax;
 			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
 			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
@@ -71,6 +74,9 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 			extraMultiply += .3f;
 		}
 		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
+		if (ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			extraMultiply += ModContent.GetInstance<UniversalSystem>().Count_BossKill * .1f;
+		}
 		return (1 + counter * .5f + extraMultiply) * scale;
 	}
 }

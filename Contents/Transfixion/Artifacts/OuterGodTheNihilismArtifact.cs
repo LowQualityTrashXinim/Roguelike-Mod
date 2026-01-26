@@ -19,7 +19,7 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		artifact = Player.HasArtifact<OuterGodTheNihilismArtifact>();
 	}
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
-		if(!artifact) {
+		if (!artifact) {
 			return;
 		}
 		if (Main.rand.NextFloat() <= .25f) {
@@ -33,7 +33,7 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void UpdateEquips() {
-		if(!artifact) {
+		if (!artifact) {
 			return;
 		}
 		Player.ModPlayerStats().UpdateDefenseBase -= 1;
@@ -47,13 +47,13 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		if (!artifact) {
 			return;
 		}
-		modifiers.SourceDamage += 1.5f;
+		modifiers.SourceDamage += 2.5f;
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (!artifact) {
 			return;
 		}
-		modifiers.SourceDamage += 1.5f;
+		modifiers.SourceDamage += 2.5f;
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (!artifact) {
@@ -64,23 +64,21 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 
 			NPC.HitInfo hitinfo = new();
 			hitinfo.Damage = (int)(Player.GetWeaponDamage(item) * 1.1f) + 1;
-			hitinfo.HitDirection = ModUtils.DirectionFromPlayerToNPC(Player.Center.X, npc.Center.X);
 			hitinfo.Crit = Main.rand.Next(1, 101) >= Player.GetWeaponCrit(item);
-			hitinfo.Knockback = Player.GetWeaponKnockback(item);
+			hitinfo.Knockback = 0;
 			Player.StrikeNPCDirect(npc, hitinfo);
 		}
 		Player.AddBuff(ModContent.BuffType<Vulnerable>(), ModUtils.ToSecond(4));
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if (artifact && (info.Dodgeable || Main.rand.NextFloat() <= .7f)) {
+		if (artifact && Main.rand.NextFloat() <= .2f) {
 			if (Player.HeldItem.IsAWeapon(true)) {
 				Item item = Player.HeldItem;
 				if (Player.Center.LookForHostileNPC(out NPC npc, 9999)) {
 					NPC.HitInfo hitinfo = new();
 					hitinfo.Damage = (int)(Player.GetWeaponDamage(item) * 2f) + 1;
-					hitinfo.HitDirection = ModUtils.DirectionFromPlayerToNPC(Player.Center.X, npc.Center.X);
 					hitinfo.Crit = Main.rand.Next(1, 101) >= Player.GetWeaponCrit(item);
-					hitinfo.Knockback = Player.GetWeaponKnockback(item);
+					hitinfo.Knockback = 0;
 					Player.StrikeNPCDirect(npc, hitinfo);
 				}
 			}
@@ -102,6 +100,7 @@ public class Vulnerable : ModBuff {
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, player.buffTime[buffIndex] / -60);
+		player.endurance -= 1;
 	}
 }
 public class VoidParticle : ModProjectile {

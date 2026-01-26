@@ -455,6 +455,7 @@ Mods: {
 			Portal_JungleTemple.DisplayName: Portal_ Jungle Temple
 			BulletHell_Projectile.DisplayName: Bullet Hell_ Projectile
 			EnergyChainOrb.DisplayName: Energy Chain Orb
+			HitScanShotv2.DisplayName: Hit Scan Shotv2
 		}
 
 		NPCs: {
@@ -2653,6 +2654,18 @@ Mods: {
 
 			BossRushModeActivation: {
 				DisplayName: Boss Rush Mode Activation
+				Tooltip:
+					'''
+					Welcome to boss rush mode
+					Use this item to activate boss rush mode.
+					IN this mode, Wooden lootbox will give spoil instead
+					The Lootpool is drastically changed to balance out what you bout to face
+					GLHF
+					'''
+			}
+
+			SpoilBag: {
+				DisplayName: Spoil Bag
 				Tooltip: ""
 			}
 		}
@@ -3513,6 +3526,11 @@ Mods: {
 			GreaterLifeForceBuff: {
 				DisplayName: Greater Life Force Buff
 				Description: Mods.Roguelike.Buffs.GreaterLifeForceBuff.Description
+			}
+
+			HallowedGaze: {
+				DisplayName: Hallowed Gaze
+				Description: Mods.Roguelike.Buffs.HallowedGaze.Description
 			}
 		}
 

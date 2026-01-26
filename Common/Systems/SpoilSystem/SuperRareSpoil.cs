@@ -36,10 +36,13 @@ internal class SuperRareSpoil {
 			chestplayer.GetAmount();
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(chestplayer.weaponAmount * .5f), 1, 999999);
 			ModUtils.GetWeaponSpoil(source, weaponAmount);
-			ModUtils.GetAccessories(source, player);
 			ModUtils.GetArmorPiece(source, player, true);
-			ModUtils.GetSkillLootbox(source, player);
-			ModUtils.GetRelic(source, player);
+			int amount = chestplayer.ModifyGetAmount(1);
+			for (int i = 0; i < amount; i++) {
+				ModUtils.GetAccessories(source, player);
+				ModUtils.GetSkillLootbox(source, player);
+				ModUtils.GetRelic(source, player);
+			}
 		}
 	}
 	public class PerkSpoil : ModSpoil {
@@ -65,20 +68,6 @@ internal class SuperRareSpoil {
 			if (item.ModItem is Relic relic) {
 				relic.AutoAddRelicTemplate(player, 4);
 			}
-		}
-	}
-	public class DivineWeaponSpoil : ModSpoil {
-		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.SuperRare;
-		}
-		public override bool IsSelectable(Player player) {
-			return SpoilDropRarity.SuperRareDrop();
-		}
-		public override void OnChoose(Player player) {
-			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
-			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			chestplayer.GetAmount();
-			ModUtils.GetWeaponSpoil(new EntitySource_Misc("Spoil"), chestplayer.weaponAmount);
 		}
 	}
 }

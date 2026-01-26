@@ -24,7 +24,7 @@ namespace Roguelike.Common.General {
 	public class DenyYouFromLoot : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
-				return !npc.CanDenyYouFromLoot;
+				return !npc.CanDenyYouFromLoot && !npc.IsAGhostEnemy;
 			}
 			return false;
 		}

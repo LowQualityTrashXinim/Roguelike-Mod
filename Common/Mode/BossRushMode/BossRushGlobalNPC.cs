@@ -9,16 +9,6 @@ using Roguelike.Common.Systems;
 namespace Roguelike.Common.Mode.BossRushMode
 {
 	internal class BossRushGlobalNPC : GlobalNPC {
-		public override void SetDefaults(NPC entity) {
-			//if(entity.boss && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-			//	float multiplier = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count * .5f;
-			//	if(Main.hardMode) {
-			//		multiplier *= 2;
-			//	}
-			//	entity.lifeMax = (int)(3000 + (3000 * multiplier));
-			//	entity.damage = (int)(30 + (30 * multiplier));
-			//}
-		}
 		public override bool PreAI(NPC npc) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				return base.PreAI(npc);

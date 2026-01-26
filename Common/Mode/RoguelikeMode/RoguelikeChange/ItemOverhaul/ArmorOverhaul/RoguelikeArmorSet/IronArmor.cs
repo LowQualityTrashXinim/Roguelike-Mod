@@ -14,7 +14,7 @@ internal class IronArmor : ModArmorSet {
 public class IronHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.IronHelmet;
-		Add_Defense = 3;
+		Add_Defense = 10;
 		TypeEquipment = Type_Head;
 		ArmorName = "IronArmor";
 		AddTooltip = true;
@@ -26,7 +26,7 @@ public class IronHelmet : ModArmorPiece {
 public class IronChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.IronChainmail;
-		Add_Defense = 4;
+		Add_Defense = 11;
 		TypeEquipment = Type_Body;
 		ArmorName = "IronArmor";
 		AddTooltip = true;
@@ -39,7 +39,7 @@ public class IronChainmail : ModArmorPiece {
 public class IronGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.IronGreaves;
-		Add_Defense = 3;
+		Add_Defense = 8;
 		TypeEquipment = Type_Leg;
 		ArmorName = "IronArmor";
 		AddTooltip = true;

@@ -94,7 +94,7 @@ public class UncommonSpoil {
 		}
 		public override void OnChoose(Player player) {
 			IEntitySource source = new EntitySource_Misc("Spoil");
-			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
 				Item relicitem = player.QuickSpawnItemDirect(source, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {

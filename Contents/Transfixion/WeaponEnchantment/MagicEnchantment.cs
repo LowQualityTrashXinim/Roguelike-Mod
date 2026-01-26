@@ -784,7 +784,7 @@ class DirtBlock : ModEnchantment {
 		//We can add very basic stats increases, here we gonna increases player's defense by 10 when player held this item
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: 10);
 		//This will teach you the what the index and the globalItem do and why it exist here ( tho mainly for ease of uses )
-		//The following effect will spawn a ring of 12 dirt projectiles for every 1s
+		//The following effect will spawn a ring of 12 dirt projectiles for every 5s
 		if (++globalItem.Item_Counter1[index] >= ModUtils.ToSecond(5)) {
 			//the globalItem.ItemCounter1 is a array of counter that applied to specific enchantment slot, the index is the index of this enchantment
 			//Now we spawn a ring of dirt

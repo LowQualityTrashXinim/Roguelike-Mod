@@ -32,7 +32,7 @@ Revolver.Description:
 	'''
 Minishark.Description:
 	'''
-	During item animation, weapon will shoot bullet toward cursor position
+	During item animation, weapon will shoot bullet toward cursor position dealing 15% weapon damage
 	+ If player in their inventory have ammo then it will use that ammo ( CD : 8 frame )
 	If weapon use ammo type : Bullet
 	Have 1% chance to gain Freezy buff
@@ -772,4 +772,87 @@ StarCannon.Description:
 	Accumulating 100 points increase attack damage by 15% and 5% critical strike chance
 	And at 200 points will make next shot shoot out Star projectile ( if weapon can shoot )
 	Star projectile deal 100 + 35% weapon damage
+	'''
+HellwingBow.Description:
+	'''
+	Increases weapon damage by 15% 
+	If weapon use arrow then increases damage by another 20%
+	Convert wooden arrow to fire arrow and fire arrow to hell fire arrow
+	Every 3 shot shoot out 1 hell wing arrow
+	'''
+Marrow.Description:
+	'''
+	Increases weapon damage by 15%
+	If weapon use arrow then increases damage by another 10%
+	Every 3 shot shoot out 1 fast bone arrow
+	Projectile shot from this weapon ignore 10% of enemy defenses
+	'''
+IceBow.Description:
+	'''
+	Increases weapon damage by 5%
+	Deal 35% more damage against target has Frost burn
+	Every 5 shot shoot out 1 ice arrow
+	'''
+DaedalusStormbow.Description:
+	'''
+	On hitting enemy with item, rain down 3 arrows from the sky (CD: 1s)
+	On Hitting enemy with projectile, rain down 3 arrows from the sky (CD: 3s)
+	'''
+ShadowFlameBow.Description:
+	'''
+	Increases weapon damage by 5%
+	Deal 35% more damage against target has Shadow flame
+	Every 5 shot shoot out 1 shadow flame arrow
+	'''
+PulseBow.Description:
+	'''
+	Increases weapon damage by 11% and crit chance by 10%
+	Modify projectile type to shoot Pulse bolt
+	If projectile shoot from this weapon is not pulse bolt then
+	+30% damage and projectile ignore 20% defenses
+	'''
+HallowedRepeater.Description:
+	'''
+	Increases weapon damage by 20% and crit chance by 5
+	Arrow shot from this weapon inflict 1 Hallowed Gaze for 5s (CD: 0.5s)
+	'''
+ChlorophyteShotbow.Description:
+	'''
+	Shot out additional 3 wooden arrow (CD: 2s)
+	Have 1 in 3 chance to replace above arrow to chlorophyte arrow
+	'''
+StakeLauncher.Description:
+	'''
+	This weapon deal 1000% more damage against vampire
+	Shoot a additional stake that deal 150% weapon damage (CD: 3s)
+	'''
+Shotgun.Description:
+	'''
+	Decreases weapon damage by 10% and crit chance by 10
+	Shoot out 5 additional projectile deal 40% weapon damage (CD: 3s)
+	'''
+Gatligator.Description:
+	'''
+	Increases weapon attack speed by 50% but decreases weapon damage by 10%
+	Shot fired from this weapon become inaccurate
+	'''
+Uzi.Description:
+	'''
+	Decreases weapon damage by 30%
+	If weapon use bullet then instead decreases by 10%
+	Shot additional high velocity bullet
+	'''
+Megashark.Description:
+	'''
+	During item animation, weapon will shoot bullet toward cursor position dealing 34% weapon damage
+	+ If player in their inventory have ammo then it will use that ammo ( CD : 7 frame )
+	If weapon use ammo bullet
+	Have 20% to shoot a extra bullet during weapon animation
+	'''
+VenusMagnum.Description:
+	'''
+	Increases damage by 30% and crit chance by 3%
+	If weapon use bullet then increases it by another 20% and 2%
+	If weapon is {0} then increases it by another 50% and 5%
+	Waiting 1s will enhanced the next shot
 	'''

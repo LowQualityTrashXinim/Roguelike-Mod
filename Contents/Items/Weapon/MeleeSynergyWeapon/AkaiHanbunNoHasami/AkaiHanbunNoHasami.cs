@@ -190,8 +190,11 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 		ThreadCutter_HitCooldown = ModUtils.CountDown(ThreadCutter_HitCooldown);
 	}
 	public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot) {
-		return Player.HeldItem.type == ModContent.ItemType<AkaiHanbunNoHasami>()
-			&& Player.ownedProjectileCounts[ModContent.ProjectileType<AkaiHanbunNoHasami_SawMode_Projectile>()] > 0;
+		if (Player.HeldItem.type == ModContent.ItemType<AkaiHanbunNoHasami>()
+			&& Player.ownedProjectileCounts[ModContent.ProjectileType<AkaiHanbunNoHasami_SawMode_Projectile>()] > 0) {
+			return false;
+		}
+		return base.CanBeHitByNPC(npc, ref cooldownSlot);
 	}
 	public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 		if (Player.HeldItem.type != ModContent.ItemType<AkaiHanbunNoHasami>()) {
@@ -231,10 +234,10 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 			return;
 		}
 		if (ThreadCutter_HitCooldown <= 0) {
-			Effect();
 			ThreadCutter_HitCooldown = 60;
 			ThreadCutter_Counter++;
 		}
+		Effect();
 		if (target.HasBuff<AkaiHanbunNoHasami_ThreadOfFate>()) {
 			foreach (var npc in Main.ActiveNPCs) {
 				if (npc.HasBuff<AkaiHanbunNoHasami_ThreadOfFate>() && npc != target && npc.immune[Player.whoAmI] <= 0) {
@@ -251,8 +254,8 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 		if (ThreadCutter_HitCooldown <= 0) {
 			ThreadCutter_HitCooldown = 60;
 			ThreadCutter_Counter++;
-			Effect();
 		}
+		Effect();
 		if (target.HasBuff<AkaiHanbunNoHasami_ThreadOfFate>()) {
 			foreach (var npc in Main.ActiveNPCs) {
 				if (npc.HasBuff<AkaiHanbunNoHasami_ThreadOfFate>() && npc != target && npc.immune[Player.whoAmI] <= 0) {

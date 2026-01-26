@@ -433,7 +433,7 @@ Version 0.0.1:
 425/ Changed build number from 0.0.17.1 -> 0.0.17.2 /.
 426/ Changed Bullet Hell into summon skill.
 427/ The skill are changed as follow:
-- Meteor Shower grant +20% to other skill that after it and merged Starfury skill
+- Meteor Shower grant +20% damage to other skill that after it and merged Starfury skill
 - Deleted Chaos Arrow Rain skill
 - Deleted Bullet Storm skill
 - Merged Electrical chain skill into Energy bolt skill and renamed it to Energy chain reaction
@@ -449,3 +449,14 @@ Version 0.0.1:
 433/ Minor bug fixes to check healing.
 434/ Changed generation of boss rush mode world.
 435/ Completely disassociate Spoil with Lootbox.
+436/ Massively updated how boss rush mode to be more fast pace.
+437/ Update Iron armor to have more def.
+438/ Various fixes.
+439/ Added various new enchantments.
+440/ Introduced Hallowed Gaze debuff, only hallowed weapon can inflict this debuff.
+441/ Fixed Outer God artifact on counter attack causing enemy AI to unable to work.
+442/ Nerfed dodge chance of Outer God artifact from 70% to 20% and 150% damage taken to 250% dmg taken.
+443/ Deleted Divine Weapon spoil due to inconsistency between machine.
+444/ Reworked Venus Magnum and Tactical Shotgun.
+445/ Added new sound effects.
+446/ Fixed Perk draw sprite effect.

@@ -721,8 +721,9 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public string Info = "";
 		private Asset<Texture2D> texture;
 		private Asset<Texture2D> ahhlookingassdefaultbgsperktexture = ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT);
-		public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
+		public PerkUIImageButton(Asset<Texture2D> texture) : base(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT)) {
 			this.texture = texture;
+			OverrideDefaultDraw = true;
 		}
 		public void ChangePerkType(int type) {
 			perkType = type;
@@ -766,6 +767,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			if (Switch != 0) {
 				Switch = ModUtils.Safe_SwitchValue(Switch, 100, extraspeed: 1);
 			}
+			OverrideDefaultDraw = true;
 		}
 		int Switch = 0;
 		public override void DrawImage(SpriteBatch spriteBatch) {
@@ -791,7 +793,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
 			}
 			else {
-				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size1, size2, .8f), SpriteEffects.None, 0);
+				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size2, size1, .8f), SpriteEffects.None, 0);
 			}
 		}
 	}

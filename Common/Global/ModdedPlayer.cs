@@ -28,6 +28,8 @@ using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
+using Roguelike.Common.Mode.BossRushMode;
+using Roguelike.Common.Systems.SpoilSystem;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -159,11 +161,10 @@ namespace Roguelike.Common.Global {
 			}
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
-			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ModContent.ItemType<LunchBox>());
 			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				LifeCrystal += 5;
-				ManaCrystal += 4;
+				yield return new Item(ModContent.ItemType<LunchBox>());
+				LifeCrystal += 15;
+				ManaCrystal += 9;
 				if (UniversalSystem.CanEnchantmentBeAccess()) {
 					yield return new Item(ModContent.ItemType<DivineHammer>());
 				}
@@ -181,6 +182,14 @@ namespace Roguelike.Common.Global {
 				yield return new Item(ModContent.ItemType<UserInfoTablet>());
 				yield return new Item(ModContent.ItemType<TransmuteTablet>());
 				yield return new Item(ModContent.ItemType<SkillOrb>());
+				yield return new Item(ItemID.DiamondHook);
+				yield return new Item(ItemID.CloudinaBottle);
+				yield return new Item(ItemID.HermesBoots);
+				yield return new Item(ModContent.ItemType<BossRushModeActivation>());
+				yield return new Item(ModContent.ItemType<SpoilBag>(), 7);
+			}
+			else {
+				yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			}
 			if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
 				yield return new Item(ModContent.ItemType<RainbowLootBox>());
@@ -188,9 +197,9 @@ namespace Roguelike.Common.Global {
 			if (Player.name.ToLower().Trim() == "drugaddict") {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 			}
-			if (Player.IsDebugPlayer()) {
-				yield return new Item(ModContent.ItemType<MainDebugStick>());
-			}
+			//if (Player.IsDebugPlayer()) {
+			//	yield return new Item(ModContent.ItemType<MainDebugStick>());
+			//}
 			if (Player.name.Contains("Ninja")) {
 				yield return new Item(ItemID.Katana);
 				yield return new Item(ItemID.Shuriken, 100);

@@ -135,6 +135,18 @@ BloodLustCluster:
 	Inflict excessive bleeding
 	May spawn additional sentient blood during swing
 	'''
+VenusMagnum:
+	'''
+	Intro effect: Your shot will be accompany with spore and chlorophyte bullet for 9s
+	Waiting for 2.5s will increases your damage by 40 base and your shot accompany with spore clouds
+	Waiting for 5s will increases your damage by 3x and your shot is accompany with chlorophyte bullets
+	Shotting at perfect moment will make your shot enhanced 
+	'''
+TacticalShotgun:
+	'''
+	Have 25% to quickly shoot another round
+	Have 50% to shoot more bullet
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

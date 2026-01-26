@@ -147,6 +147,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_WhipTag();
 		Add_OtherTag();
 		Add_ReaperMarkTag();
+		Add_HallowedGazeTag();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
@@ -941,6 +942,17 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.RavenStaff);
 		Arr_WeaponTag[tag].Add(ItemID.ScytheWhip);
 	}
+	private void Add_HallowedGazeTag() {
+		int tag = (int)WeaponTag.HallowedGaze;
+
+		Arr_WeaponTag[tag].Add(ItemID.Excalibur);
+		Arr_WeaponTag[tag].Add(ItemID.HallowedRepeater);
+		Arr_WeaponTag[tag].Add(ItemID.LightDisc);
+		Arr_WeaponTag[tag].Add(ItemID.Gungnir);
+		Arr_WeaponTag[tag].Add(ItemID.TrueExcalibur);
+		Arr_WeaponTag[tag].Add(ItemID.HallowJoustingLance);
+		Arr_WeaponTag[tag].Add(ItemID.SwordWhip);
+	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
 	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
@@ -949,7 +961,23 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	public List<int> Easy_WeaponEffectFollow = new();
 	public int IntroEffect_Duration = 0;
 	public int IntroEffect_ItemType = -1;
-	public static bool Check_ValidForINtroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
+	public static bool Check_ValidForIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
+	/// <summary>
+	/// Check whenever or not if the intro effect is valid, this is different from <see cref="Check_ValidForIntroEffect(Player)"/>
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="itemType"></param>
+	/// <returns></returns>
+	public static bool Check_IntroEffect(Player player, int itemType) {
+		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		return modplayer.IntroEffect_Duration > 0 && modplayer.IntroEffect_ItemType == itemType;
+	}
+	public static int Get_CurrentIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType;
+	public static void Set_IntroEffect(Player player, int itemType, int duration) {
+		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		modplayer.IntroEffect_ItemType = itemType;
+		modplayer.IntroEffect_Duration = duration;
+	}
 	public override void Initialize() {
 		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
 		IntroEffect_ItemType = -1;
@@ -975,9 +1003,6 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		OutroEffect_RejuvinatingGlow_Counter = ModUtils.CountDown(OutroEffect_RejuvinatingGlow_Counter);
 		if (--IntroEffect_Duration <= 0) {
 			IntroEffect_Duration = 0;
-			if (Player.ItemAnimationActive) {
-				IntroEffect_Duration = ModUtils.ToSecond(10);
-			}
 			IntroEffect_ItemType = Player.HeldItem.type;
 		}
 	}
@@ -1063,6 +1088,21 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 }
+public class WeaponEffect_GlobalItem : GlobalItem {
+	public override bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+		if (WeaponEffect_ModPlayer.Check_IntroEffect(Main.LocalPlayer, item.type)) {
+			Main.instance.LoadItem(item.type);
+			Texture2D texture = TextureAssets.Item[item.type].Value;
+			for (int i = 0; i < 3; i++) {
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+			}
+		}
+		return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+	}
+}
 public abstract class WeaponEffect : ModType {
 	public short Type = -1;
 	public int Duration = 0;
@@ -1089,11 +1129,6 @@ public abstract class WeaponEffect : ModType {
 	public virtual void WeaponKnockBack(Player player, Item item, ref StatModifier knockback) { }
 	public virtual void ModifyHitItem(Player player, NPC npc, ref NPC.HitModifiers mod) { }
 	public virtual void ModifyHitProj(Player player, Projectile proj, NPC npc, ref NPC.HitModifiers mod) { }
-}
-public enum WeaponAttribute : byte {
-	SoulBound,
-	Principle,
-	Rule,
 }
 public enum WeaponTag : byte {
 	None,
@@ -1128,6 +1163,7 @@ public enum WeaponTag : byte {
 
 	Other,
 
+	HallowedGaze,
 	Wooden,
 	Ore,
 	/// <summary>

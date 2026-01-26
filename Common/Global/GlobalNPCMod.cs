@@ -65,7 +65,7 @@ namespace Roguelike.Common.Global {
 				noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWDonHitReward>()));
 
-				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
+				IsABoss.OnSuccess(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
@@ -184,6 +184,7 @@ namespace Roguelike.Common.Global {
 			if (npc.boss) {
 				var system = ModContent.GetInstance<UniversalSystem>();
 				system.ListOfBossKilled.Add(npc.type);
+				system.Count_BossKill++;
 			}
 		}
 	}

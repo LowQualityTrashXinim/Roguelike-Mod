@@ -142,6 +142,9 @@ namespace Roguelike.Contents.Items.Lootbox {
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
 				}
 			}
+			if (CanActivateSpoil) {
+				ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
+			}
 		}
 		/// <summary>
 		/// This won't be change no matter what
@@ -184,11 +187,13 @@ namespace Roguelike.Contents.Items.Lootbox {
 					case 2:
 						ReturnWeapon = Main.rand.Next(Range);
 						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						Range.Remove(ReturnWeapon);
 						break;
 					case 3:
 						ReturnWeapon = Main.rand.Next(Magic);
 						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						Magic.Remove(ReturnWeapon);
 						break;
 					case 4:

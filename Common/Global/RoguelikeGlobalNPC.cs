@@ -7,6 +7,7 @@ using Roguelike.Contents.Items.Consumable.Throwable;
 using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
+using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using System;
@@ -95,7 +96,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
 		foreach (var item in npcLoot.Get()) {
 			item.OnSuccess(rule);
-			item.OnSuccess(rule2);
 		}
 	}
 	public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
@@ -103,7 +103,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
 		foreach (var item in globalLoot.Get()) {
 			item.OnSuccess(rule);
-			item.OnSuccess(rule2);
 		}
 	}
 	public override Color? GetAlpha(NPC npc, Color drawColor) {
@@ -165,12 +164,19 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			modifiers.SourceDamage -= .5f;
 		}
 	}
+	public int HallowedGaze_Count = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<HallowedGaze>()) {
+			modifiers.SourceDamage += .05f * HallowedGaze_Count;
+		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.SourceDamage *= 1 - Endurance;
 	}
 	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<HallowedGaze>()) {
+			modifiers.SourceDamage += .05f * HallowedGaze_Count;
+		}
 		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
 			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
 			if (npc.HasBuff<StarRay>()) {
@@ -202,9 +208,25 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
+		if (npc.HasBuff<HallowedGaze>()) {
+			if (HallowedGaze_Count >= 12) {
+				Vector2 playerPos = player.Center;
+				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (npc.Center - pos), ModContent.ProjectileType<HitScanShotv2>(), 1, 0, player.whoAmI);
+			}
+		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
+		if (projectile.owner == Main.myPlayer) {
+			if (npc.HasBuff<HallowedGaze>()) {
+				if (HallowedGaze_Count >= 12) {
+					Vector2 playerPos = Main.player[projectile.owner].Center;
+					Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
+					Projectile.NewProjectile(projectile.GetSource_FromAI(), pos, npc.Center - pos, ModContent.ProjectileType<HitScanShotv2>(), 1, 0, projectile.owner);
+				}
+			}
+		}
 		if (projectile.type == ProjectileID.HeatRay) {
 			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 200);
 			HeatRay_Decay = 30;

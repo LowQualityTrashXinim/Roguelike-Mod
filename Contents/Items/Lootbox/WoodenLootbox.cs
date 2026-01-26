@@ -19,6 +19,9 @@ class WoodenLootBox : LootBoxBase {
 		return new List<int> { ItemPool.GetPoolType<UniversalPool>() };
 	}
 	public override void AbsoluteRightClick(Player player) {
+		if (CanActivateSpoil) {
+			return;
+		}
 		var entitySource = player.GetSource_OpenItem(Type);
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.GetAmount();
