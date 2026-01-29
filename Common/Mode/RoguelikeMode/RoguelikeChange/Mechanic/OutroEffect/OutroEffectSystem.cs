@@ -83,7 +83,6 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
-using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -989,8 +988,10 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// <param name="itemType"></param>
 	/// <returns></returns>
 	public static bool Check_IntroEffect(Player player, int itemType) {
-		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
-		return modplayer.IntroEffect_Duration > 0 && modplayer.IntroEffect_ItemType == itemType;
+		if (player.TryGetModPlayer(out WeaponEffect_ModPlayer modplayer)) {
+			return modplayer.IntroEffect_Duration > 0 && modplayer.IntroEffect_ItemType == itemType;
+		}
+		return false;
 	}
 	public static int Get_CurrentIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType;
 	public static void Set_IntroEffect(Player player, int itemType, int duration) {
@@ -1110,16 +1111,16 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 }
 public class WeaponEffect_GlobalItem : GlobalItem {
 	public override bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-		//if (WeaponEffect_ModPlayer.Check_IntroEffect(Main.LocalPlayer, item.type)) {
-		//	Main.instance.LoadItem(item.type);
-		//	Texture2D texture = TextureAssets.Item[item.type].Value;
-		//	for (int i = 0; i < 3; i++) {
-		//		spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-		//		spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-		//		spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-		//		spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-		//	}
-		//}
+		if (WeaponEffect_ModPlayer.Check_IntroEffect(Main.LocalPlayer, item.type)) {
+			Main.instance.LoadItem(item.type);
+			Texture2D texture = TextureAssets.Item[item.type].Value;
+			for (int i = 0; i < 3; i++) {
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+			}
+		}
 		return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 	}
 }

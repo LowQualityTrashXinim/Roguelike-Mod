@@ -221,12 +221,11 @@ public abstract class ModArmorSet : ModType {
 	protected int headID;
 	protected int legID;
 	protected int bodyID;
-
 	public ModPlayer modplayer = null;
-	public string SetBonusToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.SetBonus");
-	public string HeadToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Head");
-	public string BodyToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Body");
-	public string LegToolTip => Language.GetTextValue($"Mods.Roguelike.Armor.{Name}.Leg");
+	public string SetBonusToolTip => ModUtils.LocalizationText("Armor", $"{Name}.SetBonus");
+	public string HeadToolTip => ModUtils.LocalizationText("Armor", $"{Name}.Head");
+	public string BodyToolTip => ModUtils.LocalizationText("Armor", $"{Name}.Body");
+	public string LegToolTip => ModUtils.LocalizationText("Armor", $"{Name}.Leg");
 	public bool OverrideOriginalToolTip = false;
 	public int HeadID { get => headID; }
 	public int BodyID { get => bodyID; }

@@ -96,18 +96,18 @@ public class BossRushStructureHandler : ModSystem {
 	public readonly int[] Arr_BossID = [
 		NPCID.KingSlime,
 		NPCID.EyeofCthulhu,
-		NPCID.SkeletronHead,
 		NPCID.EaterofWorldsHead,
 		NPCID.BrainofCthulhu,
 		NPCID.QueenBee,
 		NPCID.Deerclops,
-		NPCID.TheDestroyer,
-		NPCID.SkeletronPrime,
+		NPCID.QueenSlimeBoss,
+		NPCID.SkeletronHead,
 		NPCID.Retinazer,
+		NPCID.SkeletronPrime,
+		NPCID.TheDestroyer,
 		NPCID.Plantera,
 		NPCID.Golem,
 		NPCID.DukeFishron,
-		NPCID.QueenSlimeBoss,
 		NPCID.HallowBoss,
 		NPCID.CultistBoss,
 	];
@@ -191,6 +191,8 @@ public class BossRushStructureHandler : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		base.LoadWorldData(tag);
 	}
+	public static bool Setting_FightBossInProgression = false;
+	public static bool Setting_SpawnOnPlayerCommand = false;
 }
 public class BossRushModeGlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
@@ -203,7 +205,7 @@ public class BossRushModeGlobalNPC : GlobalNPC {
 		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
 			return;
 		}
-		if (npc.boss) {
+		if (npc.boss && BossRushStructureHandler.Setting_SpawnOnPlayerCommand) {
 			ModContent.GetInstance<BossRushStructureHandler>().BossSpawnCD = ModUtils.ToSecond(30);
 			Main.NewText("A boss have been killed, 30s until a new boss is spawn", Color.Red);
 		}

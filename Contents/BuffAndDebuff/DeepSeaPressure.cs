@@ -1,5 +1,4 @@
-﻿ 
-using Roguelike.Common.Global;
+﻿ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System.Linq;

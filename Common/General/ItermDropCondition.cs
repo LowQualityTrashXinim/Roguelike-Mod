@@ -31,16 +31,6 @@ namespace Roguelike.Common.General {
 		public bool CanShowItemDropInUI() => false;
 		public string GetConditionDescription() => "deny you from loot regardless";
 	}
-	public class Droprule_GhostNPC : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
-				return !npc.IsAGhostEnemy;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => false;
-		public string GetConditionDescription() => "You should not be able to see this";
-	}
 	public class NoHitAndIsRakan : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)

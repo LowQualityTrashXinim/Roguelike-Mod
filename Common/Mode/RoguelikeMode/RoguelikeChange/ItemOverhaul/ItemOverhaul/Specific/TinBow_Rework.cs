@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System.Collections.Generic;
@@ -10,22 +9,17 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 public class Roguelike_TinBow : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.TinBow;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type != ItemID.TinBow) {
-			return;
-		}
 		entity.damage += 5;
 		entity.useTime = entity.useAnimation = 33;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.TinBow) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_TinBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
-		}
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_TinBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.TinBow) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
 		int counter = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter;
 		player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter = -player.itemAnimationMax;
 		if (counter >= 120) {

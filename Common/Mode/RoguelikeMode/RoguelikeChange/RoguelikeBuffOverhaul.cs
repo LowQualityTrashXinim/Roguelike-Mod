@@ -49,11 +49,6 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 			}
 		}
 		if (type == BuffID.Invisibility) {
-			/*					
-			 		[+] Your critical damage increases by 35%
-					[+] Increases your movement speed by 15%
-					[+] You have 1 in 15 chance to dodge
-			*/
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, 1.35f);
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 		}

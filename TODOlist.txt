@@ -28,5 +28,8 @@ Implementation TODO:
 instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
 - Duplicate outro effect will instead have their timer reset and not added.
 - The following mechanic should also be implemented into Everlasting Overhaul.
+15/ Boss Rush setting
+- Timed or choose when to spawn boss
+- Randomize or progression boss spawn
 
 Testing TODO:

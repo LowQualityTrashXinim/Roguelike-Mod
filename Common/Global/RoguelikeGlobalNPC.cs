@@ -94,14 +94,12 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());
-		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
 		foreach (var item in npcLoot.Get()) {
 			item.OnSuccess(rule);
 		}
 	}
 	public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());
-		LeadingConditionRule rule2 = new(new Droprule_GhostNPC());
 		foreach (var item in globalLoot.Get()) {
 			item.OnSuccess(rule);
 		}
@@ -172,29 +170,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int WrathOfBlueMoon = 0;
 	public int FuryOfTheSun = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		if (npc.HasBuff<WrathOfBlueMoon>()) {
-			modifiers.SourceDamage += .01f * WrathOfBlueMoon;
-		}
-		if (npc.HasBuff<FuryOfTheSun>()) {
-			modifiers.SourceDamage += .01f * FuryOfTheSun;
-		}
-		if (npc.HasBuff<HallowedGaze>()) {
-			modifiers.SourceDamage += .05f * HallowedGaze_Count;
-		}
-		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.SourceDamage *= 1 - Endurance;
+		NPC_Debuff(npc, ref modifiers);
 	}
 	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
-		if (npc.HasBuff<WrathOfBlueMoon>()) {
-			modifiers.SourceDamage += .1f * WrathOfBlueMoon;
-		}
-		if (npc.HasBuff<FuryOfTheSun>()) {
-			modifiers.SourceDamage += .1f * FuryOfTheSun;
-		}
-		if (npc.HasBuff<HallowedGaze>()) {
-			modifiers.SourceDamage += .05f * HallowedGaze_Count;
-		}
+		NPC_Debuff(npc, ref modifiers);
 		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
 			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
 			if (npc.HasBuff<StarRay>()) {
@@ -215,13 +195,24 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (projectile.type == ProjectileID.HeatRay) {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
 		}
-		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 		if (projectile.type == ProjectileID.GolemFist) {
 			if (++GolemFist_HitCount % 3 == 0) {
 				modifiers.SourceDamage += 1.5f;
 			}
 		}
+	}
+	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			modifiers.SourceDamage += .1f * WrathOfBlueMoon;
+		}
+		if (npc.HasBuff<FuryOfTheSun>()) {
+			modifiers.SourceDamage += .1f * FuryOfTheSun;
+		}
+		if (npc.HasBuff<HallowedGaze>()) {
+			modifiers.SourceDamage += .05f * HallowedGaze_Count;
+		}
+		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
+		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
@@ -242,13 +233,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				FuryOfTheSun = 20;
 			}
 			if (Main.rand.NextBool(10)) {
-				npc.Center.LookForHostileNPC(out List<NPC> npclist, 175);
-				foreach (NPC target in npclist) {
-					if (npc.whoAmI == target.whoAmI) {
-						continue;
-					}
-					player.StrikeNPCDirect(target, hit);
-				}
+				OnHitEffect(npc, player, hit);
 			}
 		}
 		if (npc.HasBuff<HallowedGaze>()) {
@@ -257,6 +242,25 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (npc.Center - pos), ModContent.ProjectileType<HitScanShotv2>(), 1, 0, player.whoAmI);
 			}
+		}
+	}
+	private void OnHitEffect(NPC npc, Player player, NPC.HitInfo hit) {
+		npc.Center.LookForHostileNPC(out List<NPC> npclist, 175);
+		foreach (NPC target in npclist) {
+			if (npc.whoAmI == target.whoAmI) {
+				continue;
+			}
+			player.StrikeNPCDirect(target, hit);
+		}
+		for (int i = 0; i < 150; i++) {
+			int smokedust = Dust.NewDust(npc.Center, 0, 0, DustID.Smoke);
+			Main.dust[smokedust].noGravity = true;
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(14, 14);
+			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust = Dust.NewDust(npc.Center, 0, 0, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(14, 14);
+			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
@@ -278,14 +282,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			}
 			if (Main.rand.NextBool(10)) {
 				if (Main.myPlayer == projectile.owner) {
-					Player player = Main.player[projectile.owner];
-					npc.Center.LookForHostileNPC(out List<NPC> npclist, 175);
-					foreach (NPC target in npclist) {
-						if (npc.whoAmI == target.whoAmI) {
-							continue;
-						}
-						player.StrikeNPCDirect(target, hit);
-					}
+					OnHitEffect(npc, Main.player[projectile.owner], hit);
 				}
 			}
 		}

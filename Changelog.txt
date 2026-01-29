@@ -462,3 +462,7 @@ Version 0.0.1:
 446/ Fixed Perk draw sprite effect.
 447/ Added description for BlueMoon, PurpleClubberfish and Sun fury.
 448/ Added Wrath of Blue Moon and Fury of The Sun debuff which are exclusive debuff
+449/ Added Open jungle zone.
+450/ A lot of code clean up and item clean up.
+451/ Deleted Trial system.
+452/ Clean up a lot of file that is no longer in uses.

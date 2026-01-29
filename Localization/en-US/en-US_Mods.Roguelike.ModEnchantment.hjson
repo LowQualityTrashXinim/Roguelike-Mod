@@ -521,7 +521,7 @@ AquaScepter.Description:
 WeatherPain.Description:
 	'''
 	Increases mana cost by 11% 
-	Enemy hit by magic projectile take 12% more damage and ingore 10 defense Hurtnado
+	Enemy hit by magic projectile take 12% more damage and ingore 10 defense
 	Have 5% to spawm a short lives Hurtnado at where your magic projectile hit
 	'''
 FlowerOfFire.Description:
