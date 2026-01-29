@@ -1,4 +1,4 @@
-﻿ using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Roguelike.Common.Global;
@@ -1422,6 +1422,12 @@ public class BlueMoon : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlueMoon;
 	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .35f;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		crit += 15;
+	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		if (player.ItemAnimationActive) {
 			if (globalItem.Item_Counter1[index] <= 0) {
@@ -1432,11 +1438,21 @@ public class BlueMoon : ModEnchantment {
 		}
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff<WrathOfBlueMoon>(60 + player.itemAnimationMax);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type) && !proj.minion)
+			target.AddBuff<WrathOfBlueMoon>(60 + player.itemAnimationMax);
+	}
 }
 //TODO : add some special mechanic to this
 public class Sunfury : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Sunfury;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .45f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		if (player.ItemAnimationActive) {
@@ -1448,11 +1464,33 @@ public class Sunfury : ModEnchantment {
 		}
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.FinalDamage += .1f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.FinalDamage += .1f;
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff<FuryOfTheSun>(60 + player.itemAnimationMax);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type) && !proj.minion)
+			target.AddBuff<FuryOfTheSun>(60 + player.itemAnimationMax);
+	}
 }
-//TODO : add some special mechanic to this
 public class PurpleClubberfish : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.PurpleClubberfish;
+	}
+	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
+		scale += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .1f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		int projectiletype = ModContent.ProjectileType<PurpleClubberfishPRojectile>();
@@ -1462,47 +1500,48 @@ public class PurpleClubberfish : ModEnchantment {
 			}
 		}
 	}
-}
-public class PurpleClubberfishPRojectile : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.PurpleClubberfish);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 30;
-		Projectile.friendly = true;
-		Projectile.tileCollide = false;
-		Projectile.timeLeft = 300;
-		Projectile.penetrate = -1;
-	}
-	public override void AI() {
-		for (int i = 0; i < 4; i++) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
-			dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
-			dust.noGravity = true;
-			dust.velocity = Vector2.Zero;
-			dust.position += Main.rand.NextVector2Circular(60, 30).RotatedBy(Projectile.velocity.ToRotation());
-		}
 
-		Projectile.spriteDirection = Projectile.direction;
-		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-		Projectile.rotation += Projectile.spriteDirection != 1 ? MathHelper.PiOver4 : MathHelper.PiOver4 - MathHelper.Pi + MathHelper.PiOver2;
-		if (Projectile.ai[0] <= 0) {
-			Projectile.ai[0]--;
+	public class PurpleClubberfishPRojectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.PurpleClubberfish);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 30;
+			Projectile.friendly = true;
+			Projectile.tileCollide = false;
 			Projectile.timeLeft = 300;
-			return;
+			Projectile.penetrate = -1;
 		}
-		Projectile.Center.LookForHostileNPCNotImmune(out NPC closestNPC, 1500, Projectile.owner, true);
-		if (closestNPC == null) {
-			Projectile.velocity.Y += 0.3f;
-			return;
+		public override void AI() {
+			for (int i = 0; i < 4; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+				dust.noGravity = true;
+				dust.velocity = Vector2.Zero;
+				dust.position += Main.rand.NextVector2Circular(60, 30).RotatedBy(Projectile.velocity.ToRotation());
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			Projectile.rotation += Projectile.spriteDirection != 1 ? MathHelper.PiOver4 : MathHelper.PiOver4 - MathHelper.Pi + MathHelper.PiOver2;
+			if (Projectile.ai[0] <= 0) {
+				Projectile.ai[0]--;
+				Projectile.timeLeft = 300;
+				return;
+			}
+			Projectile.Center.LookForHostileNPCNotImmune(out NPC closestNPC, 1500, Projectile.owner, true);
+			if (closestNPC == null) {
+				Projectile.velocity.Y += 0.3f;
+				return;
+			}
+			Projectile.velocity += (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 2f;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
 		}
-		Projectile.velocity += (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 2f;
-		Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
-	}
-	public override void OnKill(int timeLeft) {
-		for (int i = 0; i < 50; i++) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
-			dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
-			dust.noGravity = true;
-			dust.velocity = Main.rand.NextVector2Circular(10, 10);
+		public override void OnKill(int timeLeft) {
+			for (int i = 0; i < 50; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+				dust.noGravity = true;
+				dust.velocity = Main.rand.NextVector2Circular(10, 10);
+			}
 		}
 	}
 }

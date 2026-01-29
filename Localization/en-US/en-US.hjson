@@ -3532,6 +3532,16 @@ Mods: {
 				DisplayName: Hallowed Gaze
 				Description: Mods.Roguelike.Buffs.HallowedGaze.Description
 			}
+
+			FuryOfTheSun: {
+				DisplayName: Fury Of The Sun
+				Description: Mods.Roguelike.Buffs.FuryOfTheSun.Description
+			}
+
+			WrathOfBlueMoon: {
+				DisplayName: Wrath Of Blue Moon
+				Description: Mods.Roguelike.Buffs.WrathOfBlueMoon.Description
+			}
 		}
 
 		Configs: {

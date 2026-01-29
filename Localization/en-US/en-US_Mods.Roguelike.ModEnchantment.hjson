@@ -632,11 +632,28 @@ BallOHurt.Description:
 	True melee attacks inflict cursed flames debuff
 	Shoot out Ball of Hurt ( CD : 2.5s )
 	'''
+BlueMoon.Description:
+	'''
+	+35% weapon damage and 15% critical strike chance
+	Shoot out Blue Moon ( CD : 2.5s )
+	Attack inflict Wrath of Blue Moon for 1s
+	'''
+Sunfury.Description:
+	'''
+	+45% weapon damage
+	Shoot out Sunfury ( CD : 2.5s )
+	Attack inflict Fury of Sun for 1s
+	'''
 SwordFish.Description:
 	'''
 	Your attack ignore 5 point of defenses
 	Damage dealt have 1 in 10 chance to strike twice
-	If enemy are near, spawn out a sword fish that swim to attack
+	If enemy are near, spawn a sword fish that swim to attack
+	'''
+PurpleClubberfish.Description:
+	'''
+	Increases weapon damage by 10% and size by 25%
+	If enemy are near, spawn a Purple clubber fish that swim to attack
 	'''
 TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
@@ -855,4 +872,25 @@ VenusMagnum.Description:
 	If weapon use bullet then increases it by another 20% and 2%
 	If weapon is {0} then increases it by another 50% and 5%
 	Waiting 1s will enhanced the next shot
+	'''
+TacticalShotgun.Description:
+	'''
+	Have 1 in 4 chance to shoot out burst of bullet
+	If weapon use ammo bullet:
+	The above effect is strengthen
+	Decreases weapon damage by 10% and crit chance by 10
+	'''
+SniperRifle.Description:
+	'''
+	Increases weapon damage by 50% and crit chance by 20%
+	If weapon is [i:{0}] or [i:{1}] then increases weapon damage by 150% + 10 base and crit chance by 30%
+	If weapon projectile type is bullet then replace it with high velocity bullet
+	Decreases weapon use speed by 50%
+	'''
+CandyCornRifle.Description:
+	'''
+	Increases weapon damage by 10%
+	Replace bullet with candy corn projectile
+	If weapon shooting don't use bullet as ammo, then 
+	Every 5th shot, shoot out candy corn deal 30% weapon damage
 	'''

@@ -148,6 +148,8 @@ internal class OutroEffectSystem : ModSystem {
 		Add_OtherTag();
 		Add_ReaperMarkTag();
 		Add_HallowedGazeTag();
+		Add_WrathOfBlueMoonTag();
+		Add_FuryOfTheSunTag();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
@@ -953,6 +955,24 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.HallowJoustingLance);
 		Arr_WeaponTag[tag].Add(ItemID.SwordWhip);
 	}
+	private void Add_WrathOfBlueMoonTag() {
+		int tag = (int)WeaponTag.WrathOfBlueMoon;
+
+		Arr_WeaponTag[tag].Add(ItemID.Muramasa);
+		Arr_WeaponTag[tag].Add(ItemID.BlueMoon);
+		Arr_WeaponTag[tag].Add(ItemID.AquaScepter);
+		Arr_WeaponTag[tag].Add(ItemID.MagicMissile);
+		Arr_WeaponTag[tag].Add(ItemID.WaterBolt);
+	}
+	private void Add_FuryOfTheSunTag() {
+		int tag = (int)WeaponTag.FuryOfTheSun;
+
+		Arr_WeaponTag[tag].Add(ItemID.Sunfury);
+		Arr_WeaponTag[tag].Add(ItemID.FieryGreatsword);
+		Arr_WeaponTag[tag].Add(ItemID.Flamelash);
+		Arr_WeaponTag[tag].Add(ItemID.HellwingBow);
+		Arr_WeaponTag[tag].Add(ItemID.PhoenixBlaster);
+	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
 	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
@@ -1164,6 +1184,8 @@ public enum WeaponTag : byte {
 	Other,
 
 	HallowedGaze,
+	WrathOfBlueMoon,
+	FuryOfTheSun,
 	Wooden,
 	Ore,
 	/// <summary>

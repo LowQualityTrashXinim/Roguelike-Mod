@@ -17,6 +17,7 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -163,9 +164,20 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (npc.HasBuff<NPC_Weakness>()) {
 			modifiers.SourceDamage -= .5f;
 		}
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			modifiers.SourceDamage -= .4f;
+		}
 	}
 	public int HallowedGaze_Count = 0;
+	public int WrathOfBlueMoon = 0;
+	public int FuryOfTheSun = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			modifiers.SourceDamage += .01f * WrathOfBlueMoon;
+		}
+		if (npc.HasBuff<FuryOfTheSun>()) {
+			modifiers.SourceDamage += .01f * FuryOfTheSun;
+		}
 		if (npc.HasBuff<HallowedGaze>()) {
 			modifiers.SourceDamage += .05f * HallowedGaze_Count;
 		}
@@ -174,6 +186,12 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			modifiers.SourceDamage += .1f * WrathOfBlueMoon;
+		}
+		if (npc.HasBuff<FuryOfTheSun>()) {
+			modifiers.SourceDamage += .1f * FuryOfTheSun;
+		}
 		if (npc.HasBuff<HallowedGaze>()) {
 			modifiers.SourceDamage += .05f * HallowedGaze_Count;
 		}
@@ -208,6 +226,31 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			if (++WrathOfBlueMoon >= 20) {
+				WrathOfBlueMoon = 20;
+				if (Main.rand.NextBool(10)) {
+					Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, player.whoAmI, 2, 30, 5);
+					if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
+						modproj.ProjectileColor = Color.Blue;
+					}
+				}
+			}
+		}
+		if (npc.HasBuff<FuryOfTheSun>()) {
+			if (++FuryOfTheSun >= 20) {
+				FuryOfTheSun = 20;
+			}
+			if (Main.rand.NextBool(10)) {
+				npc.Center.LookForHostileNPC(out List<NPC> npclist, 175);
+				foreach (NPC target in npclist) {
+					if (npc.whoAmI == target.whoAmI) {
+						continue;
+					}
+					player.StrikeNPCDirect(target, hit);
+				}
+			}
+		}
 		if (npc.HasBuff<HallowedGaze>()) {
 			if (HallowedGaze_Count >= 12) {
 				Vector2 playerPos = player.Center;
@@ -218,6 +261,34 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
+		if (npc.HasBuff<WrathOfBlueMoon>()) {
+			if (++WrathOfBlueMoon >= 20) {
+				WrathOfBlueMoon = 20;
+				if (Main.rand.NextBool(10)) {
+					Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, projectile.owner, 2, 30, 5);
+					if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
+						modproj.ProjectileColor = Color.Blue;
+					}
+				}
+			}
+		}
+		if (npc.HasBuff<FuryOfTheSun>()) {
+			if (++FuryOfTheSun >= 20) {
+				FuryOfTheSun = 20;
+			}
+			if (Main.rand.NextBool(10)) {
+				if (Main.myPlayer == projectile.owner) {
+					Player player = Main.player[projectile.owner];
+					npc.Center.LookForHostileNPC(out List<NPC> npclist, 175);
+					foreach (NPC target in npclist) {
+						if (npc.whoAmI == target.whoAmI) {
+							continue;
+						}
+						player.StrikeNPCDirect(target, hit);
+					}
+				}
+			}
+		}
 		if (projectile.owner == Main.myPlayer) {
 			if (npc.HasBuff<HallowedGaze>()) {
 				if (HallowedGaze_Count >= 12) {

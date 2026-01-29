@@ -11,6 +11,7 @@ using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
+using Humanizer;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class Musket : ModEnchantment {
@@ -948,7 +949,7 @@ public class VenusMagnum : ModEnchantment {
 		}
 	}
 }
-public class TaticalShotgun : ModEnchantment {
+public class TacticalShotgun : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TacticalShotgun;
 	}
@@ -958,18 +959,70 @@ public class TaticalShotgun : ModEnchantment {
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit -= 10;
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
-	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (globalItem.Item_Counter1[index] > 0) {
+		if (!Main.rand.NextBool(4)) {
 			return;
 		}
+		int amount = Main.rand.Next(4, 7);
+		if (item.useAmmo != AmmoID.Bullet) {
+			type = ProjectileID.Bullet;
+			amount += Main.rand.Next(1, 7);
+		}
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(40) * Main.rand.NextFloat(.7f, 1.1f), type, (int)(damage * .4f), knockback, player.whoAmI);
+		}
+	}
+}
+public class SniperRifle : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SniperRifle;
+	}
+	public override string ModifyDesc(string desc) {
+		return desc.FormatWith([ItemID.SniperRifle, ItemID.Musket]);
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .5f;
+		if (item.type == ItemID.SniperRifle || item.type == ItemID.Musket) {
+			damage += 1;
+			damage.Base += 50;
+		}
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		crit += 20;
+		if (item.type == ItemID.SniperRifle || item.type == ItemID.Musket) {
+			crit += 10;
+		}
+	}
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		useSpeed -= .5f;
+	}
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		if (type == ProjectileID.Bullet) {
+			type = ProjectileID.BulletHighVelocity;
+		}
+	}
+}
+public class CandyCornRifle : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CandyCornRifle;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .1f;
+	}
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (item.useAmmo == AmmoID.Bullet) {
-			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(40) * Main.rand.NextFloat(.7f, 1.1f), type, (int)(damage * .4f), knockback, player.whoAmI);
+			type = ProjectileID.CandyCorn;
+			if (velocity.LengthSquared() < 100) velocity = velocity.SafeNormalize(Vector2.Zero) * 10;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] >= 5) {
+			globalItem.Item_Counter1[index] = 0;
+			Vector2 vel = velocity.SafeNormalize(Vector2.Zero) * 10;
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(source, position, vel.Vector2DistributeEvenlyPlus(3, 40, i), ProjectileID.CandyCorn, (int)(damage * .3f), knockback, player.whoAmI);
+
 			}
-			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(3));
 		}
 	}
 }
