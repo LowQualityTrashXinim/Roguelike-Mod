@@ -4,10 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using System;
 using System.Collections.Generic;
-using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 internal class Roguelike_Chik : GlobalItem {
@@ -15,7 +12,7 @@ internal class Roguelike_Chik : GlobalItem {
 		return entity.type == ItemID.Chik;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.damage = 42;
+		entity.damage = 52;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));

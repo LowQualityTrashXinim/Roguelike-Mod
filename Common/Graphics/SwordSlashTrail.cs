@@ -43,8 +43,9 @@ public class SwordSlashTrail : ModSystem {
 	}
 
 	public static string GetShaderType(Player player) {
-		if (player.magmaStone)
-			return "FlameEffect";
+		//I accidentally broke it - Xinim
+		//if (player.magmaStone)
+		//	return "FlameEffect";
 
 		return "SwordTrailEffect";
 	}

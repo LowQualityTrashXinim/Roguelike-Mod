@@ -67,10 +67,10 @@ public class PlayerStatsHandle : ModPlayer {
 	/// Use this if you gonna always update it
 	/// </summary>
 	public float UpdateSummonChanceMutilplier = 0;
-	public int ModifyGetAmount(int baseValue) {
+	public int ModifyGetAmount(int baseValue, bool Disable_Chance = false) {
 		int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
-		if (Main.rand.NextFloat() <= ChanceLootDrop) {
-			amount = (int)Math.Ceiling(ChanceDropModifier.ApplyTo(baseValue));
+		if (!Disable_Chance && Main.rand.NextFloat() <= ChanceLootDrop) {
+			amount += (int)Math.Ceiling(ChanceDropModifier.ApplyTo(baseValue));
 		}
 		if (amount <= 0) {
 			return 1;

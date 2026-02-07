@@ -272,6 +272,10 @@ public static class TerrariaArrayID {
 		..WeakDrink, ..Smallmeal, ..fruit, .. MediumMeal, ..MediumDrink, ..BigMeal, ..StrongDrink
 	];
 
+	public readonly static int[] AllWing = [
+		ItemID.AngelWings, ItemID.DemonWings, ItemID.BatWings, ItemID.BeetleWings, ItemID.BeeWings, ItemID.BoneWings, ItemID.ButterflyWings, ItemID.FairyWings, ItemID.FestiveWings, ItemID.FinWings, ItemID.FishronWings, ItemID.FlameWings, ItemID.FrozenWings, ItemID.HarpyWings, ItemID.GhostWings, ItemID.LeafWings, ItemID.MothronWings, ItemID.SpookyWings, ItemID.SteampunkWings
+		];
+
 	//NPC
 	public readonly static int[] BAT = { NPCID.CaveBat, NPCID.GiantBat, NPCID.IceBat, NPCID.IlluminantBat, NPCID.JungleBat, NPCID.SporeBat, NPCID.Lavabat, NPCID.Hellbat };
 

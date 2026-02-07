@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Utils;
 using Terraria;
 
 namespace Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
@@ -38,26 +39,27 @@ class SwordBroadAttackOne : BaseHostileSwordBroad {
 }
 class SwordBroadAttackTwo : BaseHostileSwordBroad {
 	public override void AI() {
-		Projectile.rotation = MathHelper.PiOver4 + MathHelper.PiOver2;
 		if (Projectile.ai[1] == 1) {
-			if (Projectile.timeLeft > 30)
-				Projectile.timeLeft = 30;
-			Projectile.velocity.Y = 50;
-			Projectile.velocity.X = 0;
+			if (Projectile.timeLeft > 50) {
+				Projectile.timeLeft = 50;
+			}
+			Projectile.velocity += new Vector2(Projectile.ai[0], Projectile.ai[2]) * -3;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(25);
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			return;
 		}
 		if (Projectile.ai[1] > 1) {
-			Projectile.velocity.Y += -.5f;
-			Projectile.ai[1]--;
 			Projectile.velocity -= Projectile.velocity * .1f;
-		}
-		else {
-			Projectile.ai[1] = 1;
-			Projectile.velocity = Vector2.Zero;
+			if (Projectile.ai[0] == 0 && Projectile.ai[2] == 0) {
+				Projectile.ai[0] = Projectile.velocity.X;
+				Projectile.ai[2] = Projectile.velocity.Y;
+			}
+			Projectile.rotation = (-new Vector2(Projectile.ai[0], Projectile.ai[2])).ToRotation() + MathHelper.PiOver4;
+			Projectile.ai[1]--;
 		}
 	}
 }
-class SwordBroadDesperation: BaseHostileSwordBroad {
+class SwordBroadDesperation : BaseHostileSwordBroad {
 	public override void AI() {
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 	}

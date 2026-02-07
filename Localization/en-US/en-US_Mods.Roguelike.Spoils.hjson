@@ -103,9 +103,7 @@ StarterPerkSpoil: {
 	Description: Contains 1 Celestial Essence.
 }
 
-// UNRELEASED
-
-SpeedSpoilHM: {
-	DisplayName: Mobility Special
-	HMDescription: Contains 1 mount of any type and 1 pair of wings.
+RareWingSpoil: {
+	DisplayName: Gift of Flight
+	Description: Contain 1 randomize wing
 }

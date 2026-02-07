@@ -13,7 +13,7 @@ internal class Roguelike_StylistScissor : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		entity.noMelee = true;
 		entity.noUseGraphic = true;
-		entity.damage = 35;
+		entity.damage = 45;
 		entity.crit = 10;
 		entity.DamageType = DamageClass.Ranged;
 		entity.shoot = ModContent.ProjectileType<Roguelike_StylistScissor_ModProjectile>();

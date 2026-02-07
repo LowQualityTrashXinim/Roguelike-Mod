@@ -112,6 +112,7 @@ public class TransmutationUIState : UIState {
 		btn_RelicMergeMode = new(tex);
 		btn_RelicMergeMode.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<TransmuteTablet>("TransmuteTablet_Relic")));
 		btn_RelicMergeMode.VAlign = .5f;
+		btn_RelicMergeMode.HoverText = "Tablet: Relic merge mode";
 		btn_RelicMergeMode.OnLeftClick += btn_Mode_OnLeftClick;
 		btn_RelicMergeMode.HighlightColor = btn_RelicMergeMode.OriginalColor.ScaleRGB(.5f);
 		btn_RelicMergeMode.Highlight = true;
@@ -122,12 +123,14 @@ public class TransmutationUIState : UIState {
 		btn_EnergyMode.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<TransmutationUIState>("TransmutationEnergy")), false);
 		btn_EnergyMode.MarginLeft += btn_RelicMergeMode.Width.Pixels + 10;
 		btn_EnergyMode.VAlign = .5f;
+		btn_EnergyMode.HoverText = "Tablet: Charge mode";
 		btn_EnergyMode.HighlightColor = btn_EnergyMode.OriginalColor.ScaleRGB(.5f);
 		btn_EnergyMode.OnLeftClick += btn_Mode_OnLeftClick;
 		btn_EnergyMode.SwapHightlightColorWithOriginalColor();
 		headerPanel.Append(btn_EnergyMode);
 
 		btn_ItemShift = new(tex);
+		btn_ItemShift.HoverText = "Tablet: Item shift mode";
 		btn_ItemShift.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAsEntity<TransmuteTablet>()), false);
 		btn_ItemShift.MarginLeft += btn_RelicMergeMode.Width.Pixels * 2 + 20;
 		btn_ItemShift.VAlign = .5f;

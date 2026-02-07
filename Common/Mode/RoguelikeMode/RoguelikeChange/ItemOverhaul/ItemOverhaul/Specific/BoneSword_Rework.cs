@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -16,12 +14,12 @@ internal class Roguelike_BoneSword : GlobalItem {
 		return entity.type == ItemID.BoneSword;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.damage = 23;
+		entity.damage = 43;
 		entity.crit = 4;
 		entity.ArmorPenetration = 5;
 		entity.shoot = ProjectileID.BookOfSkullsSkull;
 		entity.shootSpeed = 15;
-		entity.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = WeaponEffect.GetWeaponEffectType<OutroEffect_ReaperMark>();
+		entity.Set_ItemOutroEffect<OutroEffect_ReaperMark>();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));

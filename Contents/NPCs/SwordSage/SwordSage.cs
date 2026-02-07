@@ -1,7 +1,10 @@
-﻿using Roguelike.Common.Global;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -42,8 +45,15 @@ internal class SwordSage : ModNPC {
 			Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SwordSage_BossMusic");
 		}
 	}
+	public float AttackTimer { get => NPC.ai[0]; set => NPC.ai[0] = value; }
+	public float CurrentAttack { get => NPC.ai[1]; set => NPC.ai[1] = value; }
+	public float AttackCounter { get => NPC.ai[2]; set => NPC.ai[2] = value; }
+	public int UniversalAttackCoolDown = 0;
 	public override void AI() {
-
+		if (UniversalAttackCoolDown > 0) {
+			UniversalAttackCoolDown--;
+			return;
+		}
 	}
 	int Attack1_Counter = 0;
 	int Attack1_AttackCounter = 0;
@@ -64,6 +74,38 @@ internal class SwordSage : ModNPC {
 			}
 		}
 
+	}
+	int Targetting_Timer = 0;
+	Vector2 Target_Pos = Vector2.Zero;
+	private void DashAttack(Player player) {
+		NPC.velocity *= .9f;
+		if (AttackCounter < 5) {
+			if (--Targetting_Timer > 0) {
+				Target_Pos = player.Center;
+				AttackTimer = 10;
+				if (AttackCounter == 0) {
+					NPC.velocity = player.velocity;
+				}
+			}
+			else {
+				if (--AttackTimer <= 0) {
+					SoundEngine.PlaySound(SoundID.Item1 with { Pitch = -1 });
+					Targetting_Timer = 10;
+					Vector2 vel = (Target_Pos - NPC.Center).SafeNormalize(Vector2.Zero) * 300;
+					Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, -vel, ModContent.ProjectileType<SimplePiercingProjectile2_Hostile>(), 60, 4, NPC.target, 1, 5, 100);
+					NPC.Center = Target_Pos + vel;
+					AttackCounter++;
+				}
+			}
+			return;
+		}
+		Reset(CurrentAttack + 1, 90);
+	}
+	public void Reset(float nextAttack, int cooldown) {
+		CurrentAttack = nextAttack;
+		AttackCounter = 0;
+		AttackTimer = 0;
+		UniversalAttackCoolDown = cooldown;
 	}
 	//Dialog during boss fight
 	//When start the fight

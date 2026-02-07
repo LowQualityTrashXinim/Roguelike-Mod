@@ -50,12 +50,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.damage += 5;
 					item.useTime = item.useAnimation = 25;
 					break;
-				case ItemID.GoldBow:
-					item.useTime = item.useAnimation = 42;
-					item.damage += 10;
-					item.shootSpeed += 3;
-					item.crit += 6;
-					break;
 				case ItemID.AbigailsFlower:
 					item.damage += 10;
 					break;
@@ -63,10 +57,13 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 					item.damage += 12;
 					break;
 				case ItemID.EnchantedSword:
+					item.damage = 93;
 					item.scale += .5f;
+					item.useTime = item.useAnimation = 42;
 					item.shootsEveryUse = true;
 					break;
 				case ItemID.IceBlade:
+					item.damage = 39;
 					item.shootsEveryUse = true;
 					item.scale += .5f;
 					break;
@@ -121,12 +118,6 @@ namespace Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul {
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			switch (item.type) {
-				case ItemID.GoldBow:
-					var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
-					if (ContentSamples.ProjectilesByType[type].arrow) {
-						projectile.extraUpdates += 1;
-					}
-					return false;
 				case ItemID.ToxicFlask:
 					if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
 						for (int i = 0; i < 3; i++) {

@@ -1,14 +1,19 @@
 ﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace Roguelike.Common.General
-{
+namespace Roguelike.Common.General {
 	public class RogueLikeConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header($"GameModeHeader")]
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool BossRushMode_Setting_FightBossInProgression { get; set; }
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool BossRushMode_Setting_SpawnOnPlayerCommand { get; set; }
 		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
 		//Replace Cursed skull

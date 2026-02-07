@@ -15,6 +15,7 @@ public class Roguelike_Musket : GlobalItem {
 	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 120;
+		entity.crit = 20;
 		entity.useTime = entity.useAnimation = 60;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

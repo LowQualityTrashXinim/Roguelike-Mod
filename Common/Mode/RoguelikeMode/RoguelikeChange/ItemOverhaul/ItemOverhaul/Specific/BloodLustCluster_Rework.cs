@@ -14,6 +14,7 @@ internal class Roguelike_BloodLustCluster : GlobalItem {
 	}
 	public override void SetDefaults(Item entity) {
 		entity.scale += .25f;
+		entity.damage = 70;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, item.type + "_Rework", ModUtils.LocalizationText("RoguelikeRework", item.Name)));

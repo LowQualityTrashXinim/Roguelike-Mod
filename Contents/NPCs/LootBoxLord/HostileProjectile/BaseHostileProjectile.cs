@@ -101,19 +101,13 @@ public class ProjectileRing : BaseHostileProjectile {
 		DisableKillEffect = true;
 	}
 	Vector2 lastKnownPosition = Vector2.Zero;
-	Vector2 NPCtruePos = Vector2.Zero;
 	public override void AI() {
 		if (IsNPCActive(out NPC npc)) {
 			if (Projectile.alpha < 255) {
 				Projectile.alpha++;
 			}
-			NPCtruePos = npc.Center;
 			if (lastKnownPosition == Vector2.Zero) {
 				lastKnownPosition = npc.Center;
-			}
-			else {
-				Vector2 dis = NPCtruePos - lastKnownPosition;
-				lastKnownPosition = lastKnownPosition + dis.SafeNormalize(Vector2.Zero) * dis.Length() / 64f;
 			}
 		}
 		else {

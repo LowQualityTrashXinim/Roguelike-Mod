@@ -20,7 +20,7 @@ internal class SSRspoil {
 		}
 		public override string FinalDescription() {
 			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			return Description.FormatWith(chestplayer.ModifyGetAmount(1), chestplayer.ModifyGetAmount(2));
+			return Description.FormatWith(chestplayer.ModifyGetAmount(1), chestplayer.ModifyGetAmount(2, true));
 		}
 		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.SSRDrop();

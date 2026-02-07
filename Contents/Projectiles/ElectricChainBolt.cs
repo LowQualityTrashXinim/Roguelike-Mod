@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria;
-using Roguelike.Texture;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Texture;
+using System;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Projectiles;
 internal class ElectricChainBolt : ModProjectile {
@@ -45,5 +46,53 @@ internal class ElectricChainBolt : ModProjectile {
 		target.AddBuff(BuffID.Electrified, ModUtils.ToSecond(Main.rand.Next(13, 17)));
 		Main.player[Projectile.owner].GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(5);
 		npc = null;
+	}
+}
+
+public class MagnetOrbProjectile : ModProjectile {
+	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.MagnetSphereBall);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 40;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Main.projFrames[Type] = 5;
+	}
+	public override void AI() {
+		if (Projectile.ai[0] == 0f) {
+			Projectile.ai[0] = Projectile.velocity.X;
+			Projectile.ai[1] = Projectile.velocity.Y;
+		}
+		if(Main.rand.NextBool(5)) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Electric);
+			dust.velocity = Main.rand.NextVector2CircularEdge(10, 10);
+			dust.noGravity = true;
+			dust.scale = Main.rand.NextFloat(.2f, .6f);
+		}
+
+		if (Projectile.velocity.X > 0f)
+			Projectile.rotation += (Math.Abs(Projectile.velocity.Y) + Math.Abs(Projectile.velocity.X)) * 0.001f;
+		else
+			Projectile.rotation -= (Math.Abs(Projectile.velocity.Y) + Math.Abs(Projectile.velocity.X)) * 0.001f;
+
+		Projectile.frameCounter++;
+		if (Projectile.frameCounter > 6) {
+			Projectile.frameCounter = 0;
+			Projectile.frame++;
+			if (Projectile.frame > 4)
+				Projectile.frame = 0;
+		}
+
+		if (Projectile.velocity.Length() > 2f)
+			Projectile.velocity *= 0.98f;
+		if (++Projectile.ai[2] < 10) {
+			return;
+		}
+		if (Projectile.Center.LookForHostileNPC(out NPC npc, 450)) {
+			Vector2 vel = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel, ProjectileID.MagnetSphereBolt, Projectile.damage, Projectile.knockBack, Projectile.owner);
+			Projectile.ai[2] = 0;
+		}
 	}
 }

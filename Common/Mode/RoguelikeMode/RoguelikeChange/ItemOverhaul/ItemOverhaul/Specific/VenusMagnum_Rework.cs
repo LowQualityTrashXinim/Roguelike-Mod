@@ -13,6 +13,9 @@ internal class Roguelike_VenusMagnum : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.VenusMagnum;
 	}
+	public override void SetDefaults(Item entity) {
+		entity.damage = 52;
+	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}

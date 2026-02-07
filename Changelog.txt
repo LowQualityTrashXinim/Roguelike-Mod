@@ -466,3 +466,15 @@ Version 0.0.1:
 450/ A lot of code clean up and item clean up.
 451/ Deleted Trial system.
 452/ Clean up a lot of file that is no longer in uses.
+453/ Added new wing spoil.
+454/ Fixed boss rush timer not resetting on exiting the world.
+455/ Added a setting for player to fight boss in progression.
+456/ Fixed possible revive mechanic not working.
+457/ Fixed missing texture/texture not found problem when using transmutation tablet.
+458/ Add some QoL to code.
+459/ Various buff to many vanilla weapon.
+460/ Added Electric Conductor weapon tag.
+461/ Reworked Gold bow and Platinum Bow.
+462/ Added Electric Conductor and Avarice weapon tag.
+463/ Updated Lootbox Lord boss fight.
+464/ Temporary disable Flame sword trail effect.

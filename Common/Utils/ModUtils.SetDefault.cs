@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using System;
@@ -8,7 +11,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
@@ -146,6 +148,9 @@ namespace Roguelike.Common.Utils {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.CriticalDamage = critDmg;
 			}
+		}
+		public static void Set_ItemOutroEffect<T>(this Item item) where T : WeaponEffect {
+			item.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = WeaponEffect.GetWeaponEffectType<T>();
 		}
 		/// <summary>
 		/// This will work for most vanilla accessory, however item effect such as follow will not work :<br/>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
@@ -169,6 +170,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HallowedGaze_Count = 0;
 	public int WrathOfBlueMoon = 0;
 	public int FuryOfTheSun = 0;
+	public int ElectricConductor = 0;
+	public bool ElectricConductorUpgrade = false;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
 		NPC_Debuff(npc, ref modifiers);
 	}
@@ -217,6 +220,35 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
+		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.ElectricConductor].Contains(item.type)) {
+			if (npc.HasBuff(BuffID.Electrified)) {
+				ElectricConductorUpgrade = true;
+				ElectricConductor = 0;
+			}
+			else {
+				ElectricConductorUpgrade = false;
+			}
+			if (++ElectricConductor >= 10) {
+				ElectricConductor = 10;
+				if (Main.rand.NextBool(10)) {
+					npc.AddBuff(BuffID.Electrified, 60 + player.itemAnimationMax);
+				}
+			}
+			if (ElectricConductorUpgrade) {
+				npc.Center.LookForHostileNPC(out List<NPC> listnpc, 150 + npc.Size.Length());
+				foreach (var target in listnpc) {
+					if (target.whoAmI == npc.whoAmI) {
+						continue;
+					}
+					player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(hit.Damage * .1f) + 1, 1));
+					if (Main.rand.NextBool(35)) {
+						Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderSpearShot, hit.Damage, 0, player.whoAmI);
+						proj.penetrate = 10;
+						proj.maxPenetrate = 10;
+					}
+				}
+			}
+		}
 		if (npc.HasBuff<WrathOfBlueMoon>()) {
 			if (++WrathOfBlueMoon >= 20) {
 				WrathOfBlueMoon = 20;
@@ -265,33 +297,57 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
-		if (npc.HasBuff<WrathOfBlueMoon>()) {
-			if (++WrathOfBlueMoon >= 20) {
-				WrathOfBlueMoon = 20;
-				if (Main.rand.NextBool(10)) {
-					Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, projectile.owner, 2, 30, 5);
-					if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
-						modproj.ProjectileColor = Color.Blue;
-					}
-				}
-			}
-		}
-		if (npc.HasBuff<FuryOfTheSun>()) {
-			if (++FuryOfTheSun >= 20) {
-				FuryOfTheSun = 20;
-			}
-			if (Main.rand.NextBool(10)) {
-				if (Main.myPlayer == projectile.owner) {
-					OnHitEffect(npc, Main.player[projectile.owner], hit);
-				}
-			}
-		}
 		if (projectile.owner == Main.myPlayer) {
+			Player player = Main.player[projectile.owner];
 			if (npc.HasBuff<HallowedGaze>()) {
 				if (HallowedGaze_Count >= 12) {
 					Vector2 playerPos = Main.player[projectile.owner].Center;
 					Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
 					Projectile.NewProjectile(projectile.GetSource_FromAI(), pos, npc.Center - pos, ModContent.ProjectileType<HitScanShotv2>(), 1, 0, projectile.owner);
+				}
+			}
+
+			if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.ElectricConductor].Contains(projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType)) {
+				if (npc.HasBuff(BuffID.Electrified)) {
+					ElectricConductorUpgrade = true;
+					ElectricConductor = 0;
+				}
+				else {
+					ElectricConductorUpgrade = false;
+				}
+				if (++ElectricConductor >= 10) {
+					ElectricConductor = 10;
+					if (Main.rand.NextBool(10)) {
+						npc.AddBuff(BuffID.Electrified, 60 + player.itemAnimationMax);
+					}
+				}
+				if (ElectricConductorUpgrade) {
+					npc.Center.LookForHostileNPC(out List<NPC> listnpc, 100);
+					foreach (var target in listnpc) {
+						if (target.whoAmI == npc.whoAmI) {
+							continue;
+						}
+						player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(hit.Damage * .1f) + 1, 1));
+					}
+				}
+			}
+			if (npc.HasBuff<WrathOfBlueMoon>()) {
+				if (++WrathOfBlueMoon >= 20) {
+					WrathOfBlueMoon = 20;
+					if (Main.rand.NextBool(10)) {
+						Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, projectile.owner, 2, 30, 5);
+						if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
+							modproj.ProjectileColor = Color.Blue;
+						}
+					}
+				}
+			}
+			if (npc.HasBuff<FuryOfTheSun>()) {
+				if (++FuryOfTheSun >= 20) {
+					FuryOfTheSun = 20;
+				}
+				if (Main.rand.NextBool(10)) {
+					OnHitEffect(npc, player, hit);
 				}
 			}
 		}

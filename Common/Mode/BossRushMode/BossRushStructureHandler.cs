@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
@@ -12,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Roguelike.Common.Mode.BossRushMode;
@@ -100,8 +102,8 @@ public class BossRushStructureHandler : ModSystem {
 		NPCID.BrainofCthulhu,
 		NPCID.QueenBee,
 		NPCID.Deerclops,
-		NPCID.QueenSlimeBoss,
 		NPCID.SkeletronHead,
+		NPCID.QueenSlimeBoss,
 		NPCID.Retinazer,
 		NPCID.SkeletronPrime,
 		NPCID.TheDestroyer,
@@ -137,12 +139,18 @@ public class BossRushStructureHandler : ModSystem {
 			npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
 			npc.timeLeft = 9999999;
 		}
+		if (!Setting_SpawnOnPlayerCommand) {
+			SpawnBoss();
+		}
+	}
+	public void SpawnBoss(bool ForcedSpawn = false) {
 		if (!ModContent.GetInstance<BossRushWorldGen>().IsABossAlive) {
-			if (--BossSpawnCD > 0) {
+			if (--BossSpawnCD > 0 && !ForcedSpawn) {
 				return;
 			}
 			if (BossList == null || BossList.Count < 1) {
 				if (!NGplus) {
+					NGplus = true;
 					Active = false;
 					Main.NewText("Congratulation, you beaten boss rush mode");
 					Main.NewText("If you want to continue to see how far you can push yourself, activate the boss rush item again");
@@ -153,7 +161,13 @@ public class BossRushStructureHandler : ModSystem {
 					BossList = [.. Arr_BossID];
 				}
 			}
-			int type = Main.rand.Next(BossList);
+			int type;
+			if (Setting_FightBossInProgression) {
+				type = BossList[0];
+			}
+			else {
+				type = Main.rand.Next(BossList);
+			}
 			BossList.Remove(type);
 			BossSpawnCD = ModUtils.ToSecond(30);
 			Vector2 pos = Rect_BossRushStructure().Center.ToWorldCoordinates();
@@ -184,6 +198,8 @@ public class BossRushStructureHandler : ModSystem {
 	}
 	public override void PreSaveAndQuit() {
 		Active = false;
+		_timer.Reset();
+		_timer.Stop();
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		base.SaveWorldData(tag);
@@ -191,8 +207,8 @@ public class BossRushStructureHandler : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		base.LoadWorldData(tag);
 	}
-	public static bool Setting_FightBossInProgression = false;
-	public static bool Setting_SpawnOnPlayerCommand = false;
+	public static bool Setting_FightBossInProgression => ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Setting_FightBossInProgression;
+	public static bool Setting_SpawnOnPlayerCommand => ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Setting_SpawnOnPlayerCommand;
 }
 public class BossRushModeGlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
@@ -205,7 +221,7 @@ public class BossRushModeGlobalNPC : GlobalNPC {
 		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
 			return;
 		}
-		if (npc.boss && BossRushStructureHandler.Setting_SpawnOnPlayerCommand) {
+		if (npc.boss && !BossRushStructureHandler.Setting_SpawnOnPlayerCommand) {
 			ModContent.GetInstance<BossRushStructureHandler>().BossSpawnCD = ModUtils.ToSecond(30);
 			Main.NewText("A boss have been killed, 30s until a new boss is spawn", Color.Red);
 		}
@@ -226,14 +242,18 @@ internal class BossRushModeActivation : ModItem {
 		Item.useTime = 30;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.scale = .5f;
-		Item.consumable = true;
 	}
 	public override bool CanUseItem(Player player) {
 		return !ModUtils.IsAnyVanillaBossAlive();
 	}
+	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {
 		if (player.whoAmI == Main.myPlayer) {
 			SoundEngine.PlaySound(SoundID.Roar, player.position);
+			if (BossRushStructureHandler.Setting_SpawnOnPlayerCommand && player.ItemAnimationJustStarted) {
+				ModContent.GetInstance<BossRushStructureHandler>().SpawnBoss(true);
+				ModContent.GetInstance<BossRushStructureHandler>().BossSpawnCD = ModUtils.ToSecond(30);
+			}
 			if (ModContent.GetInstance<UniversalSystem>().Count_BossKill > 1) {
 				Main.NewText("Restart boss rush !");
 				ModContent.GetInstance<BossRushStructureHandler>().Start_BossRush();

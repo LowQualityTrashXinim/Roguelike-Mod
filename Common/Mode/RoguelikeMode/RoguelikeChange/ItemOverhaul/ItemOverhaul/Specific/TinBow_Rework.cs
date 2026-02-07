@@ -13,7 +13,7 @@ public class Roguelike_TinBow : GlobalItem {
 		return entity.type == ItemID.TinBow;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.damage += 5;
+		entity.damage = 26;
 		entity.useTime = entity.useAnimation = 33;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

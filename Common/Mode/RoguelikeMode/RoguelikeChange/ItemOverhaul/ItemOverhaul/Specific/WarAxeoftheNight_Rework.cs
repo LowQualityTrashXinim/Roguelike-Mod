@@ -13,6 +13,7 @@ internal class Roguelike_WarAxeoftheNight : GlobalItem {
 		return entity.type == ItemID.WarAxeoftheNight;
 	}
 	public override void SetDefaults(Item entity) {
+		entity.damage = 66;
 		entity.scale += .45f;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

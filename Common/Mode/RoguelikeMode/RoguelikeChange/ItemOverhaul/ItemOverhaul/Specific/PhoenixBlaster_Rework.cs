@@ -13,7 +13,7 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 		return entity.type == ItemID.PhoenixBlaster;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.damage += 12;
+		entity.damage = 42;
 		entity.useTime = entity.useAnimation = 30;
 		entity.knockBack += 1;
 		entity.crit = 6;

@@ -69,7 +69,7 @@ public class UncommonSpoil {
 			return DisplayName.FormatWith(ItemID.SpectreBoots);
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 		}
 		public override bool IsSelectable(Player player) {
 			return SpoilDropRarity.UncommonDrop();
@@ -90,7 +90,7 @@ public class UncommonSpoil {
 			return SpoilDropRarity.UncommonDrop();
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true));
 		}
 		public override void OnChoose(Player player) {
 			IEntitySource source = new EntitySource_Misc("Spoil");

@@ -1,12 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using Roguelike.Texture;
-using Terraria.ModLoader;
-using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Texture;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class OuterGodTheNihilismArtifact : Artifact {
@@ -17,6 +18,9 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 	public bool artifact = false;
 	public override void ResetEffects() {
 		artifact = Player.HasArtifact<OuterGodTheNihilismArtifact>();
+		if(artifact) {
+			PlayerStatsHandle.Set_Chance_SecondLifeCondition(Player, "OuterGod_Nihilism", .8f);
+		}
 	}
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
 		if (!artifact) {
@@ -87,6 +91,15 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 			return true;
 		}
 		return base.FreeDodge(info);
+	}
+	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+		if (PlayerStatsHandle.Get_Chance_SecondLife(Player, "OuterGod_Nihilism")) {
+			Player.Heal(100);
+			Player.immune = true;
+			Player.AddImmuneTime(-1, 90);
+			return false;
+		}
+		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }
 public class Vulnerable : ModBuff {

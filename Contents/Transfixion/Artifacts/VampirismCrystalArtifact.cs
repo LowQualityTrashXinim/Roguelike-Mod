@@ -66,6 +66,8 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			if (PlayerStatsHandle.GetSecondLife(Player, "VC")) {
 				Player.Heal(Player.statLifeMax2);
 				Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
+				Player.immune = true;
+				Player.AddImmuneTime(-1, 90);
 				return false;
 			}
 			return true;

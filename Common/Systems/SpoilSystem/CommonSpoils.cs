@@ -28,7 +28,7 @@ public class AccessorySpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.HermesBoots);
 	}
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true));
 	}
 	public override void OnChoose(Player player) {
 		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
@@ -61,7 +61,7 @@ public class PotionSpoil : ModSpoil {
 
 public class RelicSpoil : ModSpoil {
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 	}
 	public override void OnChoose(Player player) {
 		ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 2);
@@ -69,7 +69,7 @@ public class RelicSpoil : ModSpoil {
 }
 public class SkillSpoil : ModSpoil {
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 	}
 	public override void OnChoose(Player player) {
 		ModUtils.GetSkillLootbox(new EntitySource_Misc("Spoil"), player, 2);
@@ -80,7 +80,7 @@ public class FoodSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.Burger);
 	}
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6, true));
 	}
 	public override void OnChoose(Player player) {
 		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6);

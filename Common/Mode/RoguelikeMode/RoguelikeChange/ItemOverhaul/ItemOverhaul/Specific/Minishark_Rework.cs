@@ -12,6 +12,9 @@ internal class Roguelike_Minishark : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.Minishark;
 	}
+	public override void SetDefaults(Item entity) {
+		entity.damage = 19;
+	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 50);
 	}

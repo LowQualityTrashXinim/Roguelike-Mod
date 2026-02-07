@@ -24,7 +24,7 @@ internal class SuperRareSpoil {
 			chestplayer.GetAmount();
 			return Description.FormatWith(
 				Math.Ceiling(chestplayer.weaponAmount * .5f),
-				chestplayer.ModifyGetAmount(1)
+				chestplayer.ModifyGetAmount(1, true)
 				);
 		}
 		public override bool IsSelectable(Player player) {

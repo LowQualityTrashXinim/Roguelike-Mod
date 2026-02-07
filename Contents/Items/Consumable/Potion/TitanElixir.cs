@@ -23,6 +23,7 @@ public class TitanElixir_ModPlayer : ModPlayer {
 		if (PlayerStatsHandle.GetSecondLife(Player, "TE")) {
 			Player.ClearBuff(ModContent.BuffType<Protection>());
 			Player.Heal(Player.statLifeMax2);
+			Player.immune = true;
 			Player.AddImmuneTime(-1, 90);
 			return false;
 		}

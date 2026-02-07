@@ -1,17 +1,28 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
-using Roguelike.Common.Mode.BossRushMode;
+using ReLogic.Graphics;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
+using Roguelike.Common.Mode.BossRushMode;
+using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.Achievement;
+using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Utils;
-using Roguelike.Common.RoguelikeMode;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
+using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 using Roguelike.Contents.Items.Consumable.Spawner;
+using Roguelike.Contents.Items.Toggle.Transmutation;
+using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.NPCs;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;
@@ -29,13 +40,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Roguelike.Contents.Items.aDebugItem.DebugStick;
-using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
-using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.Skill;
-using Roguelike.Contents.Items.Toggle.UserInfo;
-using Roguelike.Contents.Items.Toggle.Transmutation;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Terraria.UI.Chat;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -123,6 +128,7 @@ internal class UniversalSystem : ModSystem {
 	public StructureUI structUI;
 	public SynergyMenuWikiUI synergyWikiMenu;
 	public EnchantmentMenuWikiUI enchantmentMenuWiki;
+	public InfoMenuUI infoMenuUI;
 
 	public static bool EnchantingState = false;
 	public static ModKeybind WeaponActionKey { get; private set; }
@@ -154,6 +160,7 @@ internal class UniversalSystem : ModSystem {
 			debugUIMain = new();
 			artifactUI = new();
 			debugperkUI = new();
+			infoMenuUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -197,6 +204,7 @@ internal class UniversalSystem : ModSystem {
 		debugUIMain = null;
 		artifactUI = null;
 		debugperkUI = null;
+		infoMenuUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -337,6 +345,10 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateEnchantmentWikiUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(enchantmentMenuWiki);
+	}
+	public void ActivateInfoMenuUI() {
+		DeactivateUI();
+		user2ndInterface.SetState(infoMenuUI);
 	}
 	/// <summary>
 	/// Activate spoils ui state
@@ -784,6 +796,7 @@ class UISystemMenu : UIState {
 	UIText open_SynergyWikiUI;
 	UIText open_EnchantmentWIkiUI;
 	UIText open_HelpMenu;
+	UIText open_InfoMenu;
 	UIText exit_Menu;
 	public override void OnInitialize() {
 		Roguelike_Panel = new();
@@ -835,6 +848,14 @@ class UISystemMenu : UIState {
 		open_HelpMenu.HAlign = .5f;
 		panel.Append(open_HelpMenu);
 
+		open_InfoMenu = new("Info", 1.5f);
+		open_InfoMenu.OnLeftClick += Open_InfoMenu_OnLeftClick;
+		open_InfoMenu.OnUpdate += Universal_OnUpdate;
+		open_InfoMenu.OnMouseOver += Universal_MouseOver;
+		open_InfoMenu.MarginTop = open_HelpMenu.MarginTop + open_HelpMenu.Height.Pixels + 40;
+		open_InfoMenu.HAlign = .5f;
+		panel.Append(open_InfoMenu);
+
 		exit_Menu = new("Back", 1.5f);
 		exit_Menu.OnLeftClick += Exit_Menu_OnLeftClick;
 		exit_Menu.OnUpdate += Exit_Menu_OnUpdate;
@@ -846,6 +867,10 @@ class UISystemMenu : UIState {
 
 	private void OpenHelp_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SoundEngine.PlaySound(SoundID.MenuOpen);
+	}
+	private void Open_InfoMenu_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		ModContent.GetInstance<UniversalSystem>().ActivateInfoMenuUI();
 	}
 	private void Open_EnchantmentWikiUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -893,6 +918,14 @@ class UISystemMenu : UIState {
 			}
 			else {
 				open_HelpMenu.TextColor = Color.White;
+			}
+		}
+		else if (affectedElement.UniqueId == open_InfoMenu.UniqueId) {
+			if (affectedElement.IsMouseHovering) {
+				open_InfoMenu.TextColor = Color.Yellow;
+			}
+			else {
+				open_InfoMenu.TextColor = Color.White;
 			}
 		}
 	}
@@ -1400,4 +1433,84 @@ public class WeaponEnchantmentUIImg : Roguelike_UIImage {
 		spriteBatch.Draw(item, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
 	}
 	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / textureSize.Length();
+}
+internal class InfoMenuUI : UIState {
+	public Roguelike_UIPanel headerPanel;
+	public Roguelike_UIPanel mainPanel;
+	public InfoMenuPanelThatCanScroll panel;
+	public ExitUI exit;
+	public override void OnInitialize() {
+		mainPanel = new Roguelike_UIPanel();
+		mainPanel.UISetWidthHeight(600, 500);
+		mainPanel.HAlign = .5f;
+		mainPanel.VAlign = .5f;
+		Append(mainPanel);
+
+		headerPanel = new Roguelike_UIPanel();
+		headerPanel.UISetWidthHeight(600, 80);
+		mainPanel.Append(headerPanel);
+
+		exit = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
+		exit.HAlign = 1f;
+		exit.VAlign = 1f;
+		exit.UISetWidthHeight(52, 52);
+		headerPanel.Append(exit);
+
+		panel = new InfoMenuPanelThatCanScroll();
+		panel.UISetWidthHeight(600, 380);
+		panel.HAlign = .5f;
+		panel.VAlign = 1f;
+		mainPanel.Append(panel);
+	}
+}
+public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
+	public override void OnInitialize() {
+		OverrideDefaultDraw = true;
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		this.Disable_MouseItemUsesWhenHoverOverAUI();
+	}
+	public override void PostDraw(SpriteBatch spriteBatch) {
+		Info_Draw(spriteBatch);
+	}
+	private int linePosition;
+	private int maxLinePosition;
+	protected void Info_Draw(SpriteBatch spriteBatch) {
+		string text = ModUtils.LocalizationText("InfoMenu");
+
+		DynamicSpriteFont font = FontAssets.MouseText.Value;
+		float scale = 1f;
+		string[] lines = Terraria.Utils.WordwrapString(
+		   text,
+			font,
+			(int)(GetDimensions().Width / scale),
+			9999,
+			out int lineCount
+		).Where(line => line is not null).ToArray();
+
+		maxLinePosition = Math.Max(lines.Length - 15, 0);
+		linePosition = Math.Clamp(linePosition, 0, maxLinePosition);
+
+		float yOffset = 0f;
+		for (int i = linePosition; i < Math.Min(linePosition + 15, lines.Length); i++) {
+			string text2 = lines[i];
+			ChatManager.DrawColorCodedStringWithShadow(
+				spriteBatch,
+				font,
+				text2,
+				GetDimensions().Position() + Vector2.UnitY * yOffset,
+				Color.White,
+				0f,
+				Vector2.Zero,
+				Vector2.One * scale
+			);
+
+			yOffset += scale * 25f;
+		}
+	}
+
+	public override void ScrollWheel(UIScrollWheelEvent evt) {
+		linePosition -= MathF.Sign(evt.ScrollWheelValue);
+	}
 }

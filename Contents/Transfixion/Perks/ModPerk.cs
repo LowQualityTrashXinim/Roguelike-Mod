@@ -418,6 +418,8 @@ public class TitanPower : Perk {
 		if (PlayerStatsHandle.GetSecondLife(player, "P_TP")) {
 			player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), ModUtils.ToMinute(4));
 			player.Heal(player.statLifeMax2);
+			player.immune = true;
+			player.AddImmuneTime(-1, 90);
 			return true;
 		}
 		return false;

@@ -296,6 +296,7 @@ namespace Roguelike.Common.Utils {
 	}
 	public class Roguelike_UIPanel : UIPanel {
 		public bool Hide = false;
+		public bool OverrideDefaultDraw = false;
 		public Roguelike_UIPanel() {
 		}
 		public override void Update(GameTime gameTime) {
@@ -308,14 +309,18 @@ namespace Roguelike.Common.Utils {
 			if (Hide) {
 				return;
 			}
-			base.DrawSelf(spriteBatch);
+			if (!OverrideDefaultDraw) {
+				base.DrawSelf(spriteBatch);
+			}
 		}
 		public sealed override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {
 				return;
 			}
 			PreDraw(spriteBatch);
-			base.Draw(spriteBatch);
+			if (!OverrideDefaultDraw) {
+				base.Draw(spriteBatch);
+			}
 			PostDraw(spriteBatch);
 		}
 	}

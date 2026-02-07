@@ -1,5 +1,47 @@
 Mods: {
 	Roguelike: {
+		InfoMenu:
+			'''
+			This is a list of weapon tag effect:
+
+			[c/ffffc0:Hallowed Gaze]:
+			On applying, enemy will take 5% more damage, this debuff can be reapply ( upon reapply will reset duration )
+			reapplying the debuff will increases the above effect by another 5% ( soft-capped at 60% )
+			After reaching the soft cap, applying more will result in enemy get struck by beam of light dealing 1% of enemy current health as damage ( damage can't be lower than 10 and can't be higher than 2000 )
+			After getting struck by light beam, removed all the stacks
+
+			[c/0000ff:Wrath of Blue Moon]:
+			Deal 15 DoT to the enemy
+			Every hit increases the damage taken by 1% ( up to maximum of 20% )
+			Enemy inflict with Wrath of Blue Moon deal 40% less contact damage
+			Hitting enemy with Wrath of Blue Moon have small chance to deal Moonlight strike
+			Moon light strike deal 30 damage + 0.1% current health of enemy
+
+			[c/ff5400:Fury of The Sun]:
+			Deal 35 DoT to the enemy, the DoT increases to 50 if the enemy are currently On Fire
+			Every hit have small chance to explode dealing damage to nearby enemy
+			Every hit increases the damage taken by 1% ( up to maximum of 20% )
+
+			[c/eff1fa:Avarice]:
+			Summon gem when hitting enemy, gem also can grant benefit effect to player
+			[i:181]:Deal 100% weapon damage, grant 5 hp and 5 mana
+			[i:180]:Deal small AoE 70% weapon damage, grant 5 hp and 5 mana
+			[i:177]:Deal 80% weapon damage, grant 10 hp and mana
+			[i:179]:Deal 0.1% weapon damage as DoT to nearby enemy, grant 5s to current active buff
+			[i:178]:Deal 150% weapon damage,  heal back 1% health
+			[i:182]:Deal 150% weapon damage,  heal back 1% health
+			[i:999]:Deal 125% weapon damage, heal back 1% health
+			During collecting gem, player will gain Avarice buff
+			During Avarice buff, you increases defenses and damage
+			after the buff ended, you will explode out the gem base on the value that you collected
+
+			[c/ef8642:Electric Conductor]:
+			Dealing damage to enemy that has Electrified debuff will upgrade the debuff 
+			and make the nearby enemy have take 10% of weapon damage
+			On hitting enemey with Upgraded Electrified will sometime spread lighting randomly
+			If the target doesn't has Electrified debuff, dealing damage to target up to 10 time
+			have 10% to inflict Electrified debuff for 1s
+			'''
 		Conditions.RoguelikeModeCursed: The recipe is locked while you are playing this mod.
 		Bestiary.LootBoxLord: After our investigation, we uncovered that this entity is a ancient god whose purpose are to guard the gate of so called "World Vault", this is our first ever confirmation of there being another world, however without seeing the "world vault" there aren't any evidence would support our theory, so this can't really be reported back to our superior. However the entity is rather interesting, we had done multiple attempts of trying to neutralize the entity, even resulting to using our on broad giant rail gun which in previous record could easily pieced a super size eye ball but when against this entity it done next to no damage, as such we decided best to not engaged any further until further notice from above.
 
@@ -456,6 +498,9 @@ Mods: {
 			BulletHell_Projectile.DisplayName: Bullet Hell_ Projectile
 			EnergyChainOrb.DisplayName: Energy Chain Orb
 			HitScanShotv2.DisplayName: Hit Scan Shotv2
+			MagnetOrbProjectile.DisplayName: Magnet Orb Projectile
+			Avarice_Projectile.DisplayName: Avarice_ Projectile
+			SimplePiercingProjectile2_Hostile.DisplayName: Simple Piercing Projectile2_ Hostile
 		}
 
 		NPCs: {
@@ -489,6 +534,7 @@ Mods: {
 			TrialArcher.DisplayName: Trial Archer
 			TrialKnight.DisplayName: Trial Knight
 			SwordSage.DisplayName: Sword Sage
+			LootboxLord_Clone.DisplayName: Lootbox Lord_ Clone
 		}
 
 		Items: {
@@ -1492,7 +1538,11 @@ Mods: {
 
 			LootboxLordSummon: {
 				DisplayName: Lootbox Lord Summon
-				Tooltip: ""
+				Tooltip:
+					'''
+					Highly recommend to summon in a open area
+					"I hope you are well prepared my lord"
+					'''
 			}
 
 			ItemBundle: {
@@ -3542,6 +3592,11 @@ Mods: {
 				DisplayName: Wrath Of Blue Moon
 				Description: Mods.Roguelike.Buffs.WrathOfBlueMoon.Description
 			}
+
+			Avarice_Buff: {
+				DisplayName: Avarice
+				Description: Increases more defenses and damages the more gem you collected
+			}
 		}
 
 		Configs: {
@@ -3680,7 +3735,17 @@ Mods: {
 
 				SkipCutscene: {
 					Label: Skip Cutscene
-					Tooltip: ""
+					Tooltip: Skip a boss fight cutscene
+				}
+
+				BossRushMode_Setting_FightBossInProgression: {
+					Label: Boss Rush - Fight Boss In Progression
+					Tooltip: Make the boss rush mode to spawn boss in a vanilla progression
+				}
+
+				BossRushMode_Setting_SpawnOnPlayerCommand: {
+					Label: Boss Rush - Spawn On Player Command
+					Tooltip: Enable this to give control to player on when player want to spawn boss
 				}
 			}
 		}
