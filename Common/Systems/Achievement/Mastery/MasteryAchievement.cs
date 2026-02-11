@@ -1,4 +1,4 @@
-﻿using Roguelike.Common.Mode.HellishEndeavour;
+﻿using Roguelike.Common.Systems.HellishEndeavour;
 using Terraria;
 
 namespace Roguelike.Common.Systems.Achievement.Mastery;

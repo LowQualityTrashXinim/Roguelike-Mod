@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using Roguelike.Common.RoguelikeMode.ArmorOverhaul;
 
 namespace Roguelike.Contents.Items.Accessories.EmpoweredAccessories.MashedOfCopper
 {

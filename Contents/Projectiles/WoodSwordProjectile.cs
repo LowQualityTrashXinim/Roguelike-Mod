@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 

@@ -10,8 +10,8 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 using Humanizer;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class Musket : ModEnchantment {

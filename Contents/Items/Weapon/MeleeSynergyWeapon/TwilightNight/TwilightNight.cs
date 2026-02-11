@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Items.Weapon;
 
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.TwilightNight;
 

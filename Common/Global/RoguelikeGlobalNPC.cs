@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
@@ -18,7 +18,6 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {

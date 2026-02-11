@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Global.Mechanic;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Projectiles;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -254,4 +252,22 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 	}
+}
+public static class Roguelike_DamageClass {
+	/// <summary>
+	/// Vanilla summoner re-implementation that have crit enable
+	/// </summary>
+	public static DamageClass Summon => new Roguelike_SummonDamageClass();
+}
+public class Roguelike_SummonDamageClass : VanillaDamageClass {
+	protected override string LangKey => "LegacyTooltip.53";
+	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+		if (damageClass == Summon) {
+			return StatInheritanceData.Full;
+		}
+		else {
+			return StatInheritanceData.None;
+		}
+	}
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Magic;
 }

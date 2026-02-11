@@ -28,8 +28,8 @@ using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
-using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Systems.SpoilSystem;
+using Roguelike.Common.Systems.BossRushMode;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

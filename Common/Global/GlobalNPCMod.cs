@@ -125,7 +125,7 @@ namespace Roguelike.Common.Global {
 				//NoHit Mode drop
 
 				//Expert mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>()));
+				leadingConditionRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WoodenLootBox>()));
 				npcLoot.Add(leadingConditionRule);
 			}
 			else if (npc.type == NPCID.Plantera) {

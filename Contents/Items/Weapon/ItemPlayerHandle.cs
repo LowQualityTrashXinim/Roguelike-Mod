@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Prefixes;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
@@ -25,7 +24,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Prefixes;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {

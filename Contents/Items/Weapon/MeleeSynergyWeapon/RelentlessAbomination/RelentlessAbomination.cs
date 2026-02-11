@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination {
 	class RelentlessAbomination : SynergyModItem {

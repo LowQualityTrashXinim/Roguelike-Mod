@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using System;
 
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
 internal class TheTwoEvil : SynergyModItem {
@@ -15,8 +16,16 @@ internal class TheTwoEvil : SynergyModItem {
 		Item.BossRushDefaultRange(30, 30, 27, 6, 35, 35, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 17f, false, AmmoID.Arrow);
 		Item.UseSound = SoundID.Item5;
 	}
+	public int Counter = 0;
+	public int Decay = 0;
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
+		if (++Decay >= 120) {
+			Counter = 0;
+		}
+	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
+		Decay = -player.itemAnimationMax;
 		Vector2 offsetPos = Vector2.UnitY.RotatedBy(velocity.ToRotation());
 		Vector2 pos = position.PositionOFFSET(velocity, Item.width);
 		Projectile.NewProjectile(source, pos + offsetPos * 10, velocity, type, damage, knockback, player.whoAmI);
@@ -40,9 +49,11 @@ internal class TheTwoEvil : SynergyModItem {
 			}
 		}
 		Projectile.NewProjectile(source, newpos, vel, ModContent.ProjectileType<EvilShot>(), (int)(damage * 1.5f), knockback, player.whoAmI, colorchosing);
-		for (int i = 0; i < 3; i++) {
+		Counter = Math.Clamp(++Counter, 0, 15);
+		int amount = Counter / 3;
+		for (int i = 0; i < amount; i++) {
 			Vector2 newpos2 = position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.5f, 1.25f);
-			Vector2 newvel2 = (Main.MouseWorld - newpos2).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Vector2 newvel2 = (Main.MouseWorld - newpos2).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4, 6);
 			Projectile projectile = Projectile.NewProjectileDirect(source, newpos2, newvel2, ModContent.ProjectileType<EvilShot>(), (int)(damage * .33f) + 1, knockback, player.whoAmI, colorchosing);
 			projectile.scale -= .5f;
 			projectile.penetrate = 2;

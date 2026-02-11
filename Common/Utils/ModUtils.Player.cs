@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.Mechanic;
+using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items;
@@ -211,7 +211,7 @@ namespace Roguelike.Common.Utils {
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
 		public static void ManaHeal(this Player player, int amount) {
-			if (player.statMana >= player.statManaMax2) {
+			if (player.statMana < player.statManaMax2) {
 				if (player.statMana + amount >= player.statManaMax2) {
 					player.statMana = player.statManaMax2;
 				}

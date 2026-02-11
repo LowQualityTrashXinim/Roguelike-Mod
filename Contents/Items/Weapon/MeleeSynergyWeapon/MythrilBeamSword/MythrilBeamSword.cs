@@ -10,7 +10,7 @@ using Roguelike.Contents.Items.Weapon;
 
 using Roguelike.Common.Graphics.Structs.TrailStructs;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {

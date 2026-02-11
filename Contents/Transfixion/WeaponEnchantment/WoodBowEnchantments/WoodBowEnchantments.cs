@@ -1,12 +1,9 @@
-﻿using Humanizer.Localisation.DateToOrdinalWords;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment.WoodBowEnchantments;
 public class WoodenBow : ModEnchantment {

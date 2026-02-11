@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;

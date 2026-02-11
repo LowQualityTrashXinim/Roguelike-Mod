@@ -501,6 +501,11 @@ Mods: {
 			MagnetOrbProjectile.DisplayName: Magnet Orb Projectile
 			Avarice_Projectile.DisplayName: Avarice_ Projectile
 			SimplePiercingProjectile2_Hostile.DisplayName: Simple Piercing Projectile2_ Hostile
+			StardustSymphony_Projectile.DisplayName: Stardust Symphony_ Projectile
+			StardustSymphony_StarProjectile.DisplayName: Stardust Symphony_ Star Projectile
+			StardustSymphony_StarProjectile_Normal.DisplayName: Stardust Symphony_ Star Projectile_ Normal
+			StardustSymphony_StarProjectile_Special.DisplayName: Stardust Symphony_ Star Projectile_ Special
+			StardustSymphony_Projectile_Explosion.DisplayName: Stardust Symphony_ Projectile_ Explosion
 		}
 
 		NPCs: {
@@ -2006,7 +2011,14 @@ Mods: {
 
 			TheTwoEvil: {
 				DisplayName: The Two Evil
-				Tooltip: Disgusting
+				Tooltip:
+					'''
+					"Disgusting"
+					This weapon shoot 2 arrows instead of 1
+					Each shot is accompany with a powerful evil bolt dealing 150% weapon damage
+					Continuous uses will slowly spawn additional small evil bolt dealing 33% weapon damage ( up to 5 max )
+					After 2s of not using weapon, the counter above will reset
+					'''
 			}
 
 			BurningSky: {
@@ -2717,6 +2729,20 @@ Mods: {
 			SpoilBag: {
 				DisplayName: Spoil Bag
 				Tooltip: ""
+			}
+
+			StardustSymphony: {
+				DisplayName: Stardust Symphony
+				Tooltip:
+					'''
+					Summon star at where the cursor at ( maximum range can only be 450 pixel away from player )
+					Each chain attack will summon more star at the maximum of 3 and then unleash special chain ending attack
+					Each attack that hit will summon 1 floating star
+					Right click will summon 10 star around you and heal you for 100 hp ( CD: 15s )
+					Each attack hit will heal you for 5 - 25 + 0.5% weapon damage HP
+					After hitting up to 89 times, right clicking again will summon a field that increases 15% crit chance and 45% crit damage
+					while player are in the field they will heal 34 + 5% HP and 45 + 5% Mana and basic attack are enhanced
+					'''
 			}
 		}
 
@@ -3596,6 +3622,21 @@ Mods: {
 			Avarice_Buff: {
 				DisplayName: Avarice
 				Description: Increases more defenses and damages the more gem you collected
+			}
+
+			StardustSymphony_Buff: {
+				DisplayName: Stardust Symphony Array
+				Description:
+					'''
+					Grant 15% crit chance and 45% crit damage
+					Heal user health and mana every 1s
+					Enhanced basic attack
+					'''
+			}
+
+			StardustSymphony_CoolDown: {
+				DisplayName: Stardust Symphony Cool Down
+				Description: Healing Cool down
 			}
 		}
 

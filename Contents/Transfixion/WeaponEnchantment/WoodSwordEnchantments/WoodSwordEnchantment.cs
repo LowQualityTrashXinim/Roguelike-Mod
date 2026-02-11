@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul.ItemOverhaul.Specific;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System.Linq;

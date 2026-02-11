@@ -8,7 +8,7 @@ using Terraria.Audio;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Contents.Items.Weapon
 {

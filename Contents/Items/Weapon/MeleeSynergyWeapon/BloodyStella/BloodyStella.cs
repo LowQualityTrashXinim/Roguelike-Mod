@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.BloodyStella;
 

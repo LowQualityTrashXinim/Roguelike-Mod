@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.RoguelikeMode.RoguelikeChange.ItemOverhaul;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;

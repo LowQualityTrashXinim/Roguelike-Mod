@@ -478,3 +478,8 @@ Version 0.0.1:
 462/ Added Electric Conductor and Avarice weapon tag.
 463/ Updated Lootbox Lord boss fight.
 464/ Temporary disable Flame sword trail effect.
+465/ Added Stardust Symphony.
+466/ Massively organize mod folder to be more clean.
+467/ Changed build number from 0.0.17.2 to 0.0.18.
+468/ Slight changed to The Two Evil to make it more interesting.
+469/ Fix critical bugs in Boss Rush mode.
