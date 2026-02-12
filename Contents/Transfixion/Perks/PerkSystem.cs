@@ -123,6 +123,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public bool CanGetPerk = false;
 		public int PerkrerollAmount = 1;
 		private byte perk_Reroll = 1;
+		public int Dirt_Timer = 0;
 		public void Modify_RerollCount(byte amount, bool? negative = false) {
 			short simulate = perk_Reroll;
 			if (negative == null) {
@@ -159,6 +160,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
 		public bool perk_EssenceExtraction = false;
+		public bool perk_UntappedPotential = false;
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
 			PerkrerollAmount = 1;
@@ -188,6 +190,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
+			perk_UntappedPotential = false;
 			PerkrerollAmount = 1;
 			PerkrerollAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + RerollAmount();
 			foreach (int perk in perks.Keys) {

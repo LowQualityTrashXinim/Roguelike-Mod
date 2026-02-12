@@ -13,11 +13,6 @@ CombatLowHPTemplate: {
 	Description: While health is below 45%, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
 
-CombatV4Template: {
-	DisplayName: Core [c/{0}:{1}]
-	Description: Increases base [c/{0}:{1}] by [c/{0}:{2}]
-}
-
 StrikeFullHPTemplate: {
 	DisplayName: Weapon Virginity
 	Description: Increases first strike damage by [c/{0}:{1}]
@@ -38,11 +33,6 @@ BattleMountTemplate: {
 	Description: Increases damage by [c/{0}:{1}] while on a mount
 }
 
-StaticDefeneseTemplate: {
-	DisplayName: Damage Deflection
-	Description: Decreases damage received by [c/{0}:{1}]
-}
-
 MagicCostTemplate: {
 	DisplayName: Arcane Blessing
 	Description: Increases flat magic damage by [c/{0}:{2}], multiplies magic damage by [c/{0}:{1}], but increases mana cost by 15%
@@ -51,11 +41,6 @@ MagicCostTemplate: {
 SynergyTemplate: {
 	DisplayName: Synergetic Pirouette
 	Description: Increases [c/{2}:Synergy damage] by [c/{2}:{1}] and [c/{0}:{3}] by [c/{0}:{4}]
-}
-
-GunFireRateTemplate: {
-	DisplayName: Swift Snipe
-	Description: Increases the fire rate of guns by [c/{0}:{1}]
 }
 
 ArcherMasteryTemplate: {
@@ -73,39 +58,9 @@ SkillActivationTemplate: {
 	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
 }
 
-SlimeSpikeTemplate: {
-	DisplayName: Piercing Ooze: [c/{4}:{5}] Edition
-	Description: When close to an enemy, shoots [c/{0}:{1} friendly slime spike(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 0.5s
-}
-
 SkillCoolDownTemplate: {
 	DisplayName: Rewired Processes [c/{0}:{1}]
 	Description: Decreases the cooldown of the [c/{0}:{1}] skill by [c/{0}:{2}] seconds
-}
-
-FireBallTemplate: {
-	DisplayName: Meteor Ablaze: [c/{4}:{5}] Edition
-	Description: When close to an enemy, shoots [c/{0}:{1} fireball(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 1.5s
-}
-
-SkyFractureTemplate: {
-	DisplayName: Shattering Skies: [c/{4}:{5}] Edition
-	Description: When close to an enemy, creates [c/{0}:{1} Sky Fracture(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 2.5s
-}
-
-MagicMissileTemplate: {
-	DisplayName: Blazing Arcana: [c/{4}:{5}] Edition
-	Description: When close to an enemy, shoots [c/{0}:1 Magic Missle(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s]
-}
-
-DemonScytheTemplate: {
-	DisplayName: Crawling Sinful: [c/{4}:{5}] Edition
-	Description: When close to an enemy, creates [c/{0}:{1} Demon Scythe(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 2s
-}
-
-BlizzardTemplate: {
-	DisplayName: Blizzard : [c/{4}:{5}] Edition
-	Description: When close to an enemy, shoots [c/{0}:1 Blizzard Missle(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s]
 }
 
 MiniHeartStatuesTemplate: {

@@ -19,13 +19,20 @@ using Roguelike.Contents.Transfixion.Skill;
 namespace Roguelike.Contents.Transfixion.Perks;
 public class Dirt : Perk {
 	public override void SetDefaults() {
-		CanBeStack = false;
+		CanBeStack = true;
+		StackLimit = 3;
 		textureString = ModUtils.GetTheSameTextureAsEntity<Dirt>();
 	}
 	public override void UpdateEquip(Player player) {
-		var handle = player.GetModPlayer<PlayerStatsHandle>();
-		handle.ChanceDropModifier += .1f * StackAmount(player);
-		handle.DropModifier.Base += 1;
+		if (--player.GetModPlayer<PerkPlayer>().Dirt_Timer <= 0) {
+			player.GetModPlayer<PerkPlayer>().Dirt_Timer = ModUtils.ToSecond(1);
+			int stack = StackAmount(player);
+			for (int i = 0; i < stack; i++) {
+				Vector2 pos = player.Center + Main.rand.NextVector2Circular(100, 100);
+				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 25;
+				Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, ModContent.ProjectileType<DirtProjectile>(), 30 + (int)(player.GetWeaponDamage(player.HeldItem) * .15f), 1f, player.whoAmI);
+			}
+		}
 	}
 }
 public class StellarRetirement : Perk {
@@ -117,7 +124,7 @@ public class SummonBuffPerk : Perk {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxMinion, Base: 2 * StackAmount(player));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (hit.DamageType != DamageClass.Summon) {
+		if (hit.DamageType != DamageClass.Summon || hit.DamageType != DamageClass.SummonMeleeSpeed || hit.DamageType != Roguelike_DamageClass.Summon) {
 			hit.SourceDamage -= (int)(hit.SourceDamage * 0.05f) * StackAmount(player);
 		}
 	}
@@ -138,19 +145,17 @@ public class TrueMeleeBuffPerk : Perk {
 		}
 	}
 }
-public class KnockpackPerk : Perk {
+public class PhysicsEnjoyer : Perk {
 	public override void SetDefaults() {
 		CanBeStack = false;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.HitDirectionOverride = 0;
 		modifiers.Knockback *= 2;
 		if (target.knockBackResist >= 1f) {
 			modifiers.Defense.Base -= player.GetWeaponKnockback(item);
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.HitDirectionOverride = 0;
 		modifiers.Knockback *= 2;
 		if (target.knockBackResist >= 1f) {
 			modifiers.Defense.Base -= proj.knockBack;
@@ -175,54 +180,6 @@ public class WeaponExpert : Perk {
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 		if (item.damage <= 20 || Main.hardMode && item.damage <= 42) {
 			damage += 1;
-		}
-	}
-}
-public class AspectOfTheUnderworld : Perk {
-	public override void SetDefaults() {
-		CanBeStack = false;
-		textureString = ModTexture.ACCESSORIESSLOT;
-		DataStorer.AddContext("Perk_RingOfFire", new(
-			300,
-			Vector2.Zero,
-			false,
-			Color.DarkRed
-			));
-	}
-	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
-		if (player.IsHealthAbovePercentage(.66f)) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: -32);
-		}
-		player.buffImmune[BuffID.OnFire] = true;
-	}
-	public override void Update(Player player) {
-		DataStorer.ActivateContext(player, "Perk_RingOfFire");
-		player.Center.LookForHostileNPC(out var npclist, 300);
-		for (int i = 0; i < 4; i++) {
-			int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(300, 300), 0, 0, DustID.Torch);
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = -Vector2.UnitY * 4f;
-			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-		}
-		if (npclist.Count > 0) {
-			foreach (var npc in npclist) {
-				npc.AddBuff(BuffID.OnFire, 180);
-				if (player.IsHealthAbovePercentage(.67f)) {
-					npc.AddBuff(BuffID.OnFire3, 180);
-					npc.AddBuff(ModContent.BuffType<TheUnderworldWrath>(), 180);
-				}
-			}
-		}
-	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
-			modifiers.CritDamage *= 1.15f;
-		}
-	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
-			modifiers.CritDamage *= 1.15f;
 		}
 	}
 }
@@ -579,6 +536,9 @@ public class UntappedPotential : Perk {
 	public override bool SelectChoosing() {
 		return Main.LocalPlayer.inventory.Where(i => i.ModItem != null && i.ModItem is SynergyModItem).Any();
 	}
+	public override void UpdateEquip(Player player) {
+		player.GetModPlayer<PerkPlayer>().perk_UntappedPotential = true;
+	}
 }
 public class GlassCannon : Perk {
 	public override void SetDefaults() {
@@ -607,13 +567,6 @@ public class GlassCannonPlayer : ModPlayer {
 			Projectile.NewProjectile(source, position, reVelocity.Vector2RotateByRandom(5), ModContent.ProjectileType<GlassProjectile>(), damage * 5, knockback, Player.whoAmI);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
-	}
-}
-
-public class EnchantmentSmith : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 3;
 	}
 }
 public class Stimulation : Perk {

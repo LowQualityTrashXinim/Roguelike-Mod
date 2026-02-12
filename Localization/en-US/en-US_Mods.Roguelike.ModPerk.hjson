@@ -41,6 +41,27 @@ MarkOfSpectre: {
 		'''
 }
 
+MarkOfSlime: {
+	DisplayName: Mark of Slime
+	Description:
+		'''
+		+ You take 15% less contact damage
+		+ You are a lot more slippy, increases jump boost by 100%
+		+ When close to an enemy, shoots friendly slime spike dealing 11 + 22% weapon damage every 0.5s
+		'''
+}
+
+MarkOfWizard: {
+DisplayName: Mark of Wizard
+	Description:
+		'''
+		"What in the sage did you do ?"
+		+ When a enemy is detected nearby, shoots assortment of spell every 3s
+		- You take 30% more damage from projectile ( only applied once )
+		Spells deal 31 + 42% weapon damage
+		'''
+}
+
 LethalKnockBack: {
 	DisplayName: Lethal Knock Back
 	Description:
@@ -98,8 +119,9 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of getting extra item from loot drop by 10%
-		+ Increases loot drop by 1
+		+ Automatically shoot out dirt toward cursor direction (CD: 1s)
+		Dirt projectile deal 30 damage + 15% weapon damage
+		Note: This perk do not count as using a weapon
 		'''
 }
 
@@ -323,15 +345,18 @@ ArenaBlessing: {
 
 StellarRetirement: {
 	DisplayName: Stellar Retirement
-	Description: + Super star fall from the sky dealing 1000 damage
+	Description:
+		'''
+		+ Super star fall from the sky dealing 1000 damage
+		Super star when fall will ignore tile and fall through any platform
+		'''
 }
 
 OverchargedMana: {
 	DisplayName: Overcharged Mana
 	Description:
 		'''
-		+ Your mana regenaration is increases
-		+ When below 50% max mana, your mana regenaration is further increases
+		+ Your mana regen is increases, increases your mana regen further when below 50% max mana
 		+ At above 90% of mana, next attack deal magic explode damage and +77% magic damage
 		+ When your current mana value is greater than your current life value, strengthen above effect
 		'''
@@ -351,8 +376,8 @@ SummonBuffPerk: {
 	DisplayName: Crowd Control
 	Description:
 		'''
-		+ Gain +2 minion slot for every stack you have
-		- Non-summon projectiles decreased damage by 5%
+		+ Increases maximum minion by 2
+		- Decreases non-summon projectiles damage by 5%
 		'''
 }
 
@@ -360,19 +385,18 @@ TrueMeleeBuffPerk: {
 	DisplayName: BloodShed
 	Description:
 		'''
-		+ Melee damage is no longer random
+		+ Melee damage is no longer vary
 		+ Melee weapon that can't shoot projectile deals 25% bonus damage
 		+ While player don't have i-frame, increases above damage by 44%
 		'''
 }
 
-KnockpackPerk: {
+PhysicsEnjoyer: {
 	DisplayName: Physics Enjoyer
 	Description:
 		'''
-		+ Increases your knockback
-		+ Most projectiles knockback dealt always becomes upward
-		+ Hitting enemies that have knockback immunity will turn knockback value into flat armor penetration
+		+ Hitting enemy will apply 2x knockback 
+		+ Hitting enemies that have knockback immunity will turn weapon knockback value into flat armor penetration
 		'''
 }
 
@@ -598,16 +622,6 @@ RuthlessRage: {
 		'''
 }
 
-UnlimitedThrowable: {
-	DisplayName: Unlimited Throwable
-	Description:
-		'''
-		+ Throwable become unconsumable
-		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
-		+ Item now can be prefixed
-		'''
-}
-
 DemolitionistGunner: {
 	DisplayName: Demolitionist Gunner
 	Description:
@@ -721,11 +735,6 @@ EssenceExtraction: {
 		'''
 }
 
-EnchantmentSmith: {
-	DisplayName: Enchantment Smith
-	Description: Increases the amount of enchantment can be put onto weapon by 1
-}
-
 ArcaneMaster: {
 	DisplayName: Arcane master
 	Description:
@@ -749,7 +758,7 @@ Stimulation: {
 	Description:
 		'''
 		+ When health fall below 40%, automatically give you stim pack buff for 10s
-		+ Stimulation increases attack speed by 12% and health regenaration by 50% and flat 10
+		Stimulation increases attack speed by 12% and health regenaration by 50% and flat 10
 		'''
 }
 

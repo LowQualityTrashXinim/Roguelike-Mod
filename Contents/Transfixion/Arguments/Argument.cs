@@ -39,68 +39,7 @@ public class AugmentsWeapon : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public int[] AugmentsSlots = new int[5];
 	public int[] AugmentsSlotsCharge = new int[5];
-	/// <summary>
-	/// Can only applied to accessory<br/>
-	/// Augments won't always be added, instead it work base on chance stat<br/>
-	/// Use <paramref name="chance"/> to increases the chance directly, be aware it will decay overtime<br/>
-	/// Set <paramref name="decayable"/> to disable decay
-	/// </summary>
-	/// <param name="player">The player</param>
-	/// <param name="item">The item</param>
-	/// <param name="limit">The limit amount of Augments can have on weapon by pure chance</param>
-	/// <param name="chance">the chance to add Augments</param>
-	/// <param name="decayable">disable the decay of custom chance</param>
-	public static void Chance_AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
-		if (!item.accessory) {
-			return;
-		}
-		if (item.TryGetGlobalItem(out AugmentsWeapon weapon)) {
-			Dictionary<int, float> AugmentsList = new();
-			for (int i = 1; i <= AugmentsLoader.TotalCount; i++) {
-				ModAugments Augments = AugmentsLoader.GetAugments(i);
-				if (Augments.ConditionToBeApplied(player, item, out float Chance)) {
-					AugmentsList.Add(i, Chance);
-				}
-			}
-			AugmentsPlayer modplayer = player.GetModPlayer<AugmentsPlayer>();
-			chance += modplayer.Request_ChanceAugments;
-			limit += modplayer.Request_LimitAugments;
-			if (modplayer.Request_Decayable != null)
-				decayable = (bool)modplayer.Request_Decayable;
-
-			int currentEmptySlot = 0;
-			bool passException = false;
-
-			float chanceDecay = chance;
-			ModAugments modAugments = null;
-			float augmentChance = 0;
-			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
-				if (modAugments == null) {
-					modAugments = AugmentsLoader.GetAugments(Main.rand.Next(AugmentsList.Keys.ToArray()));
-					augmentChance = AugmentsList[modAugments.Type];
-					AugmentsList.Remove(modAugments.Type);
-				}
-				if (Main.rand.NextFloat() > chanceDecay + augmentChance && !passException || limit == 0) {
-					break;
-				}
-				if (weapon.AugmentsSlots[currentEmptySlot] == 0) {
-					if (decayable) {
-						chanceDecay *= .5f;
-					}
-					passException = false;
-					weapon.AugmentsSlots[currentEmptySlot] = modAugments.Type;
-					modAugments = null;
-					limit--;
-				}
-				else {
-					currentEmptySlot++;
-					passException = true;
-					i--;
-				}
-			}
-		}
-	}
-	public static void AddAugments<T>(Player player, ref Item item) where T : ModAugments {
+	public static void AddAugments<T>(ref Item item) where T : ModAugments {
 		if (!item.accessory) {
 			return;
 		}
@@ -118,7 +57,7 @@ public class AugmentsWeapon : GlobalItem {
 			}
 		}
 	}
-	public static void AddAugments(Player player, ref Item item, int type) {
+	public static void AddAugments(ref Item item, int type) {
 		if (!item.accessory) {
 			return;
 		}
@@ -135,7 +74,7 @@ public class AugmentsWeapon : GlobalItem {
 			}
 		}
 	}
-	public void Modify_Charge(Player player, int index, int amount) {
+	public void Modify_Charge(int index, int amount) {
 		AugmentsSlotsCharge[index] += amount;
 	}
 	public int Check_ChargeConvertToStackAmount(int index) {
@@ -242,14 +181,6 @@ public abstract class ModAugments : ModType {
 }
 public class AugmentsPlayer : ModPlayer {
 	public List<Item> accItemUpdate = new();
-	public void SafeRequest_AddAugments(float chance, int limit, bool? decayable) {
-		Request_ChanceAugments = chance;
-		Request_LimitAugments = limit;
-		Request_Decayable = decayable;
-	}
-	public float Request_ChanceAugments = 0;
-	public int Request_LimitAugments = 0;
-	public bool? Request_Decayable = null;
 	/// <summary>
 	/// The amount of augmentation currently equipped
 	/// </summary>

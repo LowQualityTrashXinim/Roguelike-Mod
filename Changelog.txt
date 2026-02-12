@@ -483,3 +483,10 @@ Version 0.0.1:
 467/ Changed build number from 0.0.17.2 to 0.0.18.
 468/ Slight changed to The Two Evil to make it more interesting.
 469/ Fix critical bugs in Boss Rush mode.
+470/ Deleted the code that handle enchantment RNG and augmentation RNG.
+471/ Slight rework Dirt perk.
+472/ Some perk get extra explanation in hope to make it more appealing.
+473/ Removed Enchantment smith perk.
+474/ Debloated relic and add 2 new perks.
+475/ Weapon now won't give random prefix upon drop or created.
+476/ Small organization.

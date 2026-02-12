@@ -356,7 +356,6 @@ public enum RelicType : byte {
 	None,
 	Stat,
 	MultiStats,
-	Projectile
 }
 public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {

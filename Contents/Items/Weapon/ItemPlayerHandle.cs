@@ -257,6 +257,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public bool IsASword = false;
 		public int OutroEffect_type = -1;
 		public override void OnCreated(Item item, ItemCreationContext context) {
+			item.prefix = 0;
 			if (item.ModItem == null) {
 				return;
 			}
@@ -273,6 +274,7 @@ namespace Roguelike.Contents.Items.Weapon {
 				}
 				WorldVaultSystem.Set_Variant = 0;
 			}
+			entity.prefix = 0;
 		}
 		public override bool CanUseItem(Item item, Player player) {
 			return base.CanUseItem(item, player);
@@ -508,7 +510,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public override sealed void ModifyWeaponCrit(Player player, ref float crit) {
 			Synergy_ModifyWeaponCrit(player, ref crit);
-			if (!player.HasPerk<UntappedPotential>()) {
+			if (!player.GetModPlayer<PerkPlayer>().perk_UntappedPotential) {
 				return;
 			}
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
@@ -517,7 +519,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public virtual void Synergy_ModifyWeaponCrit(Player player, ref float crit) { }
 		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
 			Synergy_ModifyWeaponDamage(player, ref damage);
-			if (!player.HasPerk<UntappedPotential>()) {
+			if (!player.GetModPlayer<PerkPlayer>().perk_UntappedPotential) {
 				return;
 			}
 			float damageIncreasement = 0;
@@ -697,46 +699,5 @@ namespace Roguelike.Contents.Items.Weapon {
 		public virtual void UpdateNPC(NPC npc, ref int buffIndex) {
 
 		}
-	}
-	class ItemHandleSystem : ModSystem {
-		public override void Load() {
-			On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
-			On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;
-			On_Player.QuickSpawnItem_IEntitySource_int_int += On_Player_QuickSpawnItem_IEntitySource_int_int;
-			On_Player.QuickSpawnItem_IEntitySource_Item_int += On_Player_QuickSpawnItem_IEntitySource_Item_int;
-		}
-		private int On_Player_QuickSpawnItem_IEntitySource_int_int(On_Player.orig_QuickSpawnItem_IEntitySource_int_int orig, Player self, IEntitySource source, int item, int stack) {
-			int whoamI = orig(self, source, item, stack);
-			if (whoamI < 0 && whoamI >= Main.item.Length) {
-				return whoamI;
-			}
-			Item worlditem = Main.item[whoamI];
-			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
-			AugmentsWeapon.Chance_AddAugments(self, ref worlditem);
-			return whoamI;
-		}
-		private int On_Player_QuickSpawnItem_IEntitySource_Item_int(On_Player.orig_QuickSpawnItem_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
-			int whoamI = orig(self, source, item, stack);
-			if (whoamI < 0 && whoamI >= Main.item.Length) {
-				return whoamI;
-			}
-			Item worlditem = Main.item[whoamI];
-			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
-			AugmentsWeapon.Chance_AddAugments(self, ref worlditem);
-			return whoamI;
-		}
-		private Item On_Player_QuickSpawnItemDirect_IEntitySource_int_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_int_int orig, Player self, IEntitySource source, int type, int stack) {
-			Item worlditem = orig(self, source, type, stack);
-			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
-			AugmentsWeapon.Chance_AddAugments(self, ref worlditem);
-			return worlditem;
-		}
-		private Item On_Player_QuickSpawnItemDirect_IEntitySource_Item_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
-			Item worlditem = orig(self, source, item, stack);
-			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
-			AugmentsWeapon.Chance_AddAugments(self, ref worlditem);
-			return worlditem;
-		}
-
 	}
 }
