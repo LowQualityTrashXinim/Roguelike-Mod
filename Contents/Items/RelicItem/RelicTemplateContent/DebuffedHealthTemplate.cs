@@ -23,19 +23,17 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 			return string.Format(Description, args: [Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value.Base)]);
 		}
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-			if (stat == PlayerStats.RegenHP) {
-				return new StatModifier(1, 1, 0, Main.rand.NextFloat(3, 4) * 2.25f);
-			}
-			return new StatModifier(1, 1, 0, Main.rand.NextFloat(4, 5) * 1.5f);
+			return new StatModifier(1, 1, 0, Main.rand.NextFloat(5, 11));
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			for (int i = 0; i < player.buffType.Length; i++) {
 				if (player.buffType[i] == 0) continue;
 				if (Main.debuff[player.buffType[i]]) {
-					modplayer.AddStatsToPlayer(stat, value);
-					break;
+					modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.5f, value.Base * 1.5f);
+					return;
 				}
 			}
+			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}
 }

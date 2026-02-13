@@ -13,7 +13,7 @@ internal class RangeFocusTemplate : RelicTemplate {
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
-		PlayerStats.RangeDMG,
+			PlayerStats.RangeDMG,
 			PlayerStats.RangeCritChance,
 			PlayerStats.RangeCritDmg,
 			PlayerStats.RangeAtkSpeed,

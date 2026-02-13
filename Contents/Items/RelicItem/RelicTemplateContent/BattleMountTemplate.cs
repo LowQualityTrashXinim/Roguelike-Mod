@@ -29,7 +29,7 @@ public class BattleMountTemplate : RelicTemplate {
 		]);
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		string valuestring;
+		string valuestring; string Name = Enum.GetName(stat) ?? string.Empty;
 		if (stat == PlayerStats.MeleeCritChance
 			|| stat == PlayerStats.RangeCritChance
 			|| stat == PlayerStats.MagicCritChance
@@ -40,7 +40,7 @@ public class BattleMountTemplate : RelicTemplate {
 		else {
 			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive);
 		}
-		return string.Format(Description, [Color.Yellow.Hex3(), valuestring,]);
+		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.MeleeCritChance
@@ -57,11 +57,14 @@ public class BattleMountTemplate : RelicTemplate {
 			|| stat == PlayerStats.RangeCritChance
 			|| stat == PlayerStats.MagicCritChance
 			|| stat == PlayerStats.SummonCritChance) {
-				modplayer.AddStatsToPlayer(stat, value);
+				modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.12f, value.Base * 1.12f);
 			}
 			else {
-				modplayer.AddStatsToPlayer(stat, value);
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.12f, value.Multiplicative, value.Flat * 1.12f, value.Base * 1.12f);
 			}
+		}
+		else {
+			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}
 }

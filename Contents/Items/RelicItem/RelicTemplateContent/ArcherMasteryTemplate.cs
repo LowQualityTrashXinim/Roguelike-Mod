@@ -1,13 +1,12 @@
 ﻿using System;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 
-namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
-{
+namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class ArcherMasteryTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.MultiStats;
@@ -27,7 +26,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .1f), 2), 1, 0, Main.rand.Next(3, 5));
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-			if (player.HeldItem.useAmmo == AmmoID.Arrow) {
+			if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Bow].Contains(player.HeldItem.type)) {
 				modplayer.AddStatsToPlayer(stat, value);
 				modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: value.Base);
 				modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value.Additive * 2);

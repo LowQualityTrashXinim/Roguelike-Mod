@@ -106,8 +106,8 @@ public class Omega : RelicPrefix {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("OmegaRelic");
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (RelicTemplateLoader.GetTemplate(TemplateType).relicType == RelicType.Projectile) {
-			return value + .2f;
+		if (relic.RelicTier == 1) {
+			return value + 1;
 		}
 		return value;
 	}
@@ -117,7 +117,7 @@ public class Phi : RelicPrefix {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("PhiRelic");
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (RelicTemplateLoader.GetTemplate(TemplateType).relicType == RelicType.Stat) {
+		if (relic.RelicTier == 4) {
 			return value + .2f;
 		}
 		return value;

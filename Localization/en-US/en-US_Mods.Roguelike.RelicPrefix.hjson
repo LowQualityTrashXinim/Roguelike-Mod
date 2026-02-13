@@ -20,12 +20,12 @@ Zeta: {
 
 Omega: {
 	DisplayName: Omega
-	Description: Increases projectile relic effect damage by 20%
+	Description: Increases Tier 1 relic effect damage by 100%
 }
 
 Phi: {
 	DisplayName: Phi
-	Description: Increases relic stats value effect effect by 20%
+	Description: Increases Tier 4 relic stats value effect effect by 20%
 }
 
 Warrior: {

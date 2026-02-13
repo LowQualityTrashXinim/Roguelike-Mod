@@ -1,84 +1,64 @@
 GenericTemplate: {
 	DisplayName: Classic [c/{0}:{1}]
-	Description: Increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}]
 }
 
 CombatHighHPTemplate: {
 	DisplayName: Heart of [c/{0}:{1}]
-	Description: While health is above 90%, increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.15x if health above 90%
 }
 
 CombatLowHPTemplate: {
 	DisplayName: Critical [c/{0}:{1}]
-	Description: While health is below 45%, increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.25x if health below 45%
 }
 
 StrikeFullHPTemplate: {
 	DisplayName: Weapon Virginity
-	Description: Increases first strike damage by [c/{0}:{1}]
+	Description: +[c/{0}:{1}] first strike damage
 }
 
 LowHealthTemplate: {
 	DisplayName: Endangered [c/{0}:{1}]
-	Description: While health is below 35%, increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.15x if health below 35%
 }
 
 DebuffedHealthTemplate: {
 	DisplayName: "[c/{0}:{1}] Sickness"
-	Description: While afflicted by a debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.5x while afflicted by a debuff
 }
 
 BattleMountTemplate: {
 	DisplayName: Battle ride
-	Description: Increases damage by [c/{0}:{1}] while on a mount
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.12x while on a mount
 }
 
 MagicCostTemplate: {
 	DisplayName: Arcane Blessing
-	Description: Increases flat magic damage by [c/{0}:{2}], multiplies magic damage by [c/{0}:{1}], but increases mana cost by 15%
-}
-
-SynergyTemplate: {
-	DisplayName: Synergetic Pirouette
-	Description: Increases [c/{2}:Synergy damage] by [c/{2}:{1}] and [c/{0}:{3}] by [c/{0}:{4}]
+	Description: " +[c/{0}:{2}] flat magic damage, [c/{0}:{1}]x magic damage, +15% mana cost"
 }
 
 ArcherMasteryTemplate: {
 	DisplayName: String Mastery
-	Description: Increases damage by [c/{0}:{1}], critical strike chance by [c/{0}:{2}] and critical damage by [c/{0}:{3}] while using a bow
-}
-
-SkillDurationTemplate: {
-	DisplayName: Efficiency Control: [c/{0}:{1}]
-	Description: Increases the duration of the [c/{0}:{1}] skill by [c/{0}:{2}] seconds
+	Description: +[c/{0}:{1}] bow damage, [c/{0}:{2}] crit chance, [c/{0}:{3}] crit damage
 }
 
 SkillActivationTemplate: {
 	DisplayName: "[c/{0}:{1}] Conditioning"
-	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
-}
-
-SkillCoolDownTemplate: {
-	DisplayName: Rewired Processes [c/{0}:{1}]
-	Description: Decreases the cooldown of the [c/{0}:{1}] skill by [c/{0}:{2}] seconds
-}
-
-MiniHeartStatuesTemplate: {
-	DisplayName: Mini heart statues
-	Description: Every [c/{3}:{2}s], heal you for [c/{0}:{1} hp]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.34x while skill active
 }
 
 PerfectStatusTemplate: {
 	DisplayName: Perfect Status
-	Description: While you have no buff or debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.4x while no buff or debuff active
 }
 
 RangeFocusTemplate: {
 	DisplayName: True Ranger
-	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] but decreases [c/{0}:{3}] by [c/{0}:{4}]
+	Description: +[c/{0}:{2}] [c/{0}:{1}], -[c/{0}:{4}] [c/{0}:{3}]
 }
 
 PowerTemplate: {
 	DisplayName: Power : [c/{0}:{1}] Edition
-	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] but decreases slowly drain your energy
+	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.16x while slowly decreases energy
 }

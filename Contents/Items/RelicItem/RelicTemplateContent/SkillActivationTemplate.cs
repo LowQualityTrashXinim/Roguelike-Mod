@@ -6,8 +6,7 @@ using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Contents.Transfixion.Skill;
 
-namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
-{
+namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class SkillActivationTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
@@ -30,28 +29,26 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 			if (stat == PlayerStats.PureDamage) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .3f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .11f), 2), 1, 0, 0);
 			}
 			if (stat == PlayerStats.CritChance) {
-				return new StatModifier(1, 1, 0, Main.rand.Next(10, 21));
+				return new StatModifier(1, 1, 0, Main.rand.Next(5, 11));
 			}
 			if (stat == PlayerStats.CritDamage) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.3f, .4f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .2f), 2), 1, 0, 0);
 			}
 			if (stat == PlayerStats.AttackSpeed) {
-				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .12f), 2), 1, 0, 0);
+				return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .11f), 2), 1, 0, 0);
 			}
 			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .15f), 2), 1, 0, 0);
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			SkillHandlePlayer skillPlayer = player.GetModPlayer<SkillHandlePlayer>();
 			if (skillPlayer.Activate) {
-				if (stat == PlayerStats.CritChance) {
-					modplayer.AddStatsToPlayer(stat, value);
-				}
-				else {
-					modplayer.AddStatsToPlayer(stat, value);
-				}
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.34f, value.Multiplicative, value.Flat * 1.34f, value.Base * 1.34f);
+			}
+			else {
+				modplayer.AddStatsToPlayer(stat, value);
 			}
 		}
 	}

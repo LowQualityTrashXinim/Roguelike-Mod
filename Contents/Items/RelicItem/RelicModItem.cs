@@ -361,7 +361,7 @@ public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
-	public string Description => DisplayName + "\n - " + ModUtils.LocalizationText("RelicTemplate", $"{Name}.Description");
+	public string Description => ModUtils.LocalizationText("RelicTemplate", $"{Name}.Description");
 	public string DisplayName => ModUtils.LocalizationText("RelicTemplate", $"{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {

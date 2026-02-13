@@ -490,3 +490,4 @@ Version 0.0.1:
 474/ Debloated relic and add 2 new perks.
 475/ Weapon now won't give random prefix upon drop or created.
 476/ Small organization.
+477/ Significant adjustment made toward relic.

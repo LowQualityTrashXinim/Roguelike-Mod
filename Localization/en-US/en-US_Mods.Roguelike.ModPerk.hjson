@@ -52,7 +52,7 @@ MarkOfSlime: {
 }
 
 MarkOfWizard: {
-DisplayName: Mark of Wizard
+	DisplayName: Mark of Wizard
 	Description:
 		'''
 		"What in the sage did you do ?"

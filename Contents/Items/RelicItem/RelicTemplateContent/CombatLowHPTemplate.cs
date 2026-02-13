@@ -36,21 +36,19 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 		}
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 			if (stat == PlayerStats.CritChance) {
-				return new StatModifier(1, 1, 0, Main.rand.Next(10, 16));
+				return new StatModifier(1, 1, 0, Main.rand.Next(7, 13));
 			}
 			if (stat == PlayerStats.AttackSpeed) {
-				return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.2f), 2), 1);
+				return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
 			}
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.2f, 1.25f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			if (!player.IsHealthAbovePercentage(.45f)) {
-				if (stat == PlayerStats.CritChance) {
-					modplayer.AddStatsToPlayer(stat, value);
-				}
-				else {
-					modplayer.AddStatsToPlayer(stat, value);
-				}
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.25f, value.Multiplicative, value.Flat * 1.25f, value.Base * 1.25f);
+			}
+			else {
+				modplayer.AddStatsToPlayer(stat, value);
 			}
 		}
 	}

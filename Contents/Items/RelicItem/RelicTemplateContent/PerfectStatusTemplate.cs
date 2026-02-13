@@ -52,13 +52,9 @@ public class PerfectStatusTemplate : RelicTemplate {
 			if (!Main.buffNoTimeDisplay[type] || !Main.lightPet[type] && !Main.vanityPet[type]) {
 				continue;
 			}
+			modplayer.AddStatsToPlayer(stat, value);
 			return;
 		}
-		if (stat == PlayerStats.CritChance || stat == PlayerStats.Defense) {
-			modplayer.AddStatsToPlayer(stat, value);
-		}
-		else {
-			modplayer.AddStatsToPlayer(stat, value);
-		}
+		modplayer.AddStatsToPlayer(stat, value.Additive * 1.4f, value.Multiplicative, value.Flat * 1.4f, value.Base * 1.4f);
 	}
 }
