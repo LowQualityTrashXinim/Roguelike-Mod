@@ -9,13 +9,13 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class MagicCostTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.MultiStats;
-		RelicTierUPValue = .65f;
+		RelicTierUPValue = .09f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.MagicDMG;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		return string.Format(Description, [
 			Color.Yellow.Hex3(),
-		RelicTemplateLoader.RelicValueToPercentage(value.Multiplicative),
+		$"{Math.Round(value.Multiplicative, 2)}",
 		RelicTemplateLoader.RelicValueToNumber(value.Flat)
 		]);
 	}

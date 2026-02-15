@@ -14,7 +14,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class GenericTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = .5f;
+		RelicTierUPValue = .1f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		var perkplayer = player.GetModPlayer<PerkPlayer>();

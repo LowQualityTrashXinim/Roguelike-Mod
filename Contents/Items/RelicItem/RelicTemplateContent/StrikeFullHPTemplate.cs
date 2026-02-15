@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 public class StrikeFullHPTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		relicType = RelicType.Stat;
-		RelicTierUPValue = 1.5f;
+		RelicTierUPValue = .25f;
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.FullHPDamage;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {

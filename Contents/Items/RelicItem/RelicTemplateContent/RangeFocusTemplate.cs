@@ -22,9 +22,9 @@ internal class RangeFocusTemplate : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base) : RelicTemplateLoader.RelicValueToPercentage(value.Additive);
+		string Number = stat == PlayerStats.RangeCritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base) : RelicTemplateLoader.RelicValueToPercentage(value.Additive);
 		StatModifier newstatForMelee = new StatModifier((1 - value.Additive) * .5f + 1, 1, -value.Flat, -value.Base);
-		string Number2 = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(newstatForMelee.Base) : RelicTemplateLoader.RelicValueToPercentage(newstatForMelee.Additive);
+		string Number2 = stat == PlayerStats.RangeCritChance ? RelicTemplateLoader.RelicValueToNumber(newstatForMelee.Base) : RelicTemplateLoader.RelicValueToPercentage(newstatForMelee.Additive);
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, Number, ConversionRangeToMelee(stat), Number2]);
 	}
 

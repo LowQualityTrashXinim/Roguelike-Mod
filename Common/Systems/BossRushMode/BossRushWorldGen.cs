@@ -103,7 +103,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 		public Rectangle BossRushStructure = new();
 		[Task]
 		public void Create_Arena() {
-			StructureData data = Generator.GetStructureData("Assets/BossRushStructure", Mod);
+			StructureData data = Generator.GetStructureData("Assets/BossRushStructureV2", Mod);
 			Rectangle rect = new Rectangle(Main.spawnTileX - data.width / 2, Main.spawnTileY - data.height / 2, data.width, data.height);
 			Generator.GenerateFromData(data, rect.TopLeft().ToPoint16());
 			BossRushStructure = rect;

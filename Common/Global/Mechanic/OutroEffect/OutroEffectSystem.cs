@@ -1000,6 +1000,8 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	public List<int> Easy_WeaponEffectFollow = new();
 	public int IntroEffect_Duration = 0;
 	public int IntroEffect_ItemType = -1;
+	public int OutroEffect_ItemOld = -1;
+	public int OutroEffect_Current = -1;
 	public static bool Check_ValidForIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
 	/// <summary>
 	/// Check whenever or not if the intro effect is valid, this is different from <see cref="Check_ValidForIntroEffect(Player)"/>
@@ -1023,6 +1025,13 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
 		IntroEffect_ItemType = -1;
 	}
+	public void Add_WeaponEffect() {
+		var ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_Current);
+		if (ef == null) {
+			return;
+		}
+		Add_WeaponEffect(ef);
+	}
 	public void Add_WeaponEffect(int type) {
 		var ef = OutroEffectSystem.GetWeaponEffect(type);
 		if (ef == null) {
@@ -1031,6 +1040,10 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		Add_WeaponEffect(ef);
 	}
 	public void Add_WeaponEffect(WeaponEffect ef) {
+		if (OutroEffect_ItemOld == ef.Type) {
+			return;
+		}
+		OutroEffect_ItemOld = ef.Type;
 		Arr_WeaponEffect[ef.Type] = ef.Duration;
 		if (!Easy_WeaponEffectFollow.Contains(ef.Type)) {
 			Easy_WeaponEffectFollow.Add(ef.Type);

@@ -1,14 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using Roguelike.Contents.Items.RelicItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -20,11 +13,11 @@ internal class MarkOfSlime : Perk {
 		DataStorer.AddContext("Perk_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 	}
 	public override void UpdateEquip(Player player) {
-		player.runSlowdown -= .9f;
+		player.runSlowdown -= .2f;
 		PlayerStatsHandle modplayer = player.ModPlayerStats();
 		modplayer.UpdateJumpBoost += 1;
 		DataStorer.ActivateContext(player, "Relic_SlimeSpike");
-		if (!player.Center.LookForAnyHostileNPC(375f) || modplayer.synchronize_Counter % 30 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(375f) || modplayer.synchronize_Counter % 15 != 0) {
 			return;
 		}
 		int stack = StackAmount(player);

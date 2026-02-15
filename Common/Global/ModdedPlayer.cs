@@ -10,9 +10,7 @@ using System.Collections.Generic;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
@@ -20,7 +18,6 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
@@ -172,12 +169,6 @@ namespace Roguelike.Common.Global {
 					if (Main.rand.NextBool(10)) {
 						yield return new Item(ModContent.ItemType<WorldEssence>());
 					}
-					else {
-						yield return new Item(ModContent.ItemType<CelestialEssence>());
-					}
-				}
-				else {
-					yield return new Item(ModContent.ItemType<CelestialEssence>());
 				}
 				yield return new Item(ModContent.ItemType<UserInfoTablet>());
 				yield return new Item(ModContent.ItemType<TransmuteTablet>());

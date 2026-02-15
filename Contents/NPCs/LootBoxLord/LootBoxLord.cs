@@ -201,6 +201,7 @@ internal class LootBoxLord : ModNPC {
 	bool HasCreatedDeathTimer = false;
 	bool CanScream = true;
 	public bool Enraged = false;
+	public bool FinalEnraged = false;
 	/// <summary>
 	/// If this number is greater than 0, meaning a special animation is being created here
 	/// </summary>
@@ -242,6 +243,34 @@ internal class LootBoxLord : ModNPC {
 		}
 		CanSlowDown = false;
 		if (Enraged) {
+			if (Reached12HP && !FinalEnraged) {
+				FinalEnraged = true;
+				if (list_clones.Count > 0) {
+					foreach (var friend in list_clones) {
+						friend.NPC.StrikeInstantKill();
+					}
+				}
+				for (int i = 1; i <= 4; i++) {
+					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
+					RoguelikeGlobalNPC clone = newNPC.GetGlobalNPC<RoguelikeGlobalNPC>();
+					clone.BelongToWho = NPC.whoAmI;
+					clone.CanDenyYouFromLoot = true;
+					clone.IsAGhostEnemy = true;
+					list_clones.Add((LootboxLord_Clone)newNPC.ModNPC);
+					list_clones[i - 1].index = i;
+					list_clones[i - 1].MasterNPC = NPC.whoAmI;
+				}
+				for (int i = 0; i < 101; i++) {
+					int proj = ModUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.7f, 1.35f), ModContent.ProjectileType<LBL_HealingProjectile>(), 0, 2, NPC.target);
+					if (Main.projectile[proj].ModProjectile is LBL_HealingProjectile projectile2)
+						projectile2.SetNPCOwner(NPC.whoAmI);
+					Main.projectile[proj].ai[2] = NPC.lifeMax * .01f + 1;
+
+					NPC.AddBuff<LootBoxLord_DefenseUp>(ModUtils.ToSecond(999999));
+					UniversalAttackCoolDown += 420;
+					return;
+				}
+			}
 			if (list_clones.Count <= 0) {
 				for (int i = 1; i <= 2; i++) {
 					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
@@ -1230,6 +1259,16 @@ public class LootboxLord_Clone : ModNPC {
 			}
 			else if (index == 2) {
 				if (!Teleport(player.Center + LootBoxLord.Pos3)) {
+					return;
+				}
+			}
+			else if (index == 3) {
+				if (!Teleport(player.Center + LootBoxLord.Pos2 * 2)) {
+					return;
+				}
+			}
+			else if (index == 4) {
+				if (!Teleport(player.Center + LootBoxLord.Pos3 * 2)) {
 					return;
 				}
 			}

@@ -1,64 +1,13 @@
-GenericTemplate: {
-	DisplayName: Classic [c/{0}:{1}]
-	Description: +[c/{0}:{2}] [c/{0}:{1}]
-}
-
-CombatHighHPTemplate: {
-	DisplayName: Heart of [c/{0}:{1}]
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.15x if health above 90%
-}
-
-CombatLowHPTemplate: {
-	DisplayName: Critical [c/{0}:{1}]
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.25x if health below 45%
-}
-
-StrikeFullHPTemplate: {
-	DisplayName: Weapon Virginity
-	Description: +[c/{0}:{1}] first strike damage
-}
-
-LowHealthTemplate: {
-	DisplayName: Endangered [c/{0}:{1}]
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.15x if health below 35%
-}
-
-DebuffedHealthTemplate: {
-	DisplayName: "[c/{0}:{1}] Sickness"
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.5x while afflicted by a debuff
-}
-
-BattleMountTemplate: {
-	DisplayName: Battle ride
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.12x while on a mount
-}
-
-MagicCostTemplate: {
-	DisplayName: Arcane Blessing
-	Description: " +[c/{0}:{2}] flat magic damage, [c/{0}:{1}]x magic damage, +15% mana cost"
-}
-
-ArcherMasteryTemplate: {
-	DisplayName: String Mastery
-	Description: +[c/{0}:{1}] bow damage, [c/{0}:{2}] crit chance, [c/{0}:{3}] crit damage
-}
-
-SkillActivationTemplate: {
-	DisplayName: "[c/{0}:{1}] Conditioning"
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.34x while skill active
-}
-
-PerfectStatusTemplate: {
-	DisplayName: Perfect Status
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.4x while no buff or debuff active
-}
-
-RangeFocusTemplate: {
-	DisplayName: True Ranger
-	Description: +[c/{0}:{2}] [c/{0}:{1}], -[c/{0}:{4}] [c/{0}:{3}]
-}
-
-PowerTemplate: {
-	DisplayName: Power : [c/{0}:{1}] Edition
-	Description: +[c/{0}:{2}] [c/{0}:{1}], 1.16x while slowly decreases energy
-}
+GenericTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}]"
+CombatHighHPTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.15x if health above 90%"
+CombatLowHPTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.25x if health below 45%"
+StrikeFullHPTemplate.Description: "[c/{0}:+{1}] first strike damage"
+LowHealthTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.15x if health below 35%"
+DebuffedHealthTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.5x while afflicted by a debuff"
+BattleMountTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.12x while on a mount"
+MagicCostTemplate.Description: "[c/{0}:+{2}] flat magic damage, [c/{0}:{1}]x magic damage, +15% mana cost"
+ArcherMasteryTemplate.Description: "[c/{0}:+{1}] bow damage, [c/{0}:{2}] crit chance, [c/{0}:{3}] crit damage"
+SkillActivationTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.34x while skill active"
+PerfectStatusTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.4x while no buff or debuff active"
+RangeFocusTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], [c/{0}:{4}] [c/{0}:{3}]"
+PowerTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.16x while slowly decreases energy"

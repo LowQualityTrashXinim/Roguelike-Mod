@@ -21,6 +21,7 @@ public class Relic : ModItem {
 	public short RelicSetType = -1;
 	public override void SetStaticDefaults() {
 		relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
+		Item.ResearchUnlockCount = 0;
 	}
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
@@ -106,21 +107,29 @@ public class Relic : ModItem {
 		if (nameIndex == -1) {
 			return;
 		}
+		int favoriteIndex = tooltips.FindIndex(t => t.Name == "Favorite");
+		if (favoriteIndex == -1) {
+			string active = $"[Mark favorite to activate relic]";
+			Color color = Color.Gray;
+			tooltips.Insert(nameIndex + 1, new(Mod, "RelicItem", active) { OverrideColor = color });
+		}
+		else {
+			tooltips[favoriteIndex].Text = $"[Unmarked to deacitvate relic]";
+			tooltips[favoriteIndex].OverrideColor = Main.DiscoColor;
+			tooltips[favoriteIndex + 1].Text = "";
+		}
 		string line = "";
 		string extraname = "";
 		TooltipLine NameLine = tooltips[nameIndex];
+
+		Color colorstring_set = Color.Gray;
+		TooltipLine relicsetLine = null;
 		if (RelicSetType != -1) {
 			var relicset = RelicSetSystem.GetSet(RelicSetType);
-			Color colorstring;
 			if (RelicSetSystem.Check_RelicSetRequirment(Main.LocalPlayer, RelicSetType)) {
-				colorstring = Color.Aqua;
+				colorstring_set = Color.Aqua;
 			}
-			else {
-				colorstring = Color.Gray;
-			}
-			TooltipLine relicsetLine = new(Mod, "relicSet", $"{relicset.DisplayName} ({Main.LocalPlayer.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]}/{relicset.Requirement}) :\n{relicset.Description}");
-			relicsetLine.OverrideColor = colorstring;
-			tooltips.Insert(nameIndex + 1, relicsetLine);
+			relicsetLine = new(Mod, "relicSet", $"{relicset.DisplayName} ({Main.LocalPlayer.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]}/{relicset.Requirement}) :\n{relicset.Description}");
 			extraname = relicset.DisplayName;
 		}
 		if (RelicPrefixedType != -1) {
@@ -170,24 +179,20 @@ public class Relic : ModItem {
 				line += "\n";
 			}
 		}
+		if (relicsetLine != null && Main.LocalPlayer.GetModPlayer<ModdedPlayer>().Shift_Option()) {
+			relicsetLine.OverrideColor = colorstring_set;
+			tooltips.Insert(index + 1, relicsetLine);
+		}
 		var modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
 		TooltipLine relicPoint = new(Mod, "RelicItemPoint", $"[Relic point : {modplayer.RelicPoint}/10]");
-		string active = $"[favorite the item to activate relic]";
-		Color color = Color.Gray;
 		if (modplayer.RelicActivation) {
-			if (Item.favorited) {
-				active = $"[unfavorite the item to deacitvate relic]";
-				color = Main.DiscoColor;
-			}
 			relicPoint.OverrideColor = Color.Green;
 		}
 		else {
-			active = "[too much active relic at once !]";
 			relicPoint.OverrideColor = Color.Red;
 		}
-		tooltips.Add(new(Mod, "RelicItem", active) { OverrideColor = color });
 		tooltips.Add(relicPoint);
+		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
 	}
 	/// <summary>
 	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop
@@ -362,7 +367,6 @@ public abstract class RelicTemplate : ModType {
 		return ModContent.GetInstance<T>().Type;
 	}
 	public string Description => ModUtils.LocalizationText("RelicTemplate", $"{Name}.Description");
-	public string DisplayName => ModUtils.LocalizationText("RelicTemplate", $"{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
 		SetStaticDefaults();

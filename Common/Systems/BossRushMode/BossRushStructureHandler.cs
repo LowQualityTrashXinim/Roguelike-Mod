@@ -130,16 +130,16 @@ public class BossRushStructureHandler : ModSystem {
 			}
 			Initialize = false;
 		}
-		SpawnTimeLimit = Math.Clamp(600 - SpawnAmount / 100, 60, 900);
-		if (++SpawnTime >= SpawnTimeLimit) {
-			SpawnTime = 0;
-			SpawnAmount++;
-			var zone = Rect_BossRushStructure();
-			var pos = (zone.Location + Main.rand.NextFromHashSet(MobsSpawningPos())).ToWorldCoordinates();
-			var npc = NPC.NewNPCDirect(new EntitySource_SpawnNPC(), (int)pos.X, (int)pos.Y, Main.rand.Next(NPCspawnPool));
-			npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
-			npc.timeLeft = 9999999;
-		}
+		//SpawnTimeLimit = Math.Clamp(600 - SpawnAmount / 100, 60, 900);
+		//if (++SpawnTime >= SpawnTimeLimit) {
+		//	SpawnTime = 0;
+		//	SpawnAmount++;
+		//	var zone = Rect_BossRushStructure();
+		//	var pos = (zone.Location + Main.rand.NextFromHashSet(MobsSpawningPos())).ToWorldCoordinates();
+		//	var npc = NPC.NewNPCDirect(new EntitySource_SpawnNPC(), (int)pos.X, (int)pos.Y, Main.rand.Next(NPCspawnPool));
+		//	npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
+		//	npc.timeLeft = 9999999;
+		//}
 		if (!Setting_SpawnOnPlayerCommand) {
 			SpawnBoss();
 		}

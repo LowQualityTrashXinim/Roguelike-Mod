@@ -1,12 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using System.Linq;
-using Terraria.ModLoader;
-using Terraria.Localization;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.RoguelikeMode.ArmorOverhaul;
 public class ArmorLoader : ModSystem {
@@ -106,6 +107,12 @@ public abstract class PlayerArmorHandle : ModPlayer {
 			Armor_ModifyHitByProjectile(proj, ref modifiers);
 		}
 	}
+	public override sealed void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+		if (modplayer.ArmorSetCheck(this)) {
+			Armor_ModifyManaCost(item, ref reduce, ref mult);
+		}
+	}
+	public virtual void Armor_ModifyManaCost(Item item, ref float reduce, ref float mult) { }
 	public virtual void Armor_ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) { }
 	public virtual void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override sealed void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {

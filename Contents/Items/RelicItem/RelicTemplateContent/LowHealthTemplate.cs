@@ -9,7 +9,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class LowHealthTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.Stat;
-			RelicTierUPValue = 1.2f;
+			RelicTierUPValue = .25f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([

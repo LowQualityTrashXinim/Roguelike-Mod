@@ -34,34 +34,6 @@ internal class RareSpoil {
 			ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 4);
 		}
 	}
-	public class ArmorAccessorySpoil : ModSpoil {
-		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.Rare;
-		}
-		public override string FinalDisplayName() {
-			return DisplayName.FormatWith(ItemID.ArmorStatue);
-		}
-		public override string FinalDescription() {
-			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			return Description.FormatWith(
-				chestplayer.ModifyGetAmount(1, true),
-				chestplayer.ModifyGetAmount(2, true)
-				);
-		}
-		public override bool IsSelectable(Player player) {
-			return SpoilDropRarity.RareDrop();
-		}
-		public override void OnChoose(Player player) {
-			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
-			for (int i = 0; i < amount; i++) {
-				ModUtils.GetAccessories(new EntitySource_Misc("Spoil"), player);
-			}
-			int amount2 = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
-			for (int i = 0; i < amount2; i++) {
-				ModUtils.GetArmorPiece(new EntitySource_Misc("Spoil"), player);
-			}
-		}
-	}
 	public class RareArmorPiece : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
@@ -73,7 +45,7 @@ internal class RareSpoil {
 			ModUtils.GetArmorPiece(new EntitySource_Misc("Spoil"), player);
 		}
 	}
-	public class StarterPerkSpoil : ModSpoil {
+	public class PerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -81,7 +53,7 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<CelestialEssence>());
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<WorldEssence>());
 		}
 	}
 	public class RareRelicSpoil : ModSpoil {

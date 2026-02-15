@@ -10,7 +10,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class ArcherMasteryTemplate : RelicTemplate {
 		public override void SetStaticDefaults() {
 			relicType = RelicType.MultiStats;
-			RelicTierUPValue = .77f;
+			RelicTierUPValue = .23f;
 		}
 		public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.RangeDMG;
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {

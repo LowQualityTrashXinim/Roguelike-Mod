@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
@@ -15,9 +16,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 
 public class Unforgiving : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(114, 46, 34, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
+		Item.BossRushDefaultRange(114, 46, 44, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
 		Item.Set_InfoItem();
 		Item.scale = .67f;
+		Item.Set_ItemOutroEffect<OutroEffect_Unforgiving>();
 	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-10, 0);
@@ -103,7 +105,7 @@ public class Unforgiving : SynergyModItem {
 		}
 		if (counter >= 180) {
 			SoundEngine.PlaySound(SoundID.Item60, position);
-			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), damage * 2, 0, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), damage * 4, 0, player.whoAmI);
 		}
 		if (GlobalCounter % 5 == 0) {
 			GunMode = !GunMode;
@@ -128,23 +130,12 @@ public class Unforgiving : SynergyModItem {
 			}
 		}
 	}
-	public override void OutroAttack(Player player) {
-		if (player.GetModPlayer<Unforgiving_ModPlayer>().CanActivateOutroAttack()) {
-			player.AddBuff<Unforgiving_OutroAttack>(ModUtils.ToSecond(6));
-		}
-	}
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.OnyxBlaster)
 			.AddIngredient(ItemID.ShadowFlameBow)
 			.AddIngredient(ItemID.SpiritFlame)
 			.Register();
-	}
-}
-public class Unforgiving_OutroAttack : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
 	}
 }
 public class Roguelike_SpiritFlame : ModProjectile {
@@ -155,7 +146,6 @@ public class Roguelike_SpiritFlame : ModProjectile {
 	public override void SetDefaults() {
 		Projectile.CloneDefaults(ProjectileID.SpiritFlame);
 		Projectile.aiStyle = -1;
-		Projectile.usesLocalNPCImmunity = true;
 		Projectile.penetrate = 1;
 		Projectile.width = 18;
 		Projectile.height = 32;
@@ -241,19 +231,13 @@ public class Unforgiving_ModPlayer : ModPlayer {
 	public int CD = 0;
 	public bool Unforgiving_GunMode = false;
 	public int AttackCD = 0;
-	const int AttackBucketCap = 34000;
-	int AttackBucket = 0;
-	bool OutroAttack = false;
+	public bool OutroAttack = false;
 	bool ReachedMaxPotential = false;
-	public bool CanActivateOutroAttack() {
-		if (OutroAttack) {
-			OutroAttack = false;
-			AttackBucket = 0;
-			return true;
-		}
-		return false;
-	}
 	public override void ResetEffects() {
+		if (!Player.active) {
+			return;
+		}
+		OutroAttack = false;
 		AttackCD = ModUtils.CountDown(AttackCD);
 		CD = ModUtils.CountDown(CD);
 		if (++Counter >= 180) {
@@ -283,6 +267,14 @@ public class Unforgiving_ModPlayer : ModPlayer {
 						dust.noGravity = true;
 					}
 				}
+				else if (Counter == 60) {
+					SoundEngine.PlaySound(SoundID.Item29 with { Pitch = 1 });
+					for (int i = 0; i < 50; i++) {
+						var dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.Granite, Scale: Main.rand.NextFloat(0.55f, 1f));
+						dust.velocity = Main.rand.NextVector2CircularEdge(3, 3);
+						dust.noGravity = true;
+					}
+				}
 			}
 			ReachedMaxPotential = false;
 		}
@@ -306,18 +298,12 @@ public class Unforgiving_ModPlayer : ModPlayer {
 		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Player.HasBuff<Unforgiving_OutroAttack>()) {
+		if (OutroAttack) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, Player.whoAmI);
 			var vel = velocity.SafeNormalize(Vector2.Zero);
-			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), damage, knockback, Player.whoAmI);
+			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 2), vel, ModContent.ProjectileType<Roguelike_SpiritFlame>(), (int)(damage * .7f), knockback, Player.whoAmI);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
-	}
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		AttackBucket = Math.Clamp(AttackBucket + hit.Damage, 0, int.MaxValue);
-		if (AttackBucket >= AttackBucketCap) {
-			OutroAttack = true;
-		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.Check_ItemTypeSource<Unforgiving>()) {
@@ -326,7 +312,10 @@ public class Unforgiving_ModPlayer : ModPlayer {
 				target.AddBuff(BuffID.ShadowFlame, time);
 			}
 			if ((proj.type == ModContent.ProjectileType<Unforgiving_Bolt>() || target.HasBuff<Unforgiving_Mark>()) && target.HasBuff(BuffID.ShadowFlame)) {
-				Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center + Main.rand.NextVector2CircularEdge(100, 100), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), 1 + hit.Damage / 3, 5, Player.whoAmI);
+				for (int i = 0; i < 5; i++) {
+					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center + Main.rand.NextVector2CircularEdge(100 + target.width, 100 + target.height), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), (int)(hit.Damage * .7f), 5, Player.whoAmI);
+				}
+				target.DelBuff(target.FindBuffIndex(ModContent.BuffType<Unforgiving_Mark>()));
 			}
 		}
 	}
@@ -431,6 +420,7 @@ public class Unforgiving_BlastWave : ModProjectile {
 		Projectile.light = 0.5f;
 		Projectile.extraUpdates = 10;
 		Projectile.alpha = 255;
+		Projectile.usesIDStaticNPCImmunity = true;
 	}
 	public override void AI() {
 		if (Projectile.timeLeft <= 75) {

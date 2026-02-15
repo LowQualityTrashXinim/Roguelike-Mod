@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
-using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Global.Prefixes;
+using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
@@ -24,8 +27,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
-using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Global.Prefixes;
 
 namespace Roguelike.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -266,6 +267,9 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void SetDefaults(Item entity) {
+			if (OutroEffect_type == -1) {
+				OutroEffect_type = WeaponEffect.GetWeaponEffectType<OutroEffect_None>();
+			}
 			if (WorldVaultSystem.Set_Variant != -1) {
 				VariantType = WorldVaultSystem.Set_Variant;
 				var variant = WorldVaultSystem.GetVariant(entity.type, VariantType);
@@ -378,12 +382,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void UpdateInventory(Item item, Player player) {
-			if (player.GetModPlayer<SynergyModPlayer>().JustSwitched) {
-				WeaponEffect eff = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
-				if (eff != null) {
-					player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(eff);
-				}
-			}
+			item.prefix = 0;
 			if (++Counter >= int.MaxValue / 10) {
 				Counter = 0;
 			}
@@ -491,9 +490,6 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
-		public virtual void OutroAttack(Player player) {
-
-		}
 		public string Set_TooltipName(int ItemID) => $"{Name}_{ContentSamples.ItemsByType[ItemID].Name}";
 		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();

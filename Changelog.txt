@@ -491,3 +491,11 @@ Version 0.0.1:
 475/ Weapon now won't give random prefix upon drop or created.
 476/ Small organization.
 477/ Significant adjustment made toward relic.
+478/ Buffed Unforgiving damage 34 -> 44 and Spirit flame projectile damage buff to inherit up to 70% of weapon damage.
+479/ Disable enemy spawn in boss rush mode.
+480/ Fix a bug where Laser Rifle cost 0 mana even when player don't wear meteor armor.
+481/ Spoils content rarity move.
+482/ Deleted Starter perk.
+483/ Fixed Outro Effect not working right.
+484/ Nerfed Tier up value of relic sub stats.
+485/ Adjust boss rush structure.

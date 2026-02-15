@@ -13,7 +13,7 @@ internal class MarkOfWizard : Perk {
 	readonly int[] spells = [ProjectileID.Fireball, ProjectileID.SkyFracture, ProjectileID.MagicMissile, ProjectileID.DemonScythe, ProjectileID.Blizzard];
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle modplayer = player.ModPlayerStats();
-		if (!player.Center.LookForAnyHostileNPC(1575f) || modplayer.synchronize_Counter % 180 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(1575f) || modplayer.synchronize_Counter % 60 != 0) {
 			return;
 		}
 		int stack = StackAmount(player);

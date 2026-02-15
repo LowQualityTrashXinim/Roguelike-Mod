@@ -101,7 +101,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				flame.scale = Main.rand.NextFloat(.8f, 1.1f);
 			}
 			if (projectile.timeLeft % 10 == 0) {
-				Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center + Main.rand.NextVector2Circular(12, 12), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), projectile.damage / 10 + 5, 2, projectile.owner);
+				Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center + Main.rand.NextVector2Circular(12, 12), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), (int)(projectile.damage * .7f), 2, projectile.owner);
 			}
 		}
 		if (VelocityMultiplier != 0) {

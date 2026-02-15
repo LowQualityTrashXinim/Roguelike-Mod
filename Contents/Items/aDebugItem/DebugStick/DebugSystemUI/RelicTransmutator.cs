@@ -454,7 +454,6 @@ class RelicTransmuteUI : UIState {
 			txp_Template.SetText("Error");
 		}
 		else {
-			txp_Template.SetText(val.DisplayName);
 			if (txp_Template.IsMouseHovering) {
 				UICommon.TooltipMouseText(val.Description);
 			}

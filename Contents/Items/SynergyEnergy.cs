@@ -6,6 +6,7 @@ using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 
 namespace Roguelike.Contents.Items {
 	internal class SynergyEnergy : ModItem {
@@ -46,6 +47,9 @@ namespace Roguelike.Contents.Items {
 			if (Player.itemAnimation == Player.itemAnimationMax) {
 				if (ItemTypeCurrent != item.type) {
 					ItemTypeCurrent = item.type;
+					if (itemOld != null) {
+						Player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(itemOld.GetGlobalItem<GlobalItemHandle>().OutroEffect_type);
+					}
 					itemOld = item;
 					JustSwitched = true;
 				}

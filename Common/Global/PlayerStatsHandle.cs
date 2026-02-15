@@ -68,9 +68,9 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public float UpdateSummonChanceMutilplier = 0;
 	public int ModifyGetAmount(int baseValue, bool Disable_Chance = false) {
-		int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
+		int amount = (int)Math.Round(DropModifier.ApplyTo(baseValue));
 		if (!Disable_Chance && Main.rand.NextFloat() <= ChanceLootDrop) {
-			amount += (int)Math.Ceiling(ChanceDropModifier.ApplyTo(baseValue));
+			amount += (int)Math.Round(ChanceDropModifier.ApplyTo(baseValue));
 		}
 		if (amount <= 0) {
 			return 1;
@@ -376,7 +376,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
-		if(Healed_timeSinceLastHeal == 0) {
+		if (Healed_timeSinceLastHeal == 0) {
 			Healed = false;
 		}
 		else {

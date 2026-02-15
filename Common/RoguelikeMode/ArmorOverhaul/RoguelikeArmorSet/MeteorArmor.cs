@@ -73,7 +73,7 @@ public class MeteorArmorPlayer : PlayerArmorHandle {
 	public override void Armor_UpdateEquipsSet() {
 		Player.AddBuff<SpaceSuitDefenses>(2);
 	}
-	public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+	public override void Armor_ModifyManaCost(Item item, ref float reduce, ref float mult) {
 		if (item.type == ItemID.LaserRifle) {
 			mult *= 0;
 		}

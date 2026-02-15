@@ -1636,9 +1636,6 @@ Mods: {
 
 					[Relic point] : this indicate how much relic of vary tier can be actived at all time
 					each relic tier of being active contribute to relic point
-
-					[Relic type] : relic have 3 types being [c/ff005a:Stat], [c/ffff00:Multistat] and [c/ff7500:Projectile]
-					These type are important to know which prefix effect can apply to the relic
 					'''
 			}
 
@@ -2403,7 +2400,7 @@ Mods: {
 					Bow mode : Arrow are imbues with special curse that constantly spawn dark wisp for 1s.
 					Gun mode : Shoot arch of 4 smaller dark bolt deal 150% of weapon damage.
 
-					Wait additional 1s to releases dark wave dealing 200% weapon damage which completely ignore defense
+					Wait additional 1s to releases dark wave dealing 400% weapon damage which completely ignore defense
 
 					On switching to other weapon after dealing 34000 damage, you shoot dark bolt and spawn dark wisp for 6s
 					'''
