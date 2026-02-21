@@ -44,14 +44,19 @@ namespace Roguelike.Contents.Items {
 			if (item.type == ItemID.None) {
 				return;
 			}
+			JustSwitched = false;
+			if (ItemTypeCurrent != item.type) {
+				JustSwitched = true;
+			}
 			if (Player.itemAnimation == Player.itemAnimationMax) {
 				if (ItemTypeCurrent != item.type) {
 					ItemTypeCurrent = item.type;
 					if (itemOld != null) {
-						Player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(itemOld.GetGlobalItem<GlobalItemHandle>().OutroEffect_type);
+						if (itemOld.TryGetGlobalItem(out GlobalItemHandle handler)) {
+							Player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(handler.OutroEffect_type);
+						}
 					}
 					itemOld = item;
-					JustSwitched = true;
 				}
 				ItemTypeOld = ItemTypeCurrent;
 			}

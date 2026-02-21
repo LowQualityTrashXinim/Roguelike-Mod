@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
@@ -27,6 +28,7 @@ public class Roguelike_ShortSword : GlobalItem {
 			entity.crit += 21;
 			entity.useTime = entity.useAnimation = 6;
 			entity.Set_ItemCriticalDamage(3f);
+			entity.Set_ItemOutroEffect<OutroEffect_Sword>();
 		}
 	}
 	public override bool AltFunctionUse(Item item, Player player) {

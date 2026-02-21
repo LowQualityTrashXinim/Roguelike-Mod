@@ -4,7 +4,7 @@ using Roguelike.Common.Utils;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
-internal class OutroEffect_Gun : WeaponEffect {
+internal class OutroEffect_Gun : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(30);
 	}

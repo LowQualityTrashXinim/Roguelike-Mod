@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
-internal class OutroEffect_Sword : WeaponEffect {
+internal class OutroEffect_Sword : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(30);
 	}

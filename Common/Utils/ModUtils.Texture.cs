@@ -33,6 +33,10 @@ namespace Roguelike.Common.Utils {
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
 		}
+		public static void Draw_SetUpToDrawGlowAdditive(SpriteBatch spriteBatch) {
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+		}
 		public static void Draw_ResetToNormal(SpriteBatch spriteBatch) {
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);

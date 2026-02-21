@@ -178,6 +178,9 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (Player.HeldItem.type != ModContent.ItemType<Annihiliation>()) {
 				Annihiliation_Counter = 0;
 			}
+			if (!Player.HeldItem.IsAWeapon()) {
+				return;
+			}
 			if (!ModItemLib.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;
 			}
@@ -268,7 +271,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public override void SetDefaults(Item entity) {
 			if (OutroEffect_type == -1) {
-				OutroEffect_type = WeaponEffect.GetWeaponEffectType<OutroEffect_None>();
+				OutroEffect_type = OutroEffect.GetWeaponEffectType<OutroEffect_None>();
 			}
 			if (WorldVaultSystem.Set_Variant != -1) {
 				VariantType = WorldVaultSystem.Set_Variant;
@@ -444,7 +447,7 @@ namespace Roguelike.Contents.Items.Weapon {
 				value = "This weapon is classified as following: \n";
 				value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
 				if (OutroEffect_type != -1) {
-					WeaponEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
+					OutroEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
 					if (ef != null) {
 						value += $"\n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
 					}

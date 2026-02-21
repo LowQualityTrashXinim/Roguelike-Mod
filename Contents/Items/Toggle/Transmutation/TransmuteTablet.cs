@@ -1,10 +1,18 @@
-﻿
+﻿using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.NoneSynergy;
+using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
+using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
+using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
+using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
+using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
+using Roguelike.Contents.Items.NoneSynergy.SnowballShotgunCannon;
 using Roguelike.Contents.Items.RelicItem;
 using System;
 using Terraria;
@@ -14,7 +22,6 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Toggle.Transmutation;
 public class TransmuteTablet : ModItem {
@@ -390,16 +397,16 @@ public class TransmutationUIState : UIState {
 	}
 	public int GetEnergyFromEnergySlot() {
 		int total = 0;
-		if (energyItemslot1.item.type != 0) {
+		if (energyItemslot1.item.type != ItemID.None) {
 			total += EnergyPoint(energyItemslot1.item.OriginalRarity, true);
 		}
-		if (energyItemslot2.item.type != 0) {
+		if (energyItemslot2.item.type != ItemID.None) {
 			total += EnergyPoint(energyItemslot2.item.OriginalRarity, true);
 		}
-		if (energyItemslot3.item.type != 0) {
+		if (energyItemslot3.item.type != ItemID.None) {
 			total += EnergyPoint(energyItemslot3.item.OriginalRarity, true);
 		}
-		if (energyItemslot4.item.type != 0) {
+		if (energyItemslot4.item.type != ItemID.None) {
 			total += EnergyPoint(energyItemslot4.item.OriginalRarity, true);
 		}
 		return total;
@@ -437,7 +444,7 @@ public class TransmutationUIState : UIState {
 			if (UpgradeRarityMode) {
 				rareOffset = 1;
 			}
-			float extra = 0;
+			float extra = .5f;
 			int itemType = ItemID.None;
 			if (ItemAccSelection.Highlight) {
 				if (!item.accessory) {
@@ -449,7 +456,15 @@ public class TransmutationUIState : UIState {
 				if (!item.IsAWeapon()) {
 					extra += .5f;
 				}
-				itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
+				if (UpgradeRarityMode) {
+					itemType = SpecialWeaponShifting(item.type);
+				}
+				if (itemType == 0) {
+					itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
+				}
+				else {
+					extra += 2;
+				}
 			}
 			else if (ItemArmorSelection.Highlight) {
 				if (item.headSlot > 0) {
@@ -477,6 +492,74 @@ public class TransmutationUIState : UIState {
 			ModUtils.AmmoForWeapon(player, itemType);
 			ItemResultSlotShift.item = new Item(itemType);
 			ItemShiftSlot.item.TurnToAir();
+		}
+	}
+	private int SpecialWeaponShifting(int type) {
+		switch (type) {
+			case ItemID.IceBlade:
+				return ItemID.Frostbrand;
+			case ItemID.EnchantedSword:
+				return ItemID.BeamSword;
+			case ItemID.IceSickle:
+				return ItemID.DeathSickle;
+			case ItemID.Code1:
+				return ItemID.Code2;
+			case ItemID.Cascade:
+				return ItemID.Gradient;
+			case ItemID.EnchantedBoomerang:
+				return ItemID.Trimarang;
+			case ItemID.IceBoomerang:
+				return ItemID.Flamarang;
+			case ItemID.WoodenBoomerang:
+				if (Main.rand.NextBool(5)) {
+					return ModContent.ItemType<SharpBoomerang>();
+				}
+				return ItemID.Shroomerang;
+			case ItemID.FlamingMace:
+				return ItemID.Sunfury;
+			case ItemID.CopperBroadsword:
+				return ModContent.ItemType<EnchantedCopperSword>();
+
+			case ItemID.BloodRainBow:
+				return ItemID.DaedalusStormbow;
+			case ItemID.HellwingBow:
+				return ItemID.DD2PhoenixBow;
+			case ItemID.FlintlockPistol:
+				return ItemID.Handgun;
+			case ItemID.Boomstick:
+				return ItemID.Shotgun;
+			case ItemID.QuadBarrelShotgun:
+				return ItemID.TacticalShotgun;
+			case ItemID.SnowballCannon:
+				return Main.rand.Next([
+					ModContent.ItemType<SnowballRifle>(),
+					ModContent.ItemType<SnowballShotgunCannon>(),
+					]);
+			case ItemID.StarCannon:
+				return ItemID.SuperStarCannon;
+			case ItemID.Blowpipe:
+				return ItemID.Blowgun;
+			case ItemID.Minishark:
+				return Main.rand.Next([
+					ItemID.Megashark,
+					ModContent.ItemType<BlueMinishark>(),
+					ModContent.ItemType<OvergrownMinishark>(),
+					ModContent.ItemType<SingleBarrelMinishark>(),
+					ModContent.ItemType<FrozenShark>()
+					]);
+			case ItemID.PlatinumBow:
+				return ModContent.ItemType<PlatinumComplexBow>();
+			case ItemID.GoldBow:
+				return ModContent.ItemType<GoldComplexBow>();
+
+			case ItemID.MagicMissile:
+				return ItemID.RainbowRod;
+			case ItemID.SapphireStaff:
+				return ItemID.FrostStaff;
+			case ItemID.BeeGun:
+				return ItemID.WaspGun;
+			default:
+				return 0;
 		}
 	}
 	private void ItemShift_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -580,7 +663,7 @@ public class TransmutationUIState : UIState {
 		}
 	}
 	public override void OnDeactivate() {
-		int optimization = 0;
+		int optimization;
 		optimization = ModUtils.FastDropItem(Relicslot1.item);
 		optimization = ModUtils.FastDropItem(Relicslot2.item, optimization);
 		optimization = ModUtils.FastDropItem(Relicresultslot.item, optimization);
@@ -589,7 +672,7 @@ public class TransmutationUIState : UIState {
 		optimization = ModUtils.FastDropItem(energyItemslot1.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot2.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot3.item, optimization);
-		optimization = ModUtils.FastDropItem(energyItemslot4.item, optimization);
+		_ = ModUtils.FastDropItem(energyItemslot4.item, optimization);
 
 	}
 	public override void Update(GameTime gameTime) {
@@ -613,7 +696,7 @@ public class TransmutationUIState : UIState {
 			if (UpgradeRarityMode) {
 				rareOffset = 1;
 			}
-			float extra = 0;
+			float extra = .5f;
 			if (ItemAccSelection.Highlight) {
 				if (!item.accessory) {
 					extra += .55f;
@@ -622,6 +705,9 @@ public class TransmutationUIState : UIState {
 			else if (ItemWeaponSelection.Highlight) {
 				if (!item.IsAWeapon()) {
 					extra += .5f;
+				}
+				if (UpgradeRarityMode && SpecialWeaponShifting(item.type) != 0) {
+					extra += 2;
 				}
 			}
 			else if (ItemArmorSelection.Highlight) {

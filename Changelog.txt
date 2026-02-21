@@ -499,3 +499,8 @@ Version 0.0.1:
 483/ Fixed Outro Effect not working right.
 484/ Nerfed Tier up value of relic sub stats.
 485/ Adjust boss rush structure.
+486/ Added HeartBreak Instrument
+487/ Added special interation between transmutation and specific item.
+488/ Added a few small tool.
+489/ Fixed Weapon switch logic once more.
+490/ Shortsword now can apply Sword outro skill

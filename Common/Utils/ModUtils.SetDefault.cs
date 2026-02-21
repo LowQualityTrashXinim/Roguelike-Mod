@@ -147,8 +147,8 @@ namespace Roguelike.Common.Utils {
 				globalitem.CriticalDamage = critDmg;
 			}
 		}
-		public static void Set_ItemOutroEffect<T>(this Item item) where T : WeaponEffect {
-			item.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = WeaponEffect.GetWeaponEffectType<T>();
+		public static void Set_ItemOutroEffect<T>(this Item item) where T : OutroEffect {
+			item.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = OutroEffect.GetWeaponEffectType<T>();
 		}
 		/// <summary>
 		/// This will work for most vanilla accessory, however item effect such as follow will not work :<br/>

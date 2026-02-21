@@ -40,6 +40,7 @@ using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.HeartBreakInstrument;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MasterSword;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
@@ -81,8 +82,10 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Underdog;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
+using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StardustSymphony;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
+using Roguelike.Contents.Items.Weapon.UnfinishedItem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,8 +99,8 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect;
 internal class OutroEffectSystem : ModSystem {
-	public static List<WeaponEffect> list_effect { get; private set; } = new();
-	public static WeaponEffect GetWeaponEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
+	public static List<OutroEffect> list_effect { get; private set; } = new();
+	public static OutroEffect GetWeaponEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
 	private static HashSet<int>[] Arr_WeaponTag = [];
 	/// <summary>
 	/// It is highly recommanded to use this if you already know what tag you want to check to see if it have the weapon
@@ -105,8 +108,8 @@ internal class OutroEffectSystem : ModSystem {
 	public static HashSet<int>[] Get_Arr_WeaponTag => Arr_WeaponTag;
 	private static Dictionary<int, HashSet<WeaponTag>> WeaponType_WeaponTag = new();
 	public static Dictionary<int, HashSet<WeaponTag>> Get_WeaponType_WeaponTag => WeaponType_WeaponTag;
-	public static short Register(WeaponEffect effect) {
-		ModTypeLookup<WeaponEffect>.Register(effect);
+	public static short Register(OutroEffect effect) {
+		ModTypeLookup<OutroEffect>.Register(effect);
 		effect.SetStaticDefaults();
 		list_effect.Add(effect);
 		return (short)(list_effect.Count - 1);
@@ -274,7 +277,9 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EmeraldSwotaff>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<RubySwotaff>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<DiamondSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HeartBreakInstrument>());
 
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TrueEnchantedSword>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<BloodyStella>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedOreSword>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedStarfury>());
@@ -283,6 +288,15 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<MythrilBeamSword>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<SakuraKatana>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnergyBlade>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ShatteredSky>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AkaiHanbunNoHasami>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EverlastingCold>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrostSwordFish>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DrainingVeilBlade>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RelentlessAbomination>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TwilightNight>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DarkCactus>());
 	}
 	private void Add_ShortSwordTag() {
 		int tag = (int)WeaponTag.Thrustsword;
@@ -874,6 +888,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.EmpressBlade);
 
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<StickyFlower>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<StardustSymphony>());
 	}
 	private void Add_WhipTag() {
 		int tag = (int)WeaponTag.Whip;
@@ -1002,6 +1017,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	public int IntroEffect_ItemType = -1;
 	public int OutroEffect_ItemOld = -1;
 	public int OutroEffect_Current = -1;
+	/// <summary>
+	/// This is used to check if the Intro ID is valid, otherwise skip, it is advised to check this in <see cref="ModItem.HoldItem(Player)"/>
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
 	public static bool Check_ValidForIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
 	/// <summary>
 	/// Check whenever or not if the intro effect is valid, this is different from <see cref="Check_ValidForIntroEffect(Player)"/>
@@ -1016,6 +1036,13 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		return false;
 	}
 	public static int Get_CurrentIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType;
+	/// <summary>
+	/// This is to set weapon intro ID so that intro system work in a balance way<br/>
+	/// It is highly advises to put this in <see cref="ModItem.HoldItem(Player)"/>
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="itemType"></param>
+	/// <param name="duration"></param>
 	public static void Set_IntroEffect(Player player, int itemType, int duration) {
 		var modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
 		modplayer.IntroEffect_ItemType = itemType;
@@ -1039,7 +1066,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 		Add_WeaponEffect(ef);
 	}
-	public void Add_WeaponEffect(WeaponEffect ef) {
+	public void Add_WeaponEffect(OutroEffect ef) {
 		if (OutroEffect_ItemOld == ef.Type) {
 			return;
 		}
@@ -1157,14 +1184,14 @@ public class WeaponEffect_GlobalItem : GlobalItem {
 		return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 	}
 }
-public abstract class WeaponEffect : ModType {
+public abstract class OutroEffect : ModType {
 	public short Type = -1;
 	public int Duration = 0;
 	public string DisplayName => ModUtils.LocalizationText("Outro", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
 	protected string Tooltip => ModUtils.LocalizationText("Outro", $"{Name}.Tooltip");
 	public virtual string ModifyTooltip() => string.Format(Tooltip, Duration / 60);
-	public static int GetWeaponEffectType<T>() where T : WeaponEffect => ModContent.GetInstance<T>().Type;
+	public static int GetWeaponEffectType<T>() where T : OutroEffect => ModContent.GetInstance<T>().Type;
 	protected sealed override void Register() {
 		Type = OutroEffectSystem.Register(this);
 		SetStaticDefaults();
@@ -1289,7 +1316,7 @@ public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 			for (int i = 0; i < modplayer.Easy_WeaponEffectFollow.Count; i++) {
 				var eff = OutroEffectSystem.GetWeaponEffect(modplayer.Easy_WeaponEffectFollow[i]);
 				if (i == modplayer.Easy_WeaponEffectFollow.Count - 1) {
-					textEf += $"[{eff.DisplayName}]: \n{eff.Description}";
+					textEf += $"[{eff.DisplayName}]: \n{eff.Description} [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}]";
 					continue;
 				}
 				textEf += $"[{eff.DisplayName}]: \n{eff.Description} \n";

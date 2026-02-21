@@ -778,11 +778,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			CurrentPosY = startingPoint - offsetRaise;
 			if (i == LeftPos) {
-				StructureData data = Generator.GetStructureData("Assets/StarterZoneHouse1", Mod);
+				StructureData data = Generator.GetStructureData("Assets/StarterHouse1", Mod);
 				Generator.GenerateFromData(data, new(i - data.width / 2, CurrentPosY - data.height + 3));
 			}
 			else if (i == RightPos) {
-				StructureData data = Generator.GetStructureData("Assets/StarterZoneHouse2", Mod);
+				StructureData data = Generator.GetStructureData("Assets/StarterHouse2", Mod);
 				Generator.GenerateFromData(data, new(i - data.width / 2, CurrentPosY - data.height + 3));
 			}
 			else if (Rand.NextBool(26)

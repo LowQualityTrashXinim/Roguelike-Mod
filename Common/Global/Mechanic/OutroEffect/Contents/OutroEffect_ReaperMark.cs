@@ -5,7 +5,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
-internal class OutroEffect_ReaperMark : WeaponEffect {
+internal class OutroEffect_ReaperMark : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(12);
 	}

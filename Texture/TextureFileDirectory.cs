@@ -56,7 +56,11 @@
 		/// The texture is 10x10 in size
 		/// </summary>
 		public const string Glow_Small = CommonTextureStringPattern + "SmallerGlow";
-
+		/// <summary>
+		/// The texture is 30x30 in size
+		/// </summary>
+		public const string Ring = CommonTextureStringPattern + "Ring";
+		public const string CrossGlow = CommonTextureStringPattern + "CrossGlow";
 		public const string dust_3x3 = CommonTextureStringPattern + "Dust/3x3dust";
 		public const string dust_5x5Type1 = CommonTextureStringPattern + "Dust/5x5dust";
 		public const string dust_5x5Type2 = CommonTextureStringPattern + "Dust/5x5dustType2";

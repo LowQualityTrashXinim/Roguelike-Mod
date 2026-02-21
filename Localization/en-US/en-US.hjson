@@ -506,6 +506,11 @@ Mods: {
 			StardustSymphony_StarProjectile_Normal.DisplayName: Stardust Symphony_ Star Projectile_ Normal
 			StardustSymphony_StarProjectile_Special.DisplayName: Stardust Symphony_ Star Projectile_ Special
 			StardustSymphony_Projectile_Explosion.DisplayName: Stardust Symphony_ Projectile_ Explosion
+			HeartBreakInstrument_Slash_Projectile.DisplayName: Heart Break Instrument_ Slash_ Projectile
+			Gclef.DisplayName: Gclef
+			HeartBreakerInstrument_Special.DisplayName: Heart Breaker Instrument_ Special
+			HeartBreakInstrument_InstrumentProjectile.DisplayName: Heart Break Instrument_ Instrument Projectile
+			HeartBreakInstrument_Note_Projectile.DisplayName: Heart Break Instrument_ Note_ Projectile
 		}
 
 		NPCs: {
@@ -2374,11 +2379,6 @@ Mods: {
 				Tooltip: ew
 			}
 
-			HeartBreak: {
-				DisplayName: Heart Break
-				Tooltip: ""
-			}
-
 			Unforgiving: {
 				DisplayName: Unforgiving
 				Tooltip:
@@ -2631,6 +2631,7 @@ Mods: {
 				DisplayName: Akai Hanbun No Hasami
 				Tooltip:
 					'''
+					"The fate shall never bind me, as I will cut them and save you from endless loop of tragedy"
 					At 3rd combo attack will create a large forward slash that deal 250% more damage
 					Alt-click will inflict all enemy near cursor with "Thread of Fate"
 					Dealing damage to build up "Thread Cuter"
@@ -2655,13 +2656,30 @@ Mods: {
 			}
 
 			HeartBreakInstrument: {
-				DisplayName: Heart Break Instrument
-				Tooltip: ""
-			}
+				DisplayName: Instrumental Heart Break
+				Tooltip:
+					'''
+					"Even if my mind fall apart, even if we are separate by universe, I will still find and love you"
+					Every attacks releases a slash that deal 100% weapon damage
+					Gclef attack alongside you dealing 55% weapon damage to all nearby enemy
+					Right click to summon 4 small weak blades that attack with you 
+					Each blade releases a small slashes that deal 55% weapon damage
+					'''
+				ExtraInfo:
+					'''
+					Each time Gclef attack, it count toward "Climax of Tragedy"
 
-			StellarSymphony: {
-				DisplayName: Stellar Symphony
-				Tooltip: ""
+					When Climax of Tragedy reached its peak, right click to activate Climax of Tragedy for 40s
+					During the duration, every normal attack is enhanced and you summon 4 musical instruments
+
+					During Climax of Tragedy, normal attack will increases Climax of Tragedy stack instead of Gclef
+					Reaching the max stack will make the next attack releases a skill
+
+					During the "Climax of Tragedy" peak:
+					Left click: make every musical instruments do a final attack dealing 100 + 1500% weapon damage
+					Right click: make every musical instrument fly rotate around you and heal you for 100 + 5% maximum health 
+					and granting you 20% damage, 10% crit chance, 20 hp regen, 15 DEF and 30% movement speed for 15s
+					'''
 			}
 
 			PositionWand: {
@@ -2761,7 +2779,7 @@ Mods: {
 
 			SecondChance: {
 				Description: You had survived a fatal attack, so don't get hit a 2nd time
-				DisplayName: Pheonix Bloodbath
+				DisplayName: Immortal Bloodbath
 			}
 
 			SageBuff: {
@@ -2769,39 +2787,14 @@ Mods: {
 				DisplayName: Mana Overflow
 			}
 
-			RoyalAntiEscapeTm: {
-				Description: Turns escaping into a sticky situation...
-				DisplayName: Royal Sticky Formula
-			}
-
-			Rotting: {
-				Description: You feel your insides tear apart...
-				DisplayName: Rotting
-			}
-
 			Protection: {
 				Description: This newfound aegis is almost... suffocating...
 				DisplayName: The Titan's Protection
 			}
 
-			MoonLordWrath: {
-				Description: You are at their mercy
-				DisplayName: Moon Lord Wrath
-			}
-
-			MindBreak: {
-				Description: You can no longer tell left from right...
-				DisplayName: Mind Shatter
-			}
-
 			LeaderShip: {
 				Description: Fighting alongside a horde has never been easier!
 				DisplayName: The Commander's Patience
-			}
-
-			KingSlimeRage: {
-				Description: You can't run away from his excellency
-				DisplayName: King Slime Rage
 			}
 
 			GodVision: {
@@ -2817,11 +2810,6 @@ Mods: {
 			Furious: {
 				Description: Let them know your fury
 				DisplayName: Furious
-			}
-
-			EvilPresence: {
-				Description: They are watching you
-				DisplayName: Evil Presence
 			}
 
 			EvilEyeProtection: {
@@ -3229,11 +3217,6 @@ Mods: {
 				Description: +8 defenses & +5 hp/s
 			}
 
-			GrimTouch: {
-				DisplayName: Grim Touch
-				Description: TODO
-			}
-
 			Shatter: {
 				DisplayName: Shatter
 				Description: TODO
@@ -3292,16 +3275,6 @@ Mods: {
 			RisingStarBurning_Debuff: {
 				DisplayName: Rising Star Burning
 				Description: So hot that it's burn your soul
-			}
-
-			Slimey_Debuff: {
-				DisplayName: Slimey_ Debuff
-				Description: TODO
-			}
-
-			Slimy_Debuff: {
-				DisplayName: Slimy_ Debuff
-				Description: TODO
 			}
 
 			TundraHypothermia: {
@@ -3500,7 +3473,7 @@ Mods: {
 
 			CoinFlipDebuff: {
 				DisplayName: Bad Coin Flip
-				Description: Decreases your damage and your defenses by 90% and
+				Description: Decreases your damage and your defenses by 90%
 			}
 
 			AbyssalAbsorption: {
@@ -3525,11 +3498,6 @@ Mods: {
 			Guard_Buff: {
 				DisplayName: Guard_ Buff
 				Description: Mods.Roguelike.Buffs.Guard_Buff.Description
-			}
-
-			Parry_Buff: {
-				DisplayName: Parry_ Buff
-				Description: Mods.Roguelike.Buffs.Parry_Buff.Description
 			}
 
 			DefenseMK1_Buff: {
@@ -3562,7 +3530,7 @@ Mods: {
 			}
 
 			BroadSword_Guard: {
-				DisplayName: Broad Sword_ Guard
+				DisplayName: Broad Sword Guard
 				Description: Mods.Roguelike.Buffs.BroadSword_Guard.Description
 			}
 
@@ -3598,7 +3566,7 @@ Mods: {
 
 			GreaterLifeForceBuff: {
 				DisplayName: Greater Life Force Buff
-				Description: Mods.Roguelike.Buffs.GreaterLifeForceBuff.Description
+				Description: Increases maximum life by 45%
 			}
 
 			HallowedGaze: {
@@ -3634,6 +3602,29 @@ Mods: {
 			StardustSymphony_CoolDown: {
 				DisplayName: Stardust Symphony Cool Down
 				Description: Healing Cool down
+			}
+
+			HeartBreakInstrument_Special_CoolDown: {
+				DisplayName: Instrument Cooldown
+				Description: You can't summon anymore sword for now
+			}
+
+			HeartBreakInstrument_Buff: {
+				DisplayName: Tragedy Finale
+				Description:
+					'''
+					+20% damage
+					+10% critical chance
+					+40% critical damage
+					+10 hp regen
+					+15 Defenses 
+					+30% movement speed
+					'''
+			}
+
+			Parry_Buff: {
+				DisplayName: Parry_ Buff
+				Description: Mods.Roguelike.Buffs.Parry_Buff.Description
 			}
 		}
 
