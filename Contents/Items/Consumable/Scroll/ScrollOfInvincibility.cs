@@ -8,7 +8,6 @@ internal class ScrollOfInvincibility : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);
 	}
-	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.Set_AdvancedBuffItem();
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<InvincibilitySpell>(), ModUtils.ToSecond(10));

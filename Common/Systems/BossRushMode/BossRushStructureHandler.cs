@@ -202,6 +202,9 @@ public class BossRushStructureHandler : ModSystem {
 		_timer.Reset();
 		_timer.Stop();
 		BossList = [.. Arr_BossID];
+		if (Main.LocalPlayer.dead) {
+			ModContent.GetInstance<UniversalSystem>().Count_BossKill = 0;
+		}
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		base.SaveWorldData(tag);

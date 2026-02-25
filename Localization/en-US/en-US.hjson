@@ -511,6 +511,8 @@ Mods: {
 			HeartBreakerInstrument_Special.DisplayName: Heart Breaker Instrument_ Special
 			HeartBreakInstrument_InstrumentProjectile.DisplayName: Heart Break Instrument_ Instrument Projectile
 			HeartBreakInstrument_Note_Projectile.DisplayName: Heart Break Instrument_ Note_ Projectile
+			Enchantment_FalconBladeProjectile.DisplayName: Enchantment_ Falcon Blade Projectile
+			PurpleClubberfishProjectile.DisplayName: Purple Clubberfish Projectile
 		}
 
 		NPCs: {
@@ -2634,8 +2636,8 @@ Mods: {
 					"The fate shall never bind me, as I will cut them and save you from endless loop of tragedy"
 					At 3rd combo attack will create a large forward slash that deal 250% more damage
 					Alt-click will inflict all enemy near cursor with "Thread of Fate"
-					Dealing damage to build up "Thread Cuter"
-					After succeeding in building up "Thread Cuter", alt-click will enhanced the next 3 attack
+					Dealing damage to build up "Thread Cutter"
+					After succeeding in building up "Thread Cutter", alt-click will enhanced the next 3 attack
 					'''
 				ExtraInfo:
 					'''
@@ -2758,6 +2760,11 @@ Mods: {
 					After hitting up to 89 times, right clicking again will summon a field that increases 15% crit chance and 45% crit damage
 					while player are in the field they will heal 34 + 5% HP and 45 + 5% Mana and basic attack are enhanced
 					'''
+			}
+
+			WeaponEssence: {
+				DisplayName: Weapon Essence
+				Tooltip: ""
 			}
 		}
 
@@ -3625,6 +3632,11 @@ Mods: {
 			Parry_Buff: {
 				DisplayName: Parry_ Buff
 				Description: Mods.Roguelike.Buffs.Parry_Buff.Description
+			}
+
+			PowerEssence: {
+				DisplayName: Power Essence
+				Description: Mods.Roguelike.Buffs.PowerEssence.Description
 			}
 		}
 

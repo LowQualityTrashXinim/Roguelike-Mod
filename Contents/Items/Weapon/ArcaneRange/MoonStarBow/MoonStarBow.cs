@@ -60,7 +60,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Projectile.localNPCHitCooldown = 100;
 		}
 		int ExtraUpdaterReCounter = 0;
-		float speedMultiplier = 2;
+		float speedMultiplier = .5f;
 		int AlphaAdditionalCounter = 255;
 		public override void AI() {
 			ExtraUpdateRecounter();
@@ -146,7 +146,7 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Projectile.extraUpdates = 5;
 		}
 		int ExtraUpdaterReCounter = 0;
-		float speedMultiplier = 2;
+		float speedMultiplier = 1;
 		public override void AI() {
 			Projectile.scale = .5f;
 			ExtraUpdateRecounter();

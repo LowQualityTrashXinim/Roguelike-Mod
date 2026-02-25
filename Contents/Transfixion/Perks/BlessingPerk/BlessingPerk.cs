@@ -168,8 +168,9 @@ public class BlessingOfStardust : Perk {
 		return base.ModifyToolTip();
 	}
 	public override void UpdateEquip(Player player) {
-		player.maxMinions += 1;
-		player.maxTurrets += 1;
+		int amount = StackAmount(Main.LocalPlayer);
+		player.maxMinions += amount;
+		player.maxTurrets += amount;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateSummonChanceMutilplier += 1f;
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {

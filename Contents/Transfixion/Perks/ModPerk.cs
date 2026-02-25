@@ -2,7 +2,6 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
@@ -25,14 +24,20 @@ public class Dirt : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		if (--player.GetModPlayer<PerkPlayer>().Dirt_Timer <= 0) {
-			player.GetModPlayer<PerkPlayer>().Dirt_Timer = ModUtils.ToSecond(1);
+			player.GetModPlayer<PerkPlayer>().Dirt_Timer = (int)(ModUtils.ToSecond(1) * player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD);
 			int stack = StackAmount(player);
 			for (int i = 0; i < stack; i++) {
 				Vector2 pos = player.Center + Main.rand.NextVector2Circular(100, 100);
 				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 25;
-				Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, ModContent.ProjectileType<DirtProjectile>(), 30 + (int)(player.GetWeaponDamage(player.HeldItem) * .15f), 1f, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<DirtProjectile>(), 30 + (int)(player.GetWeaponDamage(player.HeldItem) * .55f), 1f, player.whoAmI);
 			}
 		}
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD = .15f;
+	}
+	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD = .15f;
 	}
 }
 public class StellarRetirement : Perk {
@@ -41,7 +46,8 @@ public class StellarRetirement : Perk {
 		textureString = ModTexture.ACCESSORIESSLOT;
 	}
 	public override void Update(Player player) {
-		if (Main.rand.NextBool(200)) {
+		int chance = Math.Clamp(200 - 25 * StackAmount(player), 50, 200);
+		if (Main.rand.NextBool(chance)) {
 			int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
 			int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.SuperStar, damage, 5);
 			Main.projectile[proj].tileCollide = false;
@@ -70,7 +76,7 @@ public class OverchargedMana : Perk {
 		}
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (hit.DamageType == DamageClass.Magic && player.statMana == player.statLifeMax2) {
+		if (hit.DamageType == DamageClass.Magic && player.statMana >= player.statManaMax2 * .9f) {
 			target.Center.LookForHostileNPC(out var npclist, 200);
 			for (int i = 0; i < 65; i++) {
 				var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
@@ -634,6 +640,9 @@ public class ChaosProtection : Perk {
 	}
 	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
 		modifiers.SourceDamage -= Main.rand.NextFloat(.05f, .5f);
+	}
+	public override void UpdateEquip(Player player) {
+		player.GetModPlayer<ChaosTabletPlayer>().ChaosTablet = true;
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
 		if (Main.rand.NextBool(10)) {

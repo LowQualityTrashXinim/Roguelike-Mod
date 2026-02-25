@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System;
@@ -52,7 +51,7 @@ internal class Roguelike_AshWoodSword : GlobalItem {
 			int projec;
 			if (i == 5) {
 				var newpos = new Vector2(Main.MouseWorld.X, player.Center.Y - 1100) + Main.rand.NextVector2Circular(100, 100);
-				projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<AshwoodSwordProjectile>(), damage * 10, knockback, player.whoAmI, 1, 0, 1);
+				projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<AshwoodSwordProjectile>(), damage * 5, knockback, player.whoAmI, 1, 0, 1);
 				Main.projectile[projec].penetrate = 10;
 				Main.projectile[projec].maxPenetrate = 10;
 				scale = 7;

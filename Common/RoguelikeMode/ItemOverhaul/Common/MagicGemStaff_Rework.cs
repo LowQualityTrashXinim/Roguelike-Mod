@@ -54,7 +54,7 @@ public class Roguelike_MagicGemStaff : GlobalItem {
 				entity.shoot = ModContent.ProjectileType<EmeraldMagicalBolt>();
 				entity.useTime = 10;
 				entity.useAnimation = 20;
-				entity.mana = 16;
+				entity.mana = 22;
 				entity.shootSpeed = 1;
 				break;
 			case ItemID.RubyStaff:

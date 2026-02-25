@@ -14,7 +14,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([
 				PlayerStats.RegenHP,
-			PlayerStats.Defense,
+				PlayerStats.Defense,
 		]);
 		}
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
@@ -23,13 +23,13 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 		}
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 			if (stat == PlayerStats.RegenHP) {
-				return new StatModifier(1, 1, 0, Main.rand.NextFloat(4, 5) * 2);
+				return new StatModifier(1, 1, 0, Main.rand.NextFloat(3, 5));
 			}
 			return new StatModifier(1, 1, 0, Main.rand.Next(7, 11));
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-			if (!player.IsHealthAbovePercentage(.35f)) {
-				modplayer.AddStatsToPlayer(stat, value.Additive * 1.15f, value.Multiplicative, value.Flat * 1.15f, value.Base * 1.15f);
+			if (!player.IsHealthAbovePercentage(.5f)) {
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.5f, value.Multiplicative, value.Flat * 1.5f, value.Base * 1.5f);
 			}
 			else {
 				modplayer.AddStatsToPlayer(stat, value);

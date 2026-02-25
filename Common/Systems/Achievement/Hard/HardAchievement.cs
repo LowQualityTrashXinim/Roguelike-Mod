@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Systems.IOhandle;
+﻿using Roguelike.Common.Systems.BossRushMode;
+using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.NPCs.LootBoxLord;
@@ -31,7 +32,7 @@ public class SpeedRunner : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
-			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 20 && UniversalSystem.DidPlayerBeatTheMod();
+			return ModContent.GetInstance<BossRushStructureHandler>().Get_Timer.TotalHours <= 1 && UniversalSystem.DidPlayerBeatTheMod();
 		}
 		return false;
 	}
@@ -43,7 +44,7 @@ public class BossRushRunnerI : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
-			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 10 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+			return ModContent.GetInstance<BossRushStructureHandler>().Get_Timer.TotalMinutes <= 40 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
 		}
 		return false;
 	}
@@ -55,7 +56,7 @@ public class BossRushRunnerII : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
-			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 5 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+			return ModContent.GetInstance<BossRushStructureHandler>().Get_Timer.TotalMinutes <= 25 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
 		}
 		return false;
 	}

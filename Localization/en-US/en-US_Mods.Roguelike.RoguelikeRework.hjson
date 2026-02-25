@@ -194,4 +194,38 @@ FeralCraws:
 	Increases attack speed by 5%
 	Increases attack speed the lower your health is ( up to maximum of 15% )
 	'''
+AdhesiveBandage:
+	'''
+	Increases maximum health by 10%
+	After getting hit, regenerate your taken wound 
+	The wound healing can't exceed 100 damage
+	'''
+Blindfold:
+	'''
+	Increases damage by 40% and crit damage by 100%
+	Permanent obstructed debuff
+	'''
+Bezoar:
+	'''
+	Decreases player debuff duration by 20%
+	Increases player debuff inflict duration by 50%
+	Increases debuff damage by 12%
+	'''
+ArmorPolish:
+	'''
+	Increases 10 defenses for every pieces that player is wearing
+	If player wear full pieces of armor:
+	Increases player defenses by 20% and damage reduction by 5%
+	'''
+FastClock:
+	'''
+	Decreases weapon enchantment cool down by 50%
+	Increases weapon attack speed by 15%
+	'''
+Nazar:
+	'''
+	Decreases debuff duration by 50%
+	Hitting enemey will inflicted Curses for 7 to 15s
+	Cursed enemy will deal 75% less damage
+	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%

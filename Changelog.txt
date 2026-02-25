@@ -503,4 +503,24 @@ Version 0.0.1:
 487/ Added special interation between transmutation and specific item.
 488/ Added a few small tool.
 489/ Fixed Weapon switch logic once more.
-490/ Shortsword now can apply Sword outro skill
+490/ Shortsword now can apply Sword outro skill.
+491/ Added a few more outro skill.
+492/ De-randomize structure placement.
+493/ Fixed Blessing of Stardust not stacking.
+494/ Fixed the mismatch ammo when Jack O'latarn Launcher is given.
+495/ Adjusted Relic value.
+496/ Nerfed Ash Wood Sword giant wood sword projectile from 10x weapon damage to 5x weapon damage.
+497/ Added Arcane Shield perk, Perfectionist perk.
+498/ Added bunch of missing texture to bunch of scroll.
+499/ Buff Corrupted Rebirth:
+- Make acid arrow slightly easier to aim.
+- Decreases the reuse delay from 30 -> 18.
+- Increases shoot velocity from 12 -> 15.
+- Decreases use time and shoot burst from 4 -> 2.
+- Fixed defense decreases not working.
+500/ Lootbox when in boss rush mode will no longer drop weapon ticket.
+501/ Changed method of obtaining lootbox lord summon item.
+502/ Deleted all potential artifact of older perk design and added a new field for dev to set for perk sprite with scaling problem.
+503/ Changed some weapon enchantment and also added a new enchantment, also added missing enchantment description.
+504/ Reworked some of the accessory to make it more viable.
+505/ Added a lot of structure

@@ -166,7 +166,7 @@ IceBlade.Description:
 	'''
 BatBat.Description:
 	'''
-	Increases player movement speed by 12% and jump boost by 30% when held the item 
+	+12% movement speed and 30% jump boost
 	On striking enemy with item, heal for 1 HP ( CD : 0.2s )
 	Have 1 in 10 chance to spawn a bat dealing 65% of original damage
 	'''
@@ -192,12 +192,13 @@ MandibleBlade.Description:
 	'''
 TentacleSpike.Description:
 	'''
-	Increases critical strike chance by 10 while in corruption night
+	+45% blunt melee damage
+	+10% melee critical strike chance
 	Hitting a enemy will put a spike in them ( CD : 1s )
 	'''
 LightsBane.Description:
 	'''
-	Increases critical strike chance by 10 while in corruption night
+	+10% melee critical strike chance
 	Hitting enemy with projectile will create a dark slash at enemy position ( CD : 3s )
 	Hitting enemy with sword will create a dark slash at enemy position ( CD : 1s )
 	'''
@@ -620,21 +621,31 @@ SandGun.Description:
 	There are 35% chance to shoot out additional sand projectile
 	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)
 	'''
+Mace.Description:
+	'''
+	+15% Defenses
+	Shoot out a mace ball (CD: 1s)
+	'''
+FlamingMace.Description:
+	'''
+	+15% damage
+	Shoot out a flaming mace ball (CD: 1s)
+	'''
 TheMeatball.Description:
 	'''
 	20% Melee damage and 5% critcal strike chance
-	Melee attacks inflict ichor
+	Direct melee attacks inflict ichor
 	Shoot out deadly MeatBall ( CD : 2.5s )
 	'''
 BallOHurt.Description:
 	'''
 	+20% melee damage and +5% critcal strike chance
-	True melee attacks inflict cursed flames debuff
+	Direct melee attacks inflict cursed flames
 	Shoot out Ball of Hurt ( CD : 2.5s )
 	'''
 BlueMoon.Description:
 	'''
-	+35% weapon damage and 15% critical strike chance
+	+15% weapon damage and 15% critical strike chance
 	Shoot out Blue Moon ( CD : 2.5s )
 	Attack inflict Wrath of Blue Moon for 1s
 	'''
@@ -893,4 +904,15 @@ CandyCornRifle.Description:
 	Replace bullet with candy corn projectile
 	If weapon shooting don't use bullet as ammo, then 
 	Every 5th shot, shoot out candy corn deal 30% weapon damage
+	'''
+Muramasa.Description:
+	'''
+	+20% melee damage, +5% melee crit chance
+	Hitting enemy create a slash deal 100% weapon damage
+	Hitting enemy with projectile create a slash deal 100% weapon damage (CD: 2s)
+	'''
+FalconBlade.Description:
+	'''
+	+15% damage, +3% crit chance
+	Throw out a Falcon Blade when attack (CD:1s)
 	'''

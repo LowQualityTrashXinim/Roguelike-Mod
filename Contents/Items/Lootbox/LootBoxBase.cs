@@ -17,6 +17,7 @@ using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Consumable.Spawner;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	public abstract class LootBoxBase : ModItem {
@@ -116,7 +117,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			AbsoluteRightClick(player);
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
-				if (Main.rand.NextBool()) {
+				if (!CanActivateSpoil && Main.rand.NextBool()) {
 					var item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
 					var ticket = item.ModItem as WeaponTicket;
 					int amount = Main.rand.Next(4, 9);
@@ -140,6 +141,9 @@ namespace Roguelike.Contents.Items.Lootbox {
 				}
 				if (Main.rand.NextBool(1500)) {
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+				}
+				if (Main.rand.NextBool(100)) {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<LootboxLordSummon>());
 				}
 			}
 			if (CanActivateSpoil) {

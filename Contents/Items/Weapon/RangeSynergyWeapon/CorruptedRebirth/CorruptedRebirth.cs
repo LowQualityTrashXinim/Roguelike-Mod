@@ -1,9 +1,7 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using Terraria;
@@ -17,9 +15,9 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.CorruptedRebirth;
 
 public class CorruptedRebirth : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 30, 1f, 4, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 12, false, AmmoID.Arrow);
+		Item.BossRushDefaultRange(32, 32, 30, 1f, 2, 10, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 15, false, AmmoID.Arrow);
 		Item.UseSound = SoundID.Item5;
-		Item.reuseDelay = 30;
+		Item.reuseDelay = 18;
 	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-6, 0);
@@ -117,7 +115,7 @@ public class AcidArrow : ModProjectile {
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		if (++Projectile.ai[0] >= 20) {
 			if (Projectile.velocity.Y <= 20) {
-				Projectile.velocity.Y += .5f;
+				Projectile.velocity.Y += .25f;
 			}
 			Projectile.velocity.X *= .99f;
 		}
@@ -127,10 +125,13 @@ public class AcidArrow : ModProjectile {
 		dust.velocity = Vector2.Zero;
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.defense > 0) {
-			target.defense--;
-		}
 		target.AddBuff<Acid>(ModUtils.ToSecond(Main.rand.Next(1, 4)));
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (target.defDefense > 0) {
+			target.defense--;
+			target.defDefense--;
+		}
 	}
 	public override void OnKill(int timeLeft) {
 		Color greeen = new(0, 255, 0, 0);

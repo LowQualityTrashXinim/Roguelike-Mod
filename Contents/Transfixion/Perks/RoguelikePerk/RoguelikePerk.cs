@@ -1,10 +1,8 @@
 ﻿using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using Terraria;
 using Terraria.ModLoader;

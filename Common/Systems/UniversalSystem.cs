@@ -50,7 +50,7 @@ namespace Roguelike.Common.Systems;
 /// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
-	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => Main.hardMode && BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
+	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => NPC.downedMoonlord && BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
@@ -534,8 +534,6 @@ public class DefaultUI : UIState {
 	private UITextBox totalDMG;
 	private UITextBox totalHitTaken;
 	private UITextBox dmgTaken;
-
-	private Roguelike_UIImage WeaponExtraction;
 
 	UIImage_WeaponEffectShower WeaponEff;
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -1439,13 +1437,16 @@ public class WeaponEnchantmentUIImg : Roguelike_UIImage {
 internal class InfoMenuUI : UIState {
 	public Roguelike_UIPanel headerPanel;
 	public Roguelike_UIPanel mainPanel;
-	public InfoMenuPanelThatCanScroll panel;
+	public InfoMenuPanelThatCanScroll textpanel;
+	public Roguelike_UIPanel SectionPanel;
+	public List<InfoMenuContentPanel> contentPanel;
 	public ExitUI exit;
 	public override void OnInitialize() {
 		mainPanel = new Roguelike_UIPanel();
-		mainPanel.UISetWidthHeight(600, 500);
+		mainPanel.UISetWidthHeight(600, 600);
 		mainPanel.HAlign = .5f;
 		mainPanel.VAlign = .5f;
+		mainPanel.MarginLeft = mainPanel.Width.Pixels * .5f;
 		Append(mainPanel);
 
 		headerPanel = new Roguelike_UIPanel();
@@ -1458,11 +1459,22 @@ internal class InfoMenuUI : UIState {
 		exit.UISetWidthHeight(52, 52);
 		headerPanel.Append(exit);
 
-		panel = new InfoMenuPanelThatCanScroll();
-		panel.UISetWidthHeight(600, 380);
-		panel.HAlign = .5f;
-		panel.VAlign = 1f;
-		mainPanel.Append(panel);
+		textpanel = new InfoMenuPanelThatCanScroll();
+		textpanel.UISetWidthHeight(600, 380);
+		textpanel.HAlign = .5f;
+		textpanel.VAlign = 1f;
+		mainPanel.Append(textpanel);
+
+		SectionPanel = new();
+		SectionPanel.UISetWidthHeight(300, 600);
+		SectionPanel.HAlign = .5f;
+		SectionPanel.VAlign = .5f;
+		SectionPanel.MarginRight = mainPanel.Width.Pixels * .5f + 10;
+		Append(SectionPanel);
+	}
+}
+public class InfoMenuContentPanel : Roguelike_UITextPanel {
+	public InfoMenuContentPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 	}
 }
 public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
@@ -1486,7 +1498,7 @@ public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
 		string[] lines = Terraria.Utils.WordwrapString(
 		   text,
 			font,
-			(int)(GetDimensions().Width / scale),
+			(int)(GetInnerDimensions().Width / scale),
 			9999,
 			out int lineCount
 		).Where(line => line is not null).ToArray();
@@ -1501,7 +1513,7 @@ public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
 				spriteBatch,
 				font,
 				text2,
-				GetDimensions().Position() + Vector2.UnitY * yOffset,
+				GetInnerDimensions().Position() + Vector2.UnitY * yOffset,
 				Color.White,
 				0f,
 				Vector2.Zero,

@@ -6,6 +6,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox;
 using Roguelike.Contents.NPCs.LootBoxLord.Buff;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;
@@ -173,7 +174,6 @@ internal class LootBoxLord : ModNPC {
 				dialog = "I will entertain you";
 				break;
 			case 3:
-				Enraged = true;
 				dialog = "Don't die too soon my grace.";
 				color = Color.Red;
 				BeforeAttack = false;
@@ -272,6 +272,7 @@ internal class LootBoxLord : ModNPC {
 				}
 			}
 			if (list_clones.Count <= 0) {
+				Main.NewText("Okay, you shouldn't have done that");
 				for (int i = 1; i <= 2; i++) {
 					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
 					RoguelikeGlobalNPC clone = newNPC.GetGlobalNPC<RoguelikeGlobalNPC>();
@@ -479,6 +480,9 @@ internal class LootBoxLord : ModNPC {
 		}
 		else {
 			lifeCounter = 0;
+		}
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<LootBoxLord_Minion>()] > 0) {
+			Enraged = true;
 		}
 	}
 	private void Move(Player player) {

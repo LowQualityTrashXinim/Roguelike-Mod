@@ -165,6 +165,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (npc.HasBuff<WrathOfBlueMoon>()) {
 			modifiers.SourceDamage -= .4f;
 		}
+		if (npc.HasBuff(BuffID.Cursed)) {
+			modifiers.SourceDamage -= .75f;
+		}
 	}
 	public int HallowedGaze_Count = 0;
 	public int WrathOfBlueMoon = 0;

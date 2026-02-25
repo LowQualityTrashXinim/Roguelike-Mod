@@ -123,46 +123,28 @@ WeaponChallenge1: {
 	ConditionTip: Beat the mod using only a copper shortsword from start to the end of the mod
 }
 
-NightmareOvercome: {
-	DisplayName: Nightmare Overcome
-	Description: You have overcome the hellish nightmare
-	ConditionTip: Beat the mod in Nightmare mode
-}
-
-TrueNightmare: {
-	DisplayName: True Nightmare
-	Description: no word can describe the pain you must goes through
-	ConditionTip: Beat the mod in Nightmare mode in For The Worthy Master mode
-}
-
 GodOfChallenge: {
 	DisplayName: God Of Challenge
 	Description: Impressive...
 	ConditionTip: Beat the mod with God Of Challenge enable with expert or higher difficulty
 }
 
-Elite: {
-	DisplayName: Elite
-	Description: Impressive...
-	ConditionTip: Beat a elite boss
-}
-
 SpeedRunner: {
 	DisplayName: Speed Runner
 	Description: You are certified a speed runner
-	ConditionTip: Beat the mod under 30 minutes
+	ConditionTip: Beat the mod under 1 hour
 }
 
 BossRushRunnerI: {
 	DisplayName: Boss Hunter I
 	Description: You are certified a boss hunter
-	ConditionTip: Beat the mod while in boss rush mode under 10 minutes
+	ConditionTip: Beat the mod while in boss rush mode under 40 minutes
 }
 
 BossRushRunnerII: {
 	DisplayName: Boss Hunter II
 	Description: You are certified a boss hunter expert
-	ConditionTip: Beat the mod while in boss rush mode under 5 minutes
+	ConditionTip: Beat the mod while in boss rush mode under 25 minutes
 }
 
 StraightForTheWall: {
@@ -175,4 +157,10 @@ SynergyDream: {
 	DisplayName: Synergy fever dream
 	Description: What a weird dream, don't you agree ?
 	ConditionTip: Beat the mod with synergy fever mode on
+}
+
+RelicFinder: {
+	DisplayName: Relic Finder
+	Description: Your first relic, never will be the last
+	ConditionTip: Obtain your first relic via finding
 }

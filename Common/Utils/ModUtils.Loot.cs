@@ -338,7 +338,7 @@ public static partial class ModUtils {
 			Ammo = ItemID.CandyCorn;
 		}
 		else if (weapontoCheck.useAmmo == AmmoID.JackOLantern) {
-			Ammo = ItemID.JackOLantern;
+			Ammo = ItemID.ExplosiveJackOLantern;
 		}
 		else if (weapontoCheck.useAmmo == AmmoID.Flare) {
 			Ammo = ItemID.Flare;

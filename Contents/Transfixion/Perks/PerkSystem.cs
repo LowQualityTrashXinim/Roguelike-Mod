@@ -12,10 +12,8 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
@@ -124,6 +122,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public int PerkrerollAmount = 1;
 		private byte perk_Reroll = 1;
 		public int Dirt_Timer = 0;
+		public float Dirt_Multi_CD = 1f;
 		public void Modify_RerollCount(byte amount, bool? negative = false) {
 			short simulate = perk_Reroll;
 			if (negative == null) {
@@ -191,6 +190,12 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
 			perk_UntappedPotential = false;
+			if (Dirt_Multi_CD < 1) {
+				Dirt_Multi_CD += .001f;
+			}
+			else if (Dirt_Multi_CD > 1) {
+				Dirt_Multi_CD = 1;
+			}
 			PerkrerollAmount = 1;
 			PerkrerollAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + RerollAmount();
 			foreach (int perk in perks.Keys) {
@@ -392,6 +397,11 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public string Description => ModUtils.LocalizationText("ModPerk", $"{Name}.Description");
 		public string DescriptionIndex(int index) => ModUtils.LocalizationText("ModPerk", $"{Name}.Description{index}");
 		public bool CanBeStack = false;
+		/// <summary>
+		/// Use this if your perk sprite is either exact same size as the border perk UI<br/>
+		/// This will forced the sprite to be draw smaller with scaling
+		/// </summary>
+		public bool SmallScaleRegardless = false;
 		/// <summary>
 		/// This will get the value from Mod Perk player itself<br/>
 		/// it is recommend to use this rather than get it yourself cause what it doing is pretty much the same<br/>
@@ -792,11 +802,11 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			}
 			Vector2 size1 = texture.Size();
 			Vector2 size2 = ahhlookingassdefaultbgsperktexture.Size();
-			if (size1.X <= size2.X && size1.Y <= size2.Y) {
+			if (size1.X <= size2.X && size1.Y <= size2.Y && !ModPerkLoader.GetPerk(perkType).SmallScaleRegardless) {
 				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
 			}
 			else {
-				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size2, size1, .8f), SpriteEffects.None, 0);
+				spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, ModUtils.Scale_OuterTextureWithInnerTexture(size2, size1, .7f), SpriteEffects.None, 0);
 			}
 		}
 	}

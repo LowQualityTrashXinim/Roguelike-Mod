@@ -85,7 +85,6 @@ using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StardustSymphony;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
-using Roguelike.Contents.Items.Weapon.UnfinishedItem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1319,7 +1318,7 @@ public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 					textEf += $"[{eff.DisplayName}]: \n{eff.Description} [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}]";
 					continue;
 				}
-				textEf += $"[{eff.DisplayName}]: \n{eff.Description} \n";
+				textEf += $"[{eff.DisplayName}]: \n{eff.Description} [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n";
 			}
 			UICommon.TooltipMouseText(textEf);
 		}

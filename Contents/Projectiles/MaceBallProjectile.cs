@@ -4,8 +4,9 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
- 
+
 using Roguelike.Common.Utils;
+using Roguelike.Contents.BuffAndDebuff;
 
 namespace Roguelike.Contents.Projectiles;
 public class MaceBallProjectile : ModProjectile {
@@ -38,6 +39,20 @@ public class MaceBallProjectile : ModProjectile {
 		else {
 			if (Projectile.velocity.Y >= -10)
 				Projectile.velocity.Y -= .5f;
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		int type = (int)Projectile.ai[2];
+		switch (type) {
+			case ItemID.FlamingMace:
+				target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(1, 5)));
+				return;
+			case ItemID.Sunfury:
+				target.AddBuff<FuryOfTheSun>(ModUtils.ToSecond(Main.rand.Next(1, 5)));
+				return;
+			case ItemID.BlueMoon:
+				target.AddBuff<WrathOfBlueMoon>(ModUtils.ToSecond(Main.rand.Next(1, 5)));
+				return;
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {

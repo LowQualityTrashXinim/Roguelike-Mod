@@ -204,7 +204,11 @@ internal class EmeraldMagicalBolt : ModProjectile {
 		Projectile.ProjectileAlphaDecay(800);
 		if (++Projectile.ai[0] >= Projectile.ai[1]) {
 			Projectile.ai[1] = Main.rand.Next(200, 300);
-			Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * .02f;
+			Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * Projectile.ai[2];
+			Projectile.ai[2] += .01f;
+			if (Projectile.ai[2] >= 2) {
+				Projectile.ai[2] = 2;
+			}
 		}
 		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[2]));
 	}
@@ -223,8 +227,8 @@ internal class RubyMagicalBolt : ModProjectile {
 		Projectile.width = Projectile.height = 10;
 		Projectile.tileCollide = true;
 		Projectile.friendly = true;
-		Projectile.timeLeft = 1000;
-		Projectile.penetrate = 5;
+		Projectile.timeLeft = 9999;
+		Projectile.penetrate = 6;
 		Projectile.extraUpdates = 7;
 		Projectile.usesLocalNPCImmunity = true;
 		Projectile.localNPCHitCooldown = 40;
@@ -247,8 +251,8 @@ internal class RubyMagicalBolt : ModProjectile {
 			dust2.noGravity = true;
 			dust2.velocity = Vector2.Zero;
 		}
-		if (Projectile.timeLeft > 800) {
-			Projectile.timeLeft = 800;
+		if (Projectile.timeLeft > 3200) {
+			Projectile.timeLeft = 3200;
 			Projectile.ai[1] = Main.rand.Next(90, 150);
 		}
 		Projectile.ProjectileAlphaDecay(800);
@@ -273,7 +277,8 @@ internal class DiamondMagicalBolt : ModProjectile {
 		Projectile.width = Projectile.height = 10;
 		Projectile.tileCollide = true;
 		Projectile.friendly = true;
-		Projectile.timeLeft = 1000; Projectile.penetrate = 3;
+		Projectile.timeLeft = 1000; 
+		Projectile.penetrate = 6;
 		Projectile.extraUpdates = 7;
 		Projectile.usesLocalNPCImmunity = true;
 		Projectile.localNPCHitCooldown = 40;

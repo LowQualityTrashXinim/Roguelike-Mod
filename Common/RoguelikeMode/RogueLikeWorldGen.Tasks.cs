@@ -1309,9 +1309,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_CursedKingdomStructure() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = Main.rand.Next(16, 18) * GridPart_X;
-		int Y = Main.rand.Next(16, 18) * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
+		int X = 17 * GridPart_X + Rand.Next(GridPart_X - data.width);
+		int Y = 17 * GridPart_Y + Rand.Next(GridPart_Y - data.height);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -1329,9 +1329,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_CrimsonEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = Main.rand.Next(20, 22) * GridPart_X;
-		int Y = Main.rand.Next(11, 13) * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
+		int X = 21 * GridPart_X + Rand.Next(GridPart_X - data.width);
+		int Y = 12 * GridPart_Y + Rand.Next(GridPart_Y - data.height);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -1349,9 +1349,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_CorruptionEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = Main.rand.Next(5, 9) * GridPart_X;
-		int Y = Main.rand.Next(18, 20) * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
+		int X = 7 * GridPart_X + Rand.Next(GridPart_X - data.width);
+		int Y = 19 * GridPart_Y + Rand.Next(GridPart_X - data.height);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -1369,9 +1369,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_FleshRealmEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = Main.rand.Next(19, 22) * GridPart_X;
-		int Y = 19 * GridPart_Y;
 		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
+		int X = 21 * GridPart_X + Rand.Next(GridPart_X - data.width);
+		int Y = 19 * GridPart_Y + Rand.Next(GridPart_X - data.height);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -1443,6 +1443,28 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		Mod.Logger.Info("King Slime structure realm step: " + watch.ToString());
+	}
+	[Task]
+	public void Generate_MerchantHouse() {
+		Stopwatch watch = new();
+		watch.Start();
+		var data = ModWrapper.Get_StructureData("Assets/MerchantStructure", Mod);
+		int X = 13 * GridPart_X + Main.rand.Next(GridPart_X - data.width);
+		int Y = 16 * GridPart_Y + Main.rand.Next(GridPart_Y - data.height);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			ModWrapper.GenerateFromData(data, point);
+			Set_MapIgnoredZoneIntoWorldGen(new Rectangle(point.X, point.Y, data.width, data.height));
+		}
+		watch.Stop();
+		Mod.Logger.Info("Merchant House structure realm step: " + watch.ToString());
+	}
+
+	[Task]
+	public void Generate_GuideHouse() {
+
 	}
 	[Task]
 	public void Generate_PostWorld() {

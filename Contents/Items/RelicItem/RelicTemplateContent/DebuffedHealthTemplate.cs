@@ -19,7 +19,6 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 		}
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 			string Name = Enum.GetName(stat) ?? string.Empty;
-			value.Base += value.Base * (relic.RelicTier - 1) / 3f;
 			return string.Format(Description, args: [Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value.Base)]);
 		}
 		public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {

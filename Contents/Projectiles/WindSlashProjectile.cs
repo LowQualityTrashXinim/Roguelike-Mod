@@ -1,10 +1,7 @@
-﻿ 
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -79,7 +76,6 @@ public class FlyingSlashProjectile : ModProjectile {
 		Projectile.penetrate = 8;
 		Projectile.tileCollide = false;
 		Projectile.ignoreWater = true;
-		Projectile.light = 10f;
 		Projectile.ArmorPenetration = 2;
 		Projectile.stopsDealingDamageAfterPenetrateHits = true;
 		Projectile.extraUpdates = 3;

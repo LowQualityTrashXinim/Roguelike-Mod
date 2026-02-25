@@ -2,6 +2,7 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Contents.Items.Consumable.Potion;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,7 +21,7 @@ public class AspectOfTheUnderworld : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
-		if (player.IsHealthAbovePercentage(.66f)) {
+		if (player.IsHealthAbovePercentage(.66f) && !player.HasBuff<FireResistanceBuff>()) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: -32);
 		}
 		player.buffImmune[BuffID.OnFire] = true;

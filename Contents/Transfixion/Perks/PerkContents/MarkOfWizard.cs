@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Global;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +11,7 @@ internal class MarkOfWizard : Perk {
 		CanBeStack = true;
 		StackLimit = 5;
 	}
-	readonly int[] spells = [ProjectileID.Fireball, ProjectileID.SkyFracture, ProjectileID.MagicMissile, ProjectileID.DemonScythe, ProjectileID.Blizzard];
+	readonly int[] spells = [ProjectileID.BallofFire, ProjectileID.SkyFracture, ProjectileID.MagicMissile, ProjectileID.DemonScythe, ProjectileID.Blizzard];
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle modplayer = player.ModPlayerStats();
 		if (!player.Center.LookForAnyHostileNPC(1575f) || modplayer.synchronize_Counter % 60 != 0) {
@@ -18,12 +19,13 @@ internal class MarkOfWizard : Perk {
 		}
 		int stack = StackAmount(player);
 		int damage = 31 + (int)(player.GetWeaponDamage(player.HeldItem) * .42f);
+		Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 		for (int i = 0; i < stack; i++) {
 			int type = Main.rand.Next(spells);
 			Projectile proj = Projectile.NewProjectileDirect(
 				player.GetSource_FromThis(),
 				player.Center,
-				Main.rand.NextVector2CircularEdge(7, 7),
+				vel.Vector2RotateByRandom(10) * Main.rand.NextFloat(5, 7),
 				type,
 				damage,
 				2,

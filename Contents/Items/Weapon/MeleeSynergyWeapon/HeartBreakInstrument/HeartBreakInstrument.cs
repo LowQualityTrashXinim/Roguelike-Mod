@@ -712,7 +712,6 @@ public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
 	}
 }
 public class HeartBreakInstrument_Buff : ModBuff {
-	public override string Texture => ModTexture.EMPTYDEBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}
@@ -798,7 +797,6 @@ public class HeartBreakInstrument_Note_Projectile : ModProjectile {
 	}
 }
 public class HeartBreakInstrument_Special_CoolDown : ModBuff {
-	public override string Texture => ModTexture.EMPTYDEBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}

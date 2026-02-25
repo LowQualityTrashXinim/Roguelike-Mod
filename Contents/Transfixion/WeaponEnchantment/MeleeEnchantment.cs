@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
@@ -246,10 +247,14 @@ public class TentacleSpike : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TentacleSpike;
 	}
-	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
-		if (player.ZoneCorrupt) {
-			crit += 10;
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Melee && OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Blunt].Contains(item.type)) {
+			damage += .45f;
 		}
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (item.DamageType == DamageClass.Melee)
+			crit += 10;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
@@ -272,6 +277,10 @@ public class TentacleSpike : ModEnchantment {
 public class LightsBane : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.LightsBane;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (item.DamageType == DamageClass.Melee)
+			crit += 10;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
@@ -949,29 +958,29 @@ public class Spear : ModEnchantment {
 			Projectile.NewProjectile(player.GetSource_OnHit(target), pos, vel, ModContent.ProjectileType<SpearProjectile>(), (int)(hit.Damage * .8f), 2f, player.whoAmI);
 		}
 	}
-}
-public class SpearProjectile : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.Spear);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
-		Projectile.friendly = true;
-		Projectile.timeLeft = 900;
-		Projectile.penetrate = 2;
-		Projectile.tileCollide = false;
-	}
-	public override bool? CanDamage() {
-		return Projectile.penetrate <= 1;
-	}
-	public override void AI() {
-		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
-		if (Projectile.velocity.Y < 14) {
-			Projectile.velocity.Y += .5f;
+	public class SpearProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.Spear);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 32;
+			Projectile.friendly = true;
+			Projectile.timeLeft = 900;
+			Projectile.penetrate = 2;
+			Projectile.tileCollide = false;
 		}
-		if (Projectile.penetrate == 1) {
-			if (Projectile.timeLeft > 20) {
-				Projectile.timeLeft = 20;
+		public override bool? CanDamage() {
+			return Projectile.penetrate <= 1;
+		}
+		public override void AI() {
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
+			if (Projectile.velocity.Y < 14) {
+				Projectile.velocity.Y += .5f;
 			}
-			Projectile.ProjectileAlphaDecay(20);
+			if (Projectile.penetrate == 1) {
+				if (Projectile.timeLeft > 20) {
+					Projectile.timeLeft = 20;
+				}
+				Projectile.ProjectileAlphaDecay(20);
+			}
 		}
 	}
 }
@@ -1019,88 +1028,88 @@ public class Trident : ModEnchantment {
 			}
 		}
 	}
-}
-public class TridentEnchantmentProjectile_Fish1 : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Bass);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
-		Projectile.timeLeft = 360;
-		Projectile.penetrate = -1;
-		Projectile.friendly = true;
-		Projectile.tileCollide = false;
-		Projectile.idStaticNPCHitCooldown = 90;
-		Projectile.usesIDStaticNPCImmunity = true;
-	}
-	public override void OnSpawn(IEntitySource source) {
-		Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
-		Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
-	}
-	public override void AI() {
-		if (Projectile.ai[1] == 0) {
-			Projectile.ai[1] = 1;
-			Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(-15));
+	public class TridentEnchantmentProjectile_Fish1 : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Bass);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 32;
+			Projectile.timeLeft = 360;
+			Projectile.penetrate = -1;
+			Projectile.friendly = true;
+			Projectile.tileCollide = false;
+			Projectile.idStaticNPCHitCooldown = 90;
+			Projectile.usesIDStaticNPCImmunity = true;
 		}
-		if (++Projectile.ai[0] >= 10) {
-			Projectile.ai[1] *= -1;
-			Projectile.ai[0] = 0;
+		public override void OnSpawn(IEntitySource source) {
+			Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
+			Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
 		}
-		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[1] * 3));
-		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-		if (Projectile.spriteDirection == -1) {
-			Projectile.rotation += MathHelper.PiOver2;
+		public override void AI() {
+			if (Projectile.ai[1] == 0) {
+				Projectile.ai[1] = 1;
+				Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(-15));
+			}
+			if (++Projectile.ai[0] >= 10) {
+				Projectile.ai[1] *= -1;
+				Projectile.ai[0] = 0;
+			}
+			Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[1] * 3));
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+			if (Projectile.spriteDirection == -1) {
+				Projectile.rotation += MathHelper.PiOver2;
+			}
+		}
+		public override bool PreDraw(ref Color lightColor) {
+			int type = (int)Projectile.ai[2];
+			Main.instance.LoadProjectile(Type);
+			Main.instance.LoadItem(type);
+			Texture2D texture = TextureAssets.Item[type].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
+			SpriteEffects effect = SpriteEffects.None;
+			if (Projectile.spriteDirection == -1) {
+				effect = SpriteEffects.FlipHorizontally;
+			}
+			Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
+			return false;
 		}
 	}
-	public override bool PreDraw(ref Color lightColor) {
-		int type = (int)Projectile.ai[2];
-		Main.instance.LoadProjectile(Type);
-		Main.instance.LoadItem(type);
-		Texture2D texture = TextureAssets.Item[type].Value;
-		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
-		SpriteEffects effect = SpriteEffects.None;
-		if (Projectile.spriteDirection == -1) {
-			effect = SpriteEffects.FlipHorizontally;
+	public class TridentEnchantmentProjectile_Fish2 : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Bass);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 32;
+			Projectile.friendly = true;
+			Projectile.timeLeft = 360;
+			Projectile.penetrate = -1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 90;
+			Projectile.tileCollide = false;
 		}
-		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
-		return false;
-	}
-}
-public class TridentEnchantmentProjectile_Fish2 : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Bass);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
-		Projectile.friendly = true;
-		Projectile.timeLeft = 360;
-		Projectile.penetrate = -1;
-		Projectile.usesIDStaticNPCImmunity = true;
-		Projectile.idStaticNPCHitCooldown = 90;
-		Projectile.tileCollide = false;
-	}
-	public override void OnSpawn(IEntitySource source) {
-		Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
-	}
-	public override void AI() {
-		if (++Projectile.ai[0] < 30) {
-			Projectile.velocity.Y -= .5f;
+		public override void OnSpawn(IEntitySource source) {
+			Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
 		}
-		else {
-			Projectile.velocity.Y += .5f;
+		public override void AI() {
+			if (++Projectile.ai[0] < 30) {
+				Projectile.velocity.Y -= .5f;
+			}
+			else {
+				Projectile.velocity.Y += .5f;
+			}
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
 		}
-		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
-	}
-	public override bool PreDraw(ref Color lightColor) {
-		int type = (int)Projectile.ai[2];
-		Main.instance.LoadProjectile(Type);
-		Main.instance.LoadItem(type);
-		Texture2D texture = TextureAssets.Item[type].Value;
-		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
-		SpriteEffects effect = SpriteEffects.None;
-		if (Projectile.direction == -1) {
-			effect = SpriteEffects.FlipHorizontally;
+		public override bool PreDraw(ref Color lightColor) {
+			int type = (int)Projectile.ai[2];
+			Main.instance.LoadProjectile(Type);
+			Main.instance.LoadItem(type);
+			Texture2D texture = TextureAssets.Item[type].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
+			SpriteEffects effect = SpriteEffects.None;
+			if (Projectile.direction == -1) {
+				effect = SpriteEffects.FlipHorizontally;
+			}
+			Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
+			return false;
 		}
-		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
-		return false;
 	}
 }
 
@@ -1168,58 +1177,58 @@ public class ThunderSpear : ModEnchantment {
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, -Vector2.UnitY.Vector2RotateByRandom(40) * Main.rand.NextFloat(7, 9), ModContent.ProjectileType<ThunderSpearThrowProjectile>(), hit.Damage * 3, 8, player.whoAmI, 90);
 		}
 	}
-}
-public class ThunderSpearThrowProjectile : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.ThunderSpear);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 52;
-		Projectile.penetrate = 1;
-		Projectile.tileCollide = false;
-		Projectile.friendly = true;
-		Projectile.timeLeft = 9999;
-	}
-	public override bool? CanDamage() {
-		return Projectile.ai[0] < 0;
-	}
-	Vector2 toMouse = Vector2.Zero;
-	public override void AI() {
-		if (--Projectile.ai[0] == 0) {
-			toMouse = Main.MouseWorld;
-			Projectile.velocity = Vector2.Zero;
+	public class ThunderSpearThrowProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.ThunderSpear);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 52;
+			Projectile.penetrate = 1;
+			Projectile.tileCollide = false;
+			Projectile.friendly = true;
+			Projectile.timeLeft = 9999;
 		}
-		if (Projectile.ai[0] <= -1) {
-			Projectile.velocity = (toMouse - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
-			if (Projectile.ai[0] == -1) {
-				for (int i = 0; i < 50; i++) {
-					var rotate = Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(Projectile.velocity.ToRotation() + MathHelper.PiOver2) * .7f;
-					int dust3 = Dust.NewDust(Projectile.Center.PositionOFFSET(Projectile.velocity, 50), 0, 0, DustID.GemDiamond, newColor: Color.Blue);
-					Main.dust[dust3].noGravity = true;
-					Main.dust[dust3].velocity = rotate;
+		public override bool? CanDamage() {
+			return Projectile.ai[0] < 0;
+		}
+		Vector2 toMouse = Vector2.Zero;
+		public override void AI() {
+			if (--Projectile.ai[0] == 0) {
+				toMouse = Main.MouseWorld;
+				Projectile.velocity = Vector2.Zero;
+			}
+			if (Projectile.ai[0] <= -1) {
+				Projectile.velocity = (toMouse - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
+				if (Projectile.ai[0] == -1) {
+					for (int i = 0; i < 50; i++) {
+						var rotate = Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(Projectile.velocity.ToRotation() + MathHelper.PiOver2) * .7f;
+						int dust3 = Dust.NewDust(Projectile.Center.PositionOFFSET(Projectile.velocity, 50), 0, 0, DustID.GemDiamond, newColor: Color.Blue);
+						Main.dust[dust3].noGravity = true;
+						Main.dust[dust3].velocity = rotate;
+					}
+				}
+				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
+				if (Projectile.Center.IsCloseToPosition(toMouse, 36)) {
+					Projectile.Kill();
 				}
 			}
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
-			if (Projectile.Center.IsCloseToPosition(toMouse, 36)) {
-				Projectile.Kill();
+			else if (Projectile.ai[0] > 0) {
+				if (Projectile.ai[0] <= 30) {
+					Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (Main.MouseWorld - Projectile.Center).ToRotation(), 1 - Projectile.ai[0] / 30f) + MathHelper.PiOver4 + MathHelper.PiOver2;
+				}
+				else {
+					Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0]);
+				}
+				Projectile.velocity *= .98f;
 			}
 		}
-		else if (Projectile.ai[0] > 0) {
-			if (Projectile.ai[0] <= 30) {
-				Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (Main.MouseWorld - Projectile.Center).ToRotation(), 1 - Projectile.ai[0] / 30f) + MathHelper.PiOver4 + MathHelper.PiOver2;
+		public override void OnKill(int timeLeft) {
+			for (int i = 0; i < 16; i++) {
+				Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i) * 15, ProjectileID.ThunderSpearShot, Math.Max(Projectile.damage / 3, 1), 3f, Projectile.owner);
+				projectile.alpha -= 100;
+				projectile.penetrate = 5;
+				projectile.maxPenetrate = 5;
+				Projectile.usesLocalNPCImmunity = true;
+				Projectile.localNPCHitCooldown = 30;
 			}
-			else {
-				Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0]);
-			}
-			Projectile.velocity *= .98f;
-		}
-	}
-	public override void OnKill(int timeLeft) {
-		for (int i = 0; i < 16; i++) {
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i) * 15, ProjectileID.ThunderSpearShot, Math.Max(Projectile.damage / 3, 1), 3f, Projectile.owner);
-			projectile.alpha -= 100;
-			projectile.penetrate = 5;
-			projectile.maxPenetrate = 5;
-			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 30;
 		}
 	}
 }
@@ -1259,18 +1268,18 @@ public class TheRottedFork : ModEnchantment {
 			Main.projectile[proj].velocity = (target.Center - pos).SafeNormalize(Vector2.Zero);
 		}
 	}
-}
-public class TheRottedForkEnchantmentDebuff : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultDeBuff();
-	}
-	public override void Update(NPC npc, ref int buffIndex) {
-		npc.lifeRegen -= 5 + npc.buffTime[buffIndex] / 120;
-	}
-	public override bool ReApply(NPC npc, int time, int buffIndex) {
-		npc.buffTime[buffIndex] += time;
-		return true;
+	public class TheRottedForkEnchantmentDebuff : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(NPC npc, ref int buffIndex) {
+			npc.lifeRegen -= 5 + npc.buffTime[buffIndex] / 120;
+		}
+		public override bool ReApply(NPC npc, int time, int buffIndex) {
+			npc.buffTime[buffIndex] += time;
+			return true;
+		}
 	}
 }
 public class BeeKeeper : ModEnchantment {
@@ -1305,125 +1314,126 @@ public class BeeKeeper : ModEnchantment {
 		}
 		globalItem.Item_Counter1[index]++;
 	}
-}
-public class BeeKeeperEnchantmentProjectile : ModProjectile {
-	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.BeeKeeper);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 50;
-		Projectile.friendly = true;
-		Projectile.timeLeft = 360;
-		Projectile.penetrate = 1;
-		Projectile.tileCollide = false;
-	}
-	public override bool? CanDamage() {
-		return Projectile.timeLeft < 10;
-	}
-	public override void AI() {
-		Player player = Main.player[Projectile.owner];
-		if (!Projectile.Center.IsCloseToPosition(player.Center, 400)) {
-			Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (player.Center - Projectile.Center).Length() / 128f;
+	public class BeeKeeperEnchantmentProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.BeeKeeper);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 50;
+			Projectile.friendly = true;
+			Projectile.timeLeft = 360;
+			Projectile.penetrate = 1;
+			Projectile.tileCollide = false;
 		}
-		if (Projectile.timeLeft < 10) {
-			Projectile.Center.LookForHostileNPC(out NPC npc, 1500, true);
-			if (++Projectile.ai[1] < 30) {
-				Projectile.timeLeft = 9;
+		public override bool? CanDamage() {
+			return Projectile.timeLeft < 10;
+		}
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			if (!Projectile.Center.IsCloseToPosition(player.Center, 400)) {
+				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (player.Center - Projectile.Center).Length() / 128f;
+			}
+			if (Projectile.timeLeft < 10) {
+				Projectile.Center.LookForHostileNPC(out NPC npc, 1500, true);
+				if (++Projectile.ai[1] < 30) {
+					Projectile.timeLeft = 9;
+					if (npc != null) {
+						Projectile.rotation = (npc.Center - Projectile.Center).ToRotation() + MathHelper.PiOver4;
+					}
+					return;
+				}
+				if (Projectile.ai[1] == 30) {
+					for (int i = 0; i < 30; i++) {
+						Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Honey);
+						dust.noGravity = true;
+						dust.color.A = 0;
+						dust.velocity = Main.rand.NextVector2CircularEdge(15, 15);
+					}
+					for (int i = 0; i < 12; i++) {
+						SpawnBee(Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(12, 360, i) * 8);
+					}
+				}
 				if (npc != null) {
-					Projectile.rotation = (npc.Center - Projectile.Center).ToRotation() + MathHelper.PiOver4;
+					Projectile.timeLeft = 9;
+					Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
+					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 				}
 				return;
 			}
-			if (Projectile.ai[1] == 30) {
-				for (int i = 0; i < 30; i++) {
-					Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Honey);
-					dust.noGravity = true;
-					dust.color.A = 0;
-					dust.velocity = Main.rand.NextVector2CircularEdge(15, 15);
+			Projectile.velocity *= .97f;
+			Projectile.rotation = -MathHelper.PiOver4;
+			if (Projectile.timeLeft % 4 != 0) {
+				return;
+			}
+			SpawnBee(Projectile.Center + Main.rand.NextVector2CircularEdge(32, 32), Main.rand.NextVector2CircularEdge(8, 8));
+		}
+		public void SpawnBee(Vector2 position, Vector2 velocity) {
+			int damage = 5 + Math.Max(Projectile.damage / 10, 1);
+			int type = ProjectileID.Bee;
+			int extra = 0;
+			//Detecting whenever player have strong bee perk
+			if (Projectile.ai[0] == 1) {
+				if (Main.rand.NextBool(3)) {
+					type = ProjectileID.GiantBee;
+					damage += Math.Max(Projectile.damage / 7, 1) + 10;
 				}
-				for (int i = 0; i < 12; i++) {
-					SpawnBee(Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(12, 360, i) * 8);
-				}
+				damage += Math.Max(Projectile.damage / 10, 1);
+				extra = 1;
 			}
-			if (npc != null) {
-				Projectile.timeLeft = 9;
-				Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+			Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), position, velocity, type, damage, 2f, Projectile.owner);
+			proj.penetrate = 1;
+			proj.extraUpdates = extra;
+		}
+		public override void OnKill(int timeLeft) {
+			for (int i = 0; i < 24; i++) {
+				Vector2 velocity = Vector2.One.Vector2DistributeEvenlyPlus(24, 360, i) * 10;
+				int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity, ProjectileID.QueenBeeStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+				Main.projectile[proj].friendly = true;
+				Main.projectile[proj].hostile = false;
+				Main.projectile[proj].usesLocalNPCImmunity = true;
+				Main.projectile[proj].localNPCHitCooldown = 10;
 			}
-			return;
-		}
-		Projectile.velocity *= .97f;
-		Projectile.rotation = -MathHelper.PiOver4;
-		if (Projectile.timeLeft % 4 != 0) {
-			return;
-		}
-		SpawnBee(Projectile.Center + Main.rand.NextVector2CircularEdge(32, 32), Main.rand.NextVector2CircularEdge(8, 8));
-	}
-	public void SpawnBee(Vector2 position, Vector2 velocity) {
-		int damage = 5 + Math.Max(Projectile.damage / 10, 1);
-		int type = ProjectileID.Bee;
-		int extra = 0;
-		//Detecting whenever player have strong bee perk
-		if (Projectile.ai[0] == 1) {
-			if (Main.rand.NextBool(3)) {
-				type = ProjectileID.GiantBee;
-				damage += Math.Max(Projectile.damage / 7, 1) + 10;
-			}
-			damage += Math.Max(Projectile.damage / 10, 1);
-			extra = 1;
-		}
-		Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), position, velocity, type, damage, 2f, Projectile.owner);
-		proj.penetrate = 1;
-		proj.extraUpdates = extra;
-	}
-	public override void OnKill(int timeLeft) {
-		for (int i = 0; i < 24; i++) {
-			Vector2 velocity = Vector2.One.Vector2DistributeEvenlyPlus(24, 360, i) * 10;
-			int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity, ProjectileID.QueenBeeStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
-			Main.projectile[proj].friendly = true;
-			Main.projectile[proj].hostile = false;
-			Main.projectile[proj].usesLocalNPCImmunity = true;
-			Main.projectile[proj].localNPCHitCooldown = 10;
 		}
 	}
 }
-//TODO : add some special mechanic to this
 public class Mace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Mace;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().UpdateDefenseBase += .15f;
 		if (player.ItemAnimationActive) {
 			if (globalItem.Item_Counter1[index] <= 0) {
-				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
-				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 			}
 		}
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 }
-//TODO : add some special mechanic to this
 public class FlamingMace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.FlamingMace;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .15f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		if (player.ItemAnimationActive) {
 			if (globalItem.Item_Counter1[index] <= 0) {
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.FlamingMace);
-				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 			}
 		}
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 }
-//TODO : add some special mechanic to this
 public class BlueMoon : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlueMoon;
 	}
 	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage += .35f;
+		damage += .15f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 15;
@@ -1446,7 +1456,6 @@ public class BlueMoon : ModEnchantment {
 			target.AddBuff<WrathOfBlueMoon>(60 + player.itemAnimationMax);
 	}
 }
-//TODO : add some special mechanic to this
 public class Sunfury : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Sunfury;
@@ -1493,7 +1502,7 @@ public class PurpleClubberfish : ModEnchantment {
 		damage += .1f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		int projectiletype = ModContent.ProjectileType<PurpleClubberfishPRojectile>();
+		int projectiletype = ModContent.ProjectileType<PurpleClubberfishProjectile>();
 		if (player.ownedProjectileCounts[projectiletype] < 1) {
 			if (player.Center.LookForAnyHostileNPC(300)) {
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.UnitY - Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(6, 8), projectiletype, item.damage, item.knockBack, player.whoAmI, Main.rand.Next(60, 90));
@@ -1501,7 +1510,7 @@ public class PurpleClubberfish : ModEnchantment {
 		}
 	}
 
-	public class PurpleClubberfishPRojectile : ModProjectile {
+	public class PurpleClubberfishProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.PurpleClubberfish);
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 30;
@@ -1542,6 +1551,81 @@ public class PurpleClubberfish : ModEnchantment {
 				dust.noGravity = true;
 				dust.velocity = Main.rand.NextVector2Circular(10, 10);
 			}
+		}
+	}
+}
+public class Muramasa : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Muramasa;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Melee)
+			damage += .2f;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (item.DamageType == DamageClass.Melee)
+			crit += 5;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
+			ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4, 3);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(2));
+			Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
+				ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4, 3);
+		}
+	}
+}
+public class FalconBlade : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FalconBlade;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .15f;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		crit += 3;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (player.itemAnimation == player.itemAnimationMax && globalItem.Item_Counter1[index] <= 0) {
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<Enchantment_FalconBladeProjectile>(), player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(1));
+		}
+	}
+	public class Enchantment_FalconBladeProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.FalconBlade);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 16;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 9999;
+			Projectile.tileCollide = true;
+		}
+		public override void AI() {
+			Projectile.direction = Projectile.velocity.X > 0 ? -1 : 1;
+			Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() / 32f) * Projectile.direction;
+			if (++Projectile.ai[0] >= 60) {
+				Projectile.velocity.Y += .5f;
+				Projectile.velocity.X *= .97f;
+				if (Projectile.velocity.Y > 20) {
+					Projectile.velocity.Y = 20;
+				}
+			}
+		}
+		public override bool PreDraw(ref Color lightColor) {
+			Main.instance.LoadProjectile(Type);
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawpos = Projectile.Center - Main.screenPosition;
+			SpriteEffects effect = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
+			Main.EntitySpriteDraw(texture, drawpos, null, lightColor, Projectile.rotation, origin, Projectile.scale, effect);
+			return false;
 		}
 	}
 }

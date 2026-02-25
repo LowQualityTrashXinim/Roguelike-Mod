@@ -43,9 +43,6 @@ namespace Roguelike.Common.Global {
 			var noHit = new LeadingConditionRule(new GitGudMode());
 			var dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
-			if (npc.boss) {
-				npcLoot.Add(ItemDropRule.ByCondition(new LootBoxLordDrop(), ModContent.ItemType<LootboxLordSummon>()));
-			}
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));

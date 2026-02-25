@@ -385,7 +385,9 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void UpdateInventory(Item item, Player player) {
-			item.prefix = 0;
+			if (item.prefix != 0) {
+				item.ResetPrefix();
+			}
 			if (++Counter >= int.MaxValue / 10) {
 				Counter = 0;
 			}

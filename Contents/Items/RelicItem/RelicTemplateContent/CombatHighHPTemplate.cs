@@ -42,13 +42,13 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 				|| stat == PlayerStats.RangeCritChance
 				|| stat == PlayerStats.MagicCritChance
 				|| stat == PlayerStats.SummonCritChance) {
-				return new StatModifier(1, 1, 0, Main.rand.Next(7, 11));
+				return new StatModifier(1, 1, 0, Main.rand.Next(5, 11));
 			}
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.07f, 1.2f), 2), 1);
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-			if (player.IsHealthAbovePercentage(.9f)) {
-				modplayer.AddStatsToPlayer(stat, value.Additive * 1.15f, value.Multiplicative, value.Flat * 1.15f, value.Base * 1.15f);
+			if (player.IsHealthAbovePercentage(.95f)) {
+				modplayer.AddStatsToPlayer(stat, value.Additive * 2.5f, value.Multiplicative, value.Flat * 2.5f, value.Base * 2.5f);
 			}
 			else {
 				modplayer.AddStatsToPlayer(stat, value);
