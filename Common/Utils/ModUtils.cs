@@ -363,48 +363,53 @@ namespace Roguelike.Common.Utils {
 		}
 		public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance, bool notHitThroughTiles = true) {
 			Vector2 hostilePos = Vector2.Zero;
-			float maxDistanceSquare = distance * distance;
 			foreach (var target in Main.ActiveNPCs) {
 				NPC npc = target;
-				if (CompareSquareFloatValue(npc.Center, position, maxDistanceSquare, out float dis)
+				if (CompareSquareFloatValue(npc.Center, position, distance, out float dis)
 					&& npc.CanBeChasedBy()
 					&& !npc.friendly
 					&& (!notHitThroughTiles || Collision.CanHitLine(position, 10, 10, npc.position, npc.width, npc.height))
 					) {
-					maxDistanceSquare = dis;
+					distance = dis;
 					hostilePos = npc.Center;
 				}
 			}
 			return hostilePos;
 		}
+		/// <summary>
+		/// Return true when found a NPC to target, otherwise return false
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="npc"></param>
+		/// <param name="distance"></param>
+		/// <param name="CanLookThroughTile"></param>
+		/// <returns></returns>
 		public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLookThroughTile = false) {
-			float maxDistanceSquare = distance * distance;
 			npc = null;
 			foreach (var target in Main.ActiveNPCs) {
 				NPC mainnpc = target;
-				if (CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+				if (CompareSquareFloatValue(mainnpc.Center, position, distance, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
 					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
 					) {
-					maxDistanceSquare = dis;
+					distance = dis;
 					npc = mainnpc;
 				}
 			}
 			return npc != null;
 		}
 		public static bool LookForHostileNPCNotImmune(this Vector2 position, out NPC npc, float distance, int whoAmI, bool CanLookThroughTile = false) {
-			float maxDistanceSquare = distance * distance;
 			npc = null;
 			foreach (var target in Main.ActiveNPCs) {
 				NPC mainnpc = target;
-				if (CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+				if (CompareSquareFloatValue(mainnpc.Center, position, distance, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
 					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || CanLookThroughTile)
 					&& mainnpc.immune[whoAmI] <= 0
 					) {
-					maxDistanceSquare = dis;
+					distance = dis;
 					npc = mainnpc;
 				}
 			}
@@ -533,6 +538,7 @@ namespace Roguelike.Common.Utils {
 		/// Return false if length of Vector2 greater than max distance
 		/// </returns>
 		public static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance, out float distance) {
+			maxDistance = maxDistance * maxDistance;
 			float
 				DistanceX = pos1.X - pos2.X,
 				DistanceY = pos1.Y - pos2.Y;

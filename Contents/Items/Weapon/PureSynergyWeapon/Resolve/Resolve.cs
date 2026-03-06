@@ -51,7 +51,7 @@ namespace Roguelike.Contents.Items.Weapon.PureSynergyWeapon.Resolve
 					ChangeProjectile = 0;
 				int projAmount = 4;
 				for (int i = 0; i < projAmount; i++)
-					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(projAmount, 40, i), type, damage, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(projAmount, 40, i), type, damage, knockback, player.whoAmI);
 				counter = 0;
 				CanShootItem = false;
 				return;

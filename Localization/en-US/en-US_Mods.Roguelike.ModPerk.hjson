@@ -844,3 +844,16 @@ ArcaneShield: {
 		- Getting hit will delay mana regeneration massively
 		'''
 }
+
+SlimyChalice: {
+	DisplayName: Slimy Chalice
+	Description:
+		'''
+		"A small ancient power left from god, said to be cursed"
+		+ Increases damage reduction by 10%
+		+ Most projectiles can bounce off tile
+		+ Bouncing off a tile increase damage by 20%
+		- Double your knockback intake and reduce knockback resistance effectiveness
+		Note: Bouncing off a tile will make the projectile disappear after 3s
+		'''
+}

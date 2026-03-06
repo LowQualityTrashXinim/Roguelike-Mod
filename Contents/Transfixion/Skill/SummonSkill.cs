@@ -335,7 +335,7 @@ public class MeteorShower : ModSkill {
 			proj.timeLeft = 600;
 			proj.ai[1] = Main.rand.NextFloat(1, 2);
 		}
-		skillplayer.SkillDamageWhileActive += .2f;
+		skillplayer.skilldamage += .2f;
 	}
 }
 public class EnergyChainReaction : ModSkill {
@@ -356,7 +356,7 @@ public class EnergyChainReaction : ModSkill {
 				continue;
 			}
 			energy += .1f;
-			modplayer.SkillDamageWhileActive += .1f;
+			modplayer.skilldamage += .1f;
 		}
 	}
 	public class EnergyChainOrb : ModProjectile {

@@ -436,6 +436,10 @@ internal class UniversalSystem : ModSystem {
 		uiSystemInstance.DeactivateUI();
 		timeBeatenTheGame = TimeSpan.Zero;
 	}
+	public static bool AnyVanillaBossAlive = false;
+	public override void PreUpdateEntities() {
+		AnyVanillaBossAlive = ModUtils.IsAnyVanillaBossAlive();
+	}
 }
 public class TimeSerializer : TagSerializer<TimeSpan, TagCompound> {
 	public override TagCompound Serialize(TimeSpan value) => new TagCompound {

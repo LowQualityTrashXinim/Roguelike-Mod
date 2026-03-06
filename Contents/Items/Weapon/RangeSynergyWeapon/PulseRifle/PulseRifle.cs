@@ -17,7 +17,7 @@ internal class PulseRifle : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Summon 3 version of itself around the player");
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(94, 34, 64, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
+		Item.BossRushDefaultRange(94, 34, 34, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
 		Item.scale = .78f;
 		Item.crit = 12;
 		Item.UseSound = SoundID.Item75 with { Pitch = 1 };
@@ -110,7 +110,8 @@ public class PulseRifle_Gun_Projectile : ModProjectile {
 		if (--useTime > 0 && useTime == player.itemAnimationMax - 1) {
 			Vector2 vel = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 16f;
 			int damage = player.GetWeaponDamage(player.HeldItem);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel, ProjectileID.PulseBolt, damage, Projectile.knockBack, player.whoAmI);
+			var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), Projectile.Center, vel, ProjectileID.PulseBolt, damage, Projectile.knockBack, player.whoAmI);
+			projectile.timeLeft = 90;
 			Counter++;
 			if (Counter >= 30) {
 				for (int i = 0; i < 4; i++) {

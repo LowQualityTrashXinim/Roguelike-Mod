@@ -1,19 +1,21 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Consumable.Ammo;
+using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
+using Roguelike.Contents.Projectiles;
+using Roguelike.Contents.Transfixion.Artifacts;
+using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Contents.Transfixion.Skill;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
+using System;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -144,6 +146,21 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			fallThrough = true;
 		}
 		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
+	}
+	int BouncyCollide = 0;
+	public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
+		var player = Main.player[projectile.owner];
+		if (player.GetModPlayer<SlimyChalicePlayer>().Bouncy && !projectile.minion && !projectile.hostile) {
+			projectile.tileCollide = true;
+			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			if (projectile.velocity.X != oldVelocity.X) projectile.velocity.X = -oldVelocity.X;
+			if (projectile.velocity.Y != oldVelocity.Y) projectile.velocity.Y = -oldVelocity.Y;
+			if (projectile.timeLeft > 180) projectile.timeLeft = 180;
+			if (++BouncyCollide > 1) return false;
+			projectile.damage = (int)(projectile.damage * 1.2f);
+			return false;
+		}
+		return true;
 	}
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[projectile.owner];

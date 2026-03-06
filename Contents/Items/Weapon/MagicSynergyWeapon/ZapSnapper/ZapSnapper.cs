@@ -1,7 +1,5 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
@@ -54,7 +52,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				}
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain)) {
-				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI, 10);
 				float[] variant = Array.Empty<float>();
 				Array.Resize(ref variant, SoundID.Thunder.Variants.Length);
 				variant[0] = 1f;
@@ -81,17 +79,27 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			Projectile.timeLeft = 999;
 			Projectile.penetrate = -1;
 		}
-		Vector2[] lightningPreSetPath = new Vector2[10];
+		List<Vector2> lightningPreSetPath = new();
 		Vector2 finalPosition = Vector2.Zero;
 		public override bool? CanDamage() => null;
+		Vector2 initialVelocity = Vector2.Zero;
+		public override void OnSpawn(IEntitySource source) {
+			initialVelocity = Projectile.velocity;
+		}
 		public override void AI() {
 			if (Projectile.timeLeft > 1) {
 				Projectile.timeLeft = 1;
 				Vector2 path = Projectile.Center;
-				for (int i = 0; i < lightningPreSetPath.Length; i++) {
-					lightningPreSetPath[i] = path;
-					Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(Main.rand.NextFloat(5, 15));
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), lightningPreSetPath[i], Projectile.velocity * 1.5f, ProjectileID.ThunderSpearShot, (int)(Projectile.damage * .25f), 0, Projectile.owner);
+				Vector2 toward = initialVelocity.SafeNormalize(Vector2.Zero) * 1500;
+				float len = Projectile.ai[0];
+				if (len <= 1) {
+					return;
+				}
+				for (int i = 0; i < len; i++) {
+					lightningPreSetPath.Add(path);
+					if (Main.rand.NextBool(5) && Projectile.ai[1] == 0) {
+						Projectile.NewProjectile(Projectile.GetSource_FromAI(), lightningPreSetPath[i], Projectile.velocity.RotatedByRandom(10), Type, (int)(Projectile.damage * .25f), 0, Projectile.owner, 4, 1);
+					}
 
 					path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 150));
 					float length = Vector2.Distance(lightningPreSetPath[i], path);
@@ -102,15 +110,23 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 						Main.dust[dust].fadeIn = .1f;
 						Main.dust[dust].velocity = Main.rand.NextVector2Circular(1, 1);
 					}
-					if (i == lightningPreSetPath.Length - 1) {
+					if (i == len - 1) {
 						finalPosition = path;
 					}
+					int direction = (i % 2 == 0).ToDirectionInt();
+					Vector2 toCursorDirection = Projectile.Center + toward - path;
+					float rotation = toCursorDirection.ToRotation();
+					float rotationAfter = (Projectile.velocity.ToRotation() + MathHelper.ToRadians(Main.rand.NextFloat(4, 7) * 10 * direction)).AngleTowards(rotation, MathHelper.PiOver4);
+					Projectile.velocity = rotationAfter.ToRotationVector2();
 				}
 				Projectile.velocity = Vector2.Zero;
 			}
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			for (int i = 0; i < lightningPreSetPath.Length; i++) {
+			if (lightningPreSetPath.Count < 1) {
+				return false;
+			}
+			for (int i = 0; i < Projectile.ai[0]; i++) {
 				if (i == 0) {
 					if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, lightningPreSetPath[i]))
 						return true;
@@ -122,7 +138,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			return base.Colliding(projHitbox, targetHitbox);
 		}
 		public override void OnKill(int timeLeft) {
-			finalPosition.LookForHostileNPC(out List<NPC> npclist, 100);
+			finalPosition.LookForHostileNPC(out List<NPC> npclist, 200);
 			for (int i = 0; i < 150; i++) {
 				int dust = Dust.NewDust(finalPosition, 0, 0, DustID.Electric);
 				Main.dust[dust].noGravity = true;
@@ -131,8 +147,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(10, 10);
 			}
 			foreach (var npc in npclist) {
-				npc.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 2, 0));
-				Main.player[Projectile.owner].addDPS(Projectile.damage * 2);
+				Main.player[Projectile.owner].StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 2, 0));
 			}
 		}
 	}

@@ -524,3 +524,47 @@ Version 0.0.1:
 503/ Changed some weapon enchantment and also added a new enchantment, also added missing enchantment description.
 504/ Reworked some of the accessory to make it more viable.
 505/ Added a lot of structure
+506/ Changed Slimy Chalice Artifact to Perk
+507/ Fixed a infinite damage bugs caused by Light Bane.
+508/ Added a bunch of food rework.
+509/ Adjusted some localization work.
+510/ Slight rework to Maghannon
+511/ Slight buff to The Orbit.
+512/ Adjusted Synergy weapon:
+Enchanted Ore Sword:
++ Damage 17 -> 35.
++ Platinum short sword attack have increases in velocity
+Pulse Rifle:
+- Damage 64 -> 34.
+Energy Blade:
++ Reworked the weapon entirely to work more like a chainsaw.
++ Removed Code 1 synergy bonus entirely.
+Frost Sword Fish:
++ Add a alt click which allowed to switch form.
+- Fix a possibly a bug that caused the sword deal more damage than expected.
+The Orbit:
++ Projectile which created from The Orbit return now deal full damage and also spawn in larger radius.
+Knife Revolver:
++ The alt click attack when stick to enemy will deal continuous damage.
++ Usetime 30 -> 12.
+- When shooting normally, your shot become slightly inaccurate.
+MagicHandCannon:
++ The Projectile created by Magic Hand Cannon will now home toward your cursor a bit more slightly and its also act differently when outside of the range.
+Super Flare Gun:
++ Boom stick synergy bonus now always shoot out bullets.
+Amber Bone Spear:
++ Changed alt click attack of the spear to instead fires a fast moving spear that explode on impact.
++ Reduce mana cost from 15 -> 3.
+- Using alt click will result a 2s Cool down.
+Sticky Flower:
++ Make slime minion slightly smarter
++ Buff minion range attack
+The goo shoot damage is reduce to deal 45% of original damage but it shoot 3 times ( which in calculation deal 135% damage )
+The goo projectile also shoot out toward a lot faster
++ Buff the first slime ghost that summoned, for each slime ghost that is alive ( beside the first one ), increases damage by 10%.
+Zap Snapper:
++ Improved the lightning shot effect from synergy bonus to be a lot more accurate.
++ Buff the lightning shot effect having 1 in 5 chance to create additional lightning path
+- Nerf the lighting shotm effect from synergy bonus no longer spawn additional projectile.
+Bloody Shot:
+- Fixed a issue where even when the target NPC don't have the debuff, they still spawn Boiling Blood projectile.

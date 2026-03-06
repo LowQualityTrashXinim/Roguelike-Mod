@@ -1,0 +1,46 @@
+﻿using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
+
+namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
+internal class Roguelike_SpicyPepper : GlobalFoodItem {
+	public override int AppliesToFoodType() => ItemID.SpicyPepper;
+	public override int CoolDownBetweenUse() => ModUtils.ToSecond(15);
+	public override void SetFoodDefaults(Item item) {
+		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
+		SetBuff(item, ModContent.BuffType<Roguelike_SpicyPepper_Buff>(), ModUtils.ToMinute(4));
+	}
+	public override void OnConsumeItem(Item item, Player player) {
+		Player_SkillPlayer(player).Modify_EnergyAmount(120);
+		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
+	}
+}
+public class Roguelike_SpicyPepper_Buff : FoodItemTier1 {
+	public override int TypeID => ItemID.SpicyPepper;
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		handler.MeleeAtkSpeed += .13f;
+		handler.UpdateMovement += .09f;
+		handler.UpdateDefenseBase.Base -= 7;
+		player.GetModPlayer<Roguelike_SpicyPepper_ModPlayer>().SpicyPepper = true;
+	}
+}
+public class Roguelike_SpicyPepper_ModPlayer : ModPlayer {
+	public bool SpicyPepper = false;
+	public override void ResetEffects() {
+		SpicyPepper = false;
+	}
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!SpicyPepper) {
+			return;
+		}
+		if (Main.hardMode) {
+			target.AddBuff(BuffID.OnFire3, ModUtils.ToSecond(Main.rand.Next(4, 9)));
+		}
+		else {
+			target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(4, 9)));
+		}
+	}
+}

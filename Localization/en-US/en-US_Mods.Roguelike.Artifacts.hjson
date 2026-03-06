@@ -210,23 +210,6 @@ RandomArtifact: {
 	Description: Randomly chooses an artifact.
 }
 
-SlimyChaliceArtifact: {
-	DisplayName: Chalice of Royal Gel
-	Description:
-		'''
-		"A small ancient power left from god, said to be cursed"
-		[c/00ff47:Starter item] :
-			{0}
-		[c/ffff00:Positive effect] :
-			+ Increases damage reduction by 10%
-			+ Most projectiles can bounce off tile
-			+ Bouncing off a tile increase damage by 20%
-		[c/ab3e43:Negative effect] : 
-			- Bouncing off a tile will make the projectile disappear after 3s
-			- Double your knockback intake and reduce knockback resistance effectiveness
-		'''
-}
-
 SwiftHealthIdolArtifact: {
 	DisplayName: Swift Health idol
 	Description:

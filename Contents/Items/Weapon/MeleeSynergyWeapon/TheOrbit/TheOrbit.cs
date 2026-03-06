@@ -74,7 +74,7 @@ public class TheOrbitProjectile : ModProjectile {
 		}
 	}
 	public override void OnKill(int timeLeft) {
-		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<TheOrbitTheProjectile>(), Projectile.damage / 4 + 1, 0, Projectile.owner);
+		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<TheOrbitTheProjectile>(), Projectile.damage, 0, Projectile.owner);
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		if (Projectile.ai[1] == 1) {
@@ -96,15 +96,15 @@ public class TheOrbitTheProjectile : ModProjectile {
 		Projectile.width = Projectile.height = 32;
 		Projectile.friendly = true;
 		Projectile.tileCollide = false;
-		Projectile.timeLeft = 300;
+		Projectile.timeLeft = 940;
 		Projectile.penetrate = -1;
 		Projectile.light = 1f;
 	}
 	public override void AI() {
 		if (Projectile.ai[1] == 0) {
 			Projectile.ai[0] = Main.rand.Next(0, 360);
-			Projectile.ai[1] = Main.rand.Next(50, 150);
-			Projectile.ai[2] = Main.rand.NextFloat(3, 5);
+			Projectile.ai[1] = Main.rand.Next(100, 250);
+			Projectile.ai[2] = Main.rand.NextFloat(1, 3);
 		}
 		var player = Main.player[Projectile.owner];
 		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 10);

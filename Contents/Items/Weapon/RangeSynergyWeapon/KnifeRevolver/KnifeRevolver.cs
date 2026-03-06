@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver;
 internal class KnifeRevolver : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(84, 24, 21, 3f, 30, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
+		Item.BossRushDefaultRange(84, 24, 21, 3f, 12, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
 		Item.crit = 10;
 		Item.scale = 0.85f;
 		Item.rare = ItemRarityID.LightRed;
@@ -39,6 +39,9 @@ internal class KnifeRevolver : SynergyModItem {
 		else {
 			type = ProjectileID.Bullet;
 			Item.noUseGraphic = false;
+			if (!player.GetModPlayer<KnifeRevolverPlayer>().SpecialShotReady) {
+				velocity = velocity.Vector2RotateByRandom(5);
+			}
 		}
 	}
 	public override void AddRecipes() {
@@ -59,7 +62,7 @@ public class KnifeRevolverThrown_Projectile : ModProjectile {
 		Projectile.scale = .67f;
 	}
 	public override bool? CanDamage() {
-		return NPC_whoAmI == -1;
+		return null;
 	}
 	public override bool PreAI() {
 		Player player = Main.player[Projectile.owner];
@@ -120,7 +123,6 @@ public class KnifeRevolverThrown_Projectile : ModProjectile {
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (NPC_whoAmI == -1) {
 			NPC_whoAmI = target.whoAmI;
-			target.immune[Projectile.owner] = 60;
 			offsetFromCenter = Projectile.Center - target.Center;
 			Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * .1f, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .45f), 2f, Projectile.owner, 2f + Main.rand.NextFloat(2));
 		}

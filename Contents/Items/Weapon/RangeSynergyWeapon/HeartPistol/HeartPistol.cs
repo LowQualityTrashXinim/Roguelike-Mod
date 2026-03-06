@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
@@ -29,8 +30,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		int counter = 0, spreadDifferent = 0;
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.Check_SwitchedWeapon(Type)) {
-				player.AddBuff<HeartPistolPassive>(ModUtils.ToSecond(5));
+			if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(Type)) {
+				WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
 			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -55,13 +56,14 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			SoundEngine.PlaySound(Item.UseSound, player.Center);
+			bool check = WeaponEffect_ModPlayer.Check_IntroEffect(player, Type);
 			if (counter >= 5) {
 				int proj = Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartP>(), damage * 2, knockback, player.whoAmI);
 				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket)) {
 					Main.projectile[proj].timeLeft += 20;
 					Main.projectile[proj].velocity *= 1.4f;
 				}
-				if (player.HasBuff<HeartPistolPassive>()) {
+				if (check) {
 					for (int i = 0; i < 5; i++) {
 						if (i == 2) {
 							continue;
@@ -87,7 +89,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 					Main.projectile[proj].timeLeft += 20;
 				}
 			}
-			if (player.HasBuff<HeartPistolPassive>()) {
+			if (check) {
 				Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
 				for (int i = 0; i < 3; i++) {
 					if (i == 1) {
@@ -120,14 +122,6 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			if (proj.Check_ItemTypeSource<HeartPistol>()) {
 				DamageBucket += hit.Damage;
 			}
-		}
-	}
-	public class HeartPistolPassive : ModBuff {
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			player.ModPlayerStats().UpdateHPRegen += .25f;
 		}
 	}
 }

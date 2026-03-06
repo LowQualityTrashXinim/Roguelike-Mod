@@ -5,8 +5,6 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
-using Terraria.Audio;
-using Roguelike.Contents.Items.Weapon;
 
 using Roguelike.Common.Utils;
 

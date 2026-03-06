@@ -13,10 +13,12 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 22, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
-			Item.scale = 0.9f;
+			Item.scale = 0.75f;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
+
+			Item.Set_InfoItem();
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.AquaScepter);
@@ -65,19 +67,22 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 		}
 	}
 	internal class BloodBullet : ModProjectile {
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Type] = 10;
+			ProjectileID.Sets.TrailingMode[Type] = 0;
+		}
 		public override void SetDefaults() {
-			Projectile.tileCollide = false;
+			Projectile.tileCollide = true;
 			Projectile.penetrate = 1;
 			Projectile.friendly = true;
 			Projectile.width = 10;
 			Projectile.height = 10;
 			Projectile.extraUpdates = 20;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!target.HasBuff(ModContent.BuffType<BoilingBlood>()) && Main.rand.NextBool(10)) {
-				target.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
+			if (!target.HasBuff(ModContent.BuffType<BoilingBlood>())) {
+				if (Main.rand.NextBool(10))
+					target.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
 			}
 			else {
 				hit.Damage += (int)(Projectile.damage * .25f);
@@ -105,7 +110,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	}
 	public class BoilingBlood : SynergyBuff {
 		public override void SynergySetStaticDefaults() {
-			Main.debuff[Type] = true;
+			this.BossRushSetDefaultDeBuff();
 		}
 		public override void UpdateNPC(NPC npc, ref int buffIndex) {
 			npc.lifeRegen -= 50;

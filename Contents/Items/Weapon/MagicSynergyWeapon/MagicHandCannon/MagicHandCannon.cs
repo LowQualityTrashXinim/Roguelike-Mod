@@ -13,7 +13,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Flamelash, $"[i:{ItemID.Flamelash}] When magic shadow flame is inside the ring, shoot out a home in shadow magic flame and damage dealing outside of the ring increases by 45%");
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 12, 13, false);
+			Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 2, 13, false);
 			Item.scale = .75f;
 			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item92 with { Pitch = 1f };
@@ -78,7 +78,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			Projectile.tileCollide = true;
 			Projectile.friendly = true;
 			Projectile.wet = false;
-			Projectile.timeLeft = 150;
+			Projectile.timeLeft = 600;
 			Projectile.light = 1f;
 			Projectile.penetrate = -1;
 			Projectile.usesLocalNPCImmunity = true;
@@ -108,11 +108,13 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2(), ModContent.ProjectileType<ShadowMagicMissle>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 				}
 			}
-			float rotateTo = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero).ToRotation();
 			if (!outsideBorder) {
-				float currentRotation = Projectile.velocity.ToRotation();
-				Projectile.velocity = Projectile.velocity.RotatedBy(rotateTo - currentRotation);
+				Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) / 8f;
 			}
+			else {
+				Projectile.velocity += (Main.player[Projectile.owner].Center - Projectile.Center).SafeNormalize(Vector2.Zero) / 8f;
+			}
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {

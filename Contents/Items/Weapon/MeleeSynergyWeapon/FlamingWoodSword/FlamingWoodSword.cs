@@ -56,7 +56,7 @@ public class FlamingFireSpark : ModProjectile {
 		Projectile.light = .5f;
 		Projectile.timeLeft = 120;
 		Projectile.friendly = true;
-		Projectile.penetrate = -1;
+		Projectile.penetrate = 1;
 		Projectile.hide = true;
 	}
 	public override void AI() {
@@ -64,7 +64,7 @@ public class FlamingFireSpark : ModProjectile {
 			int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.Torch);
 			Main.dust[dust].noGravity = true;
 		}
-		if (Projectile.Center.LookForHostileNPC(out NPC npc, 225)) {
+		if (Projectile.Center.LookForHostileNPC(out NPC npc, 425)) {
 			Projectile.timeLeft = 120;
 			Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5;
 		}

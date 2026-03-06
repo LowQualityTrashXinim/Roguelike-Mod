@@ -360,9 +360,10 @@ public abstract class StardustSymphony_StarProjectile_Base : ModProjectile {
 		Texture2D textureDot = ModContent.Request<Texture2D>(ModTexture.WHITEDOT).Value;
 		Vector2 origin = texture.Size() * .5f;
 		Vector2 originDot = textureDot.Size() * .5f;
-		for (int k = 0; k < Projectile.oldPos.Length; k++) {
+		float len = Projectile.oldPos.Length;
+		for (int k = 0; k < len; k++) {
 			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + originOfThisProj;
-			Main.EntitySpriteDraw(texture, drawPos, null, lightColor with { A = 0 }, Projectile.rotation, origin, (Projectile.scale - k * .01f) * .75f, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(texture, drawPos, null, lightColor with { A = 0 }, Projectile.rotation, origin, (Projectile.scale * (1 - k / len)) * .75f, SpriteEffects.None, 0);
 
 			Main.EntitySpriteDraw(textureDot, drawPos, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale, SpriteEffects.None, 0);
 			Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.PiOver2) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);

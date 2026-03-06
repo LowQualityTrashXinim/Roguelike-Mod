@@ -98,6 +98,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier UpdateManaMax = new StatModifier();
 	public StatModifier UpdateManaRegen = new StatModifier();
 	public StatModifier UpdateDefenseBase = new StatModifier();
+	public StatModifier ThornAoE = new StatModifier();
 	public StatModifier UpdateThorn = new StatModifier();
 	public StatModifier UpdateDefEff = new StatModifier();
 	public StatModifier UpdateMinion = new StatModifier();
@@ -207,10 +208,20 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (UpdateThorn.ApplyTo(1) > 0) {
 			NPC.HitInfo newhitinfo = new();
-			newhitinfo.Damage = (int)UpdateThorn.ApplyTo(hurtInfo.Damage);
+			newhitinfo.Damage = (int)(UpdateThorn - 1).ApplyTo(hurtInfo.Damage);
 			newhitinfo.Crit = false;
 			newhitinfo.DamageType = DamageClass.Default;
 			Player.StrikeNPCDirect(npc, newhitinfo);
+			float distance = ThornAoE.ApplyTo(1);
+			if (distance > 0) {
+				Player.Center.LookForHostileNPC(out List<NPC> npclist, distance);
+				foreach (var target in npclist) {
+					if (target.whoAmI == npc.whoAmI) {
+						continue;
+					}
+					Player.StrikeNPCDirect(target, newhitinfo);
+				}
+			}
 		}
 		HitTakenCounter++;
 		DmgTaken += (ulong)hurtInfo.Damage;
@@ -455,7 +466,8 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateManaRegen = StatModifier.Default;
 		UpdateDefenseBase = StatModifier.Default;
 		UpdateDefEff = StatModifier.Default;
-		UpdateThorn = StatModifier.Default - 1;
+		ThornAoE = StatModifier.Default - 1;
+		UpdateThorn = StatModifier.Default;
 		DebuffTime = StatModifier.Default;
 		BuffTime = StatModifier.Default;
 		DebuffBuffTime = StatModifier.Default;

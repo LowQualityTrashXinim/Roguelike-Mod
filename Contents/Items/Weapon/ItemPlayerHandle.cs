@@ -663,7 +663,7 @@ namespace Roguelike.Contents.Items.Weapon {
 					int type = synegyB[i];
 					Main.instance.LoadItem(type);
 					Texture2D synergyBonus = TextureAssets.Item[type].Value;
-					spriteBatch.Draw(synergyBonus, position + Vector2.One.RotatedBy(MathHelper.ToRadians(rotate) + MathHelper.Pi * MathHelper.Lerp(0, 1, i / (len - 1f))) * 10, synergyBonus.Frame(), Color.White, 0, synergyBonus.Size() * .5f, .55f, SpriteEffects.None, 0);
+					spriteBatch.Draw(synergyBonus, position + Vector2.One.RotatedBy(MathHelper.ToRadians(rotate) + MathHelper.Pi * MathHelper.Lerp(0, 1, i / (float)(len))) * 10, synergyBonus.Frame(), Color.White, 0, synergyBonus.Size() * .5f, .55f, SpriteEffects.None, 0);
 				}
 			}
 			Main.instance.LoadItem(Type);

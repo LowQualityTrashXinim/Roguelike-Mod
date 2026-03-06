@@ -31,7 +31,9 @@ public class Roguelike_AdhesiveBandage_ModPlayer : ModPlayer {
 			else {
 				HealOverTime = 10;
 				DamageBucket--;
-				Player.Heal(1);
+				if (Player.statLife < Player.statLifeMax2) {
+					Player.Heal(1);
+				}
 			}
 		}
 	}

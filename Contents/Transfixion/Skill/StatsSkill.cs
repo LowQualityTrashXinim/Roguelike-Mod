@@ -12,7 +12,7 @@ public class DamageUp : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.SkillDamageWhileActive += 1f;
+		skillplayer.skilldamage += 1f;
 	}
 }
 public class GreaterDamageUp : ModSkill {
@@ -22,7 +22,7 @@ public class GreaterDamageUp : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.SkillDamageWhileActive += 3f;
+		skillplayer.skilldamage += 3f;
 	}
 }
 public class CriticalUp : ModSkill {

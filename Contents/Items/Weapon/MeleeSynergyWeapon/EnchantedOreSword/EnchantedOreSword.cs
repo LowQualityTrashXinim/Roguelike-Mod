@@ -1,8 +1,6 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -17,7 +15,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword, $"[i:{ItemID.EnchantedSword}] Your short sword attack will be randomized");
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 17, 6f, 36, 36, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
+			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 35, 6f, 36, 36, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
 			Item.value = Item.buyPrice(gold: 50);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
@@ -88,7 +86,7 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 					Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
 					break;
 				case 7:
-					Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position, velocity * 1.5f, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
 					break;
 			}
 		}

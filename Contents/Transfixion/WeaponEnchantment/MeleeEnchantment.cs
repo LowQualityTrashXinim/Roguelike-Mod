@@ -287,7 +287,7 @@ public class LightsBane : ModEnchantment {
 		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] > 0 && proj.minion) {
+		if (globalItem.Item_Counter1[index] > 0 || proj.minion) {
 			return;
 		}
 		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);
@@ -300,7 +300,7 @@ public class LightsBane : ModEnchantment {
 		}
 		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);
 		Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center.PositionOFFSET(vel, -60), vel, ProjectileID.LightsBane, player.GetWeaponDamage(item), player.HeldItem.knockBack, player.whoAmI, 1);
-		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 	}
 }
 public class BladeOfGrass : ModEnchantment {

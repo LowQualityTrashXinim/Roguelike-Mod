@@ -41,6 +41,9 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 				npc.lifeRegen -= Math.Max(npc.lifeMax / 1000, 1);
 			}
 		}
+		if (type == BuffID.WitheredArmor || type == BuffID.BrokenArmor) {
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= .5f;
+		}
 	}
 	public override void Update(int type, Player player, ref int buffIndex) {
 		if (type == BuffID.Frostburn) {

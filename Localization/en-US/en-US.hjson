@@ -628,7 +628,7 @@ Mods: {
 					"You may now defend your lawn the way eagles intended"
 					Grants increased spread and damage during your second shot
 					Increases damage by 50% against enemy with over 80% or under 30% health
-					Completes a cycle by shotting a cannonball at 400% base damage
+					Completes a cycle by shotting a cannonball deal 400% weapon damage
 					'''
 				DisplayName: Merciless
 			}
@@ -692,6 +692,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Suffocate your enemies with love!~"
+					[c/ff9bc4:Heart pistol intro effect]
+					[c/ff9bc4:Your normal attack will be accompany with a arch of 2 smaller hearts]
+					[c/ff9bc4:At peak of your normal attack, you will shot out 5 hearts]
 					Small heart projectile have very small chance to spawn a heart on hitting enemy
 					Heart projectile heal you on hitting enemy 
 					and have small chance to spawn a heart on hitting enemy
@@ -703,11 +706,6 @@ Mods: {
 
 					After you attack using different weapon and then use this weapon
 					you gain Heart Pistol passive for 5s
-
-					[c/ff9bc4: Heart pistol passive]
-					+ 25% life regeneration
-					Your normal attack will be accompany with a arch of 2 smaller hearts
-					At peak of your normal attack, you will shot out 5 hearts
 					'''
 				DisplayName: Heart pistol
 			}
@@ -756,7 +754,20 @@ Mods: {
 
 			BloodyShot: {
 				DisplayName: Bloody Shot
-				Tooltip: A few steps removed from an Evangelion finale
+				Tooltip:
+					'''
+					"A few steps removed from an Evangelion finale"
+					Replaced normal bullet with Blood shot
+					Hitting enemy with blood shot will rain down blood from the sky
+					Blood shot on hit have 10% chance to inflict [c/810000:Boiling blood]
+					'''
+				ExtraInfo:
+					'''
+					[c/810000:Boiling blood]:
+					Decreases target life 50 hp/s
+					Shooting enemy with blood shot while debuff 
+					still active will explode blood around them
+					'''
 			}
 
 			SnowballShotgunCannon: {
@@ -838,8 +849,14 @@ Mods: {
 			}
 
 			FrostSwordFish: {
-				Tooltip: You're laughing. They're shivering their fins off and you're laughing...
 				DisplayName: Frostfins
+				Tooltip:
+					'''
+					"You're laughing. They're shivering their fins off and you're laughing..."
+					Alt-click to switch mode
+					Projectile mode: Shoot out frost dagger fish dealing 25% weapon damage (CD: 0.5s)
+					True melee mode: Each sword strike summon a frost dagger fish nearby that home to enemy
+					'''
 			}
 
 			FlamingWoodSword: {
@@ -1932,7 +1949,11 @@ Mods: {
 
 			WyvernWrath: {
 				DisplayName: Wyvern Wrath
-				Tooltip: ""
+				Tooltip:
+					'''
+					Shoot out powerful magical sword 
+					Upon hitting enemy, summon weaker magical sword dealing 50% weapon damage
+					'''
 			}
 
 			MythrilBeamSword: {
@@ -2195,7 +2216,14 @@ Mods: {
 
 			TheBurningSky: {
 				DisplayName: The Burning Sky
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Releases the fury of the sky"
+					Replace wooden arrow with fire arrow
+					Have 1 in 5 chance for your arrow to be replaced with hell fire arrow dealing 120% weapon damage
+					Have 1 in 9 chance for your arrow to be replaced with meteor projectile dealing 200% weapon damage
+					When shooting, you will also shoot from the sky too
+					'''
 			}
 
 			ReInitializeUI: {
@@ -2240,7 +2268,12 @@ Mods: {
 
 			Mixmaster: {
 				DisplayName: Mixmaster
-				Tooltip: A weapon of a ancient past
+				Tooltip:
+					'''
+					"A weapon of a ancient past"
+					Shoot out fast moving plasma projectile
+					Plasma projectile on hit explode dealing substain damage
+					'''
 			}
 
 			TransmuteTablet: {
@@ -2770,8 +2803,8 @@ Mods: {
 
 		Buffs: {
 			StickyFriend: {
-				Description: Oozing
-				DisplayName: It's so friendly it's smelly...
+				DisplayName: Oozing
+				Description: It's so friendly it's smelly...
 			}
 
 			EarthPower: {
@@ -3637,6 +3670,91 @@ Mods: {
 			PowerEssence: {
 				DisplayName: Power Essence
 				Description: Mods.Roguelike.Buffs.PowerEssence.Description
+			}
+
+			Roguelike_Peach_Buff: {
+				DisplayName: Peach
+				Description: Mods.Roguelike.Buffs.Roguelike_Peach_Buff.Description
+			}
+
+			Roguelike_Apple_Buff: {
+				DisplayName: Apple
+				Description: Mods.Roguelike.Buffs.Roguelike_Apple_Buff.Description
+			}
+
+			Roguelike_BlackCurrent_Buff: {
+				DisplayName: Roguelike_ Black Current_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BlackCurrent_Buff.Description
+			}
+
+			Roguelike_Cherry_Buff: {
+				DisplayName: Roguelike_ Cherry_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Cherry_Buff.Description
+			}
+
+			Roguelike_Coconut_Buff: {
+				DisplayName: Roguelike_ Coconut_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Coconut_Buff.Description
+			}
+
+			Roguelike_JojaCola_Buff: {
+				DisplayName: Roguelike_ Joja Cola_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_JojaCola_Buff.Description
+			}
+
+			Roguelike_Banana_Buff: {
+				DisplayName: Roguelike_ Banana_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Banana_Buff.Description
+			}
+
+			Roguelike_BloodOrange_Buff: {
+				DisplayName: Roguelike_ Blood Orange_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BloodOrange_Buff.Description
+			}
+
+			Roguelike_ElderBerry_Buff: {
+				DisplayName: Roguelike_ Elder Berry_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_ElderBerry_Buff.Description
+			}
+
+			Roguelike_Pineapple_Buff: {
+				DisplayName: Roguelike_ Pineapple_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Pineapple_Buff.Description
+			}
+
+			Roguelike_AppleJuice_Buff: {
+				DisplayName: Roguelike_ Apple Juice_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_AppleJuice_Buff.Description
+			}
+
+			Roguelike_BloodyMoscato_Buff: {
+				DisplayName: Roguelike_ Bloody Moscato_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BloodyMoscato_Buff.Description
+			}
+
+			Roguelike_CartonOfMilk_Buff: {
+				DisplayName: Roguelike_ Carton Of Milk_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_CartonOfMilk_Buff.Description
+			}
+
+			Roguelike_PeachSangria_Buff: {
+				DisplayName: Roguelike_ Peach Sangria_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PeachSangria_Buff.Description
+			}
+
+			Roguelike_Rambuten_Buff: {
+				DisplayName: Roguelike_ Rambuten_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Rambuten_Buff.Description
+			}
+
+			Roguelike_SpicyPepper_Buff: {
+				DisplayName: Roguelike_ Spicy Pepper_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_SpicyPepper_Buff.Description
+			}
+
+			AmberBoneThrown_CoolDown: {
+				DisplayName: Amber Bone Thrown_ Cool Down
+				Description: Mods.Roguelike.Buffs.AmberBoneThrown_CoolDown.Description
 			}
 		}
 

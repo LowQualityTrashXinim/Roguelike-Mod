@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Humanizer;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems;
@@ -430,6 +431,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		rect.Y -= rect.Height / 2;
 		return rect;
 	}
+	Rectangle merchantHouse = new();
+	Rectangle mechanicHouse = new();
 	private void InitializeForestWorld() {
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
@@ -442,15 +445,26 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex);
 		MainTundraForestZone = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 400, 150);
 		ZoneToBeIgnored.Add(MainTundraForestZone);
-		ForestZone.Add(MainTundraForestZone);
 		Set_MapIgnoredZoneIntoWorldGen(MainTundraForestZone);
 
 		zonecachedPoint = new(GridPart_X * 9, GridPart_Y * 5);
 		MainJungleForestZone = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, 400, 150);
 		ZoneToBeIgnored.Add(MainJungleForestZone);
-		ForestZone.Add(MainJungleForestZone);
 		Set_MapIgnoredZoneIntoWorldGen(MainJungleForestZone);
 
+		merchantHouse = new Rectangle(
+			GridPart_X * 13 + Main.rand.Next(0, GridPart_X - 100),
+			GridPart_Y * 13 + Main.rand.Next(0, GridPart_Y - 50),
+			100, 50);
+		ZoneToBeIgnored.Add(merchantHouse);
+		Set_MapIgnoredZoneIntoWorldGen(merchantHouse);
+
+		mechanicHouse = new Rectangle(
+			GridPart_X * 5 + Main.rand.Next(0, GridPart_X - 100),
+			GridPart_Y * 7 + Main.rand.Next(0, GridPart_Y - 50),
+			100, 50);
+		ZoneToBeIgnored.Add(mechanicHouse);
+		Set_MapIgnoredZoneIntoWorldGen(mechanicHouse);
 		//Set small forest area
 		for (int i = 0; i < 60; i++) {
 			xdex = Main.rand.Next(1, 23);
@@ -482,6 +496,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			ZoneToBeIgnored.Add(re);
 			Set_MapIgnoredZoneIntoWorldGen(re);
 		}
+
 	}
 	/// <summary>
 	/// This code here is pure definition of evil for the sake of "optimization", idfk if this is fast or not<br/>
@@ -791,7 +806,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				WorldGen.GrowTree(i, CurrentPosY);
 			}
 		}
-		ForestZone.Add(MainForestZone);
 		watch.Stop();
 		Mod.Logger.Info("Forest step: " + watch.ToString());
 	}
@@ -891,6 +905,116 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Snow step: " + watch.ToString());
 	}
 	[Task]
+	public void Generate_MerchantHouse() {
+		Stopwatch watch = new();
+		watch.Start();
+		Rectangle forestArea = merchantHouse;
+		//We are using standard generation for this one
+		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
+		int offsetRaise = 0;
+		bool MoveToNextX;
+		float left = Rand.NextFloat(.25f, .35f);
+		float right = Rand.NextFloat(.75f, .85f);
+		int CurrentPosY = 0;
+		int LeftPos = forestArea.X + (int)(forestArea.Width * left);
+		int RightPos = forestArea.X + (int)(forestArea.Width * right);
+		int Middle = (int)(forestArea.Width * .5f) + forestArea.X;
+		int YoffsetByX = 0;
+		for (int i = forestArea.X; i < forestArea.Width + forestArea.X; i++) {
+			MoveToNextX = true;
+			if (i == Middle) {
+				var Merchant = ModWrapper.Get_StructureData("Assets/MerchantHouse", Mod);
+				ModWrapper.GenerateFromData(Merchant, new(i - Merchant.width / 2, CurrentPosY - Merchant.height));
+				SpawnTownNPC(NPCID.Merchant, i, CurrentPosY - 3);
+				YoffsetByX = Merchant.width / 2;
+				startingPoint = CurrentPosY;
+			}
+			for (int j = startingPoint; j < forestArea.Height + forestArea.Y; j++) {
+				if (MoveToNextX) {
+					if (YoffsetByX <= 0) {
+						if (Rand.NextBool(5)) {
+							offsetRaise += Rand.Next(-1, 2);
+						}
+						j = startingPoint - offsetRaise;
+					}
+					MoveToNextX = false;
+					GenerationHelper.FastPlaceTile(i, j, TileID.Grass);
+					continue;
+				}
+				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
+			}
+			CurrentPosY = startingPoint - offsetRaise;
+			YoffsetByX--;
+			if (Rand.NextBool(15)
+				&& i < LeftPos
+				&& i > RightPos) {
+				WorldGen.GrowTree(i, CurrentPosY);
+			}
+		}
+		watch.Stop();
+		Mod.Logger.Info("Merchant House structure realm step: " + watch.ToString());
+	}
+	[Task]
+	public void Generate_AbandonIgloo() {
+		Stopwatch watch = new();
+		watch.Start();
+		Rectangle forestArea = mechanicHouse;
+		//We are using standard generation for this one
+		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
+		int offsetRaise = 0;
+		bool MoveToNextX;
+		float left = Rand.NextFloat(.25f, .35f);
+		float right = Rand.NextFloat(.75f, .85f);
+		int CurrentPosY = 0;
+		int LeftPos = forestArea.X + (int)(forestArea.Width * left);
+		int RightPos = forestArea.X + (int)(forestArea.Width * right);
+		int Middle = (int)(forestArea.Width * .5f) + forestArea.X;
+		int YoffsetByX = 0;
+		for (int i = forestArea.X; i < forestArea.Width + forestArea.X; i++) {
+			MoveToNextX = true;
+			if (i == Middle) {
+				var Merchant = ModWrapper.Get_StructureData("Assets/Abandon_Igloo", Mod);
+				ModWrapper.GenerateFromData(Merchant, new(i - Merchant.width / 2, CurrentPosY - Merchant.height));
+				SpawnTownNPC(NPCID.Mechanic, i, CurrentPosY - 3);
+				YoffsetByX = Merchant.width / 2;
+				startingPoint = CurrentPosY;
+			}
+			for (int j = startingPoint; j < forestArea.Height + forestArea.Y; j++) {
+				if (MoveToNextX) {
+					if (YoffsetByX <= 0) {
+						if (Rand.NextBool(5)) {
+							offsetRaise += Rand.Next(-1, 2);
+						}
+						j = startingPoint - offsetRaise;
+					}
+					MoveToNextX = false;
+					GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
+					continue;
+				}
+				if (Rand.NextFloat() <= .45f) {
+					GenerationHelper.FastPlaceTile(i, j, TileID.IceBlock);
+				}
+				else {
+					GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
+				}
+			}
+			CurrentPosY = startingPoint - offsetRaise;
+			YoffsetByX--;
+			if (Rand.NextBool(15)
+				&& i < LeftPos
+				&& i > RightPos) {
+				WorldGen.GrowTree(i, CurrentPosY);
+			}
+		}
+		watch.Stop();
+		Mod.Logger.Info("Abandon Igloo structure realm step: " + watch.ToString());
+	}
+	private void SpawnTownNPC(int type, int X, int Y) {
+		X = X * 16;
+		Y = Y * 16;
+		int whoAmI = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), X, Y, type);
+	}
+	[Task]
 	public void Generate_SmallForest() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -926,6 +1050,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+		ForestZone.Add(merchantHouse);
+		ForestZone.Add(mechanicHouse);
+		ForestZone.Add(MainTundraForestZone);
+		ForestZone.Add(MainJungleForestZone);
+		ForestZone.Add(MainForestZone);
 		watch.Stop();
 		Mod.Logger.Info("Small forest step: " + watch.ToString());
 	}
@@ -1444,24 +1573,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		Mod.Logger.Info("King Slime structure realm step: " + watch.ToString());
 	}
-	[Task]
-	public void Generate_MerchantHouse() {
-		Stopwatch watch = new();
-		watch.Start();
-		var data = ModWrapper.Get_StructureData("Assets/MerchantStructure", Mod);
-		int X = 13 * GridPart_X + Main.rand.Next(GridPart_X - data.width);
-		int Y = 16 * GridPart_Y + Main.rand.Next(GridPart_Y - data.height);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			Set_MapIgnoredZoneIntoWorldGen(new Rectangle(point.X, point.Y, data.width, data.height));
-		}
-		watch.Stop();
-		Mod.Logger.Info("Merchant House structure realm step: " + watch.ToString());
-	}
-
 	[Task]
 	public void Generate_GuideHouse() {
 
