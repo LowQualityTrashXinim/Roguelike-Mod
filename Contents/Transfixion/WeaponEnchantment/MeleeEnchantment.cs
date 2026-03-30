@@ -1570,14 +1570,20 @@ public class Muramasa : ModEnchantment {
 			crit += 5;
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
-			ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4, 3);
+		var melee = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
+			ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4);
+		if (melee.ModProjectile is SimplePiercingProjectile2 slash) {
+			slash.ScaleX = 3 + Main.rand.NextFloat();
+		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(2));
-			Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
-				ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4, 3);
+			var melee = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1),
+				ModContent.ProjectileType<SimplePiercingProjectile2>(), player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI, 1, 4);
+			if (melee.ModProjectile is SimplePiercingProjectile2 slash) {
+				slash.ScaleX = 3 + Main.rand.NextFloat();
+			}
 		}
 	}
 }

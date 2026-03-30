@@ -34,11 +34,12 @@ public class Roguelike_CobaltSword : GlobalItem {
 				counter -= 150;
 			}
 			for (int i = 0; i < 16; i++) {
-				var velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt();
-				var Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * (i * .25f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f + counter), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 3 + i * .5f);
+				var velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(180) * Main.rand.NextBool().ToDirectionInt();
+				var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100) + Main.rand.NextVector2Circular(50, 50), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * (.85f + (counter + i) * .1f)), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 10 + i * 2);
 				if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 					modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 					Swordprojectile.scale += .2f;
+					modproj.ScaleX = 3 + i * .5f;
 				}
 				Swordprojectile.usesIDStaticNPCImmunity = false;
 				Swordprojectile.usesLocalNPCImmunity = true;

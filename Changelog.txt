@@ -580,4 +580,5 @@ Flaming Wood Sword:
 520/ Overall buff armor defenses to be more align with mod's balancing.
 521/ Overall buff armor that is lacking behind in the mod.
 522/ Reworked most of the food and completed the food system.
-520/ Changed build number from 0.0.18.2 -> 0.0.19.
+523/ Updated Simple Piercing Slash projectile to have delay slash effect.
+524/ Changed build number from 0.0.18.2 -> 0.0.19.

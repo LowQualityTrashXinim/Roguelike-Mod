@@ -4017,6 +4017,11 @@ Mods: {
 				DisplayName: Food Cool Down
 				Description: You temporary can't consume more food.
 			}
+
+			Roguelike_LobsterTail_ModBuff: {
+				DisplayName: Roguelike_ Lobster Tail_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_LobsterTail_ModBuff.Description
+			}
 		}
 
 		Configs: {

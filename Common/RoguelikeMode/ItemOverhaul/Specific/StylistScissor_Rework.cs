@@ -42,7 +42,10 @@ public class Roguelike_StylistScissor_ModProjectile : ModProjectile {
 		Projectile.velocity.X *= 0.995f;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), target.Center, Main.rand.NextVector2CircularEdge(1, 1) * .1f,
-			ModContent.ProjectileType<SimplePiercingProjectile2>(), Projectile.damage / 2 + 1, 3f, Projectile.owner, .1f, 0, 3);
+		var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), target.Center, Main.rand.NextVector2CircularEdge(1, 1) * .1f,
+			ModContent.ProjectileType<SimplePiercingProjectile2>(), Projectile.damage / 2 + 1, 3f, Projectile.owner, .1f, 0);
+		if (proj.ModProjectile is SimplePiercingProjectile2 slash) {
+			slash.ScaleX = 3 + Main.rand.NextFloat();
+		}
 	}
 }

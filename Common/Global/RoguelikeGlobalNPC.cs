@@ -257,9 +257,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			if (++WrathOfBlueMoon >= 20) {
 				WrathOfBlueMoon = 20;
 				if (Main.rand.NextBool(10)) {
-					Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, player.whoAmI, 2, 30, 5);
+					Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, player.whoAmI, 2, 30);
 					if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
 						modproj.ProjectileColor = Color.Blue;
+						modproj.ScaleX = 5;
 					}
 				}
 			}
@@ -339,9 +340,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				if (++WrathOfBlueMoon >= 20) {
 					WrathOfBlueMoon = 20;
 					if (Main.rand.NextBool(10)) {
-						Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, projectile.owner, 2, 30, 5);
+						Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), 30 + (int)(npc.life * .01f), 0, projectile.owner, 2, 30);
 						if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
 							modproj.ProjectileColor = Color.Blue;
+							modproj.ScaleX = 5;
 						}
 					}
 				}
