@@ -17,7 +17,7 @@ internal class RichMahoganyArmor : ModArmorSet {
 class RichMahoganyHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.RichMahoganyHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "RichMahoganyArmor";
 		TypeEquipment = Type_Head;
@@ -30,7 +30,7 @@ class RichMahoganyHelmet : ModArmorPiece {
 class RichMahoganyBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.RichMahoganyBreastplate;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		AddTooltip = true;
 		ArmorName = "RichMahoganyArmor";
 		TypeEquipment = Type_Body;
@@ -43,7 +43,7 @@ class RichMahoganyBreastplate : ModArmorPiece {
 class RichMahoganyGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.RichMahoganyGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "RichMahoganyArmor";
 		TypeEquipment = Type_Leg;

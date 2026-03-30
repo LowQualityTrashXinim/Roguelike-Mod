@@ -17,7 +17,7 @@ internal class NinjaArmor : ModArmorSet {
 public class NinjaHood : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.NinjaHood;
-		Add_Defense = 2;
+		Add_Defense = 5;
 		TypeEquipment = Type_Head;
 		ArmorName = "NinjaArmor";
 		AddTooltip = true;
@@ -30,7 +30,7 @@ public class NinjaHood : ModArmorPiece {
 public class NinjaShirt : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.NinjaShirt;
-		Add_Defense = 2;
+		Add_Defense = 6;
 		TypeEquipment = Type_Body;
 		ArmorName = "NinjaArmor";
 		AddTooltip = true;
@@ -43,7 +43,7 @@ public class NinjaShirt : ModArmorPiece {
 public class NinjaPants : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.NinjaPants;
-		Add_Defense = 2;
+		Add_Defense = 5;
 		TypeEquipment = Type_Leg;
 		ArmorName = "NinjaArmor";
 		AddTooltip = true;

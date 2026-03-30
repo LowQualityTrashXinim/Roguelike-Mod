@@ -48,7 +48,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
-		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
+		RelicTemplateLoader.GetTemplate(templateid).OnSettingTemplate();
 		statlist.Add(stats);
 		value = value.Scale(valueMulti);
 		valuelist.Add(value);
@@ -66,7 +66,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
-		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
+		RelicTemplateLoader.GetTemplate(templateid).OnSettingTemplate();
 		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(this, player);
 		statlist.Add(innerStats);
 		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, innerStats);
@@ -86,7 +86,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
-		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
+		RelicTemplateLoader.GetTemplate(templateid).OnSettingTemplate();
 		statlist.Add(stats);
 		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, stats);
 		value = value.Scale(valueMulti);
@@ -132,12 +132,10 @@ public class Relic : ModItem {
 			relicsetLine = new(Mod, "relicSet", $"{relicset.DisplayName} ({Main.LocalPlayer.GetModPlayer<RelicSetPlayerHandle>().RelicSet[RelicSetType]}/{relicset.Requirement}) :\n{relicset.Description}");
 			extraname = relicset.DisplayName;
 		}
-		if (RelicPrefixedType != -1) {
-			RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
-			if (relicprefix != null) {
-				extraname = $"{relicprefix.DisplayName} {extraname}";
-				tooltips.Insert(nameIndex + 1, new(Mod, "RelicPrefixDesc", $"~{{ {relicprefix.Description} }}~"));
-			}
+		RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+		if (relicprefix != null) {
+			extraname = $"{relicprefix.DisplayName} {extraname}";
+			tooltips.Insert(nameIndex + 1, new(Mod, "RelicPrefixDesc", $"~{{ {relicprefix.Description} }}~"));
 		}
 		NameLine.Text = $"[Tier {TemplateCount}] {extraname} {DisplayName}";
 		NameLine.OverrideColor = relicColor.MultiColor(5);
@@ -152,11 +150,8 @@ public class Relic : ModItem {
 				continue;
 			}
 			StatModifier value = valuelist[i];
-			if (RelicPrefixedType != -1) {
-				RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
-				if (relicprefix != null) {
-					value = relicprefix.StatsModifier(Main.LocalPlayer, this, value, templatelist[i], i);
-				}
+			if (relicprefix != null) {
+				value = relicprefix.StatsModifier(Main.LocalPlayer, this, value, templatelist[i], i);
 			}
 			float tierUP = template.RelicTierUPValue * (RelicTier - 1);
 			if (value.Additive != 1)

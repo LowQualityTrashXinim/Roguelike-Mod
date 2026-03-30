@@ -222,6 +222,9 @@ class PerkDebugBtn : Roguelike_UIImageButton {
 		spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, GetInnerDimensions().Position(), null, color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 		Vector2 size1 = texture.Size();
 		Vector2 size2 = ahhlookingassdefaultbgsperktexture.Size();
+		if(ModPerkLoader.GetPerk(perkType) == null) {
+			return;
+		}
 		if (size1.X <= size2.X && size1.Y <= size2.Y && !ModPerkLoader.GetPerk(perkType).SmallScaleRegardless) {
 			spriteBatch.Draw(texture.Value, GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
 		}

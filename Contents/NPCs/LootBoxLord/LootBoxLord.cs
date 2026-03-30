@@ -156,6 +156,9 @@ internal class LootBoxLord : ModNPC {
 		if (--dialogCD > 0) {
 			return;
 		}
+		if (Main.LocalPlayer.ownedProjectileCounts[ModContent.ProjectileType<LootBoxLord_Minion>()] > 0) {
+			Enraged = true;
+		}
 		string dialog = "";
 		var color = Color.White;
 		if (ModContent.GetInstance<RogueLikeConfig>().SkipCutscene) {
@@ -165,16 +168,44 @@ internal class LootBoxLord : ModNPC {
 		}
 		switch (dialogNumber) {
 			case 0:
-				dialog = "I recognize you";
+				if (Enraged) {
+					dialog = "Oh";
+				}
+				else {
+					dialog = "I recognize you";
+				}
 				break;
 			case 1:
-				dialog = "... I see, if that is what you wish for";
+				if (Enraged) {
+					dialog = "You are terrible";
+				}
+				else {
+					dialog = "... I see, if that is what you wish for";
+				}
 				break;
 			case 2:
-				dialog = "I will entertain you";
+				if (Enraged) {
+					dialog = "You are doing this kind of run";
+				}
+				else {
+					dialog = "I will entertain you";
+				}
 				break;
 			case 3:
-				dialog = "Don't die too soon my grace.";
+				if (Enraged) {
+					dialog = "No matter what your excuse, I will stop you before you do more harm to us";
+				}
+				else {
+					dialog = "Don't die too soon my grace.";
+					if (Main.rand.NextBool(100)) {
+						dialog = "Remember the true enemy";
+					}
+				}
+				for (int i = 0; i < Main.projectile.Length; i++) {
+					if (Main.projectile[i].type == ModContent.ProjectileType<LootBoxLord_Minion>()) {
+						Main.projectile[i].Kill();
+					}
+				}
 				color = Color.Red;
 				BeforeAttack = false;
 				NPC.dontTakeDamage = false;
@@ -272,7 +303,6 @@ internal class LootBoxLord : ModNPC {
 				}
 			}
 			if (list_clones.Count <= 0) {
-				Main.NewText("Okay, you shouldn't have done that");
 				for (int i = 1; i <= 2; i++) {
 					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
 					RoguelikeGlobalNPC clone = newNPC.GetGlobalNPC<RoguelikeGlobalNPC>();
@@ -464,6 +494,9 @@ internal class LootBoxLord : ModNPC {
 	}
 	int lifeCounter = 0;
 	public override void PostAI() {
+		if(dialogNumber <= 3) {
+			return;
+		}
 		var player = Main.player[NPC.target];
 		if (!ModUtils.CompareSquareFloatValue(SpawnProjectileRingPos, player.Center, 850 * 850)) {
 			if (++lifeCounter < 120) {

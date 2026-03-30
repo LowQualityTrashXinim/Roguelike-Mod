@@ -7,6 +7,7 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Roguelike.Common.Utils {
 		public static bool CheckDashType(this Player player, string currentDash = "") {
 			return player.dashType == DashID.None && player.ModPlayerStats().CurrentDashType == currentDash;
 		}
-
+		public static bool Check_IsPlayerFlying(this Player player) => player.wingTime > 0 && player.wingTime < player.wingTimeMax;
 		/// <summary>
 		/// Basically the same as getting <code>player.GetModPlayer<![CDATA[<]]>PlayerStatsHandle<![CDATA[>]]>()</code>
 		/// </summary>
@@ -220,6 +221,12 @@ namespace Roguelike.Common.Utils {
 				}
 				player.ManaEffect(amount);
 			}
+		}
+		public static void EnergyHeal(this Player player, int amount) {
+			var statplayer = player.ModPlayerStats();
+			amount = (int)statplayer.EnergyRecharge.ApplyTo(amount);
+			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(amount);
+			CombatTextRevamp(player.Hitbox, Color.Cyan, "" + amount, timeleft: 15);
 		}
 		/// <summary>
 		/// First strike check

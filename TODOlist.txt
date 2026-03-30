@@ -1,36 +1,62 @@
 Implementation TODO:
-1/ Make world generation process much more easy to work with.
-2/ Work on more Trial NPC and Trial Projectile
-3/ Work on debuff and buff sprite and many minssing sprite in the mod.
-4/ Work on localization "TODO"
-5/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
-6/ Refactor User info tablet
-7/ Rework rarity system and tranmutation system.
-8/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-9/ Listing problematic content that need adjustment:
+1/ Make world generation process much more easy to work with and also add content to the world.
+- Each biome need to have their respective NPC spawn pool.
+- Add in NPC shop change
+>> Merchant: Focus on general weapon and general material goods.
+>> Mechanic: Focus on mechanic weapon and wires goods.
+>> Dryad: Focus on nature weapon and natural goods.
+>> Arm dealer: Focus on guns and bullets goods.
+- Each biome be it big or small should have its own dedicate biome exclusive structure.
+- Add in 1 time mod object text for each possible guide-interaction that may happen in the world.
+- Work on a custom faster underworld generation ( should copy from vanilla code and apply self patch for fast gen time )
+- Boss will have their own dedicated spawning location
+>> King Slime : slime biome
+>> EoC : Using sus eyes will drop player sanity which attract EoC
+>> EoW : 3 shadows orb scatter around Corruption
+>> BoC : station somewhere in the center of Crimson
+>> Skeletron : Guarding the entrance to Dungeon subworld
+>> Queen Bee : Bee hive ofc
+>> Deerclop : spawn naturally while in blizzard and you in the forest biome.
+>> Wall of Flesh : Underworld but with a custom spawn mechanic at 1 of underworld end.
+2/ Work on debuff and buff sprite and many missing sprite in the mod.
+3/ Work on localization "TODO"
+4/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
+5/ Refactor User info tablet 
+6/ Rework rarity system and tranmutation system.
+7/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+8/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
-10/ Added content based on biome.
-11/ Work on level item system ( not actual leveling system ).
-12/ Implement randomize spawn location mechanic.
-13/ Implement special characteristic for material :
-- Copper : Related to electricity and the debuff electricified
-- Tin : Strengthen using tin item related.
-- Iron : Defenses focus
-- Lead : General DoT focus
-- Silver : First strike focus
+9/ Work on level item system ( not actual leveling system ).
+10/ Implement randomize spawn location mechanic. // This is probably gonna be scrap because of intended gp experience.
+11/ Implement special characteristic for material :
 - Tungsten : ????
-- Gold : Midas theme focus
-- Platinum : Avarice
-14/ Implement Outro effect mechanic, the mechanic are to work as follow:
-- Each weapon produce their own outro point and have their own threadhold.
-- If a weapon outro point is not yet reach their threadhold and player switch to different weapon, then the outro point is reset back to 0.
-- Once player reach to the threadhold of outro point then upon switching to different weapon,
-instead of direct set to 0 the outro point is instead removed by the outro effect parent weapon threadhold amount.
-- Duplicate outro effect will instead have their timer reset and not added.
-- The following mechanic should also be implemented into Everlasting Overhaul.
-15/ Buff the following synergy weapon/upgrade visual:
-- The Orbit
-- Knife Revolver
-- Wooden Flamesword
-
+12/ Work on achievement.
+13/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
+14/ Merged Help with Info together and also add content for Help and Info.
+>>> These are the following contents that should be in Help:
+- Transmutation
+- Weapon enchantment
+- Augmentation
+- Relic
+- Skill
+- Perk
+>>> These are the following contents that should be in Info:
+- Weapon Tag system ( general )
+- Weapon Tag system ( detailed )
+- Outro and Intro system
+- Roguelike Overhaul
+- Synergy Weapon
+- Relic Template, Set, Prefix
+- Weapon Upgrade system
+>>> Extra clarification:
+- Content in "Help" is suppose to be general guide on how to use the content.
+- COntent in "Info" is detailed information of how supposed content gonna act.
+15/ Work on Weapon Essences consumable.
+16/ Work on food rework.
+17/ Make vanilla buff that work only on player to work also on NPC.
+18/ Add in a event tag system
+- Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
+- Event tag is a quick and easy way to add story to every run
 Testing TODO:
+1/ Food rework.
+-  

@@ -8,12 +8,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_Rambuten : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Rambutan;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3);
+	public override int LifeAmount() => 35;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Rambuten_Buff>(), ModUtils.ToMinute(8));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		Player_SkillPlayer(player).Modify_EnergyAmount(35);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

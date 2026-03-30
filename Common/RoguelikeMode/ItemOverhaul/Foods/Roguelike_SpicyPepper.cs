@@ -8,12 +8,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_SpicyPepper : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.SpicyPepper;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(15);
+	public override int EnergyAmount() => 120;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_SpicyPepper_Buff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		Player_SkillPlayer(player).Modify_EnergyAmount(120);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }
@@ -22,7 +22,7 @@ public class Roguelike_SpicyPepper_Buff : FoodItemTier1 {
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.MeleeAtkSpeed += .13f;
-		handler.UpdateMovement += .09f;
+		handler.AttackSpeed += .09f;
 		handler.UpdateDefenseBase.Base -= 7;
 		player.GetModPlayer<Roguelike_SpicyPepper_ModPlayer>().SpicyPepper = true;
 	}

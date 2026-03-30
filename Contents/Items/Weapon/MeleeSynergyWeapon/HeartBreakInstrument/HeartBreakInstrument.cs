@@ -210,7 +210,7 @@ public class HeartBreakInstrument : SynergyModItem {
 					}
 				}
 			}
-			Gclef proj2 = Get_ModProjectile();
+			Gclef proj2 = Get_ModProjectile(player);
 			if (proj2 != null) {
 				proj2.HitNote(player);
 			}
@@ -218,7 +218,7 @@ public class HeartBreakInstrument : SynergyModItem {
 		else if (count == 4) {
 			ComboChain_CoolDownAttack = ModUtils.ToSecond(1) + player.itemAnimationMax;
 			ComboChain_ResetTimer += ComboChain_CoolDownAttack;
-			Gclef proj = Get_ModProjectile();
+			Gclef proj = Get_ModProjectile(player);
 			if (proj != null) {
 				proj.MoveToCursorTime = 1200;
 			}
@@ -275,17 +275,18 @@ public class HeartBreakInstrument : SynergyModItem {
 					}
 				}
 			}
-			Gclef proj2 = Get_ModProjectile();
+			Gclef proj2 = Get_ModProjectile(player);
 			if (proj2 != null) {
 				proj2.HitNote(player);
 			}
 		}
 	}
-	private Gclef Get_ModProjectile() {
-		if (Projectile_WhoAmI <= -1 || Projectile_WhoAmI > 1000) {
+	private Gclef Get_ModProjectile(Player player) {
+		var musicPlayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
+		if (musicPlayer.Projectile_WhoAmI <= -1 || musicPlayer.Projectile_WhoAmI > 1000) {
 			return null;
 		}
-		return (Gclef)Main.projectile[Projectile_WhoAmI].ModProjectile;
+		return (Gclef)Main.projectile[musicPlayer.Projectile_WhoAmI].ModProjectile;
 	}
 	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
 		ComboChain_ResetTimer = ModUtils.CountDown(ComboChain_ResetTimer);
@@ -293,42 +294,19 @@ public class HeartBreakInstrument : SynergyModItem {
 		if (ComboChain_ResetTimer <= 0) {
 			ComboChain_Count = 0;
 		}
-		if (!player.IsHeldingModItem<HeartBreakInstrument>()) {
-			Gclef proj = Get_ModProjectile();
-			if (proj != null) {
-				proj.Set_KillState();
-			}
-			Projectile_WhoAmI = -1;
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy_Count = 0;
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy = false;
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().Effect = false;
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().KillProjectile();
-
-		}
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 		HeartBreakInstrument_Tool.SpawnDust(target);
 	}
 	int Projectile_WhoAmI = -1;
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+		var musicPlayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
 		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(Type)) {
 			WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, 1);
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().IntroEffectActivate = true;
+			musicPlayer.IntroEffectActivate = true;
 		}
 		if (player.ItemAnimationActive) {
-			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().IntroEffectActivate = false;
-		}
-
-		int type = ModContent.ProjectileType<Gclef>();
-		if (player.ownedProjectileCounts[ModContent.ProjectileType<Gclef>()] < 1) {
-			if (Projectile_WhoAmI == -1) {
-				Projectile_WhoAmI = Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, Vector2.Zero, type, (int)(player.GetWeaponDamage(Item) * .55f), 0, player.whoAmI);
-			}
-			else {
-				if (!Main.projectile[Projectile_WhoAmI].active) {
-					Projectile_WhoAmI = -1;
-				}
-			}
+			musicPlayer.IntroEffectActivate = false;
 		}
 	}
 	public override void AddRecipes() {
@@ -349,7 +327,41 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 	public int Instrument3_WhoAmI = -1;
 	public int Instrument4_WhoAmI = -1;
 	public bool IntroEffectActivate = false;
+	public int Projectile_WhoAmI = -1;
+	private Gclef Get_ModProjectile() {
+		if (Projectile_WhoAmI <= -1 || Projectile_WhoAmI > 1000) {
+			return null;
+		}
+		return (Gclef)Main.projectile[Projectile_WhoAmI].ModProjectile;
+	}
 	public override void ResetEffects() {
+		if (!Player.active) {
+			return;
+		}
+		if (!Player.IsHeldingModItem<HeartBreakInstrument>()) {
+			Gclef proj = Get_ModProjectile();
+			if (proj != null) {
+				proj.Set_KillState();
+			}
+			Projectile_WhoAmI = -1;
+			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy_Count = 0;
+			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy = false;
+			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().Effect = false;
+			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().KillProjectile();
+		}
+		else {
+			int type = ModContent.ProjectileType<Gclef>();
+			if (Player.ownedProjectileCounts[type] < 1) {
+				if (Projectile_WhoAmI == -1) {
+					Projectile_WhoAmI = Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), Player.Center, Vector2.Zero, type, (int)(Player.GetWeaponDamage(Player.HeldItem) * .55f), 0, Player.whoAmI);
+				}
+				else {
+					if (!Main.projectile[Projectile_WhoAmI].active) {
+						Projectile_WhoAmI = -1;
+					}
+				}
+			}
+		}
 		OnCoolDown = false;
 		CheckProjectileActive();
 		if (ClimaxOfTradegy_Count >= 30 && !ClimaxOfTradegy) {

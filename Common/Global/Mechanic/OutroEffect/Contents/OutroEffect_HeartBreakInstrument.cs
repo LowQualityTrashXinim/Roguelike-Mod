@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Mono.Cecil;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.HeartBreakInstrument;
 using Terraria;
 using Terraria.ModLoader;

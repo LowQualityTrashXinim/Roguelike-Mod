@@ -229,3 +229,359 @@ Nazar:
 	Cursed enemy will deal 75% less damage
 	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%
+Apple:
+	'''
+	+20% damage if over 75% HP
+	35% discount Nurse
+	'''
+AppleJuice:
+	'''
+	+7% dmg; 25% discount Nurse
+	+17% synergy dmg; +1.5 knockback
+	'''
+Banana:
+	'''
+	+13% non-critical strikes
+	7% chance to double projectile
+	'''
+BlackCurrent:
+	'''
+	+75 maxMP; +25% MP regen
+	2.5% to inflict Slow
+	'''
+BloodOrange:
+	'''
+	+40 maxHP; +25% HP regen
+	5% to inflict Bleeding
+	'''
+Cherry:
+	'''
+	+10% DR; +3 thorns
+	200% thorns explosion when hit
+	'''
+Coconut:
+	'''
+	+20% first strike damage
+	+4 defence; +7 DR
+	'''
+Elderberry:
+	'''
+	+9% ranged; +21% crit DMG
+	+17% to not consume ammo
+	'''
+BloodyMoscato:
+	'''
+	+2 life steal; + 30% heal effective
+	Give weapon imbue Ichor
+	+2 defence; +3 thorns
+	'''
+CartonofMilk:
+	'''
+	+1 defence for every 25HP
+	5% to inflict Broken Armor
+	'''
+JojaCola:
+	'''
+	+13% ranged; +9% crit chance
+	-8% defence; huge spread
+	'''
+Peach:
+	'''
+	+23% skill damage
+	+14% energy recharge
+	'''
+PeachSangria:
+	'''
+	+250 energy cap; +17% skill dmg
+	+13 energy regen; +15% skill duration
+	'''
+Pineapple:
+	'''
+	+7 thorns; +12% thorns
+	-5 defence
+	'''
+Rambutan:
+	'''
+	+1 life steal; +15% heal effective
+	+3 defence; +7% thorns
+	'''
+SpicyPepper:
+	'''
+	+13% melee speed; +9% attack speed
+	Grant weapon imbue Fire
+	-7 defence
+	'''
+Lemon:
+	'''
+	+25% debuff time inflict; +0.5 kB
+	weapon releases a small explosion on hit
+	explosion deal 45% weapon damage
+	'''
+Grapefruit:
+	'''
+	Have rare chance to spawns grape fruit 
+	Collecting grape fruit will make strike inflict DoT debuff
+	Effect cap out at 32; stacks reset when hit
+	'''
+Plum:
+	'''
+	Have 7% chance on striking enemey or 50% when hit by a enemy:
+	-2.5s on random debuff and +1s on random buff
+	'''
+Marshmallow:
+	'''
+	1.17x life regen; 1,21x mana regen
+	0.87x buff time; 1.35x debuff time
+	'''
+Apricot:
+	'''
+	0.93x debuff time;
+	1.06x buff effects; 
+	+4% food effects
+	'''
+Pomegranate:
+	'''
+	+40 max mana; +160 tmp mana
+	5% to inflict On Fire debuff for 3s
+	'''
+BunnyStew:
+	'''
+	23% mov, mining, placement speed
+	offers weak dash, weak double jump
+	'''
+CookedMarshmallow:
+	'''
+	+3 flat life regen; 1.52x buff time;
+	+3 mana regen; 0.7x debuff time
+	'''
+FrozenBananaDaiquiri:
+	'''
+	7% damage; 10% crit damage; 3% crit chance
+	7% to not ammo; immunity to fire
+	'''
+FruitJuice:
+	'''
+	+150 temp life; +2 life regen;
+	+2 def; +5% damage; +2% crit chance
+	+5% melee speed; +20% move speed; +5% mining speed
+	'''
+FruitSalad:
+	'''
+	+50 temp life; +5 flat life regen;
+	+2 def; +5% damage; +2% crit chance
+	+5% melee speed; +20% move speed; +5% mining speed
+	'''
+GrilledSquirrel:
+	'''
+	+6% movement speed ; +12% jump boost; fall distance are increased
+	while using a hook: +16% crit chance; 3.5% dodge
+	'''
+Lemonade:
+	'''
+	+0.25 invincibility; +13% true dmg;
+	+13% debuff time inflict; +1.25 kB
+	'''
+PinaColada:
+	'''
+	+50% first strike damage;
+	+9 DR; +11% thorns
+	'''
+PotatoChips:
+	'''
+	+25% summon; +1.5 minion kB
+	-15% melee; -20% atk speed
+	'''
+PumpkinPie:
+	'''
+	+9 def; 7 DR; on getting hurt: Releases a explosion 
+	damage of the explosion based on your defenses
+	Have a 5s cool down between explosion
+	'''
+RoastedBird:
+	'''
+	+35% flight; While flying:
+	1.23x first strike; +5 dodge chance 
+	'''
+SauteedFrogLegs:
+	'''
+	+35% jump; +15% speed;
+	+7% dodge chance
+	'''
+SmoothieofDarkness:
+	'''
+	+24% magic and ranged damage;
+	Range and magic attack inflicted cursed flame
+	-10% crit chance
+	'''
+TropicalSmoothie:
+	'''
+	+100 energy cap; +19% skill dmg;
+	-17% skill duration; +55% thorns;
+	'''
+BananaSplit:
+	'''
+	+25% non-critical strikes;
+	14% chance double projectile;
+	+1.25% def/s when hit (max 50%)
+	'''
+ChickenNugget:
+	'''
+	1.25x skill damage
+	0.45x skill duration
+	0.35x energy recharge
+	'''
+ChocolateChipCookie:
+	'''
+	every 10s spawn stationary cookies;
+	when clicking on cookie:
+	+10 heal; +10% dmg, crit and crit dmg for 12s
+	'''
+Coffee:
+	'''
+	+21% jump boost,movement speed 
+	+7% melee speed
+	Increases movement acceleration and de-acceleraion
+	'''
+DragonFruit:
+	'''
+	+60 max HP; +7 defence;
+	during flight: striking enemy have
+	10% inflict Withered Armor
+	'''
+FriedEgg:
+	'''
+	'+12% synergy dmg, +20% melee, ranged dmg;
+	on hit with melee and ranged:
+	+1% synergy dmg (max 30%)
+	'''
+Fries:
+	'''
+	+1 minion slots; +1 sentries;
+	+16% summon; +35% whip damage; 
+	+1.4 minion kB
+	'''
+Grapes:
+	'''
+	Reduce melee, range damage by 10%
+	35% of summon damage deal true damage
+	minion and its projectile have 10% to dealt 2nd strike
+	'''
+IceCream:
+	'''
+	+180 max mana; +220 temp mana;
+	+0.2 rapid mana; 1.12x magic
+	+50% mana cost
+	'''
+MonsterLasagna:
+	'''
+	40 maximum health and 80 maximum mana
+	+2 life steal and 30% heal effective
+	attacking have 1% to infclit Shadowflame on enemy
+	'''
+Nachos:
+	'''
+	+20% non-critical strike melee, 
+	range and magic damage; +25% move speed
+	+5 DR; +15% summoner damage
+	'''
+StarFruit:
+	'''
+	'+0.33s invincibility;
+	+15% magic dmg; -20% mana cost;
+	+50% mana regeneration
+	'''
+BowlofSoup:
+	'''
+	+1 extra life, +4 defense, +10% damage, 
+	+4% crit chance, +15% mining speed
+	+10% melee speed, +40% move speed
+	'''
+FroggieBunwich:
+	'''
+	+125% jump; 32% speed;
+	offers dash ability;
+	+17% dodge chance
+	'''
+PadThai:
+	'''
+	+420 energy cap; +25% energy recharge;
+	+34% skill duration; +32% energy regen
+	'''
+Pho:
+	'''
+	+1s temporary life, mana, energy lifetime
+	+110 temporary life; +220 temporary mana; 
+	+550 temporary energy; 1.12x HP, MP regen; 
+	+37% energy regen
+	'''
+PrismaticPunch:
+	'''
+	+0.43s invincibility; +9 defence;
+	+18% magic dmg; -27% mana cost;
+	Player take 60% less damage and counter attack
+	Counter attack will also releases several nebula fist (CD: 5s)
+	'''
+RoastedDuck:
+	'''
+	+75% flight; while flying or in liquid:
+	1.65x direct strike; +20 dodge chance;
+	Your weapon inflict Cursed Flames
+	'''
+Bacon:
+	'''
+	During moving, you accumulate a stack
+	after reaching 100 stacks, next attack +200% damage
+	15% dodge chance, 25% velocity added to thorns
+	'''
+BBQRibs:
+	'''
+	1.2x melee; 15% nearby heart when hit
+	while dealing damage: +1 def (CD:1s) (max 50); 
+	25% gained def contribute to life regen
+	'''
+GingerbreadCookie:
+	'''
+	1.2x magic, 15% mana star on impact;
+	+15s debuff inflict; +400 temp mana
+	'''
+Hotdog:
+	'''
+	Attacking have 5% to deal extra strike
+	extra strike deal 20% weapon damage and
+	is counted as pure damage, +10% true damage
+	'''
+SugarCookie:
+	'''
+	+30% mov; +20% jump boost
+	Damage is increased by 40% velocity; 
+	-25% crit rate; shooting became inaccurate
+	'''
+ApplePie:
+	'''
+	immunity to Chilled; +10% damage reduction;
+	upon killing a enemy heal 5% maximum health
+	'''
+ChristmasPudding:
+	'''
+	+0.2s invincibility; +5 DR; -50% debuff time
+	Have 15% chance to halve incoming damage
+	Grant 65% knock back resistance
+	'''
+GoldenDelight:
+	'''
+	+10% crit chance; +35 crit dmg;
+	Reduce 5-50% taken damage
+	Inflicts Midas for 5-9s
+	'''
+Pizza:
+	'''
+	'+1 minion slots; +1 sentries;
+	+20% summon; +30% summon tag;
+	+3 minion kB; -25% atk speed
+	'''
+LobsterTail:
+	'''
+	When you get hit, do a counter attack (CD:2s)
+	Counter attack deal 500% damage based on taken damage
+	Above effect is enhanced when player are either wet or in water
+	'''

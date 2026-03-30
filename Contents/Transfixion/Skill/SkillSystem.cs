@@ -492,6 +492,10 @@ public class SkillHandlePlayer : ModPlayer {
 			}
 		}
 	}
+	/// <summary>
+	/// This is a direct way to modify energy amount
+	/// </summary>
+	/// <param name="amount"></param>
 	public void Modify_EnergyAmount(int amount) {
 		Energy = Math.Clamp(Energy + amount, 0, EnergyCap);
 	}

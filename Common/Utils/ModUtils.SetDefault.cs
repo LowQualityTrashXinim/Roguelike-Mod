@@ -258,6 +258,12 @@ public static class Roguelike_DamageClass {
 	/// Vanilla summoner re-implementation that have crit enable
 	/// </summary>
 	public static DamageClass Summon => new Roguelike_SummonDamageClass();
+	/// <summary>
+	/// This is mod custom damage class<br/>
+	/// Not to be confused with True damage, this damage class will take all of vanilla damage modifier<br/>
+	/// And then calculated the damage to be increased.
+	/// </summary>
+	public static DamageClass Pure => new Roguelike_SummonDamageClass();
 }
 public class Roguelike_SummonDamageClass : VanillaDamageClass {
 	protected override string LangKey => "LegacyTooltip.53";
@@ -270,4 +276,11 @@ public class Roguelike_SummonDamageClass : VanillaDamageClass {
 		}
 	}
 	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Magic;
+}
+public class Roguelike_PureDamageClass : VanillaDamageClass {
+	protected override string LangKey => "Pure";
+	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+		return StatInheritanceData.Full;
+	}
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Default;
 }

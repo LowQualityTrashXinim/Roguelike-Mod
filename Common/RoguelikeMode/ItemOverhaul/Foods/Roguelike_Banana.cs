@@ -10,12 +10,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_Banana : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Banana;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(5);
+	public override int EnergyAmount() => 80;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(2);
 		SetBuff(item, ModContent.BuffType<Roguelike_Banana_Buff>(), ModUtils.ToSecond(2.5f));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		Player_SkillPlayer(player).Modify_EnergyAmount(80);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

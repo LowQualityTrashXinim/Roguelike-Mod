@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.NoneSynergy.StaffOfLootbox.Projectiles;
+using Roguelike.Contents.NPCs.LootBoxLord;
 using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;
 using System;
@@ -35,6 +36,9 @@ internal class LootBoxLordSummon : ModItem {
 		Item.buffType = ModContent.BuffType<LootBoxLordProtection>();
 
 		Item.shoot = ModContent.ProjectileType<LootBoxLord_Minion>();
+	}
+	public override bool CanUseItem(Player player) {
+		return player.ownedProjectileCounts[Item.shoot] < 1 && !NPC.AnyNPCs(ModContent.NPCType<LootBoxLord>());
 	}
 	public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = Main.MouseWorld;

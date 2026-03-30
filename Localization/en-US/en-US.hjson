@@ -513,6 +513,8 @@ Mods: {
 			HeartBreakInstrument_Note_Projectile.DisplayName: Heart Break Instrument_ Note_ Projectile
 			Enchantment_FalconBladeProjectile.DisplayName: Enchantment_ Falcon Blade Projectile
 			PurpleClubberfishProjectile.DisplayName: Purple Clubberfish Projectile
+			FlamingWoodSwordWave.DisplayName: Flaming Wood Sword Wave
+			Roguelike_ChocolateChipCookie_ModProjectile.DisplayName: Roguelike_ Chocolate Chip Cookie_ Mod Projectile
 		}
 
 		NPCs: {
@@ -623,6 +625,7 @@ Mods: {
 			}
 
 			Merciless: {
+				DisplayName: Merciless
 				Tooltip:
 					'''
 					"You may now defend your lawn the way eagles intended"
@@ -630,7 +633,6 @@ Mods: {
 					Increases damage by 50% against enemy with over 80% or under 30% health
 					Completes a cycle by shotting a cannonball deal 400% weapon damage
 					'''
-				DisplayName: Merciless
 			}
 
 			AmethystBow: {
@@ -689,6 +691,7 @@ Mods: {
 			}
 
 			HeartPistol: {
+				DisplayName: Heart pistol
 				Tooltip:
 					'''
 					"Suffocate your enemies with love!~"
@@ -707,7 +710,6 @@ Mods: {
 					After you attack using different weapon and then use this weapon
 					you gain Heart Pistol passive for 5s
 					'''
-				DisplayName: Heart pistol
 			}
 
 			Gunmerang: {
@@ -869,7 +871,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Oath of the Winter Knight"
-					Hitting the enemy will rain down frost bolt and ice bolt toward the enemy
+					Hitting the enemy will rain down frost bolts and ice bolts toward the enemy
 					Upon 20 strike, generate a field that grant user "Winter Knight" buff for 60s
 					While user have "Winter Knight" buff, every strike that count toward the buff is ingore
 					'''
@@ -1605,8 +1607,9 @@ Mods: {
 			}
 
 			ConfrontTrueGod: {
-				DisplayName: Confront True God
+				DisplayName: The Gear
 				Tooltip: End this run so early ?
+				ExtraInfo: To my future, using this in specific location may or may not be benefitial
 			}
 
 			WeaponLootBox: {
@@ -2666,7 +2669,7 @@ Mods: {
 				DisplayName: Akai Hanbun No Hasami
 				Tooltip:
 					'''
-					"The fate shall never bind me, as I will cut them and save you from endless loop of tragedy"
+					"Fate shall never bind me as I will sever them and save you from endless cycle of tragedy"
 					At 3rd combo attack will create a large forward slash that deal 250% more damage
 					Alt-click will inflict all enemy near cursor with "Thread of Fate"
 					Dealing damage to build up "Thread Cutter"
@@ -2685,6 +2688,7 @@ Mods: {
 					- 1st attack: deal 34% weapon damage
 					- 2nd attack: deal 45% weapon damage
 					- 3rd attack: enhanced the attack further and deal 115% weapon daamge
+					After the 3rd attack, releases a series of slashes that last for 5s dealing weapon damage at your position
 
 					During enhanced attack animation, you will completely ignore any contact damage hit
 					'''
@@ -2694,11 +2698,9 @@ Mods: {
 				DisplayName: Instrumental Heart Break
 				Tooltip:
 					'''
-					"Even if my mind fall apart, even if we are separate by universe, I will still find and love you"
-					Every attacks releases a slash that deal 100% weapon damage
-					Gclef attack alongside you dealing 55% weapon damage to all nearby enemy
+					"Even if my mind falls apart, even if we are separated by universe, I will still find and love you"
+					Gclef attack alongside you
 					Right click to summon 4 small weak blades that attack with you 
-					Each blade releases a small slashes that deal 55% weapon damage
 					'''
 				ExtraInfo:
 					'''
@@ -2708,9 +2710,9 @@ Mods: {
 					During the duration, every normal attack is enhanced and you summon 4 musical instruments
 
 					During Climax of Tragedy, normal attack will increases Climax of Tragedy stack instead of Gclef
-					Reaching the max stack will make the next attack releases a skill
+					Reaching the 30 stacks will make the next attack releases a skill
 
-					During the "Climax of Tragedy" peak:
+					At the "Climax of Tragedy" peak:
 					Left click: make every musical instruments do a final attack dealing 100 + 1500% weapon damage
 					Right click: make every musical instrument fly rotate around you and heal you for 100 + 5% maximum health 
 					and granting you 20% damage, 10% crit chance, 20 hp regen, 15 DEF and 30% movement speed for 15s
@@ -2785,18 +2787,27 @@ Mods: {
 				DisplayName: Stardust Symphony
 				Tooltip:
 					'''
-					Summon star at where the cursor at ( maximum range can only be 450 pixel away from player )
-					Each chain attack will summon more star at the maximum of 3 and then unleash special chain ending attack
-					Each attack that hit will summon 1 floating star
+					Summon star at where the cursor at
 					Right click will summon 10 star around you and heal you for 100 hp ( CD: 15s )
 					Each attack hit will heal you for 5 - 25 + 0.5% weapon damage HP
-					After hitting up to 89 times, right clicking again will summon a field that increases 15% crit chance and 45% crit damage
-					while player are in the field they will heal 34 + 5% HP and 45 + 5% Mana and basic attack are enhanced
+					After attacking 30 times, right clicking again will summon a Stardust Array
+					'''
+				ExtraInfo:
+					'''
+					During Stardust Array active: 
+					Increases 15% crit chance and 45% crit damage
+					Player are heal 34 + 5% HP and 45 + 5% Mana
+					Basic attack are enhanced
 					'''
 			}
 
 			WeaponEssence: {
 				DisplayName: Weapon Essence
+				Tooltip: ""
+			}
+
+			Roguelike_Grapefruit_Item: {
+				DisplayName: Roguelike_ Grapefruit_ Item
 				Tooltip: ""
 			}
 		}
@@ -3662,6 +3673,11 @@ Mods: {
 					'''
 			}
 
+			AmberBoneThrown_CoolDown: {
+				DisplayName: Thrown Cool Down
+				Description: On cool down
+			}
+
 			Parry_Buff: {
 				DisplayName: Parry_ Buff
 				Description: Mods.Roguelike.Buffs.Parry_Buff.Description
@@ -3752,9 +3768,254 @@ Mods: {
 				Description: Mods.Roguelike.Buffs.Roguelike_SpicyPepper_Buff.Description
 			}
 
-			AmberBoneThrown_CoolDown: {
-				DisplayName: Amber Bone Thrown_ Cool Down
-				Description: Mods.Roguelike.Buffs.AmberBoneThrown_CoolDown.Description
+			Roguelike_Apricot_Buff: {
+				DisplayName: Roguelike_ Apricot_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Apricot_Buff.Description
+			}
+
+			Roguelike_Grapefruit_ModBuff: {
+				DisplayName: Roguelike_ Grapefruit_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Grapefruit_ModBuff.Description
+			}
+
+			Roguelike_BunnyStew_ModBuff: {
+				DisplayName: Roguelike_ Bunny Stew_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BunnyStew_ModBuff.Description
+			}
+
+			Roguelike_CookedMarshmallow_ModBuff: {
+				DisplayName: Roguelike_ Cooked Marshmallow_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_CookedMarshmallow_ModBuff.Description
+			}
+
+			Roguelike_Grapefruit_ModDeBuff: {
+				DisplayName: Roguelike_ Grapefruit_ Mod De Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Grapefruit_ModDeBuff.Description
+			}
+
+			Roguelike_Lemon_Buff: {
+				DisplayName: Roguelike_ Lemon_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Lemon_Buff.Description
+			}
+
+			Roguelike_Marshmallow_ModBuff: {
+				DisplayName: Roguelike_ Marshmallow_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Marshmallow_ModBuff.Description
+			}
+
+			Roguelike_Plum_ModBuff: {
+				DisplayName: Roguelike_ Plum_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Plum_ModBuff.Description
+			}
+
+			Roguelike_Pomegranate_ModBuff: {
+				DisplayName: Roguelike_ Pomegranate_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Pomegranate_ModBuff.Description
+			}
+
+			Roguelike_FrozenBananaDaiquiri_ModBuff: {
+				DisplayName: Roguelike_ Frozen Banana Daiquiri_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_FrozenBananaDaiquiri_ModBuff.Description
+			}
+
+			Roguelike_FruitJuice_ModBuff: {
+				DisplayName: Roguelike_ Fruit Juice_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_FruitJuice_ModBuff.Description
+			}
+
+			Roguelike_FruitSalad_ModBuff: {
+				DisplayName: Roguelike_ Fruit Salad_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_FruitSalad_ModBuff.Description
+			}
+
+			Roguelike_BananaSplit_ModBuff: {
+				DisplayName: Roguelike_ Banana Split_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BananaSplit_ModBuff.Description
+			}
+
+			Roguelike_GrilledSquirrel_ModBuff: {
+				DisplayName: Roguelike_ Grilled Squirrel_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_GrilledSquirrel_ModBuff.Description
+			}
+
+			Roguelike_Lemonade_ModBuff: {
+				DisplayName: Roguelike_ Lemonade_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Lemonade_ModBuff.Description
+			}
+
+			Roguelike_PinaColada_ModBuff: {
+				DisplayName: Roguelike_ Pina Colada_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PinaColada_ModBuff.Description
+			}
+
+			Roguelike_PotatoChips_ModBuff: {
+				DisplayName: Roguelike_ Potato Chips_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PotatoChips_ModBuff.Description
+			}
+
+			Roguelike_PumpkinPie_ModBuff: {
+				DisplayName: Roguelike_ Pumpkin Pie_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PumpkinPie_ModBuff.Description
+			}
+
+			Roguelike_RoastedBird_ModBuff: {
+				DisplayName: Roguelike_ Roasted Bird_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_RoastedBird_ModBuff.Description
+			}
+
+			Roguelike_SauteedFrogLegs_ModBuff: {
+				DisplayName: Roguelike_ Sauteed Frog Legs_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_SauteedFrogLegs_ModBuff.Description
+			}
+
+			Roguelike_SmoothieOfDarkness_ModBuff: {
+				DisplayName: Roguelike_ Smoothie Of Darkness_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_SmoothieOfDarkness_ModBuff.Description
+			}
+
+			Roguelike_TropicalSmoothie_ModBuff: {
+				DisplayName: Roguelike_ Tropical Smoothie_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_TropicalSmoothie_ModBuff.Description
+			}
+
+			Roguelike_ChickenNugget_ModBuff: {
+				DisplayName: Roguelike_ Chicken Nugget_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_ChickenNugget_ModBuff.Description
+			}
+
+			Roguelike_ChocolateChipCookie_Buff: {
+				DisplayName: Chocolate Chip Cookie buff
+				Description: +10% damage, crit chance, crit damage
+			}
+
+			Roguelike_ChocolateChipCookie_ModBuff: {
+				DisplayName: Chocolate Chip Cookie
+				Description: Click the cookies !
+			}
+
+			Roguelike_Coffee_ModBuff: {
+				DisplayName: Roguelike_ Coffee_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Coffee_ModBuff.Description
+			}
+
+			Roguelike_DragonFruit_ModBuff: {
+				DisplayName: Roguelike_ Dragon Fruit_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_DragonFruit_ModBuff.Description
+			}
+
+			Roguelike_FriedEgg_ModBuff: {
+				DisplayName: Roguelike_ Fried Egg_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_FriedEgg_ModBuff.Description
+			}
+
+			Roguelike_Fries_ModBuff: {
+				DisplayName: Roguelike_ Fries_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Fries_ModBuff.Description
+			}
+
+			Roguelike_BowlofSoup_ModBuff: {
+				DisplayName: Roguelike_ Bowlof Soup_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BowlofSoup_ModBuff.Description
+			}
+
+			Roguelike_FroggieBunwich_ModBuff: {
+				DisplayName: Roguelike_ Froggie Bunwich_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_FroggieBunwich_ModBuff.Description
+			}
+
+			Roguelike_Grapes_ModBuff: {
+				DisplayName: Roguelike_ Grapes_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Grapes_ModBuff.Description
+			}
+
+			Roguelike_IceCream_ModBuff: {
+				DisplayName: Roguelike_ Ice Cream_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_IceCream_ModBuff.Description
+			}
+
+			Roguelike_MonsterLasagna_ModBuff: {
+				DisplayName: Roguelike_ Monster Lasagna_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_MonsterLasagna_ModBuff.Description
+			}
+
+			Roguelike_Nachos_ModBuff: {
+				DisplayName: Roguelike_ Nachos_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Nachos_ModBuff.Description
+			}
+
+			Roguelike_PadThai_ModBuff: {
+				DisplayName: Roguelike_ Pad Thai_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PadThai_ModBuff.Description
+			}
+
+			Roguelike_Pho_ModBuff: {
+				DisplayName: Roguelike_ Pho_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Pho_ModBuff.Description
+			}
+
+			Roguelike_PrismaticPunch_ModBuff: {
+				DisplayName: Roguelike_ Prismatic Punch_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_PrismaticPunch_ModBuff.Description
+			}
+
+			Roguelike_Starfruit_ModBuff: {
+				DisplayName: Roguelike_ Starfruit_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Starfruit_ModBuff.Description
+			}
+
+			Roguelike_Bacon_ModBuff: {
+				DisplayName: Roguelike_ Bacon_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Bacon_ModBuff.Description
+			}
+
+			Roguelike_BBQRibs_ModBuff: {
+				DisplayName: Roguelike_ B B Q Ribs_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_BBQRibs_ModBuff.Description
+			}
+
+			Roguelike_RoastedDuck_ModBuff: {
+				DisplayName: Roguelike_ Roasted Duck_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_RoastedDuck_ModBuff.Description
+			}
+
+			Roguelike_ApplePie_ModBuff: {
+				DisplayName: Apple Pie
+				Description: Mods.Roguelike.Buffs.Roguelike_ApplePie_ModBuff.Description
+			}
+
+			Roguelike_ChristmasPudding_ModBuff: {
+				DisplayName: Christmas Pudding
+				Description: Mods.Roguelike.Buffs.Roguelike_ChristmasPudding_ModBuff.Description
+			}
+
+			Roguelike_GingerbreadCookie_ModBuff: {
+				DisplayName: Gingerbread Cookie
+				Description: Mods.Roguelike.Buffs.Roguelike_GingerbreadCookie_ModBuff.Description
+			}
+
+			Roguelike_GoldenDelight_ModBuff: {
+				DisplayName: Golden Delight
+				Description: Mods.Roguelike.Buffs.Roguelike_GoldenDelight_ModBuff.Description
+			}
+
+			Roguelike_Hotdog_ModBuff: {
+				DisplayName: Hotdog
+				Description: Mods.Roguelike.Buffs.Roguelike_Hotdog_ModBuff.Description
+			}
+
+			Roguelike_Pizza_ModBuff: {
+				DisplayName: Pizza
+				Description: Mods.Roguelike.Buffs.Roguelike_Pizza_ModBuff.Description
+			}
+
+			Roguelike_SugarCookie_ModBuff: {
+				DisplayName: Sugar Cookie
+				Description: Mods.Roguelike.Buffs.Roguelike_SugarCookie_ModBuff.Description
+			}
+
+			FoodCoolDown: {
+				DisplayName: Food Cool Down
+				Description: You temporary can't consume more food.
 			}
 		}
 

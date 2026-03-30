@@ -14,7 +14,7 @@ internal class BorealwoodArmor : ModArmorSet {
 class BorealWoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.BorealWoodHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		ArmorName = "BorealwoodArmor";
 		AddTooltip = true;
 		TypeEquipment = Type_Head;
@@ -29,7 +29,7 @@ class BorealWoodHelmet : ModArmorPiece {
 class BorealWoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.BorealWoodBreastplate;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		ArmorName = "BorealwoodArmor";
 		AddTooltip = true;
 		TypeEquipment = Type_Body;
@@ -44,7 +44,7 @@ class BorealWoodBreastplate : ModArmorPiece {
 class BorealWoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.BorealWoodGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		ArmorName = "BorealwoodArmor";
 		AddTooltip = true;
 		TypeEquipment = Type_Leg;

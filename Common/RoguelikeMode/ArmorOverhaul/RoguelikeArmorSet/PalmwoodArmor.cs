@@ -19,7 +19,7 @@ internal class PalmwoodArmor : ModArmorSet {
 public class PalmWoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PalmWoodHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		TypeEquipment = Type_Head;
 		ArmorName = "PalmwoodArmor";
 		AddTooltip = true;
@@ -31,7 +31,7 @@ public class PalmWoodHelmet : ModArmorPiece {
 public class PalmWoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PalmWoodBreastplate;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		TypeEquipment = Type_Body;
 		ArmorName = "PalmwoodArmor";
 		AddTooltip = true;
@@ -53,7 +53,7 @@ public class SandArmorBuff : ModBuff {
 public class PalmWoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PalmWoodGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		TypeEquipment = Type_Leg;
 		ArmorName = "PalmwoodArmor";
 		AddTooltip = true;

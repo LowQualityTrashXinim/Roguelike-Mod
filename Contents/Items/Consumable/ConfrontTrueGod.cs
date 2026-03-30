@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -14,6 +17,7 @@ internal class ConfrontTrueGod : ModItem {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
+		Item.Set_InfoItem();
 	}
 	int delayBetweenSwitch = 0;
 	int CurrentItemTexture = 0;
@@ -35,14 +39,27 @@ internal class ConfrontTrueGod : ModItem {
 		}
 	}
 	public override bool? UseItem(Player player) {
-		if (!player.dead) {
-			string whoAmI = "False God";
-			if (!NPC.downedMoonlord) {
-				whoAmI = "\"True\" God";
+		if (!player.dead && player.ItemAnimationJustStarted) {
+			if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(player.position.ToPoint())).Any()) {
+				if (Main.rand.NextBool()) {
+					player.QuickSpawnItem(new EntitySource_Misc("Gift"), ModContent.ItemType<WorldEssence>());
+				}
+				else {
+					KillPlayer(player);
+				}
 			}
-			player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} has confront {whoAmI}")), 9999999999, 1);
+			else {
+				KillPlayer(player);
+			}
 		}
 		return true;
+	}
+	private void KillPlayer(Player player) {
+		string whoAmI = "False God";
+		if (!NPC.downedMoonlord) {
+			whoAmI = "\"True\" God";
+		}
+		player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} has confront {whoAmI}")), 9999999999, 1);
 	}
 	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 		int length = TextureAssets.Item.Length;

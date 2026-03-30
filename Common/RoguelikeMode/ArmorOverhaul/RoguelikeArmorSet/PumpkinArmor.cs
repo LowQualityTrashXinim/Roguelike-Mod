@@ -19,19 +19,19 @@ internal class PumpkinArmor : ModArmorSet {
 public class PumpkinHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PumpkinHelmet;
-		Add_Defense = 2;
+		Add_Defense = 12;
 	}
 }
 public class PumpkinBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PumpkinBreastplate;
-		Add_Defense = 3;
+		Add_Defense = 13;
 	}
 }
 public class PumpkinLeggings : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PumpkinLeggings;
-		Add_Defense = 2;
+		Add_Defense = 12;
 	}
 }
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
@@ -74,6 +75,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		Endurance = 0;
 	}
+	public int Grapefruit = 0;
 	public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {
 		if (IsAGhostEnemy) {
 			return false;
@@ -389,6 +391,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			playerIndex = npc.FindClosestPlayer();
 		}
 		var player = Main.player[playerIndex];
+		if (player.GetModPlayer<Roguelike_ApplePie_ModPlayer>().ApplePie) {
+			player.Heal((int)(player.statLifeMax2 * .05f + 1));
+		}
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
 		if (npc.boss && player.GetModPlayer<GamblePlayer>().GodDice) {

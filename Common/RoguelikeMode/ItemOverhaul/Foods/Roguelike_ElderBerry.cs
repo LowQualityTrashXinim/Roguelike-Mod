@@ -7,12 +7,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_ElderBerry : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Elderberry;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3);
+	public override int ManaAmount() => 21;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = 60;
 		SetBuff(item, ModContent.BuffType<Roguelike_ElderBerry_Buff>(), ModUtils.ToMinute(8));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		player.ManaHeal(21);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

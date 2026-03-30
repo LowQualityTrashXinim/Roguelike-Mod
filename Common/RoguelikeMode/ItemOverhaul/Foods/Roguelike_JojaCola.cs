@@ -8,12 +8,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_JojaCola : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.JojaCola;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(2);
+	public override int EnergyAmount() => 40;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = 30;
 		SetBuff(item, ModContent.BuffType<Roguelike_JojaCola_Buff>(), ModUtils.ToMinute(3));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		Player_SkillPlayer(player).Modify_EnergyAmount(40);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

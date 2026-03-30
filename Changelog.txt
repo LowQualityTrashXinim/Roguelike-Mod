@@ -568,3 +568,16 @@ Zap Snapper:
 - Nerf the lighting shotm effect from synergy bonus no longer spawn additional projectile.
 Bloody Shot:
 - Fixed a issue where even when the target NPC don't have the debuff, they still spawn Boiling Blood projectile.
+Flaming Wood Sword:
++ Gave flaming wood sword a wave projectile that deal 10% of weapon damage.
+513/ Fixed a bug that caused debuff dealing weapon does more damage based on debuff that enemy have.
+514/ Added a enraged condition for Lootbox Lord, Lootbox Lord minion also gain a conditional can use item.
+515/ Updated tooltip for food, now food can have its own buff localization.
+516/ Added several food rework.
+517/ Added new player stats.
+518/ Improved stability of a item.
+519/ Reworked Tungsten Armor piece and set bonus.
+520/ Overall buff armor defenses to be more align with mod's balancing.
+521/ Overall buff armor that is lacking behind in the mod.
+522/ Reworked most of the food and completed the food system.
+520/ Changed build number from 0.0.18.2 -> 0.0.19.

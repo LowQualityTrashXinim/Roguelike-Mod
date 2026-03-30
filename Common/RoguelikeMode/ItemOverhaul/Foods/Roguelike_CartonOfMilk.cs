@@ -7,12 +7,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_CartonOfMilk : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.MilkCarton;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(4);
+	public override int LifeAmount() => 85;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = 90;
 		SetBuff(item, ModContent.BuffType<Roguelike_CartonOfMilk_Buff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		player.Heal(85);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

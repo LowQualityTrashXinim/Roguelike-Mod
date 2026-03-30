@@ -8,13 +8,13 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_BlackCurrent : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.BlackCurrant;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(1.5f);
+	public override int ManaAmount() => 60;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BlackCurrent_Buff>(), ModUtils.ToMinute(6));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-		player.ManaHeal(60);
 	}
 }
 public class Roguelike_BlackCurrent_Buff : FoodItemTier1 {

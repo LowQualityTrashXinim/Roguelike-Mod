@@ -8,12 +8,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_Coconut : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Coconut;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3);
+	public override int LifeAmount() => 32;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Coconut_Buff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		player.Heal(32);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

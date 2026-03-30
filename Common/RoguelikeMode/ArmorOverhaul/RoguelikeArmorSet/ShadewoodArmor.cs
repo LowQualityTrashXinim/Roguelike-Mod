@@ -17,7 +17,7 @@ internal class ShadewoodArmor : ModArmorSet {
 public class ShadewoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "ShadewoodArmor";
 		TypeEquipment = Type_Head;
@@ -30,7 +30,7 @@ public class ShadewoodHelmet : ModArmorPiece {
 public class ShadewoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodBreastplate;
-		Add_Defense = 3;
+		Add_Defense = 14;
 		AddTooltip = true;
 		ArmorName = "ShadewoodArmor";
 		TypeEquipment = Type_Body;
@@ -43,7 +43,7 @@ public class ShadewoodBreastplate : ModArmorPiece {
 public class ShadewoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "ShadewoodArmor";
 		TypeEquipment = Type_Leg;

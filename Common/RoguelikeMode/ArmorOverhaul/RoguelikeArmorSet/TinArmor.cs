@@ -19,7 +19,7 @@ internal class TinArmor : ModArmorSet {
 public class TinHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinHelmet;
-		Add_Defense = 4;
+		Add_Defense = 10;
 		AddTooltip = true;
 		ArmorName = "TinArmor";
 		TypeEquipment = Type_Head;
@@ -31,7 +31,7 @@ public class TinHelmet : ModArmorPiece {
 public class TinChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinChainmail;
-		Add_Defense = 5;
+		Add_Defense = 11;
 		AddTooltip = true;
 		ArmorName = "TinArmor";
 		TypeEquipment = Type_Body;
@@ -43,7 +43,7 @@ public class TinChainmail : ModArmorPiece {
 public class TinGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinGreaves;
-		Add_Defense = 4;
+		Add_Defense = 9;
 		AddTooltip = true;
 		ArmorName = "TinArmor";
 		TypeEquipment = Type_Leg;

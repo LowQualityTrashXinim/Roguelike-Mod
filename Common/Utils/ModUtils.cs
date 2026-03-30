@@ -5,6 +5,7 @@ using SubworldLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent;
@@ -13,6 +14,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {

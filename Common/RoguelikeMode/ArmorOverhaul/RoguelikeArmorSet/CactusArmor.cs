@@ -16,7 +16,7 @@ internal class CactusArmor : ModArmorSet {
 public class CactusHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusHelmet;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		AddTooltip = true;
 		ArmorName = "CactusArmor";
 		TypeEquipment = Type_Head;
@@ -30,7 +30,7 @@ public class CactusHelmet : ModArmorPiece {
 public class CactusBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusBreastplate;
-		Add_Defense = 5;
+		Add_Defense = 15;
 		AddTooltip = true;
 		ArmorName = "CactusArmor";
 		TypeEquipment = Type_Body;
@@ -44,7 +44,7 @@ public class CactusBreastplate : ModArmorPiece {
 public class CactusLeggings : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusLeggings;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		AddTooltip = true;
 		ArmorName = "CactusArmor";
 		TypeEquipment = Type_Leg;

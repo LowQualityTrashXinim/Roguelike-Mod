@@ -17,19 +17,19 @@ internal class PearlwoodArmor : ModArmorSet {
 public class PearlwoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PearlwoodHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 	}
 }
 public class PearlwoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PearlwoodBreastplate;
-		Add_Defense = 4;
+		Add_Defense = 14;
 	}
 }
 public class PearlwoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.PearlwoodGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 	}
 
 }

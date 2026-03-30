@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Common.Utils;
-using Roguelike.Common.RoguelikeMode.ArmorOverhaul;
 
 namespace Roguelike.Common.RoguelikeMode.ArmorOverhaul.RoguelikeArmorSet;
 internal class CopperArmor : ModArmorSet {
@@ -16,7 +15,7 @@ internal class CopperArmor : ModArmorSet {
 public class CopperHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperHelmet;
-		Add_Defense = 2;
+		Add_Defense = 11;
 		TypeEquipment = Type_Head;
 		ArmorName = "CopperArmor";
 		AddTooltip = true;
@@ -29,7 +28,7 @@ public class CopperHelmet : ModArmorPiece {
 public class CopperChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperChainmail;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		TypeEquipment = Type_Body;
 		ArmorName = "CopperArmor";
 		AddTooltip = true;
@@ -42,7 +41,7 @@ public class CopperChainmail : ModArmorPiece {
 public class CopperGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperGreaves;
-		Add_Defense = 2;
+		Add_Defense = 12;
 		TypeEquipment = Type_Leg;
 		ArmorName = "CopperArmor";
 		AddTooltip = true;
@@ -76,7 +75,7 @@ public class CopperArmorModPlayer : ModPlayer {
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (ONHitEffect) {
-			npc.AddBuff(BuffID.Electrified, ModUtils.ToSecond(3));
+			npc.AddBuff(BuffID.Electrified, ModUtils.ToSecond(12));
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
@@ -92,6 +91,7 @@ public class CopperArmorPlayer : PlayerArmorHandle {
 	}
 	public override void Armor_UpdateEquipsSet() {
 		Player.moveSpeed += 0.25f;
+		Player.buffImmune[BuffID.Electrified] = true;
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_CopperArmor();

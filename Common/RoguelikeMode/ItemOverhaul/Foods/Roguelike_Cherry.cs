@@ -8,13 +8,13 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_Cherry : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Cherry;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(6);
+	public override int LifeAmount() => 20;
+	public override int ManaAmount() => 40;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Cherry_Buff>(), ModUtils.ToMinute(1));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		player.Heal(20);
-		player.ManaHeal(40);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

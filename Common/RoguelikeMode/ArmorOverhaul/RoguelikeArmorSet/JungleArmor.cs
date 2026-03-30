@@ -17,19 +17,19 @@ internal class JungleArmor : ModArmorSet {
 public class JungleHat : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.JungleHat;
-		Add_Defense = 1;
+		Add_Defense = 3;
 	}
 }
 public class JungleShirt : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.JungleShirt;
-		Add_Defense = 1;
+		Add_Defense = 4;
 	}
 }
 public class JunglePants : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.JunglePants;
-		Add_Defense = 1;
+		Add_Defense = 3;
 	}
 }
 public class JungleArmorPlayer : PlayerArmorHandle {

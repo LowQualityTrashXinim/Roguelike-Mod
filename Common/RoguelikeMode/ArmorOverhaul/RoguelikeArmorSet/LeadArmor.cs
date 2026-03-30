@@ -17,7 +17,7 @@ internal class LeadArmor : ModArmorSet {
 public class LeadHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadHelmet;
-		Add_Defense = 2;
+		Add_Defense = 6;
 		ArmorName = "LeadArmor";
 		TypeEquipment = Type_Head;
 		AddTooltip = true;
@@ -29,7 +29,7 @@ public class LeadHelmet : ModArmorPiece {
 public class LeadChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadChainmail;
-		Add_Defense = 3;
+		Add_Defense = 7;
 		ArmorName = "LeadArmor";
 		TypeEquipment = Type_Body;
 		AddTooltip = true;
@@ -42,7 +42,7 @@ public class LeadChainmail : ModArmorPiece {
 public class LeadGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadGreaves;
-		Add_Defense = 2; 
+		Add_Defense = 6; 
 		ArmorName = "LeadArmor";
 		TypeEquipment = Type_Leg;
 		AddTooltip = true;

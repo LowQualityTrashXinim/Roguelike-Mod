@@ -17,7 +17,7 @@ internal class SilverArmor : ModArmorSet {
 public class SilverHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.SilverHelmet;
-		Add_Defense = 2;
+		Add_Defense = 8;
 		AddTooltip = true;
 		TypeEquipment = Type_Head;
 		ArmorName = "SilverArmor";
@@ -29,7 +29,7 @@ public class SilverHelmet : ModArmorPiece {
 public class SilverChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.SilverChainmail;
-		Add_Defense = 3;
+		Add_Defense = 10;
 		AddTooltip = true;
 		TypeEquipment = Type_Body;
 		ArmorName = "SilverArmor";
@@ -42,7 +42,7 @@ public class SilverChainmail : ModArmorPiece {
 public class SilverGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.SilverGreaves;
-		Add_Defense = 2;
+		Add_Defense = 9;
 		AddTooltip = true;
 		TypeEquipment = Type_Leg;
 		ArmorName = "SilverArmor";

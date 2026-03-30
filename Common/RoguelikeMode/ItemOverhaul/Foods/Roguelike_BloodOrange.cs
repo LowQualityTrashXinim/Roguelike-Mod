@@ -8,12 +8,12 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_BloodOrange : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.BloodOrange;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(1.5f);
+	public override int LifeAmount() => 25;
 	public override void SetFoodDefaults(Item item) {
 		item.useAnimation = item.useTime = ModUtils.ToSecond(.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BloodOrange_Buff>(), ModUtils.ToMinute(6));
 	}
-	public override void OnConsumeItem(Item item, Player player) {
-		player.Heal(25);
+	public override void OnConsumeFood(Item item, Player player) {
 		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }

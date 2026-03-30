@@ -19,7 +19,7 @@ internal class EbonwoodArmor : ModArmorSet {
 public class EbonwoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.EbonwoodHelmet;
-		Add_Defense = 2;
+		Add_Defense = 12;
 		AddTooltip = true;
 		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Head;
@@ -33,7 +33,7 @@ public class EbonwoodHelmet : ModArmorPiece {
 public class EbonwoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.EbonwoodBreastplate;
-		Add_Defense = 2;
+		Add_Defense = 12;
 		AddTooltip = true;
 		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Body;
@@ -47,7 +47,7 @@ public class EbonwoodBreastplate : ModArmorPiece {
 public class EbonwoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.EbonwoodGreaves;
-		Add_Defense = 2;
+		Add_Defense = 12;
 		AddTooltip = true;
 		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Leg;

@@ -20,7 +20,7 @@ namespace Roguelike.Contents.BuffAndDebuff
 			player.GetDamage(DamageClass.Generic) += 0.1f;
 			player.GetAttackSpeed(DamageClass.Generic) += .1f;
 			if (++Delay >= 25) {
-				if (player.Center.LookForHostileNPCNotImmune(out NPC npc, 550, player.whoAmI)) {
+				if (player.Center.LookForHostileNPC(out NPC npc, 750)) {
 					for (int i = 0; i < 100; i++) {
 						int electic = Dust.NewDust(ModUtils.NextPointOn2Vector2(player.Center, npc.Center), 0, 0, DustID.Electric);
 						Main.dust[electic].noGravity = true;

@@ -17,7 +17,7 @@ internal class AshwoodArmor : ModArmorSet {
 public class AshWoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.AshWoodHelmet;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "AshwoodArmor";
 		TypeEquipment = Type_Head;
@@ -30,7 +30,7 @@ public class AshWoodHelmet : ModArmorPiece {
 public class AshWoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.AshWoodBreastplate;
-		Add_Defense = 4;
+		Add_Defense = 14;
 		AddTooltip = true;
 		ArmorName = "AshwoodArmor";
 		TypeEquipment = Type_Body;
@@ -43,7 +43,7 @@ public class AshWoodBreastplate : ModArmorPiece {
 public class AshWoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.AshWoodGreaves;
-		Add_Defense = 3;
+		Add_Defense = 13;
 		AddTooltip = true;
 		ArmorName = "AshwoodArmor";
 		TypeEquipment = Type_Leg;

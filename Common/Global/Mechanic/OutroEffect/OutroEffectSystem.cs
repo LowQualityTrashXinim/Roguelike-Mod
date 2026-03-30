@@ -200,6 +200,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.WoodenSword);
 		Arr_WeaponTag[tag].Add(ItemID.BorealWoodSword);
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganySword);
+		Arr_WeaponTag[tag].Add(ItemID.PalmWoodSword);
 		Arr_WeaponTag[tag].Add(ItemID.EbonwoodSword);
 		Arr_WeaponTag[tag].Add(ItemID.ShadewoodSword);
 		Arr_WeaponTag[tag].Add(ItemID.PearlwoodSword);
@@ -457,6 +458,7 @@ internal class OutroEffectSystem : ModSystem {
 	private void Add_BowTag() {
 		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.WoodenBow);
 		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.BorealWoodBow);
+		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.PalmWoodBow);
 		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.RichMahoganyBow);
 		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.EbonwoodBow);
 		Arr_WeaponTag[(int)WeaponTag.Bow].Add(ItemID.ShadewoodBow);
@@ -1005,6 +1007,24 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.PlatinumHammer);
 		Arr_WeaponTag[tag].Add(ItemID.PlatinumShortsword);
 		Arr_WeaponTag[tag].Add(ItemID.PlatinumBroadsword);
+	}
+	private void Add_Wooden() {
+		int tag = (int)WeaponTag.WoodenMaterial;
+		Arr_WeaponTag[tag].Add(ItemID.WoodenSword);
+		Arr_WeaponTag[tag].Add(ItemID.BorealWoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganySword);
+		Arr_WeaponTag[tag].Add(ItemID.PalmWoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.EbonwoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.ShadewoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.PearlwoodSword);
+
+		Arr_WeaponTag[tag].Add(ItemID.WoodenBow);
+		Arr_WeaponTag[tag].Add(ItemID.BorealWoodBow);
+		Arr_WeaponTag[tag].Add(ItemID.PalmWoodBow);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyBow);
+		Arr_WeaponTag[tag].Add(ItemID.EbonwoodBow);
+		Arr_WeaponTag[tag].Add(ItemID.ShadewoodBow);
+		Arr_WeaponTag[tag].Add(ItemID.PearlwoodBow);
 	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
