@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
@@ -19,11 +21,28 @@ public class Roguelike_CobaltSword : GlobalItem {
 		entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
 		entity.shootSpeed = 1;
 		entity.damage += 20;
+		entity.Set_ItemOutroEffect<OutroEffect_Greatsword>();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
+	public override void HoldItem(Item item, Player player) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(item.type)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		}
+	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100), velocity, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 15, 15);
+			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
+				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
+				Swordprojectile.scale += .2f;
+				modproj.ScaleX = 30;
+			}
+			Swordprojectile.usesIDStaticNPCImmunity = false;
+			Swordprojectile.usesLocalNPCImmunity = true;
+			Swordprojectile.localNPCHitCooldown = 10;
+		}
 		int counter = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter;
 		player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter = -player.itemAnimationMax;
 		if (counter >= 150) {
@@ -35,7 +54,7 @@ public class Roguelike_CobaltSword : GlobalItem {
 			}
 			for (int i = 0; i < 16; i++) {
 				var velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(180) * Main.rand.NextBool().ToDirectionInt();
-				var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100) + Main.rand.NextVector2Circular(50, 50), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * (.85f + (counter + i) * .1f)), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 10 + i * 2);
+				var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100) + Main.rand.NextVector2Circular(50, 50), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(counter + damage * (.55f + i * .05f)), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 10 + i * 2);
 				if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 					modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 					Swordprojectile.scale += .2f;
@@ -52,7 +71,11 @@ public class Roguelike_CobaltSword : GlobalItem {
 			var Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * Main.rand.NextFloat(.4f, 1.2f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
 			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
+				modproj.ScaleX = 9 + Main.rand.NextFloat();
 			}
+			Swordprojectile.usesIDStaticNPCImmunity = false;
+			Swordprojectile.usesLocalNPCImmunity = true;
+			Swordprojectile.localNPCHitCooldown = 60;
 		}
 		return false;
 	}

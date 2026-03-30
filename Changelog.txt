@@ -581,4 +581,10 @@ Flaming Wood Sword:
 521/ Overall buff armor that is lacking behind in the mod.
 522/ Reworked most of the food and completed the food system.
 523/ Updated Simple Piercing Slash projectile to have delay slash effect.
-524/ Changed build number from 0.0.18.2 -> 0.0.19.
+524/ Updated Cobalt Sword and some more weapon now enter weapon tag system namely Wrath of Blue Moon and Fury of The Sun.
+525/ Changed build number from 0.0.18.2 -> 0.0.19.
+526/ Deletion of modded prefix since we disable prefix entirely
+527/ Added underworld generation.
+528/ Deleted relic guide because it was a placeholder.
+529/ Fixed Outro Effect Great sword dealing insane damage.
+530/ Minor code clean up all around within the mod.

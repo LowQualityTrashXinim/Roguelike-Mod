@@ -11,9 +11,8 @@ namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 
 public class Roguelike_WoodenSword : GlobalItem {
 	public override bool InstancePerEntity => true;
-	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return entity.type == ItemID.WoodenSword;
-	}
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) => entity.type == ItemID.WoodenSword;
+
 	int swingCount = 0;
 	public override void SetDefaults(Item entity) {
 		entity.scale += .45f;

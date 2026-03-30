@@ -14,11 +14,9 @@ internal class Roguelike_BroadSword : GlobalItem {
 		return Check_Sword(entity.type);
 	}
 	public override void SetDefaults(Item entity) {
-		if (Check_Sword(entity.type)) {
 			entity.scale += .45f;
 			entity.damage = 40;
 			entity.ArmorPenetration = 20;
-		}
 	}
 	public static bool Check_Sword(int type) {
 		switch (type) {

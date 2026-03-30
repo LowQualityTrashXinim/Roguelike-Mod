@@ -403,14 +403,14 @@ public partial class RogueLikeWorldGen {
 		Y = Y * 16;
 		int whoAmI = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), X, Y, type);
 	}
-	private bool ValidBiome(int ID) => 
-		ID != Bid.Space 
-		&& ID != Bid.Ocean 
-		&& ID != Bid.Desert 
-		&& ID != Bid.Caven 
-		&& ID != Bid.Underworld 
-		&& ID != Bid.Marble 
-		&& ID != Bid.Granite 
+	private bool ValidBiome(int ID) =>
+		ID != Bid.Space
+		&& ID != Bid.Ocean
+		&& ID != Bid.Desert
+		&& ID != Bid.Caven
+		&& ID != Bid.Underworld
+		&& ID != Bid.Marble
+		&& ID != Bid.Granite
 		&& ID != Bid.Slime
 		&& ID != Bid.FleshRealm;
 }
@@ -665,7 +665,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 
 		//Initialize Underworld biome
 		BiomeMapping[MapIndex(0, 20)] = ToC(Bid.Underworld);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(10, 20), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(0, 21), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 21), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
@@ -698,9 +697,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(10, 17), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(9, 18), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(8, 19), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(8, 20), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(14, 20), 3);
-
+		Array.Fill(BiomeMapping, ToC(Bid.BlueShroom), MapIndex(8, 20), 9);
 
 		Array.Fill(BiomeMapping, ToC(Bid.FleshRealm), MapIndex(22, 19), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.FleshRealm), MapIndex(21, 20), 3);
@@ -1669,6 +1666,127 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Generate_GuideHouse() {
 
+	}
+	[Task]
+	public void Generate_UnderworldOptimized() {
+		Stopwatch watch = new();
+		watch.Start();
+		int num838 = Main.maxTilesY - Rand.Next(150, 190);
+		for (int num839 = 0; num839 < Main.maxTilesX; num839++) {
+			num838 += Rand.Next(-3, 4);
+			if (num838 < Main.maxTilesY - 190)
+				num838 = Main.maxTilesY - 190;
+
+			if (num838 > Main.maxTilesY - 160)
+				num838 = Main.maxTilesY - 160;
+
+			for (int num840 = num838 - 20 - Rand.Next(3); num840 < Main.maxTilesY; num840++) {
+				Tile tile = Main.tile[num839, num840];
+				if (num840 >= num838) {
+					tile.HasTile = false;
+					tile.LiquidType = LiquidID.Lava;
+					tile.LiquidAmount = 0;
+				}
+				else {
+					tile.TileType = TileID.Ash;
+				}
+			}
+		}
+
+		int num841 = Main.maxTilesY - Rand.Next(40, 70);
+		for (int num842 = 10; num842 < Main.maxTilesX - 10; num842++) {
+			num841 += Rand.Next(-10, 11);
+			if (num841 > Main.maxTilesY - 60)
+				num841 = Main.maxTilesY - 60;
+
+			if (num841 < Main.maxTilesY - 100)
+				num841 = Main.maxTilesY - 120;
+
+			for (int i = num841; i < Main.maxTilesY - 10; i++) {
+				Tile tile = Main.tile[num842, i];
+				if (!tile.HasTile) {
+					tile.LiquidType = LiquidID.Lava;
+					tile.LiquidAmount = byte.MaxValue;
+				}
+			}
+		}
+
+		for (int num844 = 0; num844 < Main.maxTilesX; num844++) {
+			if (Rand.Next(50) == 0) {
+				int num845 = Main.maxTilesY - 65;
+				while (!Main.tile[num844, num845].HasTile && num845 > Main.maxTilesY - 135) {
+					num845--;
+				}
+
+				WorldGen.TileRunner(Rand.Next(0, Main.maxTilesX), num845 + Rand.Next(20, 50), Rand.Next(15, 20), 1000, 57, addTile: true, 0.0, Rand.Next(1, 3), noYChange: true);
+			}
+		}
+
+		Liquid.QuickWater(-2);
+		for (int num846 = 0; num846 < Main.maxTilesX; num846++) {
+			if (Rand.NextBool(13)) {
+				int num848 = Main.maxTilesY - 65;
+				while ((Main.tile[num846, num848].LiquidAmount > 0 || Main.tile[num846, num848].HasTile) && num848 > Main.maxTilesY - 140) {
+					num848--;
+				}
+				bool LeftRightCheck = !(num846 > Main.maxTilesX * 0.4) || !(num846 < Main.maxTilesX * 0.6);
+				if (Rand.NextBool(3) || LeftRightCheck)
+					WorldGen.TileRunner(num846, num848 - Rand.Next(2, 5), Rand.Next(5, 30), 1000, 57, addTile: true, 0.0, Rand.Next(1, 3), noYChange: true);
+
+				float num849 = Rand.NextFloat(1, 3);
+				if (Rand.NextBool(3))
+					num849 *= 0.5f;
+
+				if (Rand.NextBool(3) || LeftRightCheck) {
+					if (Rand.NextBool(2)) {
+						WorldGen.TileRunner(num846, num848 - Rand.Next(2, 5), (int)(Rand.Next(5, 15) * num849), (int)(Rand.Next(10, 15) * num849), 57, addTile: true, 1.0, 0.3);
+					}
+
+					if (Rand.NextBool(3)) {
+						num849 = Rand.Next(1, 3);
+						WorldGen.TileRunner(num846, num848 - Rand.Next(2, 5), (int)(Rand.Next(5, 15) * num849), (int)(Rand.Next(10, 15) * num849), 57, addTile: true, -1.0, 0.3);
+					}
+				}
+
+				WorldGen.TileRunner(num846 + Rand.Next(-10, 10), num848 + Rand.Next(-10, 10), Rand.Next(5, 15), Rand.Next(5, 10), -2, addTile: false, Rand.Next(-1, 3), Rand.Next(-1, 3));
+				if (Rand.NextBool(3))
+					WorldGen.TileRunner(num846 + Rand.Next(-10, 10), num848 + Rand.Next(-10, 10), Rand.Next(10, 30), Rand.Next(10, 20), -2, addTile: false, Rand.Next(-1, 3), Rand.Next(-1, 3));
+
+				if (Rand.NextBool(5))
+					WorldGen.TileRunner(num846 + Rand.Next(-15, 15), num848 + Rand.Next(-15, 10), Rand.Next(15, 30), Rand.Next(5, 20), -2, addTile: false, Rand.Next(-1, 3), Rand.Next(-1, 3));
+			}
+		}
+
+		for (int num850 = 0; num850 < Main.maxTilesX; num850++) {
+			WorldGen.TileRunner(Rand.Next(20, Main.maxTilesX - 20), Rand.Next(Main.maxTilesY - 180, Main.maxTilesY - 10), Rand.Next(2, 7), Rand.Next(2, 7), -2);
+		}
+
+		for (int num853 = 0; num853 < (int)(Main.maxTilesX * Main.maxTilesY * 0.0008f); num853++) {
+			WorldGen.TileRunner(Rand.Next(0, Main.maxTilesX), Rand.Next(Main.maxTilesY - 140, Main.maxTilesY), Rand.Next(2, 7), Rand.Next(3, 7), 58);
+		}
+
+		for (int num866 = 25; num866 < Main.maxTilesX - 25; num866++) {
+			if (num866 < Main.maxTilesX * 0.17f || num866 > Main.maxTilesX * 0.83f) {
+				for (int num867 = Main.maxTilesY - 300; num867 < Main.maxTilesY - 100; num867++) {
+					if (Main.tile[num866, num867].TileType == TileID.Ash && Main.tile[num866, num867].HasTile
+						&& (!Main.tile[num866 - 1, num867 - 1].HasTile
+						|| !Main.tile[num866, num867 - 1].HasTile
+						|| !Main.tile[num866 + 1, num867 - 1].HasTile
+						|| !Main.tile[num866 - 1, num867].HasTile
+						|| !Main.tile[num866 + 1, num867].HasTile
+						|| !Main.tile[num866 - 1, num867 + 1].HasTile
+						|| !Main.tile[num866, num867 + 1].HasTile
+						|| !Main.tile[num866 + 1, num867 + 1].HasTile)) {
+						Main.tile[num866, num867].TileType = TileID.AshGrass;
+					}
+				}
+			}
+			else {
+				num866 = (int)(Main.maxTilesX * 0.83f + 1);
+			}
+		}
+		watch.Stop();
+		Mod.Logger.Info("Creating underworld step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_PostWorld() {

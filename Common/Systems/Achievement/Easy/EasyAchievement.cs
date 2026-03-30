@@ -3,7 +3,6 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
-using Roguelike.Contents.Items.Guides;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Terraria;
@@ -26,9 +25,6 @@ public class RelicFinder : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return Main.LocalPlayer.HasItem(ModContent.ItemType<Relic>());
-	}
-	public override void SpecialEffectOnAchieved() {
-		Main.LocalPlayer.QuickSpawnItem(null, ModContent.ItemType<RelicGuide>());
 	}
 }
 

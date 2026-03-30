@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
 public class Roguelike_ShortSword : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) => ShortSwordCheck(entity.type);
 	public bool ShortSwordCheck(int type) =>
 		type == ItemID.CopperShortsword
 			|| type == ItemID.TinShortsword
@@ -23,35 +24,25 @@ public class Roguelike_ShortSword : GlobalItem {
 			|| type == ItemID.GoldShortsword
 			|| type == ItemID.PlatinumShortsword;
 	public override void SetDefaults(Item entity) {
-		if (ShortSwordCheck(entity.type)) {
-			entity.damage = 14;
-			entity.crit += 21;
-			entity.useTime = entity.useAnimation = 6;
-			entity.Set_ItemCriticalDamage(3f);
-			entity.Set_ItemOutroEffect<OutroEffect_Sword>();
-		}
+		entity.damage = 14;
+		entity.crit += 21;
+		entity.useTime = entity.useAnimation = 6;
+		entity.Set_ItemCriticalDamage(3f);
+		entity.Set_ItemOutroEffect<OutroEffect_Sword>();
 	}
-	public override bool AltFunctionUse(Item item, Player player) {
-		if (ShortSwordCheck(item.type))
-			return true;
-		return base.AltFunctionUse(item, player);
-	}
+	public override bool AltFunctionUse(Item item, Player player) => true;
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (ShortSwordCheck(item.type)) {
-			if (!player.HasBuff<ThrowShortSwordCoolDown>() && player.altFunctionUse == 2) {
-				Projectile.NewProjectile(source, position, velocity * 9, ModContent.ProjectileType<Special_ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-				player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), 120);
-			}
-			else {
-				Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(15, 15), velocity.Vector2RotateByRandom(5), ModContent.ProjectileType<RoguelikeOverhaul_ShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-			}
-			return false;
+		if (!player.HasBuff<ThrowShortSwordCoolDown>() && player.altFunctionUse == 2) {
+			Projectile.NewProjectile(source, position, velocity * 9, ModContent.ProjectileType<Special_ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
+			player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), 120);
 		}
-		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+		else {
+			Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(15, 15), velocity.Vector2RotateByRandom(5), ModContent.ProjectileType<RoguelikeOverhaul_ShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
+		}
+		return false;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (ShortSwordCheck(item.type))
-			ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "RogueLike_ShortSword", ModUtils.LocalizationText("RoguelikeRework", "ShortSword")));
+		ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "RogueLike_ShortSword", ModUtils.LocalizationText("RoguelikeRework", "ShortSword")));
 	}
 	class RoguelikeOverhaul_ShortSwordProjectile : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.TinShortsword);

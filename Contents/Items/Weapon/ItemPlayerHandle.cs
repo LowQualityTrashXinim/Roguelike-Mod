@@ -384,47 +384,6 @@ namespace Roguelike.Contents.Items.Weapon {
 				NameLine.Text += " [Advanced]";
 			}
 		}
-		public override void UpdateInventory(Item item, Player player) {
-			if (item.prefix != 0) {
-				item.ResetPrefix();
-			}
-			if (++Counter >= int.MaxValue / 10) {
-				Counter = 0;
-			}
-			if (item.prefix == ModContent.PrefixType<Chaotic>() && Counter % 100 == 0) {
-				Prefix_ChaoticEffect(item);
-			}
-			else if (item.prefix == ModContent.PrefixType<Unstable>() && Counter % 600 == 0) {
-				Prefix_UnstableEffect(item);
-			}
-		}
-		public void Prefix_ChaoticEffect(Item item) {
-			if (item.damage < item.OriginalDamage / 2) {
-				item.damage += Main.rand.Next(0, 2);
-			}
-			else {
-				item.damage += Main.rand.Next(-1, 2);
-			}
-			if (item.crit <= 1) {
-				item.crit += Main.rand.Next(0, 2);
-			}
-			else {
-				item.crit += Main.rand.Next(-1, 2);
-			}
-			if (CriticalDamage <= -.5f) {
-				CriticalDamage += Main.rand.NextFloat(0, .2f);
-			}
-			else {
-				CriticalDamage += Main.rand.NextFloat(-.2f, .2f);
-			}
-			item.knockBack += Main.rand.NextFloat(-1, 1);
-		}
-		public void Prefix_UnstableEffect(Item item) {
-			item.SetDefaults(Main.rand.NextFromHashSet(ModItemLib.List_Weapon).type);
-			if (!Main.rand.NextBool(1000)) {
-				item.prefix = ModContent.PrefixType<Unstable>();
-			}
-		}
 		public override void PostUpdate(Item item) {
 			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
 				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {

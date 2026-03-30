@@ -153,6 +153,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_FuryOfTheSunTag();
 		Add_EletricConductor();
 		Add_Avarice();
+		Add_Wooden();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
@@ -980,6 +981,9 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.AquaScepter);
 		Arr_WeaponTag[tag].Add(ItemID.MagicMissile);
 		Arr_WeaponTag[tag].Add(ItemID.WaterBolt);
+		Arr_WeaponTag[tag].Add(ItemID.SapphireStaff);
+		Arr_WeaponTag[tag].Add(ItemID.SkyFracture);
+		Arr_WeaponTag[tag].Add(ItemID.Code1);
 	}
 	private void Add_FuryOfTheSunTag() {
 		int tag = (int)WeaponTag.FuryOfTheSun;
@@ -989,6 +993,9 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.Flamelash);
 		Arr_WeaponTag[tag].Add(ItemID.HellwingBow);
 		Arr_WeaponTag[tag].Add(ItemID.PhoenixBlaster);
+		Arr_WeaponTag[tag].Add(ItemID.HelFire);
+		Arr_WeaponTag[tag].Add(ItemID.FireWhip);
+		Arr_WeaponTag[tag].Add(ItemID.MoltenFury);
 	}
 	private void Add_EletricConductor() {
 		int tag = (int)WeaponTag.ElectricConductor;
@@ -1335,10 +1342,10 @@ public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 			for (int i = 0; i < modplayer.Easy_WeaponEffectFollow.Count; i++) {
 				var eff = OutroEffectSystem.GetWeaponEffect(modplayer.Easy_WeaponEffectFollow[i]);
 				if (i == modplayer.Easy_WeaponEffectFollow.Count - 1) {
-					textEf += $"[{eff.DisplayName}]: \n{eff.Description} [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}]";
+					textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n{eff.Description}";
 					continue;
 				}
-				textEf += $"[{eff.DisplayName}]: \n{eff.Description} [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n";
+				textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n{eff.Description} \n";
 			}
 			UICommon.TooltipMouseText(textEf);
 		}
