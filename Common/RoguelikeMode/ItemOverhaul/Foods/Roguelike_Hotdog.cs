@@ -8,12 +8,10 @@ internal class Roguelike_Hotdog : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Hotdog;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(6);
 	public override int LifeAmount() => 200;
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Hotdog_ModBuff>(), ModUtils.ToMinute(38));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_Hotdog_ModBuff : FoodItemTier3 {

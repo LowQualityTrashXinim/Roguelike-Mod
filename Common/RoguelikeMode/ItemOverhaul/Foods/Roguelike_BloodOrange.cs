@@ -13,9 +13,6 @@ internal class Roguelike_BloodOrange : GlobalFoodItem {
 		item.useAnimation = item.useTime = ModUtils.ToSecond(.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BloodOrange_Buff>(), ModUtils.ToMinute(6));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_BloodOrange_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.BloodOrange;

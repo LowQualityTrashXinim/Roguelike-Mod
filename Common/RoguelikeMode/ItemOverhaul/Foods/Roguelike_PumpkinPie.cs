@@ -11,12 +11,10 @@ internal class Roguelike_PumpkinPie : GlobalFoodItem {
 	public override int LifeAmount() => 60;
 	public override int ManaAmount() => 110;
 	public override int EnergyAmount() => 100;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(4.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_PumpkinPie_ModBuff>(), ModUtils.ToMinute(24));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_PumpkinPie_ModBuff : FoodItemTier2 {

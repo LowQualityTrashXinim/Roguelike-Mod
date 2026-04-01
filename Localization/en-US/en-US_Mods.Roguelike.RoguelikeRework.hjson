@@ -518,7 +518,7 @@ PrismaticPunch:
 	'''
 	+0.43s invincibility; +9 defence;
 	+18% magic dmg; -27% mana cost;
-	Player take 60% less damage and counter attack
+	Player take 60% less damage and do a counter attack
 	Counter attack will also releases several nebula fist (CD: 5s)
 	'''
 RoastedDuck:
@@ -584,4 +584,10 @@ LobsterTail:
 	When you get hit, do a counter attack (CD:2s)
 	Counter attack deal 500% damage based on taken damage
 	Above effect is enhanced when player are either wet or in water
+	'''
+ShuckedOyster:
+	'''
+	gain 15 fishing power; 10 defenses
+	100% water breathing; 15% mov speed while in water
+	On hit,increases defenses by 20 for 2s ( CD 5s )
 	'''

@@ -9,12 +9,10 @@ internal class Roguelike_SugarCookie : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.SugarCookie;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(4.25f);
 	public override int EnergyAmount() => 500;
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_SugarCookie_ModBuff>(), ModUtils.ToMinute(48));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_SugarCookie_ModBuff : FoodItemTier3 {

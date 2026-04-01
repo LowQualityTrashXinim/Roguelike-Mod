@@ -13,9 +13,6 @@ internal class Roguelike_BunnyStew : GlobalFoodItem {
 		item.useTime = item.useAnimation = 180;
 		SetBuff(item, ModContent.BuffType<Roguelike_BunnyStew_ModBuff>(), ModUtils.ToMinute(7));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_BunnyStew_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.BunnyStew;

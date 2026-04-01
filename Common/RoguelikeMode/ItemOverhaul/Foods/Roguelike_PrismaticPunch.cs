@@ -10,12 +10,10 @@ internal class Roguelike_PrismaticPunch : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.PrismaticPunch;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(6);
 	public override int ManaAmount() => 305;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_PrismaticPunch_ModBuff>(), ModUtils.ToMinute(24));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_PrismaticPunch_ModBuff : FoodItemTier2 {
@@ -45,9 +43,11 @@ public class Roguelike_PrismaticPunch_ModPlayer : ModPlayer {
 		if (PrismaticPunch && CoolDown <= 0) {
 			CoolDown = ModUtils.ToSecond(5);
 			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(Player.GetSource_FromAI(), Player.Center,
-					Vector2.One.Vector2DistributeEvenlyPlus(5, 360, i) * 5,
+				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i);
+				Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_FromAI(), Player.Center.IgnoreTilePositionOFFSET(vel, 400),
+					vel * -5,
 					ProjectileID.NebulaBlaze2, 150 + (int)(hurtInfo.Damage * .1f), 5, Player.whoAmI);
+				proj.tileCollide = false;
 			}
 			Player.StrikeNPCDirect(npc, npc.CalculateHitInfo(hurtInfo.Damage, hurtInfo.HitDirection * -1));
 		}

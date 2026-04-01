@@ -12,9 +12,6 @@ internal class Roguelike_ElderBerry : GlobalFoodItem {
 		item.useTime = item.useAnimation = 60;
 		SetBuff(item, ModContent.BuffType<Roguelike_ElderBerry_Buff>(), ModUtils.ToMinute(8));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_ElderBerry_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.Elderberry;

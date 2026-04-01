@@ -9,12 +9,10 @@ internal class Roguelike_FroggieBunwich : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.FroggleBunwich;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(8);
 	public override int EnergyAmount() => 270;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(4.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_FroggieBunwich_ModBuff>(), ModUtils.ToMinute(17));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_FroggieBunwich_ModBuff : FoodItemTier2 {

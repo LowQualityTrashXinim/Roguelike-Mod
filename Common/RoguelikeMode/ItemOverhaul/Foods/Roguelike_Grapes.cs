@@ -9,12 +9,10 @@ internal class Roguelike_Grapes : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Grapes;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(5);
 	public override int EnergyAmount() => 200;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Grapes_ModBuff>(), ModUtils.ToMinute(12));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_Grapes_ModBuff : FoodItemTier2 {

@@ -17,7 +17,6 @@ internal class Roguelike_FruitSalad : GlobalFoodItem {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.Set_TemporaryLife(50, 120);
 		handler.TemporaryLife += 50;
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }
 public class Roguelike_FruitSalad_ModBuff : FoodItemTier1 {

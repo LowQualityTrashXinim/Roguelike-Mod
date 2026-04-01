@@ -13,26 +13,66 @@ Implementation TODO:
 >> King Slime : slime biome
 >> EoC : Using sus eyes will drop player sanity which attract EoC
 >> EoW : 3 shadows orb scatter around Corruption
->> BoC : station somewhere in the center of Crimson
+>> BoC : station somewhere in the center of Crimson, have 3 breakable heart nearby.
 >> Skeletron : Guarding the entrance to Dungeon subworld
 >> Queen Bee : Bee hive ofc
 >> Deerclop : spawn naturally while in blizzard and you in the forest biome.
 >> Wall of Flesh : Underworld but with a custom spawn mechanic at 1 of underworld end.
+>> Queen Slime : no planned rn.
+>> Mech : no planned rn.
+>> Plantera : Jungle bulb spawn by default at a fixed location
+>> Golem : Jungle Temple subworld.
+>> Duke Fishron : subworld and summon by releasing glowing shroom worm in there.
+>> Empress of Light : Hallow but also no plan of summon method.
 2/ Work on debuff and buff sprite and many missing sprite in the mod.
 3/ Work on localization "TODO"
-4/ Added in Source for AddPStats method in PlayerStatsHandle and implement it to most system and item within the mod
-5/ Refactor User info tablet 
-6/ Rework rarity system and tranmutation system.
-7/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
-8/ Listing problematic content that need adjustment:
+4/ Refactor User info tablet 
+5/ Rework rarity system and tranmutation system.
+6/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+- Boomerang: ( turn into sub/sup dps weapon )
+>> Become a support weapon instead of dps type weapon but still leave possibility of player turning it into dps weapon.
+>> Rewrite entire boomerang AI so that adjustment to it can be made.
+>> Add in a alt click attack where boomerang become stationary and become a full support sentry.
+- Axe: ( turn into mid range/close melee dps weapon )
+>> Add in a new mechanic called "no name"
+>> Alt click would allow player to throw axe like tomahawk, right click again to pull the axe back
+>> After pulling or recieve the axe back to player hand ( not despawn ), player would get the exclusive axe buff.
+- Hammer: ( turn into a knock back focus melee dps weapon )
+>> All hammer damage will be add up by knock back value ( in % base )
+>> Using knock back value, attacking using hammer will release a shockwave
+>> Hammer deal blunt damage, and blunt weapon use a custom mechanic called Trauma shock.
+Trauma shock upon reaching full stack will make NPC much slower and more lose all defense.
+During Trauma shock, if NPC is being attacked, they will intake damage pernamenntly increases by 2%.
+7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
-9/ Work on level item system ( not actual leveling system ).
-10/ Implement randomize spawn location mechanic. // This is probably gonna be scrap because of intended gp experience.
-11/ Implement special characteristic for material :
+8/ Work on level item system ( not actual leveling system ).
+- Item will spawn with a set level, with each 5 levels the item gain a effect.
+- As the player progress with each boss defeated, the item level vary will increases.
+At each point of weapon level, it does the following: 
+> Lvl 1: +1 base damage
+> Lvl 2: +1% critical strike chance
+> Lvl 3: +2% critical strike damage
+> lvl 4: +0.5% attack speed
+> lvl 5: Gain a effect
+A weapon level is not capped but effect level is capped at 3.
+Upon effect cap, next time gaining effect will instead raise all stats by previous 4 levels.
+9/ Implement special characteristic for material :
 - Tungsten : ????
-12/ Work on achievement.
-13/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
-14/ Merged Help with Info together and also add content for Help and Info.
+10/ Work on achievement.
+11/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
+- The mod should remember what Synergy weapon player has ever used.
+When player is helding or have a synergy weapon in the inventory, the mod should do a quick check to see if it already there
+if True
+> skip the entire process.
+if False
+> Save the synergy weapon ID or name into a json file.
+- The mod should also remember what synergy bonus that got activated.
+When player activated a synergy bonus, the synergy bonus tooltip should send a check
+if True
+> skip the entire process.
+if False
+> Find the synergy weapon ID and then save the item ID that activated the synergy bonus.
+12/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
 - Transmutation
 - Weapon enchantment
@@ -50,13 +90,12 @@ Implementation TODO:
 - Weapon Upgrade system
 >>> Extra clarification:
 - Content in "Help" is suppose to be general guide on how to use the content.
-- COntent in "Info" is detailed information of how supposed content gonna act.
-15/ Work on Weapon Essences consumable.
-16/ Work on food rework.
-17/ Make vanilla buff that work only on player to work also on NPC.
-18/ Add in a event tag system
+- Content in "Info" is detailed information of how supposed content gonna act.
+13/ Work on Weapon Essences consumable.
+14/ Work on food rework.
+15/ Make vanilla buff that work only on player to work also on NPC.
+16/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
+
 Testing TODO:
-1/ Food rework.
--  

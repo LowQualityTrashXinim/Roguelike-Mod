@@ -9,12 +9,10 @@ internal class Roguelike_DragonFruit : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Dragonfruit;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(7);
 	public override int LifeAmount() => 45;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_DragonFruit_ModBuff>(), ModUtils.ToMinute(11));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_DragonFruit_ModBuff : FoodItemTier2 {

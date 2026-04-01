@@ -57,7 +57,7 @@ MarkOfWizard: {
 		'''
 		"What in the sage did you do ?"
 		+ When a enemy is detected nearby, shoots assortment of spell every 1s
-		- You take 30% more damage from projectile ( only applied once )
+		+ You take 10% less damage from projectile ( only applied once )
 		Spells deal 31 + 42% weapon damage
 		'''
 }

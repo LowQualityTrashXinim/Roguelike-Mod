@@ -12,9 +12,6 @@ internal class Roguelike_SmoothieOfDarkness : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_SmoothieOfDarkness_ModBuff>(), ModUtils.ToMinute(10));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_SmoothieOfDarkness_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.SmoothieofDarkness;

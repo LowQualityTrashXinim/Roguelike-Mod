@@ -11,12 +11,10 @@ internal class Roguelike_BananaSplit : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.BananaSplit;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3);
 	public override int LifeAmount() => 45;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BananaSplit_ModBuff>(), ModUtils.ToMinute(19));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_BananaSplit_ModBuff : FoodItemTier2 {

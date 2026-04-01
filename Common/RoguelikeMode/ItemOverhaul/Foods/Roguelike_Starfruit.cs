@@ -9,12 +9,10 @@ internal class Roguelike_Starfruit : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Starfruit;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(9);
 	public override int ManaAmount() => 200;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3);
 		SetBuff(item, ModContent.BuffType<Roguelike_Starfruit_ModBuff>(), ModUtils.ToMinute(23));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_Starfruit_ModBuff : FoodItemTier2 {

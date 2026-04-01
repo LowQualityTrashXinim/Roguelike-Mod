@@ -11,7 +11,7 @@ internal class MarkOfWizard : Perk {
 		CanBeStack = true;
 		StackLimit = 5;
 	}
-	readonly int[] spells = [ProjectileID.BallofFire, ProjectileID.SkyFracture, ProjectileID.MagicMissile, ProjectileID.DemonScythe, ProjectileID.Blizzard];
+	readonly int[] spells = [ProjectileID.BallofFire, ProjectileID.SkyFracture, ProjectileID.MagicMissile, ProjectileID.DemonScythe, ProjectileID.Blizzard, ProjectileID.StarCannonStar];
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle modplayer = player.ModPlayerStats();
 		if (!player.Center.LookForAnyHostileNPC(1575f) || modplayer.synchronize_Counter % 60 != 0) {
@@ -25,7 +25,7 @@ internal class MarkOfWizard : Perk {
 			Projectile proj = Projectile.NewProjectileDirect(
 				player.GetSource_FromThis(),
 				player.Center,
-				vel.Vector2RotateByRandom(10) * Main.rand.NextFloat(5, 7),
+				vel.Vector2RotateByRandom(10) * Main.rand.NextFloat(9, 12),
 				type,
 				damage,
 				2,
@@ -36,6 +36,6 @@ internal class MarkOfWizard : Perk {
 		}
 	}
 	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		modifiers.SourceDamage += .3f;
+		modifiers.SourceDamage -= .1f;
 	}
 }

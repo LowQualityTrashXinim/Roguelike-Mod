@@ -13,9 +13,6 @@ internal class Roguelike_JojaCola : GlobalFoodItem {
 		item.useTime = item.useAnimation = 30;
 		SetBuff(item, ModContent.BuffType<Roguelike_JojaCola_Buff>(), ModUtils.ToMinute(3));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_JojaCola_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.JojaCola;

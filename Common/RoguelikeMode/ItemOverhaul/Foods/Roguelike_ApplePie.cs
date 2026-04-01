@@ -10,12 +10,10 @@ internal class Roguelike_ApplePie : GlobalFoodItem {
 	public override int LifeAmount() => 120;
 	public override int ManaAmount() => 240;
 	public override int EnergyAmount() => 175;
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(5);
 		SetBuff(item, ModContent.BuffType<Roguelike_ApplePie_ModBuff>(), ModUtils.ToMinute(54));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_ApplePie_ModBuff : FoodItemTier3 {

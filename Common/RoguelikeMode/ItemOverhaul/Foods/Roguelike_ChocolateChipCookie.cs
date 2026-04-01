@@ -14,12 +14,10 @@ internal class Roguelike_ChocolateChipCookie : GlobalFoodItem {
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(6);
 	public override int EnergyAmount() => 65;
 	public override int ManaAmount() => 105;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(2.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_ChocolateChipCookie_ModBuff>(), ModUtils.ToMinute(13));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_ChocolateChipCookie_ModBuff : FoodItemTier2 {

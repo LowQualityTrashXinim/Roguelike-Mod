@@ -9,12 +9,10 @@ internal class Roguelike_PadThai : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.PadThai;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3.5f);
 	public override int EnergyAmount() => 485;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(4.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_PadThai_ModBuff>(), ModUtils.ToMinute(21));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_PadThai_ModBuff : FoodItemTier2 {

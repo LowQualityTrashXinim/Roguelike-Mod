@@ -10,12 +10,10 @@ internal class Roguelike_MonsterLasagna : GlobalFoodItem {
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(9);
 	public override int LifeAmount() => 80;
 	public override int ManaAmount() => 120;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(5.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_MonsterLasagna_ModBuff>(), ModUtils.ToMinute(23));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_MonsterLasagna_ModBuff : FoodItemTier2 {

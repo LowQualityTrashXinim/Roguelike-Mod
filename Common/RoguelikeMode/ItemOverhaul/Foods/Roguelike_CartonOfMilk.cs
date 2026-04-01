@@ -12,9 +12,6 @@ internal class Roguelike_CartonOfMilk : GlobalFoodItem {
 		item.useTime = item.useAnimation = 90;
 		SetBuff(item, ModContent.BuffType<Roguelike_CartonOfMilk_Buff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_CartonOfMilk_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.MilkCarton;

@@ -10,12 +10,10 @@ internal class Roguelike_RoastedDuck : GlobalFoodItem {
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(17);
 	public override int LifeAmount() => 125;
 	public override int ManaAmount() => 215;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(10);
 		SetBuff(item, ModContent.BuffType<Roguelike_RoastedDuck_ModBuff>(), ModUtils.ToMinute(31));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_RoastedDuck_ModBuff : FoodItemTier2 {

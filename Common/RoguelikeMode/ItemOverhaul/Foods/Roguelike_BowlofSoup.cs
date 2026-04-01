@@ -10,12 +10,10 @@ internal class Roguelike_BowlofSoup : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.BowlofSoup;
 	public override int LifeAmount() => 240;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(10);
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>(), ModUtils.ToMinute(15));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_BowlofSoup_ModBuff : FoodItemTier2 {

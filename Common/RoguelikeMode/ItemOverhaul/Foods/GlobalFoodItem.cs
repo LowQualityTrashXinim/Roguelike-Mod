@@ -21,6 +21,7 @@ public abstract class GlobalFoodItem : GlobalItem {
 	public virtual int LifeAmount() => 0;
 	public virtual int ManaAmount() => 0;
 	public virtual int EnergyAmount() => 0;
+	public virtual byte Tier() => 0;
 	public void SetBuff(Item item, int type, int time) {
 		item.buffType = type;
 		item.buffTime = time;
@@ -44,6 +45,7 @@ public abstract class GlobalFoodItem : GlobalItem {
 		else {
 			ModUtils.AddTooltip(ref tooltips, new(Mod, "", tooltip));
 		}
+
 		int Life = LifeAmount();
 		int Mana = ManaAmount();
 		int Energy = EnergyAmount();
@@ -59,6 +61,9 @@ public abstract class GlobalFoodItem : GlobalItem {
 		}
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "", heal));
 		foreach (var tip in tooltips) {
+			if (tip.Name == "ItemName") {
+				tip.Text += $" [Tier {Tier() + 1}]";
+			}
 			if (tip.Name == "Tooltip0") {
 				tip.Hide();
 			}
@@ -91,6 +96,7 @@ public abstract class GlobalFoodItem : GlobalItem {
 		if (Energy > 0) {
 			player.EnergyHeal(Energy);
 		}
+		Player_FoodPlayer(player).SetFoodBuff(item.type, Tier());
 		OnConsumeFood(item, player);
 		player.AddBuff(ModContent.BuffType<FoodCoolDown>(), CoolDownBetweenUse() + player.itemAnimationMax);
 	}

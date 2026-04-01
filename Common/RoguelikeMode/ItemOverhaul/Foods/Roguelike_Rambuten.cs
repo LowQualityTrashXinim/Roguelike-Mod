@@ -13,9 +13,6 @@ internal class Roguelike_Rambuten : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Rambuten_Buff>(), ModUtils.ToMinute(8));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_Rambuten_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.Rambutan;

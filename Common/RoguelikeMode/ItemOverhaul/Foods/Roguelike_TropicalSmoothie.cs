@@ -14,9 +14,6 @@ internal class Roguelike_TropicalSmoothie : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3);
 		SetBuff(item, ModContent.BuffType<Roguelike_TropicalSmoothie_ModBuff>(), ModUtils.ToMinute(11));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_TropicalSmoothie_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.TropicalSmoothie;

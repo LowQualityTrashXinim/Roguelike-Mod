@@ -19,9 +19,6 @@ internal class Roguelike_RoastedBird : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(3);
 		SetBuff(item, ModContent.BuffType<Roguelike_RoastedBird_ModBuff>(), ModUtils.ToMinute(7));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 
 public class Roguelike_RoastedBird_ModBuff : FoodItemTier1 {

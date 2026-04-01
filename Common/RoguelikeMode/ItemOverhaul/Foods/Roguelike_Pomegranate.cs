@@ -15,7 +15,6 @@ internal class Roguelike_Pomegranate : GlobalFoodItem {
 	public override void OnConsumeFood(Item item, Player player) {
 		player.ModPlayerStats().Set_TemporaryMana(160, 120);
 		player.ModPlayerStats().TemporaryMana += 160;
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
 	}
 }
 public class Roguelike_Pomegranate_ModBuff : FoodItemTier1 {

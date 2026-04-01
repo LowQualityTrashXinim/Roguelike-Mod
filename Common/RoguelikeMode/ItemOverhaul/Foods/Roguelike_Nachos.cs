@@ -1,10 +1,5 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,12 +9,10 @@ internal class Roguelike_Nachos : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.Nachos;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(8);
 	public override int EnergyAmount() => 150;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(2.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Nachos_ModBuff>(), ModUtils.ToMinute(17));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_Nachos_ModBuff : FoodItemTier2 {

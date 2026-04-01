@@ -8,12 +8,10 @@ internal class Roguelike_LobsterTail : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.LobsterTail;
 	public override int LifeAmount() => 120;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(8);
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(5.25f);
 		SetBuff(item, ModContent.BuffType<Roguelike_LobsterTail_ModBuff>(), ModUtils.ToMinute(23));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_LobsterTail_ModBuff : FoodItemTier2 {

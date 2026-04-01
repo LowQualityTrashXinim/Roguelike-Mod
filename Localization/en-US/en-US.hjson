@@ -4022,6 +4022,11 @@ Mods: {
 				DisplayName: Roguelike_ Lobster Tail_ Mod Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_LobsterTail_ModBuff.Description
 			}
+
+			Roguelike_ShuckedOyster_ModBuff: {
+				DisplayName: Roguelike_ Shucked Oyster_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_ShuckedOyster_ModBuff.Description
+			}
 		}
 
 		Configs: {

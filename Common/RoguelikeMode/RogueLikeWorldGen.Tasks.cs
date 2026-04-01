@@ -1259,11 +1259,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = 0;
 			}
 			IsUsingHorizontal = ++count % 2 == 0;
-			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
-			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+			int Width = 0, Height = 0, offsetY = 0, offsetX = 0, holdX, holdY;
 			if (IsUsingHorizontal) {
-				re.Width = 64;
-				re.Height = 32;
+				Width = 64;
+				Height = 32;
 				if (string.IsNullOrEmpty(bundle.FormatFile)) {
 					structure = Rand.Next(HorizontalTemplate);
 				}
@@ -1286,8 +1285,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 			else {
-				re.Width = 32;
-				re.Height = 64;
+				Width = 32;
+				Height = 64;
 				if (string.IsNullOrEmpty(bundle.FormatFile)) {
 					structure = Rand.Next(VerticalTemplate);
 				}
@@ -1314,14 +1313,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				case GenerateStyle.None:
 				case GenerateStyle.FlipHorizon:
 					for (int i = 0; i < length; i++) {
-						if (offsetY >= re.Height) {
+						if (offsetY >= Height) {
 							offsetY = 0;
 							offsetX++;
 						}
-						holdX = X + offsetX; holdY = Y + offsetY;
+						holdX = counter.X + offsetX; holdY = counter.Y + offsetY;
 						if (WorldGen.InWorld(holdX, holdY) && !Get_MapIgnoredZoneInWorldGen(holdX, holdY)) {
 							TileData data = structure.Get_CurrentTileData(i);
-							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
+							Place_Tile_CreateBiome( holdX, holdY, noiseCounter, ref bundle, ref data);
 						}
 						offsetY++;
 						noiseCounter = ModUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
@@ -1331,11 +1330,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					for (int i = structure.Get_Data.Length - 1; i >= 0; i--) {
 						GenPassData gdata = structure.Get_Data[i];
 						for (int l = 0; l < gdata.Count; l++) {
-							if (offsetY >= re.Height) {
+							if (offsetY >= Height) {
 								offsetY = 0;
 								offsetX++;
 							}
-							holdX = X + offsetX; holdY = Y + offsetY;
+							holdX = counter.X + offsetX; holdY = counter.Y + offsetY;
 							if (WorldGen.InWorld(holdX, holdY) && !Get_MapIgnoredZoneInWorldGen(holdX, holdY)) {
 								TileData data = gdata.tileData;
 								Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
@@ -1347,11 +1346,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					break;
 				case GenerateStyle.FlipBoth:
 					for (int i = length; i >= 0; i--) {
-						if (offsetY >= re.Height) {
+						if (offsetY >= Height) {
 							offsetY = 0;
 							offsetX++;
 						}
-						holdX = X + offsetX; holdY = Y + offsetY;
+						holdX = counter.X + offsetX; holdY = counter.Y + offsetY;
 						if (WorldGen.InWorld(holdX, holdY) && !Get_MapIgnoredZoneInWorldGen(holdX, holdY)) {
 							TileData data = structure.Get_CurrentTileData(i);
 							Place_Tile_CreateBiome(holdX, holdY, noiseCounter, ref bundle, ref data);
@@ -1362,7 +1361,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					break;
 			}
 			if (counter.X < rect.Width) {
-				counter.X += re.Width;
+				counter.X += Width;
 			}
 			else {
 				offsetcount++;

@@ -1,7 +1,7 @@
 # Terraria Roguelike Mod
 
 Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished. If you spot any bug, please consider reporting it in our Discord server.
-Note: Multiplayer is currently in the works, so it will not work.
+Note: Multiplayer is currently in the works.
 
 Roguelike Terraria is an expansive boss rush which aims to offer a fair and diverse randomised experience, all while eliminating the need for grinding.
 Your goal is to defeat Moon Lord by making use of the limited resources from special randomised loot boxs inside a simulated, simplified world.

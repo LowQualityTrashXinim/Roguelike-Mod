@@ -356,8 +356,8 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.TaxCollectorsStickOfDoom);
 		Arr_WeaponTag[tag].Add(ItemID.WaffleIron);
 		Arr_WeaponTag[tag].Add(ItemID.HamBat);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.AntlionClaw);
-		Arr_WeaponTag[(int)WeaponTag.Blunt].Add(ItemID.KOCannon);
+		Arr_WeaponTag[tag].Add(ItemID.AntlionClaw);
+		Arr_WeaponTag[tag].Add(ItemID.KOCannon);
 		Arr_WeaponTag[tag].Add(ItemID.GolemFist);
 	}
 	private void Add_SickleTag() {

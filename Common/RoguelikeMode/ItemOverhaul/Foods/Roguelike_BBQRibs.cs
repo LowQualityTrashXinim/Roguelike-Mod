@@ -10,12 +10,10 @@ internal class Roguelike_BBQRibs : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.BBQRibs;
 	public override int LifeAmount() => 200;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(8.5f);
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(4.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_BBQRibs_ModBuff>(), ModUtils.ToMinute(43));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_BBQRibs_ModBuff : FoodItemTier3 {

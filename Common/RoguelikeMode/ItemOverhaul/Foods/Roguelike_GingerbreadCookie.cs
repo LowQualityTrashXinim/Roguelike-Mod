@@ -10,6 +10,7 @@ internal class Roguelike_GingerbreadCookie : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.GingerbreadCookie;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(4.25f);
 	public override int ManaAmount() => 350;
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(2.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_GingerbreadCookie_ModBuff>(), ModUtils.ToMinute(48));
@@ -17,7 +18,6 @@ internal class Roguelike_GingerbreadCookie : GlobalFoodItem {
 	public override void OnConsumeFood(Item item, Player player) {
 		player.ModPlayerStats().Set_TemporaryMana(400, 60);
 		player.ModPlayerStats().TemporaryMana += 400;
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_GingerbreadCookie_ModBuff : FoodItemTier3 {

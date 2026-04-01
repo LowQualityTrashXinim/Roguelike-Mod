@@ -12,9 +12,6 @@ internal class Roguelike_FrozenBananaDaiquiri : GlobalFoodItem {
 		item.useTime = item.useAnimation = 60;
 		SetBuff(item, ModContent.BuffType<Roguelike_FrozenBananaDaiquiri_ModBuff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_FrozenBananaDaiquiri_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.BananaDaiquiri;

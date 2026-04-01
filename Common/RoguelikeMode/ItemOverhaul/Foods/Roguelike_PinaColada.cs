@@ -12,9 +12,6 @@ internal class Roguelike_PinaColada : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_PinaColada_ModBuff>(), ModUtils.ToMinute(8));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 	public override string OverrideBasicTooltip() => ModUtils.LocalizationText("RoguelikeRework", "PinaColada");
 }
 public class Roguelike_PinaColada_ModBuff : FoodItemTier1 {

@@ -13,9 +13,6 @@ internal class Roguelike_GrilledSquirrel : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_GrilledSquirrel_ModBuff>(), ModUtils.ToMinute(13));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_GrilledSquirrel_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.GrilledSquirrel;

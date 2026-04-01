@@ -12,12 +12,10 @@ internal class Roguelike_Bacon : GlobalFoodItem {
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3.5f);
 	public override int LifeAmount() => 250;
 	public override int EnergyAmount() => 550;
+	public override byte Tier() => 2;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.75f);
 		SetBuff(item, ModContent.BuffType<Roguelike_Bacon_ModBuff>(), ModUtils.ToMinute(39));
-	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 2);
 	}
 }
 public class Roguelike_Bacon_ModBuff : FoodItemTier3 {

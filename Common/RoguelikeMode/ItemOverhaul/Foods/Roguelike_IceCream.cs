@@ -9,6 +9,7 @@ internal class Roguelike_IceCream : GlobalFoodItem {
 	public override int AppliesToFoodType() => ItemID.IceCream;
 	public override int CoolDownBetweenUse() => ModUtils.ToSecond(3);
 	public override int ManaAmount() => 135;
+	public override byte Tier() => 1;
 	public override void SetFoodDefaults(Item item) {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1);
 		SetBuff(item, ModContent.BuffType<Roguelike_IceCream_ModBuff>(), ModUtils.ToMinute(14));
@@ -16,7 +17,6 @@ internal class Roguelike_IceCream : GlobalFoodItem {
 	public override void OnConsumeFood(Item item, Player player) {
 		player.ModPlayerStats().Set_TemporaryMana(220, 120);
 		player.ModPlayerStats().TemporaryMana += 220;
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 1);
 	}
 }
 public class Roguelike_IceCream_ModBuff : FoodItemTier2 {

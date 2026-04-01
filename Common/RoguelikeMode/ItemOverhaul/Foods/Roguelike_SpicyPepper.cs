@@ -13,9 +13,6 @@ internal class Roguelike_SpicyPepper : GlobalFoodItem {
 		item.useTime = item.useAnimation = ModUtils.ToSecond(1.5f);
 		SetBuff(item, ModContent.BuffType<Roguelike_SpicyPepper_Buff>(), ModUtils.ToMinute(4));
 	}
-	public override void OnConsumeFood(Item item, Player player) {
-		Player_FoodPlayer(player).SetFoodBuff(item.type, 0);
-	}
 }
 public class Roguelike_SpicyPepper_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.SpicyPepper;
