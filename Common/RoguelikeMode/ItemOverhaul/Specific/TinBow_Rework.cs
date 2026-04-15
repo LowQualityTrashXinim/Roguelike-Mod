@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System.Collections.Generic;
@@ -12,6 +14,13 @@ public class Roguelike_TinBow : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.TinBow;
 	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(120f / 240f, 125f / 240f, new Color(255, 100, 0));
+		progress.Charge = true;
+	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 26;
 		entity.useTime = entity.useAnimation = 33;
@@ -19,9 +28,25 @@ public class Roguelike_TinBow : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_TinBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
+	public override void HoldItem(Item item, Player player) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(4));
+		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter / 240f;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientA = Color.White;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = new Color(255, 240, 195);
+	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int counter = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter;
 		player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter = -player.itemAnimationMax;
+		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			Vector2 vel = velocity.SafeNormalize(Vector2.Zero) * 2.5f;
+			int amount = Main.rand.Next(1, 4);
+			for (int i = 0; i < amount; i++) {
+				Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(30, 30), vel, ModContent.ProjectileType<TinBolt>(), damage * 2, knockback, player.whoAmI);
+			}
+		}
 		if (counter >= 120) {
 			int amount = 3;
 			bool randomizeYAxis = false;

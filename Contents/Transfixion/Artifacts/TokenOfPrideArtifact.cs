@@ -62,9 +62,6 @@ TokenOfPride_Upgrade2: {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
-		}
 		public override void UpdateEquip(Player player) {
 			player.AddBuff(BuffID.Blackout, 2);
 		}

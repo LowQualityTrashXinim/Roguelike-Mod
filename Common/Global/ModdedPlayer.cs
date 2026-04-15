@@ -27,6 +27,7 @@ using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.BossRushMode;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -178,6 +179,7 @@ namespace Roguelike.Common.Global {
 				yield return new Item(ItemID.HermesBoots);
 				yield return new Item(ModContent.ItemType<BossRushModeActivation>());
 				yield return new Item(ModContent.ItemType<SpoilBag>(), 7);
+				yield return new Item(ModContent.ItemType<StarterLootBox>());
 			}
 			else {
 				yield return new Item(ModContent.ItemType<WoodenLootBox>());

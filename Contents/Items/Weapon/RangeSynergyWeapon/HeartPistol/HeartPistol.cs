@@ -30,7 +30,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		int counter = 0, spreadDifferent = 0;
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(Type)) {
+			if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
 				WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
 			}
 		}

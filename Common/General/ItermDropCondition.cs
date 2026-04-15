@@ -12,7 +12,7 @@ namespace Roguelike.Common.General {
 	public class IsInBossRushMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
-				return ModContent.GetInstance<RogueLikeConfig>().BossRushMode && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+				return ModContent.GetInstance<RogueLikeConfig>().BossRushMode && RoguelikeWorldProperty.BossRushWorld;
 			}
 			return false;
 		}

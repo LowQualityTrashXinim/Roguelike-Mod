@@ -30,6 +30,9 @@ public class Roguelike_FrozenBananaDaiquiri_ModPlayer : ModPlayer {
 		BananaDaiquiri = false;
 	}
 	public override bool CanConsumeAmmo(Item weapon, Item ammo) {
-		return BananaDaiquiri && Main.rand.NextFloat() <= .07f;
+		if (BananaDaiquiri) {
+			return Main.rand.NextFloat() <= .07f;
+		}
+		return base.CanConsumeAmmo(weapon, ammo);
 	}
 }

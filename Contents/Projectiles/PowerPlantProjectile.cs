@@ -40,7 +40,7 @@ internal class PowerPlantProjectile : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 		Player player = Main.player[Projectile.owner];
-		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(Projectile.ai[0] / 10));
+		player.EnergyHeal((int)(Projectile.ai[0] / 10));
 	}
 }
 internal class TransferStationProjectile : ModProjectile {

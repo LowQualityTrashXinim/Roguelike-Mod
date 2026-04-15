@@ -301,7 +301,7 @@ public class HeartBreakInstrument : SynergyModItem {
 	int Projectile_WhoAmI = -1;
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		var musicPlayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(Type)) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
 			WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, 1);
 			musicPlayer.IntroEffectActivate = true;
 		}

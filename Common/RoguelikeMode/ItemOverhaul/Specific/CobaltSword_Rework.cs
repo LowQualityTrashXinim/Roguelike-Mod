@@ -2,6 +2,7 @@
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Graphics;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System.Collections.Generic;
@@ -17,6 +18,12 @@ public class Roguelike_CobaltSword : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.CobaltSword;
 	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(150 / 300f, 165 / 300f, new Color(10, 150, 250));
+	}
 	public override void SetDefaults(Item entity) {
 		entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
 		entity.shootSpeed = 1;
@@ -27,9 +34,11 @@ public class Roguelike_CobaltSword : GlobalItem {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(item.type)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(3));
 		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter / 300f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
@@ -46,15 +55,22 @@ public class Roguelike_CobaltSword : GlobalItem {
 		int counter = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter;
 		player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter = -player.itemAnimationMax;
 		if (counter >= 150) {
-			if (player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().PerfectStrike) {
+			bool perfectStrike = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().PerfectStrike;
+			int amount = 16;
+			if (perfectStrike) {
 				counter = 150;
+				amount += 12;
 			}
 			else {
 				counter -= 150;
 			}
-			for (int i = 0; i < 16; i++) {
+			for (int i = 0; i < amount; i++) {
 				var velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(180) * Main.rand.NextBool().ToDirectionInt();
-				var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100) + Main.rand.NextVector2Circular(50, 50), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(counter + damage * (.55f + i * .05f)), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 10 + i * 2);
+				int timeleft = 5 + i;
+				if (timeleft >= 15) {
+					timeleft = 15;
+				}
+				var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100) + Main.rand.NextVector2Circular(50, 50), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(counter + damage * (.55f + i * .05f)), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), timeleft, 10 + i * 2);
 				if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 					modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 					Swordprojectile.scale += .2f;

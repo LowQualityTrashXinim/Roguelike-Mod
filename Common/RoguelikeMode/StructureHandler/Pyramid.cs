@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.Contents;
@@ -47,7 +48,7 @@ new Point(167,92),];
 	public Rectangle Pos_Pyramid => ModContent.GetInstance<RogueLikeWorldGen>().Pyramid;
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

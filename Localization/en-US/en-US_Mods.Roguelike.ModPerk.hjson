@@ -100,7 +100,6 @@ LifeForceOrb: {
 		+ Attacking enemy will periodically create a short lived life orb
 		+ Life Orb heal you and temporary increases your max life
 		+ The lower your health, the better healing effect life force orb have
-
 		'''
 }
 

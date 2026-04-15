@@ -63,7 +63,6 @@ class LuckEssence : ModItem {
 		Item.maxStack = 999;
 	}
 	public override bool? UseItem(Player player) {
-		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		if (player.ItemAnimationJustStarted) {
 			var modplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
 			var listOfPerk = new List<int>();

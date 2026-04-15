@@ -3,6 +3,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.RelicItem;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -35,7 +36,7 @@ public class UncommonSpoil {
 		}
 		public override string FinalDescription() {
 			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			chestplayer.GetAmount();
+			chestplayer.GetAmount(false);
 			return Description.FormatWith(
 				Math.Ceiling(chestplayer.weaponAmount * .5f),
 				chestplayer.potionTypeAmount
@@ -52,11 +53,9 @@ public class UncommonSpoil {
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * .5f), 1, 999999);
 			ModUtils.GetWeaponSpoil(source, weaponAmount);
 			ModUtils.GetPotion(source, player);
-			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			chestplayer.GetAmount();
-			int amount = chestplayer.potionTypeAmount;
+			int amount = modplayer.potionTypeAmount;
 			for (int i = 0; i < amount; i++) {
-				player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.AllFood), chestplayer.potionNumAmount);
+				player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.AllFood), modplayer.potionNumAmount);
 			}
 		}
 	}
@@ -100,6 +99,66 @@ public class UncommonSpoil {
 					relic.AutoAddRelicTemplate(player, 2);
 				}
 			}
+		}
+	}
+
+	public class RandomSpoilUncommon : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override void OnChoose(Player player) {
+			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			for (int i = SpoilList.Count - 1; i >= 0; i--) {
+				ModSpoil spoil = SpoilList[i];
+				if (spoil.RareValue != SpoilDropRarity.Uncommon
+					&& spoil.RareValue != SpoilDropRarity.Common) {
+					SpoilList.Remove(spoil);
+				}
+			}
+			for (int i = 0; i < 2; i++) {
+				ModSpoil spoil = Main.rand.Next(SpoilList);
+				spoil.OnChoose(player);
+				Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));
+			}
+		}
+	}
+	public class SurprisePackage : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true));
+		}
+		public override void OnChoose(Player player) {
+			IEntitySource source = new EntitySource_Misc("Spoil");
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
+			if (Main.rand.NextBool(3)) {
+				amount += 2;
+			}
+			ModUtils.GetWeaponSpoil(source, amount);
+		}
+	}
+	public class AdventureBundle : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true));
+		}
+		public override void OnChoose(Player player) {
+			IEntitySource source = new EntitySource_Misc("Spoil");
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true);
+			ModUtils.GetWeaponSpoil(source, amount);
+			ModUtils.GetAccessories(source, player, amount);
 		}
 	}
 }

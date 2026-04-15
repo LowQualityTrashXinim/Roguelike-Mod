@@ -290,7 +290,7 @@ public class SkillHandlePlayer : ModPlayer {
 			else {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
-			percentageEnergy += skill.EnergyRequirePercentage;
+			percentageEnergy *= (1 + skill.EnergyRequirePercentage); ;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 		}
@@ -315,7 +315,7 @@ public class SkillHandlePlayer : ModPlayer {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
 			duration += (int)durationS.ApplyTo(skill.Duration);
-			percentageEnergy += skill.EnergyRequirePercentage;
+			percentageEnergy *= (1 + skill.EnergyRequirePercentage);
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 			if (!simulated)

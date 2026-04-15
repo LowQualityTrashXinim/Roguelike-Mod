@@ -1,20 +1,21 @@
-﻿using System.IO;
-using System.Text;
-using Terraria.ModLoader;
-using System.Collections.Generic;
-using System;
-using System.Diagnostics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using Terraria.UI;
-using Terraria;
-using ReLogic.Content;
-using Terraria.GameInput;
 using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Roguelike.Common.Systems;
-using Roguelike.Texture;
 using Roguelike.Common.Utils;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Roguelike.Common;
 public enum StructureUI_State : byte {
@@ -329,42 +330,42 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				strbld.Remove(fileName.Length - 6, 6);
 				fileName = strbld.ToString();
 				strbld.Clear();
-				Stream filepath = Mod.GetFileStream(filenamepath);
-				int currentchar = 0;
-				ushort amount = 1;
-				TileData tile = TileData.Default;
-				StreamReader r = new StreamReader(filepath);
-				currentchar = r.Peek();
-				if (currentchar == '1') {
-					r.Read();
-					FileFormatVer1(ref currentchar, ref r, ref strbld, ref amount, ref tile);
-					if (strbld.Length > 0) {
-						if (ushort.TryParse(strbld.ToString(), out ushort result)) {
-							list_genPass.Add(new(tile, result));
+				using (Stream filepath = Mod.GetFileStream(filenamepath)) {
+					int currentchar = 0;
+					ushort amount = 1;
+					TileData tile = TileData.Default;
+					using (StreamReader r = new StreamReader(filepath)) {
+						currentchar = r.Peek();
+						if (currentchar == '1') {
+							r.Read();
+							FileFormatVer1(ref currentchar, r, ref strbld, ref amount, ref tile);
+							if (strbld.Length > 0) {
+								if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+									list_genPass.Add(new(tile, result));
+								}
+							}
+							list_Structure.Add(new(fileName, new(list_genPass)));
+							dict_Struture.Add(fileName, new(list_genPass));
+						}
+						else if (currentchar == '2') {
+							r.Read();
+							FileFormatVer2(ref currentchar, r, ref strbld, ref tile);
+							list_Structure.Add(new(fileName, new(list_genPass)));
+							dict_Struture.Add(fileName, new(list_genPass));
+						}
+						else {
+							FileFormatVer1(ref currentchar, r, ref strbld, ref amount, ref tile);
+							if (strbld.Length > 0) {
+								if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+									list_genPass.Add(new(tile, result));
+								}
+							}
+							list_Structure.Add(new(fileName, new(list_genPass)));
+							dict_Struture.Add(fileName, new(list_genPass));
 						}
 					}
-					list_Structure.Add(new(fileName, new(list_genPass)));
-					dict_Struture.Add(fileName, new(list_genPass));
+					list_genPass.Clear();
 				}
-				else if (currentchar == '2') {
-					r.Read();
-					FileFormatVer2(ref currentchar, ref r, ref strbld, ref tile);
-					list_Structure.Add(new(fileName, new(list_genPass)));
-					dict_Struture.Add(fileName, new(list_genPass));
-				}
-				else {
-					FileFormatVer1(ref currentchar, ref r, ref strbld, ref amount, ref tile);
-					if (strbld.Length > 0) {
-						if (ushort.TryParse(strbld.ToString(), out ushort result)) {
-							list_genPass.Add(new(tile, result));
-						}
-					}
-					list_Structure.Add(new(fileName, new(list_genPass)));
-					dict_Struture.Add(fileName, new(list_genPass));
-				}
-				list_genPass.Clear();
-				r.Close();
-				filepath.Close();
 			}
 		}
 		catch {
@@ -378,7 +379,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 	}
 	Dictionary<char, TileData> data = new();
-	public void FileFormatVer2(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref TileData tile) {
+	public void FileFormatVer2(ref int currentchar, StreamReader r, ref StringBuilder strbld, ref TileData tile) {
 		bool SwitchToTileMap = false;
 		bool DataTileSaving = true;
 		char cached = ' ';
@@ -459,7 +460,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 		data.Clear();
 	}
-	public void FileFormatVer1(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref ushort amount, ref TileData tile) {
+	public void FileFormatVer1(ref int currentchar, StreamReader r, ref StringBuilder strbld, ref ushort amount, ref TileData tile) {
 		while (currentchar != -1) {
 			currentchar = r.Read();
 			char c = (char)currentchar;
@@ -598,5 +599,27 @@ public struct GenPassData {
 	public void Clear() {
 		Count = 0;
 		tileData = new();
+	}
+}
+class StructureWand : ModItem {
+	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Swordfish);
+	public override void SetDefaults() {
+		Item.useStyle = ItemUseStyleID.Swing;
+		Item.useTime = Item.useAnimation = 20;
+		Item.rare = ItemRarityID.Blue;
+		Item.noMelee = true;
+		Item.noUseGraphic = true;
+	}
+
+	public override bool AltFunctionUse(Player player) {
+		return true;
+	}
+
+	public override bool? UseItem(Player player) {
+		if (player.ItemAnimationJustStarted) {
+			ModContent.GetInstance<UniversalSystem>().ActivateStructureSaverUI();
+		}
+
+		return true;
 	}
 }

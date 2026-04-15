@@ -697,7 +697,7 @@ Mods: {
 					"Suffocate your enemies with love!~"
 					[c/ff9bc4:Heart pistol intro effect]
 					[c/ff9bc4:Your normal attack will be accompany with a arch of 2 smaller hearts]
-					[c/ff9bc4:At peak of your normal attack, you will shot out 5 hearts]
+					[c/ff9bc4:At peak of your normal attack, you will shot out 5 hearts for 9s]
 					Small heart projectile have very small chance to spawn a heart on hitting enemy
 					Heart projectile heal you on hitting enemy 
 					and have small chance to spawn a heart on hitting enemy
@@ -872,13 +872,13 @@ Mods: {
 					'''
 					"Oath of the Winter Knight"
 					Hitting the enemy will rain down frost bolts and ice bolts toward the enemy
-					Upon 20 strike, generate a field that grant user "Winter Knight" buff for 60s
+					Upon 20th strike, generate a field that grant user "Winter Knight" buff for 60s
 					While user have "Winter Knight" buff, every strike that count toward the buff is ingore
 					'''
 				ExtraInfo:
 					'''
 					Winter Knight:
-					+ Grant user 30% damage reduction and create a field (The field will die after this buff end)
+					+ Grant user 30% damage reduction and generate a field
 					While in the field: 
 					+ Every strike will spawn piercing ice shards and inflict Frost Inferno
 					+ Every damage taken will be reduce from 40% up to 90%
@@ -1593,6 +1593,7 @@ Mods: {
 					"Uwaaaa"
 					Shooting it enough time will generate a shield
 					The shield greatly increases defensive potential
+					Every 5th shot, the projectile spread decreases massively
 					'''
 			}
 
@@ -1901,8 +1902,11 @@ Mods: {
 				DisplayName: Angelic Smg
 				Tooltip:
 					'''
-					Bring down heaven wrath with this smg
+					"Bring down heaven wrath with this smg"
 					Alt-attack to throw the gun toward heretic dealing 3x damage
+					When the thrown gun strike the heretic, increases 1 stack of "Heaven Bless" (max: 40)
+					While "Heavenly Grace" buff is active, throwing the gun again deal 5x damage instead
+					and the thrown gun increases 5 stacks instead of 1
 					'''
 			}
 
@@ -2186,9 +2190,14 @@ Mods: {
 				Tooltip:
 					'''
 					"Comeback is always good"
-					Every 6th shot you shot out a burst of 6 bullets
+					Intro effect: Shoot out 3 bullets instead of 1 for 9s
+
+					At 6th shot you shoot out burst of 10 bullets and then reset the cycle
 					+10 critical strike chance and 25% attack speed when below 50% hp
 					Grant life steal effect on bullet from The Underdog when below 25% hp
+					Taken damage while helding this weapon will be stored in this weapon
+					Slowly consume taken damage to increases weapon damage which capped out at 200%
+					After 2s of not taking damage and there are no taken damage to consume, reset weapon damage
 					'''
 			}
 
@@ -2706,13 +2715,13 @@ Mods: {
 					'''
 					Each time Gclef attack, it count toward "Climax of Tragedy"
 
-					When Climax of Tragedy reached its peak, right click to activate Climax of Tragedy for 40s
+					When Climax of Tragedy reached its peak (30 stacks), right click to activate Climax of Tragedy for 40s
 					During the duration, every normal attack is enhanced and you summon 4 musical instruments
 
 					During Climax of Tragedy, normal attack will increases Climax of Tragedy stack instead of Gclef
 					Reaching the 30 stacks will make the next attack releases a skill
 
-					At the "Climax of Tragedy" peak:
+					At the "Climax of Tragedy" peak (30 stacks):
 					Left click: make every musical instruments do a final attack dealing 100 + 1500% weapon damage
 					Right click: make every musical instrument fly rotate around you and heal you for 100 + 5% maximum health 
 					and granting you 20% damage, 10% crit chance, 20 hp regen, 15 DEF and 30% movement speed for 15s
@@ -2808,6 +2817,11 @@ Mods: {
 
 			Roguelike_Grapefruit_Item: {
 				DisplayName: Roguelike_ Grapefruit_ Item
+				Tooltip: ""
+			}
+
+			StarterLootBox: {
+				DisplayName: Starter Loot Box
 				Tooltip: ""
 			}
 		}
@@ -3273,9 +3287,14 @@ Mods: {
 				Description: TODO
 			}
 
-			Vulnerable: {
-				DisplayName: Vulnerable
-				Description: Decreases your defenses the longer this debuff last
+			ShatterShell: {
+				DisplayName: Shatter shell
+				Description:
+					'''
+					The borrowed power temporary shattered
+					-100% life steal, -100% heal effectiveness, -100% defenses
+					-100% damage reduction, -100% buff duration 
+					'''
 			}
 
 			PlatinumDefense: {
@@ -4074,24 +4093,6 @@ Mods: {
 						'''
 				}
 
-				LostAccessory: {
-					Label: Lost Accessory
-					Tooltip:
-						'''
-						Enable to have a chance to get Lost accessories
-						Disable to not include Lost accessories into loot pool
-						'''
-				}
-
-				AccessoryPrefix: {
-					Label: Accessory Prefix
-					Tooltip:
-						'''
-						Enable to allow ( vanilla ) lesser accessory prefix to appear 
-						Disable to force reroll until you get the best one
-						'''
-				}
-
 				TotalRNG: {
 					Label: Total RNG mode
 					Tooltip:
@@ -4142,13 +4143,13 @@ Mods: {
 					Tooltip:
 						'''
 						Enable this if you are experiencing lag or is going toward late endgame
-						This will disable a lot of predraw call from mainly projectile
+						This will disable a lot of predraw call from mainly projectile and a lot of dust spawn
 						THIS won't help you if you are spawning more than 1000 projectiles per tick
 						'''
 				}
 
 				LowRAMMode: {
-					Label: Low RAM mode
+					Label: Low RAM usage mode
 					Tooltip:
 						'''
 						Use this if you keep getting out of game memory while playing game
@@ -4176,6 +4177,25 @@ Mods: {
 				BossRushMode_Setting_SpawnOnPlayerCommand: {
 					Label: Boss Rush - Spawn On Player Command
 					Tooltip: Enable this to give control to player on when player want to spawn boss
+				}
+
+				BossRushMode_Extra: {
+					Label: Boss Rush Mode Extra
+					Tooltip:
+						'''
+						Enabling this mode will make change boss rush mode format completely
+						+ Opening lootbox will give a random weapon/armor/accessory.
+						+ Player are given lootbox lord summon right at the start
+						+ Player must select 1 positive modifier before fighting boss
+						+ Every 3 bosses, a shop open up selling spoil and items.
+
+						- Player must select 1 negative modifier before fighting boss
+						- Spoil no longer activated upon Lootbox open
+
+						= Player are forced to select a modifier, if not the game will do it for them
+						The boss will follow progression but after reaching the EoL boss, it will loop
+						Boss scale infinitely, only way to end a run is to fight Lootbox Lord.
+						'''
 				}
 			}
 		}

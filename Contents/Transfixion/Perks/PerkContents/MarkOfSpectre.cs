@@ -27,6 +27,7 @@ public class MarkOfSpectre : Perk {
 		if (!player.immune && Main.rand.NextFloat() <= .6f) {
 			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
 			player.immune = true;
+			player.ModPlayerStats().HasDodgeInThisInstance = true;
 			return true;
 		}
 		return base.FreeDodge(player, hurtInfo);

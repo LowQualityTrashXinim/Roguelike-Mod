@@ -4,6 +4,7 @@ using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using System;
@@ -83,13 +84,15 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <br/><see cref="potionTypeAmount"/>
 	/// <br/><see cref="potionNumAmount"/>
 	/// </summary>
-	public void GetAmount() {
+	public void GetAmount(bool Modify = true) {
 		weaponAmount = 1;
 		potionTypeAmount = 1;
 		potionNumAmount = 2;
-		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 200);
-		potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
-		potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
+		if (Modify) {
+			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 200);
+			potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
+			potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
+		}
 	}
 	public StatModifier UpdateMovement = new StatModifier();
 	public StatModifier UpdateJumpBoost = new StatModifier();
@@ -246,7 +249,7 @@ public class PlayerStatsHandle : ModPlayer {
 		DmgTaken += (ulong)hurtInfo.Damage;
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage.CombineWith(DirectItemDamage);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DirectItemDamage);
 		if (AlwaysCritValue > 0) {
 			modifiers.SetCrit();
 		}
@@ -276,6 +279,9 @@ public class PlayerStatsHandle : ModPlayer {
 	/// This percentage damage will always deal NPC% health as true damage
 	/// </summary>
 	public float PercentageDamage = 0;
+	/// <summary>
+	/// Use this to increase the amount of first strike player can hit on NPC
+	/// </summary>
 	public int HitCountIgnore = 0;
 	public float TrueDamage_Melee = 0;
 	public float TrueDamage_Range = 0;
@@ -336,7 +342,7 @@ public class PlayerStatsHandle : ModPlayer {
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 
-		modifiers.FinalDamage.Flat = target.lifeMax * PercentageDamage;
+		modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 
 		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
 	}
@@ -379,12 +385,43 @@ public class PlayerStatsHandle : ModPlayer {
 		if (Main.rand.NextFloat() <= DodgeChance) {
 			Player.immune = true;
 			Player.AddImmuneTime(info.CooldownCounter, DodgeTimer);
+			HasDodgeInThisInstance = true;
 			return true;
 		}
 		return base.FreeDodge(info);
 	}
 	public float Rapid_CacheLife;
 	public float Rapid_CacheMana;
+	public override void PreUpdate() {
+		for (int i = 0; i < Player.inventory.Length; i++) {
+			Item item = Player.inventory[i];
+			if (item == null) {
+				continue;
+			}
+			if (item.IsAir) {
+				continue;
+			}
+			item.GetGlobalItem<GlobalItemHandle>().InventoryWhoAmI = i;
+		}
+		if (Player.chest <= -1 || Player.chest >= Main.chest.Length) {
+			return;
+		}
+		Chest chest = Main.chest[Player.chest];
+		foreach (var item in chest.item) {
+			if (item == null) {
+				continue;
+			}
+			if (item.IsAir) {
+				continue;
+			}
+			if (item.type == ModContent.ItemType<HeartPistol>()) {
+
+			}
+			if (item.TryGetGlobalItem(out GlobalItemHandle handler)) {
+				handler.InventoryWhoAmI = -1;
+			}
+		}
+	}
 	public override void PostUpdate() {
 		Rapid_CacheLife += Rapid_LifeRegen;
 		Rapid_CacheMana += Rapid_ManaRegen;
@@ -456,6 +493,13 @@ public class PlayerStatsHandle : ModPlayer {
 	public const short Default_EnergyCap = 1500;
 	public const short Default_RelicActivationCap = 10;
 	public byte Healed_timeSinceLastHeal = 0;
+	/// <summary>
+	/// This text right here is a quick note on how to use this field<br/>
+	/// <br/>
+	/// If you are implementing a dodge mechanic and want that dodge mechanic to sync across the mod to enable special implemention of on dodge effect, then please add this in your <see cref="ModPlayer.FreeDodge(Player.HurtInfo)"/> or <see cref="ModPlayer.ConsumableDodge(Player.HurtInfo)"/> <br/>
+	/// After that in <see cref="ModPlayer.PostUpdate"/> write your special effect dodge in the hook and add in this check
+	/// </summary>
+	public bool HasDodgeInThisInstance = false;
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
@@ -466,6 +510,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else {
 			Healed_timeSinceLastHeal = (byte)Math.Clamp(Healed_timeSinceLastHeal - 1, byte.MinValue, byte.MaxValue);
 		}
+		HasDodgeInThisInstance = false;
 		CurrentDashType = "";
 		if (!Player.immune) {
 			Get_DidPlayerDodge = false;

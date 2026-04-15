@@ -37,9 +37,6 @@ public class TokenOfWrathPlayer : ModPlayer {
 	}
 }
 public class StrikeOfFury : Perk {
-	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() || AchievementSystem.IsAchieved("TokenOfWrath");
-	}
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;
@@ -101,9 +98,6 @@ public class StrikeOfFury : Perk {
 	}
 }
 public class RuthlessRage : Perk {
-	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() || AchievementSystem.IsAchieved("TokenOfWrath");
-	}
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;

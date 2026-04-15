@@ -14,6 +14,13 @@ namespace Roguelike.Common.General {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool BossRushMode_Setting_SpawnOnPlayerCommand { get; set; }
+		
+		/// <summary>
+		/// The following are test boss rush mode
+		/// </summary>
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool BossRushMode_Extra { get; set; }
 		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
 		//Replace Cursed skull
@@ -25,8 +32,6 @@ namespace Roguelike.Common.General {
 		public bool RareSpoils { get; set; }
 		[DefaultValue(true)]
 		public bool RareLootbox { get; set; }
-		[DefaultValue(true)]
-		public bool AccessoryPrefix { get; set; }
 		[Header($"QoLHeader")]
 		[ReloadRequired]
 		[DefaultValue(false)]

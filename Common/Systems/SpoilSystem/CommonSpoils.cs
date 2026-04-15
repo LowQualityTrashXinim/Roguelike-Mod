@@ -13,7 +13,7 @@ public class WeaponSpoil : ModSpoil {
 	}
 	public override string FinalDescription() {
 		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		chestplayer.GetAmount();
+		chestplayer.GetAmount(false);
 		return Description.FormatWith(chestplayer.weaponAmount);
 	}
 	public override void OnChoose(Player player) {
@@ -40,8 +40,14 @@ public class ArmorSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
+	public override string FinalDescription() {
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1, true));
+	}
 	public override void OnChoose(Player player) {
-		ModUtils.GetArmorForPlayer(new EntitySource_Misc("Spoil"), player, true);
+		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
+		for (int i = 0; i < amount; i++) {
+			ModUtils.GetArmorForPlayer(new EntitySource_Misc("Spoil"), player, true);
+		}
 	}
 }
 
@@ -51,7 +57,7 @@ public class PotionSpoil : ModSpoil {
 	}
 	public override string FinalDescription() {
 		PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		chestplayer.GetAmount();
+		chestplayer.GetAmount(false);
 		return Description.FormatWith(chestplayer.potionTypeAmount);
 	}
 	public override void OnChoose(Player player) {
@@ -80,10 +86,10 @@ public class FoodSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.Burger);
 	}
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6, true));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 	}
 	public override void OnChoose(Player player) {
-		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(6);
+		int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 		for (int i = 0; i < amount; i++) {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), Main.rand.Next(TerrariaArrayID.AllFood));
 		}

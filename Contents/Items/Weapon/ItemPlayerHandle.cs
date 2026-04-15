@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Global.Prefixes;
 using Roguelike.Common.Mode.BossRushMode;
+using Roguelike.Common.RoguelikeMode.ArmorOverhaul;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
@@ -15,6 +17,7 @@ using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
+using StructureHelper.Content.GUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -260,6 +263,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public int ItemLevel = 0;
 		public bool IsASword = false;
 		public int OutroEffect_type = -1;
+		public int InventoryWhoAmI = -1;
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			item.prefix = 0;
 			if (item.ModItem == null) {
@@ -348,7 +352,8 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (ModContent.GetInstance<UniversalSystem>().user2ndInterface.CurrentState == ModContent.GetInstance<UniversalSystem>().transmutationUI) {
 				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 			}
-			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			Player player = Main.LocalPlayer;
+			ModdedPlayer moddedplayer = player.GetModPlayer<ModdedPlayer>();
 			if (item.ModItem != null) {
 				if (ExtraInfo) {
 					if (!moddedplayer.Shift_Option()) {
@@ -362,8 +367,19 @@ namespace Roguelike.Contents.Items.Weapon {
 						ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
 					}
 					else {
-						if (Main.SmartCursorIsUsed && !moddedplayer.Shift_Option()) {
-							tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
+						if (!moddedplayer.Shift_Option()) {
+							tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for weapon tag information]") { OverrideColor = Color.Gray });
+						}
+						else {
+							string value = "This weapon is classified as following: \n";
+							value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
+							if (OutroEffect_type != -1) {
+								OutroEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
+								if (ef != null && ef.Type != OutroEffect.GetWeaponEffectType<OutroEffect_None>()) {
+									value += $"\nOutro effect: \n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
+								}
+							}
+							tooltips.Add(new TooltipLine(Mod, "Shift_Info", value) { OverrideColor = new Color(255, 255, 0, 0) });
 						}
 					}
 				}
@@ -385,7 +401,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override void PostUpdate(Item item) {
-			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && RoguelikeWorldProperty.BossRushWorld) {
 				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
 					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
 				}
@@ -394,24 +410,12 @@ namespace Roguelike.Contents.Items.Weapon {
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			//Prevent possible conflict, basically hardcoding to make it so that it only work for item belong to this mod
 			string value = null;
-			if (!Main.SmartCursorIsUsed) {
-				if (item.ModItem != null) {
-					if (item.ModItem.Mod.Name != Mod.Name) {
-						return true;
-					}
-					if (ExtraInfo) {
-						value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
-					}
+			if (item.ModItem != null) {
+				if (item.ModItem.Mod.Name != Mod.Name) {
+					return true;
 				}
-			}
-			else {
-				value = "This weapon is classified as following: \n";
-				value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
-				if (OutroEffect_type != -1) {
-					OutroEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
-					if (ef != null) {
-						value += $"\n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
-					}
+				if (ExtraInfo) {
+					value = ModUtils.LocalizationText("Items", $"{item.ModItem.Name}.ExtraInfo");
 				}
 			}
 			if (value == null) {

@@ -5,6 +5,7 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Perks;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -22,8 +23,7 @@ internal class RareSpoil {
 		public override string FinalDescription() {
 			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			return Description.FormatWith(
-				chestplayer.ModifyGetAmount(2, true),
-				chestplayer.ModifyGetAmount(4, true)
+				chestplayer.ModifyGetAmount(2, true)
 				);
 		}
 		public override bool IsSelectable(Player player) {
@@ -31,7 +31,7 @@ internal class RareSpoil {
 		}
 		public override void OnChoose(Player player) {
 			ModUtils.GetSkillLootbox(new EntitySource_Misc("Spoil"), player, 2);
-			ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 4);
+			ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 2);
 		}
 	}
 	public class RareArmorPiece : ModSpoil {
@@ -88,6 +88,42 @@ internal class RareSpoil {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), Main.rand.Next(TerrariaArrayID.AllWing));
 		}
 	}
+	public class RandomSpoilUncommon2 : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Rare;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.RareDrop();
+		}
+		public override void OnChoose(Player player) {
+			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			for (int i = SpoilList.Count - 1; i >= 0; i--) {
+				ModSpoil spoil = SpoilList[i];
+				if (spoil.RareValue != SpoilDropRarity.Rare 
+					&& spoil.RareValue != SpoilDropRarity.Uncommon 
+					&& spoil.RareValue != SpoilDropRarity.Common) {
+					SpoilList.Remove(spoil);
+				}
+			}
+			for (int i = 0; i < 3; i++) {
+				ModSpoil spoil = Main.rand.Next(SpoilList);
+				spoil.OnChoose(Main.LocalPlayer);
+				Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));
+			}
+		}
+	}
+	public class RandomSpoilUncommon4 : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Rare;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.RareDrop();
+		}
+		public override void OnChoose(Player player) {
+			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			ModSpoil spoil = Main.rand.Next(SpoilList);
+			spoil.OnChoose(Main.LocalPlayer);
+			Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));
+		}
+	}
 }
-
-

@@ -232,6 +232,7 @@ Weaken: {
 	DisplayName: Weaken
 	Description:
 		'''
+		Refund 100 energy
 		Decreases skill projectile damage by 50%
 		Increases skill projectile velocity by 40%
 		'''

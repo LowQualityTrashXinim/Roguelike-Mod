@@ -293,7 +293,10 @@ public class EnergyAbsorption : Perk {
 		}
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(hurtInfo.Damage * .5f));
+		player.EnergyHeal((int)(hurtInfo.Damage * .5f));
+	}
+	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		player.EnergyHeal((int)(hurtInfo.Damage * .5f));
 	}
 }
 public class HybridRanger : Perk {
@@ -500,7 +503,7 @@ public class SoulShatter : Perk {
 		Chance_InstantKill(player, target, hit);
 	}
 	private static void Chance_InstantKill(Player player, NPC target, NPC.HitInfo info) {
-		if (player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount == 1) {
+		if (ModUtils.CheckFirstStrike(target, player)) {
 			target.Center.LookForHostileNPC(out var npclist, 400);
 			foreach (var npc in npclist) {
 				npc.AddBuff(ModContent.BuffType<Shatter>(), ModUtils.ToSecond(Main.rand.Next(10, 17)));
@@ -797,17 +800,5 @@ public class BloodthornCore : Perk {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_CustomContextInfo == "BloodthornCorePerk" && Main.rand.NextBool(3)) {
 			player.Heal(Main.rand.Next(3, 7));
 		}
-	}
-}
-
-public class ManyFirstStrike : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle handler = player.ModPlayerStats();
-		handler.UpdateFullHPDamage *= .33f;
-		handler.HitCountIgnore += StackAmount(player);
 	}
 }

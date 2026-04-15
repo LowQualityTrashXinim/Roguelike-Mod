@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
@@ -19,7 +20,7 @@ internal class ShrineOfOfferring_ModSystem : ModSystem {
 	public bool IsWithinRange = false;
 	public bool PlayerGetTheItem = false;
 	public override void PostUpdateEverything() {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

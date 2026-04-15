@@ -293,16 +293,14 @@ internal class KingSlime : NPCReworker {
 						}
 
 
-						if(Counter % 220 == 0)
-						{
+						if (Counter % 220 == 0) {
 
-							if(Main.netMode != NetmodeID.MultiplayerClient)
-							{
+							if (Main.netMode != NetmodeID.MultiplayerClient) {
 								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(7, -7);
 								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(-7, -7);
 
 							}
-						
+
 						}
 
 						currentScale = new Vector2(0.8f, 1).ClampedLerp(new Vector2(1.15f, 1), MathF.Cos(Counter * 0.1f) + 0.5f);
@@ -640,7 +638,7 @@ public class KingSlimeSludgeTile : ModTile {
 
 	public override void RandomUpdate(int i, int j) {
 
-		if(Main.netMode != NetmodeID.MultiplayerClient)
+		if (Main.netMode != NetmodeID.MultiplayerClient)
 			NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
 
 
@@ -692,6 +690,9 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 
+		if (!NPC.AnyNPCs(NPCID.KingSlime)) {
+			return;
+		}
 		var tilePos = Projectile.oldPosition.ToTileCoordinates();
 
 		for (int i = 0; i < 32; i++)
@@ -817,9 +818,8 @@ public class KingSlimeCrown : ModNPC {
 		NPC.noTileCollide = true;
 		NPC.noGravity = true;
 		NPC.dontTakeDamage = true;
-		NPC.life = 69;
-		NPC.lifeMax = 1;
-
+		NPC.lifeMax = 69696969;
+		NPC.chaseable = false;
 	}
 
 	ref float Counter => ref NPC.ai[0];

@@ -10,7 +10,7 @@ AccessorySpoil: {
 
 ArmorSpoil: {
 	DisplayName: Armor Pack
-	Description: Contains 1 randomized armor piece.
+	Description: Contains {0} randomized armor piece.
 }
 
 PotionSpoil: {
@@ -55,7 +55,7 @@ RareArmorPiece: {
 
 SuppliesPackage: {
 	DisplayName: Mixed Mythic
-	Description: Contains {0} weapon(s), 1 armor piece, {1} accessory(ies), {1} relic(s) and {1} skillbox(es).
+	Description: Contains {0} weapon(s), {1} armor piece, {1} accessory(ies), {1} relic(s) and {1} skillbox(es).
 }
 
 FoodSpoil: {
@@ -70,7 +70,7 @@ RareWeaponSpoil: {
 
 SSRPerkSpoil: {
 	DisplayName: Roguelike Legend
-	Description: Contains 1 perk blessing, {0} skillbox(es), {1} tier 3 relic(s), {0} accessory(ies).
+	Description: Contains {0} perk blessing, {0} skillbox(es), {1} tier 3 relic(s), {0} accessory(ies).
 }
 
 WeaponPotionSpoil: {
@@ -80,7 +80,7 @@ WeaponPotionSpoil: {
 
 ArmorAccessorySpoil: {
 	DisplayName: Chivalric Special
-	Description: Contains {0} armor piece(s) and {1} accessor(ies).
+	Description: Contains {0} weapon(s), {0} armor piece(s) and {1} accessor(ies).
 }
 
 SuperRelicSpoil: {
@@ -95,7 +95,7 @@ LegendaryRelicSpoil: {
 
 RoguelikeSpoil: {
 	DisplayName: Utility Special
-	Description: Contains {0} skillbox(es) and {1} relic(s).
+	Description: Contains {0} skillbox(es) and {0} relic(s).
 }
 
 StarterPerkSpoil: {
@@ -105,5 +105,65 @@ StarterPerkSpoil: {
 
 RareWingSpoil: {
 	DisplayName: Gift of Flight
-	Description: Contain 1 randomize wing
+	Description: Contain 1 randomize wing.
+}
+
+PerkSpoil2: {
+	DisplayName: Perk Mythic II
+	Description: Contains 1 perk blessing and 1 luck essence.
+}
+
+PerkSpoil3: {
+	DisplayName: Perk Mythic III
+	Description: Contains 1 perk blessing.
+}
+
+RandomSpoilUncommon: {
+	DisplayName: Gambler I
+	Description: Randomly choose 2 uncommon or common spoils.
+}
+
+RandomSpoilUncommon2: {
+	DisplayName: Gambler II
+	Description: Randomly choose 3 rare, uncommon or common spoils.
+}
+
+RandomSpoilUncommon3: {
+	DisplayName: Gambler III
+	Description: Randomly choose 3 super rare, rare, uncommon or common spoils.
+}
+
+RandomSpoilUncommon4: {
+	DisplayName: Gambler IV
+	Description: Randomly choose 1 spoil of any rarity.
+}
+
+RandomSpoilUncommon5: {
+	DisplayName: Gambler V
+	Description: Randomly choose 3 spoils of any rarity.
+}
+
+SurprisePackage: {
+	DisplayName: Surprise Package
+	Description: Contains {0} weapon(s), have 1 in 3 chance to gain 2 more weapons.
+}
+
+AdventureBundle: {
+	DisplayName: Adventure Bundle
+	Description: Contains {0} weapon(s) and accessory(ies)
+}
+
+SSR_LunarGift: {
+	DisplayName: Lunar blessing of Death
+	Description: Give you a random lunar tier weapon
+}
+
+SSR_LunarGift2: {
+	DisplayName: Lunar blessing of Life
+	Description: Give you a random lunar tier armor set
+}
+
+SSR_SuperSpoil: {
+	DisplayName: Super Bundle
+	Description: Open up all "Common", "Uncommon" or "Rare" tier spoil
 }

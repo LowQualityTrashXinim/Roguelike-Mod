@@ -16,7 +16,7 @@ public class SuppliesDrop : Perk {
 		CanBeChoosen = false;
 	}
 	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		return !RoguelikeWorldProperty.BossRushWorld;
 	}
 	public override void OnChoose(Player player) {
 		ModUtils.GetWeapon(out int weapon, out int amount);
@@ -31,7 +31,7 @@ public class GiftOfRelic : Perk {
 		CanBeChoosen = false;
 	}
 	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		return !RoguelikeWorldProperty.BossRushWorld;
 	}
 	public override void OnChoose(Player player) {
 		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
@@ -43,7 +43,7 @@ public class EssenceExtraction : Perk {
 		StackLimit = 999;
 	}
 	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		return !RoguelikeWorldProperty.BossRushWorld;
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PerkPlayer>().perk_EssenceExtraction = true;
@@ -55,7 +55,7 @@ public class PeaceWithGod : Perk {
 		CanBeStack = false;
 	}
 	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		return !RoguelikeWorldProperty.BossRushWorld;
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
@@ -68,7 +68,7 @@ public class AlchemistEmpowerment : Perk {
 		CanBeStack = false;
 	}
 	public override bool SelectChoosing() {
-		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		return !RoguelikeWorldProperty.BossRushWorld;
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);

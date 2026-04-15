@@ -17,7 +17,7 @@ internal class HorusEye : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PrincessWeapon, $"[i:{ItemID.PrincessWeapon}] Shoot out a powerful bolt that will knock you back slightly");
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(45, 120, 23, 7f, 26, 26, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
+		Item.BossRushDefaultRange(45, 120, 55, 7f, 26, 26, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
 		Item.crit = 12;
 		Item.reuseDelay = 8;
 		Item.rare = ItemRarityID.Orange;
@@ -38,6 +38,7 @@ internal class HorusEye : SynergyModItem {
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 70);
 	}
+	int counter = 0;
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		player.GetModPlayer<HorusEyePlayer>().ShieldCharge = Math.Clamp(player.GetModPlayer<HorusEyePlayer>().ShieldCharge + 1, 0, 10);
 		for (int i = 0; i < 30; i++) {
@@ -51,12 +52,21 @@ internal class HorusEye : SynergyModItem {
 			Main.dust[dust1].scale = Main.rand.NextFloat(.9f, 1.5f);
 		}
 		CanShootItem = false;
-		for (int i = 0; i < 10; i++) {
-			Projectile.NewProjectile(source, position, Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 21f), type, damage, knockback, player.whoAmI);
-		}
 		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PrincessWeapon)) {
 			player.velocity += -velocity * .35f;
 			Projectile.NewProjectile(source, position, velocity * .8f, ModContent.ProjectileType<HorusEye_Projectile>(), damage, knockback, player.whoAmI);
+		}
+		if (++counter >= 5) {
+			counter = 0;
+			velocity = velocity.SafeNormalize(Vector2.Zero);
+			for (int i = 0; i < 10; i++) {
+				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5) * 15, type, damage, knockback, player.whoAmI);
+			}
+		}
+		else {
+			for (int i = 0; i < 10; i++) {
+				Projectile.NewProjectile(source, position, Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 21f), type, damage, knockback, player.whoAmI);
+			}
 		}
 	}
 	public override void AddRecipes() {

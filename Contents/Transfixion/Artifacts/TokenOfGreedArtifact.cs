@@ -39,9 +39,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			CanBeStack = true;
 			StackLimit = 2;
 		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
-		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 			handle.ChanceDropModifier += .35F;

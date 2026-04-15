@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
+using Roguelike.Common.Global;
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Systems;
 using SubworldLibrary;
@@ -30,7 +31,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public float strongblizzVol = 1f;
 	public override void OnEnterWorld() {
 		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (gen.RoguelikeWorld && SubworldSystem.Current == null) {
+		if (RoguelikeWorldProperty.RoguelikeWorld && SubworldSystem.Current == null) {
 			if (ModContent.GetInstance<UniversalSystem>().UniqueWorldPlayerID == Player.GetModPlayer<UniversalModPlayer>().UniqueWorldID && gen.PlayerPos_WorldCood != Vector2.Zero) {
 				Player.Center = gen.PlayerPos_WorldCood;
 				Player.fallStart = (int)(gen.PlayerPos_WorldCood.X / 16f);
@@ -46,7 +47,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public override void ResetEffects() {
 		CurrentBiome.Clear();
 		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (!Player.active || !gen.RoguelikeWorld) {
+		if (!Player.active || !RoguelikeWorldProperty.RoguelikeWorld) {
 			return;
 		}
 		var position = new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y).ToTileCoordinates();
@@ -119,13 +120,13 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 	}
 
 	private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld && !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
 			orig(self, onWhichPlayer, sItem);
 		}
 	}
 
 	private void On_WorldGen_UpdateWorld_Inner(On_WorldGen.orig_UpdateWorld_Inner orig) {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			orig();
 			return;
 		}
@@ -148,8 +149,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 	}
 
 	private void On_Main_DrawBlack(On_Main.orig_DrawBlack orig, Main self, bool force) {
-		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (!gen.RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			orig(self, force);
 			return;
 		}
@@ -552,8 +552,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		LoaderManager.Get<SceneEffectLoader>().UpdateSceneEffect(self);
 	}
 	private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (!gen.RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			orig(self);
 			return;
 		}
@@ -630,7 +629,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 }
 internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if (ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+		if (RoguelikeWorldProperty.RoguelikeWorld) {
 			pool.Clear();
 		}
 		var modplayer = spawnInfo.Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();

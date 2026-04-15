@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
@@ -13,6 +15,12 @@ internal class Roguelike_BoneSword : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.BoneSword;
 	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(60 / 180f, 74 / 180f, new Color(150, 150, 150));
+	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 43;
 		entity.crit = 4;
@@ -24,6 +32,13 @@ internal class Roguelike_BoneSword : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
+	public override void HoldItem(Item item, Player player) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>().Counter / 180f;
+	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 
 		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
@@ -32,7 +47,7 @@ internal class Roguelike_BoneSword : GlobalItem {
 				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(3, 60, i), type, damage, knockback, player.whoAmI);
 			}
 		}
-		modplayer.Counter = 0;
+		modplayer.Counter = -player.itemAnimationMax;
 		if (++modplayer.SwingCounter >= 5) {
 			modplayer.SwingCounter = 0;
 			return true;

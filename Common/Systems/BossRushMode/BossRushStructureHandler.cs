@@ -1,21 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Toggle;
+using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 
 namespace Roguelike.Common.Systems.BossRushMode;
 public class BossRushStructureHandler : ModSystem {
@@ -24,7 +32,7 @@ public class BossRushStructureHandler : ModSystem {
 	}
 
 	private void On_NPC_EncourageDespawn(On_NPC.orig_EncourageDespawn orig, NPC self, int despawnTime) {
-		if (!Active || !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!Active || !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		orig(self, despawnTime);
@@ -117,7 +125,7 @@ public class BossRushStructureHandler : ModSystem {
 	List<int> BossList = new();
 	public int BossSpawnCD = 0;
 	public override void PostUpdateEverything() {
-		if (!Main.LocalPlayer.active || Main.LocalPlayer.dead || !Active || !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!Main.LocalPlayer.active || Main.LocalPlayer.dead || !Active || !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (BossSpawnCD > 0 && BossSpawnCD <= ModUtils.ToSecond(10))
@@ -217,13 +225,13 @@ public class BossRushStructureHandler : ModSystem {
 }
 public class BossRushModeGlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		pool.Clear();
 	}
 	public override void OnKill(NPC npc) {
-		if (!ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (!RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (npc.boss && !BossRushStructureHandler.Setting_SpawnOnPlayerCommand) {
@@ -273,5 +281,87 @@ internal class BossRushModeActivation : ModItem {
 			}
 		}
 		return true;
+	}
+}
+public class BossRushModifierUIState : UIState {
+	public List<BossRushModifierUIButton> btn_List;
+	public UITextPanel<string> textpanel;
+	public Roguelike_UIPanel mainpanel;
+	public Roguelike_UIPanel panel_Modifier_Container;
+	public Roguelike_UIPanel panel_positive_Modifier;
+	public Roguelike_UIPanel panel_negative_Modifier;
+	public override void OnInitialize() {
+		mainpanel = new();
+		mainpanel.HAlign = .5f;
+		mainpanel.VAlign = .5f;
+		mainpanel.UISetWidthHeight(650, 400);
+		mainpanel.BorderColor = Color.Black with { A = 0 };
+		mainpanel.BackgroundColor = Color.Black with { A = 0 };
+		Append(mainpanel);
+
+		panel_Modifier_Container = new Roguelike_UIPanel();
+		panel_Modifier_Container.UISetWidthHeight(600, 300);
+		panel_Modifier_Container.BorderColor = Color.Black with { A = 0 };
+		panel_Modifier_Container.BackgroundColor = Color.Black with { A = 0 };
+		panel_Modifier_Container.SetPadding(0);
+		panel_Modifier_Container.VAlign = 1;
+		mainpanel.Append(panel_Modifier_Container);
+
+		panel_positive_Modifier = new Roguelike_UIPanel();
+		panel_positive_Modifier.UISetWidthHeight(600, 120);
+		panel_positive_Modifier.BorderColor = panel_positive_Modifier.BackgroundColor = Color.Black with { A = 0 };
+		panel_Modifier_Container.Append(panel_positive_Modifier);
+
+		panel_negative_Modifier = new Roguelike_UIPanel();
+		panel_negative_Modifier.UISetWidthHeight(600, 120);
+		panel_negative_Modifier.BorderColor = panel_negative_Modifier.BackgroundColor = Color.Black with { A = 0 };
+		panel_negative_Modifier.VAlign = 1;
+		panel_Modifier_Container.Append(panel_negative_Modifier);
+
+		textpanel = new UITextPanel<string>("");
+		textpanel.HAlign = .5f;
+		textpanel.UISetWidthHeight(150, 53);
+		mainpanel.Append(textpanel);
+		btn_List = new List<BossRushModifierUIButton>();
+	}
+	public override void OnActivate() {
+		int optionsAmount = 5;
+		btn_List.Clear();
+		for (int i = 0; i < optionsAmount; i++) {
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(optionsAmount - 1));
+			BossRushModifierUIButton btn = new BossRushModifierUIButton(
+				TextureAssets.InventoryBack, Main.rand.Next(BossRushModifierLoader.modifier_good).Type);
+			btn.HAlign = Hvalue;
+			btn.VAlign = .5f;
+			btn_List.Add(btn);
+			Append(btn);
+		}
+	}
+}
+public class BossRushModifierUIButton : UIImageButton {
+	int type = 0;
+	public BossRushModifierUIButton(Asset<Texture2D> texture, int type) : base(texture) {
+		this.type = type;
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+		var modifier = BossRushModifierLoader.GetModifier(type);
+		if (modifier != null) {
+			Main.LocalPlayer.GetModPlayer<BossRushModifierPlayer>().ResetAllModifier();
+			modifier.OnChoose();
+		}
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (IsMouseHovering) {
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
+		}
 	}
 }

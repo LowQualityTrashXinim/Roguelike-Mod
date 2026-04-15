@@ -1,11 +1,14 @@
-﻿using Terraria;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
+using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Texture;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Linq;
-using Roguelike.Common.Systems;
-using Roguelike.Texture;
-using Roguelike.Contents.Transfixion.Skill;
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Lootbox.MiscLootbox;
 internal class WeaponLootBox : ModItem {
@@ -32,6 +35,7 @@ internal class SkillLootBox : ModItem {
 		Item.width = 38;
 		Item.height = 30;
 		Item.rare = ItemRarityID.LightPurple;
+		Item.maxStack = 999;
 	}
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
@@ -53,5 +57,23 @@ internal class SpecialSkillLootBox : ModItem {
 		if (player.HasItem(ModContent.ItemType<SkillOrb>())) {
 			ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
 		}
+	}
+}
+public class StarterLootBox : LootBoxBase {
+	public override string Texture => ModTexture.PLACEHOLDERCHEST;
+	public override void SetDefaults() {
+		Item.width = 38;
+		Item.height = 30;
+		Item.rare = ItemRarityID.LightPurple;
+	}
+	public override List<int> Set_ItemPool() {
+		return new List<int> { ItemPool.GetPoolType<UniversalPool>() };
+	}
+	public override void AbsoluteRightClick(Player player) {
+		var entitySource = player.GetSource_OpenItem(Type);
+		GetWeapon(entitySource, player, 1);
+		ModUtils.GetArmorForPlayer(entitySource, player);
+		GetAccessories(player, 1);
+		GetPotions(player, 1, 1);
 	}
 }

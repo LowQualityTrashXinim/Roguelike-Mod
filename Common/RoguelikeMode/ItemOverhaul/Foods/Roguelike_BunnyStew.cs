@@ -28,7 +28,6 @@ public class Roguelike_BunnyStew_ModPlayer : ModPlayer {
 	public bool BunnyStew = false;
 	public override void ResetEffects() {
 		BunnyStew = false;
-		Player.GetJumpState<Roguelike_BunnyStew_ExtraJump>().Disable();
 		if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
 			DashDir = DashRight;
 		}

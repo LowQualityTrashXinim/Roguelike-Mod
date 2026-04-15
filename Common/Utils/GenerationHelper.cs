@@ -313,7 +313,7 @@ internal static partial class GenerationHelper {
 			int indexCounter = 0;
 
 			Tile outSideLoop = new();
-			outSideLoop.TileType = ushort.MaxValue;
+			outSideLoop.TileType = 0;
 			int distance = 0;
 			string td = string.Empty;
 			string structureData = string.Empty;
@@ -363,9 +363,10 @@ internal static partial class GenerationHelper {
 				structureData += $"{dict_TileData[new(outSideLoop)]}{distance}";
 			}
 			string finalWrapper = $"2{td}>{structureData}";
-			using FileStream file = File.Create(Path.Combine(path, name));
-			Span<byte> info = new UTF8Encoding(true).GetBytes(finalWrapper);
-			file.Write(info);
+			using (FileStream file = File.Create(Path.Combine(path, name))) {
+				Span<byte> info = new UTF8Encoding(true).GetBytes(finalWrapper);
+				file.Write(info);
+			}
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());

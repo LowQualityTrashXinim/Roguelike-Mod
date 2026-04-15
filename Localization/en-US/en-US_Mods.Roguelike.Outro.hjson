@@ -1,6 +1,10 @@
 OutroEffect_Sword: {
 	DisplayName: Sword empowerment
-	Description: +15% damage for "Sword" weapon
+	Description:
+		'''
+		+35% damage for "Sword" weapon
+		+50% damage for direct hit
+		'''
 	Tooltip: Increases damage for "Sword" weapon for {0} duration
 }
 
@@ -50,12 +54,6 @@ OutroEffect_DamageMulti: {
 	DisplayName: Damage multiplier
 	Description: 1.05x damage
 	Tooltip: Slightly multiply weapon damage for {0}s duration
-}
-
-OutroEffect_LesserDamage: {
-	DisplayName: Lesser damage increases
-	Description: +7.5% damage
-	Tooltip: Slightly increases weapon damage for {0}s duration
 }
 
 OutroEffect_RejuvinatingGlow: {
@@ -116,5 +114,20 @@ OutroEffect_Greatsword: {
 		'''
 		Increases damage and knockback for "Greatsword" weapon for {0}s duration
 		"Greatsword" weapon deal 1% of NPC current health
+		'''
+}
+
+OutroEffect_ChlorophyteEmpowerment: {
+	DisplayName: Chlorophyte Empowerment
+	Description:
+		'''
+		+10% damage and have 1 in 10 chance to 
+		spawn spore cloud dealing 65% weapon damage
+		"Chlorophyte empowerment" weapon deal 20% true damage
+		'''
+	Tooltip:
+		'''
+		Increases damage and have small chance to create spore cloud for {0}s duration
+		"Chlorophyte empowerment" weapon deal extra damage
 		'''
 }

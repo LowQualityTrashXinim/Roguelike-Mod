@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
@@ -10,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -62,6 +60,21 @@ public static class SpoilDropRarity {
 	public static bool RareDrop() => ChanceWrapper(.10f);
 	public static bool SuperRareDrop() => ChanceWrapper(.025f);
 	public static bool SSRDrop() => ChanceWrapper(.001f);
+	public static Color ColorBaseOnRareValue(int rare) {
+		Color black = Color.White;
+		if (rare == 1)
+			black = new Color(150, 150, 255);
+
+		if (rare == 8)
+			black = new Color(255, 255, 10);
+
+		if (rare == 11)
+			black = new Color(180, 40, 255);
+
+		if (rare == 10)
+			black = new Color(255, 40, 100);
+		return black;
+	}
 }
 public abstract class ModSpoil {
 	public string Name => GetType().Name;

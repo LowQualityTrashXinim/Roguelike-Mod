@@ -588,3 +588,28 @@ Flaming Wood Sword:
 528/ Deleted relic guide because it was a placeholder.
 529/ Fixed Outro Effect Great sword dealing insane damage.
 530/ Minor code clean up all around within the mod.
+531/ Removed the homing property from Influx Waver projectile and give its increases shoot speed.
+532/ Slight fix to Outer God Artifact to be correct with the description.
+533/ Added in a extra field that enable developer to sync their dodge effect across the whole mod.
+534/ Fixed spoils to be accurate with description, additionally also rebalance some spoils.
+535/ Hopefully fixed KS crown not despawn after certain interaction.
+536/ Lower quality will apply to Stardust Symphony, Moonlight Spectre and The Annihiliation visual.
+537/ Added a starter lootbox if player are playing in Boss Rush mode.
+538/ Lower the volume of Annihiliation.
+539/ Fixed homing utils code.
+540/ Fixed and balance some synergy weapon kits, the following are weapon are changed:
+- Angelic SMG
+- Unforgiving
+- Horus Eye
+- The Underdog
+541/ Adjust some localization.
+542/ Remove the exclusivity perk from each artifact.
+543/ Improved Intro effect on hotbar so that it is clearer to see how long until intro effect run out.
+544/ Added a total of 12 new spoils.
+545/ Added a new visual indicator.
+546/ Added a new outro skill.
+547/ Venus Magnum get a outro skill.
+548/ Changed Chlorophyte Claymore and also added Outro skill for it.
+549/ Added in many visual indicator to reworked weapon and intro skill for those reworked weapon.
+550/ Added modifier to Boss Rush ( not selectable as of now ).
+551/ Fixed skill system percentage energy stats not being calculated properly.

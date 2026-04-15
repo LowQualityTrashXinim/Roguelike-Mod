@@ -164,7 +164,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	}
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[projectile.owner];
-		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
+		player.EnergyHeal(EnergyRegainOnHit);
 		modifiers.CritDamage += CritDamage;
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {

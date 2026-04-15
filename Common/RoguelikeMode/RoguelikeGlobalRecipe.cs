@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,7 +47,7 @@ internal class RoguelikeGlobalRecipe : ModSystem {
 				) {
 				continue;
 			}
-			recipe.AddCondition(new Condition(ModUtils.LocalizationText("Conditions", "RoguelikeModeCursed"), () => { return !ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld; }));
+			recipe.AddCondition(new Condition(ModUtils.LocalizationText("Conditions", "RoguelikeModeCursed"), () => { return !RoguelikeWorldProperty.RoguelikeWorld; }));
 		}
 	}
 }

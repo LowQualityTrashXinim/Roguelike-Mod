@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.General;
+using Roguelike.Common.Utils;
+using System;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 	internal class MoonStarBow : SynergyModItem {
@@ -80,20 +80,22 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);
-			Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 			Vector2 origin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
-			Vector2 FullOrigin = new Vector2(Projectile.width, Projectile.height);
-			Vector2 threehalfOrigin = origin * .5f;
-			Vector2 halfTexture = new Vector2(texture.Width, texture.Height) * .5f * .5f;
-			for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
-				Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin + halfTexture) + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
-				Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .01f, SpriteEffects.None, 0);
-			}
-			for (int k = 1; k < (int)(Projectile.oldPos.Length * .5f) + 1; k++) {
-				Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin - halfTexture) + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(new Color(255, 255, 255, Math.Abs(AlphaAdditionalCounter) / k));
-				Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
+			if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+				Vector2 FullOrigin = new Vector2(Projectile.width, Projectile.height);
+				Vector2 threehalfOrigin = origin * .5f;
+				Vector2 halfTexture = new Vector2(texture.Width, texture.Height) * .5f * .5f;
+				for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
+					Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin + halfTexture) + new Vector2(0f, Projectile.gfxOffY);
+					Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
+					Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .01f, SpriteEffects.None, 0);
+				}
+				for (int k = 1; k < (int)(Projectile.oldPos.Length * .5f) + 1; k++) {
+					Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin - halfTexture) + new Vector2(0f, Projectile.gfxOffY);
+					Color color = Projectile.GetAlpha(new Color(255, 255, 255, Math.Abs(AlphaAdditionalCounter) / k));
+					Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
+				}
 			}
 			Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
 			Color fullwhite = new Color(255, 255, 255, 30);
@@ -115,15 +117,17 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, Color.Blue, Main.rand.NextFloat(1.25f, 1.5f));
 				Main.dust[dustnumber].noGravity = true;
 			}
-			for (int i = 0; i < 100; i++) {
-				if (i % 2 == 0) {
-					Rotate = Main.rand.NextVector2CircularEdge(.5f, 10f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
+			if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				for (int i = 0; i < 100; i++) {
+					if (i % 2 == 0) {
+						Rotate = Main.rand.NextVector2CircularEdge(.5f, 10f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
+					}
+					else {
+						Rotate = Main.rand.NextVector2CircularEdge(10f, .5f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
+					}
+					int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, Color.Blue, Main.rand.NextFloat(1.25f, 1.5f));
+					Main.dust[dustnumber].noGravity = true;
 				}
-				else {
-					Rotate = Main.rand.NextVector2CircularEdge(10f, .5f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
-				}
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, Color.Blue, Main.rand.NextFloat(1.25f, 1.5f));
-				Main.dust[dustnumber].noGravity = true;
 			}
 		}
 	}
@@ -185,10 +189,12 @@ namespace Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 			Vector2 origin = new Vector2(Projectile.width * .5f, Projectile.height * .5f);
 			Vector2 offsetOriginbyQuad = origin * .33f;
-			for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
-				Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + offsetOriginbyQuad + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(new Color(0, 0, 255, 255 / k));
-				Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .02f, SpriteEffects.None, 0);
+			if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
+					Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + offsetOriginbyQuad + new Vector2(0f, Projectile.gfxOffY);
+					Color color = Projectile.GetAlpha(new Color(0, 0, 255, 255 / k));
+					Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .02f, SpriteEffects.None, 0);
+				}
 			}
 			Texture2D textureThis = TextureAssets.Projectile[Projectile.type].Value;
 			Vector2 drawPosThis = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);

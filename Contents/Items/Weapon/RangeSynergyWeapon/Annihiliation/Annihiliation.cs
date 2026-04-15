@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
@@ -18,9 +19,10 @@ internal class Annihiliation : SynergyModItem {
 		Item.BossRushDefaultRange(138, 36, 33, 3f, 2, 6, ItemUseStyleID.Shoot, ModContent.ProjectileType<AnnihiliationBullet>(), 20f, true, AmmoID.Bullet);
 		Item.scale = .87f;
 		Item.UseSound = SoundID.Item38 with {
-			Pitch = 1f
+			Pitch = 1f,
+			Volume = .5f
 		};
-		Item.Set_InfoItem();
+	Item.Set_InfoItem();
 	}
 	public override Vector2? HoldoutOffset() {
 		return new(-30, 0);
@@ -277,7 +279,11 @@ public class AnnihiliationBullet : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
-		for (int k = 0; k < Projectile.oldPos.Length; k++) {
+		int end = Projectile.oldPos.Length;
+		if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			end = 1;
+		}
+		for (int k = 0; k < end; k++) {
 			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 			Color color = Color.Magenta * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 			color.A = 0;

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
@@ -10,18 +12,25 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 internal class Roguelike_VenusMagnum : GlobalItem {
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(150 / 300f, 175 / 300f, new Color(10, 255, 10));
+	}
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.VenusMagnum;
 	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 52;
+		entity.Set_ItemOutroEffect<OutroEffect_ChlorophyteEmpowerment>();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		int counter = player.GetModPlayer<Roguelike_VenusMagnum_ModPlayer>().VenusMagnum_Counter;
-		if (player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().PerfectStrike) {
+		if (player.GetModPlayer<Roguelike_VenusMagnum_ModPlayer>().PerfectShot) {
 			counter = 300;
 		}
 		if (counter >= 150) {
@@ -32,9 +41,11 @@ internal class Roguelike_VenusMagnum : GlobalItem {
 		}
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(item.type)) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
 			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
 		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_VenusMagnum_ModPlayer>().VenusMagnum_Counter / 300f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int counter = player.GetModPlayer<Roguelike_VenusMagnum_ModPlayer>().VenusMagnum_Counter;
@@ -101,7 +112,7 @@ public class Roguelike_VenusMagnum_ModPlayer : ModPlayer {
 	}
 	public void SpawnSpecialCobaltDustEffect() {
 		var GunSoundStyle = new SoundStyle("Roguelike/Assets/SFX/ReloadGun");
-		SoundEngine.PlaySound(GunSoundStyle with { Pitch = 1f }, Player.Center); 
+		SoundEngine.PlaySound(GunSoundStyle with { Pitch = 1f }, Player.Center);
 		for (int o = 0; o < 10; o++) {
 			for (int i = 0; i < 4; i++) {
 				var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * (3 + Main.rand.NextFloat()) * 5;

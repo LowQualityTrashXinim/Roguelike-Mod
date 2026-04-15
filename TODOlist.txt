@@ -97,5 +97,28 @@ if False
 16/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
-
+17/ Fix spoils.
+18/ Look into KS crown AI why it despawn on hit.
+19/ Rebalancing Boss Rush:
+- Bring back old lootbox system.
+- While player are in boss rush world, treasure bag only drop expert mode item.
+- Ensure at least starter loot, starter loot should contain 1 potion, armor set ( with random piece ), weapon, accessory.
+- rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
+- Tweak Boss HP and damage scaling because player have skill issue
+20/ Rebalancing WO:
+- focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
+- add better indicators for landing Perfect strikes, for intro and outro visuals (past mockup)
+- tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
+- bridge balancing between Vanilla and Boss Rush / Everlasting
+- give the mod its own identity as more than an Everlasting sub mod 
+(because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
+21/ Boss Rush mode Extra:
+- Before player summon first boss, they have to pick a modifier:
+1 good modifier and 1 bad modifier
+- The modifier is forced to be changed after each boss beaten.
+- The player must choose modifier
+22/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
 Testing TODO:
+
+Known issue:
+> > > When a item have its bgs in inventory appear gray out and when you swap a item which the mouse is holding it, the gray out bgs disappear.

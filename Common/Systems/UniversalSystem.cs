@@ -102,8 +102,6 @@ internal class UniversalSystem : ModSystem {
 			return config.RareLootbox;
 		if (option == CHECK_RARESPOILS)
 			return config.RareSpoils;
-		if (option == CHECK_PREFIX)
-			return config.AccessoryPrefix;
 		return false;
 	}
 	internal UserInterface userInterface;
@@ -524,6 +522,7 @@ public class UniversalModPlayer : ModPlayer {
 public class DefaultUI : UIState {
 	Roguelike_ProgressUIBar energyBar;
 	Roguelike_ProgressUIBar energyCostBar;
+	public Roguelike_WeaponUIFrame WeaponBar;
 
 	private UITextPanel<string> EndOfDemoPanel;
 	private UITextPanel<string> EndOfDemoPanelClose;
@@ -569,6 +568,14 @@ public class DefaultUI : UIState {
 		timer.ShowInputTicker = false;
 		timer.TextHAlign = .5f;
 		Append(timer);
+
+		WeaponBar = new Roguelike_WeaponUIFrame();
+		WeaponBar.VAlign = .535f;
+		WeaponBar.HAlign = .5f;
+		WeaponBar.Width.Set(100, 0);
+		WeaponBar.Height.Set(20, 0);
+		WeaponBar.OnUpdate += WeaponBar_OnUpdate;
+		Append(WeaponBar);
 
 		WeaponEff = new();
 		WeaponEff.HAlign = .44f;
@@ -633,6 +640,8 @@ public class DefaultUI : UIState {
 		energyCostBar.BarProgress = modPlayer.SimulateSkillCost() / (float)modPlayer.EnergyCap;
 		energyCostBar.SetColorA(colorchanging3.MultiColor(5));
 	}
+	private void WeaponBar_OnUpdate(UIElement affectedElement) {
+	}
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
@@ -643,7 +652,7 @@ public class DefaultUI : UIState {
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-		if (ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (RoguelikeWorldProperty.BossRushWorld) {
 			timer.SetText(TimerText(ModContent.GetInstance<BossRushStructureHandler>().Get_Timer));
 		}
 		else {
@@ -662,7 +671,7 @@ public class DefaultUI : UIState {
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
 			Main.instance.MouseText("Roguelike Menu");
-			Main.LocalPlayer.mouseInterface = true;
+			player.mouseInterface = true;
 		}
 		base.Update(gameTime);
 	}

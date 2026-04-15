@@ -18,22 +18,13 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 	public bool artifact = false;
 	public override void ResetEffects() {
 		artifact = Player.HasArtifact<OuterGodTheNihilismArtifact>();
-		if(artifact) {
+		if (artifact) {
 			PlayerStatsHandle.Set_Chance_SecondLifeCondition(Player, "OuterGod_Nihilism", .8f);
 		}
 	}
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
-		if (!artifact) {
-			return;
-		}
-		if (Main.rand.NextFloat() <= .25f) {
-			Projectile.NewProjectile(Player.GetSource_ItemUse(item), Main.rand.NextVector2FromRectangle(hitbox), Vector2.Zero, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
-		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (artifact && Main.rand.NextFloat() <= .25f) {
-			Projectile.NewProjectile(Player.GetSource_ItemUse(item), position, velocity, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
-		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void UpdateEquips() {
@@ -47,17 +38,17 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 			}
 		}
 	}
-	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		if (!artifact) {
 			return;
 		}
-		modifiers.SourceDamage += 2.5f;
+		modifiers.SourceDamage += 1.5f;
 	}
-	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		if (!artifact) {
 			return;
 		}
-		modifiers.SourceDamage += 2.5f;
+		modifiers.SourceDamage += 1.5f;
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (!artifact) {
@@ -71,11 +62,16 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 			hitinfo.Crit = Main.rand.Next(1, 101) >= Player.GetWeaponCrit(item);
 			hitinfo.Knockback = 0;
 			Player.StrikeNPCDirect(npc, hitinfo);
+
+			int amount = Main.rand.Next(7, 11);
+			for (int i = 0; i < amount; i++) {
+				Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), npc.Center + Main.rand.NextVector2CircularEdge(100 + npc.width, 100 + npc.height), Vector2.Zero, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
+			}
 		}
-		Player.AddBuff(ModContent.BuffType<Vulnerable>(), ModUtils.ToSecond(4));
+		Player.AddBuff(ModContent.BuffType<ShatterShell>(), ModUtils.ToSecond(4));
 	}
-	public override bool FreeDodge(Player.HurtInfo info) {
-		if (artifact && Main.rand.NextFloat() <= .2f) {
+	public override void PostUpdate() {
+		if (artifact && Player.ModPlayerStats().HasDodgeInThisInstance) {
 			if (Player.HeldItem.IsAWeapon(true)) {
 				Item item = Player.HeldItem;
 				if (Player.Center.LookForHostileNPC(out NPC npc, 9999)) {
@@ -85,7 +81,16 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 					hitinfo.Knockback = 0;
 					Player.StrikeNPCDirect(npc, hitinfo);
 				}
+				int amount = Main.rand.Next(7, 11);
+				for (int i = 0; i < amount; i++) {
+					Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), npc.Center + Main.rand.NextVector2CircularEdge(100 + npc.width, 100 + npc.height), Vector2.Zero, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
+				}
 			}
+		}
+	}
+	public override bool FreeDodge(Player.HurtInfo info) {
+		if (artifact && Main.rand.NextFloat() <= .2f) {
+			Player.ModPlayerStats().HasDodgeInThisInstance = true;
 			Player.immune = true;
 			Player.AddImmuneTime(info.CooldownCounter, 44);
 			return true;
@@ -102,7 +107,7 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }
-public class Vulnerable : ModBuff {
+public class ShatterShell : ModBuff {
 	public override string Texture => ModTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff(true);
@@ -112,8 +117,12 @@ public class Vulnerable : ModBuff {
 		return true;
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, player.buffTime[buffIndex] / -60);
 		player.endurance -= 1;
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		handler.LifeSteal -= 1;
+		handler.UpdateDefenseBase -= 1;
+		handler.HealEffectiveness -= 1;
+		handler.BuffTime -= 1;
 	}
 }
 public class VoidParticle : ModProjectile {
@@ -146,8 +155,9 @@ public class VoidParticle : ModProjectile {
 		Projectile.velocity -= Projectile.velocity * .01f;
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.FinalDamage *= 0;
+		modifiers.FinalDamage -= 1;
 		modifiers.FinalDamage.Flat += Projectile.ai[0];
+		modifiers.ScalingArmorPenetration += 1;
 	}
 }
 

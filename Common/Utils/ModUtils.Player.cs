@@ -223,6 +223,9 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 		public static void EnergyHeal(this Player player, int amount) {
+			if (amount <= 0) {
+				return;
+			}
 			var statplayer = player.ModPlayerStats();
 			amount = (int)statplayer.EnergyRecharge.ApplyTo(amount);
 			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(amount);

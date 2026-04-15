@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.Contents;
 using Roguelike.Common.Utils;
@@ -15,7 +16,7 @@ internal class KingSlimeStructure : ModSystem {
 	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure;
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

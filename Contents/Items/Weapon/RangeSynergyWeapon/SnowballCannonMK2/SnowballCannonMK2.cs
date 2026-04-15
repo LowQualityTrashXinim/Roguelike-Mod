@@ -159,7 +159,7 @@ public class GiantSnowBall : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.tileCollide = true;
 		Projectile.timeLeft = 999;
-		Projectile.penetrate = 1;
+		Projectile.penetrate = 3;
 		Projectile.scale = 3;
 		Projectile.extraUpdates = 1;
 	}

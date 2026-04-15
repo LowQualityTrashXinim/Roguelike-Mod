@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System.Collections.Generic;
@@ -13,23 +16,33 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 
 public class Roguelike_ChlorophyteClaymore : GlobalItem {
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(150 / 240f, 170 / 240f, new Color(10, 200, 10));
+	}
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return entity.type == ItemID.ChlorophyteClaymore;
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.ChlorophyteClaymore) {
-			entity.damage += 20;
-			entity.knockBack += 5;
-			entity.useTime = entity.useAnimation = 35;
-			entity.shootsEveryUse = true;
-		}
+		entity.damage += 20;
+		entity.knockBack += 5;
+		entity.useTime = entity.useAnimation = 35;
+		entity.shootsEveryUse = true;
+		entity.Set_ItemOutroEffect<OutroEffect_ChlorophyteEmpowerment>();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (item.type == ItemID.ChlorophyteClaymore) {
-			ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_ChlorophyteClaymore", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
+		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_ChlorophyteClaymore", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
+	}
+	public override void HoldItem(Item item, Player player) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
 		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter / 240f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type != ItemID.ChlorophyteClaymore) {
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
 		int counter = player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter - 150;
 		player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter = -player.itemAnimationMax;
 		if (player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().PerfectStrike) {
@@ -39,7 +52,7 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 		if (counter >= 100) {
 			int amount = counter / 10;
 			for (int i = 0; i < amount; i++) {
-				Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(45), ModContent.ProjectileType<ChlorophyteOrb_SimplePiercingTrailProjectile>(), damage, knockback, player.whoAmI, Main.rand.NextFloat(3, 5), 180);
+				Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(45) * Main.rand.NextFloat(12f, 19f), ProjectileID.ChlorophyteOrb, damage, knockback, player.whoAmI, Main.rand.NextFloat(3, 5), 180);
 			}
 		}
 		if (counter >= 0) {
@@ -61,8 +74,8 @@ public class Roguelike_ChlorophyteClaymore_ModPlayer : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
-		if (++ChlorophyteClaymore_Counter > 250) {
-			ChlorophyteClaymore_Counter = 250;
+		if (++ChlorophyteClaymore_Counter > 240) {
+			ChlorophyteClaymore_Counter = 240;
 		}
 		if (Player.HeldItem.type != ItemID.ChlorophyteClaymore) {
 			return;
@@ -91,31 +104,33 @@ public class Roguelike_ChlorophyteClaymore_ModPlayer : ModPlayer {
 	}
 }
 public class Roguelike_ChlorophyteClaymore_GlobalProjectile : GlobalProjectile {
+	public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) {
+		return entity.type == ProjectileID.ChlorophyteOrb;
+	}
 	public override void SetDefaults(Projectile entity) {
-		if (entity.type == ProjectileID.ChlorophyteOrb) {
-			entity.tileCollide = true;
-			entity.timeLeft = 600;
-		}
+		entity.tileCollide = true;
+		entity.timeLeft = 600;
 	}
 	public override void PostAI(Projectile projectile) {
-		if (projectile.type == ProjectileID.ChlorophyteOrb) {
-			var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.ChlorophyteWeapon);
-			dust.noGravity = true;
-			dust.velocity = Vector2.Zero;
-		}
+		var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.ChlorophyteWeapon);
+		dust.noGravity = true;
+		dust.velocity = Vector2.Zero;
+
 	}
 	public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
-		if (projectile.type == ProjectileID.ChlorophyteOrb) {
-			if (projectile.velocity.Y != oldVelocity.Y) {
-				projectile.velocity.Y = -oldVelocity.Y;
-			}
-			if (projectile.velocity.X != oldVelocity.X) {
-				projectile.velocity.X = -oldVelocity.X;
-			}
-			Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity, ModContent.ProjectileType<ChlorophyteOrb_SimplePiercingTrailProjectile>(), projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
-			return false;
+		if (projectile.velocity.Y != oldVelocity.Y) {
+			projectile.velocity.Y = -oldVelocity.Y;
 		}
-		return base.OnTileCollide(projectile, oldVelocity);
+		if (projectile.velocity.X != oldVelocity.X) {
+			projectile.velocity.X = -oldVelocity.X;
+		}
+		Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.SporeCloud, projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
+		return false;
+	}
+	public override void OnKill(Projectile projectile, int timeLeft) {
+		for (int i = 0; i < 5; i++) {
+			Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.SporeCloud, projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
+		}
 	}
 }
 /// <summary>

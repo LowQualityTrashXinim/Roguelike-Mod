@@ -1,12 +1,13 @@
-﻿using Terraria;
+﻿using Roguelike.Common.Global;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 
 namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeCommonItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld;
+		return RoguelikeWorldProperty.RoguelikeWorld;
 	}
 	public override void SetDefaults(Item entity) {
 		if (entity.buffType != 0) {

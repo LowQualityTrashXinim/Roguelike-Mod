@@ -31,7 +31,12 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {
 				type = ModContent.ProjectileType<AngelicSmgThrow>();
-				damage *= 3;
+				if (player.HasBuff<AngelicSmgBuff>()) {
+					damage *= 5;
+				}
+				else {
+					damage *= 3;
+				}
 			}
 			else {
 				SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
@@ -195,8 +200,11 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			if (!returningToOwner) {
 				targetHit = true;
 				Player player = Main.player[Projectile.owner];
-				player.AddBuff(ModContent.BuffType<AngelicSmgBuff>(), 300);
+				if (player.HasBuff(ModContent.BuffType<AngelicSmgBuff>())) {
+					player.GetModPlayer<HeavenSmgPlayer>().HeavenSmg_Stacks += 4;
+				}
 				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
+				player.AddBuff(ModContent.BuffType<AngelicSmgBuff>(), 300);
 			}
 			returnToPlayer();
 		}
@@ -259,7 +267,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			player.slowFall = true;
 			player.jumpSpeedBoost = 5;
 			if (player.buffTime[buffIndex] <= 0) {
-				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
+				int len = player.GetModPlayer<HeavenSmgPlayer>().HeavenSmg_Stacks;
+				for (int i = 0; i < 5 + len; i++) {
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.One.Vector2DistributeEvenly(5f + len, 360, i), ModContent.ProjectileType<AngelicBolt>(), 30, 0, player.whoAmI, 1);
+				}
 			}
 		}
 	}
@@ -355,17 +366,12 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			}
 		}
 		public void IncreaseStack() {
-			if (!Player.HasBuff<AngelicSmgBuff>()) {
-				for (int i = 0; i < 5 + HeavenSmg_Stacks; i++) {
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f + HeavenSmg_Stacks, 360, i), ModContent.ProjectileType<AngelicBolt>(), 30, 0, Player.whoAmI, 1);
-				}
-			}
-			else {
-				if (HeavenSmg_Stacks >= 40) {
+			if (Player.HasBuff<AngelicSmgBuff>()) {
+				if (++HeavenSmg_Stacks >= 40) {
+					HeavenSmg_Stacks = 40;
 					SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
 					return;
 				}
-				HeavenSmg_Stacks++;
 				SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
 			}
 		}

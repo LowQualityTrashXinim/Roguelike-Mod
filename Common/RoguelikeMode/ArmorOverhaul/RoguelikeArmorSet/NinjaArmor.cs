@@ -69,6 +69,7 @@ public class NinjaArmorPlayer : PlayerArmorHandle {
 			Player.AddBuff<DodgeJutsuCoolDown>(ModUtils.ToSecond(20));
 			Player.AddImmuneTime(info.CooldownCounter, 44);
 			Player.immune = true;
+			Player.ModPlayerStats().HasDodgeInThisInstance = true;
 			return true;
 		}
 		return false;

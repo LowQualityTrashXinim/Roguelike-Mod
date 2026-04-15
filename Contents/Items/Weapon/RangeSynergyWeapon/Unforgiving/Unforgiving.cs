@@ -16,7 +16,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 
 public class Unforgiving : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(114, 46, 44, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
+		Item.BossRushDefaultRange(114, 46, 64, 10f, 10, 10, ItemUseStyleID.Shoot, ProjectileID.ShadowFlameArrow, 12, true, AmmoID.Arrow);
 		Item.Set_InfoItem();
 		Item.scale = .67f;
 		Item.Set_ItemOutroEffect<OutroEffect_Unforgiving>();
@@ -105,7 +105,7 @@ public class Unforgiving : SynergyModItem {
 		}
 		if (counter >= 180) {
 			SoundEngine.PlaySound(SoundID.Item60, position);
-			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), damage * 4, 0, player.whoAmI);
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Unforgiving_BlastWave>(), damage * 6, 0, player.whoAmI);
 		}
 		if (GlobalCounter % 5 == 0) {
 			GunMode = !GunMode;

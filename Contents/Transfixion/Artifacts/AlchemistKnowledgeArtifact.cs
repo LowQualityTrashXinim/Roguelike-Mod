@@ -76,9 +76,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			StackLimit = 3;
 			CanBeStack = true;
 		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() || AchievementSystem.IsAchieved("AlchemistKnowledge");
-		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 
@@ -99,9 +96,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 		public override void SetDefaults() {
 			StackLimit = 3;
 			CanBeStack = true;
-		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() || AchievementSystem.IsAchieved("AlchemistKnowledge");
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();

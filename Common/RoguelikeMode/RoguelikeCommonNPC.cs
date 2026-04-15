@@ -12,7 +12,10 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
 	public override void SetDefaults(NPC entity) {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld && !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
+			return;
+		}
+		if (!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
@@ -36,7 +39,8 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!ModContent.GetInstance<RogueLikeWorldGen>().RoguelikeWorld && !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		return;
+		if (!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye
@@ -73,7 +77,7 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 			extraMultiply += .3f;
 		}
 		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
-		if (ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+		if (RoguelikeWorldProperty.BossRushWorld) {
 			extraMultiply += ModContent.GetInstance<UniversalSystem>().Count_BossKill * .1f;
 		}
 		return (1 + counter * .5f + extraMultiply) * scale;

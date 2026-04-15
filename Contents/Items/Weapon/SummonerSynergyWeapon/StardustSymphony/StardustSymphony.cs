@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
@@ -146,6 +147,7 @@ public class StardustSymphony_DustBig : ModDust {
 		return base.Update(dust);
 	}
 	public override bool PreDraw(Dust dust) {
+
 		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
 
 		Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -172,12 +174,14 @@ public class StardustSymphony_DustStar : ModDust {
 		return base.Update(dust);
 	}
 	public override bool PreDraw(Dust dust) {
-		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
 
-		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
-		Main.spriteBatch.Draw(texture, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture.Size() * .5f, dust.scale, SpriteEffects.None, 0);
+			Texture2D texture = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+			Main.spriteBatch.Draw(texture, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture.Size() * .5f, dust.scale, SpriteEffects.None, 0);
 
-		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+			ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		}
 
 		Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.FOURSTAR).Value;
 		Main.spriteBatch.Draw(texture3, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture3.Size() * .5f, dust.scale, SpriteEffects.None, 0);
@@ -205,24 +209,26 @@ public class StardustSymphony_ModPlayer : ModPlayer {
 				}
 				IsIntheFieldAndActive = true;
 			}
-			Dust dust;
-			Dust_Counter = ModUtils.Safe_SwitchValue(Dust_Counter, 100);
-			dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Vector2.UnitY.Vector2DistributeEvenlyPlus(100, 360, Dust_Counter) * 700, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
-			dust.scale = 1;
-			dust.velocity = Vector2.Zero;
-			dust.color = Color.Cyan;
-			dust.noGravity = true;
-			dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Vector2.UnitY.Vector2DistributeEvenlyPlus(100, 360, -Dust_Counter) * 700, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
-			dust.scale = 1;
-			dust.velocity = Vector2.Zero;
-			dust.color = Color.Cyan;
-			dust.noGravity = true;
-			dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Main.rand.NextVector2Circular(650, 650), 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
-			dust.fadeIn = .8f;
-			dust.scale = Main.rand.NextFloat(.4f, .5f);
-			dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f);
-			dust.color = Color.Cyan;
-			dust.noGravity = true;
+			if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				Dust dust;
+				Dust_Counter = ModUtils.Safe_SwitchValue(Dust_Counter, 100);
+				dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Vector2.UnitY.Vector2DistributeEvenlyPlus(100, 360, Dust_Counter) * 700, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+				dust.scale = 1;
+				dust.velocity = Vector2.Zero;
+				dust.color = Color.Cyan;
+				dust.noGravity = true;
+				dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Vector2.UnitY.Vector2DistributeEvenlyPlus(100, 360, -Dust_Counter) * 700, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+				dust.scale = 1;
+				dust.velocity = Vector2.Zero;
+				dust.color = Color.Cyan;
+				dust.noGravity = true;
+				dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Main.rand.NextVector2Circular(650, 650), 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+				dust.fadeIn = .8f;
+				dust.scale = Main.rand.NextFloat(.4f, .5f);
+				dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f);
+				dust.color = Color.Cyan;
+				dust.noGravity = true;
+			}
 		}
 		else {
 			IsIntheFieldAndActive = false;
@@ -361,26 +367,27 @@ public abstract class StardustSymphony_StarProjectile_Base : ModProjectile {
 		Vector2 origin = texture.Size() * .5f;
 		Vector2 originDot = textureDot.Size() * .5f;
 		float len = Projectile.oldPos.Length;
-		for (int k = 0; k < len; k++) {
-			Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + originOfThisProj;
-			Main.EntitySpriteDraw(texture, drawPos, null, lightColor with { A = 0 }, Projectile.rotation, origin, (Projectile.scale * (1 - k / len)) * .75f, SpriteEffects.None, 0);
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			for (int k = 0; k < len; k++) {
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + originOfThisProj;
+				Main.EntitySpriteDraw(texture, drawPos, null, lightColor with { A = 0 }, Projectile.rotation, origin, (Projectile.scale * (1 - k / len)) * .75f, SpriteEffects.None, 0);
 
-			Main.EntitySpriteDraw(textureDot, drawPos, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.PiOver2) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.Pi) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.Pi + MathHelper.PiOver2) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.TwoPi) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(textureDot, drawPos, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.PiOver2) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.Pi) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.Pi + MathHelper.PiOver2) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(textureDot, drawPos + Vector2.One.RotatedBy(MathHelper.TwoPi) * 5, null, Color.Cyan, Projectile.rotation, originDot, Projectile.scale * .5f, SpriteEffects.None, 0);
+			}
+			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+
+			Texture2D texture2 = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+			Main.spriteBatch.Draw(texture2, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, 0, texture2.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
+
+			Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
+			Main.spriteBatch.Draw(texture3, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan with { A = 150 }, 0, texture3.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
+
+			ModUtils.Draw_ResetToNormal(Main.spriteBatch);
 		}
-
-		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
-
-		Texture2D texture2 = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
-		Main.spriteBatch.Draw(texture2, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, 0, texture2.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
-
-		Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
-		Main.spriteBatch.Draw(texture3, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan with { A = 150 }, 0, texture3.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
-
-		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
 
 		Texture2D textureStar = ModContent.Request<Texture2D>(Texture).Value;
 		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale * .5f, SpriteEffects.None, 0);

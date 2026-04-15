@@ -25,7 +25,7 @@ internal class Roguelike_OreBow : GlobalItem {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"Roguelike_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", "OreBow")));
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player) && player.Check_SwitchedWeapon(item.type)) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
 			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(15));
 		}
 	}

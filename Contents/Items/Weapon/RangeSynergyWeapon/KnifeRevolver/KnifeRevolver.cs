@@ -37,7 +37,6 @@ internal class KnifeRevolver : SynergyModItem {
 			Item.noUseGraphic = true;
 		}
 		else {
-			type = ProjectileID.Bullet;
 			Item.noUseGraphic = false;
 			if (!player.GetModPlayer<KnifeRevolverPlayer>().SpecialShotReady) {
 				velocity = velocity.Vector2RotateByRandom(5);
@@ -56,7 +55,7 @@ public class KnifeRevolverThrown_Projectile : ModProjectile {
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.friendly = true;
-		Projectile.tileCollide = false;
+		Projectile.tileCollide = true;
 		Projectile.timeLeft = ModUtils.ToMinute(5);
 		Projectile.penetrate = -1;
 		Projectile.scale = .67f;
@@ -100,16 +99,16 @@ public class KnifeRevolverThrown_Projectile : ModProjectile {
 			|| !Projectile.Center.IsCloseToPosition(player.Center, 1500)) {
 			Projectile.Kill();
 		}
+		Projectile.Center += player.velocity;
 		if (player.itemAnimation != player.itemAnimationMax) {
 			if (NPC_whoAmI == -1 && Projectile.ai[1] == 1) {
-				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 2;
 				if (Projectile.ai[2] == 1) {
 					Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 30;
 					Projectile.ai[2]++;
 				}
-				Projectile.Center += player.velocity;
 			}
-			if (Main.mouseRightRelease) {
+			if (++Projectile.ai[0] >= 10) {
 				if (npc != null) {
 					if (npc.type != NPCID.TargetDummy)
 						npc.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5;
@@ -169,13 +168,14 @@ public class KnifeRevolverPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.Check_ItemTypeSource<KnifeRevolver>() && shootCounter >= 3) {
+		if (proj.Check_ItemTypeSource<KnifeRevolver>()) {
 			if (target.HasBuff<DeathshotMark>()) {
 				SpecialShotReady = true;
 				target.DelBuff(target.FindBuffIndex(ModContent.BuffType<DeathshotMark>()));
 			}
 			else {
-				target.AddBuff<DeathshotMark>(120);
+				if (shootCounter >= 3)
+					target.AddBuff<DeathshotMark>(120);
 			}
 		}
 	}

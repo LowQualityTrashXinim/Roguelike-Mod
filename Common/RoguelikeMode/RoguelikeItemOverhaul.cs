@@ -70,6 +70,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				case ItemID.InfluxWaver:
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;
+					item.shootSpeed = 17;
 					break;
 			}
 		}

@@ -67,9 +67,6 @@ public class EndlessHunger : Perk {
 		CanBeStack = true;
 		StackLimit = 3;
 	}
-	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() || AchievementSystem.IsAchieved("TokenOfGluttony");
-	}
 	public override void UpdateEquip(Player player) {
 		player.endurance += .05f * StackAmount(player);
 	}
@@ -89,9 +86,6 @@ public class Satisfaction : Perk {
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;
-	}
-	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() || AchievementSystem.IsAchieved("TokenOfGluttony");
 	}
 	public override void UpdateEquip(Player player) {
 		if (!player.IsHealthAbovePercentage(.4f)) {

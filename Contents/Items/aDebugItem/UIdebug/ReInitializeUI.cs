@@ -14,7 +14,7 @@ class ReInitializeUI : ModItem {
 		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : divine hammer UI"));
+		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : default UI"));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {

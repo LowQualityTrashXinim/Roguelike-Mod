@@ -62,6 +62,7 @@ public class RoguelikeOverhaul_Buff_ModPlayer : ModPlayer {
 		if (!Player.immune && Player.HasBuff(BuffID.Invisibility) && Main.rand.NextBool(15)) {
 			Player.AddImmuneTime(info.CooldownCounter, 60);
 			Player.immune = true;
+			Player.ModPlayerStats().HasDodgeInThisInstance = true;
 			return true;
 		}
 		return base.FreeDodge(info);

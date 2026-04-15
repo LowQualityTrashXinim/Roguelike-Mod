@@ -6,6 +6,7 @@ using ReLogic.Localization.IME;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Texture;
+using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -185,11 +186,138 @@ namespace Roguelike.Common.Utils {
 			int left = hitbox.Left;
 			int right = hitbox.Right;
 			int steps = (int)((right - left) * quotient);
-			for (int i = 0; i < steps; i += 1) {
+			for (int i = 0; i < steps; i++) {
 				// float percent = (float)i / steps; // Alternate Gradient Approach
 				float percent = (float)i / (right - left);
 				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
 			}
+		}
+	}
+	/// <summary>
+	/// Special kind of UI that most likely only used once through out the mod
+	/// </summary>
+	public class Roguelike_WeaponUIFrame : UIElement {
+		protected Asset<Texture2D> texture;
+		public float barProgress;
+		public bool Hide = false;
+		public bool HideBar = false;
+		public bool HideText = false;
+		private int Delay = 0;
+		public Color gradientA, gradientB;
+		public void DelayHide(int HideDelay) {
+			if (Delay <= 0 && !Hide) {
+				Delay = HideDelay;
+			}
+			else {
+				Delay = ModUtils.CountDown(Delay);
+				if (Delay <= 1) {
+					Hide = true;
+				}
+			}
+		}
+		public Roguelike_WeaponUIFrame() {
+			texture = ModContent.Request<Texture2D>(ModTexture.Weapon_FrameUI);
+			barFrame = new UIImage(texture); // Frame of our resource bar
+			Append(barFrame);
+			barFrame.UISetWidthHeight(100, 20);
+		}
+		private UIImage barFrame;
+		WeaponProgress inner_progress = null;
+		public void SetWeaponProgress(WeaponProgress progress) {
+			if (inner_progress != null) {
+				if (inner_progress.ItemType != progress.ItemType) {
+					inner_progress = progress;
+				}
+				Hide = false;
+			}
+			inner_progress = progress;
+		}
+		public float BarProgress { get => barProgress; set => barProgress = value; }
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			if (inner_progress != null) {
+				if (inner_progress.ItemType != Main.LocalPlayer.HeldItem.type) {
+					Hide = true;
+				}
+			}
+		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			if (inner_progress == null) {
+				return;
+			}
+			if (Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+		}
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (inner_progress == null) {
+				return;
+			}
+			if (Hide) {
+				return;
+			}
+			base.DrawSelf(spriteBatch);
+			DrawBarUI(spriteBatch);
+		}
+		private void DrawBarUI(SpriteBatch spriteBatch) {
+			float quotient = barProgress;
+			quotient = Math.Clamp(quotient, 0f, 1f);
+
+			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
+			Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
+			hitbox.Width -= 2;
+
+			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
+			int left = hitbox.Left;
+
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left, hitbox.Y, hitbox.Width, hitbox.Height), Color.White.ScaleRGB(.1f) with { A = 100 });
+
+			foreach (var item in inner_progress.Setting) {
+				int starter = left + (int)(hitbox.Width * item.p1);
+				int ender = left + (int)(hitbox.Width * item.p2);
+				for (int i = starter; i < ender; i++) {
+					spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(i, hitbox.Y, 1, hitbox.Height), item.color);
+				}
+			}
+			if (inner_progress.Charge) {
+				int right = hitbox.Right;
+				int steps = (int)((right - left) * quotient);
+				for (int i = 0; i < steps; i++) {
+					float percent = (float)i / (right - left);
+					spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
+				}
+			}
+			else {
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + (int)(hitbox.Width * quotient), hitbox.Y, 2, hitbox.Height), Color.White);
+			}
+		}
+	}
+
+	public class WeaponProgress {
+		public int ItemType = 0;
+		public bool Charge = false;
+		public List<ProgressInfo> Setting { get; private set; } = new();
+		public WeaponProgress() {
+
+		}
+		public void Set_Progress(float progress) {
+			Setting.Add(new(progress, progress, Color.White));
+		}
+		public void Set_Progress(float p1, float p2, Color color) {
+			Setting.Add(new(p1, p2, color));
+		}
+	}
+	public struct ProgressInfo {
+		public float p1, p2;
+		public Color color;
+		public ProgressInfo() {
+
+		}
+		public ProgressInfo(float progress1, float progress2, Color progressColor) {
+			p1 = progress1;
+			p2 = progress2;
+			color = progressColor;
 		}
 	}
 	public class Roguelike_WrapTextUIPanel : UITextPanel<string> {

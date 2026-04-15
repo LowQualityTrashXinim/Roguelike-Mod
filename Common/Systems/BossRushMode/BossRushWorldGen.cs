@@ -11,6 +11,7 @@ using Terraria.WorldBuilding;
 using Roguelike.Common.RoguelikeMode;
 using StructureHelper.Models;
 using StructureHelper.API;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Mode.BossRushMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -19,7 +20,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			On_Player.ItemCheck_UseBossSpawners += On_Player_ItemCheck_UseBossSpawners;
 		}
 		private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
-			if (BossRushWorld) {
+			if (RoguelikeWorldProperty.BossRushWorld) {
 				if (sItem.type == ItemID.SlimeCrown) {
 					return;
 				}
@@ -67,19 +68,12 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			}
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
-			BossRushWorld = true;
 		}
 		public bool IsABossAlive = false;
-		public bool BossRushWorld = false;
 		public override void SaveWorldData(TagCompound tag) {
-			tag["BossRushWorld"] = BossRushWorld;
 			tag["BossRushStructure"] = BossRushStructure;
 		}
 		public override void LoadWorldData(TagCompound tag) {
-			if (tag.TryGet("BossRushWorld", out bool BossRushMode)) {
-				BossRushWorld = BossRushMode;
-
-			}
 			if (tag.TryGet("BossRushStructure", out Rectangle BRstructure)) {
 				BossRushStructure = BRstructure;
 			}

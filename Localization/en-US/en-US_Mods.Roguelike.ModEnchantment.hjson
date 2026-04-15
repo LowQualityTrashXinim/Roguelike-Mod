@@ -698,7 +698,7 @@ DirtBlock.Description:
 	'''
 	Increases player defense by 10 when held
 	Every 5s, shoot out a ring of 12 dirt blocks that deal 20 damage
-	Will activate every OnHitNPCWithProjectile enchantment effect of this weapon 
+	Will activate every On Hit NPC With Projectile enchantment effect of this weapon 
 	( Only the Dirt Projectile will activate above effect )
 	'''
 DeathSickle.Description:

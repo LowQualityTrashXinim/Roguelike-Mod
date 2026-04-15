@@ -70,9 +70,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			CanBeStack = true;
 			StackLimit = 3;
 		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() || AchievementSystem.IsAchieved("HeartOfEarth");
-		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Additive: 1f + 0.5f * StackAmount(player), Flat: 5 * StackAmount(player));
 		}
@@ -89,9 +86,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
-		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() || AchievementSystem.IsAchieved("HeartOfEarth");
 		}
 		public override void UpdateEquip(Player player) {
 			int stack = StackAmount(player);

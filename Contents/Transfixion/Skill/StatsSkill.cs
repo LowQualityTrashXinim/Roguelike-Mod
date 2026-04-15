@@ -53,7 +53,7 @@ public class PowerBank : ModSkill {
 }
 public class PowerSaver : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 300;
+		Skill_EnergyRequire = 900;
 		Skill_Duration = 0;
 		Skill_EnergyRequirePercentage = -.5f;
 		Skill_Type = SkillTypeID.Skill_Stats;
@@ -125,12 +125,12 @@ public class TranquilMind : ModSkill {
 }
 public class Weaken : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 400;
+		Skill_EnergyRequire = -100;
 		Skill_Duration = ModUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		skillplayer.skilldamage -= .5f;
+		skillplayer.skilldamage -= .2f;
 		skillplayer.ProjectileSpeedMultiplier += .4f;
 	}
 }

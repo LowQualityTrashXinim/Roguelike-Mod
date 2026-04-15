@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
@@ -12,16 +14,36 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.PhoenixBlaster;
 	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Set_Progress(90 / 150f, 91 / 150f, new Color(255, 100, 0));
+		progress.Charge = true;
+	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 42;
 		entity.useTime = entity.useAnimation = 30;
 		entity.knockBack += 1;
 		entity.crit = 6;
+		entity.Set_ItemOutroEffect<OutroEffect_Sword>();
+	}
+	public override void HoldItem(Item item, Player player) {
+		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(6));
+		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter / 150f;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientA = Color.Red;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = Color.Yellow;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_PhoenixBlaster", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, damage, knockback, player.whoAmI);
+		}
 		int Counter = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter;
 		if (++player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter >= 5) {
 			player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_ShootCounter = 0;

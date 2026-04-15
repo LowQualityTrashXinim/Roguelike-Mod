@@ -44,7 +44,7 @@ internal class ElectricChainBolt : ModProjectile {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Electrified, ModUtils.ToSecond(Main.rand.Next(13, 17)));
-		Main.player[Projectile.owner].GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(5);
+		Main.player[Projectile.owner].EnergyHeal(5);
 		npc = null;
 	}
 }
@@ -64,7 +64,7 @@ public class MagnetOrbProjectile : ModProjectile {
 			Projectile.ai[0] = Projectile.velocity.X;
 			Projectile.ai[1] = Projectile.velocity.Y;
 		}
-		if(Main.rand.NextBool(5)) {
+		if (Main.rand.NextBool(5)) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Electric);
 			dust.velocity = Main.rand.NextVector2CircularEdge(10, 10);
 			dust.noGravity = true;

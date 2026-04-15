@@ -1,35 +1,40 @@
 CobaltSword:
 	'''
+	Intro effect: You do a additional very long straight slash for 3s
 	Swing are accompany with cobalt slash
 	Wait 2.5s to unleash fury of slash
 	Wait additional 2.5s to increase fury of slash damage
-	Striking at perfect moment will make fury of slash deal maximum damage
+	Striking at perfect moment will make fury of slash
+	deal maximum damage and create more slashes
 	'''
 CopperBow:
 	'''
+	Intro effect: Shoot out additional 3 thunder shots.
+	Shoot out a additional thunder shot
 	Wait 1.5s to shoot out a burst of thunder shots
 	Wait additional 1s to increases shot amount by 15
-	Shoot out a additional thunder shot
 	Arrow shot from this bow have 15% chance to explode into electric sphere
 	'''
 Starfury:
 	'''
+	Intro effect: Summon additional 3 star down toward your cursor
 	Wait 2.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
 	Wait additional 2.5s to increase the base damage of fallen star
 	Striking at perfect moment will deal maximum damage without the need of waiting
 	'''
 PhoenixBlaster:
 	'''
+	Intro effect: Every shot is accompany with flamelash dealing 100% weapon damage for 6s
+	Every 5th shot shoot out a flamelash deal 34% weapon damage
+	Shot from this gun deal extra 10 fixed damage on target that is on fire
 	Wait 1.5s to shoot out a phoenix deal 3.0x weapon damage
 	Wait additional 1.5s to shoot out flame lash projectile deal .34x weapon damage
-	Every 5th shot shoot out a flame lash projectile
-	Shot from this gun deal extra 10 fixed damage on target that is on fire
 	'''
 ChlorophyteClaymore:
 	'''
-	Shoot out a bouncy chlorophyte orb that each time it bounces creates a chlorophyte bolt
+	Shoot out a bouncy chlorophyte orb that each time it bounces creates a spore cloud
 	Wait 2.5s to create a slash that deal 3x damage
-	Wait additional 1.6s to shoot out chlorophyte bolts along with the slash
+	Wait additional 1.5s to shoot out chlorophyte orb along with the slash
 	Striking at perfect moment will multiply damage by 2x and attack as if you waited
 	'''
 WoodenBow:
@@ -41,11 +46,10 @@ WoodenBow:
 	'''
 TinBow:
 	'''
+	Intro effect: shoot additional 1 - 3 tin bolt for 4s
 	Shoot a additional tin ore
 	Wait 2s to shoot down 3 tin bolt from the sky deal 2x weapon damage
 	Wait additional 2s to rain down more tin bolt
-	When tin bolt are spawned, there is a 1 in 3 chance to spawn additional tin ore
-	Falling tin ore deal 2.5x weapon damage
 	'''
 BoneSword:
 	'''
@@ -68,6 +72,7 @@ HeatRay:
 	'''
 Musket:
 	'''
+	Intro effect: Replaced shot with high velocity bullet and +10 base damage for 3s
 	Wait 1s to guarantee the next shot always be critical
 	Wait additional 2s to increases critical damage of next shot by 150%
 	'''
@@ -319,9 +324,9 @@ Lemon:
 	'''
 Grapefruit:
 	'''
-	Have rare chance to spawns grape fruit 
+	Have rare chance to spawns grape fruit during fighting
 	Collecting grape fruit will make strike inflict DoT debuff
-	Effect cap out at 32; stacks reset when hit
+	Effect cap out at 32; stack have a decay rate of 10s
 	'''
 Plum:
 	'''

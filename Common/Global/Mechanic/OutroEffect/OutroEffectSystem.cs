@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.NoneSynergy.EnhancedKatana;
@@ -18,6 +17,7 @@ using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
 using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
 using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
 using Roguelike.Contents.Items.NoneSynergy.TrueEnchantedSword;
+using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
@@ -154,6 +154,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_EletricConductor();
 		Add_Avarice();
 		Add_Wooden();
+		Add_ChlorophyteEmpowerment();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
@@ -1033,6 +1034,22 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.ShadewoodBow);
 		Arr_WeaponTag[tag].Add(ItemID.PearlwoodBow);
 	}
+	private void Add_ChlorophyteEmpowerment() {
+		int tag = (int)WeaponTag.ChlorophyteEmpowerment;
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteSaber);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteClaymore);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteGreataxe);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophytePartisan);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteShotbow);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteWarhammer);
+		Arr_WeaponTag[tag].Add(ItemID.VenusMagnum);
+
+		Arr_WeaponTag[tag].Add(ItemID.NettleBurst);
+		Arr_WeaponTag[tag].Add(ItemID.LeafBlower);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganySword);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyBow);
+		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyHammer);
+	}
 }
 public class WeaponEffect_ModPlayer : ModPlayer {
 	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
@@ -1040,6 +1057,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	public int[] Arr_WeaponEffect = [];
 	public List<int> Easy_WeaponEffectFollow = new();
 	public int IntroEffect_Duration = 0;
+	public int IntroEffect_MaxDuration = 0;
 	public int IntroEffect_ItemType = -1;
 	public int OutroEffect_ItemOld = -1;
 	public int OutroEffect_Current = -1;
@@ -1048,7 +1066,12 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// </summary>
 	/// <param name="player"></param>
 	/// <returns></returns>
-	public static bool Check_ValidForIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType == player.HeldItem.type;
+	public static bool Check_ValidForIntroEffect(Player player) {
+		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		int introitemType = modplayer.IntroEffect_ItemType;
+		int playerhelditemtype = player.HeldItem.type;
+		return introitemType != playerhelditemtype && modplayer.IntroEffect_Duration <= 0;
+	}
 	/// <summary>
 	/// Check whenever or not if the intro effect is valid, this is different from <see cref="Check_ValidForIntroEffect(Player)"/>
 	/// </summary>
@@ -1071,8 +1094,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// <param name="duration"></param>
 	public static void Set_IntroEffect(Player player, int itemType, int duration) {
 		var modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
-		modplayer.IntroEffect_ItemType = itemType;
-		modplayer.IntroEffect_Duration = duration;
+		if (player.ItemAnimationActive) {
+			modplayer.IntroEffect_ItemType = itemType;
+			modplayer.IntroEffect_Duration = duration;
+		}
+		modplayer.IntroEffect_MaxDuration = duration;
 	}
 	public override void Initialize() {
 		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
@@ -1110,7 +1136,6 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		OutroEffect_RejuvinatingGlow_Counter = ModUtils.CountDown(OutroEffect_RejuvinatingGlow_Counter);
 		if (--IntroEffect_Duration <= 0) {
 			IntroEffect_Duration = 0;
-			IntroEffect_ItemType = Player.HeldItem.type;
 		}
 	}
 	public override void UpdateEquips() {
@@ -1197,14 +1222,30 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 }
 public class WeaponEffect_GlobalItem : GlobalItem {
 	public override bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(Main.LocalPlayer, item.type)) {
-			Main.instance.LoadItem(item.type);
-			var texture = TextureAssets.Item[item.type].Value;
-			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), frame, Color.White with { A = 0 }, 0, origin, scale, SpriteEffects.None, 0);
+		if (Main.LocalPlayer.TryGetModPlayer(out WeaponEffect_ModPlayer modplayer)) {
+			if (modplayer.IntroEffect_MaxDuration > 0 && modplayer.IntroEffect_ItemType == item.type) {
+				float InvScale = Main.inventoryScale;
+				if (item.TryGetGlobalItem(out GlobalItemHandle handler)) {
+					if (Main.mouseItem.TryGetGlobalItem(out GlobalItemHandle handler2)) {
+						if (handler.InventoryWhoAmI == handler2.InventoryWhoAmI) {
+							return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+						}
+					}
+					if (handler.InventoryWhoAmI > 58 || handler.InventoryWhoAmI < 0) {
+						return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+					}
+				}
+				if (modplayer.IntroEffect_Duration >= 1) {
+					var inv = TextureAssets.InventoryBack11.Value;
+					spriteBatch.Draw(inv, position, inv.Frame(verticalFrames: 1, sizeOffsetY:
+						(int)(-inv.Size().Y * (1 - modplayer.IntroEffect_Duration / (float)modplayer.IntroEffect_MaxDuration))),
+						Color.White, 0, inv.Size() * .5f, InvScale, SpriteEffects.None, 0);
+					Terraria.Utils.DrawBorderString(spriteBatch, modplayer.IntroEffect_Duration / 60 + "s", position + Vector2.One * 10, drawColor, InvScale + .25f);
+				}
+				else {
+					var inv2 = TextureAssets.InventoryBack13.Value;
+					spriteBatch.Draw(inv2, position, null, Color.Gray, 0, inv2.Size() * .5f, InvScale, SpriteEffects.None, 0);
+				}
 			}
 		}
 		return base.PreDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
@@ -1275,6 +1316,7 @@ public enum WeaponTag : byte {
 	FuryOfTheSun,
 	ElectricConductor,
 	Avarice,
+	ChlorophyteEmpowerment,
 	/// <summary>
 	/// For weapon that is made from common wood, including hardmode pearlwood
 	/// </summary>

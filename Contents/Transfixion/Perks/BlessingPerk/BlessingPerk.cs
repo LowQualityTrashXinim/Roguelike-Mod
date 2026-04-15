@@ -397,6 +397,7 @@ public class BlessingOfMoon : Perk {
 		if (!player.immune && Main.rand.NextFloat() <= .75f && !Main.dayTime) {
 			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
 			player.immune = true;
+			player.ModPlayerStats().HasDodgeInThisInstance = true;
 			return true;
 		}
 		return base.FreeDodge(player, hurtInfo);

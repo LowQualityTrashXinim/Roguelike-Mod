@@ -41,6 +41,7 @@ public class UniversalGemstone_ModPlayer : ModPlayer {
 		if (!Player.immune && set && Main.rand.NextFloat() <= .025f) {
 			Player.AddImmuneTime(info.CooldownCounter, 60);
 			Player.immune = true;
+			Player.ModPlayerStats().HasDodgeInThisInstance = true;
 			return true;
 		}
 		return base.FreeDodge(info);
