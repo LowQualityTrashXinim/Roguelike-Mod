@@ -13,11 +13,11 @@ public class BerserkI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.OrangeRed;
 	}
-	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		float percentage = player.statLife / (float)player.statLifeMax2;
 		modifiers.SourceDamage += .5f * percentage;
 	}
-	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type && !proj.minion) {
 			float percentage = player.statLife / (float)player.statLifeMax2;
 			modifiers.SourceDamage += .5f * percentage;
@@ -29,11 +29,11 @@ public class TrueStatus : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Yellow;
 	}
-	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		int damage = (int)(player.GetWeaponDamage(item) * .1f);
 		modifiers.FinalDamage.Flat += damage;
 	}
-	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			int damage = (int)(player.GetWeaponDamage(player.HeldItem) * .1f);
 			modifiers.FinalDamage.Flat += damage;
@@ -45,10 +45,10 @@ public class Terra : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Green;
 	}
-	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
+	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		TerraStrike(player, npc, player.HeldItem, hitInfo);
 	}
-	public override void OnHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
+	public override void OnHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.Check_ItemTypeSource(player.HeldItem.type) && !proj.minion) {
 			TerraStrike(player, npc, player.HeldItem, hitInfo);
 		}
@@ -79,11 +79,11 @@ public class Light : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Pink;
 	}
-	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() > .8f)
 			modifiers.SourceDamage += 1.5f;
 	}
-	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() > .8f)
 			modifiers.SourceDamage += 1.5f;
 	}
@@ -93,11 +93,11 @@ public class Dark : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Purple;
 	}
-	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() < .4f)
 			modifiers.SourceDamage += 1.5f;
 	}
-	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() < .4f)
 			modifiers.SourceDamage += 1.5f;
 	}
@@ -107,7 +107,7 @@ public class Union : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Bisque;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		float damageIncreasement = 0;
 		for (int i = 0; player.inventory.Length > 0; i++) {
 			if (i > 50) {
@@ -126,7 +126,7 @@ public class Ghost : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Wheat;
 	}
-	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
+	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (!player.immune) {
 			player.immune = true;
 			player.AddImmuneTime(-1, 8);
@@ -138,7 +138,7 @@ public class ExtraLife : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.White;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);
 	}
 }
@@ -146,15 +146,15 @@ public class DryadBlessing : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.LimeGreen;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 3);
 	}
-	public override void OnHitByProj(Player player, AugmentsWeapon acc, int index, Projectile projectile, Player.HurtInfo info) {
+	public override void OnHitByProj(Player player, AugmentsWeapon acc, Projectile projectile, Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
 			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
 		}
 	}
-	public override void OnHitByNPC(Player player, AugmentsWeapon acc, int index, NPC npc, Player.HurtInfo info) {
+	public override void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
 			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
 		}
