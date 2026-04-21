@@ -16,22 +16,20 @@ public class TundraBow : SynergyModItem {
 		Item.UseSound = SoundID.Item5;
 	}
 	int delayBetweenShot = 0;
-	float chance = .001f;
+	float chance = 0;
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-8, 0);
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity.RotatedBy(MathHelper.ToRadians(90)), 20), velocity, type, damage, knockback, player.whoAmI);
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity.RotatedBy(MathHelper.ToRadians(-90)), 20), velocity, type, damage, knockback, player.whoAmI);
 		TundraBow_ModPlayer tundra = player.GetModPlayer<TundraBow_ModPlayer>();
-		if (Main.rand.NextFloat() <= chance) {
+		if (chance >= 100) {
 			tundra.ActivateSnowStorm(Item);
-			chance = .001f;
+			chance = 0;
 		}
 		else {
 			if (tundra.SnowStormCounter <= 0) {
-				chance += .001f;
+				chance++;
 			}
 		}
 		int snowdustamount = Main.rand.Next(12, 19);
@@ -43,12 +41,13 @@ public class TundraBow : SynergyModItem {
 		}
 		int hitcounter = tundra.HitCounter;
 		int snowballDamage = (int)(damage * (.35f + hitcounter * .1f));
-		if (++delayBetweenShot >= 5 || tundra.SnowStormCounter > 0) {
-			int amount = Main.rand.Next(3, 6);
-			for (int i = 0; i < amount; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(amount, 15, i), ProjectileID.SnowBallFriendly, snowballDamage, knockback, player.whoAmI);
-			}
+		if (++delayBetweenShot >= 15) {
 			delayBetweenShot = 0;
+			tundra.ActivateSnowStream(Item);
+		}
+		int amount = Main.rand.Next(3, 6);
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(amount, 15, i), ProjectileID.SnowBallFriendly, snowballDamage, knockback, player.whoAmI);
 		}
 	}
 	public override void AddRecipes() {
@@ -65,6 +64,13 @@ public class TundraBow_ModPlayer : ModPlayer {
 	public int SnowStormDamage = 0;
 	public Item SnowStormItemSource = null;
 	public int SnowStormInitialDirection = 1;
+	public int SnowStreamDuration = 0;
+	public void ActivateSnowStream(Item item) {
+		SnowStreamDuration = ModUtils.ToSecond(2);
+		SnowStormDamage = Player.GetWeaponDamage(item);
+		SnowStormItemSource = item.Clone();
+		SnowStormInitialDirection = Player.direction;
+	}
 	public void ActivateSnowStorm(Item item) {
 		SnowStormCounter = ModUtils.ToSecond(5);
 		SnowStormDamage = Player.GetWeaponDamage(item);
@@ -79,8 +85,16 @@ public class TundraBow_ModPlayer : ModPlayer {
 			}
 		}
 		SnowStormCounter = ModUtils.CountDown(SnowStormCounter);
+		SnowStreamDuration = ModUtils.CountDown(SnowStreamDuration);
 	}
 	public override void UpdateEquips() {
+		if (SnowStreamDuration > 0 && SnowStormItemSource != null) {
+			Vector2 vel = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 20;
+
+			Vector2 pos = Player.Center + Main.rand.NextVector2Circular(30, 30);
+			Projectile projectile = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(SnowStormItemSource), pos, vel, ProjectileID.SnowBallFriendly, SnowStormDamage, 1f, Player.whoAmI);
+			projectile.tileCollide = false;
+		}
 		if (SnowStormCounter > 0 && SnowStormItemSource != null) {
 			Vector2 vel = Vector2.One;
 			vel.X *= SnowStormInitialDirection * 5;

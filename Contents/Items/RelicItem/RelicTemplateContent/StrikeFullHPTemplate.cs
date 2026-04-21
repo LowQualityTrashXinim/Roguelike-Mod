@@ -17,7 +17,7 @@ public class StrikeFullHPTemplate : RelicTemplate {
 		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive),]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.15f, .35f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);

@@ -21,7 +21,9 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 	}
 	public override void UpdateEquips() {
 		if (PerpetuationCycle) {
-			Player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .35f;
+			var handler = Player.ModPlayerStats();
+			handler.DebuffTime += .35f;
+			handler.DebuffDamage += .1f;
 		}
 	}
 	public override void PostUpdate() {
@@ -29,12 +31,12 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (PerpetuationCycle) {
-			modifiers.SourceDamage -= .35f;
+			modifiers.SourceDamage -= 1;
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if(PerpetuationCycle) {
-			modifiers.SourceDamage -= .35f;
+		if (PerpetuationCycle) {
+			modifiers.SourceDamage -= 1;
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -45,7 +47,7 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 	}
 	private void Trinket_of_Perpetuation_OnHitNPCEffect(NPC target) {
 		if (PerpetuationCycle) {
-			target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), ModUtils.ToSecond(1));
+			target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), ModUtils.ToSecond(3));
 		}
 	}
 	public class Samsara_of_Retribution : ModBuff {

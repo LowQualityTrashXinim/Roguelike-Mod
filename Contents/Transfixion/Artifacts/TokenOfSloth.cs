@@ -16,8 +16,9 @@ using Roguelike.Contents.Transfixion.Perks;
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {
 	public override IEnumerable<Item> AddStartingItems(Player player) {
-		WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<BreakerBlade_Var1>();
-		yield return new Item(ItemID.BreakerBlade);
+		Item item = new Item(ItemID.BreakerBlade);
+		item.Set_ModdedVariant(ModVariant.GetVariantType<BreakerBlade_Var1>());
+		yield return item;
 		yield return new Item(ItemID.EndurancePotion, 5);
 	}
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");

@@ -20,8 +20,8 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 		public override int Frames => 7;
 		public override Color DisplayNameColor => Color.MediumVioletRed;
 		public override IEnumerable<Item> AddStartingItems(Player player) {
-			WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<VampireKnive_Var1>();
 			Item item = new(ItemID.VampireKnives);
+			item.Set_ModdedVariant(ModVariant.GetVariantType<VampireKnive_Var1>());
 			yield return item;
 			yield return new(ModContent.ItemType<LifeStealPotion>(), 5);
 		}

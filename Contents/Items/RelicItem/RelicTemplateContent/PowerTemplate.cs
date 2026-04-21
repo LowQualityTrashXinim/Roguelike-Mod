@@ -27,7 +27,7 @@ internal class PowerTemplate : RelicTemplate {
 	}
 
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .25f), 2), 1, 0, 0);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.04f, 1.12f), 2), 1, 0, 0);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.EnergyRegen.Base -= 1;

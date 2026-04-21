@@ -1,5 +1,4 @@
 ﻿using Roguelike.Common.Global;
-using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Terraria;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeCommonNPC : GlobalNPC {
 	public const int BossHP = 8000;
-	public const int BossDMG = 40;
+	public const int BossDMG = 30;
 	public const int BossDef = 5;
 	public override void SetDefaults(NPC entity) {
 		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
@@ -39,7 +38,9 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		return;
+		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
+			return;
+		}
 		if (!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
@@ -80,6 +81,6 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		if (RoguelikeWorldProperty.BossRushWorld) {
 			extraMultiply += ModContent.GetInstance<UniversalSystem>().Count_BossKill * .1f;
 		}
-		return (1 + counter * .5f + extraMultiply) * scale;
+		return (1 + counter * .35f + extraMultiply) * scale;
 	}
 }

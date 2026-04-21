@@ -5,7 +5,7 @@ using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items;
-using Roguelike.Contents.Transfixion.Arguments;
+using Roguelike.Contents.Transfixion.Augmentation;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
 using System;

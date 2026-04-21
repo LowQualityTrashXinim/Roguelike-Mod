@@ -371,13 +371,17 @@ internal class UniversalSystem : ModSystem {
 	public void DeactivateUI() {
 		user2ndInterface.SetState(null);
 	}
+	public override void PreSaveAndQuit() {
+		GivenBossSpawnItem.Clear();
+		Count_BossKill = 0;
+	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
 	public int Count_BossKill = 0;
 	public string UniqueWorldPlayerID = "";
 	public override void ClearWorld() {
-		GivenBossSpawnItem = new List<int>();
-		ListOfBossKilled = new();
+		ListOfBossKilled.Clear();
+		Count_BossKill = 0;
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;

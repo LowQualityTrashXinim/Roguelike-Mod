@@ -57,10 +57,10 @@ public class BattleMountTemplate : RelicTemplate {
 			|| stat == PlayerStats.RangeCritChance
 			|| stat == PlayerStats.MagicCritChance
 			|| stat == PlayerStats.SummonCritChance) {
-				modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.72f, value.Base * 1.72f);
+				modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.22f, value.Base * 1.22f);
 			}
 			else {
-				modplayer.AddStatsToPlayer(stat, value.Additive * 1.72f, value.Multiplicative, value.Flat * 1.72f, value.Base * 1.72f);
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.22f, value.Multiplicative, value.Flat * 1.22f, value.Base * 1.22f);
 			}
 		}
 		else {

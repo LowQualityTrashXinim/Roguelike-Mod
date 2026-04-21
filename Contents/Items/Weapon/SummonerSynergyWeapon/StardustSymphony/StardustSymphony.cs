@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,24 +34,32 @@ internal class StardustSymphony : SynergyModItem {
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
 		if (UseCounter == 29) {
 			Dust dust;
-			for (int i = 0; i < 23; i++) {
+			for (int i = 0; i < 36; i++) {
 				dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+				dust.position += Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * 112.5f;
 				dust.scale = Main.rand.NextFloat(1.4f, 1.8f);
-				dust.velocity = Main.rand.NextVector2CircularEdge(7, 7) * Main.rand.NextFloat(.6f, 1.1f);
+				dust.velocity = Vector2.Zero;
+				dust.color = Color.Cyan;
+				dust.noGravity = true;
+				for (int a = 0; a < 20; a++) {
+					dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_Dust>());
+					dust.position += Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * MathHelper.Lerp(112.5f, 225f, a / 20f);
+					dust.scale = Main.rand.NextFloat(1.4f, 1.8f);
+					dust.velocity = Vector2.Zero;
+					dust.color = Color.White;
+					dust.noGravity = true;
+				}
+				dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_DustStar>());
+				dust.position += Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * 225;
+				dust.scale = Main.rand.NextFloat(1.4f, 1.8f);
+				dust.velocity = Vector2.Zero;
 				dust.color = Color.Cyan;
 				dust.noGravity = true;
 			}
-			for (int i = 0; i < 53; i++) {
-				dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_Dust>());
-				dust.scale = Main.rand.NextFloat(1.4f, 1.8f);
-				dust.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.6f, 1.1f);
-				dust.color = Color.Cyan;
-				dust.noGravity = true;
-			}
-			dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_DustStar>());
-			dust.scale = Main.rand.NextFloat(1.7f, 2.2f);
-			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.6f, 1.1f);
+			dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_StarDustBig>());
+			dust.scale = Main.rand.NextFloat(2.7f, 3.2f);
 			dust.color = Color.Cyan;
+			dust.velocity = Vector2.Zero;
 			dust.noGravity = true;
 		}
 		if (player.altFunctionUse == 2) {
@@ -87,12 +98,21 @@ internal class StardustSymphony : SynergyModItem {
 					Projectile.NewProjectile(source, position + Vector2.One.Vector2DistributeEvenly(5, 360, i) * 900, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_StarProjectile_Special>(), damage, knockback, player.whoAmI);
 				}
 			}
+			if (player.GetModPlayer<StardustSymphony_ModPlayer>().AttackCoolDown <= 0) {
+				player.GetModPlayer<StardustSymphony_ModPlayer>().AttackCoolDown = ModUtils.ToSecond(10);
+				for (int i = 0; i < 6; i++) {
+					Projectile.NewProjectile(source, Main.MouseWorld + Vector2.One.Vector2DistributeEvenlyPlus(6, 360, i) * 300, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_SmallStarProjectile>(), damage, knockback, player.whoAmI, 0, 300, MathHelper.ToRadians(360 * i / 5f));
+				}
+				Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_SmallStarProjectile_Ghost>(), damage / 10, 0, player.whoAmI, 60);
+			}
 			int countB = Counter % 3;
 			for (int i = 0; i < countB; i++) {
 				Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(50, 50), velocity, type, damage, knockback, player.whoAmI);
 			}
 			Counter++;
-			UseCounter++;
+			if(!player.GetModPlayer<StardustSymphony_ModPlayer>().BuffActive) {
+				UseCounter++;
+			}
 		}
 		for (int i = 0; i < 3; i++) {
 			Dust dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<StardustSymphony_Dust>());
@@ -130,6 +150,42 @@ public class StardustSymphony_Dust : ModDust {
 		Main.spriteBatch.Draw(texture, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture.Size() * .5f, dust.scale, SpriteEffects.None, 0);
 
 		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		return false;
+	}
+}
+public class StardustSymphony_StarDustBig : ModDust {
+	public override string Texture => ModTexture.Glow_Big;
+	public override bool Update(Dust dust) {
+		dust.velocity *= .98f;
+		dust.scale -= .1f;
+		if (dust.scale <= 0) {
+			dust.active = false;
+		}
+		else {
+			dust.position += dust.velocity;
+		}
+		return false;
+	}
+	public override bool PreDraw(Dust dust) {
+		Vector2 drawpos = dust.position - Main.screenPosition;
+		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+
+		Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+		dust.color.A = 200;
+		Main.spriteBatch.Draw(texture, drawpos, null, dust.color, 0, texture.Size() * .5f, dust.scale, SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(texture, drawpos, null, Color.White, 0, texture.Size() * .5f, dust.scale * .75f, SpriteEffects.None, 0);
+
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+
+		Texture2D texture2 = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		Vector2 origin2 = texture2.Size() * .5f;
+		float scale = dust.scale;
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.Cyan with { A = 200 }, dust.rotation, origin2, new Vector2(scale * 2, scale), SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.Cyan with { A = 200 }, dust.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale), SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.White with { A = 200 }, dust.rotation, origin2, new Vector2(scale * 2, scale) * .75f, SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.White with { A = 200 }, dust.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale) * .75f, SpriteEffects.None, 0);
 		return false;
 	}
 }
@@ -195,8 +251,18 @@ public class StardustSymphony_ModPlayer : ModPlayer {
 	public int HealDelay = 0;
 	public int Dust_Counter = 0;
 	public bool IsIntheFieldAndActive = false;
+	public int FinalEffect_Timer = 0;
+	public int FinalEffect_Delay = 0;
+	public bool FinalEffect_Finally = false;
+	public bool FinalEffect_Exit = true;
+	public int AttackCoolDown = 0;
+	public bool BuffActive = false;
 	public override void ResetEffects() {
-		if (Player.HasBuff<StardustSymphony_Buff>()) {
+		BuffActive = false;
+		AttackCoolDown = ModUtils.CountDown(AttackCoolDown);
+	}
+	public override void UpdateEquips() {
+		if (BuffActive) {
 			if (StardustSymphonyField_Pos == Vector2.Zero) {
 				StardustSymphonyField_Pos = Player.Center;
 			}
@@ -222,12 +288,6 @@ public class StardustSymphony_ModPlayer : ModPlayer {
 				dust.velocity = Vector2.Zero;
 				dust.color = Color.Cyan;
 				dust.noGravity = true;
-				dust = Dust.NewDustDirect(StardustSymphonyField_Pos + Main.rand.NextVector2Circular(650, 650), 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
-				dust.fadeIn = .8f;
-				dust.scale = Main.rand.NextFloat(.4f, .5f);
-				dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f);
-				dust.color = Color.Cyan;
-				dust.noGravity = true;
 			}
 		}
 		else {
@@ -235,6 +295,47 @@ public class StardustSymphony_ModPlayer : ModPlayer {
 			StardustSymphonyField_Pos = Vector2.Zero;
 			DataStorer.DeActivateContext("Synergy_StardustSymphony");
 		}
+		if (Player.HeldItem.type != ModContent.ItemType<StardustSymphony>()) {
+			return;
+		}
+		if (FinalEffect_Exit) {
+			return;
+		}
+		if (--FinalEffect_Delay > 0) {
+			return;
+		}
+		if (--FinalEffect_Timer > 0) {
+			if (FinalEffect_Finally) {
+				if (Player.ownedProjectileCounts[ModContent.ProjectileType<StardustSymphony_StarProjectile_Visual2>()] <= 0) {
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_StarProjectile_Visual2>(), 0, 0, Player.whoAmI);
+				}
+				FinalEffect_Timer = 0;
+				FinalEffect_Exit = true;
+				return;
+			}
+			else {
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2CircularEdge(2000, 1000), Vector2.Zero, ModContent.ProjectileType<StardustSymphony_StarProjectile_Visual>(), 0, 0, Player.whoAmI);
+			}
+		}
+		else {
+			if (Player.ownedProjectileCounts[ModContent.ProjectileType<StardustSymphony_StarProjectile_Visual>()] > 0) {
+				FinalEffect_Finally = false;
+			}
+			else {
+				FinalEffect_Finally = true;
+				FinalEffect_Delay = 30;
+				FinalEffect_Timer = 10;
+			}
+		}
+	}
+	public void FinalEffect() {
+		if (Player.HeldItem.type != ModContent.ItemType<StardustSymphony>()) {
+			return;
+		}
+		FinalEffect_Timer = 90;
+		FinalEffect_Delay = 10;
+		FinalEffect_Finally = false;
+		FinalEffect_Exit = false;
 	}
 }
 public class StardustSymphony_Buff : ModBuff {
@@ -242,10 +343,15 @@ public class StardustSymphony_Buff : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		if (player.Center.IsCloseToPosition(player.GetModPlayer<StardustSymphony_ModPlayer>().StardustSymphonyField_Pos, 700f)) {
+		var modplayer = player.GetModPlayer<StardustSymphony_ModPlayer>();
+		modplayer.BuffActive = true;
+		if (player.Center.IsCloseToPosition(modplayer.StardustSymphonyField_Pos, 700f)) {
 			player.ModPlayerStats().UpdateCritDamage += .45f;
 			player.GetCritChance(DamageClass.Generic) += 15;
-
+		}
+		if (player.buffTime[buffIndex] <= 0) {
+			modplayer.FinalEffect();
+			modplayer.BuffActive = false;
 		}
 	}
 }
@@ -286,7 +392,7 @@ public class StardustSymphony_Projectile : ModProjectile {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		Player player = Main.player[Projectile.owner];
-		player.Heal(Main.rand.Next(5, 26) + (int)(Projectile.damage * .005f));
+		player.Heal(Main.rand.Next(1, 11) + (int)(Projectile.damage * .025f));
 
 		Vector2 pos = player.Center + Main.rand.NextVector2Circular(50, 50);
 		Vector2 vel = (pos - player.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(.4f, .6f);
@@ -392,8 +498,7 @@ public abstract class StardustSymphony_StarProjectile_Base : ModProjectile {
 		Texture2D textureStar = ModContent.Request<Texture2D>(Texture).Value;
 		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale * .5f, SpriteEffects.None, 0);
 
-		Texture2D textureStarLar = ModContent.Request<Texture2D>(Texture).Value;
-		Main.spriteBatch.Draw(textureStarLar, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan.ScaleRGB(.3f) with { A = 0 }, Projectile.rotation, textureStarLar.Size() * .5f, Projectile.scale, SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan.ScaleRGB(.3f) with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale, SpriteEffects.None, 0);
 
 		return false;
 	}
@@ -456,9 +561,69 @@ public class StardustSymphony_StarProjectile_Normal : StardustSymphony_StarProje
 		dust.noGravity = true;
 
 		if (Main.player[Projectile.owner].GetModPlayer<StardustSymphony_ModPlayer>().IsIntheFieldAndActive) {
-			Projectile projExplode = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f), ModContent.ProjectileType<StardustSymphony_Projectile_Explosion>(), (int)(Projectile.damage * 1.5f), Projectile.knockBack, Projectile.owner);
+			Projectile projExplode = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.6f, 1.1f), ModContent.ProjectileType<StardustSymphony_Projectile_Explosion>(), (int)(Projectile.damage * 1.5f), Projectile.knockBack, Projectile.owner);
 			projExplode.scale = Main.rand.NextFloat(1.4f, 2.8f);
 		}
+	}
+}
+public class StardustSymphony_StarProjectile_Visual : StardustSymphony_StarProjectile_Base {
+	public override string Texture => ModTexture.FOURSTAR;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 100;
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 46;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = ModUtils.ToSecond(30);
+		Projectile.extraUpdates = 10;
+	}
+	public override bool? CanDamage() => false;
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
+		Projectile.rotation += MathHelper.ToRadians(1);
+		if (Projectile.Center.IsCloseToPosition(player.Center, 200)) {
+			Projectile.scale -= .005f;
+			if (Projectile.scale <= 0) {
+				Projectile.Kill();
+			}
+		}
+		Vector2 dis = player.Center - Projectile.Center;
+		Projectile.velocity = dis.SafeNormalize(Vector2.Zero) * dis.Length() / 64f;
+		if (Projectile.velocity.IsLimitReached(2)) {
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Vector2 originOfThisProj = new Vector2(23, 23);
+		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
+		Vector2 origin = texture.Size() * .5f;
+		float len = Projectile.oldPos.Length;
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			for (int k = 0; k < len; k++) {
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + originOfThisProj;
+				Main.EntitySpriteDraw(texture, drawPos, null, lightColor with { A = 0 }, Projectile.rotation, origin, (Projectile.scale * (1 - k / len)) * .75f, SpriteEffects.None, 0);
+			}
+			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+
+			Texture2D texture2 = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+			Main.spriteBatch.Draw(texture2, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, 0, texture2.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
+
+			Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
+			Main.spriteBatch.Draw(texture3, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan with { A = 150 }, 0, texture3.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
+
+			ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		}
+
+		Texture2D textureStar = ModContent.Request<Texture2D>(Texture).Value;
+		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, lightColor with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale * .5f, SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan.ScaleRGB(.3f) with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale, SpriteEffects.None, 0);
+
+		return false;
 	}
 }
 public class StardustSymphony_StarProjectile_Special : StardustSymphony_StarProjectile_Base {
@@ -537,17 +702,289 @@ public class StardustSymphony_Projectile_Explosion : ModProjectile {
 		if (Projectile.scale <= 0) {
 			Projectile.Kill();
 		}
+		Projectile.rotation += MathHelper.ToRadians(5) * (Projectile.velocity.X > 0 ? 1 : -1);
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
 
 		Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 		Vector2 drawpos = Projectile.position - Main.screenPosition;
-		Main.spriteBatch.Draw(texture, drawpos, null, Color.Cyan with { A = 200 }, Projectile.rotation, texture.Size() * .5f, Projectile.scale, SpriteEffects.None, 0);
+		Vector2 origin = texture.Size() * .5f;
+		Main.spriteBatch.Draw(texture, drawpos, null, Color.Cyan with { A = 200 }, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 
-		Main.spriteBatch.Draw(texture, drawpos, null, Color.White, Projectile.rotation, texture.Size() * .5f, Projectile.scale * .75f, SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(texture, drawpos, null, Color.White, Projectile.rotation, origin, Projectile.scale * .75f, SpriteEffects.None, 0);
 
 		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		Texture2D texture2 = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		Vector2 origin2 = texture2.Size() * .5f;
+		float scale = Projectile.scale;
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.Cyan with { A = 200 }, Projectile.rotation, origin2, new Vector2(scale * 2, scale), SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.Cyan with { A = 200 }, Projectile.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale), SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.White with { A = 200 }, Projectile.rotation, origin2, new Vector2(scale * 2, scale) * .75f, SpriteEffects.None, 0);
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.White with { A = 200 }, Projectile.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale) * .75f, SpriteEffects.None, 0);
+
+		return false;
+	}
+}
+/// <summary>
+/// Ai0 : Delay<br/>
+/// Ai1 : Distance ( important to be set )
+/// </summary>
+public class StardustSymphony_SmallStarProjectile : ModProjectile {
+	public override string Texture => ModTexture.FOURSTAR;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 100;
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 46;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = ModUtils.ToSecond(100);
+		Projectile.extraUpdates = 10;
+	}
+	Vector2 Original_mousePos = Vector2.Zero;
+	public override void OnSpawn(IEntitySource source) {
+		Original_mousePos = Main.MouseWorld;
+		Projectile.knockBack = 0;
+	}
+	public override void AI() {
+		if (Main.rand.NextBool(30)) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_Dust>());
+			dust.scale = Main.rand.NextFloat(.7f, 1.2f);
+			dust.velocity = -Projectile.velocity.Vector2RotateByRandom(90) * 2;
+			dust.color = Color.White;
+			dust.noGravity = true;
+		}
+		if (--Projectile.ai[0] > 0) {
+			return;
+		}
+		Projectile.rotation += MathHelper.ToRadians(1);
+		Projectile.Center = Original_mousePos + Vector2.One.RotatedBy(Projectile.ai[2]) * Projectile.ai[1];
+		if (Projectile.ai[0] % 10 == 0) {
+			Projectile.ai[1]--;
+			Projectile.ai[0] = 0;
+		}
+		Projectile.ai[2] += .01f;
+		if (Projectile.Center.IsCloseToPosition(Original_mousePos, 5)) {
+			Projectile.Kill();
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		Player player = Main.player[Projectile.owner];
+		player.Heal(Main.rand.Next(1, 6) + (int)(Projectile.damage * .001f));
+
+		Dust dust;
+
+		dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+		dust.scale = Main.rand.NextFloat(.4f, .8f);
+		dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.6f, 1.1f);
+		dust.color = Color.Cyan;
+		dust.noGravity = true;
+
+		dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_DustStar>());
+		dust.scale = Main.rand.NextFloat(.7f, 1.2f);
+		dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f);
+		dust.color = Color.Cyan;
+		dust.noGravity = true;
+	}
+	public override void OnKill(int timeLeft) {
+		SoundEngine.PlaySound(SoundID.Item105 with { PitchRange = (.5f, 1f) });
+
+		Projectile projExplode = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.6f, 1.1f), ModContent.ProjectileType<StardustSymphony_Projectile_Explosion>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+		projExplode.scale = Main.rand.NextFloat(1.4f, 2.8f);
+
+		Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(2, 2), ModContent.ProjectileType<StardustSymphony_StarProjectile_Normal>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+		projExplode.scale = Main.rand.NextFloat(.5f, .65f);
+
+		Dust dust;
+		for (int i = 0; i < 3; i++) {
+			dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+			dust.scale = Main.rand.NextFloat(.4f, .8f);
+			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.6f, 1.1f);
+			dust.color = Color.Cyan;
+			dust.noGravity = true;
+		}
+		dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_StarDustBig>());
+		dust.scale = Main.rand.NextFloat(.7f, 1.2f);
+		dust.velocity = Vector2.Zero;
+		dust.rotation = Main.rand.NextFloat(MathHelper.PiOver4);
+		dust.color = Color.Cyan;
+		dust.noGravity = true;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Vector2 originOfThisProj = new Vector2(23, 23);
+		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.SMALLWHITEBALL).Value;
+		Vector2 origin = texture.Size() * .5f;
+		float len = Projectile.oldPos.Length;
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			for (int k = 0; k < len; k++) {
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + originOfThisProj;
+				float percentage = 1 - k / len;
+				Main.EntitySpriteDraw(texture, drawPos, null, Color.Cyan with { A = 0 }, Projectile.rotation, origin, Projectile.scale * percentage * .5f, SpriteEffects.None, 0);
+			}
+			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+
+			Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
+			Main.spriteBatch.Draw(texture3, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan with { A = 150 }, 0, texture3.Size() * .5f, Projectile.scale * 2, SpriteEffects.None, 0);
+
+			ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		}
+
+		Texture2D textureStar = ModContent.Request<Texture2D>(Texture).Value;
+		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.White with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale * .5f, SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(textureStar, Projectile.position - Main.screenPosition + originOfThisProj, null, Color.Cyan.ScaleRGB(.3f) with { A = 0 }, Projectile.rotation, textureStar.Size() * .5f, Projectile.scale, SpriteEffects.None, 0);
+
+		return false;
+	}
+}
+public class StardustSymphony_SmallStarProjectile_Ghost : ModProjectile {
+	public override string Texture => ModTexture.FOURSTAR;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 46;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = ModUtils.ToSecond(5);
+		Projectile.hide = true;
+	}
+	public override void OnSpawn(IEntitySource source) {
+		Projectile.knockBack = 0;
+		Projectile.ai[1] = 300;
+	}
+	public override bool? CanDamage() {
+		return false;
+	}
+	public override void AI() {
+		Projectile.ai[1]--;
+		Dust dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, ModContent.DustType<StardustSymphony_DustStar_AI2>());
+		dust.scale = .1f;
+		dust.velocity.X = Projectile.ai[1];
+		dust.velocity.Y = Main.rand.NextFloat(0, 360);
+		dust.color = Color.Cyan;
+		dust.noGravity = true;
+		dust.customData = this;
+
+		if (--Projectile.ai[0] > 0) {
+			return;
+		}
+		Player player = Main.player[Projectile.owner];
+		Projectile.ai[0] = 10;
+		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, Projectile.ai[1]);
+		foreach (var target in npclist) {
+			if (target.boss) {
+				target.velocity *= .7f;
+				continue;
+			}
+			player.StrikeNPCDirect(target, target.CalculateHitInfo(Projectile.damage, 1));
+			target.velocity += (Projectile.Center - target.Center).SafeNormalize(Vector2.Zero) * 5;
+		}
+	}
+}
+public class StardustSymphony_StarProjectile_Visual2 : ModProjectile {
+	public override string Texture => ModTexture.FOURSTAR;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 46;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = ModUtils.ToSecond(3);
+		Projectile.extraUpdates = 5;
+		Projectile.scale = 3;
+	}
+	public override bool? CanDamage() => false;
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
+
+		Vector2 directionToMouse = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+
+		Projectile.rotation = directionToMouse.ToRotation();
+
+		Dust dust;
+		//Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+		//dust.scale = 1.2f;
+		//dust.velocity = -directionToMouse * 10;
+		//dust.color = Color.White;
+		//dust.fadeIn = 1;
+		//dust.noGravity = true;
+
+		Projectile.Center = player.Center + directionToMouse * 10;
+
+		dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(10, 90).RotatedBy(Projectile.rotation), 0, 0, ModContent.DustType<StardustSymphony_DustBig>());
+		dust.scale = Main.rand.NextFloat(1, 2);
+		dust.velocity = directionToMouse * Main.rand.NextFloat(4, 15);
+		dust.color = Color.Cyan;
+		dust.fadeIn = 1;
+		dust.noGravity = true;
+
+		int damage = player.GetWeaponDamage(player.HeldItem) + 60;
+
+		if (--Projectile.ai[1] <= 0) {
+			Projectile.ai[1] = 5;
+			Vector2 vel = directionToMouse * Main.rand.NextFloat(1, 2);
+			int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center + Main.rand.NextVector2Circular(10, 90).RotatedBy(Projectile.rotation), vel.Vector2RotateByRandom(60), ModContent.ProjectileType<StardustSymphony_StarProjectile_Normal>(), damage, 0, player.whoAmI);
+			Main.projectile[proj].GetGlobalProjectile<RoguelikeGlobalProjectile>().SetCrit++;
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		Texture2D texture2 = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		Vector2 origin2 = texture2.Size() * .5f;
+		float scale = Projectile.scale;
+
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.Cyan with { A = 200 }, Projectile.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale), SpriteEffects.None, 0);
+
+
+		Main.spriteBatch.Draw(texture2, drawpos, null, Color.White with { A = 200 }, Projectile.rotation + MathHelper.PiOver2, origin2, new Vector2(scale * 2, scale) * .75f, SpriteEffects.None, 0);
+		return false;
+	}
+}
+/// <summary>
+/// Velocity X : Distance<br/>
+/// Velocity Y : Rotation
+/// </summary>
+public class StardustSymphony_DustStar_AI2 : ModDust {
+	public override string Texture => ModTexture.Glow_Small;
+	public override bool Update(Dust dust) {
+		if (dust.customData is StardustSymphony_SmallStarProjectile_Ghost modproj) {
+			dust.position = modproj.Projectile.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(dust.velocity.Y)) * dust.velocity.X;
+			dust.velocity.X *= .98f;
+			dust.velocity.Y += 5;
+			if (dust.position.IsCloseToPosition(modproj.Projectile.Center, 150)) {
+				dust.scale -= .005f;
+			}
+			else {
+				if (dust.scale <= .5f) {
+					dust.scale += .05f;
+				}
+			}
+		}
+		dust.rotation += MathHelper.ToRadians(15);
+		if (dust.scale <= .005f) {
+			dust.active = false;
+		}
+		return false;
+	}
+	public override bool PreDraw(Dust dust) {
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+
+			Texture2D texture = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+			Main.spriteBatch.Draw(texture, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture.Size() * .5f, dust.scale, SpriteEffects.None, 0);
+
+			ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		}
+
+		Texture2D texture3 = ModContent.Request<Texture2D>(ModTexture.FOURSTAR).Value;
+		Main.spriteBatch.Draw(texture3, dust.position - Main.screenPosition, null, dust.color, dust.rotation, texture3.Size() * .5f, dust.scale, SpriteEffects.None, 0);
+
+		Main.spriteBatch.Draw(texture3, dust.position - Main.screenPosition, null, Color.White with { A = 0 }, dust.rotation, texture3.Size() * .5f, dust.scale * .75f, SpriteEffects.None, 0);
 		return false;
 	}
 }

@@ -101,8 +101,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
 			NPC.HitInfo hit = new();
 			hit.Damage = (int)player.GetModPlayer<PlayerStatsHandle>().UpdateHPRegen.ApplyTo(hurtInfo.Damage * .25f * StackAmount(player)) + player.lifeRegen;
-			hit.Knockback = 10;
-			hit.HitDirection = ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X);
 			player.StrikeNPCDirect(npc, hit);
 		}
 	}

@@ -1,15 +1,14 @@
-﻿using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Utils;
 using Terraria;
 
-namespace Roguelike.Contents.Transfixion.Arguments.Contents;
+namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Strengthen : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.IndianRed;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
-		int charge = acc.Check_ChargeConvertToStackAmount(index);
-		PlayerStatsHandle stathandle = player.ModPlayerStats();
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
+		int charge = acc.Check_ChargeConvertToStackAmount();
+		var stathandle = player.ModPlayerStats();
 		if (charge >= 3) {
 			stathandle.AddStatsToPlayer(PlayerStats.PureDamage, 1.2f);
 			stathandle.AddStatsToPlayer(PlayerStats.CritDamage, 1.25f);

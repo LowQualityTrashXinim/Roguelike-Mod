@@ -6,16 +6,16 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Transfixion.Arguments.Contents;
+namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 internal class PaperDefense : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Red;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
-		int counter = acc.Check_ChargeConvertToStackAmount(index);
-		PlayerStatsHandle handle = player.ModPlayerStats();
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
+		int counter = acc.Check_ChargeConvertToStackAmount();
+		var handle = player.ModPlayerStats();
 		handle.UpdateDefenseBase.Base += 1;
-		PaperDefense_ModPlayer paper = player.GetModPlayer<PaperDefense_ModPlayer>();
+		var paper = player.GetModPlayer<PaperDefense_ModPlayer>();
 		if (counter >= 1) {
 			paper.PaperDefenseII = true;
 			if (paper.Trinket6_Stack <= 0) {
@@ -60,15 +60,15 @@ public class PaperDefense_DefensesBonus_Buff : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
-		PaperDefense_ModPlayer trinketplayer = Main.LocalPlayer.GetModPlayer<PaperDefense_ModPlayer>();
-		tip = string.Format(tip,new string[] { trinketplayer.Trinket6_StackLossses.ToString(), trinketplayer.Trinket6_Stack.ToString() });
+		var trinketplayer = Main.LocalPlayer.GetModPlayer<PaperDefense_ModPlayer>();
+		tip = string.Format(tip, new string[] { trinketplayer.Trinket6_StackLossses.ToString(), trinketplayer.Trinket6_Stack.ToString() });
 	}
 	public override bool ReApply(Player player, int time, int buffIndex) {
 		player.buffTime[buffIndex] = time;
 		return true;
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		PaperDefense_ModPlayer trinketplayer = player.GetModPlayer<PaperDefense_ModPlayer>();
+		var trinketplayer = player.GetModPlayer<PaperDefense_ModPlayer>();
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 5 * trinketplayer.Trinket6_StackLossses);
 		if (player.buffTime[buffIndex] <= 0) {
 			trinketplayer.Trinket6_StackLossses = 0;

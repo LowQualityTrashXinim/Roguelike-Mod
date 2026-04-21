@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Contents.Transfixion.Augmentation;
 
 namespace Roguelike.Contents.Items.aDebugItem.StatsInform;
 internal class ContentTracker : ModItem {

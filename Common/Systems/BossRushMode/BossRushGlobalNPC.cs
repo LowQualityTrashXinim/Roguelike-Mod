@@ -9,6 +9,8 @@ using Roguelike.Common.Systems;
 namespace Roguelike.Common.Systems.BossRushMode
 {
 	internal class BossRushGlobalNPC : GlobalNPC {
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		}
 		public override bool PreAI(NPC npc) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				return base.PreAI(npc);

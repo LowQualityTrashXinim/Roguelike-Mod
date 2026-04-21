@@ -8,7 +8,7 @@ using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Transfixion.Arguments;
+namespace Roguelike.Contents.Transfixion.Augmentation;
 public class BerserkI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.OrangeRed;
@@ -26,13 +26,6 @@ public class BerserkI : ModAugments {
 }
 
 public class TrueStatus : ModAugments {
-	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
-		Chance = 0;
-		if (player.HeldItem.type == ItemID.TrueExcalibur || player.HeldItem.type == ItemID.TrueNightsEdge) {
-			Chance = .2f;
-		}
-		return true;
-	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Yellow;
 	}
@@ -65,9 +58,9 @@ public class Terra : ModAugments {
 			return;
 		}
 		float randomrotation = Main.rand.NextFloat(90);
-		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+		var randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		for (int i = 0; i < 4; i++) {
-			Vector2 Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation)) * (3 + Main.rand.NextFloat());
+			var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation)) * (3 + Main.rand.NextFloat());
 			for (int l = 0; l < 8; l++) {
 				float multiplier = Main.rand.NextFloat();
 				float scale = MathHelper.Lerp(1.5f, .1f, multiplier);
@@ -76,7 +69,7 @@ public class Terra : ModAugments {
 				Main.dust[dust].noGravity = true;
 			}
 		}
-		NPC.HitModifiers modifier = new NPC.HitModifiers();
+		var modifier = new NPC.HitModifiers();
 		modifier.FinalDamage.Flat = player.GetWeaponDamage(item) * (hitInfo.Crit ? player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(2) : 1);
 		modifier.FinalDamage *= 0;
 		player.StrikeNPCDirect(npc, modifier.ToHitInfo(1, hitInfo.Crit, hitInfo.Knockback, true));
@@ -120,7 +113,7 @@ public class Union : ModAugments {
 			if (i > 50) {
 				break;
 			}
-			Item invitem = player.inventory[i];
+			var invitem = player.inventory[i];
 			if (!invitem.IsAWeapon() || invitem == item || item.ModItem is SynergyModItem) {
 				continue;
 			}
@@ -173,7 +166,7 @@ public class DryadBlessing_Buff : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var statplayer = player.GetModPlayer<PlayerStatsHandle>();
 		statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 8);
 		statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
 	}

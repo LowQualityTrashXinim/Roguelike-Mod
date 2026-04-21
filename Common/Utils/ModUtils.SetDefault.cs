@@ -4,6 +4,7 @@ using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -187,6 +188,15 @@ namespace Roguelike.Common.Utils {
 			if (item.TryGetGlobalItem(out Shield_GlobalItem globalitem)) {
 				globalitem.ShieldPoint = health;
 				globalitem.ShieldRes = res;
+			}
+		}
+		public static void Set_ModdedVariant(this Item item, short variantType) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle handle)) {
+				int varType = handle.VariantType = variantType;
+				var variant = WorldVaultSystem.GetVariant(varType);
+				if (variant != null) {
+					variant.SetDefault(item);
+				}
 			}
 		}
 		public enum MeleeStyle {

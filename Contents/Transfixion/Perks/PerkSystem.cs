@@ -160,6 +160,8 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public bool perk_ScatterShot = false;
 		public bool perk_EssenceExtraction = false;
 		public bool perk_UntappedPotential = false;
+		public bool perk_HeartOfThorn = false;
+		public bool perk_HeartOfIron = false;
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
 			PerkrerollAmount = 1;
@@ -190,6 +192,10 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
 			perk_UntappedPotential = false;
+			if (!perk_HeartOfIron || !perk_HeartOfThorn) {
+				perk_HeartOfIron = false;
+				perk_HeartOfThorn = false;
+			}
 			if (Dirt_Multi_CD < 1) {
 				Dirt_Multi_CD += .001f;
 			}

@@ -30,13 +30,13 @@ internal class RangeFocusTemplate : RelicTemplate {
 
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RangeDMG) {
-			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .3f), 2), 1, 0, 0);
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .12f), 2), 1, 0, 0);
 		}
 		if (stat == PlayerStats.RangeCritChance) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(10, 21));
 		}
 		if (stat == PlayerStats.RangeCritDmg) {
-			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.3f, .4f), 2), 1, 0, 0);
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .2f), 2), 1, 0, 0);
 		}
 		if (stat == PlayerStats.RangeAtkSpeed) {
 			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .12f), 2), 1, 0, 0);

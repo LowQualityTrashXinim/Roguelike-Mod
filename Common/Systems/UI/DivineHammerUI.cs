@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Arguments;
+using Roguelike.Contents.Transfixion.Augmentation;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;

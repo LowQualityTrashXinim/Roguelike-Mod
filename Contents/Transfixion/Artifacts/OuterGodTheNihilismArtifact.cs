@@ -89,7 +89,7 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if (artifact && Main.rand.NextFloat() <= .2f) {
+		if (artifact && Main.rand.NextFloat() <= .4f) {
 			Player.ModPlayerStats().HasDodgeInThisInstance = true;
 			Player.immune = true;
 			Player.AddImmuneTime(info.CooldownCounter, 44);

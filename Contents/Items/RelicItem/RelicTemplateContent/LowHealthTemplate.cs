@@ -29,7 +29,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 		}
 		public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 			if (!player.IsHealthAbovePercentage(.5f)) {
-				modplayer.AddStatsToPlayer(stat, value.Additive * 1.5f, value.Multiplicative, value.Flat * 1.5f, value.Base * 1.5f);
+				modplayer.AddStatsToPlayer(stat, value.Additive * 1.15f, value.Multiplicative, value.Flat * 1.15f, value.Base * 1.15f);
 			}
 			else {
 				modplayer.AddStatsToPlayer(stat, value);

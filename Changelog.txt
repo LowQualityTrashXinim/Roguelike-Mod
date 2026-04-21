@@ -602,6 +602,8 @@ Flaming Wood Sword:
 - Unforgiving
 - Horus Eye
 - The Underdog
+- The Tundra
+- Stardust Symphony
 541/ Adjust some localization.
 542/ Remove the exclusivity perk from each artifact.
 543/ Improved Intro effect on hotbar so that it is clearer to see how long until intro effect run out.
@@ -613,3 +615,9 @@ Flaming Wood Sword:
 549/ Added in many visual indicator to reworked weapon and intro skill for those reworked weapon.
 550/ Added modifier to Boss Rush ( not selectable as of now ).
 551/ Fixed skill system percentage energy stats not being calculated properly.
+552/ Added new perks, some artifact are adjusted or moved to perk due to not being different enough.
+553/ Adjusted relic stats value.
+554/ Fixed a variant bug and also optimized variant system as a whole.
+555/ Tweeked boss scaling, instead a 50% scale for each boss killed now it is 35% instead.
+556/ Decreases boss general base damage from 40 to 30.
+557/ Reduced amount of augmentation can have on accessory from 5 -> 1.

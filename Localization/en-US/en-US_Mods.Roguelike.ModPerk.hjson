@@ -366,9 +366,9 @@ BeyondCritcal: {
 	DisplayName: Beyond Critical
 	Description:
 		'''
-		+ Increases critcal strike chance by 5%
-		+ You have 4% chance to ignore 90% target hit defense and increases damage by 2.5 time
-		+ Critical strike will make above chance increases to 15%
+		+ Increases critcal strike chance by 10%
+		+ You have 8% chance to ignore 90% target hit defense and increases damage by 2.5 time
+		+ Critical strike will make above chance increases to 25%
 		'''
 }
 
@@ -396,7 +396,8 @@ PhysicsEnjoyer: {
 	Description:
 		'''
 		+ Hitting enemy will apply 2x knockback 
-		+ Hitting enemies that have knockback immunity will turn weapon knockback value into flat armor penetration
+		+ Hitting enemies that have knockback immunity will 
+		turn weapon knockback value into flat armor penetration
 		'''
 }
 
@@ -854,5 +855,50 @@ SlimyChalice: {
 		+ Bouncing off a tile increase damage by 20%
 		- Double your knockback intake and reduce knockback resistance effectiveness
 		Note: Bouncing off a tile will make the projectile disappear after 3s
+		'''
+}
+
+HeartOfThorn: {
+	DisplayName: Heart of Thorn
+	Description:
+		'''
+		"I have hurt too many people, please leave me alone"
+		+ Thorn base damage is increased by your current health amount
+		+ Thorn also can deal AoE, the AoE radius is based on your maximum health
+		+ Increases health regeneration by 5
+		'''
+}
+
+HeartOfIron: {
+	DisplayName: Heart of Iron
+	Description:
+		'''
+		"My will is resolved, the hardship I endured is all for this moment"
+		+ Thorn base damage is increased by your defenses
+		+ Thorn also can deal AoE, the AoE radius is based on your defenses
+		+ Increases damage reduction by 10%
+		'''
+}
+
+AmplePerception: {
+	DisplayName: Ample Perception
+	Description:
+		'''
+		+ Dealing critical strike to an enemy grant 1 Divine Eye ( CD: 2s ) ( capped at 4 )
+		+ Having Divine Eye increases your critical strike chance by 6% and damage by 12%
+		If no critical strike dealt after 7 seconds, 1 Divine Eye is lost
+		+ Increases your critical damage by 50%
+		'''
+}
+
+SwiftHealth: {
+	DisplayName: Swift Health
+	Description:
+		'''
+		+ Increases maximum health by 15% and 30% movement speed
+		+ Increases your damage by 1 for each 50 health you currently have
+		+ After dealing damage to a enemy, you receive a buff for 30 second
+		Hitting a enemy will increases your max health by 1% and movement speed by 2% (capped at 20) ( CD: 1s )
+		After the buff end, all the stack get reset.
 		'''
 }

@@ -5,16 +5,16 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Transfixion.Arguments.Contents;
+namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class ReactiveDefenses : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.MediumBlue;
 	}
-	public override void OnHitByNPC(Player player, AugmentsWeapon acc, int index, NPC npc, Player.HurtInfo info) {
+	public override void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) {
 		if (Main.rand.NextBool(3)) {
 			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
-		int chargeNum = acc.Check_ChargeConvertToStackAmount(index);
+		int chargeNum = acc.Check_ChargeConvertToStackAmount();
 		if (chargeNum >= 1 && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
@@ -25,11 +25,11 @@ public class ReactiveDefenses : ModAugments {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
-	public override void OnHitByProj(Player player, AugmentsWeapon acc, int index, Projectile projectile, Player.HurtInfo info) {
+	public override void OnHitByProj(Player player, AugmentsWeapon acc, Projectile projectile, Player.HurtInfo info) {
 		if (Main.rand.NextBool(3)) {
 			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
-		int chargeNum = acc.Check_ChargeConvertToStackAmount(index);
+		int chargeNum = acc.Check_ChargeConvertToStackAmount();
 		if (chargeNum >= 1 && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}

@@ -35,12 +35,12 @@ public class PerfectStatusTemplate : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.CritChance) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(15, 21));
+			return new StatModifier(1, 1, 0, Main.rand.Next(4, 11));
 		}
 		if (stat == PlayerStats.Defense) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(20, 26));
+			return new StatModifier(1, 1, 0, Main.rand.Next(3, 6));
 		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.25f, 1.3f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.15f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		for (int i = 0; i < player.buffType.Length; i++) {

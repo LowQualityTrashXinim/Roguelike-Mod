@@ -2,18 +2,20 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
-using Roguelike.Texture;
-using System;
-using Terraria;
-using System.Linq;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Texture;
+using System;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Perks;
 public class Dirt : Perk {
@@ -98,24 +100,24 @@ public class BeyondCritcal : Perk {
 		StackLimit = 3;
 	}
 	public override void Update(Player player) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 5 * StackAmount(player));
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10 * StackAmount(player));
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (Main.rand.NextFloat() <= .04f * StackAmount(player)) {
+		if (Main.rand.NextFloat() <= .08f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2.5f;
 			modifiers.ScalingArmorPenetration += 0.9f;
 		}
-		else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .15f * StackAmount(player)) {
+		else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .25f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2.5f;
 			modifiers.ScalingArmorPenetration += 0.9f;
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (Main.rand.NextFloat() <= .04f * StackAmount(player)) {
+		if (Main.rand.NextFloat() <= .08f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2.5f;
 			modifiers.ScalingArmorPenetration += 0.9f;
 		}
-		else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .15f * StackAmount(player)) {
+		else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .25f * StackAmount(player)) {
 			modifiers.FinalDamage *= 2.5f;
 			modifiers.ScalingArmorPenetration += 0.9f;
 		}
@@ -799,6 +801,100 @@ public class BloodthornCore : Perk {
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_CustomContextInfo == "BloodthornCorePerk" && Main.rand.NextBool(3)) {
 			player.Heal(Main.rand.Next(3, 7));
+		}
+	}
+}
+public class HeartOfThorn : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+		perkplayer.perk_HeartOfThorn = true;
+		handler.ThornAoE += 1f * StackAmount(player);
+		handler.ThornAoE.Base += player.statLifeMax2;
+		handler.UpdateThorn.Base += player.statLife * StackAmount(player);
+		handler.UpdateHPRegen.Base += 5;
+		if (perkplayer.perk_HeartOfIron) {
+			handler.UpdateHPMax += 1f;
+			handler.UpdateHPMax.Base += 100;
+		}
+	}
+}
+public class HeartOfIron : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+		perkplayer.perk_HeartOfIron = true;
+		player.endurance += .1f;
+		handler.ThornAoE += 1f * StackAmount(player);
+		handler.ThornAoE.Base += player.statDefense;
+		handler.UpdateThorn.Base += player.statDefense * StackAmount(player);
+		if (perkplayer.perk_HeartOfThorn) {
+			handler.UpdateDefenseBase.Base += 100;
+		}
+	}
+}
+public class AmplePerception : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		var modplayer = player.GetModPlayer<AmplePerceptionPlayer>();
+		modplayer.AmplePerception = true;
+		PlayerStatsHandle statsplayer = player.ModPlayerStats();
+		statsplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 6 * modplayer.PointCounter);
+		statsplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1 + .12f * modplayer.PointCounter);
+		statsplayer.UpdateCritDamage += .5f;
+	}
+	public class AmplePerceptionPlayer : ModPlayer {
+		public bool AmplePerception = false;
+		public int PointCounter = 0;
+		public int PointTimeLeft = 0;
+		public int CountDown = 0;
+		public override void ResetEffects() {
+			PointTimeLeft = ModUtils.CountDown(PointTimeLeft);
+			CountDown = ModUtils.CountDown(CountDown);
+			AmplePerception = false;
+		}
+		public override void PreUpdate() {
+			if (!AmplePerception) {
+				return;
+			}
+			if (PointTimeLeft <= 0 && PointCounter > 0) {
+				PointCounter--;
+				PointTimeLeft = ModUtils.ToSecond(7);
+			}
+			for (int i = 0; i < PointCounter; i++) {
+				Vector2 pos = Player.Center +
+					Vector2.One.Vector2DistributeEvenly(PointCounter, 360, i)
+					.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<ModUtilsPlayer>().counterToFullPi)) * 30;
+				int dust = Dust.NewDust(pos, 0, 0, DustID.GemAmber);
+				Main.dust[dust].velocity = Vector2.Zero;
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].fadeIn = 0;
+			}
+		}
+		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			Trinket3_OnHitNPCEffect(hit);
+		}
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			Trinket3_OnHitNPCEffect(hit);
+		}
+		private void Trinket3_OnHitNPCEffect(NPC.HitInfo hit) {
+			if (!AmplePerception)
+				return;
+			if (!hit.Crit)
+				return;
+			if (CountDown > 0)
+				return;
+			PointCounter = Math.Clamp(++PointCounter, 0, 4);
+			PointTimeLeft = ModUtils.ToSecond(7);
+			CountDown = ModUtils.ToSecond(2);
 		}
 	}
 }

@@ -26,7 +26,7 @@ internal class Roguelike_ArmorPolish : GlobalItem {
 			handler.UpdateDefenseBase.Base += 10;
 		}
 		if (counter >= 3) {
-			handler.UpdateDefenseBase += .2f;
+			handler.UpdateDefenseBase += .05f;
 			player.endurance += .05f;
 		}
 	}

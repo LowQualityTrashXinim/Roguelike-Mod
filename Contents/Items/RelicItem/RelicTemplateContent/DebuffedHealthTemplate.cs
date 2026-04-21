@@ -28,7 +28,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 			for (int i = 0; i < player.buffType.Length; i++) {
 				if (player.buffType[i] == 0) continue;
 				if (Main.debuff[player.buffType[i]]) {
-					modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.5f, value.Base * 1.5f);
+					modplayer.AddStatsToPlayer(stat, value.Additive, value.Multiplicative, value.Flat * 1.2f, value.Base * 1.2f);
 					return;
 				}
 			}

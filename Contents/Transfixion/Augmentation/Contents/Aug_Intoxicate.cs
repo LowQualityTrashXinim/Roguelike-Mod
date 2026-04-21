@@ -2,13 +2,13 @@
 using Roguelike.Common.Utils;
 using Terraria;
 
-namespace Roguelike.Contents.Transfixion.Arguments.Contents;
+namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Intoxicate : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.GreenYellow;
 	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
-		int chargenum = acc.Check_ChargeConvertToStackAmount(index);
+	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
+		int chargenum = acc.Check_ChargeConvertToStackAmount();
 		for (int i = 0; i < player.buffType.Length; i++) {
 			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {

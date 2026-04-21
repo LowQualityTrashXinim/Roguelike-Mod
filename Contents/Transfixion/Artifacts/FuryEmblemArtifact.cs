@@ -14,8 +14,8 @@ namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class FuryEmblemArtifact : Artifact {
 	public override Color DisplayNameColor => Color.LightGoldenrodYellow;
 	public override IEnumerable<Item> AddStartingItems(Player player) {
-		WorldVaultSystem.Set_Variant = ModVariant.GetVariantType<Volcano_Var1>();
 		Item item = new(ItemID.FieryGreatsword);
+		item.Set_ModdedVariant(ModVariant.GetVariantType<Volcano_Var1>());
 		yield return item;
 	}
 }

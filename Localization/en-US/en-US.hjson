@@ -515,6 +515,12 @@ Mods: {
 			PurpleClubberfishProjectile.DisplayName: Purple Clubberfish Projectile
 			FlamingWoodSwordWave.DisplayName: Flaming Wood Sword Wave
 			Roguelike_ChocolateChipCookie_ModProjectile.DisplayName: Roguelike_ Chocolate Chip Cookie_ Mod Projectile
+			StardustSymphony_SmallStarProjectile.DisplayName: Stardust Symphony_ Small Star Projectile
+			StardustSymphony_SmallStarProjectile_Ghost.DisplayName: Stardust Symphony_ Small Star Projectile_ Ghost
+			StardustSymphony_StarProjectile_Visual.DisplayName: Stardust Symphony_ Star Projectile_ Visual
+			StardustSymphony_StarProjectile_Visual2.DisplayName: Stardust Symphony_ Star Projectile_ Visual2
+			Roguelike_ShrimpPoBoy_ModProjectile.DisplayName: Roguelike_ Shrimp Po Boy_ Mod Projectile
+			Roguelike_Milkshake_ModProjectile.DisplayName: Roguelike_ Milkshake_ Mod Projectile
 		}
 
 		NPCs: {
@@ -549,6 +555,7 @@ Mods: {
 			TrialKnight.DisplayName: Trial Knight
 			SwordSage.DisplayName: Sword Sage
 			LootboxLord_Clone.DisplayName: Lootbox Lord_ Clone
+			Roguelike_CookedShrimp_NPC.DisplayName: Roguelike_ Cooked Shrimp_ N P C
 		}
 
 		Items: {
@@ -2252,10 +2259,9 @@ Mods: {
 				DisplayName: Tundra Bow
 				Tooltip:
 					'''
-					Every 5th shot will shoot out a arch of snowball
+					Every 15th shot will shoot out a stream of snowball for 2s
 					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
-					Have 0.1% chance to cause a snow storm which last for 3s
-					During snow storm, Tundra bow will always shoot arch of snowball
+					After 100th shot, create a snow storm which last for 5s
 					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
 					'''
 				ExtraInfo:
@@ -2797,8 +2803,10 @@ Mods: {
 				Tooltip:
 					'''
 					Summon star at where the cursor at
+					Summon a stardust vortex that deal damage and pull enemy in ( CD: 10s )
+					Every 15th attacks, summon star off screen that fly to your cursor and explode
 					Right click will summon 10 star around you and heal you for 100 hp ( CD: 15s )
-					Each attack hit will heal you for 5 - 25 + 0.5% weapon damage HP
+					Each attack hit will heal you
 					After attacking 30 times, right clicking again will summon a Stardust Array
 					'''
 				ExtraInfo:
@@ -2822,6 +2830,21 @@ Mods: {
 
 			StarterLootBox: {
 				DisplayName: Starter Loot Box
+				Tooltip: ""
+			}
+
+			Roguelike_Mango_Pickup: {
+				DisplayName: Roguelike_ Mango_ Pickup
+				Tooltip: ""
+			}
+
+			Roguelike_CreamSoda_Pickup: {
+				DisplayName: Roguelike_ Cream Soda_ Pickup
+				Tooltip: ""
+			}
+
+			Roguelike_Milkshake_Pickup: {
+				DisplayName: Roguelike_ Milkshake_ Pickup
 				Tooltip: ""
 			}
 		}
@@ -4045,6 +4068,66 @@ Mods: {
 			Roguelike_ShuckedOyster_ModBuff: {
 				DisplayName: Roguelike_ Shucked Oyster_ Mod Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_ShuckedOyster_ModBuff.Description
+			}
+
+			Roguelike_CookedFish_Buff: {
+				DisplayName: Roguelike_ Cooked Fish_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_CookedFish_Buff.Description
+			}
+
+			Roguelike_Mango_Buff: {
+				DisplayName: Roguelike_ Mango_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Mango_Buff.Description
+			}
+
+			Roguelike_Mango_ModBuff: {
+				DisplayName: Roguelike_ Mango_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Mango_ModBuff.Description
+			}
+
+			Roguelike_Teacup_Buff: {
+				DisplayName: Roguelike_ Teacup_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Teacup_Buff.Description
+			}
+
+			Roguelike_CreamSoda_Buff: {
+				DisplayName: Roguelike_ Cream Soda_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_CreamSoda_Buff.Description
+			}
+
+			Roguelike_ShrimpPoBoy_Buff: {
+				DisplayName: Roguelike_ Shrimp Po Boy_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_ShrimpPoBoy_Buff.Description
+			}
+
+			Roguelike_CookedShrimp_Buff: {
+				DisplayName: Roguelike_ Cooked Shrimp_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_CookedShrimp_Buff.Description
+			}
+
+			Roguelike_Escargot_Buff: {
+				DisplayName: Roguelike_ Escargot_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Escargot_Buff.Description
+			}
+
+			Roguelike_Milkshake_Buff: {
+				DisplayName: Roguelike_ Milkshake_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Milkshake_Buff.Description
+			}
+
+			Roguelike_Sashimi_Buff: {
+				DisplayName: Roguelike_ Sashimi_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Sashimi_Buff.Description
+			}
+
+			Roguelike_SeafoodDinner_Buff: {
+				DisplayName: Roguelike_ Seafood Dinner_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_SeafoodDinner_Buff.Description
+			}
+
+			Roguelike_Steak_Buff: {
+				DisplayName: Roguelike_ Steak_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Steak_Buff.Description
 			}
 		}
 

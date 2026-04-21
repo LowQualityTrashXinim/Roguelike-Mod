@@ -18,7 +18,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 					Color.Yellow.Hex3(),
 			RelicTemplateLoader.RelicValueToPercentage(value.Additive),
 			RelicTemplateLoader.RelicValueToNumber(value.Base),
-			RelicTemplateLoader.RelicValueToPercentage(value.Additive * 2),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive * 1.5f),
 		]);
 		}
 
@@ -29,7 +29,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 			if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Bow].Contains(player.HeldItem.type)) {
 				modplayer.AddStatsToPlayer(stat, value);
 				modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: value.Base);
-				modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value.Additive * 2);
+				modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value.Additive * 1.5f);
 			}
 		}
 	}

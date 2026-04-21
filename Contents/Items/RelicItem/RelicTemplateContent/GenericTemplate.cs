@@ -112,7 +112,10 @@ public class GenericTemplate : RelicTemplate {
 		if (stat == PlayerStats.MaxMinion || stat == PlayerStats.MaxSentry) {
 			return new StatModifier(1, 1, 0, 1);
 		}
-		if (stat == PlayerStats.RegenHP || stat == PlayerStats.RegenMana) {
+		if (stat == PlayerStats.RegenHP) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3));
+		}
+		if(stat == PlayerStats.RegenMana) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5));
 		}
 		if (stat == PlayerStats.MaxHP || stat == PlayerStats.MaxMana) {

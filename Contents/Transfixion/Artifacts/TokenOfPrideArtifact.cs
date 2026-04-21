@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Common.Systems.Achievement;
-using Roguelike.Contents.Transfixion.Arguments;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Augmentation;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {

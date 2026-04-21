@@ -56,7 +56,7 @@ BoneSword:
 	Every 5th swing summon a fast cursed skull
 	Striking enemy will shoot out a piercing bone upward
 	Wait 1s to deal 1.2x damage and summon arch of 3 cursed skull
-	Wait additional 2s to instead deal 1.5x damage
+	Wait additional 2s to deal 1.5x damage instead of 1.2x damage
 	Striking at perfect moment will make your attacks as if you waited
 	'''
 ShortSword:
@@ -220,7 +220,7 @@ ArmorPolish:
 	'''
 	Increases 10 defenses for every pieces that player is wearing
 	If player wear full pieces of armor:
-	Increases player defenses by 20% and damage reduction by 5%
+	Increases player defenses and damage reduction by 5%
 	'''
 FastClock:
 	'''
@@ -595,4 +595,80 @@ ShuckedOyster:
 	gain 15 fishing power; 10 defenses
 	100% water breathing; 15% mov speed while in water
 	On hit,increases defenses by 20 for 2s ( CD 5s )
+	'''
+Mango:
+	'''
+	Spawn small Mango every 3s around player:
+	Collecting Mango will increases 10% skill damage
+	max out at 5 stacks; each stack have 15s of decay
+	'''
+CookedFish:
+	'''
+	+10 fishing power
+	Increases 15% dmg and movement speed
+	Increases defenses by 5 and life regen by 2
+	'''
+Teacup:
+	'''
+	+9% placement, mining speed;
+	+2 range; -10% spawn rate
+	+10% crit chance and 25% crit dmg
+	'''
+CreamSoda:
+	'''
+	Every 5s since drink this, spawn a small cream soda nearby
+	Upon picking up the small cream soda, gain following:
+	1s invincibility and 5 life
+	'''
+ShrimpPoBoy:
+	'''
+	Attacking have 1% chance to spawns very big fish
+	The fish deal 120 damage + 40% weapon damage
+	There can only 1 fish be active at the time
+	'''
+CookedShrimp:
+	'''
+	every 5s: summons ghost shrimp
+	upon killing ghost shrimp, its launched toward 
+	nearest enemy, explode dealing 50 + 20% weapon damage
+	Work
+	in
+	progress
+	'''
+Escargot:
+	'''
+	+20 defenses, +20% damage reduction,
+	-90% jump boost,-40% movement speed,
+	-60% attack speed
+	'''
+Sashimi:
+	'''
+	+13 fishing power;
+	+10 damage, 2% crit chance, 25% crit damage;
+	while in water, lava: 25% HP regen; 35% mov, place spd
+	'''
+SeafoodDinner:
+	'''
+	+0.4 luck; +25 fishing power;
+	+2.5 knockback; -25% spawn rate
+	+20 defense and +5% damage reduction
+	'''
+Steak:
+	'''
+	Increases melee damage by 25%, melee crit chance by 10,
+	melee crit damage by 50% and 10 life regen
+	Decreases magic and range damage by 90%
+	'''
+Milkshake:
+	'''
+	Dealing damage will sometime spawn milkshake
+	Collecting milkshake will accomulate shake point
+	Reaching 10 points, next attack will drop a ice tortoise
+	'''
+Spagetti:
+	'''
+	Due to spagetti code, the following "feature" may occur:
+	Become invincible for 5s, Instant life heal,
+	gain 300% attack speed, random item may drop nearby
+	or this buff end immediately
 	'''

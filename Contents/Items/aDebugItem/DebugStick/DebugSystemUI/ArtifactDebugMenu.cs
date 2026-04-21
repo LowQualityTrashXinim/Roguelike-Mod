@@ -3,17 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Toggle;
-using Roguelike.Texture;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
@@ -101,7 +94,12 @@ internal class ArtifactDebugMenu : UIState {
 		btn_confirmSelection.OnLeftClick += Btn_confirmSelection_OnLeftClick;
 		panel_ArtifactHeader.Append(btn_confirmSelection);
 	}
-
+	public override void OnActivate() {
+		Artifact artifact = Artifact.GetArtifact(Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
+		currentSelectedArtifact_Uni = artifact.Type;
+		img_ArtifactIcon.SetArtifactType(artifact.Type);
+		SetArtifactInfo(Main.LocalPlayer, artifact.Type);
+	}
 	private void Btn_confirmSelection_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Artifact artifact = Artifact.GetArtifact(currentSelectedArtifact_Uni);
 		if (artifact == null) {
@@ -169,6 +167,8 @@ class Btn_Artifact : Roguelike_UIImageButton {
 		if (artifact == null) {
 			return;
 		}
+		if (IsMouseHovering)
+			UICommon.TooltipMouseText($"[c/{artifact.DisplayNameColor.Hex3()}:{artifact.DisplayName}]");
 		CalculatedStyle style = GetInnerDimensions();
 		artifact.DrawInUI(spriteBatch, style);
 	}

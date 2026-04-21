@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems;
@@ -131,9 +130,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 				StaticNoise255x255[i] = true;
 			}
 		}
-		Main.RunOnMainThread(() => {
-			sprite.Dispose();
-		}).Wait();
+		Main.RunOnMainThread(sprite.Dispose).Wait();
 
 		BiomeID = new();
 		FieldInfo[] field = typeof(Bid).GetFields();
@@ -175,6 +172,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.CorruptedDesert, new BiomeDataBundle(TileID.CorruptHardenedSand, WallID.CorruptHardenedSand,"") with { tile2 = TileID.Sandstone, weight2 = .64f } },
 			{ Bid.CrimsonTundra, new BiomeDataBundle(TileID.FleshIce, WallID.IceUnsafe,"") with { tile2 = TileID.SnowBlock, weight2 = .64f } },
 			{ Bid.CrimsonDesert, new BiomeDataBundle(TileID.CrimsonHardenedSand, WallID.CrimsonHardenedSand,"") with { tile2 = TileID.Sandstone, weight2 = .64f } },
+			{ Bid.None, new BiomeDataBundle()},
 		};
 
 		BiomeGroup = new();
@@ -408,7 +406,8 @@ public partial class RogueLikeWorldGen {
 		&& ID != Bid.Marble
 		&& ID != Bid.Granite
 		&& ID != Bid.Slime
-		&& ID != Bid.FleshRealm;
+		&& ID != Bid.FleshRealm
+		&& ID != Bid.None;
 }
 //This one is to hold variable that used by the world gen code
 public partial class RogueLikeWorldGen {
@@ -493,7 +492,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			xdex = Main.rand.Next(1, 23);
 			ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Slime || ID == Bid.Marble || ID == Bid.Granite) {
+			if (!ValidBiome(ID)) {
 				i--;
 				continue;
 			}
@@ -530,33 +529,31 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// The biome ID <see cref="Bid"/> is stored as a char data
 	/// </summary>
 	public void InitializeBiomeWorld() {
+		Array.Fill(BiomeMapping, ToC(Bid.None), 0, 24);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 1), 24);
+
 		//Initialize Space biome
-		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 15);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 2), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 3), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 4), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 5), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 6), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 7), 1);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(11, 1), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(12, 2), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(13, 3), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 3), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 4), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 5), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 6), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 7), 1);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(11, 1), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(12, 2), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(13, 3), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(6, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(17, 2), 7);
 
 		//Initialize Hallow biome
-		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 0), 9);
-		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 1), 8);
-		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(17, 2), 7);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 3), 9);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 4), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 5), 4);
 
 		//Initialize Jungle biome
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 1), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 2), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 3), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 4), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 5), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(4, 4), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(4, 5), 10);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 6), 9);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 7), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(8, 8), 6);
@@ -578,10 +575,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(22, 11), 2);
 
 		//Initialize Tundra biome
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(5, 6), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 7), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 8), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 9), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 6), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 7), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 8), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 9), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 10), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 11), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 12), 4);
@@ -606,11 +603,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(15, 14), 3);
 
 		//Initialize Ocean biome
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(4, 5), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(2, 6), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(1, 7), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 8), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 9), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 6), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 7), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 8), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 9), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 10), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 11), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 12), 2);
@@ -618,22 +614,21 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 14), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 15), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 16), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 17), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 18), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 19), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(1, 20), 4);
-		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(4, 21), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 17), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 18), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 19), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(1, 20), 1);
 
 		//Initialize Corruption biome
 		BiomeMapping[MapIndex(2, 13)] = ToC(Bid.Corruption);
 		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 14), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 15), 3);
 		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 16), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(3, 17), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(4, 18), 6);
-		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(4, 19), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(5, 20), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(6, 21), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 17), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 18), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 19), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 20), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 21), 8);
 
 		//Initialize Caven biome
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(8, 14), 7);
@@ -704,7 +699,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (Arr_ZoneIgnored.Length <= bound) {
 					continue;
 				}
-				if ((short)BiomeMapping[i][0] == Bid.Underworld) {
+				if ((short)BiomeMapping[i][0] == Bid.Underworld || (short)BiomeMapping[i][0] == Bid.None) {
 					Array.Fill(Arr_ZoneIgnored, new MapData(true, CharToBid(BiomeMapping[i])), bound, GridPart_X);
 				}
 				else {
@@ -846,8 +841,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Item potion = new Item(Rand.Next(TerrariaArrayID.SpecialPotion));
 			itemlist.Add(potion);
 		}
-		int X = 5 * GridPart_X + Main.rand.Next(0, GridPart_X);
-		int Y = 1 * GridPart_Y + Main.rand.Next(0, GridPart_Y);
+		int X = 22 * GridPart_X + Rand.Next(0, GridPart_X);
+		int Y = 21 * GridPart_Y + Rand.Next(0, GridPart_Y);
 		GeneralWorldGenTask.Generate_Container(Rand, Mod, X, Y, out Rectangle re, itemlist);
 		ZoneToBeIgnored.Add(re);
 		Set_MapIgnoredZoneIntoWorldGen(re);
@@ -1157,8 +1152,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_JungleTempleEntrance() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = (8 + Main.rand.Next(2)) * GridPart_X;
-		int Y = (3 + Main.rand.Next(2)) * GridPart_Y;
+		int X = 11 * GridPart_X + Rand.Next(0, GridPart_X);
+		int Y = 5 * GridPart_Y + Rand.Next(0, GridPart_Y);
 		var data = ModWrapper.Get_StructureData("Assets/JungleTempleEntrance", Mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
@@ -1460,7 +1455,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
-			if (ID == Bid.Space || ID == Bid.Ocean || ID == Bid.Desert || ID == Bid.Caven || ID == Bid.Underworld || ID == Bid.Marble || ID == Bid.Granite || ID == Bid.Slime) {
+			if (!ValidBiome(ID)) {
 				i--;
 				continue;
 			}

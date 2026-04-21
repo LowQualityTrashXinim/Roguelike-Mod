@@ -1,5 +1,8 @@
 Implementation TODO:
 1/ Make world generation process much more easy to work with and also add content to the world.
+- Make the following biome into their own subworld
+>> Ocean
+>> Space
 - Each biome need to have their respective NPC spawn pool.
 - Add in NPC shop change
 >> Merchant: Focus on general weapon and general material goods.
@@ -24,10 +27,15 @@ Implementation TODO:
 >> Golem : Jungle Temple subworld.
 >> Duke Fishron : subworld and summon by releasing glowing shroom worm in there.
 >> Empress of Light : Hallow but also no plan of summon method.
+
 2/ Work on debuff and buff sprite and many missing sprite in the mod.
+
 3/ Work on localization "TODO"
+
 4/ Refactor User info tablet 
+
 5/ Rework rarity system and tranmutation system.
+
 6/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
 - Boomerang: ( turn into sub/sup dps weapon )
 >> Become a support weapon instead of dps type weapon but still leave possibility of player turning it into dps weapon.
@@ -43,8 +51,10 @@ Implementation TODO:
 >> Hammer deal blunt damage, and blunt weapon use a custom mechanic called Trauma shock.
 Trauma shock upon reaching full stack will make NPC much slower and more lose all defense.
 During Trauma shock, if NPC is being attacked, they will intake damage pernamenntly increases by 2%.
+
 7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
+
 8/ Work on level item system ( not actual leveling system ).
 - Item will spawn with a set level, with each 5 levels the item gain a effect.
 - As the player progress with each boss defeated, the item level vary will increases.
@@ -56,9 +66,12 @@ At each point of weapon level, it does the following:
 > lvl 5: Gain a effect
 A weapon level is not capped but effect level is capped at 3.
 Upon effect cap, next time gaining effect will instead raise all stats by previous 4 levels.
+
 9/ Implement special characteristic for material :
 - Tungsten : ????
+
 10/ Work on achievement.
+
 11/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
 - The mod should remember what Synergy weapon player has ever used.
 When player is helding or have a synergy weapon in the inventory, the mod should do a quick check to see if it already there
@@ -72,6 +85,7 @@ if True
 > skip the entire process.
 if False
 > Find the synergy weapon ID and then save the item ID that activated the synergy bonus.
+
 12/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
 - Transmutation
@@ -91,34 +105,50 @@ if False
 >>> Extra clarification:
 - Content in "Help" is suppose to be general guide on how to use the content.
 - Content in "Info" is detailed information of how supposed content gonna act.
+
 13/ Work on Weapon Essences consumable.
+
 14/ Work on food rework.
+The following food are missing from food rework:
+- Grape Juice
+- Grup Soup
+- Cooked Shrimp
+- Spagetti
+
 15/ Make vanilla buff that work only on player to work also on NPC.
+
 16/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
+
 17/ Fix spoils.
-18/ Look into KS crown AI why it despawn on hit.
-19/ Rebalancing Boss Rush:
+
+18/ Rebalancing Boss Rush:
 - Bring back old lootbox system.
 - While player are in boss rush world, treasure bag only drop expert mode item.
-- Ensure at least starter loot, starter loot should contain 1 potion, armor set ( with random piece ), weapon, accessory.
 - rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
-- Tweak Boss HP and damage scaling because player have skill issue
-20/ Rebalancing WO:
-- focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
-- add better indicators for landing Perfect strikes, for intro and outro visuals (past mockup)
+
+19/ Rebalancing WO:
+- Focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
 - tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
 - bridge balancing between Vanilla and Boss Rush / Everlasting
 - give the mod its own identity as more than an Everlasting sub mod 
 (because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
-21/ Boss Rush mode Extra:
+
+20/ Boss Rush mode Extra:
 - Before player summon first boss, they have to pick a modifier:
 1 good modifier and 1 bad modifier
 - The modifier is forced to be changed after each boss beaten.
 - The player must choose modifier
-22/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
+
+21/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
+
+22/ Work on argumentation.
+- Reduce the amount of augmentation that a accessory can have from 5 to 1
+
 Testing TODO:
+1/ Testing the common gameplay of the Roguelike mode.
+
 
 Known issue:
 > > > When a item have its bgs in inventory appear gray out and when you swap a item which the mouse is holding it, the gray out bgs disappear.

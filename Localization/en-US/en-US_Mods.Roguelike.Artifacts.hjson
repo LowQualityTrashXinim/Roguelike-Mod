@@ -210,45 +210,16 @@ RandomArtifact: {
 	Description: Randomly chooses an artifact.
 }
 
-SwiftHealthIdolArtifact: {
-	DisplayName: Swift Health idol
-	Description:
-		'''
-		[c/ffff00:Positive effect] :
-			+ Increases maximum health by 5% and 10% movement speed
-			+ After dealing damage to a enemy, you receive a buff for 30 second ( CD: 60s )
-			During buff duration: increases your damage by 1 for each 50 health you currently have
-			Hitting a enemy will increases your max health by 1% and movement speed by 2% (capped at 20) ( CD: 1s )
-		[c/ab3e43:Negative effect] : 
-			- Getting hit while health is above 200 will triple your taken damage
-			- While health is below 200 decreases your damage by 20%
-		'''
-}
-
 PerpetuatedCycleArtifact: {
 	DisplayName: Perpetuated Cycle
 	Description:
 		'''
 		[c/ffff00:Positive effect] :
-			+ Increases debuff infliction duration by 35%
+			+ Increases debuff infliction duration by 35% and debuff damage by 10%
 			+ Hitting enemy inflict Samsara of Retribution for 1 second 
 			+ Re-inflicting Samsara of Retribution will strengthen it
 		[c/ab3e43:Negative effect] :
-			- Decreases damage you dealt by 35%
-		'''
-}
-
-AmplePerceptionArtifact: {
-	DisplayName: Ample Perception
-	Description:
-		'''
-		[c/ffff00:Positive effect] :
-			+ Dealing critical strike to an enemy grant 1 Divine Eye ( CD: 2s ) ( capped at 4 )
-			+ Having Divine Eye increases your critical strike chance by 3% and damage by 6%
-			If no critical strike dealt after 7 seconds, 1 Divine Eye is lost
-		[c/ab3e43:Negative effect] :
-			- Decreases your none-critical strike damage by 25%
-			- Critical strike chance multiplier is 0.75x
+			- Decreases damage you dealt by 100%
 		'''
 }
 
@@ -258,7 +229,7 @@ OuterGodTheNihilismArtifact: {
 		'''
 		"Thou shall recieve my power, but thee vessel is fragiles"
 		[c/ffff00:Positive effect] :
-			+ Have 20% to dodge a attack and counter attack nearest NPC by 200% weapon damage
+			+ Have 40% to dodge a attack and counter attack nearest NPC by 200% weapon damage
 			Taking damage will still activate the counter attack but deal 110% weapon damage
 			Counter attacking enemy releases void particles nearby
 			+ During i-frame, you released void particles that deal 70 fixed damage

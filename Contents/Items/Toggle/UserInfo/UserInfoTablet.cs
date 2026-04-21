@@ -17,7 +17,6 @@ using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
-using Roguelike.Contents.Transfixion.Arguments;
 
 using Roguelike.Texture;
 using Roguelike.Common.Systems.IOhandle;
@@ -25,6 +24,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 using System.Collections;
+using Roguelike.Contents.Transfixion.Augmentation;
 
 namespace Roguelike.Contents.Items.Toggle.UserInfo {
 	class UserInfoTablet : ModItem {
