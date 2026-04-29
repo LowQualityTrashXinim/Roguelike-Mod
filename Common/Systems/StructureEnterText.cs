@@ -6,7 +6,6 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Terraria.ModLoader.UI;
-using Roguelike.Contents.Transfixion.Artifacts;
 
 namespace Roguelike.Common.Systems;
 /// <summary>

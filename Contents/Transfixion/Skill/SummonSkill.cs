@@ -21,7 +21,7 @@ public class BroadSwordSpirit : ModSkill {
 			for (int i = 0; i < 3; i++) {
 				int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(34));
 				float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
-				int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, i);
+				int proj = Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, i);
 				if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
 					woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
 			}
@@ -38,7 +38,7 @@ public class WoodSwordSpirit : ModSkill {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SoulWoodSword>()] < 1) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(24));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(5);
-			int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SoulWoodSword>(), damage, knockback, player.whoAmI);
+			int proj = Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<SoulWoodSword>(), damage, knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
 				woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
 		}
@@ -57,7 +57,7 @@ public class WilloFreeze : ModSkill {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(skillplayer.SkillDamage(36));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(5);
 			for (int i = 0; i < 4; i++) {
-				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<WilloFreezeProjectile>(), damage, knockback, player.whoAmI, 75, i, 4);
+				Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<WilloFreezeProjectile>(), damage, knockback, player.whoAmI, 75, i, 4);
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class TransferStation : ModSkill {
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<TransferStationProjectile>()] < 1) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<TransferStationProjectile>(), 0, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<TransferStationProjectile>(), 0, 0, player.whoAmI);
 		}
 	}
 }
@@ -110,7 +110,7 @@ public class PhoenixBlazingTornado : ModSkill {
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
 			int damage = skillplayer.SkillDamage(120);
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), damage, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), damage, 0, player.whoAmI);
 		}
 	}
 }
@@ -157,7 +157,7 @@ public class LucidNightmares : ModSkill {
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(53);
 		for (int i = 0; i < 3; i++) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
 		}
 		player.AddBuff<AbyssalAbsorption>(duration);
 
@@ -181,7 +181,7 @@ public class SacrificialWormhole : ModSkill {
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(50);
-		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+		Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero,
 			ModContent.ProjectileType<SacrificialWormholeProjectile>(), damage, 0, player.whoAmI);
 		player.AddBuff<LifeLoss>(ModUtils.ToSecond(60));
 	}
@@ -208,7 +208,7 @@ public class BulletHell : ModSkill {
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(22) + weaponDamage;
 		damage = (int)modplayer.skilldamage.ApplyTo(damage);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
-		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BulletHell_Projectile>(), damage, knockback, player.whoAmI);
+		Projectile.NewProjectile(player.GetSource_Misc("Skill"), player.Center, Vector2.Zero, ModContent.ProjectileType<BulletHell_Projectile>(), damage, knockback, player.whoAmI);
 	}
 	public class BulletHell_Projectile : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
@@ -227,7 +227,7 @@ public class BulletHell : ModSkill {
 			float knockback = Projectile.knockBack;
 			if (Projectile.timeLeft % 100 == 0) {
 				for (int i = 0; i < 32; i++) {
-					var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenlyPlus(32, 360, i) * 10, ProjectileID.GoldenBullet, damage, knockback, Projectile.owner);
+					var proj = Projectile.NewProjectileDirect(Projectile.GetSource_Misc("Skill"), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenlyPlus(32, 360, i) * 10, ProjectileID.GoldenBullet, damage, knockback, Projectile.owner);
 					proj.tileCollide = false;
 					proj.timeLeft = 120;
 				}
@@ -235,10 +235,10 @@ public class BulletHell : ModSkill {
 			for (int i = 0; i < 8; i++) {
 				Projectile proj;
 				if (i % 2 == 0) {
-					proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(Projectile.timeLeft * 5 + 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, Projectile.owner);
+					proj = Projectile.NewProjectileDirect(Projectile.GetSource_Misc("Skill"), Projectile.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(Projectile.timeLeft * 5 + 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, Projectile.owner);
 				}
 				else {
-					proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(Projectile.timeLeft * 5 - 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, Projectile.owner);
+					proj = Projectile.NewProjectileDirect(Projectile.GetSource_Misc("Skill"), Projectile.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(Projectile.timeLeft * 5 - 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, Projectile.owner);
 				}
 				proj.timeLeft = 90;
 				proj.tileCollide = true;
@@ -265,7 +265,7 @@ public class WoodenArrowRain : ModSkill {
 		position.X += Main.rand.NextFloat(0, 2000) * -modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
 		Vector2 vel = Vector2.One;
 		vel.X *= modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
-		Projectile proj = skillplayer.NewSkillProjectile(player.GetSource_FromThis("skill"), position, vel, Main.rand.NextFloat(20, 24), ProjectileID.WoodenArrowFriendly, damage, knockback);
+		Projectile proj = skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), position, vel, Main.rand.NextFloat(20, 24), ProjectileID.WoodenArrowFriendly, damage, knockback);
 		proj.tileCollide = false;
 		proj.timeLeft = 180;
 		for (int l = 0; l < 2; l++) {
@@ -287,7 +287,7 @@ public class SpiritBurst : ModSkill {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44) * 3;
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 			var vel = Main.rand.NextVector2CircularEdge(3, 3);
-			skillplayer.NewSkillProjectile(player.GetSource_FromThis("skill"), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
+			skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
 		}
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
@@ -296,7 +296,7 @@ public class SpiritBurst : ModSkill {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44);
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 			var vel = Main.rand.NextVector2CircularEdge(2, 2);
-			skillplayer.NewSkillProjectile(player.GetSource_FromThis("skill"), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
+			skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), player.Center, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
 		}
 	}
 }
@@ -317,7 +317,7 @@ public class MeteorShower : ModSkill {
 			knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 			position = player.Center.Add(Main.rand.Next(-200, 200), 1000);
 			velocity = (player.Center - position + Main.rand.NextVector2Circular(200, 200)).SafeNormalize(Vector2.Zero);
-			proj = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, velocity, 20, ProjectileID.StarWrath, damage, knockback);
+			proj = skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), position, velocity, 20, ProjectileID.StarWrath, damage, knockback);
 			proj.friendly = true;
 			proj.hostile = false;
 			proj.tileCollide = false;
@@ -328,7 +328,7 @@ public class MeteorShower : ModSkill {
 			knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 			position = player.Center.Add(Main.rand.Next(-1000, 1000), 1000);
 			velocity = (player.Center - position + Main.rand.NextVector2Circular(200, 200)).SafeNormalize(Vector2.Zero);
-			proj = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, velocity, 10, Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage, knockback);
+			proj = skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), position, velocity, 10, Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage, knockback);
 			proj.friendly = true;
 			proj.hostile = false;
 			proj.tileCollide = false;
@@ -346,7 +346,7 @@ public class EnergyChainReaction : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
-		Projectile.NewProjectileDirect(player.GetSource_FromThis("skill"), player.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<EnergyChainOrb>(), 1, 1, player.whoAmI);
+		Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), player.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<EnergyChainOrb>(), 1, 1, player.whoAmI);
 	}
 	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
 		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
@@ -379,7 +379,7 @@ public class EnergyChainReaction : ModSkill {
 			if (Projectile.timeLeft % 50 == 0) {
 				damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(32);
 				float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
-				modplayer.NewSkillProjectile(player.GetSource_FromThis("skill"), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1), 1, ModContent.ProjectileType<ElectricChainBolt>(), damage, knockback);
+				modplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1), 1, ModContent.ProjectileType<ElectricChainBolt>(), damage, knockback);
 			}
 			if (Projectile.timeLeft % 10 == 0) {
 				damage = SkillDamage(player, 30);

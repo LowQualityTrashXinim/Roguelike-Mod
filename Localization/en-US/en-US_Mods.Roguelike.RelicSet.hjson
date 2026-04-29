@@ -15,7 +15,7 @@ RelicSet_TitanicBlood: {
 		Increases damage reduction by 10% when your life is under 50%
 		Increases additional damage reduction by 5% when your life is under 35%
 		Increases additional damage reduction by 5% when your life is under 15%
-		You have chance to resist an attack
+		You have 1 in 12 chance to resist an attack
 		'''
 }
 

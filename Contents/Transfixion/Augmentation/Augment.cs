@@ -102,10 +102,10 @@ public class AugmentsWeapon : GlobalItem {
 
 	}
 	public override void SaveData(Item item, TagCompound tag) {
-		tag.Add("AugmentsSlot", Augment);
+		tag.Add("Augment", Augment);
 	}
 	public override void LoadData(Item item, TagCompound tag) {
-		if (tag.TryGet("AugmentsSlot", out int TypeValue))
+		if (tag.TryGet("Augment", out int TypeValue))
 			Augment = TypeValue;
 	}
 }

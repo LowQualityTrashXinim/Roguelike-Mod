@@ -11,19 +11,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
-internal class KingSlimeStructure : ModSystem {
-	public Point Point_ModObject_KingSlime => new Point(25, 29);
-	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure;
+internal class FleshChamberStructure : ModSystem {
+	public Point Point_ModObject => new Point(25, 29);
+	public Rectangle Pos_structure => ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure;
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
 		if (!RoguelikeWorldProperty.RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;
-		if (player.Center.IsCloseToPosition(Pos_KSstructure.Center().ToWorldCoordinates(), 1500)) {
+		if (player.Center.IsCloseToPosition(Pos_structure.Center().ToWorldCoordinates(), 1500)) {
 			if (!IsWithinRange) {
-				var worldPos = (Pos_KSstructure.Location + Point_ModObject_KingSlime).ToWorldCoordinates();
-				ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_KingSlime>());
+				var worldPos = (Pos_structure.Location + Point_ModObject).ToWorldCoordinates();
+				ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_Eye>());
 			}
 			IsWithinRange = true;
 		}
@@ -32,23 +32,23 @@ internal class KingSlimeStructure : ModSystem {
 		}
 	}
 }
-public class Fix_SlimeCrown : GlobalItem {
+public class Fix_SusEye : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.SlimeCrown;
 	}
 	public override bool CanUseItem(Item item, Player player) {
-		return (ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
+		return (ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
 	}
 	public override bool? UseItem(Item item, Player player) {
-		var spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Location.ToWorldCoordinates().ToPoint();
-		NPC.SpawnBoss(spawnPosotion.X, spawnPosotion.Y, NPCID.KingSlime, player.whoAmI);
+		var spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure.Location.ToWorldCoordinates().ToPoint();
+		NPC.SpawnBoss(spawnPosotion.X, spawnPosotion.Y, NPCID.EyeofCthulhu, player.whoAmI);
 		return true;
 	}
 }
-public class Sealed_KingSlime : NPCSealedObject {
+public class Sealed_Eye : NPCSealedObject {
 	public int AuraCounter = 0;
 	public bool Switch = false;
-	public override int NPCTypeToFollow => NPCID.KingSlime;
+	public override int NPCTypeToFollow => NPCID.EyeofCthulhu;
 	public override void NPCObject_SetDefaults() {
 		frame = 6;
 	}
@@ -66,10 +66,10 @@ public class Sealed_KingSlime : NPCSealedObject {
 			Switch = false;
 		}
 		if (++Counter >= 10) {
-			frameCounter = ModUtils.Safe_SwitchValue(frameCounter, frame - 1);
+			frameCounter = ModUtils.Safe_SwitchValue(frameCounter, 3);
 			Counter = 0;
 		}
-		if (NPC.downedSlimeKing || NPC.AnyNPCs(NPCID.KingSlime)) {
+		if (NPC.downedBoss1 || NPC.AnyNPCs(NPCID.EyeofCthulhu)) {
 			Kill();
 		}
 	}
@@ -81,6 +81,6 @@ public class Sealed_KingSlime : NPCSealedObject {
 		var color = Color.White;
 		frameCounter = Math.Clamp(frameCounter, 0, frame);
 		spritebatch.Draw(texture, drawpos, texture.Frame(1, frame, 0, frameCounter), color, 0, origin, 1f, SpriteEffects.None, 1);
-		BasicSealAuraEffect(spritebatch, AuraCounter, Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / frame * .5f, Color.DodgerBlue, 4f);
+		BasicSealAuraEffect(spritebatch, AuraCounter, Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / frame * .5f, Color.IndianRed, 4f);
 	}
 }

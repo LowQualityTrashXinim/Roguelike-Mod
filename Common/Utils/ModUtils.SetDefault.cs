@@ -192,9 +192,9 @@ namespace Roguelike.Common.Utils {
 		}
 		public static void Set_ModdedVariant(this Item item, short variantType) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle handle)) {
-				int varType = handle.VariantType = variantType;
-				var variant = WorldVaultSystem.GetVariant(varType);
+				var variant = WorldVaultSystem.GetVariant(variantType);
 				if (variant != null) {
+					handle.VariantType = variantType;
 					variant.SetDefault(item);
 				}
 			}

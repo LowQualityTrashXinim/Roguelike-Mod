@@ -134,3 +134,10 @@ public class Weaken : ModSkill {
 		skillplayer.ProjectileSpeedMultiplier += .4f;
 	}
 }
+public class ChaoticLarpa : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 1000;
+		Skill_Duration = ModUtils.ToSecond(0);
+		Skill_Type = SkillTypeID.Skill_Stats;
+	}
+}

@@ -47,9 +47,10 @@ PaperDefense: {
 	Description2: After your defenses decreases you gain 5 defenses as compensation that last for 1 min
 }
 
-BerserkI: {
-	DisplayName: Berserk I
+Berserk: {
+	DisplayName: Berserk
 	Description: Deal more damage the lower your health get
+	Description1: While below 70% of maximum health, +25% damage
 }
 
 TrueStatus: {

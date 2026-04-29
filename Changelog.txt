@@ -621,3 +621,5 @@ Flaming Wood Sword:
 555/ Tweeked boss scaling, instead a 50% scale for each boss killed now it is 35% instead.
 556/ Decreases boss general base damage from 40 to 30.
 557/ Reduced amount of augmentation can have on accessory from 5 -> 1.
+558/ Updated all Entity source skill projectile to now come from skill.
+559/ Buff relic set by lowering their requirement to activate.

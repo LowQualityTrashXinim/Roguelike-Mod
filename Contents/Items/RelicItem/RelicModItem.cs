@@ -49,7 +49,13 @@ public class Relic : ModItem {
 		}
 		templatelist.Add(templateid);
 		RelicTemplateLoader.GetTemplate(templateid).OnSettingTemplate();
-		statlist.Add(stats);
+		if (stats == PlayerStats.None) {
+			PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(this, Main.LocalPlayer);
+			statlist.Add(innerStats);
+		}
+		else {
+			statlist.Add(stats);
+		}
 		value = value.Scale(valueMulti);
 		valuelist.Add(value);
 	}

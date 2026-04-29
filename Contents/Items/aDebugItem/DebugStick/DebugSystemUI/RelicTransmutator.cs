@@ -15,7 +15,6 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class RelicTransmuteUI : UIState {
@@ -271,6 +270,7 @@ class RelicTransmuteUI : UIState {
 		txb_valueSetterAdd.Width.Precent = 1f;
 		txb_valueSetterAdd.TextHAlign = 0;
 		txb_valueSetterAdd.OnHoverText = "Additive";
+		txb_valueSetterAdd.OnScrollWheel += Txb_valueSetterAdd_OnScrollWheel;
 		container_ExtraContainer22.Append(txb_valueSetterAdd);
 
 		txb_valueSetterMult = new("1.0", .77f);
@@ -278,6 +278,7 @@ class RelicTransmuteUI : UIState {
 		txb_valueSetterMult.TextHAlign = 0;
 		txb_valueSetterMult.VAlign = 1 / 3f;
 		txb_valueSetterMult.OnHoverText = "Multiplicative";
+		txb_valueSetterMult.OnScrollWheel += Txb_valueSetterMult_OnScrollWheel;
 		container_ExtraContainer22.Append(txb_valueSetterMult);
 
 		txb_valueSetterBase = new("0", .77f);
@@ -285,6 +286,7 @@ class RelicTransmuteUI : UIState {
 		txb_valueSetterBase.TextHAlign = 0;
 		txb_valueSetterBase.VAlign = 2 / 3f;
 		txb_valueSetterBase.OnHoverText = "Base";
+		txb_valueSetterBase.OnScrollWheel += Txb_valueSetterBase_OnScrollWheel;
 		container_ExtraContainer22.Append(txb_valueSetterBase);
 
 		txb_valueSetterFlat = new("0", .77f);
@@ -292,9 +294,67 @@ class RelicTransmuteUI : UIState {
 		txb_valueSetterFlat.TextHAlign = 0;
 		txb_valueSetterFlat.VAlign = 1f;
 		txb_valueSetterFlat.OnHoverText = "Flat";
+		txb_valueSetterFlat.OnScrollWheel += Txb_valueSetterFlat_OnScrollWheel;
 		container_ExtraContainer22.Append(txb_valueSetterFlat);
 
 	}
+
+	private void Txb_valueSetterFlat_OnScrollWheel(UIScrollWheelEvent evt, UIElement listeningElement) {
+		if (float.TryParse(txb_valueSetterFlat.Text, out float result)) {
+			float scroll = MathF.Sign(evt.ScrollWheelValue);
+			if (scroll < 0) {
+				result -= .01f;
+			}
+			else {
+				result += .01f;
+			}
+			result = MathF.Round(result, 2);
+			txb_valueSetterFlat.SetText(result.ToString());
+		}
+	}
+
+	private void Txb_valueSetterBase_OnScrollWheel(UIScrollWheelEvent evt, UIElement listeningElement) {
+		if (float.TryParse(txb_valueSetterBase.Text, out float result)) {
+			float scroll = MathF.Sign(evt.ScrollWheelValue);
+			if (scroll < 0) {
+				result -= .01f;
+			}
+			else {
+				result += .01f;
+			}
+			result = MathF.Round(result, 2);
+			txb_valueSetterBase.SetText(result.ToString());
+		}
+	}
+
+	private void Txb_valueSetterMult_OnScrollWheel(UIScrollWheelEvent evt, UIElement listeningElement) {
+		if (float.TryParse(txb_valueSetterMult.Text, out float result)) {
+			float scroll = MathF.Sign(evt.ScrollWheelValue);
+			if (scroll < 0) {
+				result -= .01f;
+			}
+			else {
+				result += .01f;
+			}
+			result = MathF.Round(result, 2);
+			txb_valueSetterMult.SetText(result.ToString());
+		}
+	}
+
+	private void Txb_valueSetterAdd_OnScrollWheel(UIScrollWheelEvent evt, UIElement listeningElement) {
+		if (float.TryParse(txb_valueSetterAdd.Text, out float result)) {
+			float scroll = MathF.Sign(evt.ScrollWheelValue);
+			if (scroll < 0) {
+				result -= .01f;
+			}
+			else {
+				result += .01f;
+			}
+			result = MathF.Round(result, 2);
+			txb_valueSetterAdd.SetText(result.ToString());
+		}
+	}
+
 	private void Init_Button() {
 		btn_AddRelic = new(TextureAssets.InventoryBack7);
 		btn_AddRelic.UISetWidthHeight(52, 52);
@@ -315,7 +375,7 @@ class RelicTransmuteUI : UIState {
 		btn_ClearSetting = new(TextureAssets.InventoryBack7);
 		btn_ClearSetting.UISetWidthHeight(52, 52);
 		btn_ClearSetting.MarginTop = 186;
-		btn_ClearSetting.OnLeftClick += Btn_ClearSetting_OnLeftClick; ;
+		btn_ClearSetting.OnLeftClick += Btn_ClearSetting_OnLeftClick;
 		btn_ClearSetting.SetVisibility(.5f, 1f);
 		btn_ClearSetting.HoverText = "Clear relic";
 		panel_sidePanel.Append(btn_ClearSetting);
@@ -442,11 +502,10 @@ class RelicTransmuteUI : UIState {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-			Draw_Template();
-			Draw_Prefix();
-			Draw_Set();
-			Draw_PlayerStats();
-		
+		Draw_Template();
+		Draw_Prefix();
+		Draw_Set();
+		Draw_PlayerStats();
 	}
 	private void Draw_Template() {
 		RelicTemplate val = RelicTemplateLoader.GetTemplate(scW_Template);

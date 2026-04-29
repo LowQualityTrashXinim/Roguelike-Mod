@@ -156,7 +156,8 @@ public class SkillHandlePlayer : ModPlayer {
 	public float ProjectileSpreadAmount = 5;
 	public float ProjectileSpreadMultiplier = 1;
 	/// <summary>
-	/// This method automatically handle skill damage, critical chance, energy regain and anything related
+	/// This method automatically handle skill damage, critical chance, energy regain and anything related<br/>
+	/// Uses this method over <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or any that is related when making skill shoot projectile.
 	/// </summary>
 	/// <param name="source"></param>
 	/// <param name="position"></param>

@@ -58,16 +58,6 @@ PowerBank: {
 	Description: Give you 300 energy but reduce the upcoming skill duration by 100%
 }
 
-Icicle: {
-	DisplayName: Icicle
-	Description:
-		'''
-		Shoots a icicles every 20 ticks towards your cursor, dealing 9 damage
-		+ 10% skill critical chance
-		+ 10% skill critical damage
-		'''
-}
-
 MeteorShower: {
 	DisplayName: Stella Shower
 	Description:
@@ -118,7 +108,11 @@ WoodSwordSpirit: {
 
 BroadSwordSpirit: {
 	DisplayName: Broadsword Spirit
-	Description: Summons 3 ancient broadswords that spin around the player, dealing 34 base damage + 75% weapon damage and inflicting the 'Penetrated' debuff
+	Description:
+		'''
+		Summons 3 broadswords that spin around the player
+		dealing 34 base damage + 75% weapon damage
+		'''
 }
 
 Overclock: {
@@ -148,7 +142,7 @@ TerrorForm: {
 
 WilloFreeze: {
 	DisplayName: Will o' Freeze
-	Description: Summons 4 frost spriti that spin around, dealing 36 damage and inflicting the 'Frostburn' debuff
+	Description: Summons 4 frost spirit that spin around, dealing 36 damage and inflicting the 'Frostburn' debuff
 }
 
 CriticalUp: {
@@ -182,14 +176,18 @@ PhoenixBlazingTornado: {
 
 BulletHell: {
 	DisplayName: Bullet Hell
-	Description: Summon a vortex of bullet [Base: 22 damage]
+	Description:
+		'''
+		Summon a vortex of bullet.
+		Bullet deal 22 damages.
+		'''
 }
 
 DebugCommand: {
 	DisplayName: Debug command
 	Description:
 		'''
-		Deal 2000 damage to every npc on screen on activate skill
+		Deal 2000 damage to every npc on screen on activate skill ( trigger once )
 		Grant you completely immunity to all debuff ( including potion sickness ) for 1/10 of skill duration
 		'''
 }
@@ -205,7 +203,11 @@ LucidNightmares: {
 
 SacrificialWormhole: {
 	DisplayName: Sacrificial Wormhole
-	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 50 damage and inflicting the 'Suffocation' debuff
+	Description:
+		'''
+		Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies
+		dealing 50 damage and inflicting the 'Suffocation' debuff
+		'''
 }
 
 DamageUp: {

@@ -2803,7 +2803,7 @@ Mods: {
 				Tooltip:
 					'''
 					Summon star at where the cursor at
-					Summon a stardust vortex that deal damage and pull enemy in ( CD: 10s )
+					Summon a stardust vortex that deal damage and pull enemy toward center ( CD: 10s )
 					Every 15th attacks, summon star off screen that fly to your cursor and explode
 					Right click will summon 10 star around you and heal you for 100 hp ( CD: 15s )
 					Each attack hit will heal you
@@ -2815,6 +2815,9 @@ Mods: {
 					Increases 15% crit chance and 45% crit damage
 					Player are heal 34 + 5% HP and 45 + 5% Mana
 					Basic attack are enhanced
+
+					Upon duration of Stardust Array ended, nearby star sucked toward you
+					After a short while, open a stardust portal that releases enhanced star
 					'''
 			}
 

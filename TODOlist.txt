@@ -35,6 +35,12 @@ Implementation TODO:
 4/ Refactor User info tablet 
 
 5/ Rework rarity system and tranmutation system.
+Transumtation changes:
+- Equivalent exchange now changes to Transmute mode.
+>> Work the exact same but instead you can transmute anything to everything.
+- Upgrade rarity now changes to Selective transmute mode.
+>> Player can choose what kind of item that they wish their item to be transmute to
+>> When using this mode, the cost is 5x
 
 6/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
 - Boomerang: ( turn into sub/sup dps weapon )
@@ -54,6 +60,19 @@ During Trauma shock, if NPC is being attacked, they will intake damage pernamenn
 
 7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
+- Fury Emblem ( artifact )
+Solution 1 : Buff the artifact in such a way that it change how player play the game
+Solution 2 : Move it to perk.
+- Nature of Evil and Good ( relic set )
+Solution 1 : Buff the effect.
+Solution 2 : Nerf the requirement to only require 3 instead.
+- Titanic Blood ( relic set )
+Solution 1 : Buff the effect.
+Solution 2 : Nerf the requirement to only require 3 instead.
+- Universal Gemstone ( relic set )
+Solution 1 : Buff the effect.
+Solution 2 : Nerf the requirement to only require 3 instead.
+- Perk Prideful Poessesion.
 
 8/ Work on level item system ( not actual leveling system ).
 - Item will spawn with a set level, with each 5 levels the item gain a effect.
@@ -67,10 +86,18 @@ At each point of weapon level, it does the following:
 A weapon level is not capped but effect level is capped at 3.
 Upon effect cap, next time gaining effect will instead raise all stats by previous 4 levels.
 
-9/ Implement special characteristic for material :
-- Tungsten : ????
+9/ Rework some of the Debug UI.
+- spoil UI need to be rework.
+- skill selection UI need to be rework.
 
 10/ Work on achievement.
+Content:
+- I am the guardian now !
+> gain 9999 defenses in a run
+- The power level, it is over 9999 !
+> Held a weapon that deal 9999
+- Infinite +1
+> Deal so much damage that the dps meter overflow to negative
 
 11/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
 - The mod should remember what Synergy weapon player has ever used.
@@ -145,6 +172,82 @@ The following food are missing from food rework:
 
 22/ Work on argumentation.
 - Reduce the amount of augmentation that a accessory can have from 5 to 1
+- Figure out what the best way for level/charge up mechanic
+The following 4 are the plans for augmentation:
+- Remove it entirely and just go down the route of getting dup or sacrifice 
+- Transmutation will charge the augment
+- Conditional charge but you can only choose 1 condition to charge the accessory when augment the accessory
+- Conditional charge become universal and is not locked
+Note: The charge decay mechanic is set to be removed entirely, so once player reachg max charge, then the max charge will stay
+
+Current implementation test: Transmutation will charge the augment
+
+23/ Rework the following Synergy weapon:
+- HeartBreak Instrument
+Remove the instrument and instead replaced it with the sword itself
+During attack, the sword will also attack together with you
+Make the alt attack a bit more unique rather than 4 small slash 
+Make the thrust attack animation more instant.
+> Alt attack summon a ghost version of the sword ( custom sprite ) and will attack along side you
+> During the climax of tragedy, instead of summoning the 4 intruments, instead create a clone of the sword but in different form 
+Each attack you do will do a random set attack
+- Flameing Wood Sword
+Create a custom wave sprite for the flame wood slash
+Add more swing attack to it
+> 1st attack : downward chop -> shoot out bunch of flame creating a flamewall
+> 2nd attack : upward slash -> shoot out a flame wave that travel a short distance
+> 3rd attack : Circle swing -> Create a heat aura around you for a short moment
+- The Orbit
+Touch up the visual of the orbit projectile
+Add in a alt click ability to make all of the current orbiting projectile fly toward cursor.
+- Master Sword
+Fix up the attack to make it look more smooth.
+- DrainingVeilBlade
+The Shadow clone sword should be consistent with player and also follow player.
+- Bowmarang
+The first instant it spawn, make it ignore tile for a short duration.
+
+24/ Rework skill system.
+Balance & Changes:
+- Rework skill holder to be skill preset.
+Skill preset can only be changed after player current skill setup is completed.
+- Player no longer can delete skill but also skill inventory space become larger.
+When player run out of slot to add in skill, they will get 1 common spoil as a refund.
+
+UI related changes:
+- Update new skill UI to potentially allow player maximumize skill slot up to 25 skills.
+- Completely changed how skill inventory system UI is presented
+- Skill UI is now added next to player skill energy bar and can only be open when player have inventory up.
+
+New addition:
+- New skill modifiers type: ( new classification )
+>> Projectile
+>> AI addon
+- New skill utility: ( new classification )
+>> Bundle
+>> Other
+- Skill system projectile now follow a certain rule that is enforced upon skill
+Summon skill will always have skill source
+- Projectile modifier applied to summon skill, only 1 projectile can be applied to 1 skill unless a bundle is used.
+- Same goes with AI addon modifier for skill, projectile modifier and Ai addon modifier can't coexist unless bundle is used.
+- A skill now have multiple classification.
+
+QoL changes:
+- Player can view what skill preset is being used by hovering over skill orb icon
+- Player can make preset and then save it later under their own naming the preset.
+- Keybind are set up so that player can move from 1 preset to another.
+- Preset order can be set up so that player can uses keybind to move from 1 preset to another.
+
+Implementation and optimization:
+- Due to the new demand of skill, each projectile will hold a list of skill id
+During activation, the skill ID is sent on Projectile spawn.
+- All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
+- UI optimization to make every UI instant.
+
+Misc changes:
+- Remove Protective Onslaught and move it to different system.
+
+25/ Make demon heart obtainable in boss rush mode.
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

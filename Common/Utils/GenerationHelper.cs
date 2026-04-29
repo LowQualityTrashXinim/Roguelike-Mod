@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Terraria;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
 namespace Roguelike.Common.Utils;
 
@@ -224,7 +225,9 @@ internal static partial class GenerationHelper {
 	public static void Structure_SimplePlaceTile(int holdX, int holdY, ref TileData data) {
 		Tile tile = Main.tile[holdX, holdY];
 		if (!data.Tile_Air) {
-			data.PlaceTileSimple(tile);
+			tile.TileType = data.Tile_Type;
+			tile.Get<TileWallWireStateData>().HasTile = true;
+			tile.WallType = data.Tile_WallData;
 		}
 		else {
 			tile.ClearTile();

@@ -35,6 +35,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int EnergyRegainOnHit = 0;
 	public int SetCrit = 0;
 	public int CustomDataValue = 0;
+	public bool ComeFromSkill = false;
 	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>
@@ -84,6 +85,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			}
 		}
 		Source_CustomContextInfo = source.Context;
+		if (source.Context == "Skill") {
+			ComeFromSkill = true;
+		}
 	}
 	public override bool PreAI(Projectile projectile) {
 		if (VelocityMultiplier != 0) {
@@ -176,6 +180,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.hostile
 			|| !projectile.friendly
 			|| projectile.minion
+			|| projectile.sentry
 			|| projectile.aiStyle == ProjAIStyleID.Vilethorn
 			|| projectile.aiStyle == ProjAIStyleID.Spear
 			|| projectile.aiStyle == ProjAIStyleID.MechanicalPiranha
@@ -183,8 +188,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.aiStyle == ProjAIStyleID.HeldProjectile
 			|| projectile.aiStyle == ProjAIStyleID.Yoyo
 			|| projectile.aiStyle == ProjAIStyleID.HorizontalRay
-			|| projectile.minion
-			|| projectile.sentry
 			|| projectile.type == ProjectileID.PhantasmArrow
 			|| projectile.type == ProjectileID.IchorDart
 			|| projectile.type == ProjectileID.ExplosiveBunny

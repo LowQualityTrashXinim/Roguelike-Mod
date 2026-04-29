@@ -65,16 +65,18 @@ WoodenSword.Description:
 AshWoodSword.Description:
 	'''
 	Only applied to: {0}
-	Hitting a enemy create a sword rise from below ( CD : 1s )
+	Hitting a enemy create a sword rise from below (CD : 1s)
 	Every 5 swing, summon 1 AshwoodSword from the sky deal 125% of weapon damage
 	if weapon is {1}:
-	Sword will always rise from below from each swing (CD : 0.5s )
+	Sword will always rise from below from each swing (CD : 0.5s)
 	Every swing summon 1 AshwoodSword from the sky deal 125% of weapon damage
 	'''
 BorealWoodSword.Description:
 	'''
 	Increases damage by 1 and weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
+	Striking enemy will summon swords nearby the target (CD : 3s)
+	if the weapon is the following: {0}
+	Summon a extra boreal wood sword for each swing
 	'''
 PalmWoodSword.Description:
 	'''
@@ -84,15 +86,14 @@ PalmWoodSword.Description:
 	'''
 RichMahoganySword.Description:
 	'''
-	Increases damage by 1
+	Increases damage by 10
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 ShadewoodSword.Description:
 	'''
-	Increases damage by 1
-	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
+	Striking with item 10 times heal 1% hp
+	Striking with projectile 50 times heal 1% hp
+	The above effect can both be activate the same time
 	'''
 EbonwoodSword.Description:
 	'''
@@ -125,6 +126,7 @@ SilverBroadsword.Description:
 	'''
 	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
+	Increases first strike damage by 40%
 	'''
 TungstenBroadsword.Description:
 	'''
@@ -161,8 +163,10 @@ StarFury.Description:
 	'''
 IceBlade.Description:
 	'''
-	Weapon that can shoot will shoot additional ice bolt ( CD : 0.5s )
-	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
+	Weapon that can shoot will shoot additional ice bolt (CD : 0.5s)
+	hitting enemy with item
+	+ Inflict Frost Burn debuff for 3 - 6s
+	+ Spawn ice bolts that fly toward enemy (CD: 0.5s)
 	'''
 BatBat.Description:
 	'''
@@ -174,6 +178,7 @@ BoneSword.Description:
 	'''
 	Increases weapon size by 15%
 	Attacking enemy have 25% chance to shoot out a infinite piercing bone (CD:1s)
+	Striking enemy for 10 times, shoot out a homing skull dealing 120% weapon damage on next hit
 	'''
 BladedGlove.Description:
 	'''
@@ -182,7 +187,8 @@ BladedGlove.Description:
 	'''
 ZombieArm.Description:
 	'''
-	Increases critical strike chance by 10 during night
+	Increases critical strike chance by 10
+	Have 1 in 10 chance to deal Rotting last 2s
 	Getting hit while holding the weapon will deal 55% damage to all nearby enemy (CD:1s)
 	'''
 MandibleBlade.Description:

@@ -7,6 +7,7 @@ using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Weapon.ItemVariant;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using Roguelike.Contents.NPCs;
 using Roguelike.Contents.Transfixion.Perks;
@@ -199,15 +200,19 @@ namespace Roguelike.Contents.Items.Weapon {
 	}
 	public class WorldVaultSystem : ModSystem {
 		private static List<ModVariant> variantlist = new();
+		public static short None = -1;
 		public static short Register(ModVariant variant) {
 			ModTypeLookup<ModVariant>.Register(variant);
 			variantlist.Add(variant);
+			if (variant is None_Var) {
+				None = (short)(variantlist.Count - 1);
+			}
 			return (short)(variantlist.Count - 1);
 		}
 		public static ModVariant GetVariant(int type) => type >= variantlist.Count || type < 0 ? null : variantlist[type];
 	}
 	public abstract class ModVariant : ModType {
-		public short Variant = 0;
+		public short Variant = -1;
 		public static short GetVariantType<T>() where T : ModVariant => ModContent.GetInstance<T>().Variant;
 		protected sealed override void Register() {
 			SetStaticDefaults();
@@ -239,8 +244,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public int OutroEffect_type = -1;
 		public int InventoryWhoAmI = -1;
 		public override GlobalItem NewInstance(Item target) {
-			if(target.TryGetGlobalItem(out GlobalItemHandle handler)) {
-				handler.VariantType = -1;
+			if (target.TryGetGlobalItem(out GlobalItemHandle handler)) {
 				handler.ItemLevel = 0;
 				handler.OutroEffect_type = -1;
 				handler.InventoryWhoAmI = -1;
@@ -248,6 +252,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			return base.NewInstance(target);
 		}
+		public bool CheckVariant() => VariantType >= 0 && VariantType != ModVariant.GetVariantType<None_Var>();
 		public override void OnCreated(Item item, ItemCreationContext context) {
 			item.prefix = 0;
 			if (item.ModItem == null) {
@@ -261,7 +266,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (OutroEffect_type == -1) {
 				OutroEffect_type = OutroEffect.GetWeaponEffectType<OutroEffect_None>();
 			}
-			if (VariantType != -1) {
+			if (CheckVariant()) {
 				var variant = WorldVaultSystem.GetVariant(VariantType);
 				if (variant != null) {
 					variant.SetDefault(entity);
@@ -274,7 +279,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public override void HoldItem(Item item, Player player) {
 			UpdateCriticalDamage = 0;
-			if (VariantType != -1) {
+			if (CheckVariant()) {
 				var variant = WorldVaultSystem.GetVariant(VariantType);
 				if (variant != null) {
 					variant.UpdateInv(item, player);
@@ -282,7 +287,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (VariantType != -1) {
+			if (CheckVariant()) {
 				var variant = WorldVaultSystem.GetVariant(VariantType);
 				if (variant != null) {
 					variant.Shoot(item, player, source, position, velocity, type, damage, knockback);

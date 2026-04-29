@@ -310,20 +310,6 @@ public class DivineHammerUIState : UIState {
 			return;
 		}
 		Item item = AccAugmentSlot.item;
-		if (!item.GetGlobalItem<AugmentsWeapon>().AugmentsSlots.Contains(0)) {
-			return;
-		}
-		int[] slots = item.GetGlobalItem<AugmentsWeapon>().AugmentsSlots;
-		int counter = 0;
-		for (int i = 0; i < slots.Length; i++) {
-			if (slots[i] == 0) {
-				continue;
-			}
-			counter++;
-		}
-		if (counter >= 1) {
-			return;
-		}
 		if (AugmentsLoader.GetAugments(SelectedAugmentationType) == null) {
 			return;
 		}

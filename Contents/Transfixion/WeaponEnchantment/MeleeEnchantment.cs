@@ -6,6 +6,7 @@ using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
+using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
@@ -103,6 +104,17 @@ public class IceBlade : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Frostburn, ModUtils.ToSecond(Main.rand.Next(3, 7)));
+		if (globalItem.Item_Counter2[index] <= 0) {
+			int amount = Main.rand.Next(2, 5);
+			for (int i = 0; i < amount; i++) {
+				Vector2 position = player.Center + Main.rand.NextVector2Circular(30, 30);
+				Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 3;
+				Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), position, velocity, ProjectileID.IceBolt, hit.Damage, 3, player.whoAmI);
+				proj.timeLeft = 300;
+				proj.extraUpdates = 5;
+			}
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(.5f));
+		}
 	}
 }
 public class BatBat : ModEnchantment {
@@ -150,10 +162,18 @@ public class BoneSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		BoneExplosion(index, player, globalItem, target.Center, damageDone, item.knockBack);
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			globalItem.Item_Counter2[index] = 0;
+			Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ProjectileID.BookOfSkullsSkull, (int)(player.GetWeaponDamage(item) * 1.2f), 1, player.whoAmI);
+		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.type != ProjectileID.Bone) {
 			BoneExplosion(index, player, globalItem, target.Center, damageDone, proj.knockBack);
+		}
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			globalItem.Item_Counter2[index] = 0;
+			Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ProjectileID.BookOfSkullsSkull, (int)(player.GetWeaponDamage(player.HeldItem) * 1.2f), 1, player.whoAmI);
 		}
 	}
 	private static void BoneExplosion(int index, Player player, EnchantmentGlobalItem globalItem, Vector2 position, int damage, float knockback) {
@@ -195,9 +215,7 @@ public class ZombieArm : ModEnchantment {
 		ItemIDType = ItemID.ZombieArm;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
-		if (!Main.dayTime) {
-			crit += 10;
-		}
+		crit += 10;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
@@ -212,6 +230,16 @@ public class ZombieArm : ModEnchantment {
 				ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
 		}
 		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(10)) {
+			target.AddBuff<RA_Rotting>(120);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(10)) {
+			target.AddBuff<RA_Rotting>(120);
+		}
 	}
 }
 public class MandibleBlade : ModEnchantment {

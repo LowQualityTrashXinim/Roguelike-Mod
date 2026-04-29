@@ -319,8 +319,11 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		try {
 			watch.Start();
 			string fileName = "";
+			//string FileDestination = Path.Join("Assets", "Structures");
 			foreach (string filenamepath in Mod.GetFileNames()) {
+				Mod.Logger.Info($"Current selected files : {filenamepath}");
 				if (!filenamepath.StartsWith(FileDestination)) {
+					Mod.Logger.Error($"Failed to load structure named: {filenamepath}");
 					continue;
 				}
 				StringBuilder strbld = new StringBuilder();
@@ -368,8 +371,8 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				}
 			}
 		}
-		catch {
-
+		catch (Exception e) {
+			Mod.Logger.Error(e.Message);
 		}
 		finally {
 			watch.Stop();

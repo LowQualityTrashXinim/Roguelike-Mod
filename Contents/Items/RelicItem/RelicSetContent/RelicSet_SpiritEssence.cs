@@ -9,7 +9,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 public class SpiritEssence_ModPlayer : ModPlayer {
 	class RelicSet_SpiritEssence : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 4;
+			Requirement = 3;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_SpiritEssence>());

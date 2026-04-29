@@ -189,6 +189,7 @@ BloodStrike: {
 		+ Increases your multiplicative damage to 1.36x
 		+ Increases your flat damage by 7
 		- Using weapon will eat your hp by 5% of that weapon damage
+		Damage from this perk can't goes below 1
 		'''
 }
 

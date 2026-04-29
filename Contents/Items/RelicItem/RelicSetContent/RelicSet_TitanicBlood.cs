@@ -6,7 +6,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicSetContent;
 internal class TitanicBlood_ModPlayer : ModPlayer {
 	class RelicSet_TitanicBlood : RelicSet {
 		public override void SetStaticDefaults() {
-			Requirement = 4;
+			Requirement = 3;
 		}
 	}
 	public bool set => RelicSetSystem.Check_RelicSetRequirment(Player, RelicSet.GetRelicSetType<RelicSet_TitanicBlood>());

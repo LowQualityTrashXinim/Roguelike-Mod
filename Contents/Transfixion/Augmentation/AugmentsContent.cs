@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -9,21 +8,6 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
 namespace Roguelike.Contents.Transfixion.Augmentation;
-public class BerserkI : ModAugments {
-	public override void SetStaticDefaults() {
-		tooltipColor = Color.OrangeRed;
-	}
-	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		float percentage = player.statLife / (float)player.statLifeMax2;
-		modifiers.SourceDamage += .5f * percentage;
-	}
-	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type && !proj.minion) {
-			float percentage = player.statLife / (float)player.statLifeMax2;
-			modifiers.SourceDamage += .5f * percentage;
-		}
-	}
-}
 
 public class TrueStatus : ModAugments {
 	public override void SetStaticDefaults() {
