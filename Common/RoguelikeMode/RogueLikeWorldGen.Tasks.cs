@@ -460,7 +460,31 @@ public partial class RogueLikeWorldGen {
 	public Rectangle FleshStructure = new Rectangle();
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
+	/// <summary>
+	/// This happen right after the <see cref="InitializeBiomeWorld"/><br/>
+	/// Developer can freely uses indexes for making custom forest here, however if the forest is important<br/>
+	/// It should be created seperately and should be add before this method and after <see cref="InitializeBiomeWorld"/>
+	/// </summary>
 	private void InitializeForestWorld() {
+		//Setting up surface forest
+		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 3, 7, 1);
+		rect.Y -= 50;
+		Set_MapIgnoredZoneIntoWorldGen(rect);
+		ZoneToBeIgnored.Add(rect);
+		ForestZone.Add(rect);
+
+		rect = GenerationHelper.GridPositionInTheWorld24x24(15, 3, 3, 1);
+		rect.Y -= 50;
+		Set_MapIgnoredZoneIntoWorldGen(rect);
+		ZoneToBeIgnored.Add(rect);
+		ForestZone.Add(rect);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(18, 3, 4, 1);
+		rect.Y -= 50;
+		Set_MapIgnoredZoneIntoWorldGen(rect);
+		ZoneToBeIgnored.Add(rect);
+		ForestZone.Add(rect);
+		//resetting rect just in case something terrible may happen
+		rect = new();
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
 		Set_MapIgnoredZoneIntoWorldGen(MainForestZone);
@@ -551,7 +575,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(17, 2), 7);
 
 		//Initialize Hallow biome
-		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 3), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(18, 3), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 4), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 5), 4);
 
@@ -606,6 +630,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(6, 12), 13);
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 13), 13);
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(15, 14), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(15, 3), 3);
 
 		//Initialize Ocean biome
 		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 6), 2);
@@ -1187,7 +1212,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Start();
 		foreach (Rectangle zone in ForestZone) {
 			//We are using standard generation for this one
-			int startingPoint = zone.Height - zone.Height / 8 + zone.Y;
+			int startingPoint = zone.Height - zone.Height / 6 + zone.Y;
 			int offsetRaise = 0;
 			bool MoveToNextX;
 			int CurrentPosY;
@@ -1200,6 +1225,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							offsetRaise += Rand.Next(-1, 2);
 						}
 						MoveToNextX = false;
+						if (startingPoint - offsetRaise < zone.Y) {
+							offsetRaise -= 4;
+						}
 						j = startingPoint - offsetRaise;
 						GenerationHelper.FastPlaceTile(i, j, bundle.outlineTile);
 						continue;
@@ -1213,6 +1241,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 				CurrentPosY = startingPoint - offsetRaise;
 				if (Rand.NextBool(11)) {
+					if (WorldGen.TileEmpty(i, CurrentPosY + 1)) {
+						continue;
+					}
 					WorldGen.GrowTree(i, CurrentPosY);
 				}
 			}
@@ -1248,40 +1279,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_GoldRoom() {
 		Stopwatch watch = new();
 		watch.Start();
-		Rectangle goldRoomSize = new(0, 0, 150, 150);
-		for (int i = 0; i < Main.maxTilesX; i++) {
-			for (int j = 0; j < Main.maxTilesY; j++) {
-				if (i > 100 && i < Main.maxTilesX - 100 && j > 100 && j < Main.maxTilesY - 100) {
-					//This is where we generate our gold room via code
-					if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
-						goldRoomSize.X = i;
-						goldRoomSize.Y = j;
-					}
-					else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
-						goldRoomSize.X = i;
-						goldRoomSize.Y = j;
-					}
-					if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
-						if (goldRoomSize.Contains(i, j)) {
-							if (i == goldRoomSize.Left
-							|| j == goldRoomSize.Top
-							|| i == goldRoomSize.Right - 1
-							|| j == goldRoomSize.Bottom - 1) {
-								GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
-							}
-							else {
-								GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
-							}
-							if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
-								Set_MapIgnoredZoneIntoWorldGen(goldRoomSize);
-								ZoneToBeIgnored.Add(goldRoomSize);
-								goldRoomSize.X = 0;
-								goldRoomSize.Y = 0;
-							}
-						}
-					}
-				}
-			}
+		Point16 GoldRoom = new((int)(Main.maxTilesX * .1f), (int)(Main.maxTilesY * .1f));
+		var data = ModWrapper.Get_StructureData("Assets/GoldRoom", Mod);
+		if (ModWrapper.IsInBound(data, GoldRoom)) {
+			Rectangle rect = new(GoldRoom.X, GoldRoom.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, GoldRoom);
+			ZoneToBeIgnored.Add(rect);
+			Set_MapIgnoredZoneIntoWorldGen(rect);
 		}
 		watch.Stop();
 		Mod.Logger.Info("Gold room step: " + watch.ToString());

@@ -72,6 +72,10 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.shootsEveryUse = true;
 					item.shootSpeed = 17;
 					break;
+				case ItemID.Spear:
+					item.shoot = ModContent.ProjectileType<Roguelike_Spear>();
+					item.useTime = item.useAnimation = 60;
+					break;
 			}
 		}
 		private void UpgradeVariant(Item item) {

@@ -233,7 +233,7 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 			return;
 		}
 		if (ThreadCutter_HitCooldown <= 0) {
-			ThreadCutter_HitCooldown = 60;
+			ThreadCutter_HitCooldown = 30;
 			ThreadCutter_Counter++;
 		}
 		Effect();
@@ -251,7 +251,7 @@ public class AkaiHanbunNoHasami_ModPlayer : ModPlayer {
 			return;
 		}
 		if (ThreadCutter_HitCooldown <= 0) {
-			ThreadCutter_HitCooldown = 60;
+			ThreadCutter_HitCooldown = 30;
 			ThreadCutter_Counter++;
 		}
 		Effect();

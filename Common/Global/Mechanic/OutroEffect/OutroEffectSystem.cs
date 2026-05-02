@@ -99,7 +99,7 @@ using Terraria.WorldBuilding;
 namespace Roguelike.Common.Global.Mechanic.OutroEffect;
 internal class OutroEffectSystem : ModSystem {
 	public static List<OutroEffect> list_effect { get; private set; } = new();
-	public static OutroEffect GetWeaponEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
+	public static OutroEffect GetOutroEffect(int type) => type >= list_effect.Count || type < 0 ? null : list_effect[type];
 	private static HashSet<int>[] Arr_WeaponTag = [];
 	/// <summary>
 	/// It is highly recommanded to use this if you already know what tag you want to check to see if it have the weapon
@@ -157,7 +157,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_ChlorophyteEmpowerment();
 
 		watch.Stop();
-		Mod.Logger.Info("Time taken to initialize tag: " + watch.ToString());
+		Mod.Logger.Info("Time taken to initialize weapon tag: " + watch.ToString());
 	}
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		WeaponType_WeaponTag.Clear();
@@ -1051,11 +1051,11 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyHammer);
 	}
 }
-public class WeaponEffect_ModPlayer : ModPlayer {
+public class OutroEffect_ModPlayer : ModPlayer {
 	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
 	public int OutroEffect_RejuvinatingGlow_Counter = 0;
-	public int[] Arr_WeaponEffect = [];
-	public List<int> Easy_WeaponEffectFollow = new();
+	public int[] Arr_OutroEffect = [];
+	public List<int> Easy_OutroEffectFollow = new();
 	public int IntroEffect_Duration = 0;
 	public int IntroEffect_MaxDuration = 0;
 	public int IntroEffect_ItemType = -1;
@@ -1067,7 +1067,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// <param name="player"></param>
 	/// <returns></returns>
 	public static bool Check_ValidForIntroEffect(Player player) {
-		WeaponEffect_ModPlayer modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		OutroEffect_ModPlayer modplayer = player.GetModPlayer<OutroEffect_ModPlayer>();
 		int introitemType = modplayer.IntroEffect_ItemType;
 		int playerhelditemtype = player.HeldItem.type;
 		return introitemType != playerhelditemtype && modplayer.IntroEffect_Duration <= 0;
@@ -1079,12 +1079,12 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// <param name="itemType"></param>
 	/// <returns></returns>
 	public static bool Check_IntroEffect(Player player, int itemType) {
-		if (player.TryGetModPlayer(out WeaponEffect_ModPlayer modplayer)) {
+		if (player.TryGetModPlayer(out OutroEffect_ModPlayer modplayer)) {
 			return modplayer.IntroEffect_Duration > 0 && modplayer.IntroEffect_ItemType == itemType;
 		}
 		return false;
 	}
-	public static int Get_CurrentIntroEffect(Player player) => player.GetModPlayer<WeaponEffect_ModPlayer>().IntroEffect_ItemType;
+	public static int Get_CurrentIntroEffect(Player player) => player.GetModPlayer<OutroEffect_ModPlayer>().IntroEffect_ItemType;
 	/// <summary>
 	/// This is to set weapon intro ID so that intro system work in a balance way<br/>
 	/// It is highly advises to put this in <see cref="ModItem.HoldItem(Player)"/>
@@ -1093,7 +1093,7 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 	/// <param name="itemType"></param>
 	/// <param name="duration"></param>
 	public static void Set_IntroEffect(Player player, int itemType, int duration) {
-		var modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
+		var modplayer = player.GetModPlayer<OutroEffect_ModPlayer>();
 		if (player.ItemAnimationActive) {
 			modplayer.IntroEffect_ItemType = itemType;
 			modplayer.IntroEffect_Duration = duration;
@@ -1101,31 +1101,31 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		modplayer.IntroEffect_MaxDuration = duration;
 	}
 	public override void Initialize() {
-		Array.Resize(ref Arr_WeaponEffect, OutroEffectSystem.list_effect.Count);
+		Array.Resize(ref Arr_OutroEffect, OutroEffectSystem.list_effect.Count);
 		IntroEffect_ItemType = -1;
 	}
-	public void Add_WeaponEffect() {
-		var ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_Current);
+	public void Add_OutroEffect() {
+		var ef = OutroEffectSystem.GetOutroEffect(OutroEffect_Current);
 		if (ef == null) {
 			return;
 		}
-		Add_WeaponEffect(ef);
+		Add_OutroEffect(ef);
 	}
-	public void Add_WeaponEffect(int type) {
-		var ef = OutroEffectSystem.GetWeaponEffect(type);
+	public void Add_OutroEffect(int type) {
+		var ef = OutroEffectSystem.GetOutroEffect(type);
 		if (ef == null) {
 			return;
 		}
-		Add_WeaponEffect(ef);
+		Add_OutroEffect(ef);
 	}
-	public void Add_WeaponEffect(OutroEffect ef) {
+	public void Add_OutroEffect(OutroEffect ef) {
 		if (OutroEffect_ItemOld == ef.Type) {
 			return;
 		}
 		OutroEffect_ItemOld = ef.Type;
-		Arr_WeaponEffect[ef.Type] = ef.Duration;
-		if (!Easy_WeaponEffectFollow.Contains(ef.Type)) {
-			Easy_WeaponEffectFollow.Add(ef.Type);
+		Arr_OutroEffect[ef.Type] = ef.Duration;
+		if (!Easy_OutroEffectFollow.Contains(ef.Type)) {
+			Easy_OutroEffectFollow.Add(ef.Type);
 			ef.OnAdd(Player);
 		}
 	}
@@ -1139,17 +1139,17 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (--Arr_WeaponEffect[i] <= 0) {
-				var ef2 = OutroEffectSystem.GetWeaponEffect(i);
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (--Arr_OutroEffect[i] <= 0) {
+				var ef2 = OutroEffectSystem.GetOutroEffect(i);
 				if (ef2 != null) {
 					ef2.OnRemove(Player);
 				}
-				Arr_WeaponEffect[i] = 0;
-				Easy_WeaponEffectFollow.Remove(i);
+				Arr_OutroEffect[i] = 0;
+				Easy_OutroEffectFollow.Remove(i);
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1157,11 +1157,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (Arr_OutroEffect[i] <= 0) {
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1169,11 +1169,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponCrit(Item item, ref float crit) {
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (Arr_OutroEffect[i] <= 0) {
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1181,11 +1181,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (Arr_OutroEffect[i] <= 0) {
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1193,11 +1193,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (Arr_OutroEffect[i] <= 0) {
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1208,11 +1208,11 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		if (!proj.Check_ItemTypeSource(Player.HeldItem.type)) {
 			return;
 		}
-		for (int i = 0; i < Arr_WeaponEffect.Length; i++) {
-			if (Arr_WeaponEffect[i] <= 0) {
+		for (int i = 0; i < Arr_OutroEffect.Length; i++) {
+			if (Arr_OutroEffect[i] <= 0) {
 				continue;
 			}
-			var ef = OutroEffectSystem.GetWeaponEffect(i);
+			var ef = OutroEffectSystem.GetOutroEffect(i);
 			if (ef == null) {
 				continue;
 			}
@@ -1220,9 +1220,9 @@ public class WeaponEffect_ModPlayer : ModPlayer {
 		}
 	}
 }
-public class WeaponEffect_GlobalItem : GlobalItem {
+public class OutroEffect_GlobalItem : GlobalItem {
 	public override bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-		if (Main.LocalPlayer.TryGetModPlayer(out WeaponEffect_ModPlayer modplayer)) {
+		if (Main.LocalPlayer.TryGetModPlayer(out OutroEffect_ModPlayer modplayer)) {
 			if (modplayer.IntroEffect_MaxDuration > 0 && modplayer.IntroEffect_ItemType == item.type) {
 				float InvScale = Main.inventoryScale;
 				if (item.TryGetGlobalItem(out GlobalItemHandle handler)) {
@@ -1258,7 +1258,7 @@ public abstract class OutroEffect : ModType {
 	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
 	protected string Tooltip => ModUtils.LocalizationText("Outro", $"{Name}.Tooltip");
 	public virtual string ModifyTooltip() => string.Format(Tooltip, Duration / 60);
-	public static int GetWeaponEffectType<T>() where T : OutroEffect => ModContent.GetInstance<T>().Type;
+	public static int GetOutroEffectType<T>() where T : OutroEffect => ModContent.GetInstance<T>().Type;
 	protected sealed override void Register() {
 		Type = OutroEffectSystem.Register(this);
 		SetStaticDefaults();
@@ -1358,15 +1358,15 @@ public enum WeaponTag : byte {
 	Musical,
 	ReaperMark,
 }
-public class UIImage_WeaponEffectShower : Roguelike_UIImage {
-	public UIImage_WeaponEffectShower() : base(TextureAssets.InventoryBack7) {
+public class UIImage_OutroEffectShower : Roguelike_UIImage {
+	public UIImage_OutroEffectShower() : base(TextureAssets.InventoryBack7) {
 	}
 	int Counter = 0;
 	public override void UpdateImage(GameTime gameTime) {
 		base.UpdateImage(gameTime);
 		var player = Main.LocalPlayer;
-		var modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
-		if (modplayer.Easy_WeaponEffectFollow.Count <= 0) {
+		var modplayer = player.GetModPlayer<OutroEffect_ModPlayer>();
+		if (modplayer.Easy_OutroEffectFollow.Count <= 0) {
 			Counter = ModUtils.CountDown(Counter);
 		}
 		else {
@@ -1380,14 +1380,14 @@ public class UIImage_WeaponEffectShower : Roguelike_UIImage {
 		if (Counter > 0 && IsMouseHovering) {
 			string textEf = "";
 			var player = Main.LocalPlayer;
-			var modplayer = player.GetModPlayer<WeaponEffect_ModPlayer>();
-			for (int i = 0; i < modplayer.Easy_WeaponEffectFollow.Count; i++) {
-				var eff = OutroEffectSystem.GetWeaponEffect(modplayer.Easy_WeaponEffectFollow[i]);
-				if (i == modplayer.Easy_WeaponEffectFollow.Count - 1) {
-					textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n{eff.Description}";
+			var modplayer = player.GetModPlayer<OutroEffect_ModPlayer>();
+			for (int i = 0; i < modplayer.Easy_OutroEffectFollow.Count; i++) {
+				var eff = OutroEffectSystem.GetOutroEffect(modplayer.Easy_OutroEffectFollow[i]);
+				if (i == modplayer.Easy_OutroEffectFollow.Count - 1) {
+					textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_OutroEffect[modplayer.Easy_OutroEffectFollow[i]] / 60}] \n{eff.Description}";
 					continue;
 				}
-				textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_WeaponEffect[modplayer.Easy_WeaponEffectFollow[i]] / 60}] \n{eff.Description} \n";
+				textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_OutroEffect[modplayer.Easy_OutroEffectFollow[i]] / 60}] \n{eff.Description} \n";
 			}
 			UICommon.TooltipMouseText(textEf);
 		}

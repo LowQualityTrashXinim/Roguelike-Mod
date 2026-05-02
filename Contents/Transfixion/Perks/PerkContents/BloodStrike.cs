@@ -18,6 +18,9 @@ public class BloodStrike : Perk {
 		if (item.IsAWeapon() && player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
 			int damage = (int)Math.Round(player.GetWeaponDamage(player.HeldItem) * .05f);
 			player.statLife = Math.Clamp(player.statLife - damage, 1, player.statLifeMax2);
+			if (damage <= 0) {
+				return;
+			}
 			ModUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10, 40), 15);
 		}
 	}

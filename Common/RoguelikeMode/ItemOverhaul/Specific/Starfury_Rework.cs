@@ -42,7 +42,7 @@ public class Roguelike_Starfury : GlobalItem {
 		player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter = -player.itemAnimationMax;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			for (int i = 0; i < 3; i++) {
 				Vector2 pos = position.Add(0, 700) + Main.rand.NextVector2Circular(400, 200);
 				Projectile proj = Projectile.NewProjectileDirect(source, pos, (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(12, 15), ProjectileID.Starfury, damage, knockback, player.whoAmI);
@@ -53,8 +53,8 @@ public class Roguelike_Starfury : GlobalItem {
 		return true;
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(4));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(4));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter / 300f;

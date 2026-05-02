@@ -26,6 +26,7 @@ internal class StardustSymphony : SynergyModItem {
 		Item.mana = 10;
 		Item.noUseGraphic = true;
 		Item.noMelee = true;
+		Item.Set_InfoItem();
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public int Counter = 0;
@@ -72,7 +73,7 @@ internal class StardustSymphony : SynergyModItem {
 						dust.color = Color.Cyan;
 						dust.noGravity = true;
 					}
-					player.AddBuff<StardustSymphony_Buff>(ModUtils.ToSecond(40));
+					player.AddBuff<StardustSymphony_Buff>(ModUtils.ToSecond(20));
 					UseCounter = 0;
 				}
 			}
@@ -101,7 +102,7 @@ internal class StardustSymphony : SynergyModItem {
 			if (player.GetModPlayer<StardustSymphony_ModPlayer>().AttackCoolDown <= 0) {
 				player.GetModPlayer<StardustSymphony_ModPlayer>().AttackCoolDown = ModUtils.ToSecond(10);
 				for (int i = 0; i < 6; i++) {
-					Projectile.NewProjectile(source, Main.MouseWorld + Vector2.One.Vector2DistributeEvenlyPlus(6, 360, i) * 300, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_SmallStarProjectile>(), damage, knockback, player.whoAmI, 0, 300, MathHelper.ToRadians(360 * i / 5f));
+					Projectile.NewProjectile(source, Main.MouseWorld + Vector2.One.Vector2DistributeEvenlyPlus(6, 360, i) * 300, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_SmallStarProjectile>(), damage, knockback, player.whoAmI, 0, 300, MathHelper.ToRadians(360 * i / 6f));
 				}
 				Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, ModContent.ProjectileType<StardustSymphony_SmallStarProjectile_Ghost>(), damage / 10, 0, player.whoAmI, 60);
 			}
@@ -110,7 +111,7 @@ internal class StardustSymphony : SynergyModItem {
 				Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(50, 50), velocity, type, damage, knockback, player.whoAmI);
 			}
 			Counter++;
-			if(!player.GetModPlayer<StardustSymphony_ModPlayer>().BuffActive) {
+			if (!player.GetModPlayer<StardustSymphony_ModPlayer>().BuffActive) {
 				UseCounter++;
 			}
 		}
@@ -862,13 +863,15 @@ public class StardustSymphony_SmallStarProjectile_Ghost : ModProjectile {
 	}
 	public override void AI() {
 		Projectile.ai[1]--;
-		Dust dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, ModContent.DustType<StardustSymphony_DustStar_AI2>());
-		dust.scale = .1f;
-		dust.velocity.X = Projectile.ai[1];
-		dust.velocity.Y = Main.rand.NextFloat(0, 360);
-		dust.color = Color.Cyan;
-		dust.noGravity = true;
-		dust.customData = this;
+		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, ModContent.DustType<StardustSymphony_DustStar_AI2>());
+			dust.scale = .1f;
+			dust.velocity.X = Projectile.ai[1];
+			dust.velocity.Y = Main.rand.NextFloat(0, 360);
+			dust.color = Color.Cyan;
+			dust.noGravity = true;
+			dust.customData = this;
+		}
 
 		if (--Projectile.ai[0] > 0) {
 			return;

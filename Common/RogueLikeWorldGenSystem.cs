@@ -330,8 +330,10 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				strbld.AppendLine(filenamepath);
 				strbld.Remove(0, FileDestination.Length);
 				fileName = strbld.ToString();
-				strbld.Remove(fileName.Length - 6, 6);
+				fileName = fileName.Trim();
+				strbld.Remove(fileName.Length - 4, 4);
 				fileName = strbld.ToString();
+				fileName = fileName.Trim();
 				strbld.Clear();
 				using (Stream filepath = Mod.GetFileStream(filenamepath)) {
 					int currentchar = 0;
@@ -485,7 +487,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 					continue;
 				}
 				//This mean there are multiple of said tile above
-				//Which mean we should just create a new tile datat and then set count to it after we retrieve all the needed amount
+				//Which mean we should just create a new tile data and then set count to it after we retrieve all the needed amount
 				else {
 					tile = new(strbld.ToString());
 					strbld.Clear();

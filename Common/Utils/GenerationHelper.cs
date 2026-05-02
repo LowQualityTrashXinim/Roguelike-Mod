@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Terraria;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
 namespace Roguelike.Common.Utils;
 

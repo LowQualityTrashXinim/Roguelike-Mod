@@ -29,8 +29,8 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 		entity.Set_ItemOutroEffect<OutroEffect_Sword>();
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(6));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(6));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter / 150f;
@@ -41,7 +41,7 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_PhoenixBlaster", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, damage, knockback, player.whoAmI);
 		}
 		int Counter = player.GetModPlayer<Roguelike_PhoenixBlaster_ModPlayer>().PhoenixBlaster_Counter;

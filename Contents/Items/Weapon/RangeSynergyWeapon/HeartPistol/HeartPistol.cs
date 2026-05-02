@@ -30,8 +30,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		int counter = 0, spreadDifferent = 0;
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-				WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
+			if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+				OutroEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
 			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -56,7 +56,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			SoundEngine.PlaySound(Item.UseSound, player.Center);
-			bool check = WeaponEffect_ModPlayer.Check_IntroEffect(player, Type);
+			bool check = OutroEffect_ModPlayer.Check_IntroEffect(player, Type);
 			if (counter >= 5) {
 				int proj = Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartP>(), damage * 2, knockback, player.whoAmI);
 				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Musket)) {

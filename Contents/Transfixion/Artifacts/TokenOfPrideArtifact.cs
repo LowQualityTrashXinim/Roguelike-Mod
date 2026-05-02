@@ -74,26 +74,16 @@ TokenOfPride_Upgrade2: {
 	}
 	public class PridefulPossession : Perk {
 		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 3;
-		}
-		public override bool SelectChoosing() {
-			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
+			CanBeStack = false;
 		}
 		public override void UpdateEquip(Player player) {
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: player.GetModPlayer<AugmentsPlayer>().valid * StackAmount(player));
-		}
-		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				int power = globalitem.GetValidNumberOfEnchantment();
-				damage += power * .1f * StackAmount(player);
-			}
-		}
-		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				int power = globalitem.GetValidNumberOfEnchantment();
-				crit += power * StackAmount(player);
-			}
+			int count = player.GetModPlayer<PerkPlayer>().perks.Keys.Count;
+			PlayerStatsHandle handler = player.ModPlayerStats();
+			handler.UpdateDefenseBase += count * .05f;
+			handler.UpdateCritDamage += count * .25f;
+			handler.UpdateHPMax += count * .02f;
+			player.GetCritChance(DamageClass.Generic) +=  count * 5;
+			player.GetDamage(DamageClass.Generic) += count * .1f;
 		}
 	}
 }

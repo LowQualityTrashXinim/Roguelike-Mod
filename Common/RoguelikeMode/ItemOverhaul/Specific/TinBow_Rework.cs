@@ -29,8 +29,8 @@ public class Roguelike_TinBow : GlobalItem {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_TinBow", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(4));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(4));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter / 240f;
@@ -40,7 +40,7 @@ public class Roguelike_TinBow : GlobalItem {
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int counter = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter;
 		player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter = -player.itemAnimationMax;
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			Vector2 vel = velocity.SafeNormalize(Vector2.Zero) * 2.5f;
 			int amount = Main.rand.Next(1, 4);
 			for (int i = 0; i < amount; i++) {

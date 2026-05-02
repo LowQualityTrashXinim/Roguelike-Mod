@@ -6,7 +6,6 @@ using Roguelike.Common.Systems;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
-using Roguelike.Common.Mode.BossRushMode;
 
 namespace Roguelike.Common.General {
 	public class IsInBossRushMode : IItemDropRuleCondition {
@@ -72,7 +71,10 @@ namespace Roguelike.Common.General {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1
-					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5;
+					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 3
+					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5
+					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 8
+					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 10;
 			}
 			return false;
 		}

@@ -34,14 +34,14 @@ public class Roguelike_CobaltSword : GlobalItem {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, $"RoguelikeOverhaul_{item.Name}", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(3));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(3));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter / 300f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100), velocity, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 15, 15);
 			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;

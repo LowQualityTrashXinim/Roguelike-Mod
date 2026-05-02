@@ -58,9 +58,11 @@ TokenOfGreedArtifact: {
 		"Satisfied by just having, caring not for weapon quality."
 		[c/ffff00:Positive effect] : 
 			+ Increase amount of drop by 1 and drop chance by 35%
+			+ You shoot all weapons in your hotbar.
+			+ Your melee hit activate all melee weapon in your hotbar.
 		[c/ab3e43:Negative effect] : 
 			- Decreases transmutation charged value by 60%.
-			- Multiply weapon damage by 0.85x and weapon crit chance by 0.5x
+			- Multiply weapon damage by 0.1x
 		'''
 }
 

@@ -67,8 +67,7 @@ public class SimplePiercingProjectile : ModProjectile {
 /// <summary>
 /// Ai0 : shoot velocity<br/>
 /// Ai1 : time left of a AI, recommend setting it above 0<br/>
-/// Ai2 : Re-adjust scaleX of the projectile
-/// Ai2 new : Delay before the slash appear
+/// Ai2 : Delay before the slash appear
 /// </summary>
 public class SimplePiercingProjectile2 : ModProjectile {
 	public Color ProjectileColor = Color.White;
@@ -80,6 +79,7 @@ public class SimplePiercingProjectile2 : ModProjectile {
 	public int TimeBeforeActive = 0;
 	Vector2 CenterBefore = Vector2.Zero;
 	float OffSetFromPlayer = 0;
+	Vector2 PlayerCenterOrigin = Vector2.Zero;
 	public bool FollowPlayer = false;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 36;
@@ -103,6 +103,7 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		Projectile.timeLeft = (int)(Projectile.ai[1] + TimeBeforeActive);
 		CenterBefore = Projectile.Center;
 		OffSetFromPlayer = (CenterBefore - Main.player[Projectile.owner].Center).Length();
+		PlayerCenterOrigin = Main.player[Projectile.owner].Center;
 	}
 	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		if (Projectile.ai[2] >= 0) {
@@ -122,7 +123,8 @@ public class SimplePiercingProjectile2 : ModProjectile {
 			return;
 		}
 		if (FollowPlayer) {
-			Projectile.Center = Main.player[Projectile.owner].Center.PositionOFFSET(Projectile.velocity, OffSetFromPlayer);
+			Player player = Main.player[Projectile.owner];
+			Projectile.Center = player.Center.PositionOFFSET(Projectile.velocity, OffSetFromPlayer) + CenterBefore - PlayerCenterOrigin;
 			OffSetFromPlayer += Projectile.velocity.Length();
 		}
 		float timeleft = Projectile.Get_ProjectileTimeInitial() - TimeBeforeActive;

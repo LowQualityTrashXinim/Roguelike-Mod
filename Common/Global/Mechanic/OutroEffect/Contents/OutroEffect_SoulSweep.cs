@@ -1,5 +1,4 @@
-﻿using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Utils;
 using Terraria;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;

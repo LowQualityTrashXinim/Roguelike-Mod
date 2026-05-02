@@ -69,6 +69,10 @@ internal class LootBoxLord : ModNPC {
 			new FlavorTextBestiaryInfoElement(ModUtils.LocalizationText("Bestiary",$"{Name}")),
 			]);
 	}
+	public bool CanDealContactDamage = false;
+	public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+		return CanDealContactDamage;
+	}
 	public override void ModifyNPCLoot(NPCLoot npcLoot) {
 		for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
 			npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreBoss[i], 10));
@@ -494,7 +498,7 @@ internal class LootBoxLord : ModNPC {
 	}
 	int lifeCounter = 0;
 	public override void PostAI() {
-		if(dialogNumber <= 3) {
+		if (dialogNumber <= 3) {
 			return;
 		}
 		var player = Main.player[NPC.target];
@@ -536,25 +540,46 @@ internal class LootBoxLord : ModNPC {
 	#region
 	private void DashAttack(Player player) {
 		if (AttackCounter >= 5) {
+			CanDealContactDamage = false;
 			Reset(CurrentAttack + 1, 90);
 			CanSlowDown = true;
 			return;
 		}
+		CanDealContactDamage = true;
+		Vector2 dis = (player.Center - NPC.Center);
+		if (AttackTimer == 0 && AttackCounter == 0 || AttackTimer == 25) {
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White, 30, 12, 0, 10);
+			if (AttackTimer == 0 && AttackCounter == 0) {
+				UniversalAttackCoolDown = 25; AttackTimer = -1;
+				return;
+			}
+		}
 		if (--AttackTimer > 0) {
-			NPC.velocity *= .9f;
+			NPC.velocity += -dis.SafeNormalize(Vector2.Zero) * .2f;
 			return;
 		}
 		if (--DashAttackTime > 0) {
+			for (int i = 0; i < 3; i++) {
+				Dust dust = Dust.NewDustDirect(NPC.Center, 0, 0, DustID.AmberBolt);
+				dust.velocity = NPC.velocity * .1f;
+				dust.position += Main.rand.NextVector2Circular(30, 30);
+				dust.noGravity = true;
+				dust.scale = Main.rand.NextFloat(.8f, 1.3f);
+				dust.fadeIn = 1;
+			}
 			if (!DashAttackCheck) {
 				DashAttackCheck = true;
-				Vector2 dis = (player.Center - NPC.Center);
-				NPC.velocity = dis.SafeNormalize(Vector2.Zero) * (35 + dis.Length() / 32f);
+				NPC.velocity = dis.SafeNormalize(Vector2.Zero) * (10 + dis.Length() / 8f);
+			}
+			else {
+				NPC.velocity *= .9f;
 			}
 			return;
 		}
 		else {
+			NPC.velocity = Vector2.Zero;
 			AttackTimer = 25;
-			DashAttackTime = 14;
+			DashAttackTime = 35;
 			DashAttackCheck = false;
 		}
 		AttackCounter++;
@@ -1082,7 +1107,7 @@ internal class LootBoxLord : ModNPC {
 	}
 	#endregion
 	public void Reset(float nextAttack, int cooldown) {
-		CurrentAttack = nextAttack;
+		CurrentAttack = 16;
 		AttackCounter = 0;
 		AttackTimer = 0;
 		UniversalAttackCoolDown = cooldown;
@@ -1133,6 +1158,12 @@ internal class LootBoxLord : ModNPC {
 			}
 		}
 		else {
+			if (CanDealContactDamage) {
+				for (int i = 0; i < 4; i++) {
+					spriteBatch.Draw(texture, NPC.position - screenPos + Vector2.One.RotatedBy(MathHelper.PiOver2 * i) * 4, Color.Red with { A = 0 });
+					spriteBatch.Draw(texture, NPC.position - screenPos + Vector2.One.RotatedBy(MathHelper.PiOver2 * i) * 4, Color.Red with { A = 0 });
+				}
+			}
 			spriteBatch.Draw(texture, NPC.position - screenPos, drawColor);
 		}
 		//For drawing glow
@@ -1191,7 +1222,7 @@ internal class LootBoxLord : ModNPC {
 	}
 	public override void OnKill() {
 		if (Enraged) {
-			Main.NewText("I have failed my promise to you ...");
+			Main.NewText("You broken the promise ...");
 		}
 		else {
 			Main.NewText("You have passed, I will look forward to our next dual");
@@ -1288,44 +1319,65 @@ public class LootboxLord_Clone : ModNPC {
 	}
 	private void DashAttack(Player player) {
 		if (AttackCounter >= 3) {
-			CanSlowDown = true;
-			if (index == 1) {
-				if (!Teleport(player.Center + LootBoxLord.Pos2)) {
-					return;
-				}
-			}
-			else if (index == 2) {
-				if (!Teleport(player.Center + LootBoxLord.Pos3)) {
-					return;
-				}
-			}
-			else if (index == 3) {
-				if (!Teleport(player.Center + LootBoxLord.Pos2 * 2)) {
-					return;
-				}
-			}
-			else if (index == 4) {
-				if (!Teleport(player.Center + LootBoxLord.Pos3 * 2)) {
-					return;
-				}
+			switch (index) {
+				case 1:
+					if (!Teleport(player.Center + LootBoxLord.Pos2)) {
+						return;
+					}
+					break;
+				case 2:
+					if (!Teleport(player.Center + LootBoxLord.Pos3)) {
+						return;
+					}
+					break;
+				case 3:
+					if (!Teleport(player.Center + LootBoxLord.Pos2 * 2)) {
+						return;
+					}
+					break;
+				case 4:
+					if (!Teleport(player.Center + LootBoxLord.Pos3 * 2)) {
+						return;
+					}
+					break;
 			}
 			Reset(Main.rand.Next(2, 6), 90);
+			CanSlowDown = true;
 			return;
 		}
+		Vector2 dis = (player.Center - NPC.Center);
+		if (AttackTimer == 0 && AttackCounter == 0 || AttackTimer == 25) {
+			ModUtils.DustStar(NPC.Center, DustID.GemRuby, Color.White);
+			if (AttackTimer == 0 && AttackCounter == 0) {
+				UniversalAttackCoolDown = 25; AttackTimer = -1;
+				return;
+			}
+		}
 		if (--AttackTimer > 0) {
-			NPC.velocity *= .9f;
+			NPC.velocity += -dis.SafeNormalize(Vector2.Zero) * .2f;
 			return;
 		}
 		if (--DashAttackTime > 0) {
+			for (int i = 0; i < 3; i++) {
+				Dust dust = Dust.NewDustDirect(NPC.Center, 0, 0, DustID.AmberBolt);
+				dust.velocity = NPC.velocity * .1f;
+				dust.position += Main.rand.NextVector2Circular(30, 30);
+				dust.noGravity = true;
+				dust.scale = Main.rand.NextFloat(.8f, 1.3f);
+			}
 			if (!DashAttackCheck) {
 				DashAttackCheck = true;
-				NPC.velocity = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 25;
+				NPC.velocity = dis.SafeNormalize(Vector2.Zero) * (10 + dis.Length() / 8f);
+			}
+			else {
+				NPC.velocity *= .9f;
 			}
 			return;
 		}
 		else {
-			AttackTimer = 20;
-			DashAttackTime = 14;
+			NPC.velocity = Vector2.Zero;
+			AttackTimer = 25;
+			DashAttackTime = 35;
 			DashAttackCheck = false;
 		}
 		AttackCounter++;

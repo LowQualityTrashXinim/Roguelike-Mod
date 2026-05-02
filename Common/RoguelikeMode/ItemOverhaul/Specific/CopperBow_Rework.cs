@@ -42,7 +42,7 @@ public class Roguelike_CopperBow : GlobalItem {
 				projectile.alpha -= 1020;
 			}
 		}
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			for (int i = 0; i < 2; i++) {
 				projectile = Projectile.NewProjectileDirect(source, position, velocity.Vector2DistributeEvenlyPlus(2, 20, i), ProjectileID.ThunderSpearShot, (int)(damage * 1.25f), knockback, player.whoAmI);
 				projectile.DamageType = DamageClass.Ranged;
@@ -58,8 +58,8 @@ public class Roguelike_CopperBow : GlobalItem {
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_CopperBow_ModPlayer>().CopperBow_Counter / 150f;

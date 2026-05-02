@@ -521,6 +521,7 @@ Mods: {
 			StardustSymphony_StarProjectile_Visual2.DisplayName: Stardust Symphony_ Star Projectile_ Visual2
 			Roguelike_ShrimpPoBoy_ModProjectile.DisplayName: Roguelike_ Shrimp Po Boy_ Mod Projectile
 			Roguelike_Milkshake_ModProjectile.DisplayName: Roguelike_ Milkshake_ Mod Projectile
+			Roguelike_Spear.DisplayName: Roguelike_ Spear
 		}
 
 		NPCs: {
@@ -2802,15 +2803,18 @@ Mods: {
 				DisplayName: Stardust Symphony
 				Tooltip:
 					'''
+					"I am always with you so that you are never alone"
 					Summon star at where the cursor at
-					Summon a stardust vortex that deal damage and pull enemy toward center ( CD: 10s )
-					Every 15th attacks, summon star off screen that fly to your cursor and explode
-					Right click will summon 10 star around you and heal you for 100 hp ( CD: 15s )
-					Each attack hit will heal you
-					After attacking 30 times, right clicking again will summon a Stardust Array
+					Alt attack will summon 10 star around you and heal you for 100 hp (CD: 15s)
+					After attacking 30 times, Alt attack will summon a Stardust Array
 					'''
 				ExtraInfo:
 					'''
+					Each attack hit will heal you
+
+					Every 15th attacks, summon star off screen that fly to your cursor and explode
+					Summon a stardust vortex that deal damage and pull enemy toward center (CD: 10s)
+
 					During Stardust Array active: 
 					Increases 15% crit chance and 45% crit damage
 					Player are heal 34 + 5% HP and 45 + 5% Mana

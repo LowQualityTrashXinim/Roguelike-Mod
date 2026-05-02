@@ -264,7 +264,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public override void SetDefaults(Item entity) {
 			if (OutroEffect_type == -1) {
-				OutroEffect_type = OutroEffect.GetWeaponEffectType<OutroEffect_None>();
+				OutroEffect_type = OutroEffect.GetOutroEffectType<OutroEffect_None>();
 			}
 			if (CheckVariant()) {
 				var variant = WorldVaultSystem.GetVariant(VariantType);
@@ -361,8 +361,8 @@ namespace Roguelike.Contents.Items.Weapon {
 							string value = "This weapon is classified as following: \n";
 							value += ModContent.GetInstance<OutroEffectSystem>().GetWeaponTag(item.type);
 							if (OutroEffect_type != -1) {
-								OutroEffect ef = OutroEffectSystem.GetWeaponEffect(OutroEffect_type);
-								if (ef != null && ef.Type != OutroEffect.GetWeaponEffectType<OutroEffect_None>()) {
+								OutroEffect ef = OutroEffectSystem.GetOutroEffect(OutroEffect_type);
+								if (ef != null && ef.Type != OutroEffect.GetOutroEffectType<OutroEffect_None>()) {
 									value += $"\nOutro effect: \n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
 								}
 							}

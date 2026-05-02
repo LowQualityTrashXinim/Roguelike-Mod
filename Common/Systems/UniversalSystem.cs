@@ -542,7 +542,7 @@ public class DefaultUI : UIState {
 	private UITextBox totalHitTaken;
 	private UITextBox dmgTaken;
 
-	UIImage_WeaponEffectShower WeaponEff;
+	UIImage_OutroEffectShower WeaponEff;
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		endofdemo_Main.Remove();
 		EndOfDemoPanel.Remove();

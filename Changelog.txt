@@ -632,3 +632,11 @@ Flaming Wood Sword:
 566/ Updated Berserk augmentation.
 567/ Updated SilverBroadSword enchantment, BorealWoodSword, ShadewoodSword, RichMahoganySword, IceBlade, ZombieArm and BoneSword
 568/ Localization updated.
+569/ Fixed Template Structure Loader that unable to load due to Linux stringbuilder work differently.
+570/ Deerclop drop demon heart in boss rush mode.
+571/ Increases amount of perk is dropped during a run.
+572/ Updated Lootbox Lord dash attack.
+573/ Updated Mark of Wizard to be better.
+574/ Updated Stardust Symphoney tooltip.
+575/ Rework Token of Greed.
+576/ Refactor class name to make it more clear on what its intention is.

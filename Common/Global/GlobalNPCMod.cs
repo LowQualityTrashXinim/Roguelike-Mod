@@ -9,7 +9,6 @@ using Roguelike.Common.General;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Consumable;
-using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Lootbox;
@@ -87,11 +86,13 @@ namespace Roguelike.Common.Global {
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.Deerclops) {
+				var expert = new LeadingConditionRule(new Conditions.IsExpert());
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopDonHitReward>()));
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
+				expert.OnSuccess(ItemDropRule.ByCondition(new IsInBossRushMode(), ItemID.DemonHeart));
 			}
 			else if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop

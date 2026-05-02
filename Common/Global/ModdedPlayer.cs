@@ -28,6 +28,7 @@ using Roguelike.Contents.Items.Toggle.Transmutation;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

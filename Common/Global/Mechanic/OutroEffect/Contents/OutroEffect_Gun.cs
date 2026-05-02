@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Global.Mechanic.OutroEffect;
 
 namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 internal class OutroEffect_Gun : OutroEffect {

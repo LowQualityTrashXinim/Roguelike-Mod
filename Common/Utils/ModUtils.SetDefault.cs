@@ -149,7 +149,7 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 		public static void Set_ItemOutroEffect<T>(this Item item) where T : OutroEffect {
-			item.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = OutroEffect.GetWeaponEffectType<T>();
+			item.GetGlobalItem<GlobalItemHandle>().OutroEffect_type = OutroEffect.GetOutroEffectType<T>();
 		}
 		/// <summary>
 		/// This will work for most vanilla accessory, however item effect such as follow will not work :<br/>

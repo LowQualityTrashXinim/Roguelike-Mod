@@ -41,8 +41,8 @@ internal class Roguelike_VenusMagnum : GlobalItem {
 		}
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_VenusMagnum_ModPlayer>().VenusMagnum_Counter / 300f;
@@ -64,7 +64,7 @@ internal class Roguelike_VenusMagnum : GlobalItem {
 				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.56f, 1f), ProjectileID.SporeCloud, (int)(damage * .43f) + 10, knockback, player.whoAmI);
 			}
 		}
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.56f, 1f), ProjectileID.ChlorophyteBullet, (int)(damage * .33f) + 10, knockback, player.whoAmI);
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.56f, 1f), ProjectileID.SporeCloud, (int)(damage * .43f) + 10, knockback, player.whoAmI);
 		}

@@ -189,7 +189,7 @@ public class HeartBreakInstrument : SynergyModItem {
 			}
 			for (int i = 0; i < amount; i++) {
 				Vector2 post = pos.PositionOFFSET(velocity, Main.rand.Next(0, 75)) + Main.rand.NextVector2Circular(20, 20);
-				projectile = Projectile.NewProjectileDirect(source, post, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI, 20, 15, i * 4);
+				projectile = Projectile.NewProjectileDirect(source, post, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI, 10, 6, i * 4);
 				if (projectile.ModProjectile is HeartBreakInstrument_Slash_Projectile proj) {
 					proj.ScaleX = 5f;
 					if (ClimaxOfTragedy) {
@@ -201,7 +201,7 @@ public class HeartBreakInstrument : SynergyModItem {
 				}
 				if (ClimaxOfTragedy) {
 					post = pos.PositionOFFSET(velocity, Main.rand.Next(0, 75)) + Main.rand.NextVector2Circular(50, 50);
-					projectile = Projectile.NewProjectileDirect(source, post, velocity.Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI, 20, 15, i * 4);
+					projectile = Projectile.NewProjectileDirect(source, post, velocity.Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI, 20, 6, i * 4);
 					if (projectile.ModProjectile is HeartBreakInstrument_Slash_Projectile proj3) {
 						proj3.ScaleX = 7f;
 						proj3.ScaleY = .5f;
@@ -301,8 +301,8 @@ public class HeartBreakInstrument : SynergyModItem {
 	int Projectile_WhoAmI = -1;
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		var musicPlayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, 1);
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, Type, 1);
 			musicPlayer.IntroEffectActivate = true;
 		}
 		if (player.ItemAnimationActive) {
@@ -1221,6 +1221,7 @@ public class HeartBreakInstrument_Slash_Projectile : ModProjectile {
 	Vector2 CenterBefore = Vector2.Zero;
 	float OffSetFromPlayer = 0;
 	public bool FollowPlayer = false;
+	Vector2 PlayerCenterOrigin = Vector2.Zero;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 36;
 		Projectile.penetrate = -1;
@@ -1243,6 +1244,7 @@ public class HeartBreakInstrument_Slash_Projectile : ModProjectile {
 		Projectile.timeLeft = (int)(Projectile.ai[1] + TimeBeforeActive);
 		CenterBefore = Projectile.Center;
 		OffSetFromPlayer = (CenterBefore - Main.player[Projectile.owner].Center).Length();
+		PlayerCenterOrigin = Main.player[Projectile.owner].Center;
 	}
 	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		if (Projectile.ai[2] >= 0) {
@@ -1265,7 +1267,8 @@ public class HeartBreakInstrument_Slash_Projectile : ModProjectile {
 			return;
 		}
 		if (FollowPlayer) {
-			Projectile.Center = Main.player[Projectile.owner].Center.PositionOFFSET(Projectile.velocity, OffSetFromPlayer);
+			Player player = Main.player[Projectile.owner];
+			Projectile.Center = player.Center.PositionOFFSET(Projectile.velocity, OffSetFromPlayer) + CenterBefore - PlayerCenterOrigin;
 			OffSetFromPlayer += Projectile.velocity.Length();
 		}
 		float timeleft = Projectile.Get_ProjectileTimeInitial() - TimeBeforeActive;

@@ -56,7 +56,7 @@ MarkOfWizard: {
 	Description:
 		'''
 		"What in the sage did you do ?"
-		+ When a enemy is detected nearby, shoots assortment of spell every 1s
+		+ When a enemy is detected nearby, shoots assortment of spells every 0.25s
 		+ You take 10% less damage from projectile ( only applied once )
 		Spells deal 31 + 42% weapon damage
 		'''
@@ -555,8 +555,12 @@ PridefulPossession: {
 	DisplayName: Prideful Possession
 	Description:
 		'''
-		+ Increases your defense per augmentation you have
-		+ For each enchantment, increases your weapon critical strike chance by 1, weapon damage by 10%
+		For each perk you have : 
+		+ Damage by 10%
+		+ Critical damage by 25%
+		+ Critical strike chance by 5
+		+ Defenses by 5%
+		+ Maximum health by 2%
 		'''
 }
 

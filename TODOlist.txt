@@ -4,15 +4,16 @@ Implementation TODO:
 >> Ocean
 >> Space
 - Each biome need to have their respective NPC spawn pool.
+
 - Add in NPC shop change
 >> Merchant: Focus on general weapon and general material goods.
 >> Mechanic: Focus on mechanic weapon and wires goods.
 >> Dryad: Focus on nature weapon and natural goods.
 >> Arm dealer: Focus on guns and bullets goods.
+
 - Each biome be it big or small should have its own dedicate biome exclusive structure.
 - Add in 1 time mod object text for each possible guide-interaction that may happen in the world.
-- Work on a custom faster underworld generation ( should copy from vanilla code and apply self patch for fast gen time )
-- Boss will have their own dedicated spawning location
+- Boss will have their own dedicated spawning location ( due to the need to test, this will be put on hold )
 >> King Slime : slime biome
 >> EoC : Using sus eyes will drop player sanity which attract EoC
 >> EoW : 3 shadows orb scatter around Corruption
@@ -34,7 +35,7 @@ Implementation TODO:
 
 4/ Refactor User info tablet 
 
-5/ Rework rarity system and tranmutation system.
+5/ Rework rarity system and tranmutation system. (put on hold due to different in idea )
 Transumtation changes:
 - Equivalent exchange now changes to Transmute mode.
 >> Work the exact same but instead you can transmute anything to everything.
@@ -63,15 +64,6 @@ During Trauma shock, if NPC is being attacked, they will intake damage pernamenn
 - Fury Emblem ( artifact )
 Solution 1 : Buff the artifact in such a way that it change how player play the game
 Solution 2 : Move it to perk.
-- Nature of Evil and Good ( relic set )
-Solution 1 : Buff the effect.
-Solution 2 : Nerf the requirement to only require 3 instead.
-- Titanic Blood ( relic set )
-Solution 1 : Buff the effect.
-Solution 2 : Nerf the requirement to only require 3 instead.
-- Universal Gemstone ( relic set )
-Solution 1 : Buff the effect.
-Solution 2 : Nerf the requirement to only require 3 instead.
 - Perk Prideful Poessesion.
 
 8/ Work on level item system ( not actual leveling system ).
@@ -98,6 +90,8 @@ Content:
 > Held a weapon that deal 9999
 - Infinite +1
 > Deal so much damage that the dps meter overflow to negative
+- Completionist
+> Uses every weapon available in the mod and win a run using it.
 
 11/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
 - The mod should remember what Synergy weapon player has ever used.
@@ -248,6 +242,8 @@ Misc changes:
 - Remove Protective Onslaught and move it to different system.
 
 25/ Make demon heart obtainable in boss rush mode.
+
+26/ Make the ultimate player handler.
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

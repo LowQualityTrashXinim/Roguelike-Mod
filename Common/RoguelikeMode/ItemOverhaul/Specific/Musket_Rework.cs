@@ -28,8 +28,8 @@ public class Roguelike_Musket : GlobalItem {
 		progress.Charge = true;
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(3));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(3));
 		}
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_Musket_ModPlayer>().Timer / 180f;
@@ -37,7 +37,7 @@ public class Roguelike_Musket : GlobalItem {
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = Color.Gray;
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		if (WeaponEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			if (type == ProjectileID.Bullet) {
 				type = ProjectileID.BulletHighVelocity;
 			}

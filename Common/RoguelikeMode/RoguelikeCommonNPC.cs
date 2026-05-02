@@ -64,10 +64,10 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 	}
 	public override void ResetEffects(NPC npc) {
-		var player = Main.player[npc.target];
-		if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
-			npc.timeLeft = 600;
-		}
+		//var player = Main.player[npc.target];
+		//if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
+		//	npc.timeLeft = 600;
+		//}
 	}
 	public float GetValueMulti(float scale = 1) {
 		float extraMultiply = 0;

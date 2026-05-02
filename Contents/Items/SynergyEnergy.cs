@@ -53,7 +53,7 @@ namespace Roguelike.Contents.Items {
 					ItemTypeCurrent = item.type;
 					if (itemOld != null) {
 						if (itemOld.TryGetGlobalItem(out GlobalItemHandle handler)) {
-							Player.GetModPlayer<WeaponEffect_ModPlayer>().Add_WeaponEffect(handler.OutroEffect_type);
+							Player.GetModPlayer<OutroEffect_ModPlayer>().Add_OutroEffect(handler.OutroEffect_type);
 						}
 					}
 					itemOld = item;

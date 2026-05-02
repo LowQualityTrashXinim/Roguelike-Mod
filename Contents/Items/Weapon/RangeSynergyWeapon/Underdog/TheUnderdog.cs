@@ -27,8 +27,8 @@ class TheUnderdog : SynergyModItem {
 			statplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 10);
 			statplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.25f);
 		}
-		if (WeaponEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
-			WeaponEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, Type, ModUtils.ToSecond(9));
 		}
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
@@ -46,7 +46,7 @@ class TheUnderdog : SynergyModItem {
 			counter = 0;
 		}
 		else {
-			bool check = WeaponEffect_ModPlayer.Check_IntroEffect(player, Type);
+			bool check = OutroEffect_ModPlayer.Check_IntroEffect(player, Type);
 			if (check) {
 				for (int i = 0; i < 2; i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(2).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.1f)), type, damage, knockback, player.whoAmI);
