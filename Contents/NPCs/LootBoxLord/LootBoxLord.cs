@@ -1107,7 +1107,7 @@ internal class LootBoxLord : ModNPC {
 	}
 	#endregion
 	public void Reset(float nextAttack, int cooldown) {
-		CurrentAttack = 16;
+		CurrentAttack = nextAttack;
 		AttackCounter = 0;
 		AttackTimer = 0;
 		UniversalAttackCoolDown = cooldown;

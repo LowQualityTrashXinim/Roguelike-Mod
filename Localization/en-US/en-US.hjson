@@ -522,6 +522,7 @@ Mods: {
 			Roguelike_ShrimpPoBoy_ModProjectile.DisplayName: Roguelike_ Shrimp Po Boy_ Mod Projectile
 			Roguelike_Milkshake_ModProjectile.DisplayName: Roguelike_ Milkshake_ Mod Projectile
 			Roguelike_Spear.DisplayName: Roguelike_ Spear
+			SpearThrownProjectile.DisplayName: Spear Thrown Projectile
 		}
 
 		NPCs: {
@@ -4135,6 +4136,11 @@ Mods: {
 			Roguelike_Steak_Buff: {
 				DisplayName: Roguelike_ Steak_ Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_Steak_Buff.Description
+			}
+
+			SpearCoolDown: {
+				DisplayName: Spear Cool Down
+				Description: Mods.Roguelike.Buffs.SpearCoolDown.Description
 			}
 		}
 

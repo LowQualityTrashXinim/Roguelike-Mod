@@ -1026,3 +1026,37 @@ public class CandyCornRifle : ModEnchantment {
 		}
 	}
 }
+public class Eventide : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FairyQueenRangedItem;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().UpdateFullHPDamage += .5f;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		float i = globalItem.Item_Counter1[index] = ModUtils.Safe_SwitchValue(globalItem.Item_Counter1[index], 5);
+		Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 15;
+		float ai3 = player.miscCounterNormalized * 12f % 1f;
+
+		Projectile projectile = Projectile.NewProjectileDirect(source, position, vel.Vector2DistributeEvenlyPlus(5, 15, i), ProjectileID.FairyQueenRangedItemShot, damage, knockback, player.whoAmI, 0, ai3);
+		projectile.extraUpdates = 2;
+	}
+}
+public class Tsunami : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Tsunami;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Generic) += .2f;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] < 15) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = 0;
+		for (int i = 0; i < 5; i++) {
+			Vector2 pos = position + velocity.SafeNormalize(Vector2.Zero).Vector2DistributeEvenlyPlus(5, 60, i) * 60;
+			Projectile.NewProjectile(source, pos, velocity, type, damage, knockback, player.whoAmI);
+		}
+	}
+}

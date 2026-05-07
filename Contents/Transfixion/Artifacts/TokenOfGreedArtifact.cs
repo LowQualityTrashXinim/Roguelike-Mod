@@ -6,6 +6,7 @@ using Roguelike.Contents.Transfixion.Perks;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
@@ -27,6 +28,9 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 		public override void ResetEffects() {
 			Greed = Player.HasArtifact<TokenOfGreedArtifact>();
 			if (Greed) {
+				if (!Player.active) {
+					return;
+				}
 				WeaponCanShoot.Clear();
 				WeaponCanMelee.Clear();
 				for (int i = 0; i < 10; i++) {
@@ -44,7 +48,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 					if (!item.IsAWeapon()) {
 						continue;
 					}
-					if (item.shoot > 0) {
+					if (item.shoot > ProjectileID.None) {
 						WeaponCanShoot.Add(i);
 					}
 					if (!item.noMelee) {
@@ -61,7 +65,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			chestmodplayer.DropModifier += 1;
 			chestmodplayer.ChanceLootDrop += .35f;
 			chestmodplayer.TransmutationModifier -= .6f;
-			if (!Player.ItemAnimationActive) {
+			if (!Player.ItemAnimationActive || !Player.HeldItem.IsAWeapon()) {
 				return;
 			}
 			if (info2 != null) {

@@ -907,3 +907,12 @@ SwiftHealth: {
 		After the buff end, all the stack get reset.
 		'''
 }
+
+MomentaryStrike: {
+	DisplayName: Momentary Strike
+	Description:
+		'''
+		Every 150 attacks ( requirement reduce by 25 every stack )
+		+ Increases attack speed by 1000% for 1s
+		'''
+}

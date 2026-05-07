@@ -640,3 +640,7 @@ Flaming Wood Sword:
 574/ Updated Stardust Symphoney tooltip.
 575/ Rework Token of Greed.
 576/ Refactor class name to make it more clear on what its intention is.
+577/ Added Pain Stone.
+578/ Added WE: Eventide; Tsunami.
+579/ Added new perk "Momentary Strike".
+580/ Reworked Spear.

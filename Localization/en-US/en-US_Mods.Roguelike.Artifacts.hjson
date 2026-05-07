@@ -243,3 +243,16 @@ OuterGodTheNihilismArtifact: {
 			-100% damage reduction, -100% buff duration 
 		'''
 }
+
+PainStoneArtifact: {
+	DisplayName: Pain Stone
+	Description:
+		'''
+		"The highest tribute to god is to challenge oneself"
+		[c/ffff00:Positive effect] :
+			+ Deal 1% percentage damage
+		[c/ab3e43:Negative effect] :
+			- Capped your health at 50
+			- Attack speed set to 2s regardless
+		'''
+}

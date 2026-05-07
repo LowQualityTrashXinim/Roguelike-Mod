@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.General;
 using Roguelike.Texture;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
@@ -30,14 +32,23 @@ namespace Roguelike.Common.Utils {
 		public static float Scale_OuterTextureWithInnerTexture(Vector2 size1, Vector2 size2, float adjustment) => size1.Length() / size2.Length() * adjustment;
 		public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
 		public static void Draw_SetUpToDrawGlow(SpriteBatch spriteBatch) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
 		}
 		public static void Draw_SetUpToDrawGlowAdditive(SpriteBatch spriteBatch) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
 		}
 		public static void Draw_ResetToNormal(SpriteBatch spriteBatch) {
+			if (ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
+				return;
+			}
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 		}

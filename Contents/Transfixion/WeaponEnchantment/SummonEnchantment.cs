@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
- 
+
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
@@ -19,6 +19,9 @@ public class BabyBirdStaff : ModEnchantment {
 		Main.projectile[globalItem.Item_Counter2[index]].Kill();
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (item.type != player.HeldItem.type) {
+			return;
+		}
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.08f);
 		if (player.ownedProjectileCounts[ProjectileID.BabyBird] < 1) {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabyBird, player.GetWeaponDamage(item), 0, player.whoAmI);
@@ -44,6 +47,9 @@ public class BabySlimeStaff : ModEnchantment {
 		Main.projectile[globalItem.Item_Counter2[index]].Kill();
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (item.type != player.HeldItem.type) {
+			return;
+		}
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.12f);
 		if (player.ownedProjectileCounts[ProjectileID.BabySlime] < 1) {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabySlime, player.GetWeaponDamage(item), 0, player.whoAmI);
@@ -75,6 +81,9 @@ public class FlinxStaff : ModEnchantment {
 		Main.projectile[globalItem.Item_Counter2[index]].Kill();
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (item.type != player.HeldItem.type) {
+			return;
+		}
 		if (player.ownedProjectileCounts[ProjectileID.FlinxMinion] < 1) {
 			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.FlinxMinion, player.GetWeaponDamage(item), 0, player.whoAmI);
 			Main.projectile[proj1].minionSlots = 0;

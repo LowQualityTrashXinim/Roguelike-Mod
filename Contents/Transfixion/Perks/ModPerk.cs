@@ -898,3 +898,34 @@ public class AmplePerception : Perk {
 		}
 	}
 }
+public class MomentaryStrike : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override void UpdateEquip(Player player) {
+		if (player.ItemAnimationActive && player.ItemAnimationJustStarted) {
+			int counterLimit = 150 - (StackAmount(player) - 1) * 25;
+			counterLimit = Math.Clamp(counterLimit, 0, 999);
+			if (player.GetModPlayer<MomentaryStrikePlayer>().Count < counterLimit) {
+				player.GetModPlayer<MomentaryStrikePlayer>().Count++;
+			}
+			else {
+				player.GetModPlayer<MomentaryStrikePlayer>().Duration = ModUtils.ToSecond(1);
+			}
+		}
+	}
+	public class MomentaryStrikePlayer : ModPlayer {
+		public int Count = 0;
+		public int Duration = 0;
+		public override void ResetEffects() {
+			Duration = ModUtils.CountDown(Duration);
+		}
+		public override void UpdateEquips() {
+			if (Duration > 0) {
+				Count = 0;
+				Player.ModPlayerStats().AttackSpeed += 10;
+			}
+		}
+	}
+}

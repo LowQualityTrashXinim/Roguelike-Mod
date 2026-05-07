@@ -32,7 +32,7 @@ Revolver.Description:
 	'''
 Minishark.Description:
 	'''
-	During item animation, weapon will shoot bullet toward cursor position dealing 15% weapon damage
+	During item animation, shoot out bullet toward cursor position dealing 15% weapon damage
 	+ If player in their inventory have ammo then it will use that ammo ( CD : 8 frame )
 	If weapon use ammo type : Bullet
 	Have 1% chance to gain Freezy buff
@@ -147,14 +147,14 @@ PlatinumBroadsword.Description:
 	'''
 CactusSword.Description:
 	'''
-	Hitting a enemy on critical strike with a sword will shoot out a friendly rolling cactus ( CD : 3s )
+	Critical strike with a sword will shoot out a friendly rolling cactus ( CD : 3s )
 	+ Rolling cactus deal equal to 300% weapon damage + 100 base damage
 	'''
 EnchantedSword.Description:
 	'''
 	Increases melee weapon attack speed by 10%
 	Shoot out a additional enchanted beam that deal 125% damage ( CD : 0.5s )
-	Upon hitting enemy with item spawn enchanted beam that ignore tile collision around player
+	Upon hitting enemy with item spawn enchanted beam around player
 	'''
 StarFury.Description:
 	'''
@@ -177,7 +177,7 @@ BatBat.Description:
 BoneSword.Description:
 	'''
 	Increases weapon size by 15%
-	Attacking enemy have 25% chance to shoot out a infinite piercing bone (CD:1s)
+	Attacking enemy have 25% chance to shoot out a infinite piercing bone ( CD:1s )
 	Striking enemy for 10 times, shoot out a homing skull dealing 120% weapon damage on next hit
 	'''
 BladedGlove.Description:
@@ -194,7 +194,8 @@ ZombieArm.Description:
 MandibleBlade.Description:
 	'''
 	Increases your damage by 10% while moving
-	Getting hit while holding the weapon will shoot out 3 Mandible Blade that will lock onto enemy ( CD : 1s )
+	Getting hit while holding the weapon will spawn out 
+	3 Mandible Blade that will lock onto enemy ( CD : 1s )
 	'''
 TentacleSpike.Description:
 	'''
@@ -872,9 +873,9 @@ Gatligator.Description:
 	'''
 Uzi.Description:
 	'''
+	Shoot additional high velocity bullet
 	Decreases weapon damage by 30%
 	If weapon use bullet then instead decreases by 10%
-	Shot additional high velocity bullet
 	'''
 Megashark.Description:
 	'''
@@ -921,4 +922,14 @@ FalconBlade.Description:
 	'''
 	+15% damage, +3% crit chance
 	Throw out a Falcon Blade when attack (CD:1s)
+	'''
+Eventide.Description:
+	'''
+	Shoot additional light lance.
+	+50% first strike damage
+	'''
+Tsunami.Description:
+	'''
+	Shoot out 5 additional projectile every 15 shot.
+	+20% damage
 	'''
