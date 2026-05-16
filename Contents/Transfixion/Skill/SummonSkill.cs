@@ -14,7 +14,7 @@ public class BroadSwordSpirit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 545;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
@@ -32,7 +32,7 @@ public class WoodSwordSpirit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 645;
 		Skill_Duration = ModUtils.ToSecond(3);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SoulWoodSword>()] < 1) {
@@ -50,7 +50,7 @@ public class WilloFreeze : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1185;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<WilloFreezeProjectile>()] < 1) {
@@ -67,7 +67,7 @@ public class PowerPlant : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 525;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<PowerPlantProjectile>()] < 1) {
@@ -79,7 +79,7 @@ public class TransferStation : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 525;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<TransferStationProjectile>()] < 1) {
@@ -91,7 +91,7 @@ public class OrbOfPurity : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 325;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1) {
@@ -105,7 +105,7 @@ public class PhoenixBlazingTornado : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 325;
 		Skill_Duration = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
@@ -119,7 +119,7 @@ public class DebugCommand : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 777;
 		Skill_Duration = ModUtils.ToSecond(10);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(2000);
@@ -152,7 +152,7 @@ public class LucidNightmares : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 850;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(53);
@@ -177,7 +177,7 @@ public class SacrificialWormhole : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 950;
 		Skill_Duration = ModUtils.ToSecond(14);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int damage = skillplayer.SkillDamage(50);
@@ -200,7 +200,7 @@ public class BulletHell : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 666;
 		Skill_Duration = ModUtils.ToSecond(6.66f);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
@@ -251,7 +251,7 @@ public class WoodenArrowRain : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1045;
 		Skill_Duration = ModUtils.ToSecond(15);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
@@ -280,7 +280,7 @@ public class SpiritBurst : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1010;
 		Skill_Duration = ModUtils.ToSecond(7);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		for (int i = 0; i < 8; i++) {
@@ -305,7 +305,7 @@ public class MeteorShower : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1220;
 		Skill_Duration = ModUtils.ToSecond(15);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		Projectile proj;
@@ -343,7 +343,7 @@ public class EnergyChainReaction : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1300;
 		Skill_Duration = ModUtils.ToSecond(16);
-		Skill_Type = SkillTypeID.Skill_Summon;
+		Skill_Type = SkillTypeID.Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), player.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<EnergyChainOrb>(), 1, 1, player.whoAmI);

@@ -147,7 +147,7 @@ PlatinumBroadsword.Description:
 	'''
 CactusSword.Description:
 	'''
-	Critical strike with a sword will shoot out a friendly rolling cactus ( CD : 3s )
+	Strike with a item will shoot out a friendly rolling cactus ( CD : 3s )
 	+ Rolling cactus deal equal to 300% weapon damage + 100 base damage
 	'''
 EnchantedSword.Description:
@@ -182,14 +182,16 @@ BoneSword.Description:
 	'''
 BladedGlove.Description:
 	'''
-	Increases attack speed by 5% and melee critical strike chance by 5%
+	Increases attack speed by 25% and melee critical strike chance by 5%
 	Hitting a enemy with melee sword will strike them twice ( CD : 1s )
 	'''
 ZombieArm.Description:
 	'''
 	Increases critical strike chance by 10
-	Have 1 in 10 chance to deal Rotting last 2s
 	Getting hit while holding the weapon will deal 55% damage to all nearby enemy (CD:1s)
+	Hitting enemy with weapon have :
+	+ 10% chance to inflict Rotting for 2s
+	+ 25% chance to heal for 1 to 3 hp
 	'''
 MandibleBlade.Description:
 	'''
@@ -214,7 +216,7 @@ BladeOfGrass.Description:
 	Have 50% chance to either :
 	+ Shoot a leaf like Blade of Grass
 	+ Shoot a leaf toward cursor
-	( Leaf deal 45% of weapon damage )
+	( Leaf deal 45% weapon damage )
 	'''
 Volcano.Description:
 	'''
@@ -286,76 +288,80 @@ Katana.Description:
 	critical damage by 20% and first strike damage by 35%
 	Hitting enemy with item will spawn a ghost katana that attack enemy ( CD : 0.25s )
 	'''
-WoodenBow.Description: Weapon will shoot a additional wooden arrow ( CD: 1s )
+WoodenBow.Description:
+	'''
+	Weapon will shoot a additional wooden arrow 
+	Have 25% chance to also shoot a windshot.
+	'''
 AshWoodBow.Description:
 	'''
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow 
 	Wooden arrow have 30% to light enemy on fire
 	'''
 BorealWoodBow.Description:
 	'''
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow 
 	Wooden arrow have 30% to inflict frost burn on enemy
 	'''
 RichMahoganyBow.Description:
 	'''
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow
 	Wooden arrow have 30% to poison enemy
 	'''
 EbonwoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow 
 	'''
 ShadewoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow 
 	'''
 PalmWoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot a additional wooden arrow ( CD: 1s )
+	Weapon will shoot a additional wooden arrow
 	'''
 CopperBow.Description:
 	'''
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	Arrow shot from this weapon have 10% to inflict electrified for 1 to 4s
 	'''
 TinBow.Description:
 	'''
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	Sometime wooden arrow is replaced with tin bar which deal 200% damage
 	'''
 IronBow.Description:
 	'''
 	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 LeadBow.Description:
 	'''
-	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	Increases debuff damage by 8%
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 SilverBow.Description:
 	'''
-	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	Increases first strike damage by 50%
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 TungstenBow.Description:
 	'''
 	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 GoldBow.Description:
 	'''
 	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 PlatinumBow.Description:
 	'''
 	Increases damage by 1
-	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
+	On hitting shoot out a wooden arrow toward the enemy ( CD : 0.2s )
 	'''
 DemonBow.Description:
 	'''
@@ -367,7 +373,7 @@ TendonBow.Description:
 	'''
 	When shoot, consumes 5 hps to increases damage by 35% 
 	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( CD : 1s )
-	Hitting any enemy 4 times will heal player for 1 hp ( Note : projectile that is a minion is not accepted )
+	Hitting any enemy 4 times will heal player for 1 hp
 	'''
 BeeKnees.Description:
 	'''
@@ -569,7 +575,13 @@ BabySlimeStaff.Description:
 	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
 FlinxStaff.Description: Spawn 2 flinx minions to aid you
-EnchantedBoomerang.Description: Shoots an Enchanted Boomerang when used
+EnchantedBoomerang.Description:
+	'''
+	+20% weapon damage
+	Shoots an Enchanted Boomerang when used
+	When enchanted boomerang hit (including the held weapon)
+	Burst out 10 enchanted beam in all direction. (CD: 1s)
+	'''
 IceBoomerang.Description: Shoots an Ice Boomerang when used
 Shroomerang.Description: Shoots a Shroomerang when used
 WoodenBoomerang.Description: Shoots a Wooden Boomerang when used
@@ -586,7 +598,12 @@ Artery.Description: summon a group of ghost yoyos around the cursor that deals h
 Code1.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Rally.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 WoodenYoyo.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
-Amazon.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Amazon.Description:
+	'''
+	15% jungle weapon damage
+	A yoyos rotate around the player deal 125% weapon damage
+	When yoyo dealt damage temporary increases held weapon damage by 50%
+	'''
 Terragrim.Description:
 	'''
 	Increases your melee speed by 15%
@@ -617,9 +634,22 @@ CandyCaneSword.Description:
 	Increases damage by 5%
 	Hitting enemy with melee weapon may have chance to drop apple candy
 	'''
-LeatherWhip.Description: 10% increased whip speed and range, Increase Summon Damage by 1
-Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damage by 2, grants jungle's fury on-hit
-SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
+LeatherWhip.Description:
+	'''
+	20% increased whip speed and range 
+	Increase summon damage by 1
+	'''
+Snapthorn.Description:
+	'''
+	15% increased whip speed and range
+	Increase summon damage by 2
+	grants jungle's fury on-hit
+	'''
+SpinalTap.Description:
+	'''
+	20% increased whip speed and range
+	Increase summon damage by 3
+	'''
 ImpStaff.Description: makes minions shot fireballs at nearby enemy that deals 15 damage
 HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 12 damage
 SandGun.Description:
@@ -673,7 +703,14 @@ PurpleClubberfish.Description:
 	Increases weapon damage by 10% and size by 25%
 	If enemy are near, spawn a Purple clubber fish that swim to attack
 	'''
-TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
+TitaniumSword.Description:
+	'''
+	Attacking enemy will summon titanium sword from the sky dealing 300% weapon damage (CD:5s)
+	After the sword successfully strike a enemy, after 1s releases a giant strike 
+	dealing 50% of titanium sword damage at strike position
+	If your weapon is a sword:
+	A ghost Titanium Sword also swing along with your swing
+	'''
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumTrident.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 OrichalcumSword.Description: fire a petal on-hit that deals 22/44 damage (ranged/melee)
@@ -698,7 +735,7 @@ BreakerBlade.Description:
 BloodRainBow.Description:
 	'''
 	Using weapon can shoot will shoot additional blood arrow
-	Hitting enemy with the weapon will shoot 3 blood arrows
+	Hitting enemy with item will shoot 3 blood arrows
 	(Note: blood arrow deal 85% weapon damage)
 	'''
 DirtBlock.Description:
@@ -932,4 +969,28 @@ Tsunami.Description:
 	'''
 	Shoot out 5 additional projectile every 15 shot.
 	+20% damage
+	'''
+HoundiusShootius.Description:
+	'''
+	+30% summon damage
+	Shooting will be accompany with a Houndius fireball dealing 74% damage
+	If a target is found near you, every 1s shoot out 1 Houndius fireball
+	'''
+LightningAuraSentry.Description:
+	'''
+	+30% summon damage
+	Enemies nearby you will recieve a shock dealing 25% damage + 5
+	Additionally they will be inflicted with electrified for 1.5s
+	'''
+FrostStaff.Description:
+	'''
+	Have 1 in 10 chance to shoot frost bolt
+	While using a magic weapon 
+	The above chance reduce to 1 in 3
+	'''
+RainbowRod.Description:
+	'''
+	Increases mana cost by 50%
+	Every 3rd shot, shoot out rainbow bolt
+	Consume 20 mana to shoot additional rainbow bolt
 	'''

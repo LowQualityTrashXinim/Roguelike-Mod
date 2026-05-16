@@ -86,10 +86,11 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		}
 		public override void PostSetupContent() {
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
-				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.Starter)) {
+				Perk perk = ModPerkLoader.GetPerk(i);
+				if (perk.list_category.Contains(PerkCategory.Starter)) {
 					StarterPerkType.Add(i);
 				}
-				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.WeaponUpgrade)) {
+				if (perk.list_category.Contains(PerkCategory.WeaponUpgrade)) {
 					WeaponUpgradeType.Add(i);
 				}
 			}

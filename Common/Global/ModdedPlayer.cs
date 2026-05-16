@@ -95,6 +95,19 @@ namespace Roguelike.Common.Global {
 			if (Player.IsDebugPlayer()) {
 				Main.NewText("You have entered debug mode", Color.Red);
 			}
+			if (Secert_PerkOverload) {
+				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
+				for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+					Perk perk = ModPerkLoader.GetPerk(i);
+					if (perk == null) {
+						continue;
+					}
+					if (!perk.CanBeChoosen) {
+						continue;
+					}
+					perkplayer.perks.Add(perk.Type, perk.StackLimit);
+				}
+			}
 			//if (Main.ActiveWorldFileData.GameMode == 0) {
 			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
 			//}
@@ -148,6 +161,7 @@ namespace Roguelike.Common.Global {
 		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia";
 		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
 		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";
+		public bool Secert_PerkOverload => Player.name == "MrPerk";
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
 			if (arti != null) {

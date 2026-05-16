@@ -29,7 +29,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (Earth) {
+			if (Earth && !Player.ModPlayerStats().DisableNegativeArtifact) {
 				damage *= Player.statLife / (float)Player.statLifeMax2;
 			}
 		}
@@ -50,14 +50,14 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			}
 		}
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-			if (!Earth) {
+			if (!Earth || Player.ModPlayerStats().DisableNegativeArtifact) {
 				return;
 			}
 			ShortStanding = (int)(ShortStanding * .75f);
 			OnHitDelay = ModUtils.ToSecond(.5f);
 		}
 		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-			if (!Earth) {
+			if (!Earth || Player.ModPlayerStats().DisableNegativeArtifact) {
 				return;
 			}
 			ShortStanding = (int)(ShortStanding * .75f);

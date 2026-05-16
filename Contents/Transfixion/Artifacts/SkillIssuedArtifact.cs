@@ -74,7 +74,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			}
 		}
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
-			if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer) {
+			if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer && !player.ModPlayerStats().DisableNegativeArtifact) {
 				spawnRate = 2;
 				maxSpawns = 400;
 			}

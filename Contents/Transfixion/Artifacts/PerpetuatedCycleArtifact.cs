@@ -30,12 +30,12 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 		CountDown = ModUtils.CountDown(CountDown);
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (PerpetuationCycle) {
+		if (PerpetuationCycle && !Player.ModPlayerStats().DisableNegativeArtifact) {
 			modifiers.SourceDamage -= 1;
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (PerpetuationCycle) {
+		if (PerpetuationCycle && !Player.ModPlayerStats().DisableNegativeArtifact) {
 			modifiers.SourceDamage -= 1;
 		}
 	}

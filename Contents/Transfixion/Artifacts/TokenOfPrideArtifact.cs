@@ -24,8 +24,10 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 		public override void UpdateEquips() {
 			if (Pride) {
 				PlayerStatsHandle handle = Player.GetModPlayer<PlayerStatsHandle>();
-				float multiplier = 0;
-				handle.DropModifier *= multiplier;
+				if (!handle.DisableNegativeArtifact) {
+					float multiplier = 0;
+					handle.DropModifier *= multiplier;
+				}
 			}
 		}
 		public override void PreUpdate() {
@@ -82,7 +84,7 @@ TokenOfPride_Upgrade2: {
 			handler.UpdateDefenseBase += count * .05f;
 			handler.UpdateCritDamage += count * .25f;
 			handler.UpdateHPMax += count * .02f;
-			player.GetCritChance(DamageClass.Generic) +=  count * 5;
+			player.GetCritChance(DamageClass.Generic) += count * 5;
 			player.GetDamage(DamageClass.Generic) += count * .1f;
 		}
 	}

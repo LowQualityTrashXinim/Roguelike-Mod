@@ -4,16 +4,35 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.Contents;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Wrapper;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
+public class Structure_FleshChamber : ModStructure {
+	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
+		int X = 22 * RogueLikeWorldGen.GridPart_X + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_X);
+		int Y = 19 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y);
+		var data = ModWrapper.Get_StructureData("Assets/FleshChamber", mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		Rectangle FleshStructure = new(point.X, point.Y, data.width, data.height);
+		if (ModWrapper.IsInBound(data, point)) {
+			ModWrapper.GenerateFromData(data, point);
+			system.ZoneToBeIgnored.Add(FleshStructure);
+			system.Set_MapIgnoredZoneIntoWorldGen(FleshStructure);
+			system.SaveStructureLocation("FleshChamber", FleshStructure);
+		}
+	}
+}
 internal class FleshChamberStructure : ModSystem {
 	public Point Point_ModObject => new Point(25, 29);
-	public Rectangle Pos_structure => ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure;
+	public Rectangle Pos_structure => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("FleshChamber");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
 		if (!RoguelikeWorldProperty.RoguelikeWorld) {
@@ -37,10 +56,10 @@ public class Fix_SusEye : GlobalItem {
 		return entity.type == ItemID.SlimeCrown;
 	}
 	public override bool CanUseItem(Item item, Player player) {
-		return (ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
+		return (ModContent.GetInstance<FleshChamberStructure>().Pos_structure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
 	}
 	public override bool? UseItem(Item item, Player player) {
-		var spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().FleshStructure.Location.ToWorldCoordinates().ToPoint();
+		var spawnPosotion = ModContent.GetInstance<FleshChamberStructure>().Pos_structure.Location.ToWorldCoordinates().ToPoint();
 		NPC.SpawnBoss(spawnPosotion.X, spawnPosotion.Y, NPCID.EyeofCthulhu, player.whoAmI);
 		return true;
 	}

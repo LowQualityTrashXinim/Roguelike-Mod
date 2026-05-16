@@ -641,6 +641,14 @@ Flaming Wood Sword:
 575/ Rework Token of Greed.
 576/ Refactor class name to make it more clear on what its intention is.
 577/ Added Pain Stone.
-578/ Added WE: Eventide; Tsunami.
+578/ Added WE: Eventide; Tsunami; HoundiusShootius; LightningAuraSentry; FrostStaff; Rainbow rod.
 579/ Added new perk "Momentary Strike".
 580/ Reworked Spear.
+581/ Added in fade in effect for The Orbit.
+582/ Buff some enchantment by reducing restriction and adding more passive stats.
+583/ Changed Percentage damage to not applied to minion projectile.
+584/ Added Modify skill and Projectile skill, and added a bunch of tag to skill.
+585/ Reworked Zombie Arm.
+586/ De-bloat RoguelikeWorldGen.Task and organize the world gen and structure files.
+587/ Progress on Shop UI and Modifier.
+588/ Added in perk Unnerfed.

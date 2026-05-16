@@ -89,7 +89,7 @@ public class Satisfaction : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		if (!player.IsHealthAbovePercentage(.4f)) {
-			player.endurance += 0.1f * StackAmount(player);
+			player.endurance += .1f * StackAmount(player);
 		}
 		else if (player.statLife >= player.statLifeMax2) {
 			player.endurance += 1f;

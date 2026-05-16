@@ -905,7 +905,7 @@ public class MomentaryStrike : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		if (player.ItemAnimationActive && player.ItemAnimationJustStarted) {
-			int counterLimit = 150 - (StackAmount(player) - 1) * 25;
+			int counterLimit = 100 - (StackAmount(player) - 1) * 25;
 			counterLimit = Math.Clamp(counterLimit, 0, 999);
 			if (player.GetModPlayer<MomentaryStrikePlayer>().Count < counterLimit) {
 				player.GetModPlayer<MomentaryStrikePlayer>().Count++;
@@ -927,5 +927,22 @@ public class MomentaryStrike : Perk {
 				Player.ModPlayerStats().AttackSpeed += 10;
 			}
 		}
+	}
+}
+public class Unnerfed : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override string ModifyToolTip() {
+		switch (StackAmount(Main.LocalPlayer)) {
+			case 0: return Description;
+			case 1: return ModUtils.LocalizationText("ModPerk", $"{Name}.Description1");
+			case 2: return ModUtils.LocalizationText("ModPerk", $"{Name}.Description2");
+			default: return ModUtils.LocalizationText("ModPerk", $"{Name}.Description3");
+		}
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().Unnerfed = true;
 	}
 }

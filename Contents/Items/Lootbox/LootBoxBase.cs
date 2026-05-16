@@ -108,10 +108,10 @@ namespace Roguelike.Contents.Items.Lootbox {
 				}
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
+			//Lootbox basic behavior
 			if (modplayer.LootboxCanDropSpecialPotion) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			}
-			//Lootbox basic behavior
 			if (modplayer.CanDropSynergyEnergy) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			}

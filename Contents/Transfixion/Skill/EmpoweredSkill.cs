@@ -14,7 +14,7 @@ public class BloodToPower : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 570;
 		Skill_Duration = ModUtils.ToSecond(2);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int blood = player.statLife / 2;
@@ -30,7 +30,7 @@ public class GuaranteedCrit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 425;
 		Skill_Duration = ModUtils.ToSecond(.5f);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.GetModPlayer<PlayerStatsHandle>().AlwaysCritValue++;
@@ -41,7 +41,7 @@ public class AdAstra : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 450;
 		Skill_Duration = ModUtils.ToSecond(3);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -68,7 +68,7 @@ public class Procrastination : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.AddBuff(BuffID.Stoned, 2);
@@ -82,7 +82,7 @@ public class Increases_3xDamage : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 400;
 		Skill_Duration = 120;
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 3);
@@ -93,7 +93,7 @@ public class SpeedDemon : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 330;
 		Skill_Duration = 30;
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -106,7 +106,7 @@ public class InfiniteManaSupply : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = ModUtils.ToSecond(.5f);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		if (player.statMana < player.statManaMax2) {
@@ -119,7 +119,7 @@ public class RapidHealing : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 345;
 		Skill_Duration = ModUtils.ToSecond(2);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.ModPlayerStats().Rapid_LifeRegen += 1;
@@ -130,7 +130,7 @@ public class Overclock : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 635;
 		Skill_Duration = ModUtils.ToSecond(1);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, 1 + Math.Clamp(.5f * (skillplayer.MaximumDuration - skillplayer.Duration) / 50, 0, 7.5f));
@@ -141,7 +141,7 @@ public class FireDamageUp : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 150;
 		Skill_Duration = ModUtils.ToSecond(2);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
@@ -159,7 +159,7 @@ public class TerrorForm : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 900;
 		Skill_Duration = ModUtils.ToSecond(4);
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		for (int i = 0; i < 2; i++) {
@@ -183,7 +183,7 @@ public class ProtectiveOnslaught : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 1000;
 		Skill_Duration = 10;
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		player.AddBuff(ModContent.BuffType<ProtectiveOnslaught_Buff>(), ModUtils.ToSecond(10));
@@ -250,7 +250,7 @@ public class CoinFlip : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 200;
 		Skill_Duration = 600;
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		if (Main.rand.NextBool()) {
@@ -288,7 +288,7 @@ public class DiceRoll : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 600;
-		Skill_Type = SkillTypeID.Skill_Empowered;
+		Skill_Type = SkillTypeID.Empowered;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int chance = Main.rand.Next(6);//0 , 1 , 2, 3, 4, 5

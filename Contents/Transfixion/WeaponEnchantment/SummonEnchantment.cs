@@ -1,11 +1,12 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-
+﻿using Microsoft.Xna.Framework;
+using Mono.Cecil;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 
@@ -101,11 +102,10 @@ public class LeatherWhip : ModEnchantment {
 		ItemIDType = ItemID.BlandWhip;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.whipRangeMultiplier += 0.10f;
-		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.10f;
+		player.whipRangeMultiplier += .2f;
+		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += .2f;
 		player.GetDamage(DamageClass.Summon).Base += 1;
 	}
-
 }
 
 public class Snapthorn : ModEnchantment {
@@ -150,7 +150,7 @@ public class ImpStaff : ModEnchantment {
 		globalItem.Item_Counter1[index]++;
 		foreach (Projectile minion in Main.ActiveProjectiles) {
 			NPC target = minion.FindTargetWithinRange(200);
-			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 30 && target != null) {
+			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[index] >= 30 && target != null) {
 				Projectile.NewProjectile(player.GetSource_FromAI(), minion.position, (target.Center - minion.Center).SafeNormalize(Vector2.UnitY) * 15, ProjectileID.ImpFireball, 15, 0, player.whoAmI);
 				globalItem.Item_Counter1[index] = 0;
 			}
@@ -168,7 +168,7 @@ public class HornetStaff : ModEnchantment {
 		globalItem.Item_Counter1[index]++;
 		foreach (Projectile minion in Main.ActiveProjectiles) {
 			NPC target = minion.FindTargetWithinRange(200);
-			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 40 && target != null) {
+			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[index] >= 40 && target != null) {
 				Projectile.NewProjectile(player.GetSource_FromAI(), minion.position, (target.Center - minion.Center).SafeNormalize(Vector2.UnitY) * 5, ProjectileID.HornetStinger, 12, 0, player.whoAmI);
 				globalItem.Item_Counter1[index] = 0;
 			}
@@ -176,3 +176,52 @@ public class HornetStaff : ModEnchantment {
 	}
 }
 
+public class HoundiusShootius : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.HoundiusShootius;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+		if (--globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = 60;
+		if (player.Center.LookForHostileNPC(out NPC npc, 800)) {
+			Vector2 pos = player.Center + Main.rand.NextVector2Circular(50, 50);
+			Vector2 vel = (npc.Center - pos).SafeNormalize(Vector2.Zero) * 15;
+			int damage = player.GetWeaponDamage(item) + 22;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.HoundiusShootiusFireball, damage, 1, player.whoAmI);
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] < 3) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = 0;
+		Projectile.NewProjectile(source, position, velocity, ProjectileID.HoundiusShootiusFireball, (int)(damage * .74f), knockback, player.whoAmI);
+	}
+}
+public class LightningAuraSentry : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2LightningAuraT1Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+		for (int i = 0; i < 30; i++) {
+			Dust dust = Dust.NewDustDirect(player.Center + Main.rand.NextVector2CircularEdge(600, 600), 0, 0, DustID.Electric);
+			dust.noGravity = true;
+			dust.scale = .2f;
+			dust.velocity = Vector2.Zero;
+		}
+		if (--globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = 10;
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 600);
+		foreach (NPC npc in npclist) {
+			int damage = (int)(player.GetWeaponDamage(item) * .25f) + 5;
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, -1));
+			npc.AddBuff(BuffID.Electrified, 90);
+		}
+	}
+}

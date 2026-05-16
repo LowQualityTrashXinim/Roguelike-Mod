@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Contents.Transfixion.Perks;
 using SubworldLibrary;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 using static System.Runtime.InteropServices.JavaScript.JSType;

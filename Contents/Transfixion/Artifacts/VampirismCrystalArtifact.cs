@@ -36,19 +36,12 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
-			if (Vampire) {
+			if (Vampire && !Player.ModPlayerStats().DisableNegativeArtifact) {
 				health -= .55f;
-				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
-				//if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade1>())) {
-				//	health += .4f;
-				//}
-				//if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade2>())) {
-				//	health -= .1f;
-				//}
 			}
 		}
 		public override void PostUpdate() {
-			if (Vampire) {
+			if (Vampire && !Player.ModPlayerStats().DisableNegativeArtifact) {
 				Player.AddBuff(BuffID.PotionSickness, 600);
 			}
 		}

@@ -64,7 +64,9 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			}
 			chestmodplayer.DropModifier += 1;
 			chestmodplayer.ChanceLootDrop += .35f;
-			chestmodplayer.TransmutationModifier -= .6f;
+			if (!Player.ModPlayerStats().DisableNegativeArtifact) {
+				chestmodplayer.TransmutationModifier -= .6f;
+			}
 			if (!Player.ItemAnimationActive || !Player.HeldItem.IsAWeapon()) {
 				return;
 			}
@@ -91,7 +93,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (Greed) {
+			if (Greed && !Player.ModPlayerStats().DisableNegativeArtifact) {
 				damage *= .1f;
 			}
 		}

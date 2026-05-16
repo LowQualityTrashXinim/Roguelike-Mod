@@ -14,6 +14,7 @@ using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Systems.IOhandle;
+using Roguelike.Common.Systems.ShopSystem;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.UI;
 using Roguelike.Common.Utils;
@@ -129,6 +130,7 @@ internal class UniversalSystem : ModSystem {
 	public SynergyMenuWikiUI synergyWikiMenu;
 	public EnchantmentMenuWikiUI enchantmentMenuWiki;
 	public InfoMenuUI infoMenuUI;
+	public ShopUI shopUI;
 
 	public static bool EnchantingState = false;
 	public static ModKeybind WeaponActionKey { get; private set; }
@@ -161,6 +163,7 @@ internal class UniversalSystem : ModSystem {
 			artifactUI = new();
 			debugperkUI = new();
 			infoMenuUI = new();
+			shopUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -205,6 +208,7 @@ internal class UniversalSystem : ModSystem {
 		artifactUI = null;
 		debugperkUI = null;
 		infoMenuUI = null;
+		shopUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -319,6 +323,10 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateMainDebugUIMenu() {
 		DeactivateUI();
 		user2ndInterface.SetState(debugUIMain);
+	}
+	public void ActivateShopUI() {
+		DeactivateUI();
+		user2ndInterface.SetState(shopUI);
 	}
 	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();

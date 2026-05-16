@@ -39,8 +39,7 @@ public class BR_Modifier4 : BossRushModifier {
 		PositiveModifier = true;
 	}
 	public override string Description =>
-		"Your first strike damage caan be applied 5 times" +
-		"\nMultiply first strike damage by 0.46x";
+		"Your first strike damage caan be applied 5 times";
 	public override void OnChoose() {
 		Player player = Main.LocalPlayer;
 		player.GetModPlayer<BossRushModifierPlayer>().ManyStrike = true;
@@ -123,7 +122,6 @@ public class BossRushModifierPlayer : ModPlayer {
 		}
 		if (ManyStrike) {
 			handler.HitCountIgnore += 5;
-			handler.UpdateFullHPDamage *= .46f;
 		}
 		if (LifeSteal) {
 			handler.LifeSteal += .2f;
@@ -189,5 +187,10 @@ public class BR_BadModifier3 : BossRushModifier {
 				item.TurnToAir();
 			}
 		}
+	}
+}
+public class BR_BadModifier4 : BossRushModifier {
+	public override string Description => "Everything gain 900% more HP";
+	public override void OnChoose() {
 	}
 }

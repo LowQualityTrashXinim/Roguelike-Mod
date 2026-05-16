@@ -8,8 +8,7 @@ using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Transfixion.Artifacts
-{
+namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {
 		public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 		public override Color DisplayNameColor => Color.LimeGreen;
@@ -80,7 +79,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			ModifyHit(ref modifiers);
 		}
 		private void ModifyHit(ref Player.HurtModifiers modifiers) {
-			if (!ManaOverLoader) {
+			if (!ManaOverLoader || Player.ModPlayerStats().DisableNegativeArtifact) {
 				return;
 			}
 			modifiers.SourceDamage += Player.statMana * 0.01f;

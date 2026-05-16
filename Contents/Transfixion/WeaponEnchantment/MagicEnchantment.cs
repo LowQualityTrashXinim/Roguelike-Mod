@@ -772,6 +772,36 @@ public class FlowerOfFrost : ModEnchantment {
 		}
 	}
 }
+public class FrostStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FrostStaff;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Main.rand.NextBool(10)) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.FrostBoltStaff, damage, knockback, player.whoAmI);
+		}
+		else if (item.mana > 0 && item.DamageType == DamageClass.Magic && Main.rand.NextBool(3)) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.FrostBoltStaff, damage, knockback, player.whoAmI);
+		}
+	}
+}
+public class RainbowRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.RainbowRod;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		reduce += .5f;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] >= 3) {
+			globalItem.Item_Counter1[index] = 0;
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ProjectileID.RainbowRodBullet, damage, knockback, player.whoAmI);
+		}
+		if (player.CheckMana(20, true)) {
+			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 10, ProjectileID.RainbowRodBullet, damage, knockback, player.whoAmI);
+		}
+	}
+}
 /// <summary>
 /// This is a example for mod enchantment and how to utilize most of the stuff
 /// </summary>

@@ -59,10 +59,13 @@ public class TokenOfSlothPlayer : ModPlayer {
 				Counter_Sloth = 0;
 			}
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, .65f);
-			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, .9f);
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, 1.1f);
 			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, 1.15f);
+			if(modplayer.DisableNegativeArtifact) {
+				return;
+			}
+			modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, .65f);
+			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, .9f);
 		}
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {

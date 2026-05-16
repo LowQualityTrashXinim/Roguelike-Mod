@@ -334,7 +334,16 @@ public class BossRushModifierUIState : UIState {
 			btn.HAlign = Hvalue;
 			btn.VAlign = .5f;
 			btn_List.Add(btn);
-			Append(btn);
+			panel_positive_Modifier.Append(btn);
+		}
+		for (int i = 0; i < optionsAmount; i++) {
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(optionsAmount - 1));
+			BossRushModifierUIButton btn = new BossRushModifierUIButton(
+				TextureAssets.InventoryBack, Main.rand.Next(BossRushModifierLoader.modifier_bad).Type);
+			btn.HAlign = Hvalue;
+			btn.VAlign = .5f;
+			btn_List.Add(btn);
+			panel_negative_Modifier.Append(btn);
 		}
 	}
 }
@@ -357,10 +366,9 @@ public class BossRushModifierUIButton : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		if (IsMouseHovering) {
-		}
-		else {
-			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-				Main.instance.MouseText("");
+			var modifier = BossRushModifierLoader.GetModifier(type);
+			if (modifier != null) {
+				Main.instance.MouseText(modifier.Description);
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
-using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

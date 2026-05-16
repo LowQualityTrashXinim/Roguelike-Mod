@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.RoguelikeMode.RoguelikeBiome;
-using Roguelike.Common.Subworlds;
+using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using SubworldLibrary;
@@ -91,7 +91,7 @@ namespace Roguelike.Contents.Projectiles {
 	public class Portal_CursedKingdom : Portal {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Portal>();
 		public override void Subworld_ToEnter() {
-			SubworldSystem.Enter<CursedKingdomSubworld>();
+			SubworldSystem.Enter<CursedKingdom>();
 		}
 	}
 	public class Portal_SlimeWorld : Portal {
@@ -130,7 +130,7 @@ namespace Roguelike.Contents.Projectiles {
 	public class Portal_DeepIce : Portal {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<Portal>();
 		public override void Subworld_ToEnter() {
-			SubworldSystem.Enter<CursedKingdomSubworld>();
+			SubworldSystem.Enter<CursedKingdom>();
 		}
 	}
 

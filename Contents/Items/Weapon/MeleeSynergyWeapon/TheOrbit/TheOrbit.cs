@@ -111,11 +111,18 @@ public class TheOrbitTheProjectile : ModProjectile {
 		Projectile.Center = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + Projectile.timeLeft * Projectile.ai[2])) * Projectile.ai[1];
 	}
 	public override Color? GetAlpha(Color lightColor) {
-		if (Projectile.timeLeft <= 60) {
-			float progress = Projectile.timeLeft / 60f;
+		float progress;
+		if (Projectile.timeLeft >= 900) {
+			progress = 1 - (Projectile.timeLeft - 900) / 40f;
 			Projectile.alpha = (byte)(255 * progress);
 			lightColor = lightColor.ScaleRGB(progress);
-			lightColor.A = (byte)(Projectile.alpha);
+			lightColor.A = (byte)Projectile.alpha;
+		}
+		else if (Projectile.timeLeft <= 60) {
+			progress = Projectile.timeLeft / 60f;
+			Projectile.alpha = (byte)(255 * progress);
+			lightColor = lightColor.ScaleRGB(progress);
+			lightColor.A = (byte)Projectile.alpha;
 		}
 		return lightColor;
 	}
@@ -125,7 +132,10 @@ public class TheOrbitTheProjectile : ModProjectile {
 		var drawpos = Projectile.position - Main.screenPosition + origin;
 		Color color = Color.White;
 		color.A = 0;
-		if (Projectile.timeLeft <= 60) {
+		if (Projectile.timeLeft >= 900) {
+			color = color.ScaleRGB(1 - (Projectile.timeLeft - 900) / 40f);
+		}
+		else if (Projectile.timeLeft <= 60) {
 			color = color.ScaleRGB(Projectile.timeLeft / 60f);
 		}
 		Main.EntitySpriteDraw(texture, drawpos, null, color, Projectile.rotation, origin, 1.3f, SpriteEffects.None);

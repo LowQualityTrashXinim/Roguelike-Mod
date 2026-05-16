@@ -152,6 +152,13 @@ TacticalShotgun:
 	Have 25% to quickly shoot another round
 	Have 50% to shoot more bullet
 	'''
+ZombieArm:
+	'''
+	Heal user for 1 to 3 on hit
+	Hitting enemey inflict Rotting for 3s
+	While helding the weapon, on getting hit will do a counter attack
+	Will get revive while helding this weapon but will break the weapon
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

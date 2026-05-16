@@ -9,7 +9,7 @@ public class DamageUp : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 50;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.skilldamage += 1f;
@@ -19,7 +19,7 @@ public class GreaterDamageUp : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.skilldamage += 3f;
@@ -30,7 +30,7 @@ public class CriticalUp : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.ProjectileCritDamage += .25f;
@@ -42,7 +42,7 @@ public class PowerBank : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration) {
 		energy = StatModifier.Default;
@@ -56,7 +56,7 @@ public class PowerSaver : ModSkill {
 		Skill_EnergyRequire = 900;
 		Skill_Duration = 0;
 		Skill_EnergyRequirePercentage = -.5f;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 }
 public class FastForward : ModSkill {
@@ -64,7 +64,7 @@ public class FastForward : ModSkill {
 		Skill_EnergyRequire = 200;
 		Skill_Duration = 0;
 		Skill_CoolDown = ModUtils.ToSecond(20);
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration) {
 		energy = new();
@@ -78,7 +78,7 @@ public class Skip1 : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 0;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
 		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
@@ -100,7 +100,7 @@ public class PowerCord : ModSkill {
 		Skill_EnergyRequire = 100;
 		Skill_EnergyRequirePercentage = .25f;
 		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void OnEnded(Player player) {
 		player.AddBuff(ModContent.BuffType<PowerCordBuff>(), ModUtils.ToSecond(12));
@@ -120,24 +120,17 @@ public class TranquilMind : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 550;
 		Skill_Duration = ModUtils.ToSecond(5);
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 }
 public class Weaken : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = -100;
 		Skill_Duration = ModUtils.ToSecond(3);
-		Skill_Type = SkillTypeID.Skill_Stats;
+		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.skilldamage -= .2f;
 		skillplayer.ProjectileSpeedMultiplier += .4f;
-	}
-}
-public class ChaoticLarpa : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 1000;
-		Skill_Duration = ModUtils.ToSecond(0);
-		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 }

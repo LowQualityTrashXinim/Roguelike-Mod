@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
@@ -8,6 +10,7 @@ using Roguelike.Common.Wrapper;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
+using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using StructureHelper.API;
 using StructureHelper.Models;
@@ -190,7 +193,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 	public override void Load() {
 	}
-	public bool AlreadyGenerated = false;
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
@@ -204,42 +206,48 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
 	public static List<Rectangle> TrialArea = new();
+	private Dictionary<string, Rectangle> StructureLocation = new();
 	public Vector2 PlayerPos_WorldCood = Vector2.Zero;
+	public void SaveStructureLocation(string structureName, Rectangle location) {
+		if (StructureLocation.ContainsKey(structureName)) {
+			StructureLocation[structureName] = location;
+		}
+		else {
+			StructureLocation.Add(structureName, location);
+		}
+	}
+	public Rectangle GetStructure(string structureName) {
+		if (StructureLocation.ContainsKey(structureName)) {
+			return StructureLocation[structureName];
+		}
+		else {
+			return new();
+		}
+	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["PlayerPos_WorldCood"] = PlayerPos_WorldCood;
 		if (Biome == null) {
 			return;
 		}
+		tag["StructureName"] = StructureLocation.Keys.ToList();
+		tag["StructureLocation"] = StructureLocation.Values.ToList();
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
-		tag["CursedKingdomArea"] = CursedKingdomArea;
 		tag["ForestZone"] = ForestZone;
-		tag["AlreadyGenerated"] = AlreadyGenerated;
-		tag["CrimsonEntrance"] = CrimsonEntrance;
-		tag["CorruptionEntrance"] = CorruptionEntrance;
-		tag["FleshRealmEntrance"] = FleshRealmEntrance;
-		tag["SlimeWorldEntrance"] = SlimeWorldEntrance;
-		tag["JungleTempleEntrance"] = JungleTempleEntrance;
-		tag["KingSlimeStructure"] = KingSlimeStructure;
 		tag["CrimsonStructure"] = CrimsonStructure;
-		tag["DesertPyramid"] = Pyramid;
+
+
+		StructureLocation.Clear();
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
-		AlreadyGenerated = tag.Get<bool>("AlreadyGenerated");
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
-		//Entrance
-		SlimeWorldEntrance = tag.Get<Rectangle>("SlimeWorldEntrance");
-		CorruptionEntrance = tag.Get<Rectangle>("CorruptionEntrance");
-		CrimsonEntrance = tag.Get<Rectangle>("CrimsonEntrance");
-		FleshRealmEntrance = tag.Get<Rectangle>("FleshRealmEntrance");
-		CursedKingdomArea = tag.Get<Rectangle>("CursedKingdomArea");
-		JungleTempleEntrance = tag.Get<Rectangle>("JungleTempleEntrance");
+		var StructureName = tag.Get<List<string>>("StructureName");
+		var Location = tag.Get<List<Rectangle>>("StructureLocation");
+		StructureLocation = StructureName.Zip(Location, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
-		Pyramid = tag.Get<Rectangle>("DesertPyramid");
-		KingSlimeStructure = tag.Get<Rectangle>("KingSlimeStructure");
 		CrimsonStructure = tag.Get<Rectangle>("CrimsonStructure");
 		if (Type == null || Area == null) {
 			return;
@@ -417,7 +425,7 @@ public partial class RogueLikeWorldGen {
 	List<Structure_XinimVer> slightlyMoreOptimized = new();
 	Structure_XinimVer[] HorizontalTemplate = null;
 	Structure_XinimVer[] VerticalTemplate = null;
-	private static UnifiedRandom Rand => WorldGen.genRand;
+	public static UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
 	Point counter = OffSetPoint;
@@ -441,23 +449,14 @@ public partial class RogueLikeWorldGen {
 	public List<Rectangle> ZoneToBeIgnored = new();
 
 	//Zone Code
-	public Rectangle CursedKingdomArea = new Rectangle();
 	Rectangle MainForestZone = new Rectangle();
 	Rectangle MainTundraForestZone = new Rectangle();
 	Rectangle MainJungleForestZone = new Rectangle();
-	public Rectangle JungleTempleEntrance = new();
 
 	Rectangle merchantHouse = new();
 	Rectangle mechanicHouse = new();
-	public Rectangle CrimsonEntrance = new();
-	public Rectangle CorruptionEntrance = new();
-	public Rectangle FleshRealmEntrance = new();
-	public Rectangle SlimeWorldEntrance = new();
-	public Rectangle Pyramid = new Rectangle();
-	public Rectangle KingSlimeStructure = new Rectangle();
 	public Rectangle CrimsonStructure = new Rectangle();
 	public Rectangle CorruptStructure = new Rectangle();
-	public Rectangle FleshStructure = new Rectangle();
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
 	/// <summary>
@@ -814,7 +813,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void ResetValue() {
 		ZoneToBeIgnored.Clear();
 		ForestZone.Clear();
-		CursedKingdomArea = new Rectangle();
 		MainForestZone = new Rectangle();
 		MainTundraForestZone = new Rectangle();
 		WatchTracker = TimeSpan.Zero;
@@ -876,25 +874,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Secret step: " + watch.ToString());
 	}
 	[Task]
-	public void Generate_KingSlimeStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 15 * GridPart_X + Main.rand.Next(GridPart_X);
-		int Y = 12 * GridPart_Y + Main.rand.Next(GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/SlimeChamber", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		KingSlimeStructure = new(point.X, point.Y, data.width, data.height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(KingSlimeStructure);
-			Set_MapIgnoredZoneIntoWorldGen(KingSlimeStructure);
-		}
-		watch.Stop();
-		Mod.Logger.Info("King Slime structure realm step: " + watch.ToString());
-	}
-	[Task]
 	public void Generate_BoCStructure() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -931,25 +910,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		Mod.Logger.Info("Corrupt Chamber structure realm step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_FleshStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 22 * GridPart_X + Main.rand.Next(GridPart_X);
-		int Y = 19 * GridPart_Y + Main.rand.Next(GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/FleshChamber", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		FleshStructure = new(point.X, point.Y, data.width, data.height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(FleshStructure);
-			Set_MapIgnoredZoneIntoWorldGen(FleshStructure);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Flesh chamber structure realm step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_StarterForest() {
@@ -1257,23 +1217,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Small forest step: " + watch.ToString());
 	}
 	[Task]
-	public void Generate_JungleTempleEntrance() {
+	public void Generate_EssentialStructure() {
 		Stopwatch watch = new();
 		watch.Start();
-		int X = 11 * GridPart_X + Rand.Next(0, GridPart_X);
-		int Y = 5 * GridPart_Y + Rand.Next(0, GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/JungleTempleEntrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			JungleTempleEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(JungleTempleEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(JungleTempleEntrance);
+		foreach (var item in ModStructure_System.structures) {
+			item.CreateStructure(Mod, this);
 		}
 		watch.Stop();
-		Mod.Logger.Info("Jungle temple entrance step: " + watch.ToString());
+		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_GoldRoom() {
@@ -1618,120 +1569,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_CursedKingdomStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
-		int X = 17 * GridPart_X + Rand.Next(GridPart_X - data.width);
-		int Y = 17 * GridPart_Y + Rand.Next(GridPart_Y - data.height);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CursedKingdomArea);
-			Set_MapIgnoredZoneIntoWorldGen(CursedKingdomArea);
-		}
-		watch.Stop();
-		Mod.Logger.Info("CK_entrance step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_CrimsonEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		var data = ModWrapper.Get_StructureData("Assets/Crimson_Entrance", Mod);
-		int X = 21 * GridPart_X + Rand.Next(GridPart_X - data.width);
-		int Y = 12 * GridPart_Y + Rand.Next(GridPart_Y - data.height);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CrimsonEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CrimsonEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(CrimsonEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Crimson step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_CorruptionEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		var data = ModWrapper.Get_StructureData("Assets/Corruption_Entrance", Mod);
-		int X = 7 * GridPart_X + Rand.Next(GridPart_X - data.width);
-		int Y = 19 * GridPart_Y + Rand.Next(GridPart_X - data.height);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			CorruptionEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CorruptionEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(CorruptionEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Corruption step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_FleshRealmEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		var data = ModWrapper.Get_StructureData("Assets/FleshRealm_Entrance", Mod);
-		int X = 22 * GridPart_X + Rand.Next(GridPart_X - data.width);
-		int Y = 20 * GridPart_Y + Rand.Next(GridPart_Y - data.height);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			FleshRealmEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(FleshRealmEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(FleshRealmEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Flesh realm step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_SlimeWorldEntrance() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 16 * GridPart_X;
-		int Y = 11 * GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			SlimeWorldEntrance = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(SlimeWorldEntrance);
-			Set_MapIgnoredZoneIntoWorldGen(SlimeWorldEntrance);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Slime world step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_DesertPyramid() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 17 * GridPart_X + Main.rand.Next(GridPart_X);
-		int Y = 7 * GridPart_Y + Main.rand.Next(GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/DesertPyramid", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		Pyramid = new(point.X, point.Y, data.width, data.height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(Pyramid);
-			Set_MapIgnoredZoneIntoWorldGen(Pyramid);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Pyramid realm step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_GuideHouse() {

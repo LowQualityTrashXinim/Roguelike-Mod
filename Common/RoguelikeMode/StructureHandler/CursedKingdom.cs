@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Wrapper;
-using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Scroll;
 using SubworldLibrary;
@@ -13,8 +12,25 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
-namespace Roguelike.Common.Subworlds;
-public class CursedKingdomSubworld : Subworld {
+namespace Roguelike.Common.RoguelikeMode.StructureHandler;
+public class Structure_CursdKingdomEntrance : ModStructure {
+	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
+		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", mod);
+		int X = 17 * RogueLikeWorldGen.GridPart_X + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_X - data.width);
+		int Y = 17 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y - data.height);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			Rectangle CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			system.ZoneToBeIgnored.Add(CursedKingdomArea);
+			system.Set_MapIgnoredZoneIntoWorldGen(CursedKingdomArea);
+			system.SaveStructureLocation("CursedKingdom_Entrance", CursedKingdomArea);
+		}
+	}
+}
+public class CursedKingdom : Subworld {
 	public override int Width => 800;
 	public override int Height => 420;
 	public override List<GenPass> Tasks => new()
@@ -49,7 +65,7 @@ public class GenPass_CursedKingdom : GenPass {
 				counterH += 1;
 			}
 		}
-		CursedKingdom_GenSystem system = ModContent.GetInstance<CursedKingdom_GenSystem>();
+		var system = ModContent.GetInstance<CursedKingdom_GenSystem>();
 		if (system.Place_CursedKingdom()) {
 			system.Place_ChestWithLoot();
 			int spawnX, spawnY = 0;
@@ -63,16 +79,6 @@ public class GenPass_CursedKingdom : GenPass {
 	}
 }
 public class CursedKingdom_GenSystem : ModSystem {
-	public void Place_CursedKingdomEntrance(int X, int Y) {
-		var data = ModWrapper.Get_StructureData("Assets/CK_Entrance", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModContent.GetInstance<RogueLikeWorldGen>().CursedKingdomArea = new(point.X, point.Y, data.width, data.height);
-			ModWrapper.GenerateFromData(data, point);
-		}
-	}
 	public bool Place_CursedKingdom() {
 		var data = ModWrapper.Get_StructureData("Assets/CursedKingdom", Mod);
 		int X = Main.maxTilesX / 2;
@@ -87,7 +93,7 @@ public class CursedKingdom_GenSystem : ModSystem {
 		return false;
 	}
 	public void Place_ChestWithLoot() {
-		UnifiedRandom rand = WorldGen.genRand;
+		var rand = WorldGen.genRand;
 		int chestAmount = 125 + rand.Next(0, 25);
 		for (int i = 0; i < chestAmount; i++) {
 			int X = rand.Next(0, Main.maxTilesX);
@@ -97,7 +103,7 @@ public class CursedKingdom_GenSystem : ModSystem {
 				i--;
 				continue;
 			}
-			Chest chest = Main.chest[chestI];
+			var chest = Main.chest[chestI];
 			for (int a = 0; a < chest.item.Length; a++) {
 				if (Main.rand.NextFloat() >= .1f) {
 					continue;
@@ -149,17 +155,17 @@ public class CursedKingdom_GenSystem : ModSystem {
 }
 public class CursedKingdomPlayer : ModPlayer {
 	public override void UpdateLifeRegen() {
-		if (SubworldSystem.IsActive<CursedKingdomSubworld>()) {
+		if (SubworldSystem.IsActive<CursedKingdom>()) {
 			Player.lifeRegenTime = 0;
 		}
 	}
 	public override void UpdateEquips() {
-		if (SubworldSystem.IsActive<CursedKingdomSubworld>()) {
+		if (SubworldSystem.IsActive<CursedKingdom>()) {
 			Player.AddBuff(BuffID.NoBuilding, 2);
 		}
 	}
 	public override bool CanUseItem(Item item) {
-		if (SubworldSystem.IsActive<CursedKingdomSubworld>()) {
+		if (SubworldSystem.IsActive<CursedKingdom>()) {
 			return !ProjectileID.Sets.Explosive[item.shoot];
 		}
 		return base.CanUseItem(item);

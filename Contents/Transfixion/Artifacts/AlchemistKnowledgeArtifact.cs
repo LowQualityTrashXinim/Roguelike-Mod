@@ -9,8 +9,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 
-namespace Roguelike.Contents.Transfixion.Artifacts
-{
+namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class AlchemistKnowledgeArtifact : Artifact {
 		public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 		public override Color DisplayNameColor => Color.PaleVioletRed;
@@ -24,6 +23,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 			if (!Alchemist) {
 				return;
 			}
+			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			int lengthpositive = 0;
 			for (int i = 0; i < Player.buffType.Length; i++) {
 				int buffType = Player.buffType[i];
@@ -32,17 +32,20 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 				}
 				if (!Main.debuff[buffType]) {
 					lengthpositive++;
-					if(lengthpositive >= 3) {
+					if (lengthpositive >= 3) {
 						break;
 					}
 				}
 				else {
-					lengthpositive -= 2;
+					if (!modplayer.DisableNegativeArtifact) {
+						lengthpositive -= 2;
+					}
 				}
 			}
-			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.BuffTime += .35f;
-			modplayer.DebuffBuffTime += 1f;
+			if (!modplayer.DisableNegativeArtifact) {
+				modplayer.DebuffBuffTime += 1f;
+			}
 			modplayer.TransmutationModifier += .2f;
 			if (lengthpositive != 0) {
 				if (lengthpositive > 0) {

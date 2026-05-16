@@ -2855,6 +2855,11 @@ Mods: {
 				DisplayName: Roguelike_ Milkshake_ Pickup
 				Tooltip: ""
 			}
+
+			OpenShopItem: {
+				DisplayName: Open Shop Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

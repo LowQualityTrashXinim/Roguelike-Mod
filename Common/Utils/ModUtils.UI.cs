@@ -2,20 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using ReLogic.Localization.IME;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Texture;
-using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
@@ -24,6 +20,8 @@ using Terraria.UI.Chat;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static float GetHeight(this UIElement element) => element.GetInnerDimensions().Height;
+
 		public static void SimpleItemMouseExchange(Player player, ref Item item) {
 			Item mouseitem = Main.mouseItem;
 			if (item.type == 0) {

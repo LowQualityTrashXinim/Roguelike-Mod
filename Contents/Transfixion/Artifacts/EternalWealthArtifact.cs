@@ -33,7 +33,7 @@ class EternalWealthPlayer : ModPlayer {
 		Midas_IsInField = false;
 	}
 	public override void UpdateEquips() {
-		if(EternalWealth) {
+		if (EternalWealth) {
 			Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= 3;
 		}
 	}
@@ -41,31 +41,38 @@ class EternalWealthPlayer : ModPlayer {
 		if (EternalWealth) {
 			timer = ModUtils.CountDown(timer);
 			if (timer <= 0) {
-				counterOldPos = ModUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
-				if (objs[counterOldPos] != null && objs[counterOldPos].active) {
-					ObjectSystem.Objects[objs[counterOldPos].whoAmI].Kill();
-				}
-				ModObject obj = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
-				objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
-				timer = 120;
-			}
-			float distance = 300;
-			foreach (EternalWealth_ModObject obj in objs) {
-				if (obj == null) {
-					continue;
-				}
-				if (!obj.active) {
-					continue;
-				}
-				if (Player.Center.IsCloseToPosition(obj.position, distance)) {
-					Midas_IsInField = true;
-					MidasInfection++;
-					if (MidasInfection >= 180)
-						Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
+				if (!Player.ModPlayerStats().DisableNegativeArtifact) {
+					counterOldPos = ModUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
+					if (objs[counterOldPos] != null && objs[counterOldPos].active) {
+						ObjectSystem.Objects[objs[counterOldPos].whoAmI].Kill();
+					}
+					ModObject obj = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
+					objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
+					timer = 120;
 				}
 			}
-			if (!Midas_IsInField)
-				MidasInfection = ModUtils.CountDown(MidasInfection);
+			if (!Player.ModPlayerStats().DisableNegativeArtifact) {
+				float distance = 300;
+				foreach (EternalWealth_ModObject obj in objs) {
+					if (obj == null) {
+						continue;
+					}
+					if (!obj.active) {
+						continue;
+					}
+					if (Player.Center.IsCloseToPosition(obj.position, distance)) {
+						Midas_IsInField = true;
+						MidasInfection++;
+						if (MidasInfection >= 180)
+							Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
+					}
+				}
+				if (!Midas_IsInField)
+					MidasInfection = ModUtils.CountDown(MidasInfection);
+			}
+			else {
+				MidasInfection = 0;
+			}
 		}
 	}
 }

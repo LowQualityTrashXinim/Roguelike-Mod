@@ -5,6 +5,7 @@ using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.Contents;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Wrapper;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -13,6 +14,22 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
+public class PyramidStructure : ModStructure {
+	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
+		int X = 17 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X);
+		int Y = 7 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y);
+		var data = ModWrapper.Get_StructureData("Assets/DesertPyramid", mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		Rectangle rect = new(point.X, point.Y, data.width, data.height);
+
+		ModWrapper.GenerateFromData(data, point);
+		system.ZoneToBeIgnored.Add(rect);
+		system.Set_MapIgnoredZoneIntoWorldGen(rect);
+		system.SaveStructureLocation("Pyramid", rect);
+	}
+}
 internal class Pyramid : ModSystem {
 	public HashSet<Point> PyramidModObjectSpawningPoint() {
 		return [ new Point(95,17),
@@ -45,7 +62,7 @@ new Point(127,92),
 new Point(147,92),
 new Point(167,92),];
 	}
-	public Rectangle Pos_Pyramid => ModContent.GetInstance<RogueLikeWorldGen>().Pyramid;
+	public Rectangle Pos_Pyramid => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("Pyramid");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
 		if (!RoguelikeWorldProperty.RoguelikeWorld) {

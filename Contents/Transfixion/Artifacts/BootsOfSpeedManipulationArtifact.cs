@@ -3,11 +3,10 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
- 
+
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Transfixion.Artifacts
-{
+namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class BootsOfSpeedManipulationArtifact : Artifact {
 		int timer;
 		public override Color DisplayNameColor => Color.Lerp(Color.BlueViolet, Color.Aqua, (MathF.Sin(timer++ * 0.1f) + 1f) / 2f);
@@ -36,6 +35,9 @@ namespace Roguelike.Contents.Transfixion.Artifacts
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (BootofSpeed) {
+				if (Player.ModPlayerStats().DisableNegativeArtifact) {
+					return;
+				}
 				if (Player.velocity.IsLimitReached(5)) {
 					damage *= Main.rand.NextFloat(.3f, 1f);
 				}

@@ -36,3 +36,19 @@ public abstract class BossRushModifier : ModType {
 	public virtual void SetStaticDefault() { }
 	public virtual void OnChoose() { }
 }
+public class BossRushModifierSystem : ModSystem {
+	public bool NPC_IncreasesHP = false;
+	public bool NPC_IncreasesDMG = false;
+	public bool NPC_DealPercentageDMG = false;
+	public bool NPC_ChaoticConcoction = false;
+	public bool NPC_Ghost = false;
+	public bool NPC_HyperRegenerative = false;
+	public void ResetModifier() {
+		NPC_IncreasesHP = false;
+		NPC_IncreasesDMG = false;
+		NPC_DealPercentageDMG = false;
+		NPC_ChaoticConcoction = false;
+		NPC_Ghost = false;
+		NPC_HyperRegenerative = false;
+	}
+}

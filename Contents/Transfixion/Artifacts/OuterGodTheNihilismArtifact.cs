@@ -31,7 +31,9 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		if (!artifact) {
 			return;
 		}
-		Player.ModPlayerStats().UpdateDefenseBase -= 1;
+		if (!Player.ModPlayerStats().DisableNegativeArtifact) {
+			Player.ModPlayerStats().UpdateDefenseBase -= 1;
+		}
 		if (Player.immune) {
 			if (Main.rand.NextBool(10)) {
 				Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
@@ -39,13 +41,13 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		if (!artifact) {
+		if (!artifact || Player.ModPlayerStats().DisableNegativeArtifact) {
 			return;
 		}
 		modifiers.SourceDamage += 1.5f;
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (!artifact) {
+		if (!artifact || Player.ModPlayerStats().DisableNegativeArtifact) {
 			return;
 		}
 		modifiers.SourceDamage += 1.5f;
@@ -67,6 +69,9 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 			for (int i = 0; i < amount; i++) {
 				Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), npc.Center + Main.rand.NextVector2CircularEdge(100 + npc.width, 100 + npc.height), Vector2.Zero, ModContent.ProjectileType<VoidParticle>(), 1, 4f, Player.whoAmI, 70);
 			}
+		}
+		if (Player.ModPlayerStats().DisableNegativeArtifact) {
+			return;
 		}
 		Player.AddBuff(ModContent.BuffType<ShatterShell>(), ModUtils.ToSecond(4));
 	}

@@ -27,7 +27,7 @@ public class CactusSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(6, 8), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3 + 100, item.knockBack, player.whoAmI);
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(13, 15), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3 + 100, item.knockBack, player.whoAmI);
 			Main.projectile[projectile].friendly = true;
 			Main.projectile[projectile].hostile = false;
 			Main.projectile[projectile].penetrate = -1;
@@ -192,7 +192,7 @@ public class BladedGlove : ModEnchantment {
 		ItemIDType = ItemID.BladedGlove;
 	}
 	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
-		useSpeed -= .05f;
+		useSpeed += .25f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 5;

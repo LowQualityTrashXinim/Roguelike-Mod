@@ -23,32 +23,51 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Contents.Transfixion.Skill;
 public static class SkillTypeID {
 	public const byte Skill_None = 0;
-	public const byte Skill_Stats = 2;
-	public const byte Skill_Summon = 3;
-	public const byte Skill_Empowered = 4;
+	/// <summary>
+	/// If your skill is projectile type, then the skill will work differently compared to other skill<br/>
+	/// - Energy require now a constant cost, if your energy requirement is met then the projectile skill is activated<br/>
+	/// - Cool down now used as cool down between shot for the projectile skill bundle.<br/>
+	/// - Duration work the same as other skill and will add on to universal duration.
+	/// </summary>
+	public const byte Projectile = 1;
+	public const byte Stats = 2;
+	public const byte Summon = 3;
+	public const byte Empowered = 4;
+	public const byte Bundle = 5;
+	public const byte Utility = 6;
+	public const byte Modify = 7;
 }
 public abstract class ModSkill : ModType {
 	public static int GetSkillType<T>() where T : ModSkill {
 		return ModContent.GetInstance<T>().Type;
 	}
+	public int Type { get; private set; }
+	public byte Skill_Type { get; protected set; }
 	/// <summary>
-	/// No longer used, will be removed in the future version
+	/// For skill which are <see cref="SkillTypeID.Skill_Projectile"/><br/>
+	/// Uses to determined how fast a projectile can automatically shoot
 	/// </summary>
 	protected int Skill_CoolDown = 0;
+	public int Cooldown { get => Skill_CoolDown; }
 	/// <summary>
 	/// This is handle automatically so no need to worry about doing it yourself
 	/// </summary>
 	protected int Skill_Duration = 0;
-	protected int Skill_EnergyRequire = 0;
-	protected float Skill_EnergyRequirePercentage = 0;
-	protected bool Skill_CanBeSelect = true;
-	public byte Skill_Type { get; protected set; }
-	public virtual string Texture => ModTexture.Get_MissingTexture("Skill");
 	public int Duration { get => Skill_Duration; }
+	protected int Skill_EnergyRequire = 0;
 	public int EnergyRequire { get => Skill_EnergyRequire; }
+	protected float Skill_EnergyRequirePercentage = 0;
 	public float EnergyRequirePercentage { get => Skill_EnergyRequirePercentage; }
+	protected int Skill_ShootType = 0;
+	public int ShootType { get => Skill_ShootType; }
+	protected int Skill_Damage = 0;
+	public int Damage { get => Skill_Damage; }
+	protected float Skill_KnockBack = 0;
+	public float Knockback { get => Skill_KnockBack; }
 	public bool CanBeSelect { get => Skill_CanBeSelect; }
-	public int Type { get; private set; }
+
+	protected bool Skill_CanBeSelect = true;
+	public virtual string Texture => ModTexture.Get_MissingTexture("Skill");
 	public string DisplayName => ModUtils.LocalizationText("ModSkill", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("ModSkill", $"{Name}.Description");
 	public ModSkill() {
@@ -87,6 +106,7 @@ public abstract class ModSkill : ModType {
 	/// </summary>
 	/// <param name="player"></param>
 	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) { }
+	public virtual void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) { }
 	/// <summary>
 	/// This only run when the duration of the skill is equal or below 1
 	/// </summary>
@@ -208,10 +228,19 @@ public class SkillHandlePlayer : ModPlayer {
 	public int BloodToPower = 0;
 	public int Request_Repeat = 0;
 	List<ModSkill> activeskill = new();
+	List<List<ModSkill>> projectileskillActive = new();
+	List<int> ProjectileShootCoolDown = new();
+	public int AlwaysCostEnergy = 0;
 	public int Skill_DirectionPlayerFaceBeforeSkillActivation = -1;
 	public Vector2 Skill_PlayerLastPositionBeforeSkillActivation = Vector2.Zero;
 	public override void OnEnterWorld() {
 		activeskill = new();
+		projectileskillActive = new();
+		projectileskillActive = new();
+		ProjectileShootCoolDown = new();
+		Energy = 0;
+		Duration = 0;
+		AlwaysCostEnergy = 0;
 	}
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
@@ -226,6 +255,8 @@ public class SkillHandlePlayer : ModPlayer {
 		Rechargebucket = 0;
 		CurrentbucketAmount = 0;
 		activeskill = new();
+		projectileskillActive = new();
+		ProjectileShootCoolDown = new();
 	}
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
@@ -403,14 +434,6 @@ public class SkillHandlePlayer : ModPlayer {
 		//return null in case where somehow a very catastrophic event ever happen
 		return null;
 	}
-	public ModSkill CurrentSkill(ref int currentIndex) {
-		int[] active = GetCurrentActiveSkillHolder();
-		var skill = SkillModSystem.GetSkill(active[currentIndex]);
-		if (skill == null) {
-			return null;
-		}
-		return SkillModSystem.GetSkill(active[currentIndex]);
-	}
 	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
 		if (Activate) {
 			return;
@@ -462,15 +485,6 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 		}
 	}
-	/// <summary>
-	/// idk, this name sound cool, so I'm keeping it
-	/// This will remove a skill from skill inventory
-	/// It won't actually request anything network wise
-	/// </summary>
-	/// <param name="whoAmI"></param>
-	public void RequestSkillRemoval_SkillInventory(int whoAmI) {
-		SkillInventory[whoAmI] = -1;
-	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (SkillModSystem.SkillActivation.JustReleased && !Activate) {
 			Activate = true;
@@ -485,8 +499,31 @@ public class SkillHandlePlayer : ModPlayer {
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
 				Skill_PlayerLastPositionBeforeSkillActivation = Player.Center;
+				ProjectileShootCoolDown.Clear();
+				projectileskillActive.Clear();
 				foreach (var item in activeskill) {
 					item.OnTrigger(Player, this, duration, energy);
+					if (item.Skill_Type == SkillTypeID.Modify) {
+						if (projectileskillActive.Count < 1) {
+							projectileskillActive.Add(new() { item });
+							ProjectileShootCoolDown.Add(0);
+						}
+						else {
+							projectileskillActive[projectileskillActive.Count - 1].Add(item);
+						}
+
+					}
+					else if (item.Skill_Type == SkillTypeID.Projectile) {
+						if (projectileskillActive.Count < 1) {
+							projectileskillActive.Add(new() { item });
+							ProjectileShootCoolDown.Add(0);
+						}
+						else {
+							projectileskillActive[projectileskillActive.Count - 1].Add(item);
+							projectileskillActive.Add(new());
+							ProjectileShootCoolDown.Add(0);
+						}
+					}
 				}
 				MaximumDuration += Duration;
 				Energy -= energy;
@@ -545,6 +582,39 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		foreach (var skill in activeskill) {
 			skill.Update(Player, this);
+		}
+		if (Energy <= 0) {
+			return;
+		}
+		Vector2 alwaysShoot = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 5;
+		IEntitySource source = Player.GetSource_Misc("Skill");
+		for (int a = 0; a < projectileskillActive.Count; a++) {
+			if (--ProjectileShootCoolDown[a] > 0) {
+				continue;
+			}
+			List<ModSkill> skilllist = projectileskillActive[a];
+			int amount = 1;
+			List<Vector2> poslist = new() { Player.Center };
+			List<Vector2> vellist = new() { alwaysShoot };
+			foreach (var item in skilllist) {
+				item.ModifyShootProjectile(Player, this, ref amount, ref poslist, ref vellist);
+				if (item.Skill_Type == SkillTypeID.Projectile) {
+					if (item.EnergyRequire >= Energy) {
+						Energy = 0;
+					}
+					else if (Energy >= item.EnergyRequire) {
+						Energy -= item.EnergyRequire;
+					}
+					for (int i = 0; i < amount; i++) {
+						if(i >= poslist.Count) {
+							continue;
+						}
+						NewSkillProjectile(source, poslist[i], vellist[i], vellist[i].Length(), item.ShootType, item.Damage, item.Knockback);
+					}
+					ProjectileShootCoolDown[a] = item.Cooldown;
+				}
+			}
+
 		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -623,6 +693,9 @@ public class SkillHandlePlayer : ModPlayer {
 		Rechargebucket = 0;
 		CurrentbucketAmount = 0;
 		activeskill.Clear();
+		projectileskillActive.Clear();
+		ProjectileShootCoolDown.Clear();
+		AlwaysCostEnergy = 0;
 	}
 	public override void SaveData(TagCompound tag) {
 		tag.Add("SkillHolder1", SkillHolder1);
@@ -855,7 +928,7 @@ class btn_SkillDeletion : UIImage {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		if (SkillModSystem.SelectInventoryIndex != -1) {
-			modplayer.RequestSkillRemoval_SkillInventory(SkillModSystem.SelectInventoryIndex);
+			modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = -1;
 			SkillModSystem.SelectInventoryIndex = -1;
 		}
 		if (SkillModSystem.SelectSkillIndex != -1) {

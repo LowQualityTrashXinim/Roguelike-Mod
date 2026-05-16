@@ -4,16 +4,35 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.Contents;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Wrapper;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
+public class Structure_KingSlimeStructure : ModStructure {
+	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
+		int X = 15 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X);
+		int Y = 12 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y);
+		var data = ModWrapper.Get_StructureData("Assets/SlimeChamber", mod);
+		int Width = data.width / 2;
+		int Height = data.height / 2;
+		Point16 point = new(X - Width, Y - Height);
+		if (ModWrapper.IsInBound(data, point)) {
+			Rectangle rect = new(point.X, point.Y, data.width, data.height);
+			ModWrapper.GenerateFromData(data, point);
+			system.ZoneToBeIgnored.Add(rect);
+			system.Set_MapIgnoredZoneIntoWorldGen(rect);
+			system.SaveStructureLocation("SlimeChamber", rect);
+		}
+	}
+}
 internal class KingSlimeStructure : ModSystem {
 	public Point Point_ModObject_KingSlime => new Point(25, 29);
-	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure;
+	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("SlimeChamber");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
 		if (!RoguelikeWorldProperty.RoguelikeWorld) {
@@ -37,10 +56,10 @@ public class Fix_SlimeCrown : GlobalItem {
 		return entity.type == ItemID.SlimeCrown;
 	}
 	public override bool CanUseItem(Item item, Player player) {
-		return (ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
+		return (ModContent.GetInstance<KingSlimeStructure>().Pos_KSstructure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
 	}
 	public override bool? UseItem(Item item, Player player) {
-		var spawnPosotion = ModContent.GetInstance<RogueLikeWorldGen>().KingSlimeStructure.Location.ToWorldCoordinates().ToPoint();
+		var spawnPosotion = ModContent.GetInstance<KingSlimeStructure>().Pos_KSstructure.Location.ToWorldCoordinates().ToPoint();
 		NPC.SpawnBoss(spawnPosotion.X, spawnPosotion.Y, NPCID.KingSlime, player.whoAmI);
 		return true;
 	}

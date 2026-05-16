@@ -249,3 +249,28 @@ CoinFlip: {
 	DisplayName: Coin flip
 	Description: Randomly choose between a positive or negative outcome
 }
+
+Skill_Arrow: {
+	DisplayName: Arrow
+	Description: Not so reliable but it is better than nothing
+}
+
+Skill_Bullet: {
+	DisplayName: Bullet
+	Description: Reliable
+}
+
+Modify_DuplicateProjectile: {
+	DisplayName: Duplicate Projectile
+	Description: Create another instance of the same projectile ( only applied to Projectile Skill )
+}
+
+Modify_QuadShooting: {
+	DisplayName: Quad Shooting
+	Description: Shoot your projectile in a 4 direction.
+}
+
+Modify_DistanceCast: {
+	DisplayName: Distance Cast
+	Description: Cast your projectile far off from you
+}

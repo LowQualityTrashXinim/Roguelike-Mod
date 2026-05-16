@@ -32,8 +32,11 @@ public class TokenOfWrathPlayer : ModPlayer {
 		}
 		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.1f);
-		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .25f);
 		modplayer.NonCriticalDamage += .5f;
+		if(Player.ModPlayerStats().DisableNegativeArtifact) {
+			return;
+		}
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .25f);
 	}
 }
 public class StrikeOfFury : Perk {

@@ -25,6 +25,8 @@ namespace Roguelike.Common.Global;
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {
+	public bool Unnerfed = false;
+	public bool DisableNegativeArtifact = false;
 	public string CurrentDashType = "";
 	public bool CanDropSynergyEnergy = true;
 	public bool LootboxCanDropSpecialPotion = false;
@@ -256,6 +258,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else if (AlwaysCritValue < 0) {
 			modifiers.DisableCrit();
 		}
+		modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 	}
 	public StatModifier UpdateCritDamage = new StatModifier();
 	public StatModifier Melee_CritDamage = StatModifier.Default;
@@ -342,8 +345,6 @@ public class PlayerStatsHandle : ModPlayer {
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 
-		modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
-
 		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
 	}
 	private void TransferStatsModifier(ref StatModifier stat1, ref StatModifier stat2, float percentage) {
@@ -373,6 +374,9 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		else if (value < 0) {
 			modifiers.DisableCrit();
+		}
+		if(!proj.minion || Unnerfed) {
+			modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 		}
 	}
 	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
@@ -504,6 +508,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
+		Unnerfed = false;
 		if (Healed_timeSinceLastHeal == 0) {
 			Healed = false;
 		}

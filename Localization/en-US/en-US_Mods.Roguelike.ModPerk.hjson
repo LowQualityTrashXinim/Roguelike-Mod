@@ -912,7 +912,15 @@ MomentaryStrike: {
 	DisplayName: Momentary Strike
 	Description:
 		'''
-		Every 150 attacks ( requirement reduce by 25 every stack )
+		Every 100 attacks ( requirement reduce by 25 every stack )
 		+ Increases attack speed by 1000% for 1s
 		'''
+}
+
+Unnerfed: {
+	DisplayName: Unnerfed
+	Description: Revert nerf toward minion can't deal percentage damage
+	Description1: Try getting another stack of this
+	Description2: Completely negate the negavite effect of artifact
+	Description3: There are nothing to be gain here, seriously
 }

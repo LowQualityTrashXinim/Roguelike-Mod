@@ -16,6 +16,9 @@ public class PainStonePlayer : ModPlayer {
 	public override void UpdateEquips() {
 		if (PainStone) {
 			Player.ModPlayerStats().PercentageDamage += .01f;
+			if (Player.ModPlayerStats().DisableNegativeArtifact) {
+				return;
+			}
 			Player.ModPlayerStats().CappedHealthAmount = 50;
 			if (Player.HeldItem.IsAWeapon()) {
 				Player.HeldItem.useTime = Player.HeldItem.useAnimation = 120;

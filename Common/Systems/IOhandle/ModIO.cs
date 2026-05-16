@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Contents.Items.Weapon;
 using System;
@@ -34,9 +35,6 @@ class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RoguelikeMode_Data");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
-	private static string GetThisFilePath([CallerFilePath] string path = null) {
-		return path;
-	}
 	public override void Load() {
 		//string projectPath2 = GetThisFilePath();
 		//string[] strArr = projectPath2.Split("\\");
@@ -69,9 +67,17 @@ class ModIO : ModSystem {
 		//		continue;
 		//	}
 		//}
-		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(RoguelikeAchievement)))) {
-			var achievement = (RoguelikeAchievement)Activator.CreateInstance(type);
-			AchievementSystem.Achievements.Add(achievement);
+		foreach (var type in Mod.Code.GetTypes()) {
+			if (!type.IsAbstract) {
+				if (type.IsAssignableTo(typeof(RoguelikeAchievement))) {
+					var achievement = (RoguelikeAchievement)Activator.CreateInstance(type);
+					AchievementSystem.Achievements.Add(achievement);
+				}
+				else if (type.IsAssignableTo(typeof(ModStructure))) {
+					var structure = (ModStructure)Activator.CreateInstance(type);
+					ModStructure_System.structures.Add(structure);
+				}
+			}
 		}
 		try {
 			if (File.Exists(DataFilePath)) {

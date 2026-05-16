@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.Subworlds;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using SubworldLibrary;
@@ -7,9 +6,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Systems;
+using Roguelike.Common.RoguelikeMode.StructureHandler;
 
 namespace Roguelike.Common.RoguelikeMode;
-internal class RoguelikeHandler : ModSystem {
+internal class RoguelikeStructureHandler : ModSystem {
 	int Projectile_WhoAmI = -1;
 	const int MaxNPCcanBeOnScreen = 50;
 	const int SpawnCD = 600;
@@ -21,12 +21,12 @@ internal class RoguelikeHandler : ModSystem {
 		}
 		var player = Main.LocalPlayer;
 		var system = ModContent.GetInstance<RogueLikeWorldGen>();
-		SpawnPortalWithCondition(player, system.CursedKingdomArea.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_CursedKingdom>());
-		SpawnPortalWithCondition(player, system.SlimeWorldEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_SlimeWorld>());
-		SpawnPortalWithCondition(player, system.FleshRealmEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_FleshRealm>());
-		SpawnPortalWithCondition(player, system.CorruptionEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Corruption>());
-		SpawnPortalWithCondition(player, system.CrimsonEntrance.Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Crimson>());
-		SpawnPortalWithCondition(player, (system.JungleTempleEntrance.Location + new Point(48, 5)).ToWorldCoordinates(), ModContent.ProjectileType<Portal_JungleTemple>());
+		SpawnPortalWithCondition(player, system.GetStructure("CursedKingdom_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_CursedKingdom>());
+		SpawnPortalWithCondition(player, system.GetStructure("SlimeWorld_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_SlimeWorld>());
+		SpawnPortalWithCondition(player, system.GetStructure("FleshRealm_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_FleshRealm>());
+		SpawnPortalWithCondition(player, system.GetStructure("Corruption_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Corruption>());
+		SpawnPortalWithCondition(player, system.GetStructure("Crimson_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_Crimson>());
+		SpawnPortalWithCondition(player, (system.GetStructure("JungleTemple_Entrance").Location + new Point(48, 5)).ToWorldCoordinates(), ModContent.ProjectileType<Portal_JungleTemple>());
 	}
 	private void SpawnPortalWithCondition(Player player, Vector2 pos, int portalType) {
 		if (player.Center.Distance(pos) < 2000) {
@@ -40,7 +40,7 @@ internal class RoguelikeHandler : ModSystem {
 		}
 	}
 	private void CursedKingdomSpawn() {
-		if (!SubworldSystem.IsActive<CursedKingdomSubworld>()) {
+		if (!SubworldSystem.IsActive<CursedKingdom>()) {
 			return;
 		}
 		int counter = 0;
