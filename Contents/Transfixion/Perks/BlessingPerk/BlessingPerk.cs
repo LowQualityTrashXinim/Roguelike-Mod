@@ -348,10 +348,9 @@ public class BlessingOfPerk : Perk {
 		list_category.Add(PerkCategory.Starter);
 		textureString = ModTexture.ACCESSORIESSLOT;
 		CanBeStack = true;
-		CanBeChoosen = false;
 		Tooltip =
 			"+ Increases perk range amount by 1";
-		StackLimit = 999;
+		StackLimit = 11;
 	}
 	public override string ModifyToolTip() {
 		if (StackAmount(Main.LocalPlayer) >= 10) {
@@ -394,7 +393,7 @@ public class BlessingOfMoon : Perk {
 		return false;
 	}
 	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
-		if (!player.immune && Main.rand.NextFloat() <= .75f && !Main.dayTime) {
+		if (!player.immune && Main.rand.NextFloat() <= .75f) {
 			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
 			player.immune = true;
 			player.ModPlayerStats().HasDodgeInThisInstance = true;

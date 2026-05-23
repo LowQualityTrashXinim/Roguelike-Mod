@@ -11,6 +11,7 @@ using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
 using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
 using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
 using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
+using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
 using Roguelike.Contents.Items.NoneSynergy.RectangleShotgun;
 using Roguelike.Contents.Items.NoneSynergy.RifleShotgun;
 using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
@@ -70,7 +71,6 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Merciless;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Mixmaster;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
@@ -299,6 +299,16 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<RelentlessAbomination>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<TwilightNight>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<DarkCactus>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmethystSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TopazSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SapphireSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EmeraldSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RubySwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DiamondSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmberBoneSpear>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<WyvernWrath>());
 	}
 	private void Add_ShortSwordTag() {
 		int tag = (int)WeaponTag.Thrustsword;
@@ -710,69 +720,72 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<RectangleShotgun>());
 	}
 	private void Add_LauncherTag() {
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.FlareGun);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Sandgun);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SnowballCannon);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Harpoon);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SuperStarCannon);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.StarCannon);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.StakeLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.GrenadeLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ProximityMineLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.RocketLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.NailGun);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Stynger);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.JackOLanternLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.SnowmanCannon);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.FireworksLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ElectrosphereLauncher);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Celeb2);
+		int tag = (int)WeaponTag.Launcher;
+		Arr_WeaponTag[tag].Add(ItemID.FlareGun);
+		Arr_WeaponTag[tag].Add(ItemID.Sandgun);
+		Arr_WeaponTag[tag].Add(ItemID.SnowballCannon);
+		Arr_WeaponTag[tag].Add(ItemID.Harpoon);
+		Arr_WeaponTag[tag].Add(ItemID.SuperStarCannon);
+		Arr_WeaponTag[tag].Add(ItemID.StarCannon);
+		Arr_WeaponTag[tag].Add(ItemID.StakeLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.GrenadeLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.ProximityMineLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.RocketLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.NailGun);
+		Arr_WeaponTag[tag].Add(ItemID.Stynger);
+		Arr_WeaponTag[tag].Add(ItemID.JackOLanternLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.SnowmanCannon);
+		Arr_WeaponTag[tag].Add(ItemID.FireworksLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.ElectrosphereLauncher);
+		Arr_WeaponTag[tag].Add(ItemID.Celeb2);
 
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.Flamethrower);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.ElfMelter);
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ItemID.PiranhaGun);
+		Arr_WeaponTag[tag].Add(ItemID.Flamethrower);
+		Arr_WeaponTag[tag].Add(ItemID.ElfMelter);
+		Arr_WeaponTag[tag].Add(ItemID.PiranhaGun);
 
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<WinterFlame>());
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<HandmadeLauncher>());
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<SnowballCannonMK2>());
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<SuperFlareGun>());
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<DeathBySpark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<WinterFlame>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<HandmadeLauncher>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SnowballCannonMK2>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SuperFlareGun>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DeathBySpark>());
 
-		Arr_WeaponTag[(int)WeaponTag.Launcher].Add(ModContent.ItemType<MagicHandCannon>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<MagicHandCannon>());
 	}
 	private void Add_MagicStaffTag() {
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.AmethystStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.TopazStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.SapphireStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.EmeraldStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.RubyStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.DiamondStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.AmberStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ThunderStaff);
+		int tag = (int)WeaponTag.MagicStaff;
 
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.FrostStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.MeteorStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.BookStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.UnholyTrident);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.InfernoFork);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.PoisonStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.VenomStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.BlizzardStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ShadowbeamStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.SpectreStaff);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.StaffofEarth);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.NettleBurst);
-		Arr_WeaponTag[(int)WeaponTag.MagicStaff].Add(ItemID.ApprenticeStaffT3);
+		Arr_WeaponTag[tag].Add(ItemID.AmethystStaff);
+		Arr_WeaponTag[tag].Add(ItemID.TopazStaff);
+		Arr_WeaponTag[tag].Add(ItemID.SapphireStaff);
+		Arr_WeaponTag[tag].Add(ItemID.EmeraldStaff);
+		Arr_WeaponTag[tag].Add(ItemID.RubyStaff);
+		Arr_WeaponTag[tag].Add(ItemID.DiamondStaff);
+		Arr_WeaponTag[tag].Add(ItemID.AmberStaff);
+		Arr_WeaponTag[tag].Add(ItemID.ThunderStaff);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<AmethystSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<TopazSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<SapphireSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<EmeraldSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<RubySwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<DiamondSwotaff>());
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<AmberBoneSpear>());
+		Arr_WeaponTag[tag].Add(ItemID.FrostStaff);
+		Arr_WeaponTag[tag].Add(ItemID.MeteorStaff);
+		Arr_WeaponTag[tag].Add(ItemID.BookStaff);
+		Arr_WeaponTag[tag].Add(ItemID.UnholyTrident);
+		Arr_WeaponTag[tag].Add(ItemID.InfernoFork);
+		Arr_WeaponTag[tag].Add(ItemID.PoisonStaff);
+		Arr_WeaponTag[tag].Add(ItemID.VenomStaff);
+		Arr_WeaponTag[tag].Add(ItemID.BlizzardStaff);
+		Arr_WeaponTag[tag].Add(ItemID.ShadowbeamStaff);
+		Arr_WeaponTag[tag].Add(ItemID.SpectreStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StaffofEarth);
+		Arr_WeaponTag[tag].Add(ItemID.NettleBurst);
+		Arr_WeaponTag[tag].Add(ItemID.ApprenticeStaffT3);
 
-		Arr_WeaponTag[(int)WeaponTag.Sword].Add(ModContent.ItemType<WyvernWrath>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmethystSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<TopazSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<SapphireSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EmeraldSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<RubySwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<DiamondSwotaff>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmberBoneSpear>());
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<WyvernWrath>());
 	}
 	private void Add_MagicWandTag() {
 		int tag = (int)WeaponTag.MagicWand;
@@ -1006,6 +1019,9 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.CopperBow);
 		Arr_WeaponTag[tag].Add(ItemID.CopperAxe);
 		Arr_WeaponTag[tag].Add(ItemID.CopperHammer);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ZapSnapper>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<ShatteredSky>());
 	}
 	private void Add_Avarice() {
 		int tag = (int)WeaponTag.Avarice;
@@ -1049,6 +1065,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganySword);
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyBow);
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyHammer);
+		Arr_WeaponTag[tag].Add(ItemID.Vilethorn);
 	}
 }
 public class OutroEffect_ModPlayer : ModPlayer {

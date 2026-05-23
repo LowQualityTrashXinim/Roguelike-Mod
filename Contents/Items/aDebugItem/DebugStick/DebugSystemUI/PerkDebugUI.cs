@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Roguelike.Common.Systems;
-using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;

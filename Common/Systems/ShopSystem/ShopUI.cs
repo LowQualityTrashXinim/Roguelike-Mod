@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Texture;
 using Terraria;
 using Terraria.GameContent;
@@ -9,7 +10,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Roguelike.Common.Systems.ShopSystem;
 public class OpenShopItem : ModItem {
@@ -71,7 +71,7 @@ public class ShopUI : UIState {
 		panel_Shop_BodyMain.BackgroundColor = new(0, 0, 0, 0);
 		panel_Shop.Append(panel_Shop_BodyMain);
 
-		txpanel_ShoptextRow1 = new($"[i:{ItemID.FallenStar}] Shop 1 [i:{ItemID.FallenStar}]");
+		txpanel_ShoptextRow1 = new($"[i:{ItemID.FallenStar}] Special offer ! [i:{ItemID.FallenStar}]");
 		txpanel_ShoptextRow1.Width.Percent = 1;
 		txpanel_ShoptextRow1.Height.Pixels = 80;
 		txpanel_ShoptextRow1.MarginTop = 5;
@@ -96,7 +96,7 @@ public class ShopUI : UIState {
 		}
 
 
-		txpanel_ShoptextRow2 = new($"[i:{ItemID.FallenStar}] Shop 2 [i:{ItemID.FallenStar}]");
+		txpanel_ShoptextRow2 = new($"[i:{ItemID.FallenStar}] Normal offer [i:{ItemID.FallenStar}]");
 		txpanel_ShoptextRow2.Width.Percent = 1;
 		txpanel_ShoptextRow2.Height.Pixels = 80;
 		txpanel_ShoptextRow2.TextHAlign = 0;
@@ -122,10 +122,12 @@ public class ShopUI : UIState {
 	}
 	public override void OnActivate() {
 		for (int i = 0; i < Arr_ShopUIButtonRow1.Length; i++) {
-			Arr_ShopUIButtonRow1[i].SetItem(new Item(ItemID.FieryGreatsword));
+			Arr_ShopUIButtonRow1[i].SetItem(ContentSamples.ItemsByType[Main.rand.Next(ModItemLib.ListLootboxType)]);
 		}
+		ItemPool pool = LootboxSystem.GetItemPool(ItemPool.GetPoolType<UniversalPool>());
+		var itempool = pool.AllWeaponPool();
 		for (int i = 0; i < Arr_ShopUIButtonRow2.Length; i++) {
-			Arr_ShopUIButtonRow2[i].SetItem(new Item(ItemID.LaserRifle));
+			Arr_ShopUIButtonRow2[i].SetItem(new Item(Main.rand.NextFromHashSet(itempool)));
 		}
 	}
 }

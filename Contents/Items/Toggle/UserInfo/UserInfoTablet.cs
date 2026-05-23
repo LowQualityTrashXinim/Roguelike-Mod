@@ -23,7 +23,6 @@ using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
-using System.Collections;
 using Roguelike.Contents.Transfixion.Augmentation;
 
 namespace Roguelike.Contents.Items.Toggle.UserInfo {
@@ -38,11 +37,11 @@ namespace Roguelike.Contents.Items.Toggle.UserInfo {
 			Item.noUseGraphic = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			if (string.IsNullOrEmpty(InfoUI.InfoShowToItem)) {
+			if (string.IsNullOrEmpty(PlayerStatsTabletUI.InfoShowToItem)) {
 				return;
 			}
 			tooltips.ForEach((t) => { if (t.Name != "ItemName") t.Hide(); });
-			tooltips.Add(new(Mod, "Stats", InfoUI.InfoShowToItem.Substring(0, InfoUI.InfoShowToItem.Length - 1)));
+			tooltips.Add(new(Mod, "Stats", PlayerStatsTabletUI.InfoShowToItem.Substring(0, PlayerStatsTabletUI.InfoShowToItem.Length - 1)));
 		}
 		public override bool? UseItem(Player player) {
 			if (player.ItemAnimationJustStarted) {
@@ -89,7 +88,7 @@ namespace Roguelike.Contents.Items.Toggle.UserInfo {
 				return;
 			}
 			if (StatePressed) {
-				InfoUI.InfoShowToItem += info.InfoText() + "\n";
+				PlayerStatsTabletUI.InfoShowToItem += info.InfoText() + "\n";
 			}
 		}
 
@@ -125,7 +124,7 @@ namespace Roguelike.Contents.Items.Toggle.UserInfo {
 			btn.Hide = hide;
 		}
 	}
-	class InfoUI : UIState {
+	class PlayerStatsTabletUI : UIState {
 		public static string InfoShowToItem = string.Empty;
 		UIPanel mainPanel;
 		UIPanel panel;

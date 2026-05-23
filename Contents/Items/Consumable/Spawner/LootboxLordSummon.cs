@@ -1,13 +1,13 @@
-﻿using Roguelike.Contents.NPCs.LootBoxLord;
-using Roguelike.Texture;
+﻿using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.NPCs.LootBoxLord;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Consumable.Spawner
-{
+namespace Roguelike.Contents.Items.Consumable.Spawner {
 	internal class LootboxLordSummon : BaseSpawnerItem {
-		public override string Texture => ModTexture.MissingTexture_Default;
+		public override string Texture => ModUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 		public override int[] NPCtypeToSpawn => new int[] { ModContent.NPCType<LootBoxLord>() };
 		public override void PostSetStaticDefaults() {
 			NPCID.Sets.MPAllowedEnemies[ModContent.NPCType<LootBoxLord>()] = true;

@@ -652,3 +652,12 @@ Flaming Wood Sword:
 586/ De-bloat RoguelikeWorldGen.Task and organize the world gen and structure files.
 587/ Progress on Shop UI and Modifier.
 588/ Added in perk Unnerfed.
+589/ Added Extra update for NPC.
+590/ Nerfed 3 OP perks.
+591/ Added in Nightmare mode prototype.
+592/ Re-enable Blessing of Opportunity.
+593/ Updated various perk sprite and added new sprite for perk.
+594/ Reworked Flaming Wood Sword.
+595/ Fixed Don't hit tooltip.
+596/ Made bowmarang have a short collision disable when first thrown.
+597/ Updated Information UI which is in Roguelike Menu.

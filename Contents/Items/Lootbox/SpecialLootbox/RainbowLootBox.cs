@@ -2,7 +2,7 @@
 using Roguelike.Contents.Items.Accessories;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Lootbox.DisableLootbox;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
+using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

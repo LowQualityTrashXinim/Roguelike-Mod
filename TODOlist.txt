@@ -216,15 +216,10 @@ Add more swing attack to it
 > 1st attack : downward chop -> shoot out bunch of flame creating a flamewall
 > 2nd attack : upward slash -> shoot out a flame wave that travel a short distance
 > 3rd attack : Circle swing -> Create a heat aura around you for a short moment
-- The Orbit
-Touch up the visual of the orbit projectile
-Add in a alt click ability to make all of the current orbiting projectile fly toward cursor.
 - Master Sword
 Fix up the attack to make it look more smooth.
 - DrainingVeilBlade
 The Shadow clone sword should be consistent with player and also follow player.
-- Bowmarang
-The first instant it spawn, make it ignore tile for a short duration.
 
 24/ Rework skill system.
 Balance & Changes:
@@ -276,9 +271,28 @@ Misc changes:
 - Enchanted Boomerang
 - Zombie Arm
 
+28/ Rework and reimplement lootbox into the mod:
+- What roles the lootbox serves ?
+- What should lootbox do ?
+- How can player obtain lootbox ?
+
+29/ Make a core component for the mod and for the off brand mod.
+The core component will contain the following:
+- Player Stats Handle.
+- Projectile global.
+- NPC global.
+
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.
-
+2/ See if it is possible to beat the game using the following playing style:
+- Melee only.
+- Range only.
+- Mage only.
+- Summoner only.
+- Tank only.
+- Weapon mastery only.
+- Quick switch only.
+- Skill only.
 
 Known issue:
-> > > When a item have its bgs in inventory appear gray out and when you swap a item which the mouse is holding it, the gray out bgs disappear.
+1/ When a item have its bgs in inventory appear gray out and when you swap a item which the mouse is holding it, the gray out bgs disappear.

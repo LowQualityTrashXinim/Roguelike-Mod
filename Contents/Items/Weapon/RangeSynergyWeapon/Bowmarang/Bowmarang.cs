@@ -43,7 +43,7 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 			Projectile.height = 64;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
-			Projectile.tileCollide = true;
+			Projectile.tileCollide = false;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.timeLeft = 999;
 			Projectile.scale = .65f;
@@ -77,6 +77,9 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 				progression = maxProgress;
 				MouseXPosDirection = (int)Projectile.ai[0] * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
 				MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .35f * MouseXPosDirection;
+			}
+			if (Projectile.timeLeft == 980) {
+				Projectile.tileCollide = true;
 			}
 			Projectile.rotation += MathHelper.ToRadians(35);
 			if (TileCollideJustHappen) {

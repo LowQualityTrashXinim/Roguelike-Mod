@@ -124,7 +124,7 @@ internal class UniversalSystem : ModSystem {
 	public PerkDebugUI debugperkUI;
 
 	public SpoilsUIState spoilsState;
-	public InfoUI infoUI;
+	public PlayerStatsTabletUI infoUI;
 	public AchievementUI achievementUI;
 	public StructureUI structUI;
 	public SynergyMenuWikiUI synergyWikiMenu;
@@ -182,7 +182,7 @@ internal class UniversalSystem : ModSystem {
 
 	public override void Unload() {
 		WeaponActionKey = null;
-		InfoUI.InfoShowToItem = null;
+		PlayerStatsTabletUI.InfoShowToItem = null;
 		GivenBossSpawnItem = null;
 
 		DivineHammer_uiState = null;
@@ -235,11 +235,11 @@ internal class UniversalSystem : ModSystem {
 		userInterface?.Update(gameTime);
 		user2ndInterface?.Update(gameTime);
 		if (infoUI != null) {
-			InfoUI.InfoShowToItem = string.Empty;
+			PlayerStatsTabletUI.InfoShowToItem = string.Empty;
 			foreach (var item in infoUI.list_info) {
 				if (item.StatePressed) {
 					if (item.info != null) {
-						InfoUI.InfoShowToItem += item.text.Text + "\n";
+						PlayerStatsTabletUI.InfoShowToItem += item.text.Text + "\n";
 					}
 				}
 			}
@@ -1458,98 +1458,4 @@ public class WeaponEnchantmentUIImg : Roguelike_UIImage {
 		spriteBatch.Draw(item, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
 	}
 	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / textureSize.Length();
-}
-internal class InfoMenuUI : UIState {
-	public Roguelike_UIPanel headerPanel;
-	public Roguelike_UIPanel mainPanel;
-	public InfoMenuPanelThatCanScroll textpanel;
-	public Roguelike_UIPanel SectionPanel;
-	public List<InfoMenuContentPanel> contentPanel;
-	public ExitUI exit;
-	public override void OnInitialize() {
-		mainPanel = new Roguelike_UIPanel();
-		mainPanel.UISetWidthHeight(600, 600);
-		mainPanel.HAlign = .5f;
-		mainPanel.VAlign = .5f;
-		mainPanel.MarginLeft = mainPanel.Width.Pixels * .5f;
-		Append(mainPanel);
-
-		headerPanel = new Roguelike_UIPanel();
-		headerPanel.UISetWidthHeight(600, 80);
-		mainPanel.Append(headerPanel);
-
-		exit = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
-		exit.HAlign = 1f;
-		exit.VAlign = 1f;
-		exit.UISetWidthHeight(52, 52);
-		headerPanel.Append(exit);
-
-		textpanel = new InfoMenuPanelThatCanScroll();
-		textpanel.UISetWidthHeight(600, 380);
-		textpanel.HAlign = .5f;
-		textpanel.VAlign = 1f;
-		mainPanel.Append(textpanel);
-
-		SectionPanel = new();
-		SectionPanel.UISetWidthHeight(300, 600);
-		SectionPanel.HAlign = .5f;
-		SectionPanel.VAlign = .5f;
-		SectionPanel.MarginRight = mainPanel.Width.Pixels * .5f + 10;
-		Append(SectionPanel);
-	}
-}
-public class InfoMenuContentPanel : Roguelike_UITextPanel {
-	public InfoMenuContentPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
-	}
-}
-public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
-	public override void OnInitialize() {
-		OverrideDefaultDraw = true;
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		this.Disable_MouseItemUsesWhenHoverOverAUI();
-	}
-	public override void PostDraw(SpriteBatch spriteBatch) {
-		Info_Draw(spriteBatch);
-	}
-	private int linePosition;
-	private int maxLinePosition;
-	protected void Info_Draw(SpriteBatch spriteBatch) {
-		string text = ModUtils.LocalizationText("InfoMenu");
-
-		DynamicSpriteFont font = FontAssets.MouseText.Value;
-		float scale = 1f;
-		string[] lines = Terraria.Utils.WordwrapString(
-		   text,
-			font,
-			(int)(GetInnerDimensions().Width / scale),
-			9999,
-			out int lineCount
-		).Where(line => line is not null).ToArray();
-
-		maxLinePosition = Math.Max(lines.Length - 15, 0);
-		linePosition = Math.Clamp(linePosition, 0, maxLinePosition);
-
-		float yOffset = 0f;
-		for (int i = linePosition; i < Math.Min(linePosition + 15, lines.Length); i++) {
-			string text2 = lines[i];
-			ChatManager.DrawColorCodedStringWithShadow(
-				spriteBatch,
-				font,
-				text2,
-				GetInnerDimensions().Position() + Vector2.UnitY * yOffset,
-				Color.White,
-				0f,
-				Vector2.Zero,
-				Vector2.One * scale
-			);
-
-			yOffset += scale * 25f;
-		}
-	}
-
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
-		linePosition -= MathF.Sign(evt.ScrollWheelValue);
-	}
 }

@@ -34,10 +34,10 @@ MarkOfSpectre: {
 	DisplayName: Mark of Spectre
 	Description:
 		'''
-		+ You have 60% to dodge a incomming attack
+		+ You have 50% to dodge a incomming attack
 		+ Your movement speed is increases by 35% and massively boost jump speed
 		+ You are knockback less
-		- Damage taken is increases by 25%
+		- Damage taken is increases by 45%
 		'''
 }
 
@@ -179,6 +179,7 @@ ScatterShot: {
 		'''
 		+ When a projectile die, it will shoot out a weaker version of itself
 		Note : There are projectiles which are blocked to work with this perk
+		- Decreases none-minion projectile damage by 33%
 		'''
 }
 
@@ -485,7 +486,7 @@ BlessingOfMoon: {
 		+ Your attack deal extra 125% of weapon damage as True damage
 		+ Inflict Moonlight debuff onto enemy which drastically make enemies more vulnerable 
 		+ Your attack is always accompany by Lunar Flare
-		+ During the night, you have 75% to dodge an attack
+		+ You have 75% to dodge an attack
 		'''
 }
 
@@ -595,8 +596,8 @@ BloodVoodoo: {
 		'''
 }
 
-NightTerror: {
-	DisplayName: Night Terror
+InnerMoon: {
+	DisplayName: Inner Moon
 	Description:
 		'''
 		While your health is below 60%:

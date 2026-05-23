@@ -20,11 +20,11 @@ public class MarkOfSpectre : Perk {
 		ModifyHit(ref modifiers);
 	}
 	private static void ModifyHit(ref Player.HurtModifiers modifiers) {
-		modifiers.FinalDamage += .25f;
+		modifiers.FinalDamage += .45f;
 		modifiers.Knockback *= .35f;
 	}
 	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
-		if (!player.immune && Main.rand.NextFloat() <= .6f) {
+		if (!player.immune && Main.rand.NextFloat() <= .5f) {
 			player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
 			player.immune = true;
 			player.ModPlayerStats().HasDodgeInThisInstance = true;

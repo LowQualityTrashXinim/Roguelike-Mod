@@ -20,7 +20,7 @@ namespace Roguelike.Contents.Items.Consumable.SpecialReward
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "DonHitReward",
 				"Overcoming a small challenge \n" +
-				"Increase maximum health by 15 " +
+				"Increase maximum health by 15\n " +
 				"Can only be used once \n"
 				));
 		}

@@ -17,6 +17,7 @@ internal class TheOrbit : SynergyModItem {
 		Item.UseSound = SoundID.Item1;
 	}
 	int counter = 0;
+	public override bool AltFunctionUse(Player player) => true;
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
 		int valid = 1;
@@ -100,6 +101,8 @@ public class TheOrbitTheProjectile : ModProjectile {
 		Projectile.penetrate = -1;
 		Projectile.light = 1f;
 	}
+	public bool AltShoot = false;
+	public bool Shoot = false;
 	public override void AI() {
 		if (Projectile.ai[1] == 0) {
 			Projectile.ai[0] = Main.rand.Next(0, 360);
@@ -108,6 +111,17 @@ public class TheOrbitTheProjectile : ModProjectile {
 		}
 		var player = Main.player[Projectile.owner];
 		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 10);
+		if (AltShoot) {
+			if (!Shoot) {
+				Projectile.velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 3;
+				Shoot = true;
+			}
+			return;
+		}
+		if (player.altFunctionUse == 2) {
+			AltShoot = true;
+			return;
+		}
 		Projectile.Center = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + Projectile.timeLeft * Projectile.ai[2])) * Projectile.ai[1];
 	}
 	public override Color? GetAlpha(Color lightColor) {
@@ -140,13 +154,18 @@ public class TheOrbitTheProjectile : ModProjectile {
 		}
 		Main.EntitySpriteDraw(texture, drawpos, null, color, Projectile.rotation, origin, 1.3f, SpriteEffects.None);
 		if (!ModContent.GetInstance<RogueLikeConfig>().LowerQuality) {
-			Vector2[] oldPosCached = new Vector2[Projectile.oldPos.Length];
-			Array.Copy(Projectile.oldPos, oldPosCached, oldPosCached.Length);
-			for (int i = 0; i < Projectile.oldPos.Length; i++) {
-				Projectile.oldPos[i] = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + (Projectile.timeLeft + i + 1) * Projectile.ai[2])) * Projectile.ai[1] - origin;
+			if (!AltShoot) {
+				Vector2[] oldPosCached = new Vector2[Projectile.oldPos.Length];
+				Array.Copy(Projectile.oldPos, oldPosCached, oldPosCached.Length);
+				for (int i = 0; i < Projectile.oldPos.Length; i++) {
+					Projectile.oldPos[i] = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[0] + (Projectile.timeLeft + i + 1) * Projectile.ai[2])) * Projectile.ai[1] - origin;
+				}
+				Projectile.DrawTrailWithoutAlpha(color.ScaleRGB(.45f), .05f);
+				Array.Copy(oldPosCached, Projectile.oldPos, oldPosCached.Length);
 			}
-			Projectile.DrawTrailWithoutAlpha(color.ScaleRGB(.45f), .05f);
-			Array.Copy(oldPosCached, Projectile.oldPos, oldPosCached.Length);
+			else {
+				Projectile.DrawTrailWithoutAlpha(color.ScaleRGB(.45f), .05f);
+			}
 			lightColor = Projectile.GetAlpha(lightColor);
 		}
 		return base.PreDraw(ref lightColor);

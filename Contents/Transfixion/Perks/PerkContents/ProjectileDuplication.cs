@@ -24,4 +24,7 @@ public class ProjectileDuplication : Perk {
 			player.GetModPlayer<PlayerStatsHandle>().Request_ShootExtra(StackAmount(player), 5 + 5 * StackAmount(player));
 		}
 	}
+	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+		modifiers.SourceDamage += .2f * StackAmount(player);
+	}
 }

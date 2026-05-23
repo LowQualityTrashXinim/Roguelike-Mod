@@ -108,6 +108,11 @@ namespace Roguelike.Common.Global {
 					perkplayer.perks.Add(perk.Type, perk.StackLimit);
 				}
 			}
+			if (Main.ActiveWorldFileData.IsValid) {
+				if (Main.ActiveWorldFileData.Name == "Nightmare") {
+					Main.NewText("You have entered Nightmare mode", Color.Black);
+				}
+			}
 			//if (Main.ActiveWorldFileData.GameMode == 0) {
 			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
 			//}

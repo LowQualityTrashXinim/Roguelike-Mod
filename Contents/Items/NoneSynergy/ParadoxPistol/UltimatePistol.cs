@@ -1,4 +1,3 @@
- 
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Terraria;
@@ -6,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
+namespace Roguelike.Contents.Items.NoneSynergy.ParadoxPistol
 {
 	class UltimatePistol : ModItem {
 		int Counter = 0;
@@ -89,8 +88,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 						Projectile.NewProjectile(source, position, velocity, ProjectileID.HallowStar, damage, knockback, player.whoAmI);
 						Projectile.NewProjectile(source, position, velocity, ProjectileID.StarWrath, damage * 3, knockback, player.whoAmI);
 						Projectile.NewProjectile(source, position, velocity, ProjectileID.FallingStar, damage, knockback, player.whoAmI);
-						Vector2 StarPosition = new Vector2(Main.MouseWorld.X - Main.rand.Next(-100, 100), -950);
-						Vector2 StarToMouse = (Main.MouseWorld - StarPosition).SafeNormalize(Vector2.UnitX) * 10f;
+						var StarPosition = new Vector2(Main.MouseWorld.X - Main.rand.Next(-100, 100), -950);
+						var StarToMouse = (Main.MouseWorld - StarPosition).SafeNormalize(Vector2.UnitX) * 10f;
 						NumOfProjectile = 36;
 						for (int i = 0; i < NumOfProjectile; i++) {
 							newVelocity = velocity.Vector2DistributeEvenly(NumOfProjectile, 360, i);
@@ -217,14 +216,14 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 							newVelocity = velocity.RotateRandom(40).Vector2RandomSpread(7, 1.5f);
 							Projectile.NewProjectile(source, position, newVelocity, ProjectileID.CrystalStorm, damage, knockback, player.whoAmI);
 							if (i < 20) {
-								Vector2 SkyPosition = new Vector2(Main.MouseWorld.X + Main.rand.Next(-75, 75), Main.MouseWorld.Y - 600 + Main.rand.Next(-100, 100));
-								Vector2 FallingDirection = (Main.MouseWorld - SkyPosition).SafeNormalize(Vector2.UnitX) * 30;
+								var SkyPosition = new Vector2(Main.MouseWorld.X + Main.rand.Next(-75, 75), Main.MouseWorld.Y - 600 + Main.rand.Next(-100, 100));
+								var FallingDirection = (Main.MouseWorld - SkyPosition).SafeNormalize(Vector2.UnitX) * 30;
 								Projectile.NewProjectile(source, SkyPosition, FallingDirection, ProjectileID.CrystalStorm, damage, knockback, player.whoAmI);
 							}
 						}
 						break;
 					case 17://MagnetSphereBall
-						Vector2 SafeMovement = (player.Center - Main.MouseWorld).SafeNormalize(Vector2.UnitX) * 10;
+						var SafeMovement = (player.Center - Main.MouseWorld).SafeNormalize(Vector2.UnitX) * 10;
 						Projectile.NewProjectile(source, Main.MouseWorld, SafeMovement, ProjectileID.MagnetSphereBall, damage * 10, knockback, player.whoAmI);
 						break;
 					case 18://HallowWeedPackage
@@ -260,8 +259,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 								newVelocity = velocity.RotateRandom(40).Vector2RandomSpread(7);
 								Projectile.NewProjectile(source, position, newVelocity * 1.5f, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
 							}
-							Vector2 SkyPosition = new Vector2(Main.MouseWorld.X + Main.rand.Next(-75, 75), Main.MouseWorld.Y - 600 + Main.rand.Next(-100, 100));
-							Vector2 FallingDirection = (Main.MouseWorld - SkyPosition).SafeNormalize(Vector2.UnitX) * 30;
+							var SkyPosition = new Vector2(Main.MouseWorld.X + Main.rand.Next(-75, 75), Main.MouseWorld.Y - 600 + Main.rand.Next(-100, 100));
+							var FallingDirection = (Main.MouseWorld - SkyPosition).SafeNormalize(Vector2.UnitX) * 30;
 							Projectile.NewProjectile(source, SkyPosition, FallingDirection, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
 						}
 						break;

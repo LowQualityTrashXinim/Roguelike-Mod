@@ -21,6 +21,11 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 				entity.lifeMax = (int)(BossHP * GetValueMulti());
 				entity.damage = (int)(BossDMG * GetValueMulti());
 				entity.defense = (int)(BossDef * GetValueMulti(.5f));
+				if (Main.ActiveWorldFileData.IsValid) {
+					if (Main.ActiveWorldFileData.Name == "Nightmare") {
+						entity.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate = 1;
+					}
+				}
 			}
 		}
 		else {
@@ -75,6 +80,12 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 		if (Main.masterMode) {
 			extraMultiply += .3f;
+		}
+		if (Main.ActiveWorldFileData.IsValid) {
+			if (Main.ActiveWorldFileData.Name == "Nightmare") {
+				extraMultiply = 1f;
+				scale += .1f;
+			}
 		}
 		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
 		if (RoguelikeWorldProperty.BossRushWorld) {

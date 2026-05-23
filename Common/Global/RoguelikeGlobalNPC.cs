@@ -36,6 +36,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public const int BossHP = 8000;
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
+	public int ExtraUpdate = 0;
 	/// <summary>
 	/// Use this for always update velocity
 	/// </summary>
@@ -210,10 +211,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
 		if (npc.HasBuff<WrathOfBlueMoon>()) {
-			modifiers.SourceDamage += .1f * WrathOfBlueMoon;
+			modifiers.SourceDamage += .01f * WrathOfBlueMoon;
 		}
 		if (npc.HasBuff<FuryOfTheSun>()) {
-			modifiers.SourceDamage += .1f * FuryOfTheSun;
+			modifiers.SourceDamage += .01f * FuryOfTheSun;
 		}
 		if (npc.HasBuff<HallowedGaze>()) {
 			modifiers.SourceDamage += .05f * HallowedGaze_Count;
@@ -235,7 +236,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			if (++ElectricConductor >= 10) {
 				ElectricConductor = 10;
 				if (Main.rand.NextBool(10)) {
-					npc.AddBuff(BuffID.Electrified, 60 + player.itemAnimationMax);
+					npc.AddBuff(BuffID.Electrified, 600 + player.itemAnimationMax);
 				}
 			}
 			if (ElectricConductorUpgrade) {
@@ -419,5 +420,20 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		//	spriteBatch.Draw(texture, drawpos + Vector2.One.Add(0, -2) * 3, npc.frame, Color.Red * .25f, npc.rotation, origin, npc.scale, effect, 0);
 		//}
 		return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+	}
+}
+public class RoguelikeNPCModSystem : ModSystem {
+	public override void Load() {
+		On_NPC.UpdateNPC += On_NPC_UpdateNPC;
+	}
+
+	private void On_NPC_UpdateNPC(On_NPC.orig_UpdateNPC orig, NPC self, int i) {
+		if (self.TryGetGlobalNPC(out RoguelikeGlobalNPC global)) {
+			int amount = global.ExtraUpdate;
+			for (int l = 0; l < amount; l++) {
+				orig(self, i);
+			}
+		}
+		orig(self, i);
 	}
 }

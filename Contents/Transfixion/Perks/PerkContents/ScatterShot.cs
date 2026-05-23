@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 using Terraria;
 
@@ -10,5 +11,11 @@ public class ScatterShot : Perk {
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PerkPlayer>().perk_ScatterShot = true;
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.minion || proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().IsFromMinion) {
+			return;
+		}
+		modifiers.SourceDamage -= .33f;
 	}
 }

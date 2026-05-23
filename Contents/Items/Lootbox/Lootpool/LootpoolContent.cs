@@ -1,9 +1,12 @@
 ﻿using Terraria.ID;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
+using Terraria;
 
 namespace Roguelike.Contents.Items.Lootbox.Lootpool;
+public class LunarPool : ItemPool {
 
+}
 public class CorruptionPool : ItemPool {
 	public override HashSet<int> MeleeLoot() => [ItemID.WarAxeoftheNight, ItemID.LightsBane, ItemID.BallOHurt, ItemID.DarkLance, ItemID.CorruptYoyo, ItemID.TentacleSpike];
 	public override HashSet<int> RangeLoot() => [ItemID.DemonBow, ItemID.EbonwoodBow];

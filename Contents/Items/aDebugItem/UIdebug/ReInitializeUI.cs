@@ -1,6 +1,5 @@
 ﻿using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.aDebugItem.InGameEditor;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;

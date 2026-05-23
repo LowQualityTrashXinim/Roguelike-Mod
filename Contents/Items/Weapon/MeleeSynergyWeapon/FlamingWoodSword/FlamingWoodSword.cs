@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -13,7 +16,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 internal class FlamingWoodSword : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushSetDefault(64, 68, 22, 5f, 30, 30, 1, false);
+		Item.BossRushSetDefault(64, 68, 44, 5f, 30, 30, 1, false);
 		Item.DamageType = DamageClass.Melee;
 
 		Item.crit = 5;
@@ -89,10 +92,9 @@ public class FlamingWoodSwordWave : ModProjectile {
 		Projectile.tileCollide = false;
 		Projectile.timeLeft = 1250;
 		Projectile.light = 0.5f;
-		Projectile.extraUpdates = 10;
+		Projectile.extraUpdates = 5;
 		Projectile.alpha = 255;
 		Projectile.usesIDStaticNPCImmunity = true;
-		Projectile.scale = 2;
 	}
 	public override void AI() {
 		if (Projectile.timeLeft <= 75) {
@@ -106,6 +108,10 @@ public class FlamingWoodSwordWave : ModProjectile {
 			dust.position += Main.rand.NextVector2Circular(Projectile.width, Projectile.width) * .5f;
 			dust.noGravity = true;
 			dust.scale *= Projectile.scale;
+		}
+		Projectile.velocity *= .99f;
+		if (!Projectile.velocity.IsLimitReached(.1f)) {
+			Projectile.Kill();
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
@@ -123,8 +129,89 @@ public class FlamingWoodSwordWave : ModProjectile {
 		for (int k = 1; k < Projectile.oldPos.Length + 1; k++) {
 			var drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin * Projectile.scale;
 			var color = Color.Lerp(Color.Red, Color.Yellow, k / 100f);
-			Main.EntitySpriteDraw(texture, drawPos, null, color.ScaleRGB(percentageAlpha), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(texture, drawPos, null, color with { A = (byte)(255 * percentageAlpha) }, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		}
 		return false;
+	}
+	public override void OnKill(int timeLeft) {
+		SoundEngine.PlaySound(SoundID.Item14 with { PitchVariance = .2f }, Projectile.Center);
+		int amount = Main.rand.Next(10, 19);
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center + Main.rand.NextVector2Circular(150, 150), Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.5f, 1.25f), ModContent.ProjectileType<FlamingFireSpark>(), (int)(Projectile.damage * .85f), 1f, Projectile.owner);
+		}
+		float randomRotation = MathHelper.ToRadians(Main.rand.Next(0, 90));
+		for (int i = 0; i < 4; i++) {
+			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.RotatedBy(randomRotation + MathHelper.PiOver2 * i) * 10, ModContent.ProjectileType<FlamingFireBall>(), (int)(Projectile.damage * 1.25f), 1f, Projectile.owner);
+		}
+		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<FlamingBlastWave>(), (int)(Projectile.damage * 1.5f), 1f, Projectile.owner);
+	}
+}
+public class FlamingBlastWave : ModProjectile {
+	public override string Texture => ModTexture.OuterInnerGlow;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.tileCollide = false;
+		Projectile.light = 1.5f;
+		Projectile.timeLeft = 120;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.scale = 1;
+	}
+	public override void AI() {
+		if (Projectile.ai[1] == 0) {
+			Projectile.ai[1] = 1;
+			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 200);
+			Player player = Main.player[Projectile.owner];
+			foreach (var npc in npclist) {
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, 1));
+			}
+		}
+		Projectile.ai[1] += .25f;
+		if (Projectile.scale <= 5 && Projectile.ai[2] == 0) {
+			Projectile.scale += .5f;
+			return;
+		}
+		else {
+			Projectile.ai[2] = 1;
+		}
+		Projectile.scale -= .25f;
+		if (Projectile.scale <= 0) {
+			Projectile.Kill();
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		Vector2 origin = texture.Size() * .5f;
+		float percentage = Math.Clamp(1 - Projectile.ai[1] / 8f, 0, 1f);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Orange, 0, origin, Projectile.scale, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Red with { A = (byte)(255 * percentage) }, 0, origin, Projectile.ai[1], SpriteEffects.None);
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		return false;
+	}
+}
+public class FlamingFireBall : ModProjectile {
+	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.BallofFire);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 16;
+		Projectile.tileCollide = true;
+		Projectile.light = .5f;
+		Projectile.timeLeft = 120;
+		Projectile.friendly = true;
+		Projectile.penetrate = 1;
+		Projectile.alpha = 0;
+	}
+	public override void AI() {
+		for (int i = 0; i < 2; i++) {
+			int dust = Dust.NewDust(Projectile.position, 16, 16, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].fadeIn = 1;
+		}
+		Projectile.rotation += MathHelper.PiOver4 * .5f;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.OnFire3, ModUtils.ToSecond(Main.rand.Next(7, 11)));
 	}
 }

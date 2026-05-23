@@ -16,7 +16,7 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff, $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt");
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMagic(56, 16, 12, 2f, 5, 5, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
+			Item.BossRushDefaultMagic(56, 16, 22, 2f, 5, 5, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
 
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(gold: 50);
@@ -67,6 +67,13 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				.AddIngredient(ItemID.RedRyder)
 				.AddIngredient(ItemID.ThunderSpear)
 				.Register();
+		}
+	}
+	public class ZapSnapper_ModPlayer : ModPlayer {
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.Check_ItemTypeSource<ZapSnapper>()) {
+				target.AddBuff(BuffID.Electrified, 180);
+			}
 		}
 	}
 	public class LightningStrike : ModProjectile {

@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
+namespace Roguelike.Contents.Items.NoneSynergy.ParadoxPistol
 {
 	public class UltimatePistolMinion : ModProjectile {
 		public override string Texture => ModUtils.GetTheSameTextureAsEntity<UltimatePistol>();
@@ -23,28 +23,28 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 		}
 		bool ISFACINGRIGHT = false;
 		public override bool PreAI() {
-			Player player = Main.player[Projectile.owner];
+			var player = Main.player[Projectile.owner];
 
 			//Idle Position and rotation
 			Projectile.velocity = player.velocity;
 
 
-			Vector2 DegreeToAim = Main.MouseWorld - Projectile.position;
-			Vector2 SafeDegree = DegreeToAim.SafeNormalize(Vector2.UnitX);
+			var DegreeToAim = Main.MouseWorld - Projectile.position;
+			var SafeDegree = DegreeToAim.SafeNormalize(Vector2.UnitX);
 			float SaferRotate = SafeDegree.ToRotation();
 
 			Projectile.rotation = SaferRotate;
 			//Actual AI here
 
 			float distanceFromTarget = 1000f;
-			Vector2 targetCenter = Projectile.position;
+			var targetCenter = Projectile.position;
 			bool foundTarget = false;
 
 			ISFACINGRIGHT = IsfacingRight(DegreeToAim, Vector2.Zero, false);
 
 			if (!foundTarget) {
 				for (int i = 0; i < Main.maxNPCs; i++) {
-					NPC npc = Main.npc[i];
+					var npc = Main.npc[i];
 					if (npc.CanBeChasedBy()) {
 						float between = Vector2.Distance(npc.Center, Projectile.Center);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
@@ -59,8 +59,8 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 				}
 			}
 			if (foundTarget) {
-				Vector2 DistanceFromProjToAim = targetCenter - Projectile.position;
-				Vector2 DirectionFromProjToAim = DistanceFromProjToAim.SafeNormalize(Vector2.UnitX) * 15f; ;
+				var DistanceFromProjToAim = targetCenter - Projectile.position;
+				var DirectionFromProjToAim = DistanceFromProjToAim.SafeNormalize(Vector2.UnitX) * 15f; ;
 				float aimtoTarget = DirectionFromProjToAim.ToRotation();
 				Projectile.rotation = aimtoTarget;
 				ISFACINGRIGHT = IsfacingRight(Vector2.Zero, DistanceFromProjToAim, foundTarget);
@@ -95,10 +95,10 @@ namespace Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);
-			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
-			SpriteEffects sprite = !ISFACINGRIGHT ? SpriteEffects.FlipVertically : SpriteEffects.None;
+			var texture = TextureAssets.Projectile[Projectile.type].Value;
+			var origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+			var drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+			var sprite = !ISFACINGRIGHT ? SpriteEffects.FlipVertically : SpriteEffects.None;
 			Main.EntitySpriteDraw(texture, drawPos, null, Main.DiscoColor, Projectile.rotation, origin, Projectile.scale, sprite, 0);
 			return false;
 		}

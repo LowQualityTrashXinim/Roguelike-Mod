@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Utils;
- 
-using Roguelike.Texture;
 
-namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
-{
+using Roguelike.Texture;
+using Terraria.GameContent;
+
+namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 	internal class SuperShortSwordOrbitShortSword : ModProjectile {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
@@ -159,8 +159,8 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 		}
 		public Vector2 getPosToReturn(Player player, float offSet, int Counter, float Distance = 50) => player.Center + Vector2.One.RotatedBy(offSet + Counter * 0.05f) * Distance;
 		public override bool PreDraw(ref Color lightColor) {
-			Main.instance.LoadProjectile(Projectile.type);
-			Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetVanillaTexture<Item>(TerrariaArrayID.AllOreShortSword[(int)Index])).Value;
+			Main.instance.LoadItem(TerrariaArrayID.AllOreShortSword[(int)Index]);
+			Texture2D texture = TextureAssets.Item[TerrariaArrayID.AllOreShortSword[(int)Index]].Value;
 			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 			Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
