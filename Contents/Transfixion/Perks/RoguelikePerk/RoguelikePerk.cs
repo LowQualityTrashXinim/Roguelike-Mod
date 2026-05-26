@@ -16,7 +16,7 @@ public class SuppliesDrop : Perk {
 		CanBeChoosen = false;
 	}
 	public override bool SelectChoosing() {
-		return !RoguelikeWorldProperty.BossRushWorld;
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
 	}
 	public override void OnChoose(Player player) {
 		ModUtils.GetWeapon(out int weapon, out int amount);
@@ -31,7 +31,7 @@ public class GiftOfRelic : Perk {
 		CanBeChoosen = false;
 	}
 	public override bool SelectChoosing() {
-		return !RoguelikeWorldProperty.BossRushWorld;
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
 	}
 	public override void OnChoose(Player player) {
 		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());

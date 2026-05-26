@@ -26,6 +26,7 @@ namespace Roguelike.Common.Global;
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {
 	public bool Unnerfed = false;
+	public bool Unnerfed2 = false;
 	public bool DisableNegativeArtifact = false;
 	public string CurrentDashType = "";
 	public bool CanDropSynergyEnergy = true;
@@ -578,12 +579,13 @@ public class PlayerStatsHandle : ModPlayer {
 			TemporaryEnergy_CounterLimit = 0;
 		}
 
-		if (CappedHealthAmount == -1) {
+		if (CappedHealthAmount == -1 || Unnerfed2) {
 			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, int.MaxValue);
 		}
 		else {
 			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, CappedHealthAmount);
 		}
+		Unnerfed2 = false;
 		EnergyCap.Flat += TemporaryEnergy;
 		CappedHealthAmount = -1;
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2) + TemporaryMana, 1, int.MaxValue);

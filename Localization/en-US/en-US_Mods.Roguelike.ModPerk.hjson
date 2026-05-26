@@ -1,11 +1,111 @@
 SuppliesDrop: {
-	DisplayName: Supply Drop
+	DisplayName: "Supply Drop [Common]"
 	Description: Give you 1 randomize weapon based on progression
 }
 
 GiftOfRelic: {
-	DisplayName: Gift of Relic
+	DisplayName: "Gift of Relic [Common]"
 	Description: Grant you a relic
+}
+
+MeleeDamage: {
+	DisplayName: "Melee damage [Common]"
+	Description: Increases melee damage by 15%
+}
+
+RangeDamage: {
+	DisplayName: "Range damage [Common]"
+	Description: Increases range damage by 15%
+}
+
+MagicDamage: {
+	DisplayName: "Magic damage [Common]"
+	Description: Increases magic damage by 15%
+}
+
+SummonDamage: {
+	DisplayName: "Summon damage [Common]"
+	Description: Increases summon damage by 15%
+}
+
+IncreasesDamage: {
+	DisplayName: "Increases damage [Common]"
+	Description: Increases damage by 8%
+}
+
+IncreasesCriticalChance: {
+	DisplayName: "Increases critical chance [Common]"
+	Description: Increases critical chance by 3%
+}
+
+IncreasesCriticalDamage: {
+	DisplayName: "Increases critical damage [Common]"
+	Description: Increases critical damage by 20%
+}
+
+MeleeCriticalChance: {
+	DisplayName: "Melee Critical Chance [Common]"
+	Description: Increases melee critical chance by 8
+}
+
+RangeCriticalChance: {
+	DisplayName: "Ramge Critical Chance [Common]"
+	Description: Increases ramge critical chance by 8
+}
+
+MagicCriticalChance: {
+	DisplayName: "Magic Critical Chance [Common]"
+	Description: Increases magic critical chance by 8
+}
+
+MeleeCriticalDamage: {
+	DisplayName: "Melee Critical damage [Common]"
+	Description: Increases melee critical damage by 30%
+}
+
+RangeCriticalDamage: {
+	DisplayName: "Ramge Critical damage [Common]"
+	Description: Increases ramge critical damage by 30%
+}
+
+MagicCriticalDamage: {
+	DisplayName: "Magic Critical damage [Common]"
+	Description: Increases magic critical damage by 30%
+}
+
+IncreasesDefense: {
+	DisplayName: "Defense [Common]"
+	Description: Increases defenses by 4
+}
+
+IncreasesHealth: {
+	DisplayName: "Maximum Health [Common]"
+	Description: Increases maximum health by 20
+}
+
+IncreasesMana: {
+	DisplayName: "Maximum Mana [Common]"
+	Description: Increases maximum mana by 20
+}
+
+IncreasesLifeRegen: {
+	DisplayName: "Life regenerate [Common]"
+	Description: Increases life regen by 1
+}
+
+IncreasesManaRegen: {
+	DisplayName: "Mana regenerate [Common]"
+	Description: Increases mana regen by 30%
+}
+
+IncreasesDebuffDamage: {
+	DisplayName: "Debuff damage [Common]"
+	Description: Increases debuff damage by 4%
+}
+
+PerkBlocker: {
+	DisplayName: Perk Blocker
+	Description: Block common perk to appear
 }
 
 LuckyStrike: {
@@ -921,7 +1021,7 @@ MomentaryStrike: {
 Unnerfed: {
 	DisplayName: Unnerfed
 	Description: Revert nerf toward minion can't deal percentage damage
-	Description1: Try getting another stack of this
+	Description1: Negate the capped health stats
 	Description2: Completely negate the negavite effect of artifact
 	Description3: There are nothing to be gain here, seriously
 }

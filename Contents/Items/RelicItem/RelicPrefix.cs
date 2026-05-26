@@ -107,7 +107,7 @@ public class Omega : RelicPrefix {
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
 		if (relic.RelicTier == 1) {
-			return value + 1;
+			return value + .5f;
 		}
 		return value;
 	}

@@ -661,3 +661,14 @@ Flaming Wood Sword:
 595/ Fixed Don't hit tooltip.
 596/ Made bowmarang have a short collision disable when first thrown.
 597/ Updated Information UI which is in Roguelike Menu.
+598/ Added many "common" perks.
+599/ Nerf the boss scaling stats: 
+- Bosses base HP decreases from 8000 -> 6500.
+- Reduced the scale from 35% -> 30%.
+- Changed how difficulty affected scaling ( for more information check codes ).
+600/ Nerf Omega relic from 100% to 50%.
+601/ Removed Fury Emblem artifact and make it back into a accessory.
+602/ Various small change that it shouldn't be really note here, but due to this file name, it should, as such here are them in 1 log number:
+- Changed Celestial Wrath death message to be a bit more of a joke
+- Supplies drop and Gift of Relic is now classified as common perk ( there are no common perk classification btw ) and changed their SelectChoosing condition.
+- Perk Unnerfed 2nd stack now disable capped health stats.

@@ -61,10 +61,7 @@ During Trauma shock, if NPC is being attacked, they will intake damage pernamenn
 
 7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
-- Fury Emblem ( artifact )
-Solution 1 : Buff the artifact in such a way that it change how player play the game
-Solution 2 : Move it to perk.
-- Perk Prideful Poessesion.
+- Token of Pride.
 
 8/ Work on level item system ( not actual leveling system ).
 - Item will spawn with a set level, with each 5 levels the item gain a effect.
@@ -165,7 +162,6 @@ The following food are missing from food rework:
 21/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
 
 22/ Work on argumentation.
-- Reduce the amount of augmentation that a accessory can have from 5 to 1
 - Figure out what the best way for level/charge up mechanic
 The following 4 are the plans for augmentation:
 - Remove it entirely and just go down the route of getting dup or sacrifice 

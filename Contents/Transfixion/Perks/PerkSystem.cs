@@ -124,6 +124,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		private byte perk_Reroll = 1;
 		public int Dirt_Timer = 0;
 		public float Dirt_Multi_CD = 1f;
+		public bool PerkBlocker = false;
 		public void Modify_RerollCount(byte amount, bool? negative = false) {
 			short simulate = perk_Reroll;
 			if (negative == null) {
@@ -193,6 +194,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
 			perk_UntappedPotential = false;
+			PerkBlocker = false;
 			if (!perk_HeartOfIron || !perk_HeartOfThorn) {
 				perk_HeartOfIron = false;
 				perk_HeartOfThorn = false;

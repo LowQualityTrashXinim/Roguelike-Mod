@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeCommonNPC : GlobalNPC {
-	public const int BossHP = 8000;
+	public const int BossHP = 6500;
 	public const int BossDMG = 30;
 	public const int BossDef = 5;
 	public override void SetDefaults(NPC entity) {
@@ -74,7 +74,7 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		//}
 	}
 	public float GetValueMulti(float scale = 1) {
-		float extraMultiply = 0;
+		float extraMultiply = .05f;
 		if (Main.expertMode) {
 			extraMultiply += .15f;
 		}
@@ -89,8 +89,8 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 		}
 		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
 		if (RoguelikeWorldProperty.BossRushWorld) {
-			extraMultiply += ModContent.GetInstance<UniversalSystem>().Count_BossKill * .1f;
+			extraMultiply *= ModContent.GetInstance<UniversalSystem>().Count_BossKill * .25f;
 		}
-		return (1 + counter * .35f + extraMultiply) * scale;
+		return (1 + counter * .3f + extraMultiply) * scale;
 	}
 }

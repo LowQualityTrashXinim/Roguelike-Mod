@@ -103,7 +103,7 @@ namespace Roguelike.Contents.Items
 			target.StrikeInstantKill();
 		}
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
-			target.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"Celestial wrath has rain down on {target.name}")), 9999999999, info.HitDirection);
+			target.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"Celestial wrath has rain down on {target.name} by either accident or intention")), 9999999999, info.HitDirection);
 		}
 		public override bool? CanDamage() => true;
 		public override bool? CanHitNPC(NPC target) => true;

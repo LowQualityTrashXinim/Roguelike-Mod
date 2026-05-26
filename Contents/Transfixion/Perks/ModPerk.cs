@@ -2,10 +2,8 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.BuffAndDebuff.PlayerDebuff;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Contents.Transfixion.Skill;
@@ -915,5 +913,19 @@ public class Unnerfed : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.ModPlayerStats().Unnerfed = true;
+		if (StackAmount(player) <= 2) {
+			player.ModPlayerStats().Unnerfed2 = true;
+		}
+		if (StackAmount(player) <= 3) {
+			player.ModPlayerStats().DisableNegativeArtifact = true;
+		}
+	}
+}
+public class PerkBlocker : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		player.GetModPlayer<PerkPlayer>().PerkBlocker = true;
 	}
 }
