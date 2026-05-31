@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -79,6 +80,8 @@ public abstract class GlobalFoodItem : GlobalItem {
 				}
 			}
 		}
+		tooltips.Add(new(Mod, "", $"{Math.Round(item.useAnimation / 60f, 2)}s eating time"));
+		tooltips.Add(new(Mod, "", $"{Math.Round(CoolDownBetweenUse() / 60f, 2)}s cool down"));
 	}
 	public virtual void OnConsumeFood(Item item, Player player) {
 
@@ -135,9 +138,17 @@ public abstract class BaseFoodBuff : ModBuff {
 	}
 	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
 		if (TypeID != -1) {
-			buffName = ContentSamples.ItemsByType[TypeID].Name;
+			Item item = ContentSamples.ItemsByType[TypeID];
+			int tier = 1;
+			if (this is FoodItemTier2) {
+				tier = 2;
+			}
+			else if (this is FoodItemTier3) {
+				tier = 3;
+			}
+			buffName = item.Name + $" [Tier {tier}]";
 			if (!OverrideTooltip) {
-				tip = ModUtils.LocalizationText("RoguelikeRework", ContentSamples.ItemsByType[TypeID].Name);
+				tip = ModUtils.LocalizationText("RoguelikeRework", item.Name);
 			}
 		}
 	}

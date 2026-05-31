@@ -86,7 +86,7 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1 + .12f * StackAmount(player));
 		}
 		public override void OnUseItem(Player player, Item item) {
-			if (item.buffType != 0) {
+			if (item.buffType != 0 && player.ItemAnimationJustStarted) {
 				PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 				//This is a hacky way to ensure the heal amount is not affected
 				modplayer.HealEffectiveness -= .2f * StackAmount(player);

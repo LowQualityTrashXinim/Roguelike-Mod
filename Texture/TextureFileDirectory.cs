@@ -31,6 +31,7 @@
 		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";
 		public const string MENU = CommonTextureStringPattern + "UI/menu";
 		public const string CrossSprite = CommonTextureStringPattern + "UI/Cross";
+		public const string AddSprite = CommonTextureStringPattern + "UI/Add";
 		public const string Lock = CommonTextureStringPattern + "UI/lock";
 		/// <summary>
 		/// Width : 16 | Height : 16

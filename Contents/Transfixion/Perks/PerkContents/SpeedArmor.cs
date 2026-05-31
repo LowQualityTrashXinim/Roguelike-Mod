@@ -1,11 +1,6 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Roguelike.Contents.Transfixion.Perks.PerkContents;

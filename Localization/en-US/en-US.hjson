@@ -43,11 +43,20 @@ Mods: {
 			ElectricConductor:
 				'''
 				[c/ef8642:Electric Conductor]:
-				Dealing damage to enemy that has Electrified debuff will upgrade the debuff 
+				Dealing damage to enemy that has Electrified debuff will enhanced the debuff 
 				and make the nearby enemy have take 10% of weapon damage
-				On hitting enemey with Upgraded Electrified will sometime spread lighting randomly
+				Enemey with Enhanced Electrified will sometime spread lighting randomly
 				If the target doesn't has Electrified debuff, dealing damage to target up to 10 time
-				have 10% to inflict Electrified debuff for 10s
+				have 25% to inflict Electrified debuff for 10s
+				'''
+			DeepFrost:
+				'''
+				Dealing continuous damage to enemy will increases deep frost stack
+				Each stack will increases damage taken by 2% and each attack have 50% to deal extra 50% damage
+				At the 20th stack, the next strike will remove all stack and deal 420% damage
+				Enemy with deep frost also move a lot slower
+				While enemy is inflicted with chilled, frozen debuff
+				damage taken is increased by 1000% when target have deep frost stack
 				'''
 		}
 
@@ -534,6 +543,8 @@ Mods: {
 			SpearThrownProjectile.DisplayName: Spear Thrown Projectile
 			FlamingBlastWave.DisplayName: Flaming Blast Wave
 			FlamingFireBall.DisplayName: Flaming Fire Ball
+			ShortCircusDischarge.DisplayName: Short Circus Discharge
+			IceBlade_Slash_Projectile.DisplayName: Ice Blade_ Slash_ Projectile
 		}
 
 		NPCs: {
@@ -893,7 +904,7 @@ Mods: {
 					"Oath of the Winter Knight"
 					Hitting the enemy will rain down frost bolts and ice bolts toward the enemy
 					Upon 20th strike, generate a field that grant user "Winter Knight" buff for 60s
-					While user have "Winter Knight" buff, every strike that count toward the buff is ingore
+					While user have "Winter Knight" buff, every strike that count toward the buff is ignore
 					'''
 				ExtraInfo:
 					'''
@@ -1333,7 +1344,6 @@ Mods: {
 				Tooltip:
 					'''
 					"High focus, stay alert"
-					Most gunshots are more stable
 					Increase critical strike chance by 50%
 					Getting hit will remove this buff
 					'''
@@ -2871,6 +2881,11 @@ Mods: {
 				DisplayName: Open Shop Item
 				Tooltip: ""
 			}
+
+			FuryEmblem: {
+				DisplayName: Fury Emblem
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -4200,7 +4215,7 @@ Mods: {
 					Label: Rare Lootbox
 					Tooltip:
 						'''
-						Enable to have a chance to get rare drop from lootbox
+						Enable to have a chance to get rare item from lootbox
 						Disable to remove rare drop from lootbox
 						'''
 				}
@@ -4209,11 +4224,12 @@ Mods: {
 					Label: Total RNG mode
 					Tooltip:
 						'''
+						[+] Weapon enchantment have 20% to appear on your weapon
+						[+] Accessory have 20% chance to contain a augment
 						[-] You no longer can choose your artifact
 						[-] You lost ability to choose what perk you want
 						[-] Randomize spoil reward, making you unable to choose them
-						[-] Your right to access enchantment system is revoked
-						Instead weapon enchantment have 20% to appear on your weapon
+						[-] Your right to access divine hammer is revoked
 						'''
 				}
 
@@ -4222,8 +4238,8 @@ Mods: {
 					Tooltip:
 						'''
 						"For those who believe"
-						Everything that deal damage via contact will instantly kill you
-						Your loot drop amount is limited down to 1 regardless
+						[-] Everything that deal damage via contact will instantly kill you
+						[-] Your loot drop amount is limited down to 1 regardless
 						'''
 				}
 
@@ -4236,8 +4252,8 @@ Mods: {
 					Label: Hold shift
 					Tooltip:
 						'''
-						Enable to make information tooltip need you to hold shift to show
-						Disable to make information tooltip toggle on shift pressed
+						[+] Enable to make information tooltip need you to hold shift to show
+						[-] Disable to make information tooltip toggle on shift pressed
 						'''
 				}
 
@@ -4245,8 +4261,8 @@ Mods: {
 					Label: Disable ring visual
 					Tooltip:
 						'''
-						Enable this to disable ring visual in some of the mod's content, do this if you have framerate skip on
-						Otherwise disable this to show the ring visual effect which will benefit the gameplay
+						[+] Enable this to disable ring visual in some of the mod's content, do this if you have framerate skip on
+						[-] Disable this to show the ring visual effect which will benefit the gameplay
 						'''
 				}
 
@@ -4254,7 +4270,7 @@ Mods: {
 					Label: Lower visual quality
 					Tooltip:
 						'''
-						Enable this if you are experiencing lag or is going toward late endgame
+						[+] Enable this if you are experiencing lag or is going toward late endgame
 						This will disable a lot of predraw call from mainly projectile and a lot of dust spawn
 						THIS won't help you if you are spawning more than 1000 projectiles per tick
 						'''
@@ -4264,7 +4280,7 @@ Mods: {
 					Label: Low RAM usage mode
 					Tooltip:
 						'''
-						Use this if you keep getting out of game memory while playing game
+						[+] Use this if you keep getting out of game memory while playing game
 						This will lessen the caching method within the mod
 						But it will significantly slow down some aspect of the mod
 						WIP
@@ -4296,17 +4312,11 @@ Mods: {
 					Tooltip:
 						'''
 						Enabling this mode will make change boss rush mode format completely
-						+ Opening lootbox will give a random weapon/armor/accessory.
-						+ Player are given lootbox lord summon right at the start
 						+ Player must select 1 positive modifier before fighting boss
-						+ Every 3 bosses, a shop open up selling spoil and items.
 
 						- Player must select 1 negative modifier before fighting boss
-						- Spoil no longer activated upon Lootbox open
 
 						= Player are forced to select a modifier, if not the game will do it for them
-						The boss will follow progression but after reaching the EoL boss, it will loop
-						Boss scale infinitely, only way to end a run is to fight Lootbox Lord.
 						'''
 				}
 			}

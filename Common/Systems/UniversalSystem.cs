@@ -132,6 +132,8 @@ internal class UniversalSystem : ModSystem {
 	public InfoMenuUI infoMenuUI;
 	public ShopUI shopUI;
 
+	public BossRushModifierUIState UI_BRmodifier;
+
 	public static bool EnchantingState = false;
 	public static ModKeybind WeaponActionKey { get; private set; }
 	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
@@ -164,6 +166,7 @@ internal class UniversalSystem : ModSystem {
 			debugperkUI = new();
 			infoMenuUI = new();
 			shopUI = new();
+			UI_BRmodifier = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -209,6 +212,7 @@ internal class UniversalSystem : ModSystem {
 		debugperkUI = null;
 		infoMenuUI = null;
 		shopUI = null;
+		UI_BRmodifier = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!CanAccessContent(BOSSRUSH_MODE)) {
@@ -313,6 +317,9 @@ internal class UniversalSystem : ModSystem {
 		user2ndInterface.SetState(skillUIstate);
 	}
 	public void ActivateEnchantmentUI() {
+		if (Check_TotalRNG()) {
+			return;
+		}
 		DeactivateUI();
 		user2ndInterface.SetState(DivineHammer_uiState);
 	}
@@ -375,6 +382,10 @@ internal class UniversalSystem : ModSystem {
 			return;
 		}
 		user2ndInterface.SetState(spoilsState);
+	}
+	public void ActivateBRmodifierUI() {
+		DeactivateUI();
+		user2ndInterface.SetState(UI_BRmodifier);
 	}
 	public void DeactivateUI() {
 		user2ndInterface.SetState(null);

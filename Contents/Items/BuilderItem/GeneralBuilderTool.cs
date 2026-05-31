@@ -1,11 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -17,11 +20,15 @@ public class GeneralBuilderToolSystem : ModSystem {
 	public const byte None = 0;
 	public const byte Fill = 1;
 	public const byte Draw = 2;
+	public const byte Create = 3;
 	public static byte CurrentMode = None;
 	public static bool DeleteMode = false;
 	public static bool OverrideMode = false;
+	public static bool OutlineMode = false;
+	public static bool MirrorMode = false;
 	public static bool Tile = false;
 	public static bool Wall = false;
+	public Vector2 createPosition = Vector2.Zero;
 	public GeneralBuilderToolUI GeneralBuilderToolState;
 	internal UserInterface userInterface;
 	public override void Load() {
@@ -74,15 +81,20 @@ public class GeneralBuilderToolUI : UIState {
 	public Roguelike_UIImage OverrideMode;
 	public Roguelike_UIImage TileMode;
 	public Roguelike_UIImage WallMode;
+	public Roguelike_UIPanel Main_CreateMode_Panel;
+	public Roguelike_UIImage CreateMode;
+	public Roguelike_TextBox txb_width;
+	public Roguelike_TextBox txb_height;
+	public Roguelike_UIImage OutlineMode;
 	public override void OnInitialize() {
 		Asset<Texture2D> thesameuitextureasvanilla = TextureAssets.InventoryBack7;
 
 		Panel = new();
 		Panel.Width.Pixels = 350;
-		Panel.Height.Pixels = 100;
+		Panel.Height.Pixels = 400;
 		Panel.Left.Percent = .5f;
 		Panel.Top.Percent = .5f;
-		Panel.BackgroundColor.A = 255;
+		Panel.BackgroundColor.A = 150;
 		Panel.OnLeftMouseDown += Panel_OnLeftMouseDown;
 		Panel.OnLeftMouseUp += Panel_OnLeftMouseUp;
 		Panel.OnUpdate += Panel_OnUpdate;
@@ -90,7 +102,6 @@ public class GeneralBuilderToolUI : UIState {
 
 		DrawMode = new(thesameuitextureasvanilla);
 		DrawMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.DrawBrush));
-		DrawMode.VAlign = .5f;
 		DrawMode.HighlightColor = DrawMode.OriginalColor * .5f;
 		DrawMode.SwapHightlightColorWithOriginalColor();
 		DrawMode.OnLeftClick += DrawMode_OnLeftClick;
@@ -99,7 +110,6 @@ public class GeneralBuilderToolUI : UIState {
 
 		FillMode = new(thesameuitextureasvanilla);
 		FillMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.FillBucket));
-		FillMode.VAlign = .5f;
 		FillMode.HAlign = MathHelper.Lerp(0, 1f, 1 / 5f);
 		FillMode.HighlightColor = FillMode.OriginalColor * .5f;
 		FillMode.SwapHightlightColorWithOriginalColor();
@@ -109,7 +119,6 @@ public class GeneralBuilderToolUI : UIState {
 
 		DeleteMode = new(thesameuitextureasvanilla);
 		DeleteMode.SetPostTex(TextureAssets.Trash);
-		DeleteMode.VAlign = .5f;
 		DeleteMode.HAlign = MathHelper.Lerp(0, 1f, 2 / 5f);
 		DeleteMode.HighlightColor = DeleteMode.OriginalColor * .5f;
 		DeleteMode.OnLeftClick += DeleteMode_OnLeftClick;
@@ -118,7 +127,6 @@ public class GeneralBuilderToolUI : UIState {
 		Panel.Append(DeleteMode);
 
 		OverrideMode = new(thesameuitextureasvanilla);
-		OverrideMode.VAlign = .5f;
 		OverrideMode.HAlign = MathHelper.Lerp(0, 1f, 3 / 5f);
 		OverrideMode.HighlightColor = OverrideMode.OriginalColor * .5f;
 		OverrideMode.OnLeftClick += OverrideMode_OnLeftClick;
@@ -128,7 +136,6 @@ public class GeneralBuilderToolUI : UIState {
 
 		TileMode = new(thesameuitextureasvanilla);
 		TileMode.SetPostTex(TextureAssets.Item[ItemID.StoneBlock], attemptToLoad: true);
-		TileMode.VAlign = .5f;
 		TileMode.HAlign = MathHelper.Lerp(0, 1f, 4 / 5f);
 		TileMode.HighlightColor = TileMode.OriginalColor * .5f;
 		TileMode.OnLeftClick += TileMode_OnLeftClick;
@@ -138,15 +145,140 @@ public class GeneralBuilderToolUI : UIState {
 
 		WallMode = new(thesameuitextureasvanilla);
 		WallMode.SetPostTex(TextureAssets.Item[ItemID.StoneWall], attemptToLoad: true);
-		WallMode.VAlign = .5f;
 		WallMode.HAlign = 1;
 		WallMode.HighlightColor = WallMode.OriginalColor * .5f;
 		WallMode.OnLeftClick += WallMode_OnLeftClick;
 		WallMode.SwapHightlightColorWithOriginalColor();
 		WallMode.HoverText = "Wall";
 		Panel.Append(WallMode);
+
+		Main_CreateMode_Panel = new();
+		Main_CreateMode_Panel.MaxWidth = Panel.Width;
+		Main_CreateMode_Panel.Width.Pixels = 352;
+		Main_CreateMode_Panel.Height.Pixels = 110;
+		Main_CreateMode_Panel.MarginLeft = -11;
+		Main_CreateMode_Panel.MarginRight = -11;
+		Main_CreateMode_Panel.BackgroundColor.A = 100;
+		Main_CreateMode_Panel.MarginTop = DrawMode.GetInnerDimensions().Height + 10;
+		Panel.Append(Main_CreateMode_Panel);
+
+		CreateMode = new(thesameuitextureasvanilla);
+		CreateMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
+		CreateMode.HighlightColor = DrawMode.OriginalColor * .5f;
+		CreateMode.SwapHightlightColorWithOriginalColor();
+		CreateMode.OnLeftClick += CreateMode_OnLeftClick;
+		CreateMode.HoverText = "Create mode";
+		Main_CreateMode_Panel.Append(CreateMode);
+
+		OutlineMode = new(thesameuitextureasvanilla);
+		OutlineMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Ring));
+		OutlineMode.HighlightColor = DrawMode.OriginalColor * .5f;
+		OutlineMode.MarginLeft = CreateMode.GetInnerDimensions().Width + 10;
+		OutlineMode.SwapHightlightColorWithOriginalColor();
+		OutlineMode.OnLeftClick += OutlineMode_OnLeftClick;
+		OutlineMode.HoverText = "Outline only";
+		Main_CreateMode_Panel.Append(OutlineMode);
+
+		txb_width = new("");
+		txb_width.OnHoverText = "Width";
+		txb_width.HAlign = 1f;
+		txb_width.Width.Percent = .49f;
+		Main_CreateMode_Panel.Append(txb_width);
+
+		txb_height = new("");
+		txb_height.OnHoverText = "Height";
+		txb_height.HAlign = 1f;
+		txb_height.Width.Percent = .49f;
+		txb_height.MarginTop = txb_width.GetOuterDimensions().Height + 5;
+		Main_CreateMode_Panel.Append(txb_height);
 	}
 
+	private void OutlineMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem.OutlineMode = !GeneralBuilderToolSystem.OutlineMode;
+		OutlineMode.Highlight = GeneralBuilderToolSystem.OutlineMode;
+	}
+
+	public Vector2 createPosition = Vector2.Zero;
+	private void CreateMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Create;
+		VisualUpdateBaseOnMode();
+		if (createPosition == Vector2.Zero) {
+			return;
+		}
+		else {
+			PlaceTile(new Point((int)point1.X, (int)point1.Y), new Point((int)point2.X, (int)point2.Y));
+			point1 = Vector2.Zero;
+			point2 = Vector2.Zero;
+			createPosition = Vector2.Zero;
+			ModContent.GetInstance<GeneralBuilderToolSystem>().createPosition = Vector2.Zero;
+		}
+	}
+	private void PlaceTile(Point position1, Point position2) {
+		Player player = Main.LocalPlayer;
+		int minX = Math.Min(position1.X, position2.X);
+		int maxX = Math.Max(position1.X, position2.X);
+		int minY = Math.Min(position1.Y, position2.Y);
+		int maxY = Math.Max(position1.Y, position2.Y);
+		bool SearchedForTile, SearchedForWall = SearchedForTile = false;
+		for (int i = 0; i < player.inventory.Length; i++) {
+			if (SearchedForTile && GeneralBuilderToolSystem.Tile && !GeneralBuilderToolSystem.Wall) {
+				break;
+			}
+			else if (SearchedForWall && GeneralBuilderToolSystem.Wall && !GeneralBuilderToolSystem.Tile) {
+				break;
+			}
+			else if (!GeneralBuilderToolSystem.Tile && !GeneralBuilderToolSystem.Wall) {
+				break;
+			}
+			else if (SearchedForTile && SearchedForWall) {
+				break;
+			}
+			Item item = player.inventory[i];
+			if (GeneralBuilderToolSystem.Tile && !SearchedForTile && (item.favorited && item.createTile != -1 || GeneralBuilderToolSystem.DeleteMode)) {
+				for (int x = minX; x <= maxX; x++) {
+					for (int y = minY; y <= maxY; y++) {
+						if ((x == minX || x == maxX || y == minY || y == maxY) && GeneralBuilderToolSystem.OutlineMode || !GeneralBuilderToolSystem.OutlineMode) {
+							if (GeneralBuilderToolSystem.DeleteMode) {
+								WorldGen.KillTile(x, y, noItem: true);
+							}
+							else if (GeneralBuilderToolSystem.OverrideMode) {
+								if (Main.tile[x, y].TileType != item.createTile) {
+									WorldGen.KillTile(x, y, noItem: true);
+									WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
+								}
+							}
+							else {
+								WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
+							}
+						}
+					}
+				}
+				SearchedForTile = true;
+				continue;
+			}
+			if (GeneralBuilderToolSystem.Wall && !SearchedForWall && (item.favorited && item.createWall != -1 || GeneralBuilderToolSystem.DeleteMode)) {
+				for (int x = minX; x <= maxX; x++) {
+					for (int y = minY; y <= maxY; y++) {
+						if (GeneralBuilderToolSystem.DeleteMode) {
+							Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
+							WorldGen.SquareWallFrame(x, y);
+						}
+						else if (GeneralBuilderToolSystem.OverrideMode) {
+							if (Main.tile[x, y].WallType != item.createWall) {
+								Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
+								WorldGen.PlaceWall(x, y, item.createWall, true);
+							}
+						}
+						else {
+							WorldGen.PlaceWall(x, y, item.createWall, true);
+						}
+					}
+				}
+				SearchedForWall = true;
+				continue;
+			}
+		}
+	}
 	private void TileMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.Tile = !GeneralBuilderToolSystem.Tile;
 		TileMode.Highlight = GeneralBuilderToolSystem.Tile;
@@ -160,27 +292,46 @@ public class GeneralBuilderToolUI : UIState {
 	private void OverrideMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.OverrideMode = !GeneralBuilderToolSystem.OverrideMode;
 		GeneralBuilderToolSystem.DeleteMode = false;
-		DeleteMode.Highlight = false;
-		OverrideMode.Highlight = GeneralBuilderToolSystem.OverrideMode;
+		VisualUpdateBaseOnMode();
 	}
 
 	private void DeleteMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.DeleteMode = !GeneralBuilderToolSystem.DeleteMode;
 		GeneralBuilderToolSystem.OverrideMode = false;
-		OverrideMode.Highlight = false;
-		DeleteMode.Highlight = GeneralBuilderToolSystem.DeleteMode;
+		VisualUpdateBaseOnMode();
 	}
 
 	private void DrawMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Draw;
-		FillMode.Highlight = false;
-		DrawMode.Highlight = true;
+		VisualUpdateBaseOnMode();
 	}
 
 	private void FillMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Fill;
+		VisualUpdateBaseOnMode();
+	}
+	/// <summary>
+	/// Doesn't support tile and wall mode due to it being too basic
+	/// </summary>
+	private void VisualUpdateBaseOnMode() {
+		DeleteMode.Highlight = GeneralBuilderToolSystem.DeleteMode;
+		OverrideMode.Highlight = GeneralBuilderToolSystem.OverrideMode;
 		DrawMode.Highlight = false;
-		FillMode.Highlight = true;
+		FillMode.Highlight = false;
+		CreateMode.Highlight = false;
+		switch (GeneralBuilderToolSystem.CurrentMode) {
+			case GeneralBuilderToolSystem.None:
+				break;
+			case GeneralBuilderToolSystem.Draw:
+				DrawMode.Highlight = true;
+				break;
+			case GeneralBuilderToolSystem.Fill:
+				FillMode.Highlight = true;
+				break;
+			case GeneralBuilderToolSystem.Create:
+				CreateMode.Highlight = true;
+				break;
+		}
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 	}
@@ -215,13 +366,52 @@ public class GeneralBuilderToolUI : UIState {
 		else {
 			lastPressedPositionDistance = Panel.GetOuterDimensions().Position();
 		}
+		affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
 	}
 
 	private Vector2 offset;
 	private bool dragging;
+	private Vector2 point1, point2;
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		int num1, num2;
+		if (!int.TryParse(txb_width.Text, out num1)) {
+			return;
+		}
+		if (!int.TryParse(txb_height.Text, out num2)) {
+			return;
+		}
+		createPosition = ModContent.GetInstance<GeneralBuilderToolSystem>().createPosition;
+		if (createPosition == Vector2.Zero || !createPosition.IsCloseToPosition(Main.LocalPlayer.Center, 2000)) {
+			return;
+		}
+		createPosition = createPosition.ToTileCoordinates16().ToVector2();
+		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
+		point1 = createPosition;
+		point2 = createPosition + new Vector2(num1, num2);
 
+		Texture2D tex2 = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_Box").Value;
+
+		Point16 topLeft = new Point16(
+			(int)(point1.X < point2.X ? point1.X : point2.X),
+			(int)(point1.Y < point2.Y ? point1.Y : point2.Y));
+
+		Point16 bottomRight = new Point16(
+			(int)(point1.X > point2.X ? point1.X : point2.X),
+			(int)(point1.Y > point2.Y ? point1.Y : point2.Y)
+			);
+
+		int Width = bottomRight.X - topLeft.X;
+		int Height = bottomRight.Y - topLeft.Y;
+
+		var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
+		ModUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)Math.Sin(Main.GameUpdateCount * 0.2f)));
+		spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
+
+		spriteBatch.Draw(tex, createPosition * 16 - Main.screenPosition, null, Color.Yellow, 0, tex.Size() * .5f, 1, SpriteEffects.None, 0);
 	}
 }
 internal class GeneralBuilderTool : ModItem {
@@ -240,22 +430,22 @@ internal class GeneralBuilderTool : ModItem {
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		string text = "";
 		if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Fill) {
-			text = "Current Mode : Fill\n";
+			text = "Current Mode : Fill";
 		}
 		else if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Draw) {
-			text = "Current Mode : Draw\n";
+			text = "Current Mode : Draw";
+		}
+		else if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Create) {
+			text = "Current Mode : Create";
 		}
 		else {
 			text = "Alt click to select Fill or Draw mode";
 		}
 		if (GeneralBuilderToolSystem.DeleteMode) {
-			text += "Delete Mode";
+			text += "\nDelete Mode";
 		}
 		else if (GeneralBuilderToolSystem.OverrideMode) {
-			text += "Override Mode";
-		}
-		else {
-			text += "Normal Mode";
+			text += "\nOverride Mode";
 		}
 		if (GeneralBuilderToolSystem.Tile) {
 			text += "\nPlace tile";
@@ -286,6 +476,9 @@ internal class GeneralBuilderTool : ModItem {
 		}
 		else if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Draw) {
 			return DrawFunction(player);
+		}
+		else if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Create) {
+			return CreateSelection();
 		}
 		return base.UseItem(player);
 	}
@@ -326,7 +519,13 @@ internal class GeneralBuilderTool : ModItem {
 		Main.NewText("Fail to find nearest favorited tile");
 		return false;
 	}
-	private static void GeneralPlaceTileFunction(Player player, Point position1, Point position2) {
+	public bool CreateSelection() {
+		if (Main.mouseLeft) {
+			ModContent.GetInstance<GeneralBuilderToolSystem>().createPosition = Main.MouseWorld;
+		}
+		return false;
+	}
+	public static void GeneralPlaceTileFunction(Player player, Point position1, Point position2) {
 		int minX = Math.Min(position1.X, position2.X);
 		int maxX = Math.Max(position1.X, position2.X);
 		int minY = Math.Min(position1.Y, position2.Y);
@@ -370,11 +569,12 @@ internal class GeneralBuilderTool : ModItem {
 				for (int x = minX; x <= maxX; x++) {
 					for (int y = minY; y <= maxY; y++) {
 						if (GeneralBuilderToolSystem.DeleteMode) {
-							WorldGen.KillWall(x, y);
+							Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
+							WorldGen.SquareWallFrame(x, y);
 						}
 						else if (GeneralBuilderToolSystem.OverrideMode) {
 							if (Main.tile[x, y].WallType != item.createWall) {
-								WorldGen.KillWall(x, y);
+								Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
 								WorldGen.PlaceWall(x, y, item.createWall, true);
 							}
 						}

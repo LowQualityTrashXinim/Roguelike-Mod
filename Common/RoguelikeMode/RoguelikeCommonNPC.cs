@@ -1,5 +1,6 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.BossRushMode;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -65,6 +66,10 @@ internal class RoguelikeCommonNPC : GlobalNPC {
 			npc.life = npc.lifeMax;
 			npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
 			npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
+		}
+		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier4>()) {
+			npc.lifeMax += npc.lifeMax * 9;
+			npc.life = npc.lifeMax;
 		}
 	}
 	public override void ResetEffects(NPC npc) {

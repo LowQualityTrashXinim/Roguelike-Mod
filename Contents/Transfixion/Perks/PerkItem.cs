@@ -8,6 +8,7 @@ using Roguelike.Texture;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks.RoguelikePerk;
 using Terraria.ModLoader.IO;
+using Roguelike.Common.General;
 
 namespace Roguelike.Contents.Transfixion.Perks;
 class WorldEssence : ModItem {
@@ -82,6 +83,11 @@ class LuckEssence : ModItem {
 				listOfPerk.Add(i);
 			}
 			int perkType = Main.rand.Next(listOfPerk);
+			if(ModContent.GetInstance<RogueLikeConfig>().TotalRNG) {
+				UniversalSystem.AddPerk(perkType);
+				ModUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
+			}
+			perkType = Main.rand.Next(listOfPerk);
 			UniversalSystem.AddPerk(perkType);
 			ModUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}

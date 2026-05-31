@@ -168,6 +168,9 @@ namespace Roguelike.Common.Global {
 		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";
 		public bool Secert_PerkOverload => Player.name == "MrPerk";
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+			if (UniversalSystem.Check_TotalRNG()) {
+				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
+			}
 			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
 			if (arti != null) {
 				var moreStarter = arti.AddStartingItems(Player);

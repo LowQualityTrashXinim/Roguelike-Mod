@@ -1,5 +1,6 @@
 ﻿using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
@@ -17,9 +18,13 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().shopUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().shopUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().shopUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().UI_BRmodifier.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().UI_BRmodifier.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().UI_BRmodifier.Activate();
+
+			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.RemoveAllChildren();
+			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.OnInitialize();
+			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.Activate();
 		}
 		return false;
 	}

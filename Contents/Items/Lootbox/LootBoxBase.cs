@@ -212,7 +212,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 				int level = WeaponLevelRangeRandomizer(player);
 				Item item = Main.item[whoAmI];
 				if (level > 0 && item != null && item.IsAWeapon()) {
-					item.GetGlobalItem<GlobalItemHandle>().ItemLevel = level;
+					item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(level);
 				}
 			}
 		}

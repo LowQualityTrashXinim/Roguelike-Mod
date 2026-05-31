@@ -25,8 +25,8 @@ public static class BossRushModifierLoader {
 public abstract class BossRushModifier : ModType {
 	public int Type { get; private set; }
 	protected sealed override void Register() {
-		Type = BossRushModifierLoader.Register(this);
 		SetStaticDefault();
+		Type = BossRushModifierLoader.Register(this);
 	}
 	public bool PositiveModifier = false;
 	public static int GetModifierType<T>() where T : BossRushModifier {

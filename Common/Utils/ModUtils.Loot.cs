@@ -398,6 +398,14 @@ public static partial class ModUtils {
 			player.QuickSpawnItem(source, Main.rand.Next(DropItemPotion), modplayer.potionNumAmount);
 		}
 	}
+	public static void GetPotion(IEntitySource source, Player player, int amount, int stack) {
+		List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion, .. ModItemLib.LootboxPotion.Select(i => i.type)];
+		DropItemPotion.Add(ItemID.LifeforcePotion);
+		DropItemPotion.Add(ItemID.InfernoPotion);
+		for (int i = 0; i < amount; i++) {
+			player.QuickSpawnItem(source, Main.rand.Next(DropItemPotion), stack);
+		}
+	}
 	public static void GetArmorPiece(IEntitySource source, Player player, bool randomized = false) {
 		if (randomized) {
 			player.QuickSpawnItem(source, Main.rand.Next(TerrariaArrayID.EveryArmorPiece));

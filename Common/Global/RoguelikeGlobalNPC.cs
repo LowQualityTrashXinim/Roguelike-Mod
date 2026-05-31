@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
+using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Throwable;
@@ -16,9 +17,11 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -29,7 +32,14 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int GolemFist_HitCount = 0;
 
 	public StatModifier StatDefense = new StatModifier();
+	/// <summary>
+	/// This is always reset back to 0, if you are looking for static damage reduciton, use <see cref="DamageReduction"/> instead
+	/// </summary>
 	public float Endurance = 0;
+	/// <summary>
+	/// This is static and won''t changed, if you are looking for always update damage reduction, use <see cref="Endurance"/> instead
+	/// </summary>
+	public float DamageReduction = 0;
 	public bool DRFromFatalAttack = false;
 	public bool OneTimeDR = false;
 	public int DRTimer = 0;
@@ -51,7 +61,13 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// </summary>
 	public bool IsAGhostEnemy = false;
 	public int BelongToWho = -1;
+	/// <summary>
+	/// Currently this is broken, highly not recommand to use it.
+	/// </summary>
 	public bool CanDenyYouFromLoot = false;
+	/// <summary>
+	/// This doesn't reset anywhere, it is a static value that allow npc to regenerate hp
+	/// </summary>
 	public int PositiveLifeRegen = 0;
 	public int PositiveLifeRegenCount = 0;
 	public int Perpetuation_PointStack = 0;
@@ -59,14 +75,33 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
 	public bool NPC_SpecialException = false;
+	public int InvincibilityFrame = 0;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
+		if (ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra) {
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier11>()) {
+				PositiveLifeRegen = Math.Clamp((int)(npc.lifeMax * .01f), 1, int.MaxValue);
+			}
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier10>()) {
+				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount <= 0) {
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount = 100;
+				}
+			}
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier9>()) {
+				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate <= 0) {
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate = 1;
+				}
+			}
+		}
 	}
 	public override void ResetEffects(NPC npc) {
 		npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		StatDefense = new();
 		if (IsAGhostEnemy) {
 			npc.dontTakeDamage = true;
+			npc.chaseable = false;
 		}
 		if (--DRTimer <= 0) {
 			DRFromFatalAttack = false;
@@ -78,19 +113,19 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public int Grapefruit = 0;
 	public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {
-		if (IsAGhostEnemy) {
+		if (IsAGhostEnemy || InvincibilityFrame > 0) {
 			return false;
 		}
 		return base.CanBeHitByItem(npc, player, item);
 	}
 	public override bool CanBeHitByNPC(NPC npc, NPC attacker) {
-		if (IsAGhostEnemy) {
+		if (IsAGhostEnemy || InvincibilityFrame > 0) {
 			return false;
 		}
 		return base.CanBeHitByNPC(npc, attacker);
 	}
 	public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
-		if (IsAGhostEnemy) {
+		if (IsAGhostEnemy || InvincibilityFrame > 0) {
 			return false;
 		}
 		return base.CanBeHitByProjectile(npc, projectile);
@@ -98,12 +133,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());
 		foreach (var item in npcLoot.Get()) {
-			item.OnSuccess(rule);
-		}
-	}
-	public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
-		LeadingConditionRule rule = new(new DenyYouFromLoot());
-		foreach (var item in globalLoot.Get()) {
 			item.OnSuccess(rule);
 		}
 	}
@@ -149,7 +178,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			var parent = Main.npc[BelongToWho];
 			if (parent != null) {
 				if (!parent.active || parent.life <= 0) {
-					npc.StrikeInstantKill();
+					npc.life = 0;
+					npc.realLife = 0;
+					npc.active = false;
+					return;
 				}
 			}
 			else {
@@ -160,6 +192,20 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			PositiveLifeRegenCount = 0;
 			npc.life = Math.Clamp(npc.life + PositiveLifeRegen, 0, npc.lifeMax);
 		}
+		if (npc.HasBuff(BuffID.Electrified)) {
+			if (ElectricConductorUpgrade) {
+				if (Main.rand.NextBool(35)) {
+					int damage = Math.Clamp(npc.life / 20 + 1, 1, int.MaxValue);
+					Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Main.rand.NextVector2CircularEdge(10, 10), ProjectileID.ThunderSpearShot, damage, 0, npc.target);
+					proj.penetrate = 10;
+					proj.maxPenetrate = 10;
+				}
+			}
+		}
+		else {
+			ElectricConductorUpgrade = false;
+		}
+		InvincibilityFrame = ModUtils.CountDown(InvincibilityFrame);
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
 		if (npc.HasBuff<NPC_Weakness>()) {
@@ -177,6 +223,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int FuryOfTheSun = 0;
 	public int ElectricConductor = 0;
 	public bool ElectricConductorUpgrade = false;
+	public int ResistHitCount = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
 		NPC_Debuff(npc, ref modifiers);
 	}
@@ -221,6 +268,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
+		modifiers.SourceDamage *= Math.Clamp(1 - DamageReduction, 0, 1f);
+		if (--ResistHitCount > 0) {
+			modifiers.SetMaxDamage(1);
+		}
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
@@ -232,11 +283,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			}
 			else {
 				ElectricConductorUpgrade = false;
-			}
-			if (++ElectricConductor >= 10) {
-				ElectricConductor = 10;
-				if (Main.rand.NextBool(10)) {
-					npc.AddBuff(BuffID.Electrified, 600 + player.itemAnimationMax);
+				if (++ElectricConductor >= 10) {
+					ElectricConductor = 10;
+					if (Main.rand.NextBool(4)) {
+						npc.AddBuff(BuffID.Electrified, 600 + player.itemAnimationMax);
+					}
 				}
 			}
 			if (ElectricConductorUpgrade) {
@@ -246,11 +297,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 						continue;
 					}
 					player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(hit.Damage * .1f) + 1, 1));
-					if (Main.rand.NextBool(35)) {
-						Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderSpearShot, hit.Damage, 0, player.whoAmI);
-						proj.penetrate = 10;
-						proj.maxPenetrate = 10;
-					}
 				}
 			}
 		}
@@ -280,6 +326,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (npc.Center - pos), ModContent.ProjectileType<HitScanShotv2>(), 1, 0, player.whoAmI);
 			}
+		}
+		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
+			InvincibilityFrame += 30;
 		}
 	}
 	private void OnHitEffect(NPC npc, Player player, NPC.HitInfo hit) {
@@ -387,6 +436,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				}
 			}
 		}
+		int badmodifier = ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier;
+		if (badmodifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
+			InvincibilityFrame += 30;
+		}
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;
@@ -407,6 +460,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {
+			return false;
+		}
 		//TODO : this is very broken, I couldn't get the outline to work so I gave up
 		//if (npc.boss) {
 		//	Main.instance.LoadNPC(npc.type);

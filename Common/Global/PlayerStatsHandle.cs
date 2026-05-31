@@ -346,6 +346,9 @@ public class PlayerStatsHandle : ModPlayer {
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 
+		if(modifiers.DamageType == Roguelike_DamageClass.True) {
+			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(TrueDamage);
+		}
 		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
 	}
 	private void TransferStatsModifier(ref StatModifier stat1, ref StatModifier stat2, float percentage) {
@@ -376,7 +379,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else if (value < 0) {
 			modifiers.DisableCrit();
 		}
-		if(!proj.minion || Unnerfed) {
+		if(!proj.minion && !proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().IsFromMinion || Unnerfed) {
 			modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 		}
 	}

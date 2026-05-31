@@ -1,5 +1,4 @@
-﻿using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using System.Collections.Generic;
 using Terraria;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
@@ -10,7 +11,10 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.ItemVariant;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using Roguelike.Contents.NPCs;
+using Roguelike.Contents.Transfixion.Augmentation;
 using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.WeaponEffect;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
@@ -47,7 +51,34 @@ namespace Roguelike.Contents.Items.Weapon {
 		public static Dictionary<int, List<SynergyBonus>> Dictionary_SynergyBonus = new();
 		public override void Load() {
 			Dictionary_SynergyBonus = new();
+			On_Item.NewItem_Inner += On_Item_NewItem_Inner;
 		}
+
+		private int On_Item_NewItem_Inner(On_Item.orig_NewItem_Inner orig, IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack, bool noBroadcast, int pfix, bool noGrabDelay, bool reverseLookup) {
+			int whoAmI = orig(source, X, Y, Width, Height, itemToClone, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
+			Item item = Main.item[whoAmI];
+			if (ModContent.GetInstance<RogueLikeConfig>().TotalRNG) {
+				if (Main.rand.NextBool(5)) {
+					if (item.IsAWeapon()) {
+						int amount = 1 + Main.rand.Next(3);
+						for (int i = 0; i < amount; i++) {
+							EnchantmentSystem.EnchantItem(ref item, i);
+						}
+						if (item.TryGetGlobalItem(out GlobalItemHandle handler)) {
+							handler.SetItemLevel(Main.rand.Next(0, 16));
+						}
+					}
+					if (item.accessory) {
+						AugmentsWeapon.AddAugments(ref item, Main.rand.Next(1, AugmentsLoader.TotalCount));
+						if (item.TryGetGlobalItem(out AugmentsWeapon acc)) {
+							acc.Modify_Charge(Main.rand.Next(255));
+						}
+					}
+				}
+			}
+			return whoAmI;
+		}
+
 		public override void Unload() {
 			Dictionary_SynergyBonus = null;
 		}
@@ -223,7 +254,7 @@ namespace Roguelike.Contents.Items.Weapon {
 		public virtual void UpdateInv(Item item, Player player) { }
 	}
 	/// <summary>
-	/// This class hold mainly tooltip information<br/>
+	/// This class hold mainly tooltip information and other general stats or field<br/>
 	/// However this doesn't handle overhaul information
 	/// </summary>
 	public class GlobalItemHandle : GlobalItem {
@@ -243,12 +274,23 @@ namespace Roguelike.Contents.Items.Weapon {
 		public bool IsASword = false;
 		public int OutroEffect_type = -1;
 		public int InventoryWhoAmI = -1;
+		public List<int> list_WeaponEffectType = new();
+		public void SetItemLevel(int level) {
+			int amountAdd = level / 5;
+			if (amountAdd > 0) {
+				for (int i = 0; i < amountAdd; i++) {
+					list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
+				}
+			}
+			ItemLevel = level;
+		}
 		public override GlobalItem NewInstance(Item target) {
 			if (target.TryGetGlobalItem(out GlobalItemHandle handler)) {
 				handler.ItemLevel = 0;
 				handler.OutroEffect_type = -1;
 				handler.InventoryWhoAmI = -1;
 				handler.Counter = 0;
+				list_WeaponEffectType = new();
 			}
 			return base.NewInstance(target);
 		}
@@ -285,6 +327,13 @@ namespace Roguelike.Contents.Items.Weapon {
 					variant.UpdateInv(item, player);
 				}
 			}
+			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
+				int effectID = list_WeaponEffectType[i];
+				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
+				if (effect != null) {
+					effect.UpdateItem(player, item, this);
+				}
+			}
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (CheckVariant()) {
@@ -303,6 +352,13 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			damage += .02f * ItemLevel;
 			damage.Base += (int)(ItemLevel * .5f);
+			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
+				int effectID = list_WeaponEffectType[i];
+				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
+				if (effect != null) {
+					effect.ModifyWeaponDamage(player, item, ref damage);
+				}
+			}
 		}
 		public override void ModifyWeaponCrit(Item item, Player player, ref float crit) {
 			if (ItemLevel <= 0) {
@@ -310,6 +366,13 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			crit += ItemLevel / 3;
 			UpdateCriticalDamage += .05f * (ItemLevel / 4);
+			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
+				int effectID = list_WeaponEffectType[i];
+				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
+				if (effect != null) {
+					effect.ModifyWeaponCrit(player, item, ref crit);
+				}
+			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (UniversalSystem.EnchantingState) {
@@ -341,6 +404,13 @@ namespace Roguelike.Contents.Items.Weapon {
 			}
 			Player player = Main.LocalPlayer;
 			ModdedPlayer moddedplayer = player.GetModPlayer<ModdedPlayer>();
+			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
+				int effectID = list_WeaponEffectType[i];
+				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
+				if (effect != null) {
+					tooltips.Add(new TooltipLine(Mod, "WeaponEffect", $"[i:{ItemID.FallenStar}] {effect.Description}"));
+				}
+			}
 			if (item.ModItem != null) {
 				if (ExtraInfo) {
 					if (!moddedplayer.Shift_Option()) {
@@ -439,9 +509,13 @@ namespace Roguelike.Contents.Items.Weapon {
 		}
 		public override void SaveData(Item item, TagCompound tag) {
 			tag["VariantType"] = VariantType;
+			tag["WeaponEffectList"] = list_WeaponEffectType;
+			tag["ItemLevel"] = ItemLevel;
 		}
 		public override void LoadData(Item item, TagCompound tag) {
 			VariantType = tag.Get<short>("VariantType");
+			list_WeaponEffectType = tag.Get<List<int>>("WeaponEffectList");
+			ItemLevel = tag.Get<int>("ItemLevel");
 		}
 	}
 	public abstract class SynergyModItem : ModItem {

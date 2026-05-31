@@ -239,3 +239,51 @@ public class IncreasesDebuffDamage : Perk {
 		player.ModPlayerStats().DebuffDamage.Base += .04f * StackAmount(player);
 	}
 }
+public class IncreasesThorn : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 10;
+	}
+	public override bool SelectChoosing() {
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().UpdateThorn += .1f * StackAmount(player);
+	}
+}
+public class IncreasesHealEff : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 10;
+	}
+	public override bool SelectChoosing() {
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().HealEffectiveness += .1f * StackAmount(player);
+	}
+}
+public class IncreasesMovement : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 10;
+	}
+	public override bool SelectChoosing() {
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().UpdateMovement += .1f * StackAmount(player);
+	}
+}
+public class IncreasesJumpBoost : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 10;
+	}
+	public override bool SelectChoosing() {
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().UpdateJumpBoost += .1f * StackAmount(player);
+	}
+}

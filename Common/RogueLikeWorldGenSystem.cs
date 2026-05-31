@@ -247,6 +247,7 @@ public class StructureUI : UIState {
 			movePoint2 = false;
 		}
 	}
+	private Vector2 ToWorldPosition(Point16 point) => point.ToVector2() * 16 - Main.screenPosition;
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		if (CurrentUI_State == StructureUI_State.Selecting) {
@@ -270,7 +271,7 @@ public class StructureUI : UIState {
 				ModUtils.DrawOutline(spriteBatch, target, Color.Gold);
 				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
 
-				spriteBatch.Draw(tex, this.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
+				spriteBatch.Draw(tex, ToWorldPosition(this.point1), tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
 				//spriteBatch.Draw(tex, point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
 			}
 			else if (Ready) {

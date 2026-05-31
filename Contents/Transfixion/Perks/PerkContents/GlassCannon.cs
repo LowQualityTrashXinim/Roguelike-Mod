@@ -9,7 +9,7 @@ namespace Roguelike.Contents.Transfixion.Perks.PerkContents;
 public class GlassCannon : Perk {
 	public override void SetDefaults() {
 		CanBeStack = true;
-		StackLimit = 999;
+		StackLimit = 5;
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 		damage *= 1 + StackAmount(player) * .25f;

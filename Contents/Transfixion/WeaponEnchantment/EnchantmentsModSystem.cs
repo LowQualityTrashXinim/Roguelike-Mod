@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
 using System;
 using System.Collections.Generic;
 using Terraria;

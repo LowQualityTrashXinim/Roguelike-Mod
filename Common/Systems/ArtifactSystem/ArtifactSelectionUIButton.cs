@@ -102,11 +102,6 @@ namespace Roguelike.Common.Systems.ArtifactSystem
 			if (Hide) {
 				return;
 			}
-			if (UniversalSystem.Check_TotalRNG()) {
-				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Artifact.ArtifactType<RandomArtifact>();
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				return;
-			}
 			Artifact artifact = Artifact.GetArtifact(ArtifactType);
 
 			if (artifact == null) {

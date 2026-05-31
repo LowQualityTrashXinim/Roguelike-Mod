@@ -294,6 +294,9 @@ namespace Roguelike.Common.Utils {
 
 	public class WeaponProgress {
 		public int ItemType = 0;
+		/// <summary>
+		/// This mean that this weapon doesn't contain timing base
+		/// </summary>
 		public bool Charge = false;
 		public List<ProgressInfo> Setting { get; private set; } = new();
 		public WeaponProgress() {

@@ -1,106 +1,126 @@
 SuppliesDrop: {
-	DisplayName: "Supply Drop [Common]"
-	Description: Give you 1 randomize weapon based on progression
+	DisplayName: Supply Drop [Common]
+	Description: + Give you 1 randomize weapon based on progression
 }
 
 GiftOfRelic: {
-	DisplayName: "Gift of Relic [Common]"
-	Description: Grant you a relic
+	DisplayName: Gift of Relic [Common]
+	Description: + Grant you a relic
 }
 
 MeleeDamage: {
-	DisplayName: "Melee damage [Common]"
-	Description: Increases melee damage by 15%
+	DisplayName: Melee damage [Common]
+	Description: + Increases melee damage by 15%
 }
 
 RangeDamage: {
-	DisplayName: "Range damage [Common]"
-	Description: Increases range damage by 15%
+	DisplayName: Range damage [Common]
+	Description: + Increases range damage by 15%
 }
 
 MagicDamage: {
-	DisplayName: "Magic damage [Common]"
-	Description: Increases magic damage by 15%
+	DisplayName: Magic damage [Common]
+	Description: + Increases magic damage by 15%
 }
 
 SummonDamage: {
-	DisplayName: "Summon damage [Common]"
-	Description: Increases summon damage by 15%
+	DisplayName: Summon damage [Common]
+	Description: + Increases summon damage by 15%
 }
 
 IncreasesDamage: {
-	DisplayName: "Increases damage [Common]"
-	Description: Increases damage by 8%
+	DisplayName: Damage [Common]
+	Description: + Increases damage by 8%
 }
 
 IncreasesCriticalChance: {
-	DisplayName: "Increases critical chance [Common]"
-	Description: Increases critical chance by 3%
+	DisplayName: Critical chance [Common]
+	Description: + Increases critical chance by 3%
 }
 
 IncreasesCriticalDamage: {
-	DisplayName: "Increases critical damage [Common]"
-	Description: Increases critical damage by 20%
+	DisplayName: Critical damage [Common]
+	Description: + Increases critical damage by 20%
 }
 
 MeleeCriticalChance: {
-	DisplayName: "Melee Critical Chance [Common]"
-	Description: Increases melee critical chance by 8
+	DisplayName: Melee Critical Chance [Common]
+	Description: + Increases melee critical chance by 8
 }
 
 RangeCriticalChance: {
-	DisplayName: "Ramge Critical Chance [Common]"
-	Description: Increases ramge critical chance by 8
+	DisplayName: Ramge Critical Chance [Common]
+	Description: + Increases ramge critical chance by 8
 }
 
 MagicCriticalChance: {
-	DisplayName: "Magic Critical Chance [Common]"
-	Description: Increases magic critical chance by 8
+	DisplayName: Magic Critical Chance [Common]
+	Description: + Increases magic critical chance by 8
 }
 
 MeleeCriticalDamage: {
-	DisplayName: "Melee Critical damage [Common]"
-	Description: Increases melee critical damage by 30%
+	DisplayName: Melee Critical damage [Common]
+	Description: + Increases melee critical damage by 30%
 }
 
 RangeCriticalDamage: {
-	DisplayName: "Ramge Critical damage [Common]"
-	Description: Increases ramge critical damage by 30%
+	DisplayName: Ramge Critical damage [Common]
+	Description: + Increases ramge critical damage by 30%
 }
 
 MagicCriticalDamage: {
-	DisplayName: "Magic Critical damage [Common]"
-	Description: Increases magic critical damage by 30%
+	DisplayName: Magic Critical damage [Common]
+	Description: + Increases magic critical damage by 30%
 }
 
 IncreasesDefense: {
-	DisplayName: "Defense [Common]"
-	Description: Increases defenses by 4
+	DisplayName: Defense [Common]
+	Description: + Increases defenses by 4
 }
 
 IncreasesHealth: {
-	DisplayName: "Maximum Health [Common]"
-	Description: Increases maximum health by 20
+	DisplayName: Maximum Health [Common]
+	Description: + Increases maximum health by 20
 }
 
 IncreasesMana: {
-	DisplayName: "Maximum Mana [Common]"
-	Description: Increases maximum mana by 20
+	DisplayName: Maximum Mana [Common]
+	Description: + Increases maximum mana by 20
 }
 
 IncreasesLifeRegen: {
-	DisplayName: "Life regenerate [Common]"
-	Description: Increases life regen by 1
+	DisplayName: Life regenerate [Common]
+	Description: + Increases life regen by 1
 }
 
 IncreasesManaRegen: {
-	DisplayName: "Mana regenerate [Common]"
-	Description: Increases mana regen by 30%
+	DisplayName: Mana regenerate [Common]
+	Description: + Increases mana regen by 1
 }
 
 IncreasesDebuffDamage: {
-	DisplayName: "Debuff damage [Common]"
-	Description: Increases debuff damage by 4%
+	DisplayName: Debuff damage [Common]
+	Description: + Increases debuff damage by 4%
+}
+
+IncreasesThorn: {
+	DisplayName: Thorn [Common]
+	Description: + Increases thorn damage by 10%
+}
+
+IncreasesHealEff: {
+	DisplayName: Heal effectiveness [Common]
+	Description: + Increases heal effectiveness by 10%
+}
+
+IncreasesMovement: {
+	DisplayName: Movement speed [Common]
+	Description: + Increases movement speed by 10%
+}
+
+IncreasesJumpBoost: {
+	DisplayName: Jump boost [Common]
+	Description: + Increases jump boost by 10%
 }
 
 PerkBlocker: {
@@ -270,6 +290,7 @@ ProjectileDuplication: {
 		+ Decreases your projectile damage by 55%
 		Note: the next stack will increases projectile damage by 15%
 		( warning : may work weirdly on many weapon due to terraria code )
+		- Projectile deal 20% more damage to player
 		'''
 }
 
@@ -290,7 +311,7 @@ BloodStrike: {
 		+ Increases your multiplicative damage to 1.36x
 		+ Increases your flat damage by 7
 		- Using weapon will eat your hp by 5% of that weapon damage
-		Damage from this perk can't goes below 1
+		Damage from this perk can't kill you
 		'''
 }
 
@@ -378,7 +399,7 @@ BlessingOfStardust: {
 		+ Your whip inflict Star gaze
 		+ For 2 minion/sentry slot you have, you gain 1 base damage
 		+ Increases your max minion slot and sentry slot by 1
-		+ Your whip attack may occassionally spawn stardust which home into enemy
+		+ Your whip attack may occasionally spawn stardust which home into enemy
 		'''
 }
 
@@ -468,7 +489,7 @@ BeyondCritcal: {
 	DisplayName: Beyond Critical
 	Description:
 		'''
-		+ Increases critcal strike chance by 10%
+		+ Increases critical strike chance by 10%
 		+ You have 8% chance to ignore 90% target hit defense and increases damage by 2.5 time
 		+ Critical strike will make above chance increases to 25%
 		'''
@@ -584,7 +605,6 @@ BlessingOfMoon: {
 		'''
 		"The lunar power are now at your disposal" 
 		+ Your attack deal extra 125% of weapon damage as True damage
-		+ Inflict Moonlight debuff onto enemy which drastically make enemies more vulnerable 
 		+ Your attack is always accompany by Lunar Flare
 		+ You have 75% to dodge an attack
 		'''
@@ -817,7 +837,7 @@ UntappedPotential: {
 		+ Increases damage of synergy weapon base on 
 		Synergy bonus value
 		Amount of weapon in player inventory
-		Note : damage is increased base on weapon's damage
+		Note : damage is increased base on weapon's base damage
 		+ Increases synergy weapon critical strike chance base on synergy bonus
 		'''
 }

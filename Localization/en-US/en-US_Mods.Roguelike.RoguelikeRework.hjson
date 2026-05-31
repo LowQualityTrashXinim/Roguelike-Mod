@@ -98,6 +98,13 @@ BroadSword:
 	'''
 	Alt-click to guard against any attack which reduce 95% of damage
 	Wait 1s to deal 3x damage and increases critical strike chance by 30%
+	While on guard, getting hit will instantly fill up the charge !
+	'''
+CopperBroadSword:
+	'''
+	Intro effect: Swing will release a short circut discharge toward your cursor for 9s
+	Striking will have a chance to make target release a electric shots
+	While at full charge, striking enemy will releases electic shots
 	'''
 OreBow:
 	'''

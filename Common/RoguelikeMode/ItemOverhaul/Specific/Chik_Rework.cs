@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 internal class Roguelike_Chik : GlobalItem {
@@ -22,11 +23,34 @@ public class Roguelike_Chik_GlobalProjectile : GlobalProjectile {
 	public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) {
 		return entity.type == ProjectileID.Chik;
 	}
+	public override void OnSpawn(Projectile projectile, IEntitySource source) {
+		ChildrenWhoAmI = -1;
+		HitCounter = 0;
+	}
+	public override bool InstancePerEntity => true;
+	public int HitCounter = 0;
+	public int ChildrenWhoAmI = -1;
 	public override bool PreAI(Projectile projectile) {
-		if (Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<Roguelike_Chik_ModProjectile>()] < 1) {
-			Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<Roguelike_Chik_ModProjectile>(), projectile.damage, 0, projectile.whoAmI);
+		if (ChildrenWhoAmI == -1) {
+			ChildrenWhoAmI = Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<Roguelike_Chik_ModProjectile>(), projectile.damage, 0, projectile.owner, projectile.whoAmI);
+		}
+		else {
+			if (ChildrenWhoAmI < 0 || ChildrenWhoAmI >= Main.maxProjectiles) {
+				return base.PreAI(projectile);
+			}
+			if (!Main.projectile[ChildrenWhoAmI].active) {
+				ChildrenWhoAmI = -1;
+			}
 		}
 		return base.PreAI(projectile);
+	}
+	public override void OnKill(Projectile projectile, int timeLeft) {
+		if (ChildrenWhoAmI < 0 || ChildrenWhoAmI >= Main.maxProjectiles) {
+			return;
+		}
+		if (Main.projectile[ChildrenWhoAmI].active) {
+			Main.projectile[ChildrenWhoAmI].Kill();
+		}
 	}
 	public override void PostAI(Projectile projectile) {
 		var proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), projectile.Center + Main.rand.NextVector2Circular(projectile.width, projectile.height), Main.rand.NextVector2CircularEdge(1, 1), ProjectileID.CrystalShard, projectile.damage / 3 + 1, 1, projectile.owner);
@@ -35,21 +59,15 @@ public class Roguelike_Chik_GlobalProjectile : GlobalProjectile {
 		proj.usesIDStaticNPCImmunity = true;
 		proj.idStaticNPCHitCooldown = 20;
 	}
-}
-public class Roguelike_CHik_ModPlayer : ModPlayer {
-	public int HitCounter = 0;
-	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type != ProjectileID.Chik) {
-			return;
-		}
+	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (++HitCounter >= 12) {
 			float rotationRand = MathHelper.ToRadians(Main.rand.Next(90));
 			for (int i = 0; i < 12; i++) {
-				var projectile = Projectile.NewProjectileDirect(proj.GetSource_FromAI(), proj.Center, Vector2.One.RotatedBy(rotationRand).Vector2DistributeEvenlyPlus(12, 360, i) * 6, ProjectileID.CrystalShard, hit.Damage / 3 + 1, 1, proj.owner);
-				projectile.penetrate = -1;
-				projectile.maxPenetrate = -1;
-				projectile.usesIDStaticNPCImmunity = true;
-				projectile.idStaticNPCHitCooldown = 20;
+				var proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), projectile.Center, Vector2.One.RotatedBy(rotationRand).Vector2DistributeEvenlyPlus(12, 360, i) * 6, ProjectileID.CrystalShard, hit.Damage / 3 + 1, 1, projectile.owner);
+				proj.penetrate = -1;
+				proj.maxPenetrate = -1;
+				proj.usesIDStaticNPCImmunity = true;
+				proj.idStaticNPCHitCooldown = 20;
 			}
 			if (HitCounter >= 15) {
 				HitCounter = 0;
@@ -67,7 +85,7 @@ public class Roguelike_Chik_ModProjectile : ModProjectile {
 		Projectile.CloneDefaults(ProjectileID.Chik);
 		Projectile.aiStyle = -1;
 		Projectile.tileCollide = false;
-		Projectile.extraUpdates = 2;
+		Projectile.extraUpdates = 5;
 	}
 	public int Owner { get => (int)Projectile.ai[0]; set => Projectile.ai[0] = value; }
 	public override void AI() {

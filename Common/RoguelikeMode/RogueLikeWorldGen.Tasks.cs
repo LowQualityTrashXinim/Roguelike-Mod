@@ -466,22 +466,29 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// </summary>
 	private void InitializeForestWorld() {
 		//Setting up surface forest
+		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 3, 2, 1);
+		rect.Y -= 50;
+		Set_MapIgnoredZoneIntoWorldGen(rect);
+		ZoneToBeIgnored.Add(rect);
+		ForestZone.Add(rect);//Tundra
+
 		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 3, 7, 1);
 		rect.Y -= 50;
 		Set_MapIgnoredZoneIntoWorldGen(rect);
 		ZoneToBeIgnored.Add(rect);
-		ForestZone.Add(rect);
+		ForestZone.Add(rect);//Jungle
 
 		rect = GenerationHelper.GridPositionInTheWorld24x24(15, 3, 3, 1);
 		rect.Y -= 50;
 		Set_MapIgnoredZoneIntoWorldGen(rect);
 		ZoneToBeIgnored.Add(rect);
-		ForestZone.Add(rect);
+		ForestZone.Add(rect);//Forest
+
 		rect = GenerationHelper.GridPositionInTheWorld24x24(18, 3, 4, 1);
 		rect.Y -= 50;
 		Set_MapIgnoredZoneIntoWorldGen(rect);
 		ZoneToBeIgnored.Add(rect);
-		ForestZone.Add(rect);
+		ForestZone.Add(rect);//Hallow
 		//resetting rect just in case something terrible may happen
 		rect = new();
 		//Forest spawn zone
@@ -580,8 +587,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 
 		//Initialize Jungle biome
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 3), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(4, 4), 9);
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(4, 5), 10);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 4), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 5), 10);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 6), 9);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 7), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(8, 8), 6);
@@ -603,6 +610,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(22, 11), 2);
 
 		//Initialize Tundra biome
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 3), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 4), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 5), 3);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 6), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 7), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 8), 6);
@@ -1217,16 +1227,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Small forest step: " + watch.ToString());
 	}
 	[Task]
-	public void Generate_EssentialStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		foreach (var item in ModStructure_System.structures) {
-			item.CreateStructure(Mod, this);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
-	}
-	[Task]
 	public void Generate_GoldRoom() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -1415,6 +1415,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
 		Mod.Logger.Info("Create biome step :" + watch.ToString());
+	}
+	[Task]
+	public void Generate_EssentialStructure() {
+		Stopwatch watch = new();
+		watch.Start();
+		foreach (var item in ModStructure_System.structures) {
+			item.CreateStructure(Mod, this);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
 	}
 	[Task]
 	public void Generate_SmallVillage() {

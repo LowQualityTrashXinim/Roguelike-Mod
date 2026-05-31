@@ -1,10 +1,8 @@
 ﻿using Humanizer;
-using Mono.Cecil;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Perks;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;

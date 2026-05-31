@@ -47,9 +47,9 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 		player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter = -player.itemAnimationMax;
 		if (player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().PerfectStrike) {
 			damage *= 2;
-			counter = 100;
+			counter = 90;
 		}
-		if (counter >= 100) {
+		if (counter >= 90) {
 			int amount = counter / 10;
 			for (int i = 0; i < amount; i++) {
 				Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(45) * Main.rand.NextFloat(12f, 19f), ProjectileID.ChlorophyteOrb, damage, knockback, player.whoAmI, Main.rand.NextFloat(3, 5), 180);

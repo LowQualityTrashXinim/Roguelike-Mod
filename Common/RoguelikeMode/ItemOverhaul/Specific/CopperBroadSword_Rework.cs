@@ -1,39 +1,34 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy;
 using Roguelike.Texture;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
-internal class Roguelike_BroadSword : GlobalItem {
+namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
+internal class CopperBroadSword_Rework : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return Check_Sword(entity.type);
+		return entity.type == ItemID.CopperBroadsword;
+	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Charge = true;
 	}
 	public override void SetDefaults(Item entity) {
 		entity.scale += .45f;
 		entity.damage = 40;
 		entity.ArmorPenetration = 20;
 	}
-	public static bool Check_Sword(int type) {
-		switch (type) {
-			case ItemID.TinBroadsword:
-			case ItemID.IronBroadsword:
-			case ItemID.LeadBroadsword:
-			case ItemID.SilverBroadsword:
-			case ItemID.TungstenBroadsword:
-			case ItemID.GoldBroadsword:
-			case ItemID.PlatinumBroadsword:
-				return true;
-		}
-		return false;
-	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "", ModUtils.LocalizationText("RoguelikeRework", "CopperBroadSword")));
 		ModUtils.AddTooltip(ref tooltips, new TooltipLine(Mod, "", ModUtils.LocalizationText("RoguelikeRework", "BroadSword")));
 	}
 	public override bool AltFunctionUse(Item item, Player player) => true;
@@ -43,10 +38,14 @@ internal class Roguelike_BroadSword : GlobalItem {
 		}
 		return base.UseSpeedMultiplier(item, player);
 	}
-	public override bool? UseItem(Item item, Player player) {
-		return base.UseItem(item, player);
-	}
 	public override void HoldItem(Item item, Player player) {
+		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
+			OutroEffect_ModPlayer.Set_IntroEffect(player, item.type, ModUtils.ToSecond(9));
+		}
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_CopperBroadSword_ModPlayer>().Counter / 60f;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientA = Color.Orange;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = Color.Yellow;
 		if (player.altFunctionUse == 2) {
 			if (player.ItemAnimationJustStarted) {
 				player.AddBuff<BroadSword_Guard>(player.itemAnimationMax);
@@ -57,6 +56,12 @@ internal class Roguelike_BroadSword : GlobalItem {
 		item.GetGlobalItem<MeleeWeaponOverhaul>().HideSwingVisual = player.altFunctionUse == 2;
 	}
 	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			if (Main.rand.NextBool(5)) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 3;
+				Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<ShortCircusDischarge>(), player.GetWeaponDamage(item), 0, player.whoAmI);
+			}
+		}
 		if (player.altFunctionUse == 2) {
 			player.itemLocation = player.Center;
 			if (player.direction == 1) {
@@ -83,28 +88,8 @@ internal class Roguelike_BroadSword : GlobalItem {
 		return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 	}
 }
-public class BroadSword_Guard : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-}
-public class Roguelike_BroadSword_ModPlayer : ModPlayer {
+public class Roguelike_CopperBroadSword_ModPlayer : ModPlayer {
 	public int Counter = 0;
-	public bool Check_Sword(int type) {
-		switch (type) {
-			case ItemID.TinBroadsword:
-			case ItemID.IronBroadsword:
-			case ItemID.LeadBroadsword:
-			case ItemID.SilverBroadsword:
-			case ItemID.TungstenBroadsword:
-			case ItemID.GoldBroadsword:
-			case ItemID.PlatinumBroadsword:
-			case ItemID.CopperBroadsword:
-				return true;
-		}
-		return false;
-	}
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
@@ -115,7 +100,7 @@ public class Roguelike_BroadSword_ModPlayer : ModPlayer {
 		if (++Counter >= 60) {
 			Counter = 60;
 		}
-		if (!Roguelike_BroadSword.Check_Sword(Player.HeldItem.type)) {
+		if (Player.HeldItem.type != ItemID.CopperBroadsword) {
 			return;
 		}
 		if (Counter == 59) {
@@ -139,42 +124,51 @@ public class Roguelike_BroadSword_ModPlayer : ModPlayer {
 			}
 		}
 	}
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (!Check_Sword(Player.HeldItem.type)) {
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Player.HeldItem.type != ItemID.CopperBroadsword) {
 			return;
 		}
-		if (Counter >= 60) {
-			damage *= 3;
-		}
-	}
-	public override void ModifyWeaponCrit(Item item, ref float crit) {
-		if (!Check_Sword(Player.HeldItem.type)) {
-			return;
+		hit.Damage = Math.Clamp(hit.Damage / 3, 1, int.MaxValue);
+		if (Main.rand.NextBool(5)) {
+			Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.ThunderSpearShot, hit.Damage, 0, Player.whoAmI);
+			proj.penetrate = 10;
+			proj.maxPenetrate = 10;
 		}
 		if (Counter >= 60) {
-			crit += 30;
+			for (int i = 0; i < 5; i++) {
+				Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.ThunderSpearShot, hit.Damage, 0, Player.whoAmI);
+				proj.penetrate = 10;
+				proj.maxPenetrate = 10;
+			}
 		}
 	}
-	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		if (!Check_Sword(Player.HeldItem.type)) {
+	public override void OnHitAnything(float x, float y, Entity victim) {
+		if (Player.HeldItem.type != ItemID.CopperBroadsword) {
 			return;
 		}
 		if (Player.HasBuff<BroadSword_Guard>()) {
-			modifiers.SourceDamage *= .05f;
-			modifiers.Knockback *= .15f;
-			Player.AddImmuneTime(-1, 44);
 			Counter = 59;
 		}
 	}
-	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (!Check_Sword(Player.HeldItem.type)) {
-			return;
-		}
-		if (Player.HasBuff<BroadSword_Guard>()) {
-			modifiers.SourceDamage *= .05f;
-			modifiers.Knockback *= .15f;
-			Player.AddImmuneTime(-1, 44);
-			Counter = 59;
+}
+public class ShortCircusDischarge : ModProjectile {
+	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 1;
+		Projectile.DamageType = DamageClass.Melee;
+		Projectile.friendly = true;
+		Projectile.hide = true;
+		Projectile.extraUpdates = 100;
+		Projectile.penetrate = -1;
+		Projectile.timeLeft = 60;
+	}
+	public override void AI() {
+		int dust = Dust.NewDust(Projectile.Center, 0, 0, Main.rand.Next(new int[] { DustID.Electric, DustID.GemSapphire }));
+		Main.dust[dust].scale = Main.rand.NextFloat(.3f, .75f);
+		Main.dust[dust].velocity = Vector2.Zero;
+		if (Projectile.timeLeft % 5 == 0) {
+			Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(20);
+			Projectile.damage += 5;
 		}
 	}
 }

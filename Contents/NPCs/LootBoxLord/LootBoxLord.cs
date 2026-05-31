@@ -12,7 +12,6 @@ using Roguelike.Contents.NPCs.LootBoxLord.HostileProjectile;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

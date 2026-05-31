@@ -167,3 +167,8 @@ SSR_SuperSpoil: {
 	DisplayName: Super Bundle
 	Description: Open up all "Common", "Uncommon" or "Rare" tier spoil
 }
+
+WealthSpoil: {
+	DisplayName: Wealth spoil
+	Description: Give you 1 coin gun and 9999 platinum coins. PS: Have fun~
+}

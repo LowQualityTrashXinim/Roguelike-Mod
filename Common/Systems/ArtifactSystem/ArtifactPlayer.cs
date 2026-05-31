@@ -8,7 +8,7 @@ namespace Roguelike.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {
 		public int ActiveArtifact { get; set; } = Artifact.ArtifactType<NormalizeArtifact>();
 		public override void OnEnterWorld() {
-			while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {
+			while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>()) {
 				ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
 			}
 		}

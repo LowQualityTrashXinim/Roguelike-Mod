@@ -166,4 +166,16 @@ internal class SSRspoil {
 			}
 		}
 	}
+	public class WealthSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SSR;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.SSRDrop();
+		}
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ItemID.CoinGun);
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ItemID.PlatinumCoin, 9999);
+		}
+	}
 }

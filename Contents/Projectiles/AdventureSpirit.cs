@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
+using System;
 
 namespace Roguelike.Contents.Projectiles;
 internal class AdventureSpirit : ModProjectile {
@@ -30,7 +31,7 @@ internal class AdventureSpirit : ModProjectile {
 			dust.velocity = Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(-3f, -1f);
 		}
 		SelectFrame();
-		Projectile.ai[0] = ModUtils.Safe_SwitchValue((int)Projectile.ai[0], 300, 0);
+		Projectile.ai[0] = ModUtils.Safe_SwitchValue((int)Projectile.ai[0], 300, -300);
 		Player player = Main.player[Projectile.owner];
 		if (player.dead || !player.active) {
 			Projectile.Kill();
@@ -87,7 +88,7 @@ internal class AdventureSpirit : ModProjectile {
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		ModUtils.BresenhamCircle(Projectile.Center, radius, Color.Lerp(Color.Red, Color.Orange, Projectile.ai[0] / 300f));
+		ModUtils.BresenhamCircle(Projectile.Center, radius, Color.Lerp(Color.Red, Color.Orange, Math.Abs(Projectile.ai[0] / 300f)));
 		return base.PreDraw(ref lightColor);
 	}
 }

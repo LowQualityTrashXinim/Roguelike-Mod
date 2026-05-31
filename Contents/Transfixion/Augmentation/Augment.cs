@@ -66,7 +66,7 @@ public class AugmentsWeapon : GlobalItem {
 		AugmentCharge += amount;
 	}
 	public int Check_ChargeConvertToStackAmount() {
-		int Amount = AugmentCharge % 50;
+		int Amount = AugmentCharge / 50;
 		if (AugmentCharge >= 250) {
 			return Amount;
 		}
@@ -121,17 +121,17 @@ public abstract class ModAugments : ModType {
 	public string Description => ModUtils.LocalizationText("ModAugments", $"{Name}.Description");
 	protected string Description2(string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.Description{Extra}");
 	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, Item item, int stack) {
-		string desc = Description;
+		string desc = "";
 		for (int i = 0; i < stack; i++) {
 			string num = i.ToString();
 			if (i == 0) {
-				num = "";
+				num = string.Empty;
 			}
 			string text = Description2(num);
-			if (text == "") {
+			if (string.IsNullOrEmpty(text)) {
 				break;
 			}
-			desc += "\n" + Description2(num);
+			desc += "\n" + text;
 		}
 		TooltipLine line = new(Mod, Name, desc);
 		return line;
@@ -140,7 +140,7 @@ public abstract class ModAugments : ModType {
 	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc) { }
 	public virtual string ModifyName(Player player, AugmentsWeapon acc, Item item, int stack) {
 		string name = DisplayName;
-		return ColorWrapper(name + ModUtils.Convert_NumberToRomanNumerals(stack));
+		return ColorWrapper(name + " " + ModUtils.Convert_NumberToRomanNumerals(stack));
 	}
 	public virtual void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }

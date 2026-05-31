@@ -59,6 +59,28 @@ Transumtation changes:
 Trauma shock upon reaching full stack will make NPC much slower and more lose all defense.
 During Trauma shock, if NPC is being attacked, they will intake damage pernamenntly increases by 2%.
 
+Weapon balance todo list:
+- Ice Blade:
+Intro effect: When attack, additional slash is accommpany for 7s
+After a 2s waiting, the next strike releases bunch of frost strike
+Frost strike after a short while will explode dealing damage to nearby enemy
+and releases bunch of ice shard
+After frost strike explode, Ice Blade damage is increases by 20% for 4s
+Weapon is classified as Glacio weapon type
+
+- Enchanted Sword:
+Intro effect: Shoot more enchanted beam every swing for 4s
+Enchanted beam from the sword on hit will spawn more short live beam near enemy
+Swing the sword will do enchanted slash
+Wait for 2s to strengthen the enchanted slash
+
+New weapon tag: 
+Glacio: 
+- Dealing continuous damage to enemy will increases glacio stack
+- Each stack will increases damage taken by 2% and each attack have 50% to deal extra 50% damage
+- At the 20th stack, the next strike will remove all stack and deal 420% damage
+- Enemy with glacio stack also move a lot slower
+
 7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
 - Token of Pride.

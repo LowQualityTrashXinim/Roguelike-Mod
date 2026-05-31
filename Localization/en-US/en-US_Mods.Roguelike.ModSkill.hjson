@@ -274,3 +274,13 @@ Modify_DistanceCast: {
 	DisplayName: Distance Cast
 	Description: Cast your projectile far off from you
 }
+
+Utility_SummonPerk: {
+	DisplayName: Summon perk
+	Description: Grant you a free perk at a massive energy cost
+}
+
+Utility_SummonWeapon: {
+	DisplayName: Summon weapon
+	Description: Grant you a free weapon at a massive energy cost
+}

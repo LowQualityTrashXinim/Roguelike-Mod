@@ -672,3 +672,28 @@ Flaming Wood Sword:
 - Changed Celestial Wrath death message to be a bit more of a joke
 - Supplies drop and Gift of Relic is now classified as common perk ( there are no common perk classification btw ) and changed their SelectChoosing condition.
 - Perk Unnerfed 2nd stack now disable capped health stats.
+- Re-adjusted maximum stack of glass cannon player can have to 5 instead of 999.
+603/ Added multiple weapon effects and complete the system itself.
+604/ Modification made to General Builder Tool.
+605/ Fixed multiple bugs and adjust Blessing of Moon.
+The following are bugs that is fixed:
+- Total RNG artifact selection doesn't work and always default to no artifact.
+- Weapon enchantment doesn't naturally spawn even with 100% chance.
+- Same goes with augmentation.
+- Put a furthor blocker for Divine Hammer when player are in Total RNG mode.
+- Fixed augmentation "Convert_NumberToRomanNumerals" not working as expected.
+- Updated Weapon Leveling and how to set Item level.
+- Fixed Augmentation "Check_ChargeConvertToStackAmount" doing the wrong calculation.
+- Fixed the Augmentation description duplicate.
+606/ Luck Essence now do something extra in Total RNG mode.
+607/ Added "Wealth Spoil" spoil.
+608/ Updated Boss Rush Extra mode.
+609/ Added Utility skill.
+610/ Added 7 new Weapon effects.
+611/ Updated various localization.
+612/ Fixed a bug with adventure spirit that cause the circle to instantly snap to 1 color.
+613/ Fixed a bug that caused when player picked Blessed Knowledge and use a potion, the 10 healing is activate throughout the entire duration of item animation.
+614/ Food buff name now have their tier display along side.
+615/ Food item now display eating time and cool down in their tooltip.
+616/ Fixed a Chilk overhaul bug that cause the illusion of the yoyo not appearing and may also have potential to crash the game.
+617/ Reworked Copper Broad Sword.

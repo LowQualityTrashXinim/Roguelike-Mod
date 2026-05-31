@@ -267,6 +267,33 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.Arkhalis);
 		Arr_WeaponTag[tag].Add(ItemID.Terragrim);
 
+		Arr_WeaponTag[tag].Add(ItemID.AshWoodSword);
+		Arr_WeaponTag[tag].Add(ItemID.CandyCaneSword);
+		Arr_WeaponTag[tag].Add(ItemID.BladeofGrass);
+		Arr_WeaponTag[tag].Add(ItemID.FieryGreatsword);
+		Arr_WeaponTag[tag].Add(ItemID.BreakerBlade);
+		Arr_WeaponTag[tag].Add(ItemID.AdamantiteSword);
+		Arr_WeaponTag[tag].Add(ItemID.TitaniumSword);
+		Arr_WeaponTag[tag].Add(ItemID.DD2SquireDemonSword);
+		Arr_WeaponTag[tag].Add(ItemID.ChlorophyteClaymore);
+		Arr_WeaponTag[tag].Add(ItemID.TheHorsemansBlade);
+		Arr_WeaponTag[tag].Add(ItemID.ChristmasTreeSword);
+		Arr_WeaponTag[tag].Add(ItemID.DD2SquireBetsySword);
+		Arr_WeaponTag[tag].Add(ItemID.StarWrath);
+		Arr_WeaponTag[tag].Add(ItemID.Meowmere);
+
+		Arr_WeaponTag[tag].Add(ItemID.CopperShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.TinShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.IronShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.LeadShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.SilverShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.TungstenShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.GoldShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.PlatinumShortsword);
+		Arr_WeaponTag[tag].Add(ItemID.Gladius);
+		Arr_WeaponTag[tag].Add(ItemID.Ruler);
+		Arr_WeaponTag[tag].Add(ItemID.PiercingStarlight);
+
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<EnchantedCopperSword>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<ManaStarFury>());
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<GenericBlackSword>());
@@ -568,6 +595,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.Megashark);
 		Arr_WeaponTag[tag].Add(ItemID.Gatligator);
 		Arr_WeaponTag[tag].Add(ItemID.Uzi);
+		Arr_WeaponTag[tag].Add(ItemID.RedRyder);
 		Arr_WeaponTag[tag].Add(ItemID.CandyCornRifle);
 		Arr_WeaponTag[tag].Add(ItemID.ChainGun);
 		Arr_WeaponTag[tag].Add(ItemID.VortexBeater);
@@ -664,6 +692,7 @@ internal class OutroEffectSystem : ModSystem {
 
 		Arr_WeaponTag[tag].Add(ItemID.Musket);
 		Arr_WeaponTag[tag].Add(ItemID.Minishark);
+		Arr_WeaponTag[tag].Add(ItemID.RedRyder);
 		Arr_WeaponTag[tag].Add(ItemID.ClockworkAssaultRifle);
 		Arr_WeaponTag[tag].Add(ItemID.Megashark);
 		Arr_WeaponTag[tag].Add(ItemID.Gatligator);

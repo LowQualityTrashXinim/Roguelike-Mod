@@ -404,20 +404,17 @@ public class BlessingOfMoon : Perk {
 	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		int damage = player.GetWeaponDamage(item);
 		float knockback = player.GetWeaponKnockback(item);
-		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f), hit.HitDirection, hit.Crit, knockback, Roguelike_DamageClass.True));
 
 		var source = player.GetSource_OnHit(target);
 		var pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
 		var vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
 		Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
-
-
-		target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		int damage = proj.damage;
 		float knockback = proj.knockBack;
-		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+		player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f), hit.HitDirection, hit.Crit, knockback, Roguelike_DamageClass.True));
 
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			var source = player.GetSource_OnHit(target);
@@ -426,15 +423,5 @@ public class BlessingOfMoon : Perk {
 			Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
 
 		}
-		target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), ModUtils.ToSecond(Main.rand.Next(4, 8)));
-	}
-}
-public class MoonLightDebuff : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultDeBuff();
-	}
-	public override void Update(NPC npc, ref int buffIndex) {
-		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= 0;
 	}
 }

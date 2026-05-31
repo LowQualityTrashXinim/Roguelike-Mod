@@ -16,8 +16,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
 		public static string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
@@ -41,7 +39,7 @@ namespace Roguelike.Common.Utils {
 			}
 			int length = num / 10;
 			int remainder = num - length * 10;
-			if (remainder > 5) {
+			if (remainder >= 5) {
 				if (remainder % 5 == 4) {
 					R = "IX";
 				}
