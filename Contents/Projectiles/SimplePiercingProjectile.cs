@@ -81,6 +81,11 @@ public class SimplePiercingProjectile2 : ModProjectile {
 	float OffSetFromPlayer = 0;
 	Vector2 PlayerCenterOrigin = Vector2.Zero;
 	public bool FollowPlayer = false;
+	/// <summary>
+	/// Make the projectile stay still for a moment
+	/// </summary>
+	public float ExtraDelay = 0;
+	int timeleft_Onspawn = 0;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 36;
 		Projectile.penetrate = -1;
@@ -101,6 +106,7 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		}
 		TimeBeforeActive = (int)Projectile.ai[2];
 		Projectile.timeLeft = (int)(Projectile.ai[1] + TimeBeforeActive);
+		timeleft_Onspawn = Projectile.timeLeft;
 		CenterBefore = Projectile.Center;
 		OffSetFromPlayer = (CenterBefore - Main.player[Projectile.owner].Center).Length();
 		PlayerCenterOrigin = Main.player[Projectile.owner].Center;
@@ -139,6 +145,9 @@ public class SimplePiercingProjectile2 : ModProjectile {
 			//	dust.color = Color.Black with { A = 150 };
 			//	dust.rotation += Main.rand.NextFloat();
 			//}
+		}
+		if (--ExtraDelay >= 0) {
+			Projectile.timeLeft = timeleft_Onspawn;
 		}
 		ScaleX = InitialScaleXValue * (Projectile.timeLeft / timeleft);
 		ScaleY = InitialScaleYValue * (Projectile.timeLeft / timeleft);

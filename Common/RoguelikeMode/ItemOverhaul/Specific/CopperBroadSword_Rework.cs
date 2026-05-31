@@ -94,14 +94,14 @@ public class Roguelike_CopperBroadSword_ModPlayer : ModPlayer {
 		if (!Player.active) {
 			return;
 		}
-		if (Player.ItemAnimationActive && Player.ItemAnimationEndingOrEnded && Player.altFunctionUse != 2) {
-			Counter = -Player.itemAnimationMax;
-		}
 		if (++Counter >= 60) {
 			Counter = 60;
 		}
 		if (Player.HeldItem.type != ItemID.CopperBroadsword) {
 			return;
+		}
+		if (Player.ItemAnimationActive && Player.ItemAnimationEndingOrEnded && Player.altFunctionUse != 2) {
+			Counter = -Player.itemAnimationMax;
 		}
 		if (Counter == 59) {
 			SpawnSpecialDustEffect();

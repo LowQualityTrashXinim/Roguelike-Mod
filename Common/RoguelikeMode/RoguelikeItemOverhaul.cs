@@ -62,11 +62,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.useTime = item.useAnimation = 42;
 					item.shootsEveryUse = true;
 					break;
-				case ItemID.IceBlade:
-					item.damage = 39;
-					item.shootsEveryUse = true;
-					item.scale += .5f;
-					break;
 				case ItemID.InfluxWaver:
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;

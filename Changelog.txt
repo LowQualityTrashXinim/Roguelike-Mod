@@ -697,3 +697,4 @@ The following are bugs that is fixed:
 615/ Food item now display eating time and cool down in their tooltip.
 616/ Fixed a Chilk overhaul bug that cause the illusion of the yoyo not appearing and may also have potential to crash the game.
 617/ Reworked Copper Broad Sword.
+618/ Reworked Ice Blade.

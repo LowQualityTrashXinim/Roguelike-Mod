@@ -106,6 +106,13 @@ CopperBroadSword:
 	Striking will have a chance to make target release a electric shots
 	While at full charge, striking enemy will releases electic shots
 	'''
+IceBlade:
+	'''
+	Intro effect: When attack, additional slash is accommpany for 7s
+	After waiting 2s, the next strike releases bunch of frost strike and weapon deal 4x damage
+	Frost strike after a short while will explode dealing damage to nearby enemy
+	and releases bunch of ice shard
+	'''
 OreBow:
 	'''
 	Intro effect: Increases weapon damage by 10 base for 15s

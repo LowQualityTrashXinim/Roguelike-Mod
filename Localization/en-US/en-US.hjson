@@ -545,6 +545,7 @@ Mods: {
 			FlamingFireBall.DisplayName: Flaming Fire Ball
 			ShortCircusDischarge.DisplayName: Short Circus Discharge
 			IceBlade_Slash_Projectile.DisplayName: Ice Blade_ Slash_ Projectile
+			ReworkIceShards.DisplayName: Rework Ice Shards
 		}
 
 		NPCs: {
