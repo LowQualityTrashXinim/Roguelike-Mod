@@ -698,3 +698,4 @@ The following are bugs that is fixed:
 616/ Fixed a Chilk overhaul bug that cause the illusion of the yoyo not appearing and may also have potential to crash the game.
 617/ Reworked Copper Broad Sword.
 618/ Reworked Ice Blade.
+619/ Separate the weapon tag interaction with npc due to the global class is not meant to be used as a debuff holder.

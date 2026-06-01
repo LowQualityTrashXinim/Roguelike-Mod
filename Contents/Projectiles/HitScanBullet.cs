@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
 
@@ -105,7 +106,7 @@ internal class HitScanShotv2 : ModProjectile {
 		modifiers.SourceDamage.Base += damage;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		target.GetGlobalNPC<RoguelikeGlobalNPC>().HallowedGaze_Count = 0;
+		target.GetGlobalNPC<Roguelike_HallowedGaze_GlobalNPC>().HallowedGaze_Count = 0;
 	}
 	Vector2 ToMouseDirection => new(Projectile.ai[0], Projectile.ai[1]);
 	public override bool PreDraw(ref Color lightColor) {
