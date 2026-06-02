@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Graphics;
 using Roguelike.Common.Systems;
@@ -103,13 +104,24 @@ public class IceBlade_Slash_Projectile : SimplePiercingProjectile2 {
 	public override void OnKill(int timeLeft) {
 		int amount = Main.rand.Next(4, 9);
 		for (int i = 0; i < amount; i++) {
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(2, 2) * Main.rand.NextFloat(1, 2), ModContent.ProjectileType<ReworkIceShards>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(2, 2) * Main.rand.NextFloat(1, 2), ModContent.ProjectileType<ReworkIceShards>(), (int)(Projectile.damage * .25f), Projectile.knockBack, Projectile.owner);
 			projectile.hostile = false;
 			projectile.friendly = true;
-			projectile.penetrate = -1;
-			projectile.maxPenetrate = -1;
+			projectile.penetrate = 2;
+			projectile.maxPenetrate = 2;
 			projectile.tileCollide = true;
 			projectile.scale = Main.rand.NextFloat(.5f, .7f);
+		}
+		amount = 3;
+		for (int i = 0; i < amount; i++) {
+			Vector2 vel = Main.rand.NextVector2CircularEdge(2, 2);
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + vel * 10, vel, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .67f), Projectile.knockBack, Projectile.owner, .1f, 15, 0);
+			if (projectile.ModProjectile is SimplePiercingProjectile2 slash) {
+				slash.ScaleX = 4 + i * .05f;
+				slash.ScaleY = .25f;
+				slash.ProjectileColor = Color.Cyan;
+				slash.ExtraDelay = 10;
+			}
 		}
 		Player player = Main.player[Projectile.owner];
 		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150);

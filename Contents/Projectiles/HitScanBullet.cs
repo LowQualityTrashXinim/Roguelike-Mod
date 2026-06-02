@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.AkaiHanbunNoHasami;
 
 using Roguelike.Texture;
 using System;

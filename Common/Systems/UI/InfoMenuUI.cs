@@ -196,3 +196,6 @@ public class Avarice_ModInfo : ModInformation {
 public class ElectricConductor_ModInfo : ModInformation {
 	public override string LocalizationName => "ElectricConductor";
 }
+public class Frostbite_ModInfo : ModInformation {
+	public override string LocalizationName => "Frostbite";
+}

@@ -699,3 +699,5 @@ The following are bugs that is fixed:
 617/ Reworked Copper Broad Sword.
 618/ Reworked Ice Blade.
 619/ Separate the weapon tag interaction with npc due to the global class is not meant to be used as a debuff holder.
+620/ Added Frost bite weapon tag.
+621/ Reworked Revolver.

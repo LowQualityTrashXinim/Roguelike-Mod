@@ -6,7 +6,8 @@ Mods: {
 				[c/ffffc0:Hallowed Gaze]:
 				On applying, enemy will take 5% more damage, this debuff can be reapply ( upon reapply will reset duration )
 				reapplying the debuff will increases the above effect by another 5% ( soft-capped at 60% )
-				After reaching the soft cap, applying more will result in enemy get struck by beam of light dealing 1% of enemy current health as damage ( damage can't be lower than 10 and can't be higher than 2000 )
+				After reaching the soft cap, applying more will result in enemy get struck by beam of light dealing 1% of enemy current health as damage 
+				( damage can't be lower than 10 and can't be higher than 2000 )
 				After getting struck by light beam, removed all the stacks
 				'''
 			WrathofBlueMoon:
@@ -49,14 +50,14 @@ Mods: {
 				If the target doesn't has Electrified debuff, dealing damage to target up to 10 time
 				have 25% to inflict Electrified debuff for 10s
 				'''
-			DeepFrost:
+			Frostbite:
 				'''
-				Dealing continuous damage to enemy will increases deep frost stack
+				[c/b5ffff:Frost bite]:
+				Dealing continuous damage to enemy will strengthen the effect, enemy also move a lot slower
 				Each stack will increases damage taken by 2% and each attack have 50% to deal extra 50% damage
 				At the 20th stack, the next strike will remove all stack and deal 420% damage
-				Enemy with deep frost also move a lot slower
-				While enemy is inflicted with chilled, frozen debuff
-				damage taken is increased by 1000% when target have deep frost stack
+				While enemy is inflicted with chilled, frozen debuff damage taken is increased by 1000%
+				After dealt damage, remove the chilled or frozen debuff on the enemy
 				'''
 		}
 
@@ -546,6 +547,7 @@ Mods: {
 			ShortCircusDischarge.DisplayName: Short Circus Discharge
 			IceBlade_Slash_Projectile.DisplayName: Ice Blade_ Slash_ Projectile
 			ReworkIceShards.DisplayName: Rework Ice Shards
+			Roguelike_Revolver_ModProjectile.DisplayName: Roguelike_ Revolver_ Mod Projectile
 		}
 
 		NPCs: {
@@ -4173,6 +4175,11 @@ Mods: {
 			SpearCoolDown: {
 				DisplayName: Spear Cool Down
 				Description: Mods.Roguelike.Buffs.SpearCoolDown.Description
+			}
+
+			Frostbite: {
+				DisplayName: Frostbite
+				Description: Mods.Roguelike.Buffs.Frostbite.Description
 			}
 		}
 

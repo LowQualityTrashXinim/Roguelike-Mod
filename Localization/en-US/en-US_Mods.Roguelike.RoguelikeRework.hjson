@@ -113,6 +113,11 @@ IceBlade:
 	Frost strike after a short while will explode dealing damage to nearby enemy
 	and releases bunch of ice shard
 	'''
+Revolver:
+	'''
+	Every 6th shot, throw out a revolver that bounce off enemy and tile
+	The thrown revolver on hit enemy or tile will shoot out bullet constantly
+	'''
 OreBow:
 	'''
 	Intro effect: Increases weapon damage by 10 base for 15s

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.NoneSynergy;
 using Roguelike.Contents.Items.NoneSynergy.EnhancedKatana;
+using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
 using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
 using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
@@ -155,6 +156,7 @@ internal class OutroEffectSystem : ModSystem {
 		Add_Avarice();
 		Add_Wooden();
 		Add_ChlorophyteEmpowerment();
+		Add_Frostbite();
 
 		watch.Stop();
 		Mod.Logger.Info("Time taken to initialize weapon tag: " + watch.ToString());
@@ -1096,6 +1098,31 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.RichMahoganyHammer);
 		Arr_WeaponTag[tag].Add(ItemID.Vilethorn);
 	}
+	private void Add_Frostbite() {
+		int tag = (int)WeaponTag.Frostbite;
+		Arr_WeaponTag[tag].Add(ItemID.IceBlade);
+		Arr_WeaponTag[tag].Add(ItemID.Frostbrand);
+		Arr_WeaponTag[tag].Add(ItemID.IceBow);
+		Arr_WeaponTag[tag].Add(ItemID.IceSickle);
+		Arr_WeaponTag[tag].Add(ItemID.Amarok);
+		Arr_WeaponTag[tag].Add(ItemID.NorthPole);
+		Arr_WeaponTag[tag].Add(ItemID.FrostDaggerfish);
+		Arr_WeaponTag[tag].Add(ItemID.WandofFrosting);
+		Arr_WeaponTag[tag].Add(ItemID.IceRod);
+		Arr_WeaponTag[tag].Add(ItemID.FlowerofFrost);
+		Arr_WeaponTag[tag].Add(ItemID.FrostStaff);
+		Arr_WeaponTag[tag].Add(ItemID.BlizzardStaff);
+		Arr_WeaponTag[tag].Add(ItemID.StaffoftheFrostHydra);
+		Arr_WeaponTag[tag].Add(ItemID.CoolWhip);
+
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrostSwordFish>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FairFrozen>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrozenShark>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FrozenEnchantedSword>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<Snowstorm>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<IceStorm>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<EverlastingCold>());
+	}
 }
 public class OutroEffect_ModPlayer : ModPlayer {
 	//This is not really clean but I really don't want to create a Modplayer class just to store a single field
@@ -1362,6 +1389,11 @@ public enum WeaponTag : byte {
 	FuryOfTheSun,
 	ElectricConductor,
 	Avarice,
+	Frostbite,
+	/// <summary>
+	/// This is not a weapon tag, it is specifically for outro effect and weapon that should recieve the benefit<br/>
+	/// If you want your weapon to inherit outro effect of "ChlorophyteEmpowerment" then add in this tag into your weapon
+	/// </summary>
 	ChlorophyteEmpowerment,
 	/// <summary>
 	/// For weapon that is made from common wood, including hardmode pearlwood
