@@ -10,7 +10,6 @@ using Roguelike.Common.Wrapper;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
-using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using StructureHelper.API;
 using StructureHelper.Models;
@@ -235,7 +234,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
 		tag["ForestZone"] = ForestZone;
-		tag["CrimsonStructure"] = CrimsonStructure;
 
 
 		StructureLocation.Clear();
@@ -248,7 +246,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 		var Location = tag.Get<List<Rectangle>>("StructureLocation");
 		StructureLocation = StructureName.Zip(Location, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		ForestZone = tag.Get<List<Rectangle>>("ForestZone");
-		CrimsonStructure = tag.Get<Rectangle>("CrimsonStructure");
 		if (Type == null || Area == null) {
 			return;
 		}
@@ -326,7 +323,7 @@ public partial class RogueLikeWorldGen {
 					"AbandonHouse7",
 					"AbandonHouse8",
 				};
-				data = Generator.GetStructureData($"Assets/{Main.rand.Next(arr_stringpath)}", mod);
+				data = Generator.GetStructureData($"Assets/AbandonHouse/{Main.rand.Next(arr_stringpath)}", mod);
 				break;
 		}
 		return data;
@@ -455,8 +452,6 @@ public partial class RogueLikeWorldGen {
 
 	Rectangle merchantHouse = new();
 	Rectangle mechanicHouse = new();
-	public Rectangle CrimsonStructure = new Rectangle();
-	public Rectangle CorruptStructure = new Rectangle();
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
 	/// <summary>
@@ -472,7 +467,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ZoneToBeIgnored.Add(rect);
 		ForestZone.Add(rect);//Tundra
 
-		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 3, 7, 1);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 3, 6, 1);
 		rect.Y -= 50;
 		Set_MapIgnoredZoneIntoWorldGen(rect);
 		ZoneToBeIgnored.Add(rect);
@@ -489,7 +484,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Set_MapIgnoredZoneIntoWorldGen(rect);
 		ZoneToBeIgnored.Add(rect);
 		ForestZone.Add(rect);//Hallow
-		//resetting rect just in case something terrible may happen
+							 //resetting rect just in case something terrible may happen
 		rect = new();
 		//Forest spawn zone
 		MainForestZone = new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200);
@@ -564,8 +559,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// The biome ID <see cref="Bid"/> is stored as a char data
 	/// </summary>
 	public void InitializeBiomeWorld() {
-		Array.Fill(BiomeMapping, ToC(Bid.None), 0, 24);
-		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 1), 24);
+		Array.Fill(BiomeMapping, ToC(Bid.None), 0, BiomeMapping.Length);
 
 		//Initialize Space biome
 		Array.Fill(BiomeMapping, ToC(Bid.None), MapIndex(0, 2), 6);
@@ -586,7 +580,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 5), 4);
 
 		//Initialize Jungle biome
-		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 3), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 3), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 4), 9);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 5), 10);
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 6), 9);
@@ -595,7 +589,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(8, 9), 7);
 
 		//Initialize Desert biome
-		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(13, 4), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(12, 4), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(14, 5), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(16, 6), 8);
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(15, 7), 9);
@@ -605,9 +599,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(22, 10), 2);
 
 		//Initialize Crimson desert biome
-		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(18, 9), 2);
-		BiomeMapping[MapIndex(21, 10)] = ToC(Bid.CrimsonDesert);
-		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(22, 11), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(18, 9), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.CrimsonDesert), MapIndex(22, 10), 2);
 
 		//Initialize Tundra biome
 		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 3), 2);
@@ -627,11 +620,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 
 		//Initialize Corrupted Tundra
 		BiomeMapping[MapIndex(2, 11)] = ToC(Bid.CorruptedTundra);
-		BiomeMapping[MapIndex(2, 12)] = ToC(Bid.CorruptedTundra);
-		BiomeMapping[MapIndex(3, 13)] = ToC(Bid.CorruptedTundra);
+		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(2, 12), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(3, 13), 2);
 		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(4, 14), 2);
-		BiomeMapping[MapIndex(5, 15)] = ToC(Bid.CorruptedTundra);
-		BiomeMapping[MapIndex(7, 16)] = ToC(Bid.CorruptedTundra);
+		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(5, 15), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.CorruptedTundra), MapIndex(7, 16), 2);
 
 		//Initialize Forest biome
 		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(8, 10), 10);
@@ -680,8 +673,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 20), 3);
 
 		//Initialize crimson biome
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 11), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 11), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 12), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(20, 13), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(21, 14), 3);
@@ -884,44 +877,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Secret step: " + watch.ToString());
 	}
 	[Task]
-	public void Generate_BoCStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 22 * GridPart_X + Main.rand.Next(GridPart_X);
-		int Y = 12 * GridPart_Y + Main.rand.Next(GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/CrimsonChamber", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		CrimsonStructure = new(point.X, point.Y, data.width, data.height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CrimsonStructure);
-			Set_MapIgnoredZoneIntoWorldGen(CrimsonStructure);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Crimson structure realm step: " + watch.ToString());
-	}
-	[Task]
-	public void Generate_EoWStructure() {
-		Stopwatch watch = new();
-		watch.Start();
-		int X = 6 * GridPart_X + Main.rand.Next(GridPart_X);
-		int Y = 19 * GridPart_Y + Main.rand.Next(GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/CorruptChamber", Mod);
-		int Width = data.width / 2;
-		int Height = data.height / 2;
-		Point16 point = new(X - Width, Y - Height);
-		CorruptStructure = new(point.X, point.Y, data.width, data.height);
-		if (ModWrapper.IsInBound(data, point)) {
-			ModWrapper.GenerateFromData(data, point);
-			ZoneToBeIgnored.Add(CorruptStructure);
-			Set_MapIgnoredZoneIntoWorldGen(CorruptStructure);
-		}
-		watch.Stop();
-		Mod.Logger.Info("Corrupt Chamber structure realm step: " + watch.ToString());
-	}
-	[Task]
 	public void Generate_StarterForest() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -1057,7 +1012,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			CurrentPosY = startingPoint - offsetRaise;
 			if (i == MiddlePos) {
-				SpawnTownNPC(NPCID.Dryad, i, CurrentPosY - 3);
+				SpawnTownNPC(NPCID.Dryad, i, forestArea.Y + forestArea.Height / 2);
 				StructureData data = Generator.GetStructureData("Assets/Jungle_house", Mod);
 				Generator.GenerateFromData(data, new(i - data.width / 2, CurrentPosY - data.height + 3));
 			}
@@ -1092,7 +1047,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (i == Middle) {
 				var Merchant = ModWrapper.Get_StructureData("Assets/MerchantHouse", Mod);
 				ModWrapper.GenerateFromData(Merchant, new(i - Merchant.width / 2, CurrentPosY - Merchant.height));
-				SpawnTownNPC(NPCID.Merchant, i, CurrentPosY - 3);
+				SpawnTownNPC(NPCID.Merchant, i, forestArea.Y + forestArea.Height / 2);
 				YoffsetByX = Merchant.width / 2;
 				startingPoint = CurrentPosY;
 			}
@@ -1142,7 +1097,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (i == Middle) {
 				var Merchant = ModWrapper.Get_StructureData("Assets/Abandon_Igloo", Mod);
 				ModWrapper.GenerateFromData(Merchant, new(i - Merchant.width / 2, CurrentPosY - Merchant.height));
-				SpawnTownNPC(NPCID.Mechanic, i, CurrentPosY - 3);
+				SpawnTownNPC(NPCID.Mechanic, i, forestArea.Y + forestArea.Height / 2);
 				YoffsetByX = Merchant.width / 2;
 				startingPoint = CurrentPosY;
 			}
@@ -1230,7 +1185,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_GoldRoom() {
 		Stopwatch watch = new();
 		watch.Start();
-		Point16 GoldRoom = new((int)(Main.maxTilesX * .1f), (int)(Main.maxTilesY * .1f));
+		Point16 GoldRoom = new(
+			22 * GridPart_X + GridPart_X / 2
+			, 8 * GridPart_Y);
 		var data = ModWrapper.Get_StructureData("Assets/GoldRoom", Mod);
 		if (ModWrapper.IsInBound(data, GoldRoom)) {
 			Rectangle rect = new(GoldRoom.X, GoldRoom.Y, data.width, data.height);
@@ -1510,7 +1467,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Stopwatch watch = new();
 		watch.Start();
 		List<Rectangle> placed = new();
-		for (int i = 0; i < 300; i++) {
+		for (int i = 0; i < 100; i++) {
 			StructureData data = Get_RandomizeAbandonStructure(Mod);
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
@@ -1707,6 +1664,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_PostWorld() {
+		for (int i = 0; i < Main.maxTilesX; i++) {
+			for (int j = 0; j < Main.maxTilesY; j++) {
+				if (i % GridPart_X == 0) {
+					GenerationHelper.FastPlaceTile(i, j, TileID.TeamBlockWhite);
+				}
+				if (j % GridPart_Y == 0) {
+					GenerationHelper.FastPlaceTile(i, j, TileID.TeamBlockWhite);
+				}
+			}
+		}
 	}
 	[Task]
 	public void FinalTask() {

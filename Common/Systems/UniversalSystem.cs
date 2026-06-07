@@ -620,19 +620,17 @@ public class DefaultUI : UIState {
 		}
 	}
 	public override void OnActivate() {
-		if (false) {
-			string text = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.Tooltip");
-			popUpWarning = new UITextPanel<string>(text);
-			popUpWarning.Height.Set(66, 0);
-			popUpWarning.HAlign = .5f;
-			popUpWarning.VAlign = .5f;
-			Append(popUpWarning);
-			popUpWarningClose = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.ClosingText"));
-			popUpWarningClose.HAlign = .5f;
-			popUpWarningClose.VAlign = .6f;
-			popUpWarningClose.OnLeftClick += PopUpWarning_OnLeftClick;
-			Append(popUpWarningClose);
-		}
+		string text = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.Tooltip");
+		popUpWarning = new UITextPanel<string>(text);
+		popUpWarning.Height.Set(106, 0);
+		popUpWarning.HAlign = .5f;
+		popUpWarning.VAlign = .5f;
+		Append(popUpWarning);
+		popUpWarningClose = new UITextPanel<string>(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.PopUpWarning.ClosingText"));
+		popUpWarningClose.HAlign = .5f;
+		popUpWarningClose.VAlign = .6f;
+		popUpWarningClose.OnLeftClick += PopUpWarning_OnLeftClick;
+		Append(popUpWarningClose);
 	}
 	private void PopUpWarning_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Elements.Remove(popUpWarning);

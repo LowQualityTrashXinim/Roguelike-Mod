@@ -13,7 +13,7 @@ public class Structure_SlimeWorldEntrance : ModStructure {
 	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
 		int X = 16 * RogueLikeWorldGen.GridPart_X;
 		int Y = 11 * RogueLikeWorldGen.GridPart_Y;
-		var data = ModWrapper.Get_StructureData("Assets/SlimeWorld_Entrance", mod);
+		var data = ModWrapper.Get_StructureData("Assets/Entrance/SlimeWorld_Entrance", mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);

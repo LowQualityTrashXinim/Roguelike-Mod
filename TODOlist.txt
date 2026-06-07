@@ -67,14 +67,6 @@ Swing the sword will do enchanted slash
 Wait for 2s to strengthen the enchanted slash
 
 New weapon tag: 
-- Deep Frost: 
-Dealing continuous damage to enemy will increases deep frost stack
-Each stack will increases damage taken by 2% and each attack have 50% to deal extra 50% damage
-At the 20th stack, the next strike will remove all stack and deal 420% damage
-Enemy with deep frost also move a lot slower
-While enemy is inflicted with chilled, frozen debuff
-damage taken is increased by 1000% when target have deep frost stack
-				
 
 7/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )

@@ -15,9 +15,9 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
 public class Structure_KingSlimeStructure : ModStructure {
 	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
-		int X = 15 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X);
-		int Y = 12 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/SlimeChamber", mod);
+		int X = 15 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X / 2);
+		int Y = 12 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y / 2);
+		var data = ModWrapper.Get_StructureData("Assets/BossChamber/SlimeChamber", mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);

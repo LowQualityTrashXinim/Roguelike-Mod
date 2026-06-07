@@ -15,9 +15,9 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
 public class Structure_FleshChamber : ModStructure {
 	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
-		int X = 22 * RogueLikeWorldGen.GridPart_X + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_X);
-		int Y = 19 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y);
-		var data = ModWrapper.Get_StructureData("Assets/FleshChamber", mod);
+		int X = 22 * RogueLikeWorldGen.GridPart_X + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_X / 2);
+		int Y = 19 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y / 2);
+		var data = ModWrapper.Get_StructureData("Assets/BossChamber/FleshChamber", mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Roguelike.Common.Global;
-using Roguelike.Common.Mode.BossRushMode;
+using Roguelike.Common.RoguelikeMode.RoguelikeBiome;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Utils;
 using SubworldLibrary;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 			}
 		}
 	}
+	public int Space_Counter = 0;
 	public override void ResetEffects() {
 		CurrentBiome.Clear();
 		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
@@ -54,6 +56,25 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return;
+		}
+		if (SubworldSystem.Current == null && position.Y < 1) {
+			//Sending yo ass to space
+			if (++Space_Counter >= 600) {
+				ModUtils.EnterSubWorld<Subworld_Space>();
+			}
+			if (Space_Counter % 60 == 0) {
+				Color color = Color.White;
+				if(Space_Counter >= 300) {
+					color = Color.Yellow;
+				}
+				if(Space_Counter >= 420) {
+					color = Color.Red;
+				}
+				Main.NewText($"Entering space subword in {10 - Space_Counter / 60}", color);
+			}
+		}
+		else {
+			Space_Counter = 0;
 		}
 		string zone = gen.BiomeMapping[WorldIndex];
 		bool IsInSmallForest = gen.ForestZone.Where(rect => rect.Contains(Player.Center.ToTileCoordinates())).Any();
@@ -74,9 +95,6 @@ public abstract class BiomeData : ModType {
 	public ushort Type = 0;
 	protected override void Register() {
 		Type = RoguelikeBiomeHandle_ModSystem.Register(this);
-	}
-	public List<RoguelikeSpawnInfo> SpawningInfo(NPCSpawnInfo spawnInfo) {
-		return new();
 	}
 	public struct RoguelikeSpawnInfo {
 		/// <summary>

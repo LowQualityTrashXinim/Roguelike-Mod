@@ -19,6 +19,9 @@ internal class RoguelikeStructureHandler : ModSystem {
 		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}
+		if (SubworldSystem.Current != null) {
+			return;
+		}
 		var player = Main.LocalPlayer;
 		var system = ModContent.GetInstance<RogueLikeWorldGen>();
 		SpawnPortalWithCondition(player, system.GetStructure("CursedKingdom_Entrance").Center().ToWorldCoordinates(), ModContent.ProjectileType<Portal_CursedKingdom>());

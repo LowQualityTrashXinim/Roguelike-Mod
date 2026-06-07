@@ -701,3 +701,5 @@ The following are bugs that is fixed:
 619/ Separate the weapon tag interaction with npc due to the global class is not meant to be used as a debuff holder.
 620/ Added Frost bite weapon tag.
 621/ Reworked Revolver.
+622/ Organized structure files.
+623/ Added space subworld.

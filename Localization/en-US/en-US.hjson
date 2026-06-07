@@ -79,8 +79,9 @@ Mods: {
 			PopUpWarning: {
 				Tooltip:
 					'''
-					Terraria: Roguelike is only compatible with freshly created Hardcore characters.
-					As a result, the mod will be temporarily disabled until you leave the world.
+					The mod is still in alpha state, as such bug are to be expected
+					Multiplayer is heavily not supported, and most likely won't be supported
+					Same goes with cross mod gameplay, the mod is meant to be played as it is
 					'''
 				ClosingText: Understood
 			}

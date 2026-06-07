@@ -10,7 +10,7 @@ namespace Roguelike.Common.Wrapper
     {
         public static StructureData Get_StructureData(string path, Mod mod)
         {
-            return Generator.GetStructureData(path, mod);
+			return Generator.GetStructureData(path, mod);
         }
         public static void GenerateFromData(StructureData data, Point16 pos)
         {

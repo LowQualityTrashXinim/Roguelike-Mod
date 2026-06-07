@@ -16,8 +16,8 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
 public class PyramidStructure : ModStructure {
 	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
-		int X = 17 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X);
-		int Y = 7 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y);
+		int X = 17 * RogueLikeWorldGen.GridPart_X + Main.rand.Next(RogueLikeWorldGen.GridPart_X / 2);
+		int Y = 7 * RogueLikeWorldGen.GridPart_Y + Main.rand.Next(RogueLikeWorldGen.GridPart_Y / 2);
 		var data = ModWrapper.Get_StructureData("Assets/DesertPyramid", mod);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
