@@ -179,72 +179,6 @@ public class TerrorForm : ModSkill {
 		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.35f, Multiplicative: 1 + percentage);
 	}
 }
-public class ProtectiveOnslaught : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 1000;
-		Skill_Duration = 10;
-		Skill_Type = SkillTypeID.Empowered;
-	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
-		player.AddBuff(ModContent.BuffType<ProtectiveOnslaught_Buff>(), ModUtils.ToSecond(10));
-	}
-	class ProtectiveOnslaught_ModPlayer : ModPlayer {
-		public int HitCount = 0;
-		public int Delay = 0;
-		public override void ResetEffects() {
-			if (!Player.HasBuff<ProtectiveOnslaught_Buff>()) {
-				HitCount = 0;
-			}
-			Delay = ModUtils.CountDown(Delay);
-		}
-		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Player.HasBuff<ProtectiveOnslaught_Buff>() && Delay <= 0) {
-				HitCount++;
-				Delay = 6;
-			}
-		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Player.HasBuff<ProtectiveOnslaught_Buff>() && Delay <= 0 && proj.Check_ItemTypeSource(Player.HeldItem.type) && !proj.minion) {
-				HitCount++;
-				Delay = 6;
-			}
-		}
-	}
-	class ProtectiveOnslaught_Buff : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			player.statDefense += player.GetModPlayer<ProtectiveOnslaught_ModPlayer>().HitCount;
-			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.PureDamage, 1 + player.statDefense * .001f);
-			if (player.buffTime[buffIndex] <= 0) {
-				OnEnded(player);
-			}
-		}
-		public void OnEnded(Player player) {
-			player.GetModPlayer<ProtectiveOnslaught_ModPlayer>().HitCount = 0;
-			if (player.statLifeMax2 <= player.statDefense) {
-				for (int i = 0; i < 300; i++) {
-					int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
-					Main.dust[smokedust].noGravity = true;
-					Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(25, 25);
-					Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
-					int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = Main.rand.NextVector2Circular(25, 25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-				}
-				int leftover = player.statDefense - player.statLifeMax2;
-				player.Center.LookForHostileNPC(out var npclist, 500);
-				foreach (var npc in npclist) {
-					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(leftover * 100, player.Center.X > npc.Center.X ? -1 : 1, true, 20, damageVariation: true));
-				}
-			}
-			player.Heal(player.statDefense);
-		}
-	}
-}
 public class CoinFlip : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<CoinFlip>();
 	public override void SetDefault() {
@@ -360,5 +294,26 @@ public class DiceRoll : ModSkill {
 			handle.AddStatsToPlayer(PlayerStats.Defense, .5f);
 			handle.AddStatsToPlayer(PlayerStats.MovementSpeed, .85f);
 		}
+	}
+}
+public class GhostForm : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 600;
+		Skill_Duration = ModUtils.ToSecond(.1f);
+		Skill_Type = SkillTypeID.Empowered;
+	}
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		player.ModPlayerStats().DodgeChance += .75f;
+		player.ModPlayerStats().DamageTaken += 1;
+	}
+}
+public class ProtectiveBarrier : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 300;
+		Skill_Duration = ModUtils.ToSecond(.1f);
+		Skill_Type = SkillTypeID.Empowered;
+	}
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		player.ModPlayerStats().UpdateDefenseBase.Base += 100;
 	}
 }

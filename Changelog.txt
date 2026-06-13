@@ -703,3 +703,11 @@ The following are bugs that is fixed:
 621/ Reworked Revolver.
 622/ Organized structure files.
 623/ Added space subworld.
+624/ Changed Protective Onslaught skill to a item scroll.
+625/ Added Ghost Form skill and Protective Barrier.
+626/ Added Utility skills which are Copy random skill, Duration to None, Swap duration with energy.
+627/ Added more projectile skills.
+628/ Added alt click function to Revolver.
+629/ Removed Static Defense stats entirely from the mod.
+630/ Reworked Megaphone, Vitamin.
+631/ Added charging bar indicator for wood bow.

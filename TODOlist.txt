@@ -263,9 +263,6 @@ During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
-Misc changes:
-- Remove Protective Onslaught and move it to different system.
-
 25/ Make demon heart obtainable in boss rush mode.
 
 26/ Make the ultimate player handler.
@@ -286,6 +283,10 @@ The core component will contain the following:
 - Player Stats Handle.
 - Projectile global.
 - NPC global.
+
+30/ Add in charge bar for the following weapon:
+- Every pre HM ore broad sword beside copper broadsword.
+
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

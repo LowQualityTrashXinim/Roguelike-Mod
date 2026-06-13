@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.RoguelikeMode.ArmorOverhaul;
 
 namespace Roguelike.Common.RoguelikeMode.ArmorOverhaul.RoguelikeArmorSet;
 internal class AshwoodArmor : ModArmorSet {

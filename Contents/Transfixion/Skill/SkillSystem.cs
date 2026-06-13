@@ -134,6 +134,17 @@ public abstract class ModSkill : ModType {
 		var skillplayer = player.GetModPlayer<SkillHandlePlayer>();
 		return (int)Math.Ceiling(skillplayer.skilldamage.ApplyTo(damage));
 	}
+	/// <summary>
+	/// This run before skill get added, return false if you don't want to add this skill into active chain<br/>
+	/// Otherwise return true
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="skillplayer"></param>
+	/// <param name="activeskill"></param>
+	/// <param name="currentindex"></param>
+	public virtual bool OnAddSkill(Player player, SkillHandlePlayer skillplayer, int[] currentSkill, ref List<ModSkill> activeskill, int currentindex, ref int energy, ref int duration) {
+		return true;
+	}
 }
 public class SkillModSystem : ModSystem {
 	private static List<ModSkill> _skill = new();
@@ -350,8 +361,11 @@ public class SkillHandlePlayer : ModPlayer {
 			percentageEnergy *= (1 + skill.EnergyRequirePercentage);
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
-			if (!simulated)
-				activeskill.Add(skill);
+			if (!simulated) {
+				if (skill.OnAddSkill(Player, this, active, ref activeskill, i, ref energy, ref duration)) {
+					activeskill.Add(skill);
+				}
+			}
 		}
 		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
@@ -606,7 +620,7 @@ public class SkillHandlePlayer : ModPlayer {
 						Energy -= item.EnergyRequire;
 					}
 					for (int i = 0; i < amount; i++) {
-						if(i >= poslist.Count) {
+						if (i >= poslist.Count) {
 							continue;
 						}
 						NewSkillProjectile(source, poslist[i], vellist[i], vellist[i].Length(), item.ShootType, item.Damage, item.Knockback);

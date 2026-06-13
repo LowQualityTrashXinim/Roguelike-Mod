@@ -549,6 +549,9 @@ Mods: {
 			IceBlade_Slash_Projectile.DisplayName: Ice Blade_ Slash_ Projectile
 			ReworkIceShards.DisplayName: Rework Ice Shards
 			Roguelike_Revolver_ModProjectile.DisplayName: Roguelike_ Revolver_ Mod Projectile
+			Roguelike_Revovler_Fail.DisplayName: Roguelike_ Revovler_ Fail
+			Roguelike_Megaphone_Projectile_SoundWave.DisplayName: Roguelike_ Megaphone_ Projectile_ Sound Wave
+			Roguelike_Megaphone_Projectile_SoundWave2.DisplayName: Roguelike_ Megaphone_ Projectile_ Sound Wave2
 		}
 
 		NPCs: {
@@ -2383,6 +2386,16 @@ Mods: {
 					'''
 					Grant user protection spell
 					Protection spell: Taken hit are set to 1 regardless of damage, upon hit delete the buff
+					'''
+			}
+
+			ScrollOfProtectiveOnslaught: {
+				DisplayName: Scroll: Protective Onslaught
+				Tooltip:
+					'''
+					Increases defence by 1 every successful strike (CD: 0.1s).
+					Heals the player at the end of the buff based on defense gained.
+					Excess healing bursts into an AoE explosion.
 					'''
 			}
 
@@ -4350,6 +4363,13 @@ Mods: {
 			Holy.DisplayName: Phasing
 			Chaotic.DisplayName: Chaotic
 			Unstable.DisplayName: Unstable
+		}
+
+		Biomes: {
+			Roguelike_Space: {
+				DisplayName: Roguelike_ Space
+				TownNPCDialogueName: the Roguelike_ Space
+			}
 		}
 	}
 }

@@ -92,7 +92,6 @@ namespace Roguelike.Common.Global {
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopDonHitReward>()));
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
-				expert.OnSuccess(ItemDropRule.ByCondition(new IsInBossRushMode(), ItemID.DemonHeart));
 			}
 			else if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop

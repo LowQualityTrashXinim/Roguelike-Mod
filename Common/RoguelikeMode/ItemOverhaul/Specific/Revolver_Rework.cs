@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks.PerkContents;
+using Roguelike.Texture;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -13,14 +17,35 @@ internal class Roguelike_Revolver : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.Revolver;
 	}
+	public override bool InstancePerEntity => true;
 	public override void SetDefaults(Item entity) {
 		entity.damage += 20;
 		entity.crit += 10;
 		entity.useTime = entity.useAnimation = 16;
 	}
+	public int Counter = 6;
+	public bool Alt_Shoot = false;
+	public int PowerUp = 0;
 	public override bool CanUseItem(Item item, Player player) {
-		var modplayer = player.GetModPlayer<Roguelike_Revolver_ModPlayer>();
-		if (modplayer.Counter >= 5) {
+		if (--Counter <= 0) {
+			Counter = 7;
+		}
+		if (player.altFunctionUse == 2) {
+			if (!Main.rand.NextBool(Counter) && Counter > 1) {
+				item.UseSound = SoundID.Item98 with { Pitch = 1f };
+				PowerUp++;
+				Alt_Shoot = false;
+			}
+			else {
+				PowerUp = 0;
+				Counter = 7;
+				item.UseSound = SoundID.Item41;
+				Alt_Shoot = true;
+			}
+			item.noUseGraphic = true;
+			return base.CanUseItem(item, player);
+		}
+		if (Counter <= 1) {
 			item.UseSound = SoundID.Item1;
 			item.noUseGraphic = true;
 		}
@@ -32,8 +57,10 @@ internal class Roguelike_Revolver : GlobalItem {
 	}
 	public override bool? UseItem(Item item, Player player) {
 		if (player.ItemAnimationJustStarted) {
-			var modplayer = player.GetModPlayer<Roguelike_Revolver_ModPlayer>();
-			if (modplayer.Counter >= 5) {
+			if (player.altFunctionUse == 2) {
+				return base.UseItem(item, player);
+			}
+			if (Counter <= 1) {
 				item.UseSound = SoundID.Item1;
 				item.noUseGraphic = true;
 			}
@@ -44,17 +71,32 @@ internal class Roguelike_Revolver : GlobalItem {
 		}
 		return base.UseItem(item, player);
 	}
+	public override bool AltFunctionUse(Item item, Player player) {
+		return true;
+	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		ModUtils.AddTooltip(ref tooltips, new(Mod, "", ModUtils.LocalizationText("RoguelikeRework", item.Name)));
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		if (PowerUp > 0) {
+			damage = damage + (int)(damage * PowerUp * 1.5f);
+		}
 		if (type == ProjectileID.Bullet)
 			type = ProjectileID.BulletHighVelocity;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		var modplayer = player.GetModPlayer<Roguelike_Revolver_ModPlayer>();
-		if (++modplayer.Counter >= 6) {
-			modplayer.Counter = 0;
+		if (player.altFunctionUse == 2) {
+			if (Alt_Shoot) {
+				Alt_Shoot = false;
+				Projectile.NewProjectileDirect(source, position, Vector2.Zero, ModContent.ProjectileType<Roguelike_Revovler_Fail>(), 1, 1, player.whoAmI);
+			}
+			return false;
+		}
+		else {
+			PowerUp = 0;
+		}
+		if (Counter <= 1) {
+			Counter = 0;
 			var proj = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<Roguelike_Revolver_ModProjectile>(), damage, knockback, player.whoAmI);
 			proj.rotation = MathHelper.ToRadians(Main.rand.NextFloat(360));
 			return false;
@@ -62,8 +104,31 @@ internal class Roguelike_Revolver : GlobalItem {
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 	}
 }
-public class Roguelike_Revolver_ModPlayer : ModPlayer {
-	public int Counter = 0;
+public class Roguelike_Revovler_Fail : ModProjectile {
+	public override string Texture => ModTexture.MissingTexture_Default;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 1;
+		Projectile.hide = true;
+		Projectile.timeLeft = 2;
+		Projectile.friendly = false;
+		Projectile.hostile = true;
+		Projectile.penetrate = -1;
+	}
+	public override void AI() {
+		Projectile.Center = Main.player[Projectile.owner].Center;
+		Projectile.velocity = Vector2.Zero;
+	}
+	public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
+		modifiers.SetMaxDamage(1);
+	}
+	public override void OnHitPlayer(Player target, Player.HurtInfo info) {
+		if (target.statLife - 200 <= 1) {
+			target.statLife = 2;
+		}
+		else {
+			target.statLife -= 200;
+		}
+	}
 }
 public class Roguelike_Revolver_ModProjectile : ModProjectile {
 	public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Revolver);
@@ -81,13 +146,14 @@ public class Roguelike_Revolver_ModProjectile : ModProjectile {
 	}
 	bool OnHitEnemy => Projectile.ai[2] == 1;
 	public override void AI() {
-		Projectile.rotation += Projectile.velocity.ToRotation() * .1f;
+		Projectile.rotation += MathHelper.ToRadians(1 * Projectile.velocity.Length());
 		if (++Projectile.ai[1] >= 30) {
 			if (Projectile.velocity.Y <= 20) {
 				Projectile.velocity.Y += .25f;
 			}
 		}
-		if (OnHitEnemy) {
+		Projectile.velocity.X *= .99f;
+		if (OnHitEnemy && Projectile.velocity.IsLimitReached(1)) {
 			if (++Projectile.ai[0] >= 16) {
 				Projectile.ai[0] = 0;
 				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2().SafeNormalize(Vector2.Zero) * 10, ProjectileID.BulletHighVelocity, Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -97,7 +163,12 @@ public class Roguelike_Revolver_ModProjectile : ModProjectile {
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.ai[2] = 1;
 		Projectile.ai[1] = 60;
+		if (!Projectile.velocity.IsLimitReached(.1f)) {
+			Projectile.velocity = Vector2.Zero;
+			return false;
+		}
 		Projectile.velocity.Y = -oldVelocity.Y;
+		Projectile.velocity.Y *= .7f;
 		if (Projectile.velocity.X == 0) {
 			Projectile.velocity.X = -oldVelocity.X;
 		}

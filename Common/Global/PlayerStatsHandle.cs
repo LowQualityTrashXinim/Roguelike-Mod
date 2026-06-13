@@ -131,7 +131,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier RechargeEnergyCap = new StatModifier();
 	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier UpdateFullHPDamage = new StatModifier();
-	public StatModifier StaticDefense = new StatModifier();
 	public StatModifier DebuffDamage = new StatModifier();
 	public StatModifier SynergyDamage = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
@@ -155,6 +154,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// The cool down are made public and free to be modify cause fun
 	/// </summary>
 	public StatModifier LifeSteal = StatModifier.Default - 1;
+	public StatModifier DamageTaken = StatModifier.Default;
 	/// <summary>
 	/// This is the public count cool down of <see cref="LifeSteal"/>
 	/// </summary>
@@ -633,7 +633,6 @@ public class PlayerStatsHandle : ModPlayer {
 		HealEffectiveness = StatModifier.Default;
 		RechargeEnergyCap = StatModifier.Default;
 		EnergyRecharge = StatModifier.Default;
-		StaticDefense = StatModifier.Default - 1;
 		DebuffDamage = StatModifier.Default - 1;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
@@ -642,6 +641,8 @@ public class PlayerStatsHandle : ModPlayer {
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;
 		TransmutationModifier = StatModifier.Default;
+		DamageTaken = StatModifier.Default;
+
 		WingUpTime = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
@@ -722,10 +723,10 @@ public class PlayerStatsHandle : ModPlayer {
 		return MathF.Round(global.ApplyTo(useSpeed), 2);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
 	}
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {

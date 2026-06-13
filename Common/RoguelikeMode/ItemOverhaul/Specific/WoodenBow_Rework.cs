@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using System.Collections.Generic;
@@ -12,10 +13,19 @@ public class Roguelike_WoodenBow : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.WoodenBow;
 	}
+	public static WeaponProgress progress = new() {
+
+	};
 	public override void SetDefaults(Item entity) {
 		entity.shootSpeed += 3;
 		entity.crit += 6;
 		entity.damage = 25;
+	}
+	public override void HoldItem(Item item, Player player) {
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter / 150f;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientA = new Color(78,63,47);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = Color.Yellow;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int Counter = player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter;

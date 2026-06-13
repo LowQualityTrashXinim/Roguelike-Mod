@@ -87,13 +87,12 @@ public class Skip1 : ModSkill {
 			if (skill == null) {
 				continue;
 			}
-			index = index + 1;
+			index = i;
 			energy.Base -= 600;
 			break;
 		}
 	}
 }
-
 public class PowerCord : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<PowerCord>();
 	public override void SetDefault() {
@@ -131,6 +130,5 @@ public class Weaken : ModSkill {
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		skillplayer.skilldamage -= .2f;
-		skillplayer.ProjectileSpeedMultiplier += .4f;
 	}
 }

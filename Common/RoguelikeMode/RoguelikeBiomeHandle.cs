@@ -634,7 +634,6 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		}
 		if (modplayer.CurrentBiome.Contains(Bid.Space)) {
 			self.ZoneSkyHeight = true;
-
 		}
 		else {
 			self.gravity = Player.defaultGravity;

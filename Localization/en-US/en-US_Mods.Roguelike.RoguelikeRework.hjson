@@ -115,8 +115,12 @@ IceBlade:
 	'''
 Revolver:
 	'''
-	Every 6th shot, throw out a revolver that bounce off enemy and tile
+	Every 7th shot, throw out a revolver that bounce off enemy and tile
 	The thrown revolver on hit enemy or tile will shoot out bullet constantly
+	Alt-click to do a russian roulette
+	- Every successful roulette, increases next shot damage by 150%
+	- When fail, deal non-lethal 200 damage
+	Failing will also reset the shot and damage increases.
 	'''
 OreBow:
 	'''
@@ -215,7 +219,7 @@ SorcererEmblem:
 	'''
 AnkletoftheWind:
 	'''
-	Increases jump boost by 150% and allow directional dash toward your cursor
+	Increases jump boost by 150% and gain directional dash toward your cursor
 	Gain a wind shield that can regenerate itself
 	Wind shield reduce damage taken directly by 20% and projectile damage by 80%
 	Wind shield multiply taken knockback taken directly by 0.7x and projectile knockback by 0x
@@ -258,6 +262,19 @@ Nazar:
 	Decreases debuff duration by 50%
 	Hitting enemey will inflicted Curses for 7 to 15s
 	Cursed enemy will deal 75% less damage
+	'''
+Megaphone:
+	'''
+	Getting hit will create sound wave counter attack
+	Sound wave deal 100 + 45% weapon damage
+	Dodging will also activate the counter attack
+	Every 10th attacks will shoot a sound wave deal 50x5 damage
+	'''
+Vitamins:
+	'''
+	Minor increases to various stats
+	Getting hit will increases above stats for short period
+	The above effect can be stack repeatedly without cap
 	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%
 Apple:

@@ -220,14 +220,18 @@ GreaterDamageUp: {
 	Description: Increase skill damage by 300%
 }
 
-ProtectiveOnslaught: {
-	DisplayName: Protective Onslaught
+GhostForm: {
+	DisplayName: Ghost Form
 	Description:
 		'''
-		Increases defence by 1 every successful strike (CD: 0.1s).
-		Heals the player at the end of the buff based on defense gained.
-		Excess healing bursts into an AoE explosion.
+		Increases dodge chance by 75%
+		But increases damage taken by 100%
 		'''
+}
+
+ProtectiveBarrier: {
+	DisplayName: Protective Barrier
+	Description: Increases defenses by 100
 }
 
 Weaken: {
@@ -235,8 +239,7 @@ Weaken: {
 	Description:
 		'''
 		Refund 100 energy
-		Decreases skill projectile damage by 50%
-		Increases skill projectile velocity by 40%
+		Decreases skill projectile damage by 20%
 		'''
 }
 
@@ -258,6 +261,26 @@ Skill_Arrow: {
 Skill_Bullet: {
 	DisplayName: Bullet
 	Description: Reliable
+}
+
+Skill_Dart: {
+	DisplayName: Dart
+	Description: Tiny arrow
+}
+
+Skill_Flamelash: {
+	DisplayName: Magic fire ball missle
+	Description: Fire missle with homing property
+}
+
+Skill_Waterbolt: {
+	DisplayName: Water bolt
+	Description: Magical water that can bounce off tile
+}
+
+Skill_StarWrath: {
+	DisplayName: Star wrath
+	Description: Celestial bullet
 }
 
 Modify_DuplicateProjectile: {
@@ -283,4 +306,19 @@ Utility_SummonPerk: {
 Utility_SummonWeapon: {
 	DisplayName: Summon weapon
 	Description: Grant you a free weapon at a massive energy cost
+}
+
+Utility_CopyRandomSkill: {
+	DisplayName: Copy random skill
+	Description: Randomly select a skill after this skill
+}
+
+Utility_SetDurationToNone: {
+	DisplayName: Duration to none
+	Description: Set your skill duration to 0
+}
+
+Utility_SwapDurationWithEnergy: {
+	DisplayName: Swap duration with energy
+	Description: Swap your duration value with energy value and energy value with duration value
 }

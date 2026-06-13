@@ -4,7 +4,10 @@ using Roguelike.Common.Utils;
 using SubworldLibrary;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.IO;
+using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.RoguelikeMode.RoguelikeBiome;
@@ -41,5 +44,13 @@ public class GenPass_Space : GenPass {
 				}
 			}
 		}
+	}
+}
+public class Roguelike_Space : ModBiome {
+	public override bool MapBackgroundFullbright => true;
+	public override int Music => MusicID.Space;
+	public override bool IsBiomeActive(Player player) {
+		return player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>().CurrentBiome.Contains(Bid.Space)
+			|| SubworldSystem.IsActive<Subworld_Space>();
 	}
 }
