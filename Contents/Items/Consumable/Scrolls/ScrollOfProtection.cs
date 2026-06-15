@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class ScrollOfProtection : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);

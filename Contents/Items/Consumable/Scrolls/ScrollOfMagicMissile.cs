@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class ScrollOfMagicMissile : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);
@@ -21,10 +21,10 @@ internal class ScrollOfMagicMissile : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			Vector2 limitedSpawningPosition = Main.MouseWorld;
-			Vector2 distance = (limitedSpawningPosition - player.Center).SafeNormalize(Vector2.Zero);
+			var limitedSpawningPosition = Main.MouseWorld;
+			var distance = (limitedSpawningPosition - player.Center).SafeNormalize(Vector2.Zero);
 			for (int i = 0; i < 4; i++) {
-				Projectile projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), player.Center, distance.Vector2DistributeEvenlyPlus(4, 20, i) * 3, ProjectileID.MagicMissile, Item.damage, Item.knockBack, player.whoAmI);
+				var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), player.Center, distance.Vector2DistributeEvenlyPlus(4, 20, i) * 3, ProjectileID.MagicMissile, Item.damage, Item.knockBack, player.whoAmI);
 				projectile.timeLeft = 180;
 				projectile.tileCollide = false;
 			}

@@ -31,7 +31,7 @@ internal class PerkDebugUI : UIState {
 		list_perkSelection = new();
 
 		panel_Main = new();
-		panel_Main.UISetWidthHeight(600, 600);
+		panel_Main.UISetWidthHeight(500, 500);
 		panel_Main.HAlign = .5f;
 		panel_Main.VAlign = .5f;
 		Append(panel_Main);

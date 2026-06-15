@@ -69,13 +69,13 @@ namespace Roguelike {
 						perkplayer.SyncPlayer(-1, whoAmI, false);
 					}
 					break;
-				case MessageType.Skill:
-					SkillHandlePlayer skillplayer = Main.player[playernumber].GetModPlayer<SkillHandlePlayer>();
-					skillplayer.ReceivePlayerSync(reader);
-					if (Main.netMode == NetmodeID.Server) {
-						skillplayer.SyncPlayer(-1, whoAmI, false);
-					}
-					break;
+				//case MessageType.Skill:
+				//	SkillHandlePlayer skillplayer = Main.player[playernumber].GetModPlayer<SkillHandlePlayer>();
+				//	skillplayer.ReceivePlayerSync(reader);
+				//	if (Main.netMode == NetmodeID.Server) {
+				//		skillplayer.SyncPlayer(-1, whoAmI, false);
+				//	}
+				//	break;
 				case MessageType.Artifact:
 					ArtifactPlayer artifactPlayer = Main.player[playernumber].GetModPlayer<ArtifactPlayer>();
 					artifactPlayer.ReceivePlayerSync(reader);

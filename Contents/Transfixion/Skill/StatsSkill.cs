@@ -81,7 +81,7 @@ public class Skip1 : ModSkill {
 		Skill_Type = SkillTypeID.Stats;
 	}
 	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
-		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
+		int[] currentskillset = modplayer.ActiveSkill.ToArray();
 		for (int i = index + 1; i < currentskillset.Length; i++) {
 			var skill = SkillModSystem.GetSkill(currentskillset[i]);
 			if (skill == null) {

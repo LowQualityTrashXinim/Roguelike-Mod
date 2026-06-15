@@ -711,3 +711,8 @@ The following are bugs that is fixed:
 629/ Removed Static Defense stats entirely from the mod.
 630/ Reworked Megaphone, Vitamin.
 631/ Added charging bar indicator for wood bow.
+632/ Forgot to mention in the previous changelog: Weapon level is implemented in the mod.
+633/ Adjusted some summon skills, "can only have one" condition is removed.
+634/ Changed how Broad sword skill work.
+635/ Attempt to fix the scroll file's name problem on github.
+636/ Reworked skill UI and the whole skill at a whole.

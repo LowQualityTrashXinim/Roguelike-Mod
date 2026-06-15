@@ -1,19 +1,17 @@
-﻿using System;
-using Terraria;
-using Terraria.ModLoader;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.UI;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems;
-using Roguelike.Texture;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
 class btn_Skill : UIImageButton {
@@ -25,33 +23,57 @@ class btn_Skill : UIImageButton {
 	public btn_Skill(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		this.Disable_MouseItemUsesWhenHoverOverAUI();
+	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		var drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
 		if (ModSkillID < 0 || ModSkillID >= SkillModSystem.TotalCount) {
 			return;
 		}
-		var skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(ModSkillID).Texture).Value;
+		ModSkill skill = SkillModSystem.GetSkill(ModSkillID);
+		var skilltexture = ModContent.Request<Texture2D>(skill.Texture).Value;
 		var origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(texture.Size(), skilltexture.Size());
 		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
+		if (IsMouseHovering) {
+			string tooltipText = "";
+			string Name = "";
+			if (skill != null) {
+				Name = skill.DisplayName;
+				tooltipText = skill.Description;
+				tooltipText +=
+					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(skill.Duration / 60f, 2)}s" +
+					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {skill.EnergyRequire}";
+				if (skill.Skill_Type == SkillTypeID.Projectile) {
+					tooltipText +=
+						$"\n[c/{Color.Red.Hex3()}:Damage] : {skill.Damage}" +
+						$"\n[c/{Color.Purple.Hex3()}:Knockback] : {skill.Knockback}" +
+						$"\n[c/{Color.Gray.Hex3()}:Cool down] : {Math.Round(skill.Cooldown / 60f, 2)}s";
+				}
+			}
+			UICommon.TooltipMouseText(Name + "\n" + tooltipText);
+		}
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(ModSkillID);
+		Main.NewText($"Added skill: {SkillModSystem.GetSkill(ModSkillID).DisplayName}");
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
 class SkillGetterUI : UIState {
-	UIImageButton btn_select;
+	ExitUI btn_select;
 	UIPanel panel;
-	int currentSelectTemplate = -1;
 
 	private int linePosition;
 	List<btn_Skill> btn_list;
 	public const int SKILL_MAXLINE = 10;
 	public override void OnInitialize() {
-		btn_select = new UIImageButton(TextureAssets.InventoryBack);
+		btn_select = new ExitUI(TextureAssets.InventoryBack);
 		btn_select.HAlign = .65f;
 		btn_select.VAlign = .5f;
-		btn_select.OnLeftClick += Btn_select_OnLeftClick;
-		btn_select.OnUpdate += Btn_select_OnUpdate;
 		Append(btn_select);
 
 		panel = new UIPanel();
@@ -71,8 +93,6 @@ class SkillGetterUI : UIState {
 			if (i % SKILL_MAXLINE == 0) {
 				lineCounter++;
 			}
-
-
 			btn_Skill button = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT)) {
 				Width = StyleDimension.FromPixels(44f),
 				Height = StyleDimension.FromPixels(44f),
@@ -80,33 +100,11 @@ class SkillGetterUI : UIState {
 				Top = StyleDimension.FromPixels(i / SKILL_MAXLINE * 48.0f + 1.0f)
 			};
 			button.ModSkillID = i;
-			button.OnLeftClick += Text_OnLeftClick;
-			button.OnUpdate += Text_OnUpdate;
 			btn_list.Add(button);
 			panel.Append(button);
 
 		}
 	}
-
-	private void Btn_select_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-	}
-
-	private void Btn_select_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		var text = btn_list.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
-		if (text == null) {
-			return;
-		}
-		var template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
-		if (template == null) {
-			return;
-		}
-		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(template.Type);
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-	}
-
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		linePosition -= MathF.Sign(evt.ScrollWheelValue);
 		int offsetvalue = linePosition * SKILL_MAXLINE;
@@ -123,24 +121,5 @@ class SkillGetterUI : UIState {
 			}
 			btn_list[i].ChangeModSKillID(arty);
 		}
-	}
-	private void Text_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.IsMouseHovering) {
-			var text = btn_list.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
-			if (text == null) {
-				return;
-			}
-			var template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
-			if (template == null) {
-				return;
-			}
-			Main.instance.MouseText(template.DisplayName);
-		}
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-	}
-	private void Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		currentSelectTemplate = listeningElement.UniqueId;
 	}
 }

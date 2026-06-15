@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class ScrollOfTeleportation : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);

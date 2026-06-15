@@ -7,7 +7,7 @@ using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class MagicalScroll : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);

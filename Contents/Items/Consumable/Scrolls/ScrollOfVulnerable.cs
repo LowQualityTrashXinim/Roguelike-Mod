@@ -5,7 +5,7 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using System.Collections.Generic;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class ScrollOfVulnerable : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);
@@ -16,8 +16,8 @@ internal class ScrollOfVulnerable : ModItem {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<Anti_Immunity>(), ModUtils.ToSecond(10));
 	}
 	public override bool? UseItem(Player player) {
-		player.Center.LookForHostileNPC(out List<NPC> npclist, 2000);
-		foreach (NPC npc in npclist) {
+		player.Center.LookForHostileNPC(out var npclist, 2000);
+		foreach (var npc in npclist) {
 			npc.AddBuff<Anti_Immunity>(ModUtils.ToSecond(1));
 		}
 		return true;

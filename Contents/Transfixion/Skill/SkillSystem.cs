@@ -1,24 +1,28 @@
-﻿using System;
-using Terraria;
-using System.IO;
-using Terraria.ID;
-using Terraria.UI;
-using ReLogic.Content;
-using Terraria.ModLoader;
-using Terraria.GameInput;
-using Terraria.GameContent;
-using Terraria.ModLoader.IO;
-using Terraria.Localization;
+﻿using log4net.Util;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
-using Roguelike.Common.Systems;
-using Roguelike.Texture;
+using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Roguelike.Contents.Transfixion.Skill;
 public static class SkillTypeID {
@@ -165,8 +169,6 @@ public class SkillModSystem : ModSystem {
 	public static ModSkill GetSkill(int type) {
 		return type >= 0 && type < _skill.Count ? _skill[type] : null;
 	}
-	public static int SelectInventoryIndex = -1;
-	public static int SelectSkillIndex = -1;
 	public static ModKeybind SkillActivation { get; private set; }
 
 	public override void Load() {
@@ -177,6 +179,13 @@ public class SkillModSystem : ModSystem {
 		_skill = null;
 		dict_skill = null;
 	}
+}
+public class SkillLoadOut {
+	public SkillLoadOut() {
+
+	}
+	public List<int> list_SkillLoadOut = new List<int>();
+	public string Name = "Load Out";
 }
 public class SkillHandlePlayer : ModPlayer {
 	public float ProjectileSpeedMultiplier = 1;
@@ -223,17 +232,13 @@ public class SkillHandlePlayer : ModPlayer {
 	public int Energy { get; private set; }
 	public int Duration { get; private set; }
 	public byte AvailableSkillActiveSlot = 3;
-	int[] SkillHolder1 = new int[10];
-	int[] SkillHolder2 = new int[10];
-	int[] SkillHolder3 = new int[10];
-	public int[] SkillInventory = new int[30];
+	public List<int> ActiveSkill = new();
+	public Dictionary<int, int> SkillInventory = new();
 	/// <summary>
 	/// <b>Return : </b>true when skill is activated
 	/// </summary>
 	public bool Activate = false;
 	public int Duplicate = 0;
-	int CurrentActiveHolder = 1;
-	public int CurrentActiveIndex { get => CurrentActiveHolder; }
 	int RechargeDelay = 0;
 	public int MaximumDuration = 0;
 	public int BloodToPower = 0;
@@ -254,10 +259,8 @@ public class SkillHandlePlayer : ModPlayer {
 		AlwaysCostEnergy = 0;
 	}
 	public override void Initialize() {
-		Array.Fill(SkillHolder1, -1);
-		Array.Fill(SkillHolder2, -1);
-		Array.Fill(SkillHolder3, -1);
-		Array.Fill(SkillInventory, -1);
+		ActiveSkill = new();
+		SkillInventory = new();
 		AvailableSkillActiveSlot = 3;
 		Activate = false;
 		Energy = 0;
@@ -269,9 +272,6 @@ public class SkillHandlePlayer : ModPlayer {
 		projectileskillActive = new();
 		ProjectileShootCoolDown = new();
 	}
-	public void ChangeHolder(int index) {
-		CurrentActiveHolder = Math.Clamp(index, 1, 3);
-	}
 	/// <summary>
 	/// 
 	/// </summary>
@@ -280,26 +280,11 @@ public class SkillHandlePlayer : ModPlayer {
 	/// Return false when skill slot can't no longer be increased
 	/// </returns>
 	public bool IncreasesSkillSlot() {
-		if (AvailableSkillActiveSlot < SkillHolder1.Length) {
-			AvailableSkillActiveSlot++;
-			return true;
-		}
-		return false;
+		AvailableSkillActiveSlot++;
+		return true;
 	}
 	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
 		if (skillType < 0 && skillType >= SkillModSystem.TotalCount) {
-			return false;
-		}
-		int availableIndex = -1;
-		for (int i = 0; i < SkillInventory.Length; i++) {
-			if (SkillInventory[i] != -1) {
-				continue;
-			}
-			availableIndex = i;
-			break;
-		}
-		if (availableIndex == -1) {
-			ModUtils.CombatTextRevamp(Player.Hitbox, Color.IndianRed, "Fail to add a skill");
 			return false;
 		}
 		if (!SkillModSystem.GetSkill(skillType).CanBeSelect) {
@@ -307,18 +292,30 @@ public class SkillHandlePlayer : ModPlayer {
 				skillType = Main.rand.Next(SkillModSystem.TotalCount);
 			}
 			else {
-				SkillInventory[availableIndex] = skillType;
+				if (SkillInventory.ContainsKey(skillType)) {
+					SkillInventory[skillType]++;
+				}
+				else {
+					SkillInventory.Add(skillType, 1);
+				}
+				ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
 				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillModSystem.GetSkill(skillType).DisplayName}");
 				return true;
 			}
 		}
-		SkillInventory[availableIndex] = skillType;
+		if (SkillInventory.ContainsKey(skillType)) {
+			SkillInventory[skillType]++;
+		}
+		else {
+			SkillInventory.Add(skillType, 1);
+		}
+		ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
 		ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
 		return true;
 	}
 	public int SimulateSkillCost() {
 		int energy = 0;
-		int[] active = GetCurrentActiveSkillHolder();
+		int[] active = ActiveSkill.ToArray();
 		float percentageEnergy = 1;
 		StatModifier energyS = new(), durationS = new();
 		int seperateEnergy = 0;
@@ -340,7 +337,7 @@ public class SkillHandlePlayer : ModPlayer {
 		return (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void SkillStatTotal(bool simulated, out int energy, out int duration) {
-		int[] active = GetCurrentActiveSkillHolder();
+		int[] active = ActiveSkill.ToArray();
 		energy = 0;
 		duration = 0;
 		float percentageEnergy = 1;
@@ -370,134 +367,6 @@ public class SkillHandlePlayer : ModPlayer {
 		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
-	}
-	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
-		if (Activate) {
-			return;
-		}
-		if (whoAmIskill >= AvailableSkillActiveSlot) {
-			return;
-		}
-		if (whoAmIskill < 0 || whoAmIskill > 9) {
-			return;
-		}
-		if (whoAmIInv < 0 || whoAmIInv > 30) {
-			return;
-		}
-		int cache;
-		switch (CurrentActiveHolder) {
-			case 1:
-				cache = SkillHolder1[whoAmIskill];
-				SkillHolder1[whoAmIskill] = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = cache;
-				break;
-			case 2:
-				cache = SkillHolder2[whoAmIskill];
-				SkillHolder2[whoAmIskill] = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = cache;
-				break;
-			case 3:
-				cache = SkillHolder3[whoAmIskill];
-				SkillHolder3[whoAmIskill] = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = cache;
-				break;
-		}
-	}
-	public void ReplaceSkillFromSkillHolderToInv(int whoAmIskill, int whoAmIInv) {
-		if (Activate) {
-			return;
-		}
-		if (whoAmIskill >= AvailableSkillActiveSlot) {
-			return;
-		}
-		if (whoAmIskill < 0 || whoAmIskill > 9) {
-			return;
-		}
-		if (whoAmIInv < 0 || whoAmIInv > 30) {
-			return;
-		}
-		int cache;
-		switch (CurrentActiveHolder) {
-			case 1:
-				cache = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = SkillHolder1[whoAmIskill];
-				SkillHolder1[whoAmIskill] = cache;
-				break;
-			case 2:
-				cache = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = SkillHolder2[whoAmIskill];
-				SkillHolder2[whoAmIskill] = cache;
-				break;
-			case 3:
-				cache = SkillInventory[whoAmIInv];
-				SkillInventory[whoAmIInv] = SkillHolder3[whoAmIskill];
-				SkillHolder3[whoAmIskill] = cache;
-				break;
-		}
-	}
-	public int[] GetCurrentActiveSkillHolder() {
-		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
-		switch (CurrentActiveHolder) {
-			case 1:
-				return SkillHolder1;
-			case 2:
-				return SkillHolder2;
-			case 3:
-				return SkillHolder3;
-		}
-		//return null in case where somehow a very catastrophic event ever happen
-		return null;
-	}
-	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
-		if (Activate) {
-			return;
-		}
-		if (whoAmIsource >= AvailableSkillActiveSlot) {
-			return;
-		}
-		if (whoAmIdestination >= AvailableSkillActiveSlot) {
-			return;
-		}
-		int cache;
-		switch (CurrentActiveHolder) {
-			case 1:
-				cache = SkillHolder1[whoAmIsource];
-				SkillHolder1[whoAmIsource] = SkillHolder1[whoAmIdestination];
-				SkillHolder1[whoAmIdestination] = cache;
-				break;
-			case 2:
-				cache = SkillHolder2[whoAmIsource];
-				SkillHolder2[whoAmIsource] = SkillHolder2[whoAmIdestination];
-				SkillHolder2[whoAmIdestination] = cache;
-				break;
-			case 3:
-				cache = SkillHolder2[whoAmIsource];
-				SkillHolder2[whoAmIsource] = SkillHolder2[whoAmIdestination];
-				SkillHolder2[whoAmIdestination] = cache;
-				break;
-		}
-	}
-	/// <summary>
-	/// idk, this name sound cool, so I'm keeping it
-	/// This will remove a skill from skill holder
-	/// It won't actually request anything network wise
-	/// </summary>
-	/// <param name="whoAmI"></param>
-	public void RequestSkillRemoval_SkillHolder(int whoAmI) {
-		if (Activate) {
-			return;
-		}
-		switch (CurrentActiveHolder) {
-			case 1:
-				SkillHolder1[whoAmI] = -1;
-				break;
-			case 2:
-				SkillHolder2[whoAmI] = -1;
-				break;
-			case 3:
-				SkillHolder3[whoAmI] = -1;
-				break;
-		}
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (SkillModSystem.SkillActivation.JustReleased && !Activate) {
@@ -565,7 +434,7 @@ public class SkillHandlePlayer : ModPlayer {
 				}
 			}
 		}
-		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
+
 	}
 	public override void ResetEffects() {
 		ProjectileCritChance = 0;
@@ -583,7 +452,7 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
-		int[] skillHolder = GetCurrentActiveSkillHolder();
+		int[] skillHolder = ActiveSkill.ToArray();
 		for (int i = 0; i < skillHolder.Length; i++) {
 			var skill = SkillModSystem.GetSkill(skillHolder[i]);
 			if (skill == null) {
@@ -712,86 +581,84 @@ public class SkillHandlePlayer : ModPlayer {
 		AlwaysCostEnergy = 0;
 	}
 	public override void SaveData(TagCompound tag) {
-		tag.Add("SkillHolder1", SkillHolder1);
-		tag.Add("SkillHolder2", SkillHolder2);
-		tag.Add("SkillHolder3", SkillHolder3);
-		tag.Add("SkillInventory", SkillInventory);
+		tag.Add("ActiveSkill", ActiveSkill);
+		tag["SkillStorage"] = SkillInventory.Keys.ToList();
+		tag["SkillStack"] = SkillInventory.Values.ToList();
 		tag.Add("AvailableSkillActiveSlot", AvailableSkillActiveSlot);
 	}
 	public override void LoadData(TagCompound tag) {
-		if (tag.TryGet("SkillHolder1", out int[] SkillHolder1)) {
-			Array.Copy(SkillHolder1, this.SkillHolder1, 10);
+		if (tag.TryGet("ActiveSkill", out List<int> activeskill)) {
+			ActiveSkill = activeskill;
 		}
-		if (tag.TryGet("SkillHolder2", out int[] SkillHolder2)) {
-			Array.Copy(SkillHolder2, this.SkillHolder2, 10);
+		List<int> storage = new(), stack = new();
+		if (tag.TryGet("SkillStorage", out List<int> Storage)) {
+			storage = Storage;
 		}
-		if (tag.TryGet("SkillHolder3", out int[] SkillHolder3)) {
-			Array.Copy(SkillHolder3, this.SkillHolder3, 10);
+		if (tag.TryGet("SkillStack", out List<int> Stack)) {
+			stack = Stack;
 		}
-		if (tag.TryGet("SkillInventory", out int[] SkillInventory)) {
-			Array.Copy(SkillInventory, this.SkillInventory, SkillInventory.Length);
-		}
+		SkillInventory = storage.Zip(stack, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		if (tag.TryGet("AvailableSkillActiveSlot", out byte AvailableSkillActiveSlot)) {
 			this.AvailableSkillActiveSlot = AvailableSkillActiveSlot;
 		}
 	}
-	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-		var packet = Mod.GetPacket();
-		packet.Write((byte)Roguelike.MessageType.Skill);
-		packet.Write((byte)Player.whoAmI);
-		packet.Write(SkillInventory.Length);
-		foreach (int item in SkillInventory) {
-			packet.Write(item);
-		}
-		packet.Write(SkillHolder1.Length);
-		foreach (int item in SkillHolder1) {
-			packet.Write(item);
-		}
-		foreach (int item in SkillHolder2) {
-			packet.Write(item);
-		}
-		foreach (int item in SkillHolder3) {
-			packet.Write(item);
-		}
-		packet.Write(AvailableSkillActiveSlot);
-		packet.Send(toWho, fromWho);
-	}
-	public void ReceivePlayerSync(BinaryReader reader) {
-		Array.Fill(SkillInventory, -1);
-		Array.Fill(SkillHolder1, -1);
-		Array.Fill(SkillHolder2, -1);
-		Array.Fill(SkillHolder3, -1);
-		int countInventory = reader.ReadInt32();
-		for (int i = 0; i < countInventory; i++) {
-			SkillInventory[i] = reader.ReadInt32();
-		}
-		int countHolder = reader.ReadInt32();
-		for (int i = 0; i < countHolder; i++)
-			SkillHolder1[i] = reader.ReadInt32();
-		for (int i = 0; i < countHolder; i++)
-			SkillHolder2[i] = reader.ReadInt32();
-		for (int i = 0; i < countHolder; i++)
-			SkillHolder3[i] = reader.ReadInt32();
-		AvailableSkillActiveSlot = reader.ReadByte();
-	}
+	//public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+	//	var packet = Mod.GetPacket();
+	//	packet.Write((byte)Roguelike.MessageType.Skill);
+	//	packet.Write((byte)Player.whoAmI);
+	//	packet.Write(SkillInventory.Length);
+	//	foreach (int item in SkillInventory) {
+	//		packet.Write(item);
+	//	}
+	//	packet.Write(SkillHolder1.Length);
+	//	foreach (int item in SkillHolder1) {
+	//		packet.Write(item);
+	//	}
+	//	foreach (int item in SkillHolder2) {
+	//		packet.Write(item);
+	//	}
+	//	foreach (int item in SkillHolder3) {
+	//		packet.Write(item);
+	//	}
+	//	packet.Write(AvailableSkillActiveSlot);
+	//	packet.Send(toWho, fromWho);
+	//}
+	//public void ReceivePlayerSync(BinaryReader reader) {
+	//	Array.Fill(SkillInventory, -1);
+	//	Array.Fill(SkillHolder1, -1);
+	//	Array.Fill(SkillHolder2, -1);
+	//	Array.Fill(SkillHolder3, -1);
+	//	int countInventory = reader.ReadInt32();
+	//	for (int i = 0; i < countInventory; i++) {
+	//		SkillInventory[i] = reader.ReadInt32();
+	//	}
+	//	int countHolder = reader.ReadInt32();
+	//	for (int i = 0; i < countHolder; i++)
+	//		SkillHolder1[i] = reader.ReadInt32();
+	//	for (int i = 0; i < countHolder; i++)
+	//		SkillHolder2[i] = reader.ReadInt32();
+	//	for (int i = 0; i < countHolder; i++)
+	//		SkillHolder3[i] = reader.ReadInt32();
+	//	AvailableSkillActiveSlot = reader.ReadByte();
+	//}
 
-	public override void CopyClientState(ModPlayer targetCopy) {
-		var clone = (SkillHandlePlayer)targetCopy;
-		clone.SkillInventory = SkillInventory;
-		clone.SkillHolder1 = SkillHolder1;
-		clone.SkillHolder2 = SkillHolder2;
-		clone.SkillHolder3 = SkillHolder3;
-		clone.AvailableSkillActiveSlot = AvailableSkillActiveSlot;
-	}
+	//public override void CopyClientState(ModPlayer targetCopy) {
+	//	var clone = (SkillHandlePlayer)targetCopy;
+	//	clone.SkillInventory = SkillInventory;
+	//	clone.SkillHolder1 = SkillHolder1;
+	//	clone.SkillHolder2 = SkillHolder2;
+	//	clone.SkillHolder3 = SkillHolder3;
+	//	clone.AvailableSkillActiveSlot = AvailableSkillActiveSlot;
+	//}
 
-	public override void SendClientChanges(ModPlayer clientPlayer) {
-		var clone = (SkillHandlePlayer)clientPlayer;
-		if (SkillInventory != clone.SkillInventory
-			|| SkillHolder1 != clone.SkillHolder1
-			|| SkillHolder2 != clone.SkillHolder2
-			|| SkillHolder3 != clone.SkillHolder3
-			) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-	}
+	//public override void SendClientChanges(ModPlayer clientPlayer) {
+	//	var clone = (SkillHandlePlayer)clientPlayer;
+	//	if (SkillInventory != clone.SkillInventory
+	//		|| SkillHolder1 != clone.SkillHolder1
+	//		|| SkillHolder2 != clone.SkillHolder2
+	//		|| SkillHolder3 != clone.SkillHolder3
+	//		) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+	//}
 }
 public class SkillOrb : ModItem {
 	public override void SetStaticDefaults() {
@@ -811,276 +678,4 @@ public class SkillOrb : ModItem {
 		}
 		return base.UseItem(player);
 	}
-}
-internal class SkillUI : UIState {
-	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
-	public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
-	public ExitUI exitUI;
-	public btn_SkillDeletion btn_delete;
-	public const string UItype_SKILL = "skill";
-	public const string UIType_INVENTORY = "inventory";
-	public UIPanel panel;
-	public UIText energyCostText;
-	public UIText durationText;
-	public override void OnInitialize() {
-		panel = new UIPanel();
-		panel.UISetWidthHeight(250, 60);
-		panel.Left.Pixels = 860;
-		panel.Top.Pixels = 360;
-		Append(panel);
-		energyCostText = new UIText("");
-		energyCostText.VAlign = 0;
-		panel.Append(energyCostText);
-		durationText = new UIText("");
-		durationText.VAlign = 1f;
-		panel.Append(durationText);
-	}
-
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		var modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		modplayer.SkillStatTotal(true, out int energy, out int duration);
-		var color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
-		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
-		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
-	}
-
-	private void ActivateSkillUI(Player player) {
-		if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
-			//Explain : since most likely in the future we aren't gonna expand the skill slot, we just hard set it to 10
-			//We are also pre render these UI first
-			int[] SkillHolder = modplayer.GetCurrentActiveSkillHolder();
-			var textureSize = new Vector2(52, 52);
-			var OffSetPosition_Skill = player.Center;
-			OffSetPosition_Skill.X -= textureSize.X * 5;
-			if (skill.Count < 1) {
-				var customOffSet = OffSetPosition_Skill;
-				customOffSet.Y -= 60;
-				for (int i = 0; i < 3; i++) {
-					var btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, i + 1);
-					btn_Selection.UISetPosition(customOffSet + new Vector2(52, 0) * i, textureSize);
-					Append(btn_Selection);
-				}
-				for (int i = 0; i < 10; i++) {
-					var skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack17, i, SkillHolder[i], UItype_SKILL);
-					skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
-					skill.Add(skillslot);
-					Append(skill[i]);
-				}
-			}
-			if (inventory.Count < 1) {
-				var InvOffSet = new Vector2(520, -55);
-				for (int i = 0; i < 30; i++) {
-					var skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, modplayer.SkillInventory[i], UIType_INVENTORY);
-					var InvPos = OffSetPosition_Skill + new Vector2(0, 72);
-					if (i >= 10) {
-						InvPos -= InvOffSet;
-					}
-					if (i >= 20) {
-						InvPos -= InvOffSet;
-					}
-					skillslot.UISetPosition(InvPos + new Vector2(52, 0) * i, textureSize);
-					inventory.Add(skillslot);
-					Append(inventory[i]);
-				}
-			}
-			if (exitUI == null) {
-				exitUI = new ExitUI(TextureAssets.InventoryBack10);
-				exitUI.UISetPosition(player.Center + new Vector2(275, 0), textureSize);
-				Append(exitUI);
-			}
-			if (btn_delete == null) {
-				btn_delete = new btn_SkillDeletion(TextureAssets.InventoryBack, modplayer);
-				btn_delete.UISetPosition(player.Center - new Vector2(330, 0), textureSize);
-				Append(btn_delete);
-			}
-		}
-	}
-	public override void OnActivate() {
-		var player = Main.LocalPlayer;
-		ActivateSkillUI(player);
-	}
-	public override void OnDeactivate() {
-		SkillModSystem.SelectInventoryIndex = -1;
-		SkillModSystem.SelectSkillIndex = -1;
-	}
-}
-class btn_SkillSlotSelection : UIImage {
-	int SelectionIndex = 0;
-	public btn_SkillSlotSelection(Asset<Texture2D> texture, int selection) : base(texture) {
-		SelectionIndex = selection;
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		base.LeftClick(evt);
-		if (SelectionIndex == 0) {
-			return;
-		}
-		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().ChangeHolder(SelectionIndex);
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		if (SelectionIndex != Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().CurrentActiveIndex) {
-			Color = new Color(255, 255, 255, 100);
-		}
-		else {
-			Color = Color.White;
-		}
-		base.Draw(spriteBatch);
-	}
-}
-class btn_SkillDeletion : UIImage {
-	SkillHandlePlayer modplayer;
-	Vector2 size;
-	public btn_SkillDeletion(Asset<Texture2D> texture, SkillHandlePlayer modplayer) : base(texture) {
-		this.modplayer = modplayer;
-		size = texture.Size();
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		if (SkillModSystem.SelectInventoryIndex != -1) {
-			modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = -1;
-			SkillModSystem.SelectInventoryIndex = -1;
-		}
-		if (SkillModSystem.SelectSkillIndex != -1) {
-			modplayer.RequestSkillRemoval_SkillHolder(SkillModSystem.SelectSkillIndex);
-			SkillModSystem.SelectSkillIndex = -1;
-		}
-	}
-	public override void Update(GameTime gameTime) {
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (IsMouseHovering) {
-			Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Skill.Delete"));
-		}
-		base.Update(gameTime);
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		var drawpos = new Vector2(Left.Pixels, Top.Pixels) + size * .5f;
-		var trashbin = TextureAssets.Trash.Value;
-		float scaling = ScaleCalculation(size, trashbin.Size());
-		var origin = trashbin.Size() * .5f;
-		spriteBatch.Draw(trashbin, drawpos, null, new Color(0, 0, 0, 150), 0, origin, scaling, SpriteEffects.None, 0);
-	}
-	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
-}
-//Why the fuck did I thought this is a good idea
-//Too late to change it now
-class btn_SkillSlotHolder : UIImageButton {
-	public int whoAmI = -1;
-	public int sKillID = -1;
-	public string uitype = "";
-	Texture2D Texture;
-	public btn_SkillSlotHolder(Asset<Texture2D> texture, int WhoAmI, int SkillID, string UItype) : base(texture) {
-		//player = Tplayer;
-		whoAmI = WhoAmI;
-		sKillID = SkillID;
-		Texture = texture.Value;
-		uitype = UItype;
-		SetVisibility(1, .67f);
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		var player = Main.LocalPlayer;
-		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		//Moving skill around in inventory
-		if (uitype == SkillUI.UIType_INVENTORY) {
-			if (SkillModSystem.SelectInventoryIndex == -1) {
-				if (SkillModSystem.SelectSkillIndex == -1) {
-					//This mean the player haven't select anything
-					SkillModSystem.SelectInventoryIndex = whoAmI;
-				}
-				else {
-					//Player are Attempting to move a skill from their skill slot back to inventory
-					modplayer.ReplaceSkillFromSkillHolderToInv(SkillModSystem.SelectSkillIndex, whoAmI);
-					SkillModSystem.SelectSkillIndex = -1;
-				}
-			}
-			else {
-				//Player are moving skill around their inventory
-				int cache = modplayer.SkillInventory[whoAmI];
-				modplayer.SkillInventory[whoAmI] = modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex];
-				modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = cache;
-				SkillModSystem.SelectInventoryIndex = -1;
-				//It is impossible where SelectSkillIndex can't be equal to -1
-			}
-		}
-		else if (uitype == SkillUI.UItype_SKILL) {
-			if (SkillModSystem.SelectSkillIndex == -1) {
-				if (SkillModSystem.SelectInventoryIndex == -1) {
-					//This mean the player haven't select anything
-					SkillModSystem.SelectSkillIndex = whoAmI;
-				}
-				else {
-					//Player are Attempting to move a skill from their inventory into a skill holder
-					modplayer.ReplaceSkillFromInvToSkillHolder(whoAmI, SkillModSystem.SelectInventoryIndex);
-					SkillModSystem.SelectInventoryIndex = -1;
-				}
-			}
-			else {
-				//Player are moving skill around their skill holder
-				modplayer.SwitchSkill(whoAmI, SkillModSystem.SelectSkillIndex);
-				SkillModSystem.SelectSkillIndex = -1;
-			}
-		}
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		var player = Main.LocalPlayer;
-		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (uitype == SkillUI.UIType_INVENTORY) {
-			if (modplayer.SkillInventory[whoAmI] != sKillID) {
-				sKillID = modplayer.SkillInventory[whoAmI];
-			}
-		}
-		else if (uitype == SkillUI.UItype_SKILL) {
-			int[] skillholder = modplayer.GetCurrentActiveSkillHolder();
-			if (skillholder[whoAmI] != sKillID) {
-				sKillID = skillholder[whoAmI];
-			}
-		}
-		if (IsMouseHovering) {
-			string tooltipText = "";
-			string Name = "";
-			if (SkillModSystem.GetSkill(sKillID) != null) {
-				Name = SkillModSystem.GetSkill(sKillID).DisplayName;
-				tooltipText = SkillModSystem.GetSkill(sKillID).Description;
-				tooltipText +=
-					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillModSystem.GetSkill(sKillID).Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}";
-			}
-			Main.instance.MouseText(Name + "\n" + tooltipText);
-		}
-	}
-	Asset<Texture2D> locktexture = ModContent.Request<Texture2D>(ModTexture.Lock);
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		var drawpos = new Vector2(Left.Pixels, Top.Pixels) + Texture.Size() * .5f;
-		if (SkillModSystem.SelectInventoryIndex == whoAmI && uitype == SkillUI.UIType_INVENTORY
-			|| SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL) {
-			ModUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
-		}
-		if (uitype == SkillUI.UItype_SKILL) {
-			if (whoAmI >= Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot) {
-				var origin2 = locktexture.Value.Size() * .5f;
-				float scaling2 = ScaleCalculation(Texture.Size(), locktexture.Value.Size());
-				spriteBatch.Draw(locktexture.Value, drawpos, null, new Color(255, 255, 255), 0, origin2, scaling2, SpriteEffects.None, 0);
-			}
-		}
-		if (sKillID < 0 || sKillID >= SkillModSystem.TotalCount) {
-			return;
-		}
-		var skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(sKillID).Texture).Value;
-		var origin = skilltexture.Size() * .5f;
-		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
-		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
-	}
-	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }

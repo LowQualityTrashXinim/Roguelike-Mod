@@ -242,21 +242,18 @@ internal class SwordProjectile3 : ModProjectile {
 	public int ItemIDtextureValue = ItemID.WoodenSword;
 	public float ProjectileIndex { get => Projectile.ai[2]; set => Projectile.ai[2] = value; }
 	public float RotationValue { get => Projectile.ai[1]; set => Projectile.ai[1] = value; }
+	Vector2 Initial_center = Vector2.Zero;
+	public override void OnSpawn(IEntitySource source) {
+		Initial_center = Projectile.Center;
+	}
 	public override void AI() {
 		if (Projectile.timeLeft == 999) {
 			Projectile.velocity = Vector2.Zero;
 		}
-		RotationValue += 10;
-		Vector2 RotationPos = Vector2.One.RotatedBy(MathHelper.ToRadians(ProjectileIndex * 120 + RotationValue)) * 50f;
-		Vector2 NewPos = Main.player[Projectile.owner].Center + RotationPos;
-		Projectile.Center = NewPos;
+		RotationValue += 5;
+		Vector2 RotationPos = Vector2.One.RotatedBy(MathHelper.ToRadians(ProjectileIndex * 120 + RotationValue)) * 150f;
+		Projectile.Center = Initial_center + RotationPos;
 		Projectile.rotation = RotationPos.ToRotation() + MathHelper.PiOver4;
-	}
-	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		Player player = Main.player[Projectile.owner];
-
-		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
-		modifiers.HitDirectionOverride = directionTo;
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

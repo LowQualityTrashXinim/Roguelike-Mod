@@ -72,23 +72,11 @@ New weapon tag:
 - Essence Lantern ( artifact )
 - Token of Pride.
 
-8/ Work on level item system ( not actual leveling system ).
-- Item will spawn with a set level, with each 5 levels the item gain a effect.
-- As the player progress with each boss defeated, the item level vary will increases.
-At each point of weapon level, it does the following: 
-> Lvl 1: +1 base damage
-> Lvl 2: +1% critical strike chance
-> Lvl 3: +2% critical strike damage
-> lvl 4: +0.5% attack speed
-> lvl 5: Gain a effect
-A weapon level is not capped but effect level is capped at 3.
-Upon effect cap, next time gaining effect will instead raise all stats by previous 4 levels.
-
-9/ Rework some of the Debug UI.
+8/ Rework some of the Debug UI.
 - spoil UI need to be rework.
 - skill selection UI need to be rework.
 
-10/ Work on achievement.
+9/ Work on achievement.
 Content:
 - I am the guardian now !
 > gain 9999 defenses in a run
@@ -99,7 +87,7 @@ Content:
 - Completionist
 > Uses every weapon available in the mod and win a run using it.
 
-11/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
+10/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
 - The mod should remember what Synergy weapon player has ever used.
 When player is helding or have a synergy weapon in the inventory, the mod should do a quick check to see if it already there
 if True
@@ -113,7 +101,7 @@ if True
 if False
 > Find the synergy weapon ID and then save the item ID that activated the synergy bonus.
 
-12/ Merged Help with Info together and also add content for Help and Info.
+11/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
 - Transmutation
 - Weapon enchantment
@@ -133,44 +121,44 @@ if False
 - Content in "Help" is suppose to be general guide on how to use the content.
 - Content in "Info" is detailed information of how supposed content gonna act.
 
-13/ Work on Weapon Essences consumable.
+12/ Work on Weapon Essences consumable.
 
-14/ Work on food rework.
+13/ Work on food rework.
 The following food are missing from food rework:
 - Grape Juice
 - Grup Soup
 - Cooked Shrimp
 - Spagetti
 
-15/ Make vanilla buff that work only on player to work also on NPC.
+14/ Make vanilla buff that work only on player to work also on NPC.
 
-16/ Add in a event tag system
+15/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
 
-17/ Fix spoils.
+16/ Fix spoils.
 
-18/ Rebalancing Boss Rush:
+17/ Rebalancing Boss Rush:
 - Bring back old lootbox system.
 - While player are in boss rush world, treasure bag only drop expert mode item.
 - rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
 
-19/ Rebalancing WO:
+18/ Rebalancing WO:
 - Focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
 - tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
 - bridge balancing between Vanilla and Boss Rush / Everlasting
 - give the mod its own identity as more than an Everlasting sub mod 
 (because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
 
-20/ Boss Rush mode Extra:
+19/ Boss Rush mode Extra:
 - Before player summon first boss, they have to pick a modifier:
 1 good modifier and 1 bad modifier
 - The modifier is forced to be changed after each boss beaten.
 - The player must choose modifier
 
-21/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
+20/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
 
-22/ Work on argumentation.
+21/ Work on argumentation.
 - Figure out what the best way for level/charge up mechanic
 The following 4 are the plans for augmentation:
 - Remove it entirely and just go down the route of getting dup or sacrifice 
@@ -206,7 +194,7 @@ the rate of decay is depend on that accessory decay condition ( or none at all )
 
 Current implementation test: Transmutation will charge the augment
 
-23/ Rework the following Synergy weapon:
+22/ Rework the following Synergy weapon:
 - HeartBreak Instrument
 Remove the instrument and instead replaced it with the sword itself
 During attack, the sword will also attack together with you
@@ -226,7 +214,7 @@ Fix up the attack to make it look more smooth.
 - DrainingVeilBlade
 The Shadow clone sword should be consistent with player and also follow player.
 
-24/ Rework skill system.
+23/ Rework skill system.
 Balance & Changes:
 - Rework skill holder to be skill preset.
 Skill preset can only be changed after player current skill setup is completed.
@@ -240,14 +228,14 @@ UI related changes:
 
 New addition:
 - New skill modifiers type: ( new classification )
->> Projectile
->> AI addon
+>> Projectile // Added
+>> AI addon // Added as "Modify"
 - New skill utility: ( new classification )
 >> Bundle
->> Other
+>> Other // Added as "Utlity"
 - Skill system projectile now follow a certain rule that is enforced upon skill
 Summon skill will always have skill source
-- Projectile modifier applied to summon skill, only 1 projectile can be applied to 1 skill unless a bundle is used.
+- Only 1 projectile can be applied to 1 skill unless a bundle is used.
 - Same goes with AI addon modifier for skill, projectile modifier and Ai addon modifier can't coexist unless bundle is used.
 - A skill now have multiple classification.
 
@@ -263,28 +251,26 @@ During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
-25/ Make demon heart obtainable in boss rush mode.
+24/ Make the ultimate player handler.
 
-26/ Make the ultimate player handler.
-
-27/ Rework the following Enchantment according to the WE localization:
+25/ Rework the following Enchantment according to the WE localization:
 - Amazon
 - Titanium Sword
 - Enchanted Boomerang
 - Zombie Arm
 
-28/ Rework and reimplement lootbox into the mod:
+26/ Rework and reimplement lootbox into the mod:
 - What roles the lootbox serves ?
 - What should lootbox do ?
 - How can player obtain lootbox ?
 
-29/ Make a core component for the mod and for the off brand mod.
+27/ Make a core component for the mod and for the off brand mod.
 The core component will contain the following:
 - Player Stats Handle.
 - Projectile global.
 - NPC global.
 
-30/ Add in charge bar for the following weapon:
+28/ Add in charge bar for the following weapon:
 - Every pre HM ore broad sword beside copper broadsword.
 
 

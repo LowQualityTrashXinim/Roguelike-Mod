@@ -4,7 +4,7 @@ using Roguelike.Texture;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 internal class ScrollOfMaterialize : ModItem {
 	public override void SetStaticDefaults() {
 		ModItemLib.LootboxPotion.Add(Item);

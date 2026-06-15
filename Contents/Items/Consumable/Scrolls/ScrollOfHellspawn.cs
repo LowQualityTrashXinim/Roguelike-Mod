@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Consumable.Scroll;
+namespace Roguelike.Contents.Items.Consumable.Scrolls;
 
 class ScrollOfHellspawn : ModItem {
 	public override void SetStaticDefaults() {
@@ -19,8 +19,8 @@ class ScrollOfHellspawn : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			Vector2 limitedSpawningPosition = Main.MouseWorld;
-			Vector2 distance = player.Center - limitedSpawningPosition;
+			var limitedSpawningPosition = Main.MouseWorld;
+			var distance = player.Center - limitedSpawningPosition;
 			if (distance.Length() > 350f) {
 				limitedSpawningPosition = player.Center - distance.SafeNormalize(Vector2.Zero) * 350;
 			}
@@ -36,7 +36,7 @@ public class HellSpawnObject : ModObject {
 	public override void AI() {
 		float progress = timeLeft;
 		for (int i = 0; i < 4; i++) {
-			Dust dust = Dust.NewDustDirect(Center, 0, 0, DustID.LavaMoss);
+			var dust = Dust.NewDustDirect(Center, 0, 0, DustID.LavaMoss);
 			dust.velocity = Vector2.One.RotatedBy(MathHelper.ToRadians(progress + 90 * i)) * 2;
 			dust.noGravity = true;
 			dust.scale += 1;
@@ -47,7 +47,7 @@ public class HellSpawnObject : ModObject {
 		}
 		if (progress % 100 == 0) {
 			for (int i = 0; i < 100; i++) {
-				Dust dust = Dust.NewDustDirect(Center, 0, 0, DustID.DemonTorch);
+				var dust = Dust.NewDustDirect(Center, 0, 0, DustID.DemonTorch);
 				dust.velocity = Main.rand.NextVector2CircularEdge(10, 10);
 				dust.noGravity = true;
 				dust.scale += 1;

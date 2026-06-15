@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Accessories;
-internal class Roguelike_FeralCraws : GlobalItem {
+internal class Roguelike_FeralClaws : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.FeralClaws;
 	}

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Wrapper;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Items.Consumable.Scroll;
 using SubworldLibrary;
 using System.Collections.Generic;
 using Terraria;
@@ -11,6 +10,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using Roguelike.Contents.Items.Consumable.Scrolls;
 
 namespace Roguelike.Common.RoguelikeMode.StructureHandler;
 public class Structure_CursdKingdomEntrance : ModStructure {
