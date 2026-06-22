@@ -552,6 +552,11 @@ Mods: {
 			Roguelike_Revovler_Fail.DisplayName: Roguelike_ Revovler_ Fail
 			Roguelike_Megaphone_Projectile_SoundWave.DisplayName: Roguelike_ Megaphone_ Projectile_ Sound Wave
 			Roguelike_Megaphone_Projectile_SoundWave2.DisplayName: Roguelike_ Megaphone_ Projectile_ Sound Wave2
+			Roguelike_EnchantedBoomerang_Beam_ModProjectile.DisplayName: Roguelike_ Enchanted Boomerang_ Beam_ Mod Projectile
+			Roguelike_EnchantedBoomerang_ModProjectile.DisplayName: Roguelike_ Enchanted Boomerang_ Mod Projectile
+			Amazon_Projectile_WE.DisplayName: Amazon_ Projectile_ W E
+			Rework_Boomerang.DisplayName: Rework_ Boomerang
+			CustomEnchantedBoomerang.DisplayName: Custom Enchanted Boomerang
 		}
 
 		NPCs: {
@@ -2421,7 +2426,8 @@ Mods: {
 					Throw out the disk that have flaming mace orbit around it
 					After 4th throw, the next throw will release 3 flaming mace orbiting around the disk
 					Every 2th throw, damage is increases by 50%
-					Upon recieved the disk, a short lived weaker copy of the disk will orbit around the player
+					Upon recieved the disk, a short lived copy of the disk will orbit around the player
+					Alt click to make all orbit disk around player fly toward cursor direction
 					'''
 			}
 
@@ -4195,6 +4201,11 @@ Mods: {
 				DisplayName: Frostbite
 				Description: Mods.Roguelike.Buffs.Frostbite.Description
 			}
+
+			Amazon_ModBuff: {
+				DisplayName: Amazon_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Amazon_ModBuff.Description
+			}
 		}
 
 		Configs: {
@@ -4347,22 +4358,6 @@ Mods: {
 		Keybinds: {
 			"Skill activation.DisplayName": Skill Activation
 			"Weapon action.DisplayName": Alternative Weapon Action
-		}
-
-		Prefixes: {
-			Cunning.DisplayName: Cunning
-			Evasive.DisplayName: Evasive
-			Spiky.DisplayName: Spiky
-			Stealthy.DisplayName: Stealthy
-			Vampiric.DisplayName: Vampiric
-			Vital.DisplayName: Vital
-			Energetic.DisplayName: Energetic
-			Savage.DisplayName: Savage
-			Alchemic.DisplayName: Alchemic
-			Jumpy.DisplayName: Floating
-			Holy.DisplayName: Phasing
-			Chaotic.DisplayName: Chaotic
-			Unstable.DisplayName: Unstable
 		}
 
 		Biomes: {

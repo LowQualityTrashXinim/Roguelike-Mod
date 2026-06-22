@@ -30,7 +30,7 @@ public class Effect4 : WeaponEffect {
 }
 public class Effect5 : WeaponEffect {
 	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
-		player.GetModPlayer<WeaponEffectPlayer>().Effect5 = true;
+		player.GetModPlayer<WeaponEffectPlayer>().Effect5++;
 	}
 }
 public class Effect6 : WeaponEffect {
@@ -43,14 +43,31 @@ public class Effect7 : WeaponEffect {
 		player.ModPlayerStats().AttackSpeed += .25f;
 	}
 }
+public class Effect8 : WeaponEffect {
+	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
+		player.ModPlayerStats().PercentageDamage += .001f;
+	}
+}
+public class Effect9 : WeaponEffect {
+	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
+		player.ModPlayerStats().TrueDamage += .2f;
+	}
+}
+public class Effect10 : WeaponEffect {
+	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
+		player.GetModPlayer<WeaponEffectPlayer>().Effect10++;
+	}
+}
 public class WeaponEffectPlayer : ModPlayer {
 	public bool Effect4 = false;
-	public bool Effect5 = false;
+	public int Effect5 = 0;
 	public bool Effect6 = false;
+	public int Effect10 = 0;
 	public override void ResetEffects() {
 		Effect4 = false;
-		Effect5 = false;
+		Effect5 = 0;
 		Effect6 = false;
+		Effect10 = 0;
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		if (Effect6) {
@@ -60,16 +77,28 @@ public class WeaponEffectPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Effect5) {
+		for (int i = 0; i < Effect5; i++) {
 			if (Main.rand.NextBool(20) && !proj.minion && proj.Check_ItemTypeSource(Player.HeldItem.type)) {
 				Player.Heal(Main.rand.Next(1, 20));
 			}
 		}
+		for (int i = 0; i < Effect10; i++) {
+			if (Main.rand.NextBool(5) && !proj.minion && proj.Check_ItemTypeSource(Player.HeldItem.type)) {
+				Player.StrikeNPCDirect(target, hit);
+				Effect10--;
+			}
+		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Effect5) {
+		for (int i = 0; i < Effect5; i++) {
 			if (Main.rand.NextBool(20)) {
 				Player.Heal(Main.rand.Next(1, 20));
+			}
+		}
+		for (int i = 0; i < Effect10; i++) {
+			if (Main.rand.NextBool(5)) {
+				Player.StrikeNPCDirect(target, hit);
+				Effect10--;
 			}
 		}
 	}

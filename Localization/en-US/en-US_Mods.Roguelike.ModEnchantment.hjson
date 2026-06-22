@@ -579,7 +579,7 @@ EnchantedBoomerang.Description:
 	'''
 	+20% weapon damage
 	Shoots an Enchanted Boomerang when used
-	When enchanted boomerang hit (including the held weapon)
+	When enchanted boomerang hit a enemy
 	Burst out 10 enchanted beam in all direction. (CD: 1s)
 	'''
 IceBoomerang.Description: Shoots an Ice Boomerang when used

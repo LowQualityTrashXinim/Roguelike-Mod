@@ -906,7 +906,7 @@ ChaosProtection: {
 		+ Have 25% chance to randomly spawn a projectile
 		+ Have 10% chance to convert taken damage to heal
 		+ Chaos explosion may happen during combat
-		+ Increases one of your stats after 15s
+		Every stack increases the chance of event above happen
 		'''
 }
 
@@ -915,9 +915,9 @@ BloodthornCore: {
 	Description:
 		'''
 		"A thorn in heart"
-		Upon hit, Burst out 6 blood thorn that deal 45 magic damage
+		+ Upon hit, Burst out 6 blood thorn that deal 45 magic damage
 		Blood thorn that is created by this perk have life steal effect
-		Increases healing effective by 15% and maximum life by 15
+		+ Increases healing effective by 15% and maximum life by 15
 		'''
 }
 
@@ -935,8 +935,8 @@ SoulBreaker: {
 	DisplayName: Soul Breaker
 	Description:
 		'''
-		Multiply damage by 0.25x ( only applied once )
-		+ Increases true damage by 50%
+		Multiply damage by 0.95x ( only applied once )
+		+ Increases true damage by 10%
 		+ Increases percentage damage by 0.1%
 		'''
 }
@@ -1024,7 +1024,7 @@ SwiftHealth: {
 		+ Increases maximum health by 15% and 30% movement speed
 		+ Increases your damage by 1 for each 50 health you currently have
 		+ After dealing damage to a enemy, you receive a buff for 30 second
-		Hitting a enemy will increases your max health by 1% and movement speed by 2% (capped at 20) ( CD: 1s )
+		Hitting a enemy will increases your max health by 1% (capped at 20)
 		After the buff end, all the stack get reset.
 		'''
 }
@@ -1044,4 +1044,14 @@ Unnerfed: {
 	Description1: Negate the capped health stats
 	Description2: Completely negate the negavite effect of artifact
 	Description3: There are nothing to be gain here, seriously
+}
+
+FocusAttack: {
+	DisplayName: Focus Attack
+	Description:
+		'''
+		Everytime you use a weapon of same type
+		+ Increases that type of weapon damage by 1%
+		Capped at 100%, stacking raise the cap by 100
+		'''
 }

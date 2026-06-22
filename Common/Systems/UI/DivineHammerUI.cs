@@ -42,16 +42,15 @@ public class DivineHammerUIState : UIState {
 		HeaderPanel = new();
 		HeaderPanel.Width.Percent = 1f;
 		HeaderPanel.Height.Pixels = 80;
-		HeaderPanel.BackgroundColor = Color.Black;
-		HeaderPanel.BorderColor = Color.Black;
-		HeaderPanel.BackgroundColor.A = 0;
-		HeaderPanel.BorderColor.A = 0;
+		HeaderPanel.BackgroundColor = Color.Black with { A = 0 };
+		HeaderPanel.BorderColor = Color.Black with { A = 0 };
 		Mainpanel.Append(HeaderPanel);
 
 		BodyPanel = new();
 		BodyPanel.Width.Percent = 1f;
-		BodyPanel.Height.Pixels = Mainpanel.Height.Pixels - HeaderPanel.Height.Pixels - 30;
+		BodyPanel.Height.Pixels = 160;
 		BodyPanel.VAlign = 1f;
+		BodyPanel.HAlign = 0;
 		Mainpanel.Append(BodyPanel);
 
 		exit = new ExitUI(tex);
@@ -231,7 +230,6 @@ public class DivineHammerUIState : UIState {
 		AugmentationSelection_Forward.OnLeftClick += AugmentationSelection_OnLeftClick;
 		AugmentationSelection_Head.Append(AugmentationSelection_Forward);
 	}
-
 	private void AugmentationSelection_Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Visual_AugmentationSelection();
 	}
@@ -515,7 +513,7 @@ public class WeaponEnchantmentUIslot : Roguelike_UIImage {
 		DropItem(player);
 	}
 	public override void DrawImage(SpriteBatch spriteBatch) {
-		Vector2 drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
+		Vector2 drawpos = GetInnerDimensions().Position() * Main.UIScale + texture.Size() * .5f;
 		if (item != null) {
 			if (IsMouseHovering) {
 				UniversalSystem.EnchantingState = false;
@@ -583,14 +581,14 @@ public class EnchantmentUIslot : Roguelike_UIImage {
 			if (Main.LocalPlayer.GetModPlayer<EnchantmentModplayer>().SlotUnlock < WhoAmI) {
 				Texture2D lockTexture = ModContent.Request<Texture2D>(ModTexture.Lock).Value;
 				Vector2 origin = lockTexture.Size() * .5f;
-				Vector2 drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
+				Vector2 drawpos = GetInnerDimensions().Position() * Main.UIScale + texture.Size() * .5f;
 				spriteBatch.Draw(lockTexture, drawpos, null, Color.White, 0, origin, .87f, SpriteEffects.None, 0);
 				return;
 			}
 			if (itemOwner == null)
 				return;
 			if (itemType != 0) {
-				Vector2 drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
+				Vector2 drawpos = GetInnerDimensions().Position() * Main.UIScale + texture.Size() * .5f;
 				Main.instance.LoadItem(itemType);
 				Texture2D texture1 = TextureAssets.Item[itemType].Value;
 				Vector2 origin = texture1.Size() * .5f;

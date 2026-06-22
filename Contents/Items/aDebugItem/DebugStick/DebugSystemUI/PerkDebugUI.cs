@@ -43,7 +43,7 @@ internal class PerkDebugUI : UIState {
 
 		panel_Body = new();
 		panel_Body.Width.Percent = 1f;
-		panel_Body.Height.Pixels = 500;
+		panel_Body.Height.Pixels = 400;
 		panel_Body.VAlign = 1f;
 		panel_Main.Append(panel_Body);
 

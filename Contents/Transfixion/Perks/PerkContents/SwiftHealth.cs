@@ -17,7 +17,7 @@ internal class SwiftHealth : Perk {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		int Point = player.GetModPlayer<SwiftHealthIdolPlayer>().Swift_Health_PointCounter;
 		handler.UpdateHPMax += .15f + .01f * Point;
-		handler.UpdateMovement += .3f + .02f * Point;
+		handler.UpdateMovement += .3f;
 		player.GetDamage(DamageClass.Generic).Base += player.statLife / 50;
 	}
 	public class SwiftHealthIdolPlayer : ModPlayer {
@@ -28,9 +28,7 @@ internal class SwiftHealth : Perk {
 			HasBuff = false;
 		}
 		public int Swift_Health_PointCounter = 0;
-		public int Swift_Health_DelayBetweenEachHit = 0;
 		public override void PreUpdate() {
-			Swift_Health_DelayBetweenEachHit = ModUtils.CountDown(Swift_Health_DelayBetweenEachHit);
 			if (HasBuff) {
 				Swift_Health_PointCounter = 0;
 			}
@@ -42,12 +40,9 @@ internal class SwiftHealth : Perk {
 			Trinket_of_Swift_Health_OnHitEffect();
 		}
 		private void Trinket_of_Swift_Health_OnHitEffect() {
-			if (Swift_Health_DelayBetweenEachHit > 0)
-				return;
 			if (!SwiftHealth)
 				return;
 			if (HasBuff) {
-				Swift_Health_DelayBetweenEachHit = ModUtils.ToSecond(1);
 				Swift_Health_PointCounter = Math.Clamp(++Swift_Health_PointCounter, 0, 20);
 			}
 			else {

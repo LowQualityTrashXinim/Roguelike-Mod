@@ -716,3 +716,11 @@ The following are bugs that is fixed:
 634/ Changed how Broad sword skill work.
 635/ Attempt to fix the scroll file's name problem on github.
 636/ Reworked skill UI and the whole skill at a whole.
+637/ Organize UI in universal system.
+638/ Reworked Amazon.
+639/ Added a system that automatically handle no longer trackable projectile.
+640/ Reworked Enchanted Boomerang and Enchanted boomerang enchantment.
+641/ Added Focus Attack perk.
+642/ Adjusted Soul breaker, Chaos Protection, Swift Health perk.
+643/ Added new Weapon Effects.
+644/ Updated The Orbit localization to include alt-click functionality.

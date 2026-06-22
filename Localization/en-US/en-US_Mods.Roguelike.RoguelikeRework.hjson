@@ -182,6 +182,12 @@ ZombieArm:
 	While helding the weapon, on getting hit will do a counter attack
 	Will get revive while helding this weapon but will break the weapon
 	'''
+EnchantedBoomerang:
+	'''
+	Intro effect: Throw out special enchanted boomerang for 3s
+	Throw out enchanted boomerang when reach it peak, shoot out a enchanted beam
+	Alt click to redirect all boomerang toward your cursor
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

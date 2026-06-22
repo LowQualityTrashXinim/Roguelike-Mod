@@ -211,7 +211,7 @@ public class btn_SkillActive : Roguelike_UIImageButton {
 				tooltipText = skill.Description;
 				tooltipText +=
 					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(skill.Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {skill.EnergyRequire}";
+					$"\n[c/{new Color(243, 171, 77).Hex3()}:Energy require] : {skill.EnergyRequire}";
 				if (skill.Skill_Type == SkillTypeID.Projectile) {
 					tooltipText +=
 						$"\n[c/{Color.Red.Hex3()}:Damage] : {skill.Damage}" +
@@ -224,31 +224,20 @@ public class btn_SkillActive : Roguelike_UIImageButton {
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
-//Why the fuck did I thought this is a good idea
-//Too late to change it now
 public class btn_SkillSlotHolder : UIImageButton {
 	public int sKillID = -1;
 	public int Stack = 0;
 	Texture2D Texture;
 	public btn_SkillSlotHolder(Asset<Texture2D> texture, int SkillID) : base(texture) {
-		//player = Tplayer;
 		sKillID = SkillID;
 		Texture = texture.Value;
 		SetVisibility(1, .67f);
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		var player = Main.LocalPlayer;
-		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		//Moving skill around in inventory
-		base.LeftClick(evt);
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
-		var player = Main.LocalPlayer;
-		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
@@ -270,7 +259,7 @@ public class btn_SkillSlotHolder : UIImageButton {
 				tooltipText = skill.Description;
 				tooltipText +=
 					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(skill.Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {skill.EnergyRequire}";
+					$"\n[c/{new Color(243, 171, 77).Hex3()}:Energy require] : {skill.EnergyRequire}";
 				if (skill.Skill_Type == SkillTypeID.Projectile) {
 					tooltipText +=
 						$"\n[c/{Color.Red.Hex3()}:Damage] : {skill.Damage}" +

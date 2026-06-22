@@ -5,11 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
-using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.Augmentation;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -44,8 +41,8 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			}
 		}
 	}
-	/*
-	 TokenOfPride_Upgrade1: {
+/*
+TokenOfPride_Upgrade1: {
 	DisplayName: Noble Pride [Token Of Pride]
 	Description: + Loot drop value are now halve instead of 0x
 }
@@ -59,33 +56,4 @@ TokenOfPride_Upgrade2: {
 		'''
 }
 */
-	public class BlindPride : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 3;
-		}
-		public override void UpdateEquip(Player player) {
-			player.AddBuff(BuffID.Blackout, 2);
-		}
-		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage += .55f + .2f * StackAmount(player);
-		}
-		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-			crit += 25 + 5 * StackAmount(player);
-		}
-	}
-	public class PridefulPossession : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override void UpdateEquip(Player player) {
-			int count = player.GetModPlayer<PerkPlayer>().perks.Keys.Count;
-			PlayerStatsHandle handler = player.ModPlayerStats();
-			handler.UpdateDefenseBase += count * .05f;
-			handler.UpdateCritDamage += count * .25f;
-			handler.UpdateHPMax += count * .02f;
-			player.GetCritChance(DamageClass.Generic) += count * 5;
-			player.GetDamage(DamageClass.Generic) += count * .1f;
-		}
-	}
 }

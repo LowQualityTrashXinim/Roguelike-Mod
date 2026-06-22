@@ -607,7 +607,8 @@ public class VampiricAura : Perk {
 }
 public class ChaosProtection : Perk {
 	public override void SetDefaults() {
-		CanBeStack = false;
+		CanBeStack = true;
+		StackLimit = 3;
 	}
 	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.SourceDamage -= Main.rand.NextFloat(.05f, .5f);
@@ -616,56 +617,57 @@ public class ChaosProtection : Perk {
 		modifiers.SourceDamage -= Main.rand.NextFloat(.05f, .5f);
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<ChaosTabletPlayer>().ChaosTablet = true;
+		if (!player.Center.LookForAnyHostileNPC(600)) {
+			return;
+		}
+		bool Rand = Main.rand.NextBool(100);
+		for (int i = 0; i < StackAmount(player) - 1; i++) {
+			if (Rand) {
+				break;
+			}
+			Rand = Main.rand.NextBool(100);
+		}
+		if (Rand) {
+			int weapondmg = player.GetWeaponDamage(player.HeldItem);
+			int dmg = (Main.rand.Next(40, 180) + weapondmg) * StackAmount(player);
+			int buffid = Main.rand.Next(TerrariaArrayID.Debuff);
+			Projectile.NewProjectile(player.GetSource_Misc("ChaosTablet"), player.Center + Main.rand.NextVector2Circular(600, 600), Vector2.Zero, ModContent.ProjectileType<ChaosExplosion>(), dmg, Main.rand.NextFloat(3, 9), player.whoAmI, buffid);
+		}
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-		if (Main.rand.NextBool(10)) {
-			player.Heal(hurtInfo.Damage * 2);
-		}
 		SpawnProjectile(player, hurtInfo.Damage);
 	}
 	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-		if (Main.rand.NextBool(10)) {
-			player.Heal(hurtInfo.Damage * 2);
-		}
 		SpawnProjectile(player, hurtInfo.Damage);
 	}
 	private void SpawnProjectile(Player player, int Damage) {
-		if (Main.rand.NextBool(4)) {
+		bool Rand = Main.rand.NextBool(10);
+		for (int i = 0; i < StackAmount(player) - 1; i++) {
+			if (Rand) {
+				break;
+			}
+			Rand = Main.rand.NextBool(10);
+		}
+		if (Rand) {
+			player.Heal(Damage * 2);
+		}
+		Rand = Main.rand.NextBool(4);
+		for (int i = 0; i < StackAmount(player) - 1; i++) {
+			if (Rand) {
+				break;
+			}
+			Rand = Main.rand.NextBool(4);
+		}
+		if (Rand) {
 			var pos = player.Center + Main.rand.NextVector2Circular(400, 400);
 			var vel = Main.rand.NextVector2CircularEdge(10, 10);
 			int min = Math.Min(10, Damage);
 			int max = Math.Max(10, Damage);
-			int damageraw = Main.rand.Next(min - 1, max);
+			int damageraw = Main.rand.Next(min - 1, max) * StackAmount(player);
 			if (damageraw <= 0) {
 				damageraw = 1;
 			}
 			Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damageraw, Main.rand.NextFloat(2, 5), player.whoAmI);
-		}
-	}
-	class ChaosTabletPlayer : ModPlayer {
-		public bool ChaosTablet = false;
-		public PlayerStats chaosstat = PlayerStats.None;
-		public override void ResetEffects() {
-			ChaosTablet = false;
-		}
-		public override void UpdateEquips() {
-			if (!ChaosTablet) {
-				return;
-			}
-			if (chaosstat == PlayerStats.None) {
-				chaosstat = Main.rand.Next(TerrariaArrayID.Dict_PlayerStatAndValue.Keys.ToArray());
-				Player.AddBuff(ModContent.BuffType<ChaosBuff>(), ModUtils.ToSecond(15));
-			}
-			if (!Player.Center.LookForAnyHostileNPC(600)) {
-				return;
-			}
-			if (Main.rand.NextBool(100)) {
-				int weapondmg = Player.GetWeaponDamage(Player.HeldItem);
-				int dmg = Main.rand.Next(40, 180) + weapondmg;
-				int buffid = Main.rand.Next(TerrariaArrayID.Debuff);
-				Projectile.NewProjectile(Player.GetSource_Misc("ChaosTablet"), Player.Center + Main.rand.NextVector2Circular(600, 600), Vector2.Zero, ModContent.ProjectileType<ChaosExplosion>(), dmg, Main.rand.NextFloat(3, 9), Player.whoAmI, buffid);
-			}
 		}
 	}
 	class ChaosExplosion : ModProjectile {
@@ -674,7 +676,7 @@ public class ChaosProtection : Perk {
 			Projectile.width = Projectile.height = 1;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
-			Projectile.timeLeft = 10;
+			Projectile.timeLeft = 30;
 			Projectile.hide = true;
 		}
 		public int BuffID { get => (int)Projectile.ai[0]; }
@@ -698,56 +700,13 @@ public class ChaosProtection : Perk {
 			var player = Main.player[Projectile.owner];
 			NPC.HitInfo info = new();
 			info.Damage = Projectile.damage;
-			info.Knockback = Projectile.knockBack;
+			info.Knockback = Projectile.knockBack + 1;
 			foreach (var npc in npclist) {
 				info.HitDirection = ModUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X);
 				info.Crit = Main.rand.NextBool(7);
 				player.StrikeNPCDirect(npc, info);
 				npc.AddBuff(BuffID, ModUtils.ToSecond(Main.rand.Next(5, 16)));
 			}
-		}
-	}
-
-	class ChaosBuff : ModBuff {
-		public override string Texture => ModTexture.EMPTYBUFF;
-		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			var chaosplayer = player.GetModPlayer<ChaosTabletPlayer>();
-			var statsplayer = player.GetModPlayer<PlayerStatsHandle>();
-			switch (chaosplayer.chaosstat) {
-				case PlayerStats.MaxHP:
-				case PlayerStats.RegenHP:
-				case PlayerStats.MaxMana:
-				case PlayerStats.RegenMana:
-				case PlayerStats.CritChance:
-				case PlayerStats.MaxMinion:
-				case PlayerStats.Defense:
-				case PlayerStats.MaxSentry:
-					statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-						Base: ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 2));
-					break;
-				default:
-					statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-						Additive: 1 + ModUtilsPlayer.ToStatsNumFloat(chaosplayer.chaosstat, 2));
-					break;
-			}
-			if (player.buffTime[buffIndex] <= 0) {
-				player.GetModPlayer<ChaosTabletPlayer>().chaosstat = PlayerStats.None;
-			}
-		}
-		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
-			var chaosplayer = Main.LocalPlayer.GetModPlayer<ChaosTabletPlayer>();
-			if (ModUtils.DoesStatsRequiredWholeNumber(chaosplayer.chaosstat)) {
-				tip = $"+ {ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 1)} {chaosplayer.chaosstat}";
-			}
-			else {
-				tip = $"+ {ModUtilsPlayer.ToStatsNumInt(chaosplayer.chaosstat, 1)}% {chaosplayer.chaosstat}";
-			}
-		}
-		public override bool RightClick(int buffIndex) {
-			return false;
 		}
 	}
 }
@@ -927,5 +886,64 @@ public class PerkBlocker : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PerkPlayer>().PerkBlocker = true;
+	}
+}
+public class BlindPride : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override void UpdateEquip(Player player) {
+		player.AddBuff(BuffID.Blackout, 2);
+	}
+	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+		damage += .55f + .2f * StackAmount(player);
+	}
+	public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
+		crit += 25 + 5 * StackAmount(player);
+	}
+}
+public class PridefulPossession : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		int count = player.GetModPlayer<PerkPlayer>().perks.Keys.Count;
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		handler.UpdateDefenseBase += count * .05f;
+		handler.UpdateCritDamage += count * .25f;
+		handler.UpdateHPMax += count * .02f;
+		player.GetCritChance(DamageClass.Generic) += count * 5;
+		player.GetDamage(DamageClass.Generic) += count * .1f;
+	}
+}
+public class FocusAttack : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 5;
+	}
+	public override void UpdateEquip(Player player) {
+		var modplayer = player.GetModPlayer<EvolvedWeapon_ModPlayer>();
+		if (player.ItemAnimationJustStarted) {
+			if (player.HeldItem.type == modplayer.HeldWeapon) {
+				modplayer.Counter = Math.Clamp(modplayer.Counter + 1, 0, 100 * StackAmount(player));
+			}
+			else {
+				if (player.HeldItem.IsAWeapon()) {
+					modplayer.Counter = 0;
+					modplayer.HeldWeapon = player.HeldItem.type;
+				}
+			}
+		}
+	}
+	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+		var modplayer = player.GetModPlayer<EvolvedWeapon_ModPlayer>();
+		if (item.type == modplayer.HeldWeapon) {
+			damage += modplayer.Counter * .01f;
+		}
+	}
+	public class EvolvedWeapon_ModPlayer : ModPlayer {
+		public int HeldWeapon = ItemID.None;
+		public int Counter = 0;
 	}
 }

@@ -14,7 +14,7 @@ Implementation TODO:
 - Each biome be it big or small should have its own dedicate biome exclusive structure.
 - Add in 1 time mod object text for each possible guide-interaction that may happen in the world.
 - Boss will have their own dedicated spawning location ( due to the need to test, this will be put on hold )
->> King Slime : slime biome
+>> King Slime : using slime crown in slime biome near the sealed boss
 >> EoC : Using sus eyes will drop player sanity which attract EoC
 >> EoW : 3 shadows orb scatter around Corruption
 >> BoC : station somewhere in the center of Crimson, have 3 breakable heart nearby.
@@ -31,9 +31,51 @@ Implementation TODO:
 
 2/ Work on debuff and buff sprite and many missing sprite in the mod.
 
-3/ Work on localization "TODO"
+3/ Work on World selection panel:
+The world selection panel would include the following:
 
-4/ Refactor User info tablet 
+- Toggle for Boss Rush world gen
+When boss rush world gen is selected:
+> Toggle for extra mode appear
+> Boss spawn on player decision
+> Randomize spawning boss order
+
+- Difficulty selection (by default the base difficulty% is 100%):
+#For more information check the task after this
+
+
+
+4/Welcome to difficulty modifier, in this we will rate how hard is a modifier is and rate it on %, by default the base difficulty% is 100% 
+Selectable difficulty Format : 
+> "Name" [stats value/option] [cap] [%difficulty]
+The following below are a list of difficulty modifier:
+> Enemies's HP increases [+10%] [max 10] [+10%/stack]
+> Bosses health increases [+25%] [max 10] [+10%/stack]
+> Damage increases [+5%] [max 10] [+10%/stack]
+> Bosses damage% scale [+2.5%] [max 10] [+5%/stack]
+> Progression lock [+1] [max vanilla boss] [+10%/stack]
+Progression lock: lock final boss of the boss behind optional boss
+> Revive reduce maximum heath [true/false] [+20% on true]
+Revive reduce maximum heath: Getting revived will reduce you maximum health by 20%, this will only occur once
+> Hit taken effectiveness [true/false] [+30%]
+Hit taken effectiveness : Taking multiple hit will increases the damage of next taken hit by 10% ( stackable / 2s duration )
+> Time restriction [true/false | -5 min] [max 24] [+30% on true | +10%/stack]
+Time restriction : Reduce the time that is available to the player to beat the mod, by default player have unlimited time, 
+and once player activated this option, they will be left with 3 hours to beat the mod.
+---- if the world is not boss rush mode ----
+> Reduce amount of abandon house [+5%] [max 10] [+5%/stack]
+> Increases spawn rate [+10%] [max 10] [+5%/stack]
+> Increases chance of enemy spawn with elite status [+20%] [max 5] [+10%/stack]
+> Normal enemy have 1 in 3 chance to completely revive [true/false] [+30% on true]
+> Biome modifier [true/false] [+20% on true]
+---- Extra selectable difficulty calculation ----
+> Journey mode [true/false] [-100%]
+> Normal mode [true/false] [+0%]
+> Expert mode [true/false] [+50%]
+> Master mode [true/false] [+75%] //Do not stack with Expert mode
+> Nightmare mode [true/false] [+50%] //Stack with any mode above
+> Cursed mode [true/false] [+100%] //Stack with any mode above
+=> When player enable all of the above difficulty, the maximum increases for difficulty will be 1325%
 
 5/ Rework rarity system and tranmutation system. (put on hold due to different in idea )
 Transumtation changes:
@@ -150,15 +192,7 @@ The following food are missing from food rework:
 - give the mod its own identity as more than an Everlasting sub mod 
 (because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
 
-19/ Boss Rush mode Extra:
-- Before player summon first boss, they have to pick a modifier:
-1 good modifier and 1 bad modifier
-- The modifier is forced to be changed after each boss beaten.
-- The player must choose modifier
-
-20/ Added in visual indicator and more indicator for weapon overhaul that uses wait mechanic.
-
-21/ Work on argumentation.
+19/ Work on Augmentation.
 - Figure out what the best way for level/charge up mechanic
 The following 4 are the plans for augmentation:
 - Remove it entirely and just go down the route of getting dup or sacrifice 
@@ -194,7 +228,7 @@ the rate of decay is depend on that accessory decay condition ( or none at all )
 
 Current implementation test: Transmutation will charge the augment
 
-22/ Rework the following Synergy weapon:
+20/ Rework the following Synergy weapon:
 - HeartBreak Instrument
 Remove the instrument and instead replaced it with the sword itself
 During attack, the sword will also attack together with you
@@ -214,7 +248,7 @@ Fix up the attack to make it look more smooth.
 - DrainingVeilBlade
 The Shadow clone sword should be consistent with player and also follow player.
 
-23/ Rework skill system.
+21/ Rework skill system.
 Balance & Changes:
 - Rework skill holder to be skill preset.
 Skill preset can only be changed after player current skill setup is completed.
@@ -251,31 +285,34 @@ During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
-24/ Make the ultimate player handler.
+22/ Make the ultimate player handler.
 
-25/ Rework the following Enchantment according to the WE localization:
-- Amazon
+23/ Rework the following Enchantment according to the WE localization:
 - Titanium Sword
-- Enchanted Boomerang
-- Zombie Arm
 
-26/ Rework and reimplement lootbox into the mod:
+24/ Rework and reimplement lootbox into the mod:
 - What roles the lootbox serves ?
 - What should lootbox do ?
 - How can player obtain lootbox ?
 
-27/ Make a core component for the mod and for the off brand mod.
+25/ Make a core component for the mod and for the off brand mod.
 The core component will contain the following:
 - Player Stats Handle.
 - Projectile global.
 - NPC global.
 
-28/ Add in charge bar for the following weapon:
+26/ Add in charge bar for the following weapon:
 - Every pre HM ore broad sword beside copper broadsword.
 
+27/ work on general building tool in-game for builder of the mod
+- Must include copy and paste function and flip function
+
+28/ Rework User Info Tablet.
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.
+- Put off for now because of the roguelike mode map is not finished.
+
 2/ See if it is possible to beat the game using the following playing style:
 - Melee only.
 - Range only.

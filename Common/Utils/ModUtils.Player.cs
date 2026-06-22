@@ -2,7 +2,7 @@
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic;
-using Roguelike.Common.Systems;
+using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Transfixion.Augmentation;
@@ -16,10 +16,11 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
+		public static bool Check_ItemTag(int itemType, WeaponTag tag) => OutroEffectSystem.Get_Arr_WeaponTag[(int)tag].Contains(itemType);
+			
 		public static bool CheckDashType(this Player player, string currentDash = "") {
 			return player.dashType == DashID.None && player.ModPlayerStats().CurrentDashType == currentDash;
 		}

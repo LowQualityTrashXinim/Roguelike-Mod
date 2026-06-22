@@ -12,6 +12,7 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -236,10 +237,8 @@ public class ZombieArm : ModEnchantment {
 		if (Main.rand.NextBool(10)) {
 			target.AddBuff<RA_Rotting>(120);
 		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(10)) {
-			target.AddBuff<RA_Rotting>(120);
+		if (Main.rand.NextBool(4)) {
+			player.Heal(Main.rand.Next(1, 4));
 		}
 	}
 }
@@ -497,21 +496,6 @@ public class WoodenBoomerang : ModEnchantment {
 	}
 }
 
-public class EnchantedBoomerang : ModEnchantment {
-	Item itemstat = new();
-	public override void SetDefaults() {
-		ItemIDType = ItemID.EnchantedBoomerang;
-		itemstat = ContentSamples.ItemsByType[ItemIDType];
-	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (player.itemAnimation == player.itemAnimationMax) {
-			if (player.ownedProjectileCounts[ProjectileID.EnchantedBoomerang] < 1) {
-				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.EnchantedBoomerang, itemstat.damage, itemstat.knockBack, player.whoAmI);
-			}
-		}
-	}
-}
 public class IceBoomerang : ModEnchantment {
 	Item itemstat = new();
 	public override void SetDefaults() {
@@ -623,7 +607,46 @@ public class Amazon : YoyoEnchantment {
 		ItemIDType = ItemID.JungleYoyo;
 		yoyoAmount = 3;
 	}
-
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (ModUtils.Check_ItemTag(item.type, WeaponTag.ChlorophyteEmpowerment)) {
+			damage += .15f;
+		}
+		if (player.HasBuff<Amazon_ModBuff>()) {
+			damage += .5f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		for (int i = 0; i < handler.WhoAmI_Projectile.Count; i++) {
+			Projectile proj = Main.projectile[handler.WhoAmI_Projectile[i]];
+			if (proj == null) {
+				continue;
+			}
+			if (proj.type != ModContent.ProjectileType<GhostYoyo2>() || !proj.active || proj.timeLeft <= 0) {
+				int whoAmI = Projectile.NewProjectile(
+				player.GetSource_ItemUse(item),
+				player.position,
+				Vector2.Zero,
+				ModContent.ProjectileType<GhostYoyo2>(),
+				(int)(player.GetWeaponDamage(item) * 1.25f),
+				1,
+				player.whoAmI, 150, 1, 0);
+				handler.WhoAmI_Projectile.Add(whoAmI);
+			}
+		}
+	}
+	public class Amazon_Projectile_WE : GhostYoyo2 {
+		public override int ItemType => ItemID.JungleYoyo;
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			Main.player[Projectile.owner].AddBuff(ModContent.BuffType<Amazon_ModBuff>(), 180);
+		}
+	}
+	public class Amazon_ModBuff : ModBuff {
+		public override string Texture => ModTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+	}
 }
 
 public class HiveFive : YoyoEnchantment {

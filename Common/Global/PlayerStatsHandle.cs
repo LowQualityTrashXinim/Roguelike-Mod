@@ -200,6 +200,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// Only applied to food that actually use this mechanic.
 	/// </summary>
 	public StatModifier FoodValue = StatModifier.Default;
+	public List<int> WhoAmI_Projectile = new();
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
@@ -346,7 +347,7 @@ public class PlayerStatsHandle : ModPlayer {
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 
-		if(modifiers.DamageType == Roguelike_DamageClass.True) {
+		if (modifiers.DamageType == Roguelike_DamageClass.True) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(TrueDamage);
 		}
 		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
@@ -379,7 +380,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else if (value < 0) {
 			modifiers.DisableCrit();
 		}
-		if(!proj.minion && !proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().IsFromMinion || Unnerfed) {
+		if (!proj.minion && !proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().IsFromMinion || Unnerfed) {
 			modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 		}
 	}
@@ -511,6 +512,22 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void ResetEffects() {
 		if (!Player.active) {
 			return;
+		}
+		for (int i = WhoAmI_Projectile.Count - 1; i >= 0; i--) {
+			int whoAmI = WhoAmI_Projectile[i];
+			if (whoAmI < 0 || whoAmI >= Main.maxProjectiles) {
+				WhoAmI_Projectile.RemoveAt(i);
+				continue;
+			}
+			Projectile projectile = Main.projectile[whoAmI];
+			if(projectile == null) {
+				WhoAmI_Projectile.RemoveAt(i);
+				continue;
+			}
+			if(!projectile.active || projectile.timeLeft <= 0) {
+				WhoAmI_Projectile.RemoveAt(i);
+				continue;
+			}
 		}
 		Unnerfed = false;
 		if (Healed_timeSinceLastHeal == 0) {
@@ -1257,6 +1274,13 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_NPC.HitModifiers.GetDamage += HitModifiers_GetDamage;
 		On_Player.Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float += On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float;
 		On_Player.GetWingStats += On_Player_GetWingStats;
+		On_Player.StrikeNPCDirect += On_Player_StrikeNPCDirect;
+	}
+	private void On_Player_StrikeNPCDirect(On_Player.orig_StrikeNPCDirect orig, Player self, NPC npc, NPC.HitInfo hit) {
+		if(npc.boss) {
+			hit.Knockback = 0;
+		}
+		orig(self, npc, hit);	
 	}
 
 	private WingStats On_Player_GetWingStats(On_Player.orig_GetWingStats orig, Player self, int wingID) {
@@ -1267,8 +1291,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 		}
 		return orig(self, wingID);
 	}
-
-
 	private double On_Player_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float(On_Player.orig_Hurt_PlayerDeathReason_int_int_bool_bool_bool_int_bool_float orig, Player self, PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp, bool quiet, bool Crit, int cooldownCounter, bool dodgeable, float armorPenetration) {
 		double dmg = orig(self, damageSource, Damage, hitDirection, pvp, quiet, Crit, cooldownCounter, dodgeable, armorPenetration);
 		if (dmg == 0.0) {

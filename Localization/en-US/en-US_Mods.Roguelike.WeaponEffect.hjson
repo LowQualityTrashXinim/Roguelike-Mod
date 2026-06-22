@@ -5,3 +5,6 @@ Effect4: Weapon no longer consume any material or resource
 Effect5: Have 5% to deal weak life steal strike ( heal maximum of 20 health )
 Effect6: Every strike have 5% to deal 5x damage
 Effect7: Increases weapon attack speed by 25%
+Effect8: Increases percentage damage by 0.1%
+Effect9: Increases true damage by 20%
+Effect10: Weapon have 20% chance to deal 2nd strike

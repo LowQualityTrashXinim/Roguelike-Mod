@@ -1,17 +1,16 @@
-﻿using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
+﻿using Roguelike.Common.Utils;
 using Terraria;
 
 namespace Roguelike.Contents.Transfixion.Perks.PerkContents;
 internal class SoulBreaker : Perk {
 	public override void SetDefaults() {
-		CanBeStack = false;
+		CanBeStack = true;
+		StackLimit = 10;
 	}
 	public override void UpdateEquip(Player player) {
 		var handler = player.ModPlayerStats();
-		handler.TrueDamage += .5f;
-		handler.PercentageDamage += .001f;
-		handler.AddStatsToPlayer(PlayerStats.PureDamage, 1, .25f, 0, 0);
+		handler.TrueDamage += .1f * StackAmount(player);
+		handler.PercentageDamage += .001f * StackAmount(player);
+		handler.AddStatsToPlayer(PlayerStats.PureDamage, 1, .95f, 0, 0);
 	}
 }

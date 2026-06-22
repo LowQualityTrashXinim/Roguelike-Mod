@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Utils;
+﻿using JetBrains.Annotations;
+using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,7 +10,12 @@ internal class WeaponEssence : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<PowerEssence>(), ModUtils.ToSecond(30));
 	}
-	public int WeaponDamage = 0;
+	public override bool? UseItem(Player player) {
+		if (player.ItemAnimationJustStarted) {
+			player.GetModPlayer<WeaponEssence_ModPlayer>().EssencePower += Item.damage;
+		}
+		return base.UseItem(player);
+	}
 }
 public class PowerEssence : ModBuff {
 	public override string Texture => ModTexture.EMPTYBUFF;
@@ -22,7 +28,15 @@ public class PowerEssence : ModBuff {
 }
 public class WeaponEssence_ModPlayer : ModPlayer {
 	public bool PowerEssence = false;
+	public int EssencePower = 0;
+	public int EssenceCounter = 0;
 	public override void ResetEffects() {
 		PowerEssence = false;
+		if (EssencePower > 0) {
+			if (++EssenceCounter >= 60) {
+				EssenceCounter = 0;
+				EssencePower--;
+			}
+		}
 	}
 }
