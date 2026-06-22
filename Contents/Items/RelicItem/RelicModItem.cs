@@ -169,7 +169,7 @@ public class Relic : ModItem {
 			}
 			line += template.ModifyToolTip(this, statlist[i], value) + $" (+{RelicTemplateLoader.RelicValueToPercentage(tierUP + 1)} | Base:{RelicTemplateLoader.RelicValueToPercentage(template.RelicTierUPValue + 1)})";
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
-			//	line.Text +=
+			//	line +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
 			//		$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
 			//		$"\nTemplate ID : {templatelist[i]}" +

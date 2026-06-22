@@ -39,7 +39,7 @@ namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent
 				return new StatModifier(1, 1, 0, Main.rand.Next(7, 13));
 			}
 			if (stat == PlayerStats.AttackSpeed) {
-				return new StatModifier(MathF.Round(Main.rand.NextFloat(1.03f, 1f), 2), 1);
+				return new StatModifier(MathF.Round(Main.rand.NextFloat(1.03f, 1.07f), 2), 1);
 			}
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.07f, 1.2f), 2), 1);
 		}

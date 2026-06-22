@@ -84,6 +84,9 @@ public class SkillUI : UIState {
 				return;
 			}
 		}
+		if (panel_Inventory == null) {
+			ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
+		}
 		btn_SkillSlotHolder btn = new(TextureAssets.InventoryBack10, SkillID);
 		btn.OverflowHidden = true;
 		btn.Stack = stack;
