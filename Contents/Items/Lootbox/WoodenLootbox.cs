@@ -39,8 +39,8 @@ class WoodenLootBox : LootBoxBase {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.GetAmount();
 		GetWeapon(entitySource, player, handler.weaponAmount);
-		GetArmor(player, 1);
-		GetAccessories(player, 1);
-		GetPotions(player, handler.potionTypeAmount, handler.potionNumAmount);
+		//GetArmor(player, 1);
+		//GetAccessories(player, 1);
+		//GetPotions(player, handler.potionTypeAmount, handler.potionNumAmount);
 	}
 }

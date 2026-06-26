@@ -678,6 +678,7 @@ public class DefaultUI : UIState {
 		}
 	}
 	public override void Update(GameTime gameTime) {
+		popUpWarningClose.Disable_MouseItemUsesWhenHoverOverAUI();
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
 		if (RoguelikeWorldProperty.BossRushWorld) {

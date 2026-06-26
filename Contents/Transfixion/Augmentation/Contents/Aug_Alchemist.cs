@@ -10,8 +10,12 @@ public class Alchemist : ModAugments {
 		int charge = acc.Check_ChargeConvertToStackAmount();
 		var modplayer = player.ModPlayerStats();
 		modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1.06f);
+		int BuffAmount = player.BuffAmount();
 		if (charge >= 1) {
-			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: player.BuffAmount());
+			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: BuffAmount);
+		}
+		if (charge >= 2) {
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, BuffAmount * .04f);
 		}
 	}
 }

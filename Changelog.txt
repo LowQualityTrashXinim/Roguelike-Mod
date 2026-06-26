@@ -724,3 +724,7 @@ The following are bugs that is fixed:
 642/ Adjusted Soul breaker, Chaos Protection, Swift Health perk.
 643/ Added new Weapon Effects.
 644/ Updated The Orbit localization to include alt-click functionality.
+645/ Reworked Spagetti.
+646/ A very small change made to Coin gun ;).
+646/ Deleted Dryad Blessing.
+647/ Implement test on lootbox.

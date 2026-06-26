@@ -30,6 +30,123 @@ Implementation TODO:
 >> Empress of Light : Hallow but also no plan of summon method.
 
 2/ Work on debuff and buff sprite and many missing sprite in the mod.
+The following are the list for missing sprite in the mod:
+__________Skill related__________
+- AdAstraDebuff
+- CoinFlipBuff
+- CoinFlipDebuff
+- GhostForm
+- ProtectiveBarrier
+- Modify_DuplicateProjectile
+- Modify_QuadShooting
+- Modify_DistanceCast
+- Skill_Arrow
+- Skill_Bullet
+- Skill_Dart
+- Skill_Flamelash
+- Skill_Waterbolt
+- Skill_StarWrath
+- DamageUp
+- GreaterDamageUp
+- PowerSaver
+- FastForward
+- Weaken
+- BroadSwordSpirit
+- WoodSwordSpirit
+- PowerPlant
+- TransferStation
+- OrbOfPurity
+- PhoenixBlazingTornado
+- DebugCommand
+- DebugStatus
+- LucidNightmares
+- AbyssalAbsorption
+- SacrificialWormhole 
+- LifeLoss
+- BulletHell
+- SpiritBurst
+- Utility_SummonPerk
+- Utility_SummonWeapon
+- Utility_CopyRandomSkill
+- Utility_SetDurationToNone
+- Utility_SwapDurationWithEnergy
+__________Perk related__________
+- Stellar Retirement
+- Overcharged Mana
+- Beyond Critical
+- Summon Buff Perk
+- True Melee buff perk
+- Physics Enjoyer
+- Improved Potion
+- Weapon Expert
+- Aspect of First Chaos
+- Energy Absorption
+- Hybrid Ranger
+- Oath of Sword
+- Titan Power
+- TitanPowerBuff
+- DemolitionistGunner
+- MindOfBattlefield
+- SoulShatter
+- UntappedPotential
+- Stimulation
+- VampiricAura
+- ChaosProtection
+- BloodthornCore
+- HeartOfThorn
+- HeartOfIron
+- AmplePerception
+- MomentaryStrike
+- Unnerfed
+- PerkBlocker
+- BlindPride
+- PridefulPossession
+- Focus Attack
+- Mark of Slime
+- Mark of Wizard
+- Perfectionist
+- Projectile duplication
+- Triple Shot
+- Soul Breaker
+- Blessing of Titan
+- Blessing of Perk/Opportunity
+- Blessing of Moon
+- Blessed Knowledge
+- Ancient Knowledge
+- Earthly Warm
+- Natural Thorn
+- The Big Moment
+- Greed Privilage
+- Endless Hunger
+- Satisfaction
+- Sloth Vessle
+- Strike Of Fury
+- Ruthless Rage
+- Blood Voodoo
+__________Artifact related__________
+- Token of Wrath
+- Tokane of Sloth
+- Token of Gluttony
+- Essence Lantern
+- Outer God The Nihilism
+- Shatter Shell (debuff)
+- Eternal Wealth
+- Alchemist Knowledge
+- Mana Overloader
+- Perpetuated Cycle
+- Normalize Artifact | Good luck charm
+__________Buff sprite__________
+- Absolute Stun Movement
+- Anti Immunity
+- Crimson Absorbtion
+- Deep Sea Pressure
+- Evil Eye Protection
+- Lead Irradiation
+- Over Charged
+- Shatter
+- The Underworld Wrath
+- Stasis
+- Drawback
 
 3/ Work on World selection panel:
 The world selection panel would include the following:
@@ -42,8 +159,6 @@ When boss rush world gen is selected:
 
 - Difficulty selection (by default the base difficulty% is 100%):
 #For more information check the task after this
-
-
 
 4/Welcome to difficulty modifier, in this we will rate how hard is a modifier is and rate it on %, by default the base difficulty% is 100% 
 Selectable difficulty Format : 
@@ -85,7 +200,8 @@ Transumtation changes:
 >> Player can choose what kind of item that they wish their item to be transmute to
 >> When using this mode, the cost is 5x
 
-6/ Rework weapon subclass such as Boomerang, yoyo, axe and hammer.
+6/ 
+___________Rework weapon subclass such as Boomerang, yoyo, axe and hammer___________
 - Boomerang: ( turn into sub/sup dps weapon )
 >> Become a support weapon instead of dps type weapon but still leave possibility of player turning it into dps weapon.
 >> Rewrite entire boomerang AI so that adjustment to it can be made.
@@ -101,24 +217,22 @@ Transumtation changes:
 Trauma shock upon reaching full stack will make NPC much slower and more lose all defense.
 During Trauma shock, if NPC is being attacked, they will intake damage pernamenntly increases by 2%.
 
-Weapon balance todo list:
+___________Weapon balance todo list___________
+- Weapon that act like upgraded to their pre-hardmode will gain the same buff as their pre hardmode counter part
+Otherwise, the weapon shall be nerfed in term of damage to act more inline with mods overall dps
+
 - Enchanted Sword:
 Intro effect: Shoot more enchanted beam every swing for 4s
 Enchanted beam from the sword on hit will spawn more short live beam near enemy
 Swing the sword will do enchanted slash
 Wait for 2s to strengthen the enchanted slash
 
+___________Buff balance___________
+Make vanilla buff that work only on player to work also on NPC.
+
 New weapon tag: 
 
-7/ Listing problematic content that need adjustment:
-- Essence Lantern ( artifact )
-- Token of Pride.
-
-8/ Rework some of the Debug UI.
-- spoil UI need to be rework.
-- skill selection UI need to be rework.
-
-9/ Work on achievement.
+7/ Work on achievement.
 Content:
 - I am the guardian now !
 > gain 9999 defenses in a run
@@ -129,7 +243,7 @@ Content:
 - Completionist
 > Uses every weapon available in the mod and win a run using it.
 
-10/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
+8/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
 - The mod should remember what Synergy weapon player has ever used.
 When player is helding or have a synergy weapon in the inventory, the mod should do a quick check to see if it already there
 if True
@@ -143,7 +257,7 @@ if True
 if False
 > Find the synergy weapon ID and then save the item ID that activated the synergy bonus.
 
-11/ Merged Help with Info together and also add content for Help and Info.
+9/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
 - Transmutation
 - Weapon enchantment
@@ -163,36 +277,31 @@ if False
 - Content in "Help" is suppose to be general guide on how to use the content.
 - Content in "Info" is detailed information of how supposed content gonna act.
 
-12/ Work on Weapon Essences consumable.
+10/ Work on Weapon Essences consumable.
 
-13/ Work on food rework.
+11/ Work on food rework.
 The following food are missing from food rework:
 - Grape Juice
 - Grup Soup
 - Cooked Shrimp
-- Spagetti
 
-14/ Make vanilla buff that work only on player to work also on NPC.
-
-15/ Add in a event tag system
+12/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
 
-16/ Fix spoils.
-
-17/ Rebalancing Boss Rush:
+13/ Rebalancing Boss Rush:
 - Bring back old lootbox system.
 - While player are in boss rush world, treasure bag only drop expert mode item.
 - rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
 
-18/ Rebalancing WO:
+14/ Rebalancing WO:
 - Focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
 - tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
 - bridge balancing between Vanilla and Boss Rush / Everlasting
 - give the mod its own identity as more than an Everlasting sub mod 
 (because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
 
-19/ Work on Augmentation.
+15/ Rework on Augmentation.
 - Figure out what the best way for level/charge up mechanic
 The following 4 are the plans for augmentation:
 - Remove it entirely and just go down the route of getting dup or sacrifice 
@@ -219,6 +328,7 @@ VI is 101 - 120%: weird small buffs but mainly debuffs
 VII is 121 - 141%: only debuffs
 . . .
 ///Taken from Papyro
+
 >> Adjustment to it:
 Introduce: Overcharged
 - Overcharged happen when the player intentionally overcharged their accessories, 
@@ -226,9 +336,74 @@ doing so will buff all previous effects of augmentation.
 - Upon overcharging, a decay timer is started, 
 the rate of decay is depend on that accessory decay condition ( or none at all ).
 
-Current implementation test: Transmutation will charge the augment
+16/ Rework skill system.
+Balance & Changes:
+- Rework skill holder to be skill preset.
+Skill preset can only be changed after player current skill duration die out.
+- Player no longer can delete skill.
 
-20/ Rework the following Synergy weapon:
+UI related changes:
+- Update new skill UI allowing player unlimited skill slot.
+- Completely changed how skill inventory system UI is presented
+- Skill UI is now added next to player skill energy bar and can only be open when player have inventory up.
+
+New addition:
+- New skill modifiers type: ( new classification )
+>> Projectile // Added
+>> AI addon // Added as "Modify"
+- New skill utility: ( new classification )
+>> Bundle
+>> Other // Added as "Utlity"
+
+- Skill system projectile now follow a certain rule that is enforced upon skill
+- Only 1 projectile can be applied to 1 skill unless a bundle is used.
+- Same goes with AI addon modifier for skill, projectile modifier and Ai addon modifier can coexist.
+- A skill now have multiple classification.
+
+QoL changes:
+- Player can view what skill preset is being used by hovering over skill orb icon
+- Player can make preset and then save it later under their own naming the preset.
+- Keybind are set up so that player can move from 1 preset to another.
+- Preset order can be set up so that player can uses keybind to move from 1 preset to another.
+
+Implementation and optimization:
+- Due to the new demand of skill, each projectile will hold a list of skill id
+During activation, the skill ID is sent on Projectile spawn.
+- All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
+- UI optimization to make every UI instant.
+
+17/ Rework the following Enchantment according to the WE localization:
+- Titanium Sword
+
+18/ Rework and reimplement lootbox into the mod:
+Wooden, Iron, Silver, Gold lootbox is normally can be found in these following place:
+- Shop
+- Bosses drop
+Wooden, Iron, Silver, Gold lootbox will uses universal loot pool as standard loot drop.
+
+Corruption, Crimson, Crystal, Deerclop, Duke, Empress, Honey, Lihzahrd, Lunatic, Mech, Moonlord, Nature lootbox are secert lootbox
+which have 1 in 10 chance to replace gold lootbox.
+Specialize lootbox above will still uses standard loot drop but will have 50/50 chance to drop a exclusive weapon
+Failing the 50/50 chance will instead drop normal SSR weapon.
+Specialize lootbox when dropping weapon, will drop item level the same as gold lootbox
+
+19/ Make a core component for the mod and for the off brand mod.
+The core component will contain the following:
+- Player Stats Handle.
+- Projectile global.
+- NPC global.
+
+20/ Add in charge bar for the following weapon:
+- Every pre HM ore broad sword beside copper broadsword.
+
+21/ work on general building tool in-game for builder of the mod
+- Must include copy and paste function and flip function
+
+22/ Rework User Info Tablet.
+
+23/ Listing problematic content that need adjustment:
+- Essence Lantern ( artifact )
+- Token of Pride.
 - HeartBreak Instrument
 Remove the instrument and instead replaced it with the sword itself
 During attack, the sword will also attack together with you
@@ -248,67 +423,6 @@ Fix up the attack to make it look more smooth.
 - DrainingVeilBlade
 The Shadow clone sword should be consistent with player and also follow player.
 
-21/ Rework skill system.
-Balance & Changes:
-- Rework skill holder to be skill preset.
-Skill preset can only be changed after player current skill setup is completed.
-- Player no longer can delete skill but also skill inventory space become larger.
-When player run out of slot to add in skill, they will get 1 common spoil as a refund.
-
-UI related changes:
-- Update new skill UI to potentially allow player maximumize skill slot up to 25 skills.
-- Completely changed how skill inventory system UI is presented
-- Skill UI is now added next to player skill energy bar and can only be open when player have inventory up.
-
-New addition:
-- New skill modifiers type: ( new classification )
->> Projectile // Added
->> AI addon // Added as "Modify"
-- New skill utility: ( new classification )
->> Bundle
->> Other // Added as "Utlity"
-- Skill system projectile now follow a certain rule that is enforced upon skill
-Summon skill will always have skill source
-- Only 1 projectile can be applied to 1 skill unless a bundle is used.
-- Same goes with AI addon modifier for skill, projectile modifier and Ai addon modifier can't coexist unless bundle is used.
-- A skill now have multiple classification.
-
-QoL changes:
-- Player can view what skill preset is being used by hovering over skill orb icon
-- Player can make preset and then save it later under their own naming the preset.
-- Keybind are set up so that player can move from 1 preset to another.
-- Preset order can be set up so that player can uses keybind to move from 1 preset to another.
-
-Implementation and optimization:
-- Due to the new demand of skill, each projectile will hold a list of skill id
-During activation, the skill ID is sent on Projectile spawn.
-- All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
-- UI optimization to make every UI instant.
-
-22/ Make the ultimate player handler.
-
-23/ Rework the following Enchantment according to the WE localization:
-- Titanium Sword
-
-24/ Rework and reimplement lootbox into the mod:
-- What roles the lootbox serves ?
-- What should lootbox do ?
-- How can player obtain lootbox ?
-
-25/ Make a core component for the mod and for the off brand mod.
-The core component will contain the following:
-- Player Stats Handle.
-- Projectile global.
-- NPC global.
-
-26/ Add in charge bar for the following weapon:
-- Every pre HM ore broad sword beside copper broadsword.
-
-27/ work on general building tool in-game for builder of the mod
-- Must include copy and paste function and flip function
-
-28/ Rework User Info Tablet.
-
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.
 - Put off for now because of the roguelike mode map is not finished.
@@ -318,10 +432,17 @@ Testing TODO:
 - Range only.
 - Mage only.
 - Summoner only.
-- Tank only.
-- Weapon mastery only.
-- Quick switch only.
+- Tank only. // No weapon can be used during a run
+- Weapon mastery focus. // User must play with combination of weapon intro and outro skill to create a chain of attacks sequence
+- Quick switch focus. // User must play using only intro skill and the cap bar effect of the weapon
 - Skill only.
+
+3/ Using Mod object system, marker system, structure system
+=> Create a event structure with mod object handling the event
+After successful task above, test it in Roguelike world gen.
+
+4/ Using Mod Object system, marker system, structure system
+=> Create a 1 time trial system with mod object handling the trial
 
 Known issue:
 1/ When a item have its bgs in inventory appear gray out and when you swap a item which the mouse is holding it, the gray out bgs disappear.

@@ -47,12 +47,16 @@ namespace Roguelike.Common.Global {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
 
+				npcLoot.RemoveWhere(rule => rule is CommonDrop drop && drop.itemId == ItemID.KingSlimeBossBag);
+
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.EyeofCthulhu) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCDonHitReward>()));
+
+				npcLoot.RemoveWhere(rule => rule is CommonDrop drop && drop.itemId == ItemID.EyeOfCthulhuBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
@@ -166,11 +170,8 @@ namespace Roguelike.Common.Global {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonLootBox>()));
 			}
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalDrop(), ItemID.LifeCrystal));
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalDrop(), ItemID.ManaCrystal));
 			LeadingConditionRule perkrule = new(new PerkDrop());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new SkillUnlockRule(), ModContent.ItemType<SkillSlotUnlock>()));
 			npcLoot.Add(perkrule);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);

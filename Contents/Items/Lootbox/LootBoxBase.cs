@@ -1,23 +1,25 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using System.Linq;
-using Terraria.ModLoader;
-using Terraria.GameContent;
+﻿using log4net.Core;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Potion;
-using Roguelike.Common.Systems.IOhandle;
-using Roguelike.Contents.Items.Lootbox.Lootpool;
-using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
-using Roguelike.Contents.Items.Lootbox.MiscLootbox;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Consumable.Spawner;
+using Roguelike.Contents.Items.Lootbox.Lootpool;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
+using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Lootbox {
 	public abstract class LootBoxBase : ModItem {
@@ -163,7 +165,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 		/// <param name="LoopAmount"></param>
 		/// <param name="rng"></param>
 		public void GetWeapon(IEntitySource entitySource, Player player, int LoopAmount) {
-			int ReturnWeapon;
+			int ReturnWeapon = ItemID.DirtBlock;
 			var AllLootID = LootboxItemPool().ToArray();
 			List<int> Melee = new(), Range = new(), Magic = new(), Summon = new();
 
@@ -185,24 +187,24 @@ namespace Roguelike.Contents.Items.Lootbox {
 						break;
 					case 1:
 						ReturnWeapon = Main.rand.Next(Melee);
-						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						//whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Melee.Remove(ReturnWeapon);
 						break;
 					case 2:
 						ReturnWeapon = Main.rand.Next(Range);
-						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
-						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						//whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						//AmmoForWeapon(entitySource, player, ReturnWeapon);
 						Range.Remove(ReturnWeapon);
 						break;
 					case 3:
 						ReturnWeapon = Main.rand.Next(Magic);
-						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
-						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						//whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						//AmmoForWeapon(entitySource, player, ReturnWeapon);
 						Magic.Remove(ReturnWeapon);
 						break;
 					case 4:
 						ReturnWeapon = Main.rand.Next(Summon);
-						whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
+						//whoAmI = player.QuickSpawnItem(entitySource, ReturnWeapon);
 						Summon.Remove(ReturnWeapon);
 						break;
 					case 6:
@@ -210,10 +212,11 @@ namespace Roguelike.Contents.Items.Lootbox {
 						return;
 				}
 				int level = WeaponLevelRangeRandomizer(player);
-				Item item = Main.item[whoAmI];
-				if (level > 0 && item != null && item.IsAWeapon()) {
-					item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(level);
-				}
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, -Vector2.UnitY.Vector2RotateByRandom(45) * (1 + Main.rand.NextFloat()), ModContent.ProjectileType<ItemDropProjectile>(), 0, 0, player.whoAmI, ReturnWeapon, 1, level);
+				//Item item = Main.item[whoAmI];
+				//if (level > 0 && item != null && item.IsAWeapon()) {
+				//	item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(level);
+				//}
 			}
 		}
 		/// <summary>
@@ -392,6 +395,74 @@ namespace Roguelike.Contents.Items.Lootbox {
 				spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
 			}
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+		}
+	}
+}
+public class ItemDropProjectile : ModProjectile {
+	public override string Texture => ModTexture.WHITEDOT;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+		ProjectileID.Sets.TrailCacheLength[Type] = 50;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 1;
+		Projectile.tileCollide = false;
+		Projectile.friendly = true;
+		Projectile.damage = 0;
+		Projectile.penetrate = -1;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = 9999;
+		Projectile.extraUpdates = 10;
+		Projectile.light = 1;
+	}
+	int itemID = ItemID.DirtBlock;
+	int count = 1;
+	int Level = 0;
+	public override void OnSpawn(IEntitySource source) {
+		itemID = (int)Projectile.ai[0];
+		count = (int)Projectile.ai[1];
+		Level = (int)Projectile.ai[2];
+
+		Projectile.ai[0] = Main.rand.NextBool().ToDirectionInt();
+		Projectile.ai[1] = Main.rand.NextFloat(0, .5f);
+		Projectile.ai[2] = Main.rand.Next(20, 60) * 10;
+	}
+	public override void AI() {
+		Projectile.velocity *= .995f;
+		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[1] * Projectile.ai[0]));
+		if (!Projectile.velocity.IsLimitReached(.1f)) {
+			if (--Projectile.ai[2] <= 0) {
+				Projectile.Kill();
+			}
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+
+		Projectile.DrawTrail(lightColor);
+
+		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+		Texture2D texture2 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
+		Main.EntitySpriteDraw(texture, drawpos, null, lightColor with { A = 25 }, 0, texture.Size() * .5f, Projectile.scale + 2, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture2, drawpos, null, lightColor with { A = 200 }, 0, texture2.Size() * .5f, Projectile.scale, SpriteEffects.None);
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		return false;
+	}
+	public override void OnKill(int timeLeft) {
+		int whoAmIItem = Item.NewItem(Projectile.GetSource_FromAI(), Projectile.Center, itemID, count);
+		Item item = Main.item[whoAmIItem];
+		ModUtils.AmmoForWeapon(Main.player[Projectile.owner], item.type);
+		if (Level > 0 && item != null && item.IsAWeapon()) {
+			item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(Level);
+		}
+		ModUtils.DustStar(Projectile.Center, DustID.GemDiamond, Color.White);
+		for (int i = 0; i < 60; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.scale += Main.rand.NextFloat(.4f);
+			dust.velocity = Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.75f, 1.1f);
 		}
 	}
 }

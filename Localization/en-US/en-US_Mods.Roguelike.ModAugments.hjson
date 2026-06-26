@@ -88,6 +88,7 @@ Alchemist: {
 	DisplayName: Alchemist
 	Description: Increases debuff damage by 6%
 	Description1: For each debuff/buff you have, increases life regeneration by 1
+	Description2: For each debuff/buff you have, increases damage by 4%
 }
 
 Light: {
@@ -154,9 +155,4 @@ StealthStrike: {
 	DisplayName: Stealth Strike
 	Description: +200% First strike damage
 	Description1: While invisible, you deal 25% more damage
-}
-
-DryadBlessing: {
-	DisplayName: Dryad Blessing
-	Description: Grant passive regenaration 3 hp/s, getting hit have chance to give Dryad blessing
 }

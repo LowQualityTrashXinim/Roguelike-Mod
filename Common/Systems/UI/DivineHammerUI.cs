@@ -7,7 +7,6 @@ using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -282,10 +281,11 @@ public class DivineHammerUIState : UIState {
 	int SelectedAugmentationType = 0;
 	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (listeningElement is AugmentationText btn) {
-			SelectedAugmentationType = btn.AugmentationType;
 			btn.TextColor = Color.Yellow;
+			SelectedAugmentationType = btn.AugmentationType;
 			ModAugments aug = AugmentsLoader.GetAugments(SelectedAugmentationType);
 			if (aug == null) {
+				SelectedAugmentationType = 0;
 				return;
 			}
 			AugmentationSelection_Text.SetText(aug.DisplayName);
@@ -311,7 +311,6 @@ public class DivineHammerUIState : UIState {
 		if (AugmentsLoader.GetAugments(SelectedAugmentationType) == null) {
 			return;
 		}
-		SelectedAugmentationType = 0;
 		AugmentsWeapon.AddAugments(ref item, SelectedAugmentationType);
 		AccSacrificeAugmentSlot.item.TurnToAir();
 		AccAugmentResult.item = item.Clone();
@@ -377,7 +376,6 @@ public class DivineHammerUIState : UIState {
 		EnchantmentInit();
 
 		AugmentationInit();
-
 	}
 	private void Universal_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		enchantment.Highlight = false;
@@ -429,7 +427,6 @@ public class WeaponEnchantmentUIslot : Roguelike_UIImage {
 	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
 	}
-	List<int> textUqID = new List<int>();
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		//checking whenever or not if the mouse item is a actual weapon

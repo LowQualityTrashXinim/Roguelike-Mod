@@ -126,32 +126,3 @@ public class ExtraLife : ModAugments {
 		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);
 	}
 }
-public class DryadBlessing : ModAugments {
-	public override void SetStaticDefaults() {
-		tooltipColor = Color.LimeGreen;
-	}
-	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 3);
-	}
-	public override void OnHitByProj(Player player, AugmentsWeapon acc, Projectile projectile, Player.HurtInfo info) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
-			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
-		}
-	}
-	public override void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
-			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), ModUtils.ToSecond(Main.rand.Next(3, 8)));
-		}
-	}
-}
-public class DryadBlessing_Buff : ModBuff {
-	public override string Texture => ModTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		var statplayer = player.GetModPlayer<PlayerStatsHandle>();
-		statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 8);
-		statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
-	}
-}

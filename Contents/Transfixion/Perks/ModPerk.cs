@@ -16,30 +16,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Perks;
-public class Dirt : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 3;
-		textureString = ModUtils.GetTheSameTextureAsEntity<Dirt>();
-	}
-	public override void UpdateEquip(Player player) {
-		if (--player.GetModPlayer<PerkPlayer>().Dirt_Timer <= 0) {
-			player.GetModPlayer<PerkPlayer>().Dirt_Timer = (int)(ModUtils.ToSecond(1) * player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD);
-			int stack = StackAmount(player);
-			for (int i = 0; i < stack; i++) {
-				Vector2 pos = player.Center + Main.rand.NextVector2Circular(100, 100);
-				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 25;
-				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<DirtProjectile>(), 30 + (int)(player.GetWeaponDamage(player.HeldItem) * .55f), 1f, player.whoAmI);
-			}
-		}
-	}
-	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-		player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD = .15f;
-	}
-	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-		player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD = .15f;
-	}
-}
+
 public class StellarRetirement : Perk {
 	public override void SetDefaults() {
 		CanBeStack = false;
@@ -872,10 +849,10 @@ public class Unnerfed : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.ModPlayerStats().Unnerfed = true;
-		if (StackAmount(player) <= 2) {
+		if (StackAmount(player) >= 2) {
 			player.ModPlayerStats().Unnerfed2 = true;
 		}
-		if (StackAmount(player) <= 3) {
+		if (StackAmount(player) >= 3) {
 			player.ModPlayerStats().DisableNegativeArtifact = true;
 		}
 	}

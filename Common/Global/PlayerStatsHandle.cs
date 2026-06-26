@@ -520,16 +520,18 @@ public class PlayerStatsHandle : ModPlayer {
 				continue;
 			}
 			Projectile projectile = Main.projectile[whoAmI];
-			if(projectile == null) {
+			if (projectile == null) {
 				WhoAmI_Projectile.RemoveAt(i);
 				continue;
 			}
-			if(!projectile.active || projectile.timeLeft <= 0) {
+			if (!projectile.active || projectile.timeLeft <= 0) {
 				WhoAmI_Projectile.RemoveAt(i);
 				continue;
 			}
 		}
 		Unnerfed = false;
+		Unnerfed2 = false;
+		DisableNegativeArtifact = false;
 		if (Healed_timeSinceLastHeal == 0) {
 			Healed = false;
 		}
@@ -1277,10 +1279,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Player.StrikeNPCDirect += On_Player_StrikeNPCDirect;
 	}
 	private void On_Player_StrikeNPCDirect(On_Player.orig_StrikeNPCDirect orig, Player self, NPC npc, NPC.HitInfo hit) {
-		if(npc.boss) {
+		if (npc.boss) {
 			hit.Knockback = 0;
 		}
-		orig(self, npc, hit);	
+		orig(self, npc, hit);
 	}
 
 	private WingStats On_Player_GetWingStats(On_Player.orig_GetWingStats orig, Player self, int wingID) {

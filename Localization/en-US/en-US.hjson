@@ -557,6 +557,8 @@ Mods: {
 			Amazon_Projectile_WE.DisplayName: Amazon_ Projectile_ W E
 			Rework_Boomerang.DisplayName: Rework_ Boomerang
 			CustomEnchantedBoomerang.DisplayName: Custom Enchanted Boomerang
+			ItemDropProjectile.DisplayName: Item Drop Projectile
+			ExampleWhipProjectile.DisplayName: Example Whip Projectile
 		}
 
 		NPCs: {
@@ -2909,6 +2911,11 @@ Mods: {
 				DisplayName: Fury Emblem
 				Tooltip: ""
 			}
+
+			ExampleWhip: {
+				DisplayName: Example Whip
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -4205,6 +4212,11 @@ Mods: {
 			Amazon_ModBuff: {
 				DisplayName: Amazon_ Mod Buff
 				Description: Mods.Roguelike.Buffs.Amazon_ModBuff.Description
+			}
+
+			Roguelike_Spagetti_Buff: {
+				DisplayName: Roguelike_ Spagetti_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_Spagetti_Buff.Description
 			}
 		}
 
