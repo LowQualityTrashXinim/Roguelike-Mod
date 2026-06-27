@@ -230,7 +230,13 @@ Wait for 2s to strengthen the enchanted slash
 ___________Buff balance___________
 Make vanilla buff that work only on player to work also on NPC.
 
-New weapon tag: 
+___________New weapon tag:___________
+
+___________Food rework___________
+The following food are missing from food rework:
+- Grape Juice
+- Grup Soup
+- Cooked Shrimp
 
 7/ Work on achievement.
 Content:
@@ -279,64 +285,30 @@ if False
 
 10/ Work on Weapon Essences consumable.
 
-11/ Work on food rework.
-The following food are missing from food rework:
-- Grape Juice
-- Grup Soup
-- Cooked Shrimp
-
-12/ Add in a event tag system
+11/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
 
-13/ Rebalancing Boss Rush:
+12/ Rebalancing Boss Rush:
 - Bring back old lootbox system.
 - While player are in boss rush world, treasure bag only drop expert mode item.
 - rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
 
-14/ Rebalancing WO:
+13/ Rebalancing WO:
 - Focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
 - tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
 - bridge balancing between Vanilla and Boss Rush / Everlasting
 - give the mod its own identity as more than an Everlasting sub mod 
 (because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
 
-15/ Rework on Augmentation.
-- Figure out what the best way for level/charge up mechanic
-The following 4 are the plans for augmentation:
-- Remove it entirely and just go down the route of getting dup or sacrifice 
-- Transmutation will charge the augment
-- Conditional charge but you can only choose 1 condition to charge the accessory when augment the accessory
-- Conditional charge become universal and is not locked
-Note: The charge decay mechanic is set to be removed entirely, so once player reachg max charge, then the max charge will stay
-
-///Taken from Papyro
-Suppose you have a level / tier system
-
-Let's say that for x accessory (values would not be hardcoded this is just an example):
-I is 0-20%
-II is 21-40%
-III is 41-60%
-IV is 61-80%
-V is 81-100%
-
-Then, values from 101% to infinity (or 200% cap) act as additional levels that instead give debuffs
-
-101 - 200% gradually weakens the effects of levels I to V from -1% to -100% (or -(charge - 100)%)
-
-VI is 101 - 120%: weird small buffs but mainly debuffs
-VII is 121 - 141%: only debuffs
-. . .
-///Taken from Papyro
-
->> Adjustment to it:
+14/ Rework on Augmentation.
 Introduce: Overcharged
 - Overcharged happen when the player intentionally overcharged their accessories, 
 doing so will buff all previous effects of augmentation.
 - Upon overcharging, a decay timer is started, 
 the rate of decay is depend on that accessory decay condition ( or none at all ).
 
-16/ Rework skill system.
+15/ Rework skill system.
 Balance & Changes:
 - Rework skill holder to be skill preset.
 Skill preset can only be changed after player current skill duration die out.
@@ -372,10 +344,10 @@ During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
-17/ Rework the following Enchantment according to the WE localization:
+16/ Rework the following Enchantment according to the WE localization:
 - Titanium Sword
 
-18/ Rework and reimplement lootbox into the mod:
+17/ Rework and reimplement lootbox into the mod:
 Wooden, Iron, Silver, Gold lootbox is normally can be found in these following place:
 - Shop
 - Bosses drop
@@ -387,21 +359,21 @@ Specialize lootbox above will still uses standard loot drop but will have 50/50 
 Failing the 50/50 chance will instead drop normal SSR weapon.
 Specialize lootbox when dropping weapon, will drop item level the same as gold lootbox
 
-19/ Make a core component for the mod and for the off brand mod.
+18/ Make a core component for the mod and for the off brand mod.
 The core component will contain the following:
 - Player Stats Handle.
 - Projectile global.
 - NPC global.
 
-20/ Add in charge bar for the following weapon:
+19/ Add in charge bar for the following weapon:
 - Every pre HM ore broad sword beside copper broadsword.
 
-21/ work on general building tool in-game for builder of the mod
+20/ work on general building tool in-game for builder of the mod
 - Must include copy and paste function and flip function
 
-22/ Rework User Info Tablet.
+21/ Rework User Info Tablet.
 
-23/ Listing problematic content that need adjustment:
+22/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
 - Token of Pride.
 - HeartBreak Instrument

@@ -94,15 +94,10 @@ public class DivineHammerUIState : UIState {
 	public void Visual_Enchantment(bool hide) {
 		weaponEnchantmentUIslot.Hide = hide;
 	}
-	Roguelike_UITextPanel AugmentationSelection_Text;
 	Roguelike_UIPanel AugmentationSelection_Container;
 	Roguelike_UIPanel AugmentationSelection_Head;
 	Roguelike_UIPanel AugmentationSelection_Body;
-	Roguelike_UIImageButton AugmentationSelection_BackIcon;
-	Roguelike_UIImageButton AugmentationSelection_Forward;
-	Roguelike_UIImageButton AugmentationSelection_Backward;
 	public void AugmentationInit() {
-		textlist.Clear();
 		augmentation = new(tex);
 		augmentation.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAs<DivineHammerUIState>("Augmentation")), true);
 		augmentation.UISetWidthHeight(52, 52);
@@ -143,14 +138,6 @@ public class DivineHammerUIState : UIState {
 		AccAugmentResult.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccAugmentResult);
 
-		AugmentationSelection_Text = new("click on this panel to select", .8f);
-		AugmentationSelection_Text.Width.Percent = 1f;
-		AugmentationSelection_Text.Height.Pixels = 30;
-		AugmentationSelection_Text.TextHAlign = .5f;
-		AugmentationSelection_Text.Hide = true;
-		AugmentationSelection_Text.OnLeftClick += AugmentationSelection_Text_OnLeftClick;
-		BodyPanel.Append(AugmentationSelection_Text);
-
 		Vector2 position = Mainpanel.GetOuterDimensions().Position();
 		AugmentationSelection_Container = new();
 		AugmentationSelection_Container.UISetWidthHeight(480, 450);
@@ -172,132 +159,8 @@ public class DivineHammerUIState : UIState {
 		AugmentationSelection_Body.Height.Pixels = AugmentationSelection_Container.Height.Pixels - 90;
 		AugmentationSelection_Body.VAlign = 1f;
 		AugmentationSelection_Container.Append(AugmentationSelection_Body);
-
-		auglist.Clear();
-		auglist.AddRange(AugmentsLoader.ReturnListOfAugment());
-		float num = 4;
-		for (int x = 0; x < num; x++) {
-			for (int y = 0; y < num + 2; y++) {
-				int counter = (int)(x * (num + 2)) + y + 1;
-				ModAugments aug = auglist[counter];
-				string augText = "";
-				Color color = Color.White;
-				if (aug != null) {
-					augText = aug.DisplayName;
-					color = aug.tooltipColor;
-				}
-				AugmentationText btn = new(aug.Type, augText, .7f);
-				btn.BorderColor = color;
-				btn.BackgroundColor = btn.BackgroundColor with { A = 255 };
-				btn.VAlign = MathHelper.Lerp(0f, 1f, y / (num + 1));
-				btn.HAlign = MathHelper.Lerp(0f, 1f, x / (num - 1f));
-				btn.UISetWidthHeight(110, 10);
-				btn.OnLeftClick += Btn_OnLeftClick;
-				btn.OnUpdate += Btn_OnUpdate;
-				btn.TextHAlign = .5f;
-				btn.PaddingBottom = 15;
-				btn.PaddingTop = 15;
-				AugmentationSelection_Body.Append(btn);
-				textlist.Add(btn);
-			}
-		}
-		maxPage = AugmentsLoader.TotalCount / 24;
-		if (AugmentsLoader.TotalCount % 24 != 0) {
-			maxPage++;
-		}
-
-		AugmentationSelection_BackIcon = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
-		AugmentationSelection_BackIcon.SetPostTex(ModContent.Request<Texture2D>(ModTexture.BackIcon));
-		AugmentationSelection_BackIcon.UISetWidthHeight(52, 52);
-		AugmentationSelection_BackIcon.HAlign = 1f;
-		AugmentationSelection_BackIcon.VAlign = .5f;
-		AugmentationSelection_BackIcon.OnLeftClick += AugmentationSelection_OnLeftClick;
-		AugmentationSelection_Head.Append(AugmentationSelection_BackIcon);
-
-		AugmentationSelection_Backward = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
-		AugmentationSelection_Backward.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Arrow_Left));
-		AugmentationSelection_Backward.UISetWidthHeight(52, 52);
-		AugmentationSelection_Backward.VAlign = .5f;
-		AugmentationSelection_Backward.OnLeftClick += AugmentationSelection_OnLeftClick;
-		AugmentationSelection_Head.Append(AugmentationSelection_Backward);
-
-		AugmentationSelection_Forward = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
-		AugmentationSelection_Forward.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Arrow_Right));
-		AugmentationSelection_Forward.UISetWidthHeight(52, 52);
-		AugmentationSelection_Forward.VAlign = .5f;
-		AugmentationSelection_Forward.MarginLeft = AugmentationSelection_Backward.Width.Pixels + 10;
-		AugmentationSelection_Forward.OnLeftClick += AugmentationSelection_OnLeftClick;
-		AugmentationSelection_Head.Append(AugmentationSelection_Forward);
 	}
-	private void AugmentationSelection_Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		Visual_AugmentationSelection();
-	}
-
-	List<ModAugments> auglist = new();
-	int maxPage = 0;
-	int currentPage = 0;
-	private void AugmentationSelection_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (listeningElement.UniqueId == AugmentationSelection_BackIcon.UniqueId) {
-			Visual_Augmentation(false);
-		}
-		else if (listeningElement.UniqueId == AugmentationSelection_Forward.UniqueId) {
-			currentPage++;
-			Reflesh_VisibleAugList();
-		}
-		else if (listeningElement.UniqueId == AugmentationSelection_Backward.UniqueId) {
-			currentPage--;
-			Reflesh_VisibleAugList();
-		}
-		currentPage = Math.Clamp(currentPage, 0, maxPage - 1);
-	}
-	private void Reflesh_VisibleAugList() {
-		if (currentPage >= maxPage || currentPage < 0 || maxPage <= 1) {
-			return;
-		}
-		int startingPoint = 24 * currentPage;
-		for (int i = 0; i < textlist.Count; i++) {
-			AugmentationText btn = textlist[i];
-			int indexChecker = startingPoint + i + 1;
-			if (textlist.Count - 1 < i || indexChecker >= auglist.Count) {
-				btn.BorderColor = Color.White;
-				btn.SetAug(0);
-				btn.SetText(" ");
-				continue;
-			}
-			ModAugments aug = auglist[indexChecker];
-			btn.SetAug(aug.Type);
-			btn.SetText(aug.DisplayName);
-			btn.BorderColor = aug.tooltipColor;
-		}
-	}
-	private void Btn_OnUpdate(UIElement affectedElement) {
-		if (affectedElement is AugmentationText btn) {
-			if (btn.AugmentationType != SelectedAugmentationType) {
-				btn.TextColor = Color.White;
-			}
-		}
-	}
-
-	int SelectedAugmentationType = 0;
-	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (listeningElement is AugmentationText btn) {
-			btn.TextColor = Color.Yellow;
-			SelectedAugmentationType = btn.AugmentationType;
-			ModAugments aug = AugmentsLoader.GetAugments(SelectedAugmentationType);
-			if (aug == null) {
-				SelectedAugmentationType = 0;
-				return;
-			}
-			AugmentationSelection_Text.SetText(aug.DisplayName);
-			AugmentationSelection_Text.TextColor = aug.tooltipColor;
-		}
-	}
-
-	List<AugmentationText> textlist = new();
 	private void ConfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (SelectedAugmentationType == 0) {
-			return;
-		}
 		if (AccAugmentSlot.item == null || AccAugmentSlot.item.type == ItemID.None) {
 			return;
 		}
@@ -308,13 +171,20 @@ public class DivineHammerUIState : UIState {
 			return;
 		}
 		Item item = AccAugmentSlot.item;
-		if (AugmentsLoader.GetAugments(SelectedAugmentationType) == null) {
-			return;
+		if (AccSacrificeAugmentSlot.item.ModItem is Augmentation aug) {
+			if (AugmentsLoader.GetAugments(aug.Aug_Type) == null) {
+				return;
+			}
+			if (item.GetGlobalItem<AugmentsWeapon>().Augment == aug.Type) {
+				item.GetGlobalItem<AugmentsWeapon>().Modify_Charge(50);
+			}
+			else {
+				AugmentsWeapon.AddAugments(ref item, aug.Aug_Type);
+			}
+			AccSacrificeAugmentSlot.item.TurnToAir();
+			AccAugmentResult.item = item.Clone();
+			AccAugmentSlot.item.TurnToAir();
 		}
-		AugmentsWeapon.AddAugments(ref item, SelectedAugmentationType);
-		AccSacrificeAugmentSlot.item.TurnToAir();
-		AccAugmentResult.item = item.Clone();
-		AccAugmentSlot.item.TurnToAir();
 	}
 
 	private void AccAugmentSlot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -336,10 +206,9 @@ public class DivineHammerUIState : UIState {
 		}
 		else if (listeningElement.UniqueId == AccSacrificeAugmentSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (!item.accessory && item.type != ItemID.None) {
-				return;
+			if (item.type != ItemID.None && item.ModItem is Augmentation) {
+				ModUtils.SimpleItemMouseExchange(player, ref AccSacrificeAugmentSlot.item);
 			}
-			ModUtils.SimpleItemMouseExchange(player, ref AccSacrificeAugmentSlot.item);
 		}
 		else if (listeningElement.UniqueId == AccAugmentResult.UniqueId) {
 			Item item = Main.mouseItem;
@@ -356,7 +225,6 @@ public class DivineHammerUIState : UIState {
 	}
 
 	public void Visual_Augmentation(bool hide) {
-		AugmentationSelection_Text.Hide = hide;
 		AccAugmentSlot.Hide = hide;
 		AccSacrificeAugmentSlot.Hide = hide;
 		confirmButton.Hide = hide;
@@ -405,18 +273,6 @@ public class DivineHammerUIState : UIState {
 		slot3.Hide = true;
 		slot2.Hide = true;
 		slot1.Hide = true;
-	}
-}
-public class AugmentationText : Roguelike_UITextPanel {
-	public int AugmentationType { get; private set; }
-	public void SetAug(int type) {
-		AugmentationType = type;
-	}
-	public AugmentationText(int type, string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
-		if (AugmentsLoader.GetAugments(type) == null) {
-			return;
-		}
-		AugmentationType = type;
 	}
 }
 public class WeaponEnchantmentUIslot : Roguelike_UIImage {

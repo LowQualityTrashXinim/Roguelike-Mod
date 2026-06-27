@@ -4,6 +4,9 @@ using Terraria.ModLoader.IO;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Roguelike.Texture;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace Roguelike.Contents.Transfixion.Augmentation;
 internal class AugmentsLoader : ModSystem {
@@ -149,6 +152,49 @@ public abstract class ModAugments : ModType {
 	public virtual void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) { }
 	public virtual void OnHitByProj(Player player, AugmentsWeapon acc, Projectile projectile, Player.HurtInfo info) { }
 	public virtual void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) { }
+}
+public class Augmentation : ModItem {
+	public override string Texture => ModTexture.CrossGlow;
+	public int Aug_Type = -1;
+	public override void SetDefaults() {
+		Item.width = Item.height = 32;
+		if (Aug_Type == -1) {
+			Aug_Type = Main.rand.Next(AugmentsLoader.TotalCount);
+		}
+	}
+	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		var aug = AugmentsLoader.GetAugments(Aug_Type);
+		if (aug == null) {
+			Aug_Type = Main.rand.Next(AugmentsLoader.TotalCount);
+			return;
+		}
+		tooltips.Add(new TooltipLine(Mod, "", $"[c/{aug.tooltipColor.Hex3()}:{aug.DisplayName}] \n {aug.Description}"));
+		tooltips.Add(new TooltipLine(Mod, "", $"[c/{Main.DiscoColor.Hex3()}:Can be used in divine hammer to imblue accessory]"));
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["Aug_Type"] = Aug_Type;
+	}
+	public override void LoadData(TagCompound tag) {
+		if (tag.TryGet("Aug_Type", out int value)) {
+			Aug_Type = value;
+		}
+	}
+	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+		ModUtils.Draw_SetUpToDrawGlowAdditive(spriteBatch);
+		Main.instance.LoadItem(Type);
+		Texture2D texture = TextureAssets.Item[Type].Value;
+		spriteBatch.Draw(texture, position, frame, drawColor, 0, origin, scale, SpriteEffects.None, 0);
+		ModUtils.Draw_ResetToNormal(spriteBatch);
+		return false;
+	}
+	public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+		ModUtils.Draw_SetUpToDrawGlowAdditive(spriteBatch);
+		Main.instance.LoadItem(Type);
+		Texture2D texture = TextureAssets.Item[Type].Value;
+		spriteBatch.Draw(texture, Main.item[whoAmI].position - Main.screenPosition, null, lightColor, rotation, texture.Size() * .5f, scale, SpriteEffects.None, 0);
+		ModUtils.Draw_ResetToNormal(spriteBatch);
+		return false;
+	}
 }
 public class AugmentsPlayer : ModPlayer {
 	public List<Item> accItemUpdate = new();

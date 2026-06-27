@@ -559,6 +559,8 @@ Mods: {
 			CustomEnchantedBoomerang.DisplayName: Custom Enchanted Boomerang
 			ItemDropProjectile.DisplayName: Item Drop Projectile
 			ExampleWhipProjectile.DisplayName: Example Whip Projectile
+			HeartBreakInstrument_Ghost_Projectile.DisplayName: Heart Break Instrument_ Ghost_ Projectile
+			HeartBreakInstrument_StarProjectile.DisplayName: Heart Break Instrument_ Star Projectile
 		}
 
 		NPCs: {
@@ -2914,6 +2916,11 @@ Mods: {
 
 			ExampleWhip: {
 				DisplayName: Example Whip
+				Tooltip: ""
+			}
+
+			Augmentation: {
+				DisplayName: Augmentation
 				Tooltip: ""
 			}
 		}

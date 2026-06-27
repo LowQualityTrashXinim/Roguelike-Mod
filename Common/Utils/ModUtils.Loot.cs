@@ -1,6 +1,7 @@
 ﻿using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.RelicItem;
+using Roguelike.Contents.Transfixion.Augmentation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -378,9 +379,15 @@ public static partial class ModUtils {
 	/// <param name="type"></param>
 	/// <param name="player"></param>
 	public static void GetAccessories(IEntitySource source, Player player, int loopamount = 1) {
+		bool SpoilSource = source.Context == "Spoil";
 		for (int i = 0; i < loopamount; i++) {
 			int acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
 			player.QuickSpawnItem(source, acc);
+			if (SpoilSource) {
+				if (Main.rand.NextBool()) {
+					player.QuickSpawnItem(source, ModContent.ItemType<Augmentation>());
+				}
+			}
 		}
 	}
 	/// <summary>

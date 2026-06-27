@@ -6,6 +6,7 @@ using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
@@ -136,7 +137,24 @@ public class HeartBreakInstrument : SynergyModItem {
 			}
 		}
 		bool ClimaxOfTragedy = heartplayer.ClimaxOfTradegy;
+		int count = ComboChain_Count;
 		if (ClimaxOfTragedy) {
+			if (count != 0) {
+				int whoAmI = Projectile.NewProjectile(source, Main.MouseWorld + Vector2.One.Vector2DistributeEvenlyPlus(5, 360, count) * 300, Vector2.Zero, ModContent.ProjectileType<HeartBreakInstrument_Ghost_Projectile>(), damage * 3, knockback, player.whoAmI);
+				player.ModPlayerStats().WhoAmI_Projectile.Add(whoAmI);
+			}
+			else {
+				PlayerStatsHandle handler = player.ModPlayerStats();
+				for (int i = 0; i < handler.WhoAmI_Projectile.Count; i++) {
+					Projectile proj = Main.projectile[handler.WhoAmI_Projectile[i]];
+					if (proj == null) {
+						continue;
+					}
+					if (proj.ModProjectile is HeartBreakInstrument_Ghost_Projectile ghost) {
+						ghost.ActivateAttack();
+					}
+				}
+			}
 			heartplayer.ClimaxOfTradegy_Count++;
 		}
 		if (player.altFunctionUse == 2) {
@@ -144,18 +162,8 @@ public class HeartBreakInstrument : SynergyModItem {
 				heartplayer.ClimaxOfTradegy = true;
 				heartplayer.ClimaxOfTradegy_Count = 0;
 				heartplayer.Effect = false;
-				int type_Instrument = ModContent.ProjectileType<HeartBreakInstrument_InstrumentProjectile>();
-				if (heartplayer.Instrument1_WhoAmI == -1) {
-					heartplayer.Instrument1_WhoAmI = Projectile.NewProjectile(source, position, velocity, type_Instrument, damage, knockback, player.whoAmI, ItemID.IvyGuitar, 1);
-				}
-				if (heartplayer.Instrument2_WhoAmI == -1) {
-					heartplayer.Instrument2_WhoAmI = Projectile.NewProjectile(source, position, velocity, type_Instrument, damage, knockback, player.whoAmI, ItemID.Piano, 2);
-				}
-				if (heartplayer.Instrument3_WhoAmI == -1) {
-					heartplayer.Instrument3_WhoAmI = Projectile.NewProjectile(source, position, velocity, type_Instrument, damage, knockback, player.whoAmI, ItemID.Harp, 3);
-				}
-				if (heartplayer.Instrument4_WhoAmI == -1) {
-					heartplayer.Instrument4_WhoAmI = Projectile.NewProjectile(source, position, velocity, type_Instrument, damage, knockback, player.whoAmI, ItemID.Bell, 4);
+				for (int i = 0; i < 6; i++) {
+					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(6, 360, i) * 10, ModContent.ProjectileType<HeartBreakInstrument_StarProjectile>(), damage, knockback, player.whoAmI);
 				}
 				return;
 			}
@@ -176,7 +184,6 @@ public class HeartBreakInstrument : SynergyModItem {
 		if ((pos - player.Center).LengthSquared() > 5625) {
 			pos = position.PositionOFFSET(velocity, 75f);
 		}
-		int count = ComboChain_Count;
 
 		if (count == 3) {
 			int amount = 5;
@@ -298,7 +305,6 @@ public class HeartBreakInstrument : SynergyModItem {
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 		HeartBreakInstrument_Tool.SpawnDust(target);
 	}
-	int Projectile_WhoAmI = -1;
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		var musicPlayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
 		if (OutroEffect_ModPlayer.Check_ValidForIntroEffect(player)) {
@@ -322,10 +328,6 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 	public bool ClimaxOfTradegy = false;
 	public bool OnCoolDown = false;
 	public bool Effect = false;
-	public int Instrument1_WhoAmI = -1;
-	public int Instrument2_WhoAmI = -1;
-	public int Instrument3_WhoAmI = -1;
-	public int Instrument4_WhoAmI = -1;
 	public bool IntroEffectActivate = false;
 	public int Projectile_WhoAmI = -1;
 	private Gclef Get_ModProjectile() {
@@ -344,10 +346,9 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 				proj.Set_KillState();
 			}
 			Projectile_WhoAmI = -1;
-			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy_Count = 0;
-			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy = false;
-			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().Effect = false;
-			Player.GetModPlayer<HeartBreakInstrument_ModPlayer>().KillProjectile();
+			ClimaxOfTradegy_Count = 0;
+			ClimaxOfTradegy = false;
+			Effect = false;
 		}
 		else {
 			int type = ModContent.ProjectileType<Gclef>();
@@ -363,7 +364,6 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 			}
 		}
 		OnCoolDown = false;
-		CheckProjectileActive();
 		if (ClimaxOfTradegy_Count >= 30 && !ClimaxOfTradegy) {
 			if (!Effect) {
 				Effect = true;
@@ -376,51 +376,15 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 				VisualEffect();
 			}
 			if (!Player.ItemAnimationActive) {
-				var Proj1 = GetInstrument1();
-				var Proj2 = GetInstrument2();
-				var Proj3 = GetInstrument3();
-				var Proj4 = GetInstrument4();
 				if (Main.mouseLeft) {
-					if (Proj1 != null) {
-						Proj1.DoSkillAttack = true;
-					}
-					if (Proj2 != null) {
-						Proj2.DoSkillAttack = true;
-					}
-					if (Proj3 != null) {
-						Proj3.DoSkillAttack = true;
-					}
-					if (Proj4 != null) {
-						Proj4.DoSkillAttack = true;
-					}
 					ClimaxOfTradegy_Count = 0;
 					ClimaxOfTradegy = false;
 					Effect = false;
-					Instrument1_WhoAmI = -1;
-					Instrument2_WhoAmI = -1;
-					Instrument3_WhoAmI = -1;
-					Instrument4_WhoAmI = -1;
 				}
 				else if (Main.mouseRight) {
-					if (Proj1 != null) {
-						Proj1.DoHealAttack = true;
-					}
-					if (Proj2 != null) {
-						Proj2.DoHealAttack = true;
-					}
-					if (Proj3 != null) {
-						Proj3.DoHealAttack = true;
-					}
-					if (Proj4 != null) {
-						Proj4.DoHealAttack = true;
-					}
 					ClimaxOfTradegy_Count = 0;
 					ClimaxOfTradegy = false;
 					Effect = false;
-					Instrument1_WhoAmI = -1;
-					Instrument2_WhoAmI = -1;
-					Instrument3_WhoAmI = -1;
-					Instrument4_WhoAmI = -1;
 				}
 			}
 		}
@@ -431,75 +395,6 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 			dust.scale = Main.rand.NextFloat(.7f, 1.3f);
 			dust.color = Color.DodgerBlue;
 			dust.noGravity = true;
-		}
-	}
-	public void KillProjectile() {
-		var Proj1 = GetInstrument1();
-		var Proj2 = GetInstrument2();
-		var Proj3 = GetInstrument3();
-		var Proj4 = GetInstrument4();
-		if (Proj1 != null) {
-			Proj1.Projectile.Kill();
-		}
-		if (Proj2 != null) {
-			Proj2.Projectile.Kill();
-		}
-		if (Proj3 != null) {
-			Proj3.Projectile.Kill();
-		}
-		if (Proj4 != null) {
-			Proj4.Projectile.Kill();
-		}
-		Instrument1_WhoAmI = -1;
-		Instrument2_WhoAmI = -1;
-		Instrument3_WhoAmI = -1;
-		Instrument4_WhoAmI = -1;
-	}
-
-	private HeartBreakInstrument_InstrumentProjectile GetInstrument1() {
-		if (Instrument1_WhoAmI >= 0 && Instrument1_WhoAmI < 1000) {
-			return (HeartBreakInstrument_InstrumentProjectile)Main.projectile[Instrument1_WhoAmI].ModProjectile;
-		}
-		return null;
-	}
-	private HeartBreakInstrument_InstrumentProjectile GetInstrument2() {
-		if (Instrument2_WhoAmI >= 0 && Instrument2_WhoAmI < 1000) {
-			return (HeartBreakInstrument_InstrumentProjectile)Main.projectile[Instrument2_WhoAmI].ModProjectile;
-		}
-		return null;
-	}
-	private HeartBreakInstrument_InstrumentProjectile GetInstrument3() {
-		if (Instrument3_WhoAmI >= 0 && Instrument3_WhoAmI < 1000) {
-			return (HeartBreakInstrument_InstrumentProjectile)Main.projectile[Instrument3_WhoAmI].ModProjectile;
-		}
-		return null;
-	}
-	private HeartBreakInstrument_InstrumentProjectile GetInstrument4() {
-		if (Instrument4_WhoAmI >= 0 && Instrument4_WhoAmI < 1000) {
-			return (HeartBreakInstrument_InstrumentProjectile)Main.projectile[Instrument4_WhoAmI].ModProjectile;
-		}
-		return null;
-	}
-	private void CheckProjectileActive() {
-		if (Instrument1_WhoAmI >= 0 && Instrument1_WhoAmI < 1000) {
-			if (!Main.projectile[Instrument1_WhoAmI].active) {
-				Instrument1_WhoAmI = -1;
-			}
-		}
-		if (Instrument2_WhoAmI >= 0 && Instrument2_WhoAmI < 1000) {
-			if (!Main.projectile[Instrument2_WhoAmI].active) {
-				Instrument2_WhoAmI = -1;
-			}
-		}
-		if (Instrument3_WhoAmI >= 0 && Instrument3_WhoAmI < 1000) {
-			if (!Main.projectile[Instrument3_WhoAmI].active) {
-				Instrument3_WhoAmI = -1;
-			}
-		}
-		if (Instrument4_WhoAmI >= 0 && Instrument4_WhoAmI < 1000) {
-			if (!Main.projectile[Instrument4_WhoAmI].active) {
-				Instrument4_WhoAmI = -1;
-			}
 		}
 	}
 	private void VisualEffect() {
@@ -515,60 +410,26 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 		}
 	}
 }
-public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
-	public override string Texture => ModTexture.MissingTexture_Default;
+public class HeartBreakInstrument_StarProjectile : ModProjectile {
+	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.PiercingStarlight);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 30;
 		Projectile.friendly = true;
 		Projectile.penetrate = -1;
-		Projectile.timeLeft = 6000;
+		Projectile.timeLeft = 600;
 		Projectile.tileCollide = false;
 		Projectile.ignoreWater = true;
 	}
-	int TextureItemID = -1;
 	int DelayBeforeDecaySound = 0;
 	public bool DoSkillAttack = false;
 	public bool DoHealAttack = false;
 	public float Index = 0;
 	public override void OnSpawn(IEntitySource source) {
-		TextureItemID = (int)Projectile.ai[0];
-		Projectile.ai[0] = 0;
 		Index = Projectile.ai[1];
 		Projectile.ai[1] = 0;
 	}
 	public override void AI() {
 		Projectile.velocity *= .98f;
-
-		if (DoSkillAttack) {
-			if (++Projectile.ai[1] < 100) {
-				Projectile.velocity *= .97f;
-				Projectile.timeLeft = 300;
-			}
-			else {
-				Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * (Projectile.ai[1] - 100) * .1f;
-				if (Projectile.ai[1] >= 250) {
-					Projectile.ai[1] = 250;
-				}
-				if (Projectile.Center.IsCloseToPosition(Main.MouseWorld, 50)) {
-					Projectile.Kill();
-				}
-			}
-			return;
-		}
-		if (DoHealAttack) {
-			if (++Projectile.ai[1] < 100) {
-				Projectile.velocity *= .97f;
-				Projectile.timeLeft = 120;
-			}
-			else {
-				Player player = Main.player[Projectile.owner];
-				Vector2 dis = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(Projectile.ai[1]) * MathHelper.PiOver4 * Index) * 75 - Projectile.Center;
-				Projectile.velocity = dis.SafeNormalize(Vector2.Zero) * dis.Length() / 32f;
-			}
-			return;
-		}
-		Vector2 distance = Main.player[Projectile.owner].Center + Vector2.One.RotatedBy(Index * MathHelper.PiOver4 + MathHelper.PiOver2 + MathHelper.PiOver4 * .5f) * 150 - Projectile.Center;
-		Projectile.velocity = distance.SafeNormalize(Vector2.Zero) * distance.Length() / 32f;
 
 		Attack();
 
@@ -589,28 +450,9 @@ public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
 		if (Projectile.timeLeft <= 100) {
 			return;
 		}
-		SoundStyle sound;
-		int CD = 0;
+		SoundStyle sound = SoundID.Item35;
+		int CD = 30;
 		int damage = Projectile.damage;
-		if (TextureItemID == ItemID.Harp) {
-			sound = SoundID.Item26;
-			CD = 60;
-			damage = (int)(damage * 1.4f);
-		}
-		else if (TextureItemID == ItemID.Bell) {
-			sound = SoundID.Item35;
-			CD = 45;
-		}
-		else if (TextureItemID == ItemID.Piano) {
-			sound = SoundID.Item35;
-			CD = 30;
-			damage = (int)(damage * .9f);
-		}
-		else if (TextureItemID == ItemID.IvyGuitar) {
-			sound = Main.rand.Next(HeartBreakInstrument_Tool.Guitar);
-			CD = 25;
-			damage = (int)(damage * .85f);
-		}
 		if (++Projectile.ai[1] < CD) {
 			return;
 		}
@@ -618,7 +460,7 @@ public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
 		SpawnVisualTracker();
 		Projectile.scale += .2f;
 		Projectile.ai[2] = Math.Clamp(Projectile.ai[2] + .15f, -1, 1);
-		DelayBeforeDecaySound = 120;
+		DelayBeforeDecaySound = 30;
 		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = Projectile.ai[2] }, Projectile.Center);
 		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<HeartBreakInstrument_Note_Projectile>(), damage, Projectile.knockBack, Projectile.owner, Main.rand.Next(1, 5));
 
@@ -629,16 +471,14 @@ public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
 	List<SpriteTracker> tracker = new();
 	public override void OnKill(int timeLeft) {
 		Player player = Main.player[Projectile.owner];
-		if (DoSkillAttack) {
-			Projectile.Center.LookForHostileNPC(out List<NPC> listnpc, 500);
-			foreach (var npc in listnpc) {
-				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 15, ModUtils.DirectionFromEntityAToEntityB(npc.Center.X, Projectile.Center.X)));
-			}
+		Projectile.Center.LookForHostileNPC(out List<NPC> listnpc, 500);
+		foreach (var npc in listnpc) {
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 15, ModUtils.DirectionFromEntityAToEntityB(npc.Center.X, Projectile.Center.X)));
 		}
-		if (DoHealAttack) {
-			player.Heal(100 + (int)(player.statLifeMax2 * .05f));
-			player.AddBuff<HeartBreakInstrument_Buff>(ModUtils.ToSecond(15));
-		}
+
+		player.Heal((int)(player.statLifeMax2 * .05f));
+		player.AddBuff<HeartBreakInstrument_Buff>(ModUtils.ToSecond(15));
+
 		Vector2 ran = Main.rand.NextVector2Circular(Projectile.width, Projectile.height) * .75f;
 		Dust dust = Dust.NewDustDirect(Projectile.Center + ran, 0, 0, ModContent.DustType<HeartBreakInstrument_Cross>());
 		dust.noGravity = true;
@@ -664,22 +504,23 @@ public class HeartBreakInstrument_InstrumentProjectile : ModProjectile {
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		if (TextureItemID <= 0 || TextureItemID > ItemID.Count) {
-			return false;
-		}
-
 		if (Projectile.timeLeft <= 100) {
 			lightColor *= Projectile.timeLeft / 100f;
 		}
 
-		Main.instance.LoadItem(TextureItemID);
-		Texture2D texture = TextureAssets.Item[TextureItemID].Value;
+		Main.instance.LoadItem(Type);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
 		Vector2 origin = texture.Size() * .5f;
 		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Cyan, MathHelper.PiOver2, origin, Projectile.scale * 2, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.White, MathHelper.PiOver2, origin, Projectile.scale, SpriteEffects.None);
+
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Cyan, 0, origin, Projectile.scale, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.White, 0, origin, Projectile.scale * .5f, SpriteEffects.None);
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
 
 		TrackerHandler(lightColor, lightColor, origin);
-
-		Main.EntitySpriteDraw(texture, drawpos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None);
 		return false;
 	}
 	private void SpawnVisualTracker() {
@@ -769,9 +610,6 @@ public class HeartBreakInstrument_Note_Projectile : ModProjectile {
 			}
 			Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * VelocityLength;
 		}
-		else {
-			Projectile.velocity *= .995f;
-		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		if (TextureIDSelf <= 0 || TextureIDSelf > ItemID.Count) {
@@ -805,6 +643,74 @@ public class HeartBreakInstrument_Note_Projectile : ModProjectile {
 			Color color2 = lightColor * ((Projectile.oldPos.Length - k) / len);
 			Main.EntitySpriteDraw(line, drawPosDot, null, color2, 0, originLine, 1f, SpriteEffects.None, 0);
 		}
+		return false;
+	}
+}
+public class HeartBreakInstrument_Ghost_Projectile : ModProjectile {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<HeartBreakInstrument>();
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 10;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.penetrate = -1;
+		Projectile.timeLeft = 9000;
+		Projectile.scale = .75f;
+		Projectile.extraUpdates = 1;
+		Projectile.light = .5f;
+	}
+	public override bool? CanDamage() => Projectile.ai[0] >= 1;
+	public override void AI() {
+		if (!Main.player[Projectile.owner].GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy) {
+			ActivateAttack();
+		}
+	}
+	public void ActivateAttack() {
+		if (Projectile.ai[0] == 0) {
+			Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
+			Projectile.timeLeft = 900;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			Projectile.ai[0] = 10;
+			for (int i = 0; i < 30; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<HeartBreakInstrument_Extra>());
+				dust.velocity = -Projectile.velocity.Vector2RotateByRandom(30) * Main.rand.NextFloat(.5f, 1.1f);
+				dust.rotation = dust.velocity.ToRotation();
+				dust.scale = 1 + Main.rand.NextFloat(.2f, .8f);
+				dust.color = Color.DodgerBlue;
+				dust.noGravity = true;
+			}
+			for (int i = 0; i < 120; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<HeartBreakInstrument_Extra>());
+				dust.position += Main.rand.NextVector2Circular(1000, 50).RotatedBy(Projectile.velocity.ToRotation());
+				dust.velocity = Projectile.velocity * Main.rand.NextFloat(.5f, 1.1f);
+				dust.rotation = dust.velocity.ToRotation();
+				dust.scale = 1 + Main.rand.NextFloat(.2f, .8f);
+				dust.color = Color.DodgerBlue;
+				dust.noGravity = true;
+			}
+			Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity, ModContent.ProjectileType<SimplePiercingProjectile2>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 15, 30);
+			if (proj.ModProjectile is SimplePiercingProjectile2 modproj) {
+				modproj.ScaleX = 30;
+				modproj.ScaleY = 1f;
+				modproj.ProjectileColor = Color.DodgerBlue;
+			}
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		Projectile.NewProjectile(Projectile.GetSource_FromAI(), target.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<HeartBreakInstrument_Slash_Projectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 4, 6);
+		Projectile.ai[0]--;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		Vector2 origin = texture.Size() * .5f;
+		Texture2D texture2 = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		float rotation = Projectile.rotation - MathHelper.PiOver2;
+		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
+		Main.EntitySpriteDraw(texture2, drawpos, null, Color.DodgerBlue, rotation, texture2.Size() * .5f, new Vector2(Projectile.scale * 5, Projectile.scale), SpriteEffects.None);
+		Main.EntitySpriteDraw(texture2, drawpos, null, Color.White, rotation, texture2.Size() * .5f, new Vector2(Projectile.scale * 3, Projectile.scale), SpriteEffects.None);
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		Main.EntitySpriteDraw(texture, drawpos, null, lightColor, rotation + MathHelper.PiOver4, origin, Projectile.scale, SpriteEffects.None);
 		return false;
 	}
 }
