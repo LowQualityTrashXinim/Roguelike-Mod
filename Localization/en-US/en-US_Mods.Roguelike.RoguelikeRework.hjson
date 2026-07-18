@@ -62,8 +62,8 @@ BoneSword:
 ShortSword:
 	'''
 	Alt-click to throw out a shortsword (CD: 2s)
-	Thrown out shortsword will always deal critical strike and
-	Additionally inflict bleeding and make enemy more vulnerable
+	Throwing this shortsword will always deal a critical strike. 
+	Additionally, it inflicts bleeding and makes the enemy more vulnerable.
 	'''
 HeatRay:
 	'''
@@ -78,20 +78,20 @@ Musket:
 	'''
 RedRyder:
 	'''
-	Replaced normal bullet with high velocity round
-	Alt-click to throw the gun, alt click again to be pulled to the gun (CD:5s)
-	Multiply damage by 3x after collected the gun
+	Replaces normal bullets with high velocity rounds.
+	Alt-click to throw the gun, and alt-click again to pull yourself to the gun.
+	Damage multiplies by 3x after recovering the gun (CD : 5s).
 	'''
 TheUndertaker:
 	'''
-	Shoot out a burst of 6 inaccurate bullets
-	Bullet shot from this gun have life steal effect
+	Shoots out a burst of 6 inaccurate bullets
+	Bullets shot from this gun have lifesteal effect
 	'''
 Minishark:
 	'''
-	Have 1 in 6 chance to shoot additional bullet
-	There are 1% chance to get freezy buff for 5s
-	While freezy buff are active, minishark shoot more bullet
+	Has 1 in 6 chance to shoot out an additional bullet
+	There is a 1% chance to get Freezy buff for 5s
+	While Freezy buff is active, the Minishark shoot out more bullets.
 	'''
 GemStaff: Alt-click to activate special attack
 BroadSword:

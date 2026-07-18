@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ObjectSystem;
+using Roguelike.Common.Systems.ObjectSystem.DataStructures;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
@@ -201,6 +202,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public StatModifier FoodValue = StatModifier.Default;
 	public List<int> WhoAmI_Projectile = new();
+	public float Chance_ToInstantKill = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
@@ -253,6 +255,12 @@ public class PlayerStatsHandle : ModPlayer {
 		DmgTaken += (ulong)hurtInfo.Damage;
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (Chance_ToInstantKill > 0) {
+			if (Main.rand.NextFloat() <= Chance_ToInstantKill) {
+				modifiers.SetInstantKill();
+				return;
+			}
+		}
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DirectItemDamage);
 		if (AlwaysCritValue > 0) {
 			modifiers.SetCrit();
@@ -293,6 +301,12 @@ public class PlayerStatsHandle : ModPlayer {
 	public float TrueDamage_Magic = 0;
 	public float TrueDamage_Summon = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (Chance_ToInstantKill > 0) {
+			if (Main.rand.NextFloat() <= Chance_ToInstantKill) {
+				modifiers.SetInstantKill();
+				return;
+			}
+		}
 		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 			modifiers.CritDamage += globalitem.CriticalDamage;
@@ -667,6 +681,7 @@ public class PlayerStatsHandle : ModPlayer {
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = 60;
+		Chance_ToInstantKill = 0;
 		LifeSteal_CoolDownCounter = ModUtils.CountDown(LifeSteal_CoolDownCounter);
 		ModifyHit_Before_Crit = false;
 		Rapid_LifeRegen = 0;
@@ -763,9 +778,13 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		if (listItem != null && listItem.Count > 0) {
 			int typeItem = listItem[0].type;
-			ModObject modobject = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<AccessoryVisualModObject>());
-			AccessoryVisualModObject accobject = (AccessoryVisualModObject)modobject;
-			accobject.AccType = typeItem;
+
+			ModObject.NewModObject(
+			new EntitySource_AccessoryVisual(typeItem, Player),
+			Player.Center,
+			Vector2.Zero,
+			ModObject.GetModObjectType<AccessoryVisualModObject>());
+
 			listItem[0].TurnToAir();
 			listItem.RemoveAt(0);
 			Player.Heal(Player.statLifeMax2 / 2);
@@ -1201,6 +1220,11 @@ public class AccessoryVisualModObject : ModObject {
 	public int alpha = 255;
 	public override void SetDefaults() {
 		timeLeft = 120;
+	}
+	public override void OnSpawn(IEntitySource source) {
+		if (source is EntitySource_AccessoryVisual visual) {
+			AccType = visual.AccType;
+		}
 	}
 	public override void AI() {
 		velocity = -Vector2.UnitY * 2;

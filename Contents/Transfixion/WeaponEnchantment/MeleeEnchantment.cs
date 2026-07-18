@@ -12,7 +12,6 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -358,10 +357,10 @@ public class Volcano : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		player.Center.LookForHostileNPC(out List<NPC> npclist, 125);
+		proj.Center.LookForHostileNPC(out List<NPC> npclist, 125);
 		foreach (NPC npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
-				ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+				ModUtils.DirectionFromPlayerToNPC(proj.Center.X, npc.Center.X)));
 		}
 		for (int i = 0; i < 35; i++) {
 			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
@@ -372,6 +371,9 @@ public class Volcano : ModEnchantment {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust3 = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(125, 125), 0, 0, DustID.Torch);
+			Main.dust[dust3].noGravity = true;
+			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
 		}
 		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 240);
 	}
@@ -380,10 +382,10 @@ public class Volcano : ModEnchantment {
 		if (globalItem.Item_Counter2[index] > 0) {
 			return;
 		}
-		player.Center.LookForHostileNPC(out List<NPC> npclist, 125);
+		target.Center.LookForHostileNPC(out List<NPC> npclist, 125);
 		foreach (NPC npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f),
-				ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+				ModUtils.DirectionFromPlayerToNPC(target.Center.X, npc.Center.X)));
 		}
 		for (int i = 0; i < 35; i++) {
 			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
@@ -394,6 +396,9 @@ public class Volcano : ModEnchantment {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust3 = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(125, 125), 0, 0, DustID.Torch);
+			Main.dust[dust3].noGravity = true;
+			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
 		}
 		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 	}

@@ -199,6 +199,9 @@ namespace Roguelike.Common.Utils {
 		/// <param name="entity"></param>
 		public static void Dust_BelongTo(this Dust dust, Entity entity) {
 			if (dust.active) {
+				if (RoguelikeGlobalDust.Dust[dust.dustIndex] == null) {
+					return;
+				}
 				RoguelikeGlobalDust.Dust[dust.dustIndex].entityToFollow = entity;
 			}
 		}

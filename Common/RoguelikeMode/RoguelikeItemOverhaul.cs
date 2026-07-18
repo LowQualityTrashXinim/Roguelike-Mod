@@ -111,8 +111,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 					break;
-				case ItemID.ChlorophyteClaymore:
-					break;
 			}
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

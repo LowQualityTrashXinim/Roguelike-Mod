@@ -91,7 +91,7 @@ namespace Roguelike.Common.RoguelikeMode {
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0) {
-				tooltips.Add(new(Mod, "", "This weapon use speed doesn't get affected by attack speed stats"));
+				tooltips.Add(new(Mod, "", "This weapon's attack speed is not affected by your attack speed stat."));
 			}
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {

@@ -732,3 +732,11 @@ The following are bugs that is fixed:
 Now augmentation itself exist as a item and can be imblued into item via divine hammer.
 649/ When choosing spoils that drop accessory, have 50% to drop a augmentation.
 650/ Changed Heart Break Instrument.
+651/ Udpated items localization of the mod.
+652/ Spoils adjustment :
+- Reduce amount of selectable spoil from 5 -> 3.
+653/ Updated ModObject to included EntitySource and OnSpawn hook.
+654/ Disable bosses's boss bags during within the mod.
+655/ Deleted code that does absolutely nothing.
+656/ Added the rest of Don't hit reward and no hit for all vanilla bosses.
+657/ Updated build number from 0.0.19.6 -> 0.0.19.7 /.

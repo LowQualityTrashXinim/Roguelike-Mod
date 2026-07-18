@@ -29,4 +29,35 @@ namespace Roguelike.Contents.Items.Consumable.SpecialReward
 	internal class WallOfFleshNoHitReward : BaseNoHit {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.WallOfFleshGoatMountItem);
 	}
+	internal class QueenSlimeNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.QueenSlimePetItem);
+	}
+	internal class DestroyerNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.DestroyerPetItem);
+	}
+	internal class SkeletronPrimeNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.SkeletronPrimePetItem);
+	}
+	internal class TheTwinsNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.TwinsPetItem);
+	}
+	internal class PlanteraNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.PlanteraPetItem);
+	}
+	internal class GolemNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.GolemPetItem);
+	}
+	internal class FairyQueenNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.FairyQueenPetItem);
+	}
+	internal class DukeFishronNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.DukeFishronPetItem);
+	}
+	internal class LunaticCultistNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.LunaticCultistPetItem);
+	}
+	internal class MoonLordNoHitReward : BaseNoHit {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.MoonLordPetItem);
+	}
+
 }

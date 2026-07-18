@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.ObjectSystem;
@@ -146,6 +148,9 @@ public class ModObject : IModType, ILoadable {
 	public Mod Mod { get; internal set; }
 	public string Name => GetType().Name;
 	public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
+	public virtual void OnSpawn(IEntitySource source) {
+
+	}
 	/// <summary>
 	/// Use this to create new Mod Object in the world.<br/>
 	/// The position that this mod object use to be created is World Coord, not tile coord
@@ -172,6 +177,36 @@ public class ModObject : IModType, ILoadable {
 		obj.position = position;
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
+		obj.OnSpawn(new EntitySource_Misc(null));
+		return obj;
+	}
+	/// <summary>
+	/// Use this to create new Mod Object in the world.<br/>
+	/// The position that this mod object use to be created is World Coord, not tile coord
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="velocity"></param>
+	/// <param name="type"></param>
+	/// <returns></returns>
+	public static ModObject NewModObject(IEntitySource source, Vector2 position, Vector2 velocity, int type) {
+		int whoAmI = -1;
+		for (int i = 0; i < ObjectSystem.MaxObjects; i++) {
+			if (ObjectSystem.Objects[i] == null || !ObjectSystem.Objects[i].active) {
+				whoAmI = i;
+				break;
+			}
+		}
+		if (whoAmI == ObjectSystem.MaxObjects || whoAmI == -1) {
+			whoAmI = 0;
+		}
+		ObjectSystem.Objects[whoAmI] = ObjectSystem.GetModObject(type);
+		ModObject obj = ObjectSystem.Objects[whoAmI];
+		obj.SetDefaults();
+		obj.active = true;
+		obj.position = position;
+		obj.velocity = velocity;
+		obj.whoAmI = whoAmI;
+		obj.OnSpawn(source);
 		return obj;
 	}
 	public static int GetModObjectType<T>() where T : ModObject {

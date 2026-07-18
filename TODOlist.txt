@@ -344,8 +344,19 @@ During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
+Depending on weapon held tag, player gain ability to gain energy with the following effect:
+- regenerate 1 energy per second
+- 1% of damage dealt is converted to energy ( have 5s CD )
+- Taken damage is converted to energy at 200% of its original value
+- Standing close to hostile projectile or hostile energy will drain energy from them ( 30 energy per second )
+
+Add in a visual background for skill that different classifaction/catagory
+
 16/ Rework the following Enchantment according to the WE localization:
 - Titanium Sword
+- Cactus Sword
+- Bat Bat
+- Volcano
 
 17/ Rework and reimplement lootbox into the mod:
 Wooden, Iron, Silver, Gold lootbox is normally can be found in these following place:
@@ -394,6 +405,117 @@ Add more swing attack to it
 Fix up the attack to make it look more smooth.
 - DrainingVeilBlade
 The Shadow clone sword should be consistent with player and also follow player.
+Turn the on attack ability to Alt click ability with 5s CD
+
+- Rectangle shotgun
+Shoot out slow moving rectangle shape bullets
+If the rectangle bullet collide with each other, a explosion will occur dealing combined damage of all nearby rectangle bullet
+After a while the bullet will correct itself to move horizontally, increasing its damage by 100% but lose ability to pierce
+Hitting enemy in this state will create a small explosion
+- Knife Revolver
+Shooting at close proximity will make the projectile from the weapon deal additional slash at 100% weapon damage ( the slash have no cool down )
+
+1st : remove Magic gem bow synergy status and replace them with a centralize magic bow synergy, do the same with swotaff
+2nd : the following synergy weapon gain additional buff
+
+23/ Cursed mode : 
+"*Pushing once self to absolute extreme, a fine tribute to god !*"
+- Everything take 50% less damage ( multiplicative )
+- The following perk become unobtainable:
+> Unnerfed
+> Perk Blocker
+- All form of extra life is disable
+- When hit, life regeneration ( not natural life regen ) is multiply by 0, and slowly goes back up to 1 overtime ( +0.01x/s )
+- Each time getting hit, reduce 1% of player maximum health, up to 40% ( multiplicative ), this slowly regenerate ( 1% per 10s )
+- Boss gain 50% damage reduction and 25% percentage damage
+- Boss will always have a bad modifier goes along with
+- Defeating a boss will force you to choose a bad modifier yourself ( not choosing will result to random modifier to be set )
+However, your hardship is rewarded to ease the pain:
+- Spoil can be choosen up to 2 times
+- You always spawn with 2 extra perks
+- Double amount of money/point gained
+
+24/ Nightmare Mode :
+"*Your worst imagination came into life*"
+- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
+- Bosses health is increased by 500%,  gain 25% damage reduction, deal 25% percentage damage, at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
+- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
+- Enemy may spawn in group.
+- During a boss fight in pre hardmode, a portal of demon occasionally opened spawning Demon, fire imp and fire bat ( won't drop anything ), defeating Wall of Flesh, the portal is then upgraded to celestial portal spawning random celestial being.
+- Your immunity frame is halve.
+- Automatically turned your world into Master mode difficulty ( can exist along with FTW )
+
+25/ Skill idea to implement
+Skill 1: ( C: 100 )
+- Copy the last skill in your list at double the cost
+
+Skill 2: ( C: 100 )
+- Copy the first skill in your list at halve the cost
+
+Skill 3: ( C: 40 )
+- Loop the next spell 4 time but decreases projectile damage by 40
+
+Skill 4: ( C: 200 | D: 3s | CD: 1s )
+- Cast all projectile type spell in the spell list at triple the cost ( modifier won't be carried )
+
+Skill 4: ( C: 500 | D: 1s )
+- Increases damage of your skill by 400% but make all of your projectile also deal damage to you
+
+Skill 5: ( C: 500 )
+- For how much energy you have left, increases damage by 1 per energy consumed
+
+Skill 6: ( C: 0 | D: 60s)
+- Duplicate all of your modifier skill in your skill list at seemingly no cost
+
+Skill 7: ( C: 100)
+- The more skill activate before this skill, the more damage is increased, if this skill is at the last position, the damage is further increased
+Note: the math is as follow 
+Damage = A * A * 0.05 * 2?0
+A is the amount of spell before it
+2?0 is whenever condition of T or F
+
+Skill 8: ( C: 300 )
+- For each skill after this skill activate, increases duration of skill list by 1s
+
+26/ Implement training room.
+The training room in the mod would be a randomly generated variable that consist of sets of weapons and armor,
+collection of perks, potions, skills and artifacts all randomly set in player varible
+And player are given a randomly generated arena and their goal is to beat a boss along with constantly generated mobs spawn
+This is meant to help player adapt to roguelike situtation better and also act as a test for we developer 
+to see the complexity of the idea and act as a anchor point to be implemented into the main mode
+
+The loot that is set to player inventory is always pulled from existing pool of loot.
+> This is so that player is never given a unfair situation
+
+27/ Evo mode:
+"*A change of pace is always nice*"
+
+The blessings are to be follow:
+- You can level up all of your current weapon in your inventory after defeating a boss
+- Level up effect is strengthen by 1000%
+- Weapon effect is now capless
+- Weapon can spawn with level status
+- Accessory and armor can also level up but its effect is not boosted by above buff
+- Player can use relic merge in transmutation to level up their weapon ( 1 weapon = 1 level )
+- Perk will also gain a stack for each boss defeated
+
+However there are drawbacks:
+- Relic, Weapon enchantment and augmentation are banned
+( Token of pride still can bypass this )
+- You can only have up to 3 perks
+- Monster in the world overtime will become stronger as their level passively increases
+Note: the monster will has its stats increases by 1% + 1 flat for every minute passed ( this is counted as monster level )
+
+this mode doesn't count as difficulty increases
+
+28/ Synergy energy alternative obtain method: 
+- Have 50% chance to replace a SSR spoil
+- Synergy lootbox or Black lootbox have 25% to drop synergy energy
+- Rainbow lootbox have 100% chance to drop synergy energy
+
+29/ Relic adjustment :
+- Relic set name visable all time and only collapse the description
+- Remove some relic set and move them to Perk.
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

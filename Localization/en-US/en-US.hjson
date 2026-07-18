@@ -806,9 +806,9 @@ Mods: {
 				Tooltip:
 					'''
 					"A few steps removed from an Evangelion finale"
-					Replaced normal bullet with Blood shot
-					Hitting enemy with blood shot will rain down blood from the sky
-					Blood shot on hit have 10% chance to inflict [c/810000:Boiling blood]
+					Replaces a normal bullet with Blood Shot.
+					Hitting an enemy with Blood Shot summons a rain of blood that falls down from the sky
+					On hit, Blood Shots have a 10% chance to inflict [c/810000:Boiling blood].
 					'''
 				ExtraInfo:
 					'''
@@ -2249,7 +2249,7 @@ Mods: {
 
 			BlueMinishark: {
 				DisplayName: Blue Minishark
-				Tooltip: New and improve with a new coat of paint !
+				Tooltip: New and improved with a new coat of paint !
 			}
 
 			RelentlessAbomination: {
@@ -2298,10 +2298,10 @@ Mods: {
 				DisplayName: Tundra Bow
 				Tooltip:
 					'''
-					Every 15th shot will shoot out a stream of snowball for 2s
-					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
-					After 100th shot, create a snow storm which last for 5s
-					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
+					After every 15th shot, it shoots out a stream of snowball for 2s.
+					Hitting an enemy will increase snowball's damage by 10% (capped up to 50%)
+					After every 100th shot, it creates a snow storm which lasts for 5s.
+					Snowballs shot from this bow inflict [c/75ffff:Hypothermia].
 					'''
 				ExtraInfo:
 					'''
@@ -2417,9 +2417,10 @@ Mods: {
 				DisplayName: Snowball Cannon MK2
 				Tooltip:
 					'''
-					After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
-					Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
-					Alt click to swing your gun like a sword dealing 50% more damage
+					After every 10th shot, it shoots out a giant snowball that deals 300% of the weapon's damage. 
+					Standard shots have a 10% chance to be accompanied by an Ice bolt. 
+					Ice bolt deals 125% of the weapon's damage. 
+					Alt click to swing the gun like a sword, dealing 50% more damage.
 					'''
 			}
 
@@ -2551,7 +2552,7 @@ Mods: {
 
 			EnchantedCopperSword: {
 				DisplayName: Enchanted Copper Sword
-				Tooltip: A derserve forgotten
+				Tooltip: A derserved forgotten
 			}
 
 			SniperRifle: {
@@ -2717,7 +2718,7 @@ Mods: {
 
 			GoldComplexBow: {
 				DisplayName: Gold Complex Bow
-				Tooltip: There are actually nothing complex, you just pull the string like normal
+				Tooltip: There is actually nothing complex, just pull the string like always.
 			}
 
 			PlatinumComplexBow: {
@@ -2764,20 +2765,18 @@ Mods: {
 				Tooltip:
 					'''
 					"Even if my mind falls apart, even if we are separated by universe, I will still find and love you"
-					Gclef attack alongside you
-					Right click to summon 4 small weak blades that attack with you 
+					Gclef attack alongside you which build up [c/0088ff:Climax of Tragedy]
+					Right click to summon 4 small weak blades that attack with you
 					'''
 				ExtraInfo:
 					'''
-					Each time Gclef attack, it count toward "Climax of Tragedy"
-
-					When Climax of Tragedy reached its peak (30 stacks), right click to activate Climax of Tragedy for 40s
+					When [c/0088ff:Climax of Tragedy] reached its peak (30 stacks), right click to activate [c/0088ff:Climax of Tragedy] for 40s
 					During the duration, every normal attack is enhanced and you summon 4 musical instruments
 
-					During Climax of Tragedy, normal attack will increases Climax of Tragedy stack instead of Gclef
+					During [c/0088ff:Climax of Tragedy], normal attack will increases stack instead of Gclef
 					Reaching the 30 stacks will make the next attack releases a skill
 
-					At the "Climax of Tragedy" peak (30 stacks):
+					At the [c/0088ff:Climax of Tragedy] peak (30 stacks):
 					Left click: make every musical instruments do a final attack dealing 100 + 1500% weapon damage
 					Right click: make every musical instrument fly rotate around you and heal you for 100 + 5% maximum health 
 					and granting you 20% damage, 10% crit chance, 20 hp regen, 15 DEF and 30% movement speed for 15s

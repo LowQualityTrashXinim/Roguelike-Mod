@@ -108,7 +108,7 @@ public class SpoilsUIState : UIState {
 		panel.VAlign = .3f;
 		panel.UISetWidthHeight(150, 53);
 		Append(panel);
-		Limit_Spoils = 5;
+		Limit_Spoils = 3;
 		btn_List = new List<SpoilsUIButton>();
 	}
 	public override void OnActivate() {

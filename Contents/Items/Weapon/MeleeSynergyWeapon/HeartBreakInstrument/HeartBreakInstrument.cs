@@ -243,7 +243,7 @@ public class HeartBreakInstrument : SynergyModItem {
 			}
 			for (int i = 0; i < amount; i++) {
 				Vector2 vel = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(180);
-				projectile = Projectile.NewProjectileDirect(source, pos.PositionOFFSET(velocity, 35f) + Main.rand.NextVector2Circular(15, 15), vel, type, damage, knockback, player.whoAmI, 5 * Main.rand.NextBool().ToDirectionInt(), 9, 25 + i * 3);
+				projectile = Projectile.NewProjectileDirect(source, pos.PositionOFFSET(velocity, 35f) + Main.rand.NextVector2Circular(15, 15), vel, type, damage + (int)(damage * .1f * i), knockback, player.whoAmI, 5 * Main.rand.NextBool().ToDirectionInt(), 9, 25 + i * 3);
 				if (projectile.ModProjectile is HeartBreakInstrument_Slash_Projectile proj) {
 					proj.ScaleX = 5f + Main.rand.NextFloat(-1, 1);
 					proj.ScaleY = .5f;
@@ -511,7 +511,7 @@ public class HeartBreakInstrument_StarProjectile : ModProjectile {
 		Main.instance.LoadItem(Type);
 		Texture2D texture = TextureAssets.Projectile[Type].Value;
 		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition + origin;
 		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
 		Main.EntitySpriteDraw(texture, drawpos, null, Color.Cyan, MathHelper.PiOver2, origin, Projectile.scale * 2, SpriteEffects.None);
 		Main.EntitySpriteDraw(texture, drawpos, null, Color.White, MathHelper.PiOver2, origin, Projectile.scale, SpriteEffects.None);
