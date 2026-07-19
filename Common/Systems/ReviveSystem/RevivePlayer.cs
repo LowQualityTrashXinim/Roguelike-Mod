@@ -54,11 +54,6 @@ public class RevivePlayer : ModPlayer {
 	}
 
 	public override void ResetEffects() {
-		// Put all the revives into the not active state
-		foreach (var revive in ReviveSystem.Revives) {
-			revive.Deactivate(Player);
-		}
-		
 		// Clear all the revive consumable references
 		ReviveConsumables?.Clear();
 	}
@@ -75,8 +70,8 @@ public class RevivePlayer : ModPlayer {
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		// 1) evaluate all the chance based revives
 		foreach (var revive in ReviveSystem.Revives) {
-			if (!revive.GetActive(Player) 
-			    || revive.ReviveType != ReviveType.Chance
+			if (revive.ReviveType != ReviveType.Chance
+			    || !revive.IsActive(Player) 
 			    || !revive.GetChanceResult(Player)) {
 				continue;
 			}
@@ -92,9 +87,8 @@ public class RevivePlayer : ModPlayer {
 		
 		// 2) use all the conditional revives
 		foreach (var revive in ReviveSystem.Revives) {
-			if (!revive.GetActive(Player) 
-				|| revive.ReviveType != ReviveType.Conditional
-				|| !revive.GetConditionResult(Player)) {
+			if (revive.ReviveType != ReviveType.Conditional
+				|| !revive.IsActive(Player)) {
 				continue;
 			}
 			
@@ -105,8 +99,8 @@ public class RevivePlayer : ModPlayer {
 		
 		// 3) use all the consumable revives
 		foreach (var revive in ReviveSystem.Revives) {
-			if (!revive.GetActive(Player) 
-				|| revive.ReviveType != ReviveType.Uses
+			if (revive.ReviveType != ReviveType.Uses
+				|| !revive.IsActive(Player) 
 				|| revive.GetUseResult(Player)) {
 				continue;
 			}
@@ -191,7 +185,7 @@ public class RevivePlayer : ModPlayer {
 		
 		// Make sure the list has a count that is divisible by 8
 		// (makes the data byte aligned)
-		for (int i = (8 - flags.Count % 8) % 8; i >= 0; i--) {
+		for (int i = 8 - flags.Count % 8; i > 0; i--) {
 			flags.Add(false);
 		}
 

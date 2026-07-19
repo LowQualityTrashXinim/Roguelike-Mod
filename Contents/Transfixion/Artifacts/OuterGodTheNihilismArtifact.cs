@@ -15,14 +15,17 @@ internal class OuterGodTheNihilismArtifact : Artifact {
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.Black;
 }
-public class OuterGod_Revive : ModRevive {
+public class OuterGod_Revive : Revive {
 	public override void SetStaticDefaults() {
-		ReviveChanceType = true;
+		ReviveType = ReviveType.Chance;
+		Chance = 0.80f;
 	}
-	public override bool ReviveCondition(Player player) {
-		return player.HasArtifact<OuterGodTheNihilismArtifact>() && Main.rand.NextFloat() <= .8f;
+
+	public override bool IsActive(Player player) {
+		return player.HasArtifact<OuterGodTheNihilismArtifact>();
 	}
-	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+
+	public override void OnRevive(Player player) {
 		player.Heal(100);
 		player.immune = true;
 		player.AddImmuneTime(-1, 90);

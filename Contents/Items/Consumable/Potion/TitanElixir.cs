@@ -16,11 +16,11 @@ internal class TitanElixir : ModItem {
 		Item.value = Item.sellPrice(gold: 25);
 	}
 }
-public class TitanElixir_Revive : ModRevive {
-	public override bool ReviveCondition(Player player) {
+public class TitanElixir_Revive : Revive {
+	public override bool IsActive(Player player) {
 		return player.HasBuff(ModContent.BuffType<Protection>());
 	}
-	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+	public override void OnRevive(Player player) {
 		player.ClearBuff(ModContent.BuffType<Protection>());
 		player.Heal(player.statLifeMax2);
 		player.immune = true;

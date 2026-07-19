@@ -29,6 +29,13 @@ public abstract class Revive : ModType {
 	}
 
 	/// <summary>
+	/// Determines if the revive is currently activated for the
+	/// player. Place custom logic here to determine if it is
+	/// allowed to be active and revive the player if true.
+	/// </summary>
+	public abstract bool IsActive(Player player);
+	
+	/// <summary>
 	/// Gets the chance based revive result from the
 	/// data object of the player.
 	/// </summary>
@@ -37,28 +44,11 @@ public abstract class Revive : ModType {
 	}
 
 	/// <summary>
-	/// Figures out if the player is allowed to be killed.
-	/// Return true to prevent the player from being killed.
-	/// Returns false by default. Only gets called when this
-	/// is a Conditional revive.
-	/// </summary>
-	public virtual bool GetConditionResult(Player player) {
-		return false;
-	}
-
-	/// <summary>
 	/// Checks if this revive was already used. Returns
 	/// true when the revive was used.
 	/// </summary>
 	public bool GetUseResult(Player player) {
 		return GetData(player).Used;
-	}
-
-	/// <summary>
-	/// Gets the active flag from the data object of this revive.
-	/// </summary>
-	public bool GetActive(Player player) {
-		return GetData(player).Active;
 	}
 
 	/// <summary>
@@ -97,20 +87,6 @@ public abstract class Revive : ModType {
 		if (ReviveType == ReviveType.Chance) {
 			RecalculateChance(data);
 		}
-	}
-
-	/// <summary>
-	/// Puts the revive into the active state.
-	/// </summary>
-	public void Activate(Player player) {
-		GetData(player).Active = true;
-	}
-
-	/// <summary>
-	/// Puts the revive into the not active state.
-	/// </summary>
-	public void Deactivate(Player player) {
-		GetData(player).Active = false;
 	}
 
 	/// <summary>

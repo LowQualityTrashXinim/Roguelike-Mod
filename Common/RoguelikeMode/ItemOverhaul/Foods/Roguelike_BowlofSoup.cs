@@ -29,11 +29,11 @@ public class Roguelike_BowlofSoup_ModBuff : FoodItemTier2 {
 		player.pickSpeed += .15f;
 	}
 }
-public class Roguelike_BowlofSoup_Revive : ModRevive {
-	public override bool ReviveCondition(Player player) {
+public class Roguelike_BowlofSoup_Revive : Revive {
+	public override bool IsActive(Player player) {
 		return player.HasBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>());
 	}
-	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+	public override void OnRevive(Player player) {
 		player.ClearBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>());
 		player.Heal(player.statLifeMax2);
 		player.immune = true;
