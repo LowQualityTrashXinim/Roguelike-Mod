@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Texture;

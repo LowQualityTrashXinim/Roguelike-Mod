@@ -1,5 +1,5 @@
 ﻿using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.DataStructures;
