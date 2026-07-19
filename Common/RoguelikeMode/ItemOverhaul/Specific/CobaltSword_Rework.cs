@@ -42,11 +42,11 @@ public class Roguelike_CobaltSword : GlobalItem {
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
-			var Swordprojectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 100), velocity, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 15, 15);
+			var Swordprojectile = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 1, 10);
 			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
 				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
 				Swordprojectile.scale += .2f;
-				modproj.ScaleX = 30;
+				modproj.ScaleX = 10;
 			}
 			Swordprojectile.usesIDStaticNPCImmunity = false;
 			Swordprojectile.usesLocalNPCImmunity = true;

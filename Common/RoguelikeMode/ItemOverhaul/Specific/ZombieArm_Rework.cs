@@ -1,4 +1,5 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
 using System.Collections.Generic;
@@ -23,25 +24,23 @@ internal class ZombieArm_Rework : GlobalItem {
 		target.AddBuff<RA_Rotting>(ModUtils.ToSecond(3));
 	}
 }
-public class ZombieArm_Rework_ModPlayer : ModPlayer {
-	public override void ResetEffects() {
-		PlayerStatsHandle.SetSecondLifeCondition(Player, "ZombieArm", Player.HeldItem.type == ItemID.ZombieArm);
+public class ZombieArm_Rework_Revive : ModRevive {
+	public override bool ReviveCondition(Player player) {
+		return player.HeldItem.type == ItemID.ZombieArm;
 	}
+	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		player.Heal(player.statLifeMax2);
+		player.AddImmuneTime(-1, 120);
+		player.immune = true;
+		if (player.HeldItem.type == ItemID.ZombieArm) {
+			player.HeldItem.TurnToAir();
+		}
+	}
+}
+public class ZombieArm_Rework_ModPlayer : ModPlayer {
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (Player.HeldItem.type == ItemID.ZombieArm) {
 			Player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Player.GetWeaponDamage(Player.HeldItem), 1));
 		}
-	}
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		if(PlayerStatsHandle.GetSecondLife(Player, "ZombieArm")) {
-			Player.Heal(Player.statLifeMax2);
-			Player.AddImmuneTime(-1, 120);
-			Player.immune = true;
-			if(Player.HeldItem.type == ItemID.ZombieArm) {
-				Player.HeldItem.TurnToAir();
-			}
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }

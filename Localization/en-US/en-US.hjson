@@ -561,6 +561,7 @@ Mods: {
 			ExampleWhipProjectile.DisplayName: Example Whip Projectile
 			HeartBreakInstrument_Ghost_Projectile.DisplayName: Heart Break Instrument_ Ghost_ Projectile
 			HeartBreakInstrument_StarProjectile.DisplayName: Heart Break Instrument_ Star Projectile
+			Roguelike_EnchantedSword_Slash_Projectile.DisplayName: Roguelike_ Enchanted Sword_ Slash_ Projectile
 		}
 
 		NPCs: {
@@ -2920,6 +2921,106 @@ Mods: {
 
 			Augmentation: {
 				DisplayName: Augmentation
+				Tooltip: ""
+			}
+
+			DestroyerDonHitReward: {
+				DisplayName: Destroyer Don Hit Reward
+				Tooltip: ""
+			}
+
+			DestroyerNoHitReward: {
+				DisplayName: Destroyer No Hit Reward
+				Tooltip: ""
+			}
+
+			DukeFishronDonHitReward: {
+				DisplayName: Duke Fishron Don Hit Reward
+				Tooltip: ""
+			}
+
+			DukeFishronNoHitReward: {
+				DisplayName: Duke Fishron No Hit Reward
+				Tooltip: ""
+			}
+
+			FairyQueenDonHitReward: {
+				DisplayName: Fairy Queen Don Hit Reward
+				Tooltip: ""
+			}
+
+			FairyQueenNoHitReward: {
+				DisplayName: Fairy Queen No Hit Reward
+				Tooltip: ""
+			}
+
+			GolemDonHitReward: {
+				DisplayName: Golem Don Hit Reward
+				Tooltip: ""
+			}
+
+			GolemNoHitReward: {
+				DisplayName: Golem No Hit Reward
+				Tooltip: ""
+			}
+
+			LunaticCultistDonHitReward: {
+				DisplayName: Lunatic Cultist Don Hit Reward
+				Tooltip: ""
+			}
+
+			LunaticCultistNoHitReward: {
+				DisplayName: Lunatic Cultist No Hit Reward
+				Tooltip: ""
+			}
+
+			MoonLordDonHitReward: {
+				DisplayName: Moon Lord Don Hit Reward
+				Tooltip: ""
+			}
+
+			MoonLordNoHitReward: {
+				DisplayName: Moon Lord No Hit Reward
+				Tooltip: ""
+			}
+
+			PlanteraDonHitReward: {
+				DisplayName: Plantera Don Hit Reward
+				Tooltip: ""
+			}
+
+			PlanteraNoHitReward: {
+				DisplayName: Plantera No Hit Reward
+				Tooltip: ""
+			}
+
+			QueenSlimeDonHitReward: {
+				DisplayName: Queen Slime Don Hit Reward
+				Tooltip: ""
+			}
+
+			QueenSlimeNoHitReward: {
+				DisplayName: Queen Slime No Hit Reward
+				Tooltip: ""
+			}
+
+			SkeletronPrimeDonHitReward: {
+				DisplayName: Skeletron Prime Don Hit Reward
+				Tooltip: ""
+			}
+
+			SkeletronPrimeNoHitReward: {
+				DisplayName: Skeletron Prime No Hit Reward
+				Tooltip: ""
+			}
+
+			TheTwinsDonHitReward: {
+				DisplayName: The Twins Don Hit Reward
+				Tooltip: ""
+			}
+
+			TheTwinsNoHitReward: {
+				DisplayName: The Twins No Hit Reward
 				Tooltip: ""
 			}
 		}

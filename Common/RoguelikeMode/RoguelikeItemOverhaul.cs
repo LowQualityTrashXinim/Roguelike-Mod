@@ -57,12 +57,6 @@ namespace Roguelike.Common.RoguelikeMode {
 				case ItemID.ChainKnife:
 					item.damage += 12;
 					break;
-				case ItemID.EnchantedSword:
-					item.damage = 93;
-					item.scale += .5f;
-					item.useTime = item.useAnimation = 42;
-					item.shootsEveryUse = true;
-					break;
 				case ItemID.InfluxWaver:
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;

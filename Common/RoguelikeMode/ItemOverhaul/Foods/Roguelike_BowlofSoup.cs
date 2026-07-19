@@ -1,4 +1,5 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.DataStructures;
@@ -28,18 +29,14 @@ public class Roguelike_BowlofSoup_ModBuff : FoodItemTier2 {
 		player.pickSpeed += .15f;
 	}
 }
-public class Roguelike_BowlofSoup_ModPlayer : ModPlayer {
-	public override void ResetEffects() {
-		PlayerStatsHandle.SetSecondLifeCondition(Player, "RW_BoS", Player.HasBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>()));
+public class Roguelike_BowlofSoup_Revive : ModRevive {
+	public override bool ReviveCondition(Player player) {
+		return player.HasBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>());
 	}
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-		if (PlayerStatsHandle.GetSecondLife(Player, "RW_BoS")) {
-			Player.ClearBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>());
-			Player.Heal(Player.statLifeMax2);
-			Player.immune = true;
-			Player.AddImmuneTime(-1, 90);
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
+	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		player.ClearBuff(ModContent.BuffType<Roguelike_BowlofSoup_ModBuff>());
+		player.Heal(player.statLifeMax2);
+		player.immune = true;
+		player.AddImmuneTime(-1, 90);
 	}
 }

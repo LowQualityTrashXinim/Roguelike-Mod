@@ -43,25 +43,29 @@ internal class Roguelike_IceBlade : GlobalItem {
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		Roguelike_IceBlade_ModPlayer modplayer = player.GetModPlayer<Roguelike_IceBlade_ModPlayer>();
 		Vector2 velUnit = velocity.SafeNormalize(Vector2.Zero);
-		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+		var velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(55);
+		var Swordprojectile = Projectile.NewProjectileDirect(source, position + velUnit * item.Size.Length(), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
+		if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
+			modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.IceBlade] * 2;
+			modproj.ScaleX = 9 + Main.rand.NextFloat();
+		}
+		Swordprojectile.usesIDStaticNPCImmunity = false;
+		Swordprojectile.usesLocalNPCImmunity = true;
+		Swordprojectile.localNPCHitCooldown = 60;
 
-			var velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(55);
-			var Swordprojectile = Projectile.NewProjectileDirect(source, position + velUnit * item.Size.Length(), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
-			if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
-				modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.IceBlade] * 2;
-				modproj.ScaleX = 9 + Main.rand.NextFloat();
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			int amount = Main.rand.Next(1, 5);
+			for (int i = 0; i < amount; i++) {
+				Projectile.NewProjectile(source, position, velocity.Vector2RandomSpread(Main.rand.NextFloat(1,2), Main.rand.NextFloat(.91f, 1.1f)).Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
 			}
-			Swordprojectile.usesIDStaticNPCImmunity = false;
-			Swordprojectile.usesLocalNPCImmunity = true;
-			Swordprojectile.localNPCHitCooldown = 60;
 		}
 		if (modplayer.Counter >= 120) {
 			Vector2 rotate = velocity.RotatedBy(MathHelper.PiOver2);
 			for (int i = 0; i < 5; i++) {
 				Projectile projectile = Projectile.NewProjectileDirect(source, position + velUnit * 35 * (1 + i), rotate.Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt(), ModContent.ProjectileType<IceBlade_Slash_Projectile>(), damage, knockback, player.whoAmI, .1f, 3, 5 + i);
 				if (projectile.ModProjectile is IceBlade_Slash_Projectile slash) {
-					slash.ScaleX = 2 + i * .05f;
-					slash.ScaleY = .5f;
+					slash.ScaleX = 2 + i * 1.5f;
+					slash.ScaleY = .5f + i * .25f;
 					slash.ProjectileColor = Color.Cyan;
 					slash.ExtraDelay = 30;
 				}
@@ -104,7 +108,7 @@ public class IceBlade_Slash_Projectile : SimplePiercingProjectile2 {
 	public override void OnKill(int timeLeft) {
 		int amount = Main.rand.Next(4, 9);
 		for (int i = 0; i < amount; i++) {
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(2, 2) * Main.rand.NextFloat(1, 2), ModContent.ProjectileType<ReworkIceShards>(), (int)(Projectile.damage * .25f), Projectile.knockBack, Projectile.owner);
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.5f, 1.2f), ModContent.ProjectileType<ReworkIceShards>(), (int)(Projectile.damage * .25f), Projectile.knockBack, Projectile.owner);
 			projectile.hostile = false;
 			projectile.friendly = true;
 			projectile.penetrate = 2;

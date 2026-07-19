@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Roguelike.Common.Utils;
+using System;
 
 namespace Roguelike.Contents.Projectiles;
 //This projectile is made with the purpose of being reused everywhere and anytime
@@ -72,8 +73,8 @@ public class SimplePiercingProjectile : ModProjectile {
 public class SimplePiercingProjectile2 : ModProjectile {
 	public Color ProjectileColor = Color.White;
 	public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.PiercingStarlight);
-	float InitialScaleXValue = 0f;
-	float InitialScaleYValue = 0f;
+	protected float InitialScaleXValue = 0f;
+	protected float InitialScaleYValue = 0f;
 	public float ScaleX = 3f;
 	public float ScaleY = 1f;
 	public int TimeBeforeActive = 0;
@@ -86,7 +87,11 @@ public class SimplePiercingProjectile2 : ModProjectile {
 	/// </summary>
 	public float ExtraDelay = 0;
 	int timeleft_Onspawn = 0;
-	public override void SetDefaults() {
+	/// <summary>
+	/// Set this to false if you do not want the scale of projectile become dependant on AI2 timeleft
+	/// </summary>
+	public bool ExcessScaling = true;
+	public override sealed void SetDefaults() {
 		Projectile.width = Projectile.height = 36;
 		Projectile.penetrate = -1;
 		Projectile.timeLeft = 60;
@@ -95,7 +100,7 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		Projectile.tileCollide = false;
 		Projectile.friendly = true;
 	}
-	public override void OnSpawn(IEntitySource source) {
+	public override sealed void OnSpawn(IEntitySource source) {
 		if (Projectile.ai[0] <= 0) {
 			Projectile.ai[0] = 1;
 		}
@@ -111,19 +116,22 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		OffSetFromPlayer = (CenterBefore - Main.player[Projectile.owner].Center).Length();
 		PlayerCenterOrigin = Main.player[Projectile.owner].Center;
 	}
-	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
+	public override sealed bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		if (Projectile.ai[2] >= 0) {
 			return false;
 		}
 		Vector2 pointEdgeOfProjectile = Projectile.Center.IgnoreTilePositionOFFSET(Projectile.rotation.ToRotationVector2(), 18 * ScaleX);
 		Vector2 pointEdgeOfProjectile2 = Projectile.Center.IgnoreTilePositionOFFSET((Projectile.rotation + MathHelper.Pi).ToRotationVector2(), 18 * ScaleX);
-		return ModUtils.Collision_PointAB_EntityCollide(targetHitbox, pointEdgeOfProjectile, pointEdgeOfProjectile2);
+		Vector2 pointEdgeOfProjectileHeight = Projectile.Center.IgnoreTilePositionOFFSET((Projectile.rotation + MathHelper.PiOver2).ToRotationVector2(), 9 * ScaleY);
+		Vector2 pointEdgeOfProjectile2Height = Projectile.Center.IgnoreTilePositionOFFSET((Projectile.rotation + +MathHelper.PiOver2 + MathHelper.Pi).ToRotationVector2(), 9 * ScaleY);
+		return ModUtils.Collision_PointAB_EntityCollide(targetHitbox, pointEdgeOfProjectile, pointEdgeOfProjectile2)
+		|| ModUtils.Collision_PointAB_EntityCollide(targetHitbox, pointEdgeOfProjectileHeight, pointEdgeOfProjectile2Height);
 	}
 	public override Color? GetAlpha(Color lightColor) {
 		ProjectileColor.A = 0;
 		return ProjectileColor * (Projectile.timeLeft / Projectile.ai[1]);
 	}
-	public override void AI() {
+	public override sealed void AI() {
 		if (--Projectile.ai[2] >= 0) {
 			Projectile.Center = CenterBefore;
 			return;
@@ -149,10 +157,16 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		if (--ExtraDelay >= 0) {
 			Projectile.timeLeft = timeleft_Onspawn;
 		}
-		ScaleX = InitialScaleXValue * (Projectile.timeLeft / timeleft);
-		ScaleY = InitialScaleYValue * (Projectile.timeLeft / timeleft);
+		if (!ExcessScaling) {
+			ScaleX = InitialScaleXValue * Math.Clamp(Projectile.timeLeft / (float)timeleft_Onspawn, 0, 1f);
+			ScaleY = InitialScaleYValue * Math.Clamp(Projectile.timeLeft / (float)timeleft_Onspawn, 0, 1f);
+		}
+		else {
+			ScaleX = InitialScaleXValue * Projectile.timeLeft / timeleft;
+			ScaleY = InitialScaleYValue * Projectile.timeLeft / timeleft;
+		}
 	}
-	public override bool PreDraw(ref Color lightColor) {
+	public override sealed bool PreDraw(ref Color lightColor) {
 		if (Projectile.ai[2] < 0) {
 			Main.instance.LoadProjectile(ProjectileID.PiercingStarlight);
 			var texture = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;

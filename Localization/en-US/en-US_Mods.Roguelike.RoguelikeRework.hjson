@@ -32,6 +32,7 @@ PhoenixBlaster:
 	'''
 ChlorophyteClaymore:
 	'''
+	Intro effect: Attacking will shoots out more chlorophyte orbs for 9s
 	Shoot out a bouncy chlorophyte orb that each time it bounces creates a spore cloud
 	Wait 2.5s to create a slash that deal 3x damage
 	Wait additional 1.5s to shoot out chlorophyte orb along with the slash
@@ -58,6 +59,12 @@ BoneSword:
 	Wait 1s to deal 1.2x damage and summon arch of 3 cursed skull
 	Wait additional 2s to deal 1.5x damage instead of 1.2x damage
 	Striking at perfect moment will make your attacks as if you waited
+	'''
+EnchantedSword:
+	'''
+	Intro effect: Enhanced weapon ability to shoot enchanted beam for 4s
+	Swing the sword will do enchanted slash
+	Wait for 2s to strengthen the enchanted slash
 	'''
 ShortSword:
 	'''
@@ -108,7 +115,8 @@ CopperBroadSword:
 	'''
 IceBlade:
 	'''
-	Intro effect: When attack, additional slash is accommpany for 7s
+	Intro effect: When attacking, weapon shoots out more ice bolts is accommpany for 7s
+	You will do additional ice slash that deal 85% of weapon damage
 	After waiting 2s, the next strike releases bunch of frost strike and weapon deal 4x damage
 	Frost strike after a short while will explode dealing damage to nearby enemy
 	and releases bunch of ice shard

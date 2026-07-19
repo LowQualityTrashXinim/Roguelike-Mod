@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Potion;
@@ -14,13 +15,23 @@ internal class OuterGodTheNihilismArtifact : Artifact {
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.Black;
 }
+public class OuterGod_Revive : ModRevive {
+	public override void SetStaticDefaults() {
+		ReviveChanceType = true;
+	}
+	public override bool ReviveCondition(Player player) {
+		return player.HasArtifact<OuterGodTheNihilismArtifact>() && Main.rand.NextFloat() <= .8f;
+	}
+	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		player.Heal(100);
+		player.immune = true;
+		player.AddImmuneTime(-1, 90);
+	}
+}
 public class OuterGodTheNihilismModPlayer : ModPlayer {
 	public bool artifact = false;
 	public override void ResetEffects() {
 		artifact = Player.HasArtifact<OuterGodTheNihilismArtifact>();
-		if (artifact) {
-			PlayerStatsHandle.Set_Chance_SecondLifeCondition(Player, "OuterGod_Nihilism", .8f);
-		}
 	}
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
 	}
@@ -101,15 +112,6 @@ public class OuterGodTheNihilismModPlayer : ModPlayer {
 			return true;
 		}
 		return base.FreeDodge(info);
-	}
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		if (PlayerStatsHandle.Get_Chance_SecondLife(Player, "OuterGod_Nihilism")) {
-			Player.Heal(100);
-			Player.immune = true;
-			Player.AddImmuneTime(-1, 90);
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }
 public class ShatterShell : ModBuff {

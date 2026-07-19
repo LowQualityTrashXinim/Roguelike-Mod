@@ -43,6 +43,12 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter / 240f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			int amount = Main.rand.Next(1, 5);
+			for (int i = 0; i < amount; i++) {
+				Projectile.NewProjectile(source, position, velocity.Vector2RandomSpread(Main.rand.NextFloat(1, 2), Main.rand.NextFloat(.91f, 1.1f)).Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
+			}
+		}
 		int counter = player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter - 150;
 		player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().ChlorophyteClaymore_Counter = -player.itemAnimationMax;
 		if (player.GetModPlayer<Roguelike_ChlorophyteClaymore_ModPlayer>().PerfectStrike) {

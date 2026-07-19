@@ -1,5 +1,7 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.Augmentation;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -139,7 +141,17 @@ public class BR_Modifier13 : BossRushModifier {
 		player.GetModPlayer<BossRushModifierPlayer>().Extralife = true;
 	}
 }
-
+public class BossRushModifier_Revive : ModRevive {
+	public override bool ReviveCondition(Player player) {
+		return player.GetModPlayer<BossRushModifierPlayer>().Extralife;
+	}
+	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		player.GetModPlayer<BossRushModifierPlayer>().Extralife = false;
+		player.AddImmuneTime(-1, 120);
+		player.immune = true;
+		player.Heal(player.statLifeMax2);
+	}
+}
 public class BossRushModifierPlayer : ModPlayer {
 	//+50% damage
 	public bool IncreasesDamage = false;
@@ -165,9 +177,6 @@ public class BossRushModifierPlayer : ModPlayer {
 		LifeSteal = false;
 		AlwaysCrit = false;
 		Extralife = false;
-	}
-	public override void ResetEffects() {
-		PlayerStatsHandle.SetSecondLifeCondition(Player, "Modifier_Extralife", Extralife);
 	}
 	public override void UpdateEquips() {
 		PlayerStatsHandle handler = Player.ModPlayerStats();
@@ -196,16 +205,6 @@ public class BossRushModifierPlayer : ModPlayer {
 			SecondStrikeCD = 120;
 			Player.StrikeNPCDirect(target, hit);
 		}
-	}
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		if (PlayerStatsHandle.GetSecondLife(Player, "Modifier_ExtraLife")) {
-			Extralife = false;
-			Player.AddImmuneTime(-1, 120);
-			Player.immune = true;
-			Player.Heal(Player.statLifeMax2);
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }
 public class BR_BadModifier1 : BossRushModifier {
@@ -313,7 +312,7 @@ public class BR_BadModifier11 : BossRushModifier {
 		ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier = Type;
 	}
 }
-public class BR_BadModifier12: BossRushModifier {
+public class BR_BadModifier12 : BossRushModifier {
 	public override string Description => "Everytime a npc got hit, they gain 0.5s of i-frame";
 	public override void OnChoose() {
 		ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier = Type;

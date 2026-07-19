@@ -740,3 +740,14 @@ Now augmentation itself exist as a item and can be imblued into item via divine 
 655/ Deleted code that does absolutely nothing.
 656/ Added the rest of Don't hit reward and no hit for all vanilla bosses.
 657/ Updated build number from 0.0.19.6 -> 0.0.19.7 /.
+658/ The following vanilla item has been adjusted or reworked:
+- Ice Blade:
+Intro effect changed and its basic attack is adjusted for more close range dps.
+Ice blade max charged shattered ice shard receives AI adjustment to decreases AoE range
+- Chlorophyte claymore: 
+Intro effect added.
+- Enchanted Sword:
+Intro effect: Enhanced weapon ability to shoot enchanted beam for 4s
+Swing the sword will do enchanted slash
+Wait for 2s to strengthen the enchanted slash
+659/ Implemented new revive handler system for the mod.

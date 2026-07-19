@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
@@ -347,9 +348,6 @@ public class TitanPower : Perk {
 		}
 		return false;
 	}
-	public override void ResetEffect(Player player) {
-		PlayerStatsHandle.SetSecondLifeCondition(player, "P_TP", !player.HasBuff(ModContent.BuffType<TitanPowerBuff>()));
-	}
 	public override void UpdateEquip(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: 200);
@@ -357,15 +355,16 @@ public class TitanPower : Perk {
 		modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.25f, Flat: 15);
 		player.endurance += .4f;
 	}
-	public override bool PreKill(Player player) {
-		if (PlayerStatsHandle.GetSecondLife(player, "P_TP")) {
+	public class Titan_Revive : ModRevive {
+		public override bool ReviveCondition(Player player) {
+			return !player.HasBuff(ModContent.BuffType<TitanPowerBuff>()) && player.HasPerk<TitanPower>();
+		}
+		public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
 			player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), ModUtils.ToMinute(4));
 			player.Heal(player.statLifeMax2);
 			player.immune = true;
 			player.AddImmuneTime(-1, 90);
-			return true;
 		}
-		return false;
 	}
 }
 public class TitanPowerBuff : ModBuff {

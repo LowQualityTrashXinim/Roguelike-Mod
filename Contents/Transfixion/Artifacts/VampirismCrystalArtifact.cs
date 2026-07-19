@@ -1,19 +1,21 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System;
-using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Utils;
-using System.Collections.Generic;
+using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.ItemVariant;
-using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
+using Roguelike.Contents.Transfixion.Augmentation.Contents;
 using Roguelike.Contents.Transfixion.Perks;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {
@@ -26,13 +28,23 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			yield return new(ModContent.ItemType<LifeStealPotion>(), 5);
 		}
 	}
+	public class Vampire_Revive : ModRevive {
+		public override bool ReviveCondition(Player player) {
+			return !player.HasBuff(ModContent.BuffType<SecondChance>()) && player.HasArtifact<VampirismCrystalArtifact>();
+		}
+		public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+			player.Heal(player.statLifeMax2);
+			player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
+			player.immune = true;
+			player.AddImmuneTime(-1, 90);
+		}
+	}
 	public class VampirePlayer : ModPlayer {
 		bool Vampire = false;
 		int cooldown = 0;
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
 			cooldown = ModUtils.CountDown(cooldown);
-			PlayerStatsHandle.SetSecondLifeCondition(Player, "VC", !Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire);
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
@@ -54,16 +66,6 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			if (Vampire) {
 				LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
 			}
-		}
-		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (PlayerStatsHandle.GetSecondLife(Player, "VC")) {
-				Player.Heal(Player.statLifeMax2);
-				Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
-				Player.immune = true;
-				Player.AddImmuneTime(-1, 90);
-				return false;
-			}
-			return true;
 		}
 		private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1) {
 			if (cooldown > 0) {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.DataStructures;
 using Roguelike.Common.Utils;
@@ -459,8 +460,8 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
 	}
 	public void Add_ExtraLifeWeapon(Item item) {
-		if (!listItem.Contains(item))
-			listItem.Add(item);
+		if (!Player.GetModPlayer<RevivePlayer>().listItem.Contains(item))
+			Player.GetModPlayer<RevivePlayer>().listItem.Add(item);
 	}
 	public void Set_TemporaryMana(int limit, int counterlimit) {
 		TemporaryMana_Limit += limit;
@@ -761,36 +762,6 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
-	}
-	public List<Item> listItem = new();
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		foreach (var chance in Chance_SecondLife.Values) {
-			if (Main.rand.NextFloat() <= chance.ChanceValue) {
-				chance.ApprovedConditionPass();
-				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
-			}
-		}
-		foreach (var chance in SecondLife.Values) {
-			if (chance.Condition) {
-				chance.ApprovedConditionPass();
-				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
-			}
-		}
-		if (listItem != null && listItem.Count > 0) {
-			int typeItem = listItem[0].type;
-
-			ModObject.NewModObject(
-			new EntitySource_AccessoryVisual(typeItem, Player),
-			Player.Center,
-			Vector2.Zero,
-			ModObject.GetModObjectType<AccessoryVisualModObject>());
-
-			listItem[0].TurnToAir();
-			listItem.RemoveAt(0);
-			Player.Heal(Player.statLifeMax2 / 2);
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 	/// <summary>
 	/// This should be uses in always update code
@@ -1173,75 +1144,6 @@ public class PlayerStatsHandle : ModPlayer {
 		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 		float newcooldown = handle.EnchantmentCoolDown.ApplyTo(cooldown);
 		return (int)Math.Max(Math.Ceiling(newcooldown), 0);
-	}
-	public Dictionary<string, ConditionApproved> SecondLife = new();
-	public static void SetSecondLifeCondition(Player player, string context, bool condition) {
-		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.SecondLife.ContainsKey(context)) {
-			modplayer.SecondLife[context].ChangeCondition(condition);
-		}
-		else {
-			modplayer.SecondLife.Add(context, new(condition));
-		}
-	}
-	public static bool GetSecondLife(Player player, string context) {
-		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.SecondLife.ContainsKey(context)) {
-			if (modplayer.SecondLife[context].Approved) {
-				modplayer.SecondLife[context].DeApproved();
-				return true;
-			}
-		}
-		return false;
-	}
-	public Dictionary<string, ConditionApproved> Chance_SecondLife = new();
-	public static void Set_Chance_SecondLifeCondition(Player player, string context, float chance) {
-		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
-			modplayer.Chance_SecondLife[context].SetChanceValue(chance);
-		}
-		else {
-			modplayer.Chance_SecondLife.Add(context, new(chance));
-		}
-	}
-	public static bool Get_Chance_SecondLife(Player player, string context) {
-		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
-			if (modplayer.Chance_SecondLife[context].Approved) {
-				modplayer.Chance_SecondLife[context].DeApproved();
-				return true;
-			}
-		}
-		return false;
-	}
-}
-public class AccessoryVisualModObject : ModObject {
-	public int AccType = -1;
-	public int alpha = 255;
-	public override void SetDefaults() {
-		timeLeft = 120;
-	}
-	public override void OnSpawn(IEntitySource source) {
-		if (source is EntitySource_AccessoryVisual visual) {
-			AccType = visual.AccType;
-		}
-	}
-	public override void AI() {
-		velocity = -Vector2.UnitY * 2;
-		alpha = (int)MathHelper.Lerp(0, 255, timeLeft / 120f);
-	}
-	public override void Draw(SpriteBatch spritebatch) {
-		if (AccType < 0) {
-			return;
-		}
-		float opacity = alpha / 255f;
-		Main.instance.LoadItem(AccType);
-		Texture2D texture = TextureAssets.Item[AccType].Value;
-		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawPos = position - Main.screenPosition + origin;
-		Color color = new Color(255, 255, 255, 0) * opacity;
-		color.A = (byte)alpha;
-		spritebatch.Draw(texture, drawPos, null, color, 0, origin, 1f, SpriteEffects.None, 0);
 	}
 }
 /// <summary>

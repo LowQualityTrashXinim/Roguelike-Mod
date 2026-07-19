@@ -1,4 +1,5 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
@@ -15,19 +16,15 @@ internal class TitanElixir : ModItem {
 		Item.value = Item.sellPrice(gold: 25);
 	}
 }
-public class TitanElixir_ModPlayer : ModPlayer {
-	public override void ResetEffects() {
-		PlayerStatsHandle.SetSecondLifeCondition(Player, "TE", Player.HasBuff(ModContent.BuffType<Protection>()));
+public class TitanElixir_Revive : ModRevive {
+	public override bool ReviveCondition(Player player) {
+		return player.HasBuff(ModContent.BuffType<Protection>());
 	}
-	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-		if (PlayerStatsHandle.GetSecondLife(Player, "TE")) {
-			Player.ClearBuff(ModContent.BuffType<Protection>());
-			Player.Heal(Player.statLifeMax2);
-			Player.immune = true;
-			Player.AddImmuneTime(-1, 90);
-			return false;
-		}
-		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
+	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		player.ClearBuff(ModContent.BuffType<Protection>());
+		player.Heal(player.statLifeMax2);
+		player.immune = true;
+		player.AddImmuneTime(-1, 90);
 	}
 }
 internal class Protection : ModBuff {
