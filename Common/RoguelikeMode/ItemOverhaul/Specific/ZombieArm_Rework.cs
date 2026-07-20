@@ -1,5 +1,5 @@
 ﻿using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination;
 using System.Collections.Generic;
@@ -24,11 +24,11 @@ internal class ZombieArm_Rework : GlobalItem {
 		target.AddBuff<RA_Rotting>(ModUtils.ToSecond(3));
 	}
 }
-public class ZombieArm_Rework_Revive : ModRevive {
-	public override bool ReviveCondition(Player player) {
+public class ZombieArm_Rework_Revive : Revive {
+	public override bool IsActive(Player player) {
 		return player.HeldItem.type == ItemID.ZombieArm;
 	}
-	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+	public override void OnRevive(Player player) {
 		player.Heal(player.statLifeMax2);
 		player.AddImmuneTime(-1, 120);
 		player.immune = true;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Potion;
@@ -28,11 +28,11 @@ namespace Roguelike.Contents.Transfixion.Artifacts {
 			yield return new(ModContent.ItemType<LifeStealPotion>(), 5);
 		}
 	}
-	public class Vampire_Revive : ModRevive {
-		public override bool ReviveCondition(Player player) {
+	public class Vampire_Revive : Revive {
+		public override bool IsActive(Player player) {
 			return !player.HasBuff(ModContent.BuffType<SecondChance>()) && player.HasArtifact<VampirismCrystalArtifact>();
 		}
-		public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		public override void OnRevive(Player player) {
 			player.Heal(player.statLifeMax2);
 			player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
 			player.immune = true;
