@@ -1055,3 +1055,18 @@ FocusAttack: {
 		Capped at 100%, stacking raise the cap by 100
 		'''
 }
+
+BombshellArtillery: {
+	DisplayName: Bombshell Artillery
+	Description:
+		'''
+		"Miner self defense equipment"
+		Upon hit, thrown out 4 friendly bombs that after a while explode dealing 90 damage
+		Increases defense by 5
+		'''
+	Description1:
+		'''
+		Increases amount of bomb thrown by 1
+		Increases defense by 5
+		'''
+}

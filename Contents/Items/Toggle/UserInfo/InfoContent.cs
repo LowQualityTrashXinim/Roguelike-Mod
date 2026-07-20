@@ -78,7 +78,7 @@ public class Info_AttackSpeed : InfoType {
 	}
 	public override string InfoText() {
 		Player player = Main.LocalPlayer;
-		return $"{ModUtils.ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}%";
+		return $"{ModUtils.ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}";
 	}
 }
 public class Info_HPRegen : InfoType {
@@ -104,7 +104,7 @@ public class Info_HP : InfoType {
 		if (player.lifeForce) {
 			increases = 20;
 		}
-		return $"{ModUtils.ItemIcon(ItemID.LifeCrystal)} health: {player.statLifeMax2} Additive: {Math.Round(player.ModPlayerStats().UpdateHPMax.Additive * 100 + increases)}% base: {Math.Round(player.ModPlayerStats().UpdateHPMax.Base * 100)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateHPMax.Multiplicative)}x";
+		return $"{ModUtils.ItemIcon(ItemID.LifeCrystal)} health: {player.statLifeMax2} Additive: {Math.Round(player.ModPlayerStats().UpdateHPMax.Additive * 100 + increases)}% base: {Math.Round(player.ModPlayerStats().UpdateHPMax.Base * 100)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateHPMax.Multiplicative)}x Flat: {Math.Round(player.ModPlayerStats().UpdateHPMax.Flat)}";
 	}
 }
 public class Info_ManaRegen : InfoType {
@@ -113,7 +113,7 @@ public class Info_ManaRegen : InfoType {
 	}
 	public override string InfoText() {
 		Player player = Main.LocalPlayer;
-		return $"{ModUtils.ItemIcon(ItemID.ManaRegenerationBand)} Mana regen: {player.manaRegen} Additive: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Additive * 100)}% base: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Base)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Multiplicative)}x";
+		return $"{ModUtils.ItemIcon(ItemID.ManaRegenerationBand)} Mana regen: {player.manaRegen} Additive: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Additive * 100)}% base: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Base)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Multiplicative)}x Flat: {Math.Round(player.ModPlayerStats().UpdateManaRegen.Flat)}";
 	}
 }
 public class Info_Mana : InfoType {
@@ -122,7 +122,7 @@ public class Info_Mana : InfoType {
 	}
 	public override string InfoText() {
 		Player player = Main.LocalPlayer;
-		return $"{ModUtils.ItemIcon(ItemID.ManaCrystal)} Mana: {player.statManaMax2} Additive: {Math.Round(player.ModPlayerStats().UpdateManaMax.Additive * 100)}% base: {Math.Round(player.ModPlayerStats().UpdateManaMax.Base)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateManaMax.Multiplicative)}x";
+		return $"{ModUtils.ItemIcon(ItemID.ManaCrystal)} Mana: {player.statManaMax2} Additive: {Math.Round(player.ModPlayerStats().UpdateManaMax.Additive * 100)}% base: {Math.Round(player.ModPlayerStats().UpdateManaMax.Base)} Multiplicative: {Math.Round(player.ModPlayerStats().UpdateManaMax.Multiplicative)}x Flat: {Math.Round(player.ModPlayerStats().UpdateManaMax.Flat)}";
 	}
 }
 public class Info_ManaReduction : InfoType {

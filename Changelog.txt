@@ -751,3 +751,5 @@ Intro effect: Enhanced weapon ability to shoot enchanted beam for 4s
 Swing the sword will do enchanted slash
 Wait for 2s to strengthen the enchanted slash
 659/ Implemented new revive handler system for the mod.
+660/ Updated SimpleSlashProjectile2 for multi purpose uses.
+661/ Changed BombshellArtillery from being a relic set to being a perk.

@@ -221,12 +221,6 @@ ___________Weapon balance todo list___________
 - Weapon that act like upgraded to their pre-hardmode will gain the same buff as their pre hardmode counter part
 Otherwise, the weapon shall be nerfed in term of damage to act more inline with mods overall dps
 
-- Enchanted Sword:
-Intro effect: Shoot more enchanted beam every swing for 4s
-Enchanted beam from the sword on hit will spawn more short live beam near enemy
-Swing the sword will do enchanted slash
-Wait for 2s to strengthen the enchanted slash
-
 ___________Buff balance___________
 Make vanilla buff that work only on player to work also on NPC.
 
@@ -381,8 +375,14 @@ The core component will contain the following:
 
 20/ work on general building tool in-game for builder of the mod
 - Must include copy and paste function and flip function
+- Enable placement preview.
 
 21/ Rework User Info Tablet.
+- Separate the 4 classes information into each different sections that player can choose to focus.
+- Add in a main state UI panel that hold focus information.
+- Turn all of the information that player should know into InfoType class.
+- Add in more clarity for what each section, panel will inform you of.
+- Allow for full customisability of what information player want to pay close attention to.
 
 22/ Listing problematic content that need adjustment:
 - Essence Lantern ( artifact )
@@ -515,7 +515,7 @@ this mode doesn't count as difficulty increases
 
 29/ Relic adjustment :
 - Relic set name visable all time and only collapse the description
-- Remove some relic set and move them to Perk.
+- Remove some relic set and move them to Perk and strengthen some of relic set effect.
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.
