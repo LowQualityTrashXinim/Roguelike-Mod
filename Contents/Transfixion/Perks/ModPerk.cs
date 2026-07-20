@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Contents.Items.RelicItem.RelicSetContent;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
@@ -10,6 +11,8 @@ using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -355,11 +358,11 @@ public class TitanPower : Perk {
 		modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.25f, Flat: 15);
 		player.endurance += .4f;
 	}
-	public class Titan_Revive : ModRevive {
-		public override bool ReviveCondition(Player player) {
+	public class Titan_Revive : Revive {
+		public override bool IsActive(Player player) {
 			return !player.HasBuff(ModContent.BuffType<TitanPowerBuff>()) && player.HasPerk<TitanPower>();
 		}
-		public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		public override void OnRevive(Player player) {
 			player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), ModUtils.ToMinute(4));
 			player.Heal(player.statLifeMax2);
 			player.immune = true;
@@ -921,5 +924,93 @@ public class FocusAttack : Perk {
 	public class EvolvedWeapon_ModPlayer : ModPlayer {
 		public int HeldWeapon = ItemID.None;
 		public int Counter = 0;
+	}
+}
+public class BombshellArtillery : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override string ModifyToolTip() {
+		if(StackAmount(Main.LocalPlayer) == 0) {
+			return Description;
+		}
+		return ModUtils.LocalizationText("ModPerk", $"{Name}.Description1"); ;
+	}
+	public override void UpdateEquip(Player player) {
+		player.ModPlayerStats().UpdateDefenseBase.Base += 5 * StackAmount(player);
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		SpawnBomb(player);
+	}
+	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		SpawnBomb(player);
+	}
+	public void SpawnBomb(Player player) {
+		int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(30);
+		int amount = 4 + StackAmount(player) - 1;
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(5f, 5f) * Main.rand.NextFloat(2, 3.5f), ModContent.ProjectileType<ReactiveBombProjectile>(), damage, 3f, player.whoAmI);
+		}
+	}
+	public class ReactiveBombProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Bomb);
+		public override void SetDefaults() {
+			Projectile.width = 30;
+			Projectile.height = 30;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.timeLeft = 500;
+			Projectile.penetrate = 1;
+		}
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+			fallThrough = false;
+			return true;
+		}
+		public override bool OnTileCollide(Vector2 oldVelocity) {
+			if (++Projectile.ai[1] <= 6) {
+				Projectile.netUpdate = true;
+				Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
+				if (Projectile.velocity.X != oldVelocity.X) Projectile.velocity.X = (int)(-oldVelocity.X * 0.6f);
+				if (Projectile.velocity.Y != oldVelocity.Y) Projectile.velocity.Y = (int)(-oldVelocity.Y * 0.6f);
+			}
+			else {
+				if (Projectile.velocity.IsLimitReached(.1f)) {
+					Projectile.position += Projectile.velocity;
+					Projectile.velocity = Vector2.Zero;
+				}
+			}
+			return false;
+		}
+		public override bool? CanDamage() {
+			return Projectile.ai[0] >= 30;
+		}
+		public override void AI() {
+			if (Projectile.velocity.IsLimitReached(.1f)) {
+				Projectile.rotation += Projectile.velocity.ToRotation() * .1f;
+			}
+			Projectile.velocity.X *= 0.98f;
+			Projectile.velocity.Y += 0.35f;
+			Projectile.ai[0]++;
+		}
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			Projectile.Kill();
+		}
+		public override void OnKill(int timeLeft) {
+			Player player = Main.player[Projectile.owner];
+			for (int i = 0; i < 34; i++) {
+				var randomSpeed = Main.rand.NextVector2Circular(5, 5);
+				Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 3.5f));
+				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Torch);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(7.5f, 7.5f) * Main.rand.NextFloat(2, 4);
+				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 3f);
+			}
+			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
+			foreach (var npc in npclist) {
+				int direction = Projectile.Center.X < npc.Center.X ? -1 : 1;
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, direction, false, 3.5f));
+			}
+		}
 	}
 }

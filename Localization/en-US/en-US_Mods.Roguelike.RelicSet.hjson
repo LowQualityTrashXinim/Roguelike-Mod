@@ -81,16 +81,6 @@ RelicSet_StarfellStone: {
 		'''
 }
 
-RelicSet_BombshellArtillery: {
-	DisplayName: Bombshell Artillery
-	Description:
-		'''
-		"Miner self defense equipment"
-		Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
-		Increases defense by 10
-		'''
-}
-
 RelicSet_StellaCharm: {
 	DisplayName: Stella Charm
 	Description:
