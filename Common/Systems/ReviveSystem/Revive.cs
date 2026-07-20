@@ -24,6 +24,7 @@ public abstract class Revive : ModType {
 	public float Chance { get; protected set; }
 
 	protected override void Register() {
+		SetStaticDefaults();
 		Type = ReviveSystem.Add(this);
 		ModTypeLookup<Revive>.Register(this);
 	}

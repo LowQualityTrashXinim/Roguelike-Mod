@@ -22,7 +22,7 @@ public class RevivePlayer : ModPlayer {
 	/// Set to true during Revive actions.
 	/// </summary>
 	public bool NetUpdate;
-	
+
 	/// <summary>
 	/// List holding all the revive consumables that the player
 	/// has. This list is cleared during <see cref="ModPlayer.ResetEffects"/>.
@@ -43,7 +43,7 @@ public class RevivePlayer : ModPlayer {
 
 		// Copy all the item references into a new list
 		revivePlayer.ReviveConsumables = new List<Item>(ReviveConsumables);
-			
+
 		// Copy the data objects into a new dictionary
 		revivePlayer.ReviveData = [];
 		foreach (var revive in ReviveData) {
@@ -70,48 +70,54 @@ public class RevivePlayer : ModPlayer {
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		// 1) evaluate all the chance based revives
 		foreach (var revive in ReviveSystem.Revives) {
-			if (revive.ReviveType != ReviveType.Chance
-			    || !revive.IsActive(Player) 
-			    || !revive.GetChanceResult(Player)) {
+			if (!revive.IsActive(Player)) {
 				continue;
 			}
-
-			revive.OnRevive(Player);
-
-			if (Player.whoAmI == Main.myPlayer) {
-				revive.RecalculateChance(Player);
+			if (revive.ReviveType == ReviveType.Chance) {
+				if (revive.GetChanceResult(Player)) {
+					revive.OnRevive(Player);
+					if (Player.whoAmI == Main.myPlayer) {
+						revive.RecalculateChance(Player);
+					}
+					return false;
+				}
+				else {
+					if (Player.whoAmI == Main.myPlayer) {
+						revive.RecalculateChance(Player);
+					}
+				}
 			}
 
-			return true;
 		}
-		
+
 		// 2) use all the conditional revives
 		foreach (var revive in ReviveSystem.Revives) {
+
 			if (revive.ReviveType != ReviveType.Conditional
 				|| !revive.IsActive(Player)) {
 				continue;
 			}
-			
+
 			revive.OnRevive(Player);
 
-			return true;
+			return false;
 		}
-		
+
 		// 3) use all the consumable revives
 		foreach (var revive in ReviveSystem.Revives) {
 			if (revive.ReviveType != ReviveType.Uses
-				|| !revive.IsActive(Player) 
+				|| !revive.IsActive(Player)
 				|| revive.GetUseResult(Player)) {
 				continue;
 			}
-			
+
 			revive.OnRevive(Player);
 
 			revive.Used(Player);
-			
-			return true;
+
+			return false;
 		}
-		
+
 		// 4) use revive item
 		if (ReviveConsumables is { Count: > 0 }) {
 			var consumable = ReviveConsumables[0];
@@ -124,18 +130,18 @@ public class RevivePlayer : ModPlayer {
 
 			consumable.TurnToAir();
 			consumable.NetStateChanged();
-			
+
 			ReviveConsumables.RemoveAt(0);
-			
+
 			Player.Heal(Player.statLifeMax2 / 2);
-			
-			return true;
+
+			return false;
 		}
 
 		// 5) no revive triggered
-		return false;
+		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
-	
+
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 		SendRevivePacket(toWho, fromWho, true);
 		NetUpdate = false;
@@ -145,32 +151,34 @@ public class RevivePlayer : ModPlayer {
 		if (!NetUpdate) {
 			return;
 		}
-		
+
 		SendRevivePacket(-1, -1);
 		NetUpdate = false;
 	}
-
+	public override void CopyClientState(ModPlayer targetCopy) {
+		base.CopyClientState(targetCopy);
+	}
 	public void SendRevivePacket(int toWho, int fromWho, bool sync = false) {
 		// Create a new packet
 		var packet = Mod.GetPacket();
-		
+
 		// Write the message type
 		packet.Write(sync ? (byte)Roguelike.MessageType.ReviveSync : (byte)Roguelike.MessageType.Revive);
-		
+
 		// Write the player id
 		packet.Write(Player.whoAmI);
 
 		// Create a new list to hold all the data
 		var flags = new List<bool>();
-		
+
 		// Loop over all the revives
-		foreach(var revive in ReviveSystem.Revives) {
+		foreach (var revive in ReviveSystem.Revives) {
 			// Get the data object of this revive
 			var data = revive.GetData(Player);
-			
+
 			// Create a new bool for saving the data
 			bool flag;
-			
+
 			// Determine how to fill the data
 			switch (revive.ReviveType) {
 				case ReviveType.Conditional: continue;
@@ -178,11 +186,11 @@ public class RevivePlayer : ModPlayer {
 				case ReviveType.Uses: flag = data.Used; break;
 				default: continue;
 			}
-			
+
 			// Add the data to the list
 			flags.Add(flag);
 		}
-		
+
 		// Make sure the list has a count that is divisible by 8
 		// (makes the data byte aligned)
 		for (int i = 8 - flags.Count % 8; i > 0; i--) {
@@ -199,19 +207,19 @@ public class RevivePlayer : ModPlayer {
 
 			packet.Write(data);
 		}
-		
+
 		// Send the revive flag packet
-		packet.Send(toWho, fromWho );
+		packet.Send(toWho, fromWho);
 	}
 
 	public void ReceiveRevivePacket(BinaryReader binaryReader) {
 		// Message type and player id were already read!
-		
+
 		// Determine the amount of flags that are received.
 		int amount = 0;
-		
+
 		// Loop over all the revives
-		foreach(var revive in ReviveSystem.Revives) {
+		foreach (var revive in ReviveSystem.Revives) {
 			switch (revive.ReviveType) {
 				case ReviveType.Conditional: continue;
 				case ReviveType.Chance:
@@ -227,18 +235,18 @@ public class RevivePlayer : ModPlayer {
 
 		// Create List to hold the flags
 		var flags = new List<bool>();
-		
+
 		for (int i = 0; i < amount; i += 8) {
 			var data = binaryReader.ReadBitsByte();
-			
+
 			for (int j = 0; j < 8; j++) {
 				flags.Add(data[j]);
 			}
 		}
 
 		int index = 0;
-		
-		foreach(var revive in ReviveSystem.Revives) {
+
+		foreach (var revive in ReviveSystem.Revives) {
 			// Get the data object of this revive
 			var data = revive.GetData(Player);
 
@@ -246,10 +254,10 @@ public class RevivePlayer : ModPlayer {
 			switch (revive.ReviveType) {
 				case ReviveType.Conditional: continue;
 				case ReviveType.Chance: data.Chance = flags[index]; break;
-				case ReviveType.Uses: data.Used = flags[index];break;
+				case ReviveType.Uses: data.Used = flags[index]; break;
 				default: continue;
 			}
-			
+
 			// Go to the next index
 			index++;
 		}
