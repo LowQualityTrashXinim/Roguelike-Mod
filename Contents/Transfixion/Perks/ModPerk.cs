@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.RelicItem.RelicSetContent;
@@ -358,11 +358,11 @@ public class TitanPower : Perk {
 		modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.25f, Flat: 15);
 		player.endurance += .4f;
 	}
-	public class Titan_Revive : ModRevive {
-		public override bool ReviveCondition(Player player) {
+	public class Titan_Revive : Revive {
+		public override bool IsActive(Player player) {
 			return !player.HasBuff(ModContent.BuffType<TitanPowerBuff>()) && player.HasPerk<TitanPower>();
 		}
-		public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+		public override void OnRevive(Player player) {
 			player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), ModUtils.ToMinute(4));
 			player.Heal(player.statLifeMax2);
 			player.immune = true;

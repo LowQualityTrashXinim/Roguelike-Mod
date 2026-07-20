@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Global.Mechanic.Revive;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.DataStructures;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
@@ -460,8 +460,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
 	}
 	public void Add_ExtraLifeWeapon(Item item) {
-		if (!Player.GetModPlayer<RevivePlayer>().listItem.Contains(item))
-			Player.GetModPlayer<RevivePlayer>().listItem.Add(item);
+		Player.GetModPlayer<RevivePlayer>().ReviveConsumables.Add(item);
 	}
 	public void Set_TemporaryMana(int limit, int counterlimit) {
 		TemporaryMana_Limit += limit;

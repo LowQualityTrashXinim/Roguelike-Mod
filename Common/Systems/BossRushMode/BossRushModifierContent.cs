@@ -1,5 +1,5 @@
 ﻿using Roguelike.Common.Global;
-using Roguelike.Common.Global.Mechanic.Revive;
+using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Augmentation;
 using Terraria;
@@ -141,11 +141,11 @@ public class BR_Modifier13 : BossRushModifier {
 		player.GetModPlayer<BossRushModifierPlayer>().Extralife = true;
 	}
 }
-public class BossRushModifier_Revive : ModRevive {
-	public override bool ReviveCondition(Player player) {
+public class BossRushModifier_Revive : Revive {
+	public override bool IsActive(Player player) {
 		return player.GetModPlayer<BossRushModifierPlayer>().Extralife;
 	}
-	public override void OnRevive(Player player, double damage, int hitDirection, bool pvp, ref PlayerDeathReason damageSource) {
+	public override void OnRevive(Player player) {
 		player.GetModPlayer<BossRushModifierPlayer>().Extralife = false;
 		player.AddImmuneTime(-1, 120);
 		player.immune = true;
