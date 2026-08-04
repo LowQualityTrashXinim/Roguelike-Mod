@@ -8,8 +8,7 @@ using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.General;
 
-namespace Roguelike.Common.Global
-{
+namespace Roguelike.Common.Global {
 	internal class CommonRecipe : ModSystem {
 		public override void AddRecipes() {
 			//QoL convert
@@ -80,6 +79,17 @@ namespace Roguelike.Common.Global
 				ItemID.PlatinumBow,
 			});
 			RecipeGroup.RegisterGroup("Ore bow", OreBow);
+
+			RecipeGroup GemStaff = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Gem staff", new int[]
+{
+				ItemID.AmethystStaff,
+				ItemID.TopazStaff,
+				ItemID.SapphireStaff,
+				ItemID.EmeraldStaff,
+				ItemID.RubyStaff,
+				ItemID.DiamondStaff,
+});
+			RecipeGroup.RegisterGroup("Gem staff", OreBow);
 		}
 		public override void PostAddRecipes() {
 			RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();

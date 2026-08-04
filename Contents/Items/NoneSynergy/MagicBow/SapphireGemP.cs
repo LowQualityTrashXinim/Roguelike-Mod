@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow
+namespace Roguelike.Contents.Items.NoneSynergy.MagicBow
 {
 	internal class SapphireGemP : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Sapphire);

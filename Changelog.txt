@@ -753,3 +753,61 @@ Wait for 2s to strengthen the enchanted slash
 659/ Implemented new revive handler system for the mod.
 660/ Updated SimpleSlashProjectile2 for multi purpose uses.
 661/ Changed BombshellArtillery from being a relic set to being a perk.
+662/ Removed Magic Gem Bow's synergy status 
+663/ Added Magic Bow synergy weapon.
+664/ Fixed multiplayer compatibility.
+665/ Added new Recipe group.
+666/ Updated Night Edge enchantment.
+667/ Added 2 new item pool for lootbox.
+668/ Sniper Rifle included explanation for Completely Shattered debuff ( along with very small buff ).
+669/ Synergy weapon minor improvement in gameplay sense:
+- Improved stardust distributer tooltip ( included the functionality of the weapon ). [QoL]
+- Twilight Night swing animation got updated. [QoL]
+- The Burning Sky attacks from the sky buffed
+Increased the chance of meteor fall from the sky
+Remove fire arrow and hellfire arrow fall from the sky
+- Samanya right click only activate if you are holding the weapon.
+670/ Updated perk.
+> Lucky Strike :
+- Correct variable that what was incorrectly set to not appear.
+- Updated localization.
+
+> Uncertain strike :
+- Updated localization.
+
+> Mark of Spectre : 
+- Updated localization.
+- Added stack effect.
+
+> Mark of Slime :
+- Updated localization.
+
+> Mark of Wizard :
+- Updated localization.
+
+> Lethal KnockBack :
+- Updated localization.
+- Added stack effect.
+
+> Power Up | Strong heavy attack :
+- Updated localization.
+
+> Wind Slash :
+- Updated localization.
+- Added stack effect and a special stack effect at stack 3.
+
+> Life Force :
+- Fixed the 3rd effect of perk.
+
+> Back up Mana :
+- Updated localization.
+
+> Dirt :
+- Updated localization.
+
+> Healing Explosion :
+- Updated localization.
+
+> Added Last breath, Final Moment and Last option
+671/ Added in additional hook for projectile global to track the source of projectile
+672/ Added Nightmare mode as a official configuration.

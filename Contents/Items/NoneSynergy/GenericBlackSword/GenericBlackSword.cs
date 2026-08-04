@@ -105,7 +105,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.GenericBlackSword
 				Projectile.timeLeft += 314 * 2;
 			}
 			var player = Main.player[Projectile.owner];
-			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO || Main.mouseRight && Projectile.ai[1] == 0) {
+			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO || Main.mouseRight && Projectile.ai[1] == 0 && player.HeldItem.type == ModContent.ItemType<GenericBlackSword>()) {
 				if (Main.mouseRight) {
 					RightClickActivate = true;
 				}

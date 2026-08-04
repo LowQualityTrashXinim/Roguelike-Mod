@@ -438,7 +438,8 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public string textureString = null;
 		public string Tooltip = null;
 		/// <summary>
-		/// This will prevent from perk being able to be choose
+		/// This will prevent from perk being able to be choose<br/>
+		/// Setting this False will prevent this from being choosen
 		/// </summary>
 		public bool CanBeChoosen = true;
 		public int Type { get; private set; }
@@ -451,7 +452,7 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		}
 		public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
 		/// <summary>
-		/// If you are using <see cref="StackAmount(Player)"/> check for tooltip, always set it back at lest by 1
+		/// If you are using <see cref="StackAmount(Player)"/> check for tooltip, always set it back at least by 1
 		/// </summary>
 		/// <returns></returns>
 		public virtual string ModifyToolTip() {

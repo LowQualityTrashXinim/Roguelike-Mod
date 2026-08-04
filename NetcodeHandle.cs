@@ -27,9 +27,10 @@ namespace Roguelike {
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			MessageType msgType = (MessageType)reader.ReadByte();
-			byte playernumber = reader.ReadByte();
+			byte playernumber;
 			switch (msgType) {
 				case MessageType.NoHitBossNum:
+					playernumber = reader.ReadByte();
 					NoHitPlayerHandle nohitplayer = Main.player[playernumber].GetModPlayer<NoHitPlayerHandle>();
 					nohitplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -37,6 +38,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.SkillIssuePlayer:
+					playernumber = reader.ReadByte();
 					SkillIssuedArtifactPlayer SkillISsue = Main.player[playernumber].GetModPlayer<SkillIssuedArtifactPlayer>();
 					SkillISsue.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -44,6 +46,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.DrugSyncPlayer:
+					playernumber = reader.ReadByte();
 					WonderDrugPlayer drugplayer = Main.player[playernumber].GetModPlayer<WonderDrugPlayer>();
 					drugplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -51,6 +54,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.GambleAddiction:
+					playernumber = reader.ReadByte();
 					GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();
 					gamble.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -58,6 +62,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.GodUltimateChallenge:
+					playernumber = reader.ReadByte();
 					ModdedPlayer moddedplayer = Main.player[playernumber].GetModPlayer<ModdedPlayer>();
 					moddedplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -65,6 +70,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.Perk:
+					playernumber = reader.ReadByte();
 					PerkPlayer perkplayer = Main.player[playernumber].GetModPlayer<PerkPlayer>();
 					perkplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -79,6 +85,7 @@ namespace Roguelike {
 				//	}
 				//	break;
 				case MessageType.Artifact:
+					playernumber = reader.ReadByte();
 					ArtifactPlayer artifactPlayer = Main.player[playernumber].GetModPlayer<ArtifactPlayer>();
 					artifactPlayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -86,6 +93,7 @@ namespace Roguelike {
 					}
 					break;
 				case MessageType.PlayerStatsHandle:
+					playernumber = reader.ReadByte();
 					PlayerStatsHandle statplayer = Main.player[playernumber].GetModPlayer<PlayerStatsHandle>();
 					statplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
@@ -95,24 +103,24 @@ namespace Roguelike {
 
 				case MessageType.Revive:
 				case MessageType.ReviveSync: {
-					// Read the player id from the packet
-					int playerID = reader.ReadInt32();
-					
-					// Pass the reader to the RevivePlayer
-					Main.player[playerID].GetModPlayer<RevivePlayer>().ReceiveRevivePacket(reader);
-					
-					// Check if this is a normal revive packet received on the server.
-					// => clients and singleplayer don't have to forward the packet.
-					// => if this is a sync of the player, vanilla will take care of netcode
-					//    by calling ModPlayer.SyncPlayer again.
-					if (Main.netMode != NetmodeID.Server || msgType == MessageType.ReviveSync) {
-						break;
+						// Read the player id from the packet
+						byte playerID = reader.ReadByte();
+
+						// Pass the reader to the RevivePlayer
+						Main.player[playerID].GetModPlayer<RevivePlayer>().ReceiveRevivePacket(reader);
+
+						// Check if this is a normal revive packet received on the server.
+						// => clients and singleplayer don't have to forward the packet.
+						// => if this is a sync of the player, vanilla will take care of netcode
+						//    by calling ModPlayer.SyncPlayer again.
+						if (Main.netMode != NetmodeID.Server || msgType == MessageType.ReviveSync) {
+							break;
+						}
+
+						// Forward it to other clients
+						Main.player[playerID].GetModPlayer<RevivePlayer>().SendRevivePacket(-1, whoAmI);
 					}
-					
-					// Forward it to other clients
-					Main.player[playerID].GetModPlayer<RevivePlayer>().SendRevivePacket(-1, whoAmI);
-				}
-				break;
+					break;
 			}
 		}
 	}

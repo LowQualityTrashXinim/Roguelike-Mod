@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow
+namespace Roguelike.Contents.Items.NoneSynergy.MagicBow
 {
 	internal class DiamondGemP : ModProjectile {
 		public override string Texture => ModUtils.GetVanillaTexture<Item>(ItemID.Diamond);

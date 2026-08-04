@@ -22,25 +22,15 @@ internal class TheBurningSky : SynergyModItem {
 		if (type == ProjectileID.WoodenArrowFriendly)
 			type = ProjectileID.FireArrow;
 		SoundEngine.PlaySound(Item.UseSound);
-		Vector2 newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
-		Vector2 vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-		int arrow = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
-		Main.projectile[arrow].extraUpdates += 1;
-		Main.projectile[arrow].tileCollide = false;
-		if (Main.rand.NextBool(9)) {
+		Vector2 newPos;
+		Vector2 vel;
+		if (Main.rand.NextBool()) {
 			type = Main.rand.Next(met);
 			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
 			int proj = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, damage * 2, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
 			Main.projectile[proj].tileCollide = false;
-		}
-		if (Main.rand.NextBool(5)) {
-			type = ProjectileID.HellfireArrow;
-			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
-			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-			int meteor = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, (int)(damage * 1.2f), knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
-			Main.projectile[meteor].extraUpdates += 1;
-			Main.projectile[meteor].tileCollide = false;
+			Main.projectile[proj].extraUpdates += 1;
 		}
 		int straightArrow = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
 		if (met.Contains(type)) {

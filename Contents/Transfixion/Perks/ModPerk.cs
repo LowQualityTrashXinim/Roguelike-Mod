@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
@@ -10,12 +12,13 @@ using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
+using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -932,7 +935,7 @@ public class BombshellArtillery : Perk {
 		StackLimit = 3;
 	}
 	public override string ModifyToolTip() {
-		if(StackAmount(Main.LocalPlayer) == 0) {
+		if (StackAmount(Main.LocalPlayer) == 0) {
 			return Description;
 		}
 		return ModUtils.LocalizationText("ModPerk", $"{Name}.Description1"); ;
@@ -1010,6 +1013,80 @@ public class BombshellArtillery : Perk {
 			foreach (var npc in npclist) {
 				int direction = Projectile.Center.X < npc.Center.X ? -1 : 1;
 				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, direction, false, 3.5f));
+			}
+		}
+	}
+}
+public class LastOption : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		if (++player.GetModPlayer<LastOption_Player>().lastoptionCounter >= 600) {
+			Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15;
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<LastOption_Projectile>(), player.GetWeaponDamage(player.HeldItem) * 5 + 1, 1, player.whoAmI, player.HeldItem.type);
+			player.GetModPlayer<LastOption_Player>().lastoptionCounter = 0;
+		}
+	}
+	public class LastOption_Player : ModPlayer {
+		public int lastoptionCounter = 0;
+	}
+	public class LastOption_Projectile : ModProjectile {
+		public override string Texture => ModTexture.MissingTexture_Default;
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 10;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 999;
+		}
+		public override void AI() {
+			Projectile.rotation += MathHelper.ToRadians(10 * Projectile.direction);
+			if (Projectile.velocity.Y < 16) {
+				Projectile.velocity.Y += .5f;
+			}
+		}
+		public override bool PreDraw(ref Color lightColor) {
+			int ID = (int)Projectile.ai[0];
+			if (ID < 0) {
+				return true;
+			}
+			Main.instance.LoadItem(ID);
+			Texture2D texture = TextureAssets.Item[ID].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawpos = Projectile.Center - Main.screenPosition;
+			Main.EntitySpriteDraw(texture, drawpos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None);
+			return false;
+		}
+	}
+}
+public class LastBreath : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+		modifiers.SourceDamage += 2;
+	}
+	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+		modifiers.SourceDamage += 2;
+	}
+	public override bool PreKill(Player player) {
+		return player.statLife <= 200;
+	}
+}
+public class FinalMoment : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		if (player.statLife <= 200 || player.statLife <= player.statLifeMax2 * .2f) {
+			player.AddImmuneTime(-1, 10);
+			player.immune = true;
+			handler.UpdateHPRegen *= 0;
+			handler.UpdateHPRegen.Flat -= 60;
+			if (player.statLife <= 10) {
+				player.EasyKillPlayer($"{player.name} had decessed", 90000);
 			}
 		}
 	}

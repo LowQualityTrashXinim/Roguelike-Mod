@@ -136,6 +136,7 @@ LuckyStrike: {
 		+ Your damage increases range from 15% to 100% when striking enemy
 		+ Multiply your damage by 2.0x
 		+ Healing you from 1 to 50 health
+		All of the above chance effect can all activate at once
 		'''
 }
 
@@ -146,7 +147,7 @@ UncertainStrike: {
 		Your strike have
 		+ 33% chance to vary your damage from -15% to 55%
 		+ 15% chance to ignore 20 defenses or reduce damage by 20
-		( note : all of this effect can happen all at once )
+		All of the above chance effect can all activate at once
 		'''
 }
 
@@ -159,6 +160,11 @@ MarkOfSpectre: {
 		+ You are knockback less
 		- Damage taken is increases by 45%
 		'''
+	Description1:
+		'''
+		+ Increases the chance to dodge a attack by 5%
+		+ Decreases damage taken by 5%
+		'''
 }
 
 MarkOfSlime: {
@@ -169,6 +175,11 @@ MarkOfSlime: {
 		+ You are a lot more slippy, increases jump boost by 100%
 		+ When close to an enemy, shoots friendly slime spike dealing 11 + 22% weapon damage every 0.25s
 		'''
+	Description1:
+		'''
+		+ You take 15% less contact damage
+		+ Increases amount of friendly slime spike shoot
+		'''
 }
 
 MarkOfWizard: {
@@ -176,19 +187,27 @@ MarkOfWizard: {
 	Description:
 		'''
 		"What in the sage did you do ?"
-		+ When a enemy is detected nearby, shoots assortment of spells every 0.25s
+		+ When a enemy is detected nearby, shoots assortment of spells every 1s
 		+ You take 10% less damage from projectile ( only applied once )
 		Spells deal 31 + 42% weapon damage
 		'''
+	Description1: + Increases amount of spell can be created in session
 }
 
 LethalKnockBack: {
 	DisplayName: Lethal Knock Back
 	Description:
 		'''
-		+ You deal additional damage base on your knockback and target's knockback resistance
+		+ You deal additional damage base on your weapon knockback and target's knockback resistance
 		+ Increases melee knockback by 15%
 		- Decreases weapon damage by 11%
+		'''
+	Description1:
+		'''
+		+ Increases additional damage dealt base on weapon knockback
+		+ Increases melee knockback by 15%
+		+ Decreases weapon reduce damage value by 2%
+		( Above last effect only applied to this perk )
 		'''
 }
 
@@ -198,7 +217,13 @@ PowerUp: {
 		'''
 		+ Increases damage by 25%
 		+ Increases critical strike chance by 10
-		- Decreases attack speed by 35% ( the next stack only decreases by 10% )
+		- Decreases attack speed by 35%
+		'''
+	Description1:
+		'''
+		+ Increases damage by 25%
+		+ Increases critical strike chance by 10
+		- Decreases attack speed by 10%
 		'''
 }
 
@@ -210,6 +235,17 @@ WindSlash: {
 		 + Release a short wind slash upon swing that deal 75% of that weapon damage
 		 + Waiting for 1.5s will multiply wind slash damage by 3x and drastically increases velocity
 		 + Increases weapon base damage by 5
+		'''
+	Description1:
+		'''
+		+ Increases wind slash damage by 25%
+		+ Increases weapon base damage by 5
+		'''
+	Description2:
+		'''
+		+ Releases wind slashes in a arch of 3
+		+ Increases wind slash damage by 25%
+		+ Increases weapon base damage by 5
 		'''
 }
 
@@ -229,7 +265,13 @@ BackUpMana: {
 		'''
 		+ Increases your maximum mana by 67
 		+ When you are out of mana, instant fill up your mana
-		( Have 30s cool down, stacking this perk will reduce the duration by 7)
+		Have 30s cool down
+		'''
+	Description1: 
+		'''
+		+ Increases your maximum mana by 67
+		+ When you are out of mana, instant fill up your mana
+		Reduce 7s cool down of above ability
 		'''
 }
 
@@ -242,6 +284,7 @@ Dirt: {
 		Dirt projectile deal 30 damage + 55% weapon damage
 		+ Getting hit will drastically decreases dirt shoot cool down 
 		'''
+	Description1: "Increases amnount of dirt shoot by 1"
 }
 
 PeaceWithGod: {
@@ -271,6 +314,7 @@ SelfExplosion: {
 		+ Explode damaging surrounding enemies when you got hit
 		+ After you explode, you gain a small buff that massively increases your life regenaration
 		'''
+	Description1: "+ Increases final explosion damage by 100%"
 }
 
 ProjectileProtection: {
@@ -450,19 +494,19 @@ ArenaBlessing: {
 		'''
 		+ Strengthen your spirit lamp
 		Now can give you heart lamp buff
-		Increases spirit's movement speed by 10% and radius strength
+		Increases spirit's movement speed by 10% and radius
 		'''
 	Description2:
 		'''
 		+ Strengthen your spirit lamp
 		Now can give you Star in bottle buff
-		Increases spirit's movement speed by 10% and radius strength
+		Increases spirit's movement speed by 10% and radius
 		'''
 	Description3:
 		'''
 		+ Strengthen your spirit lamp
 		Now can give you Bash statue buff
-		Increases spirit's movement speed by 10% and radius strength
+		Increases spirit's movement speed by 10% and radius
 		'''
 }
 
@@ -1068,5 +1112,36 @@ BombshellArtillery: {
 		'''
 		Increases amount of bomb thrown by 1
 		Increases defense by 5
+		'''
+}
+
+WeaponThrower: {
+	DisplayName: Last option
+	Description:
+		'''
+		Every 10s, throw current weapon that you are helding 
+		+ The thrown weapon deal 500% damage
+		Note: Throwing doesn't actually remove your weapon from your inventory
+		'''
+}
+
+LastBreath: {
+	DisplayName: Last breath
+	Description:
+		'''
+		+ You can't die if your hp is over 200 health
+		But
+		- You take 200% more damage
+		'''
+}
+
+FinalMoment: {
+	DisplayName: Final Moment
+	Description:
+		'''
+		Upon reaching 200 health or less than 20% maximum health
+		- Health will automatically be drained and disable healing
+		- Instantly kill you upon belowing 10 health
+		+ During health drain, you are immune to every source of damage
 		'''
 }

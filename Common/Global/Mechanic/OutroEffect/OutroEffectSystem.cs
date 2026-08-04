@@ -10,6 +10,7 @@ using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
 using Roguelike.Contents.Items.NoneSynergy.Gunmerang;
 using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
 using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
+using Roguelike.Contents.Items.NoneSynergy.MagicBow;
 using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
 using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
 using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
@@ -24,7 +25,6 @@ using Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.LaserSniper;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
@@ -338,6 +338,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<AmberBoneSpear>());
 
 		Arr_WeaponTag[tag].Add(ModContent.ItemType<WyvernWrath>());
+		Arr_WeaponTag[tag].Add(ModContent.ItemType<FairFrozen>());
 	}
 	private void Add_ShortSwordTag() {
 		int tag = (int)WeaponTag.Thrustsword;

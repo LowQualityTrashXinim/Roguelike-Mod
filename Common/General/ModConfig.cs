@@ -22,6 +22,8 @@ namespace Roguelike.Common.General {
 		[DefaultValue(false)]
 		public bool BossRushMode_Extra { get; set; }
 		[DefaultValue(false)]
+		public bool NightmareMode { get; set; }
+		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
 		//Replace Cursed skull
 		[ReloadRequired]

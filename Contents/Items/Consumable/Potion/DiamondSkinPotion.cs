@@ -1,0 +1,30 @@
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ModLoader;
+
+namespace Roguelike.Contents.Items.Consumable.Potion;
+internal class DiamondSkinPotion : ModItem {
+	public override void SetStaticDefaults() {
+		ModItemLib.LootboxPotion.Add(Item);
+	}
+	public override string Texture => ModTexture.MISSINGTEXTUREPOTION;
+	public override void SetDefaults() {
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<Holy_Buff>(), ModUtils.ToSecond(10));
+	}
+}
+public class DiamondSkin_Buff : ModBuff {
+	public override string Texture => ModTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		player.endurance += .5f;
+	}
+}

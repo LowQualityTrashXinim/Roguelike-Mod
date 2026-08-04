@@ -9,6 +9,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 	public static RogueLikeConfig config => ModContent.GetInstance<RogueLikeConfig>();
 	public static bool RoguelikeWorld = false;
 	public static bool BossRushWorld = false;
+	public static bool NightmareWorld = false;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		if (config.BossRushMode) {
 			RoguelikeWorld = false;
@@ -18,6 +19,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 			RoguelikeWorld = true;
 			BossRushWorld = !RoguelikeWorld;
 		}
+		NightmareWorld = config.NightmareMode;
 	}
 	public static bool BossRush_Set_Progression = true;
 	public static bool BossRush_Set_CommandFight = true;
@@ -37,6 +39,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Setting_RareSpoils"] = RareSpoils;
 		tag["Setting_RareLootbox"] = RareLootbox;
 		tag["Setting_DataSaved"] = true;
+		tag["Setting_Nightmare"] = NightmareWorld;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		DataSaved = tag.Get<bool>("Setting_DataSaved");
@@ -45,6 +48,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 		TotalRNG = tag.Get<bool>("Setting_TotalRNG");
 		RareSpoils = tag.Get<bool>("Setting_RareSpoils");
 		RareLootbox = tag.Get<bool>("Setting_RareLootbox");
+		NightmareWorld = tag.Get<bool>("Setting_Nightmare");
 	}
 }
 public class RoguelikeWorldProperty_Player : ModPlayer {
@@ -55,5 +59,6 @@ public class RoguelikeWorldProperty_Player : ModPlayer {
 		RoguelikeWorldProperty.TotalRNG = config.TotalRNG;
 		RoguelikeWorldProperty.RareSpoils = config.RareSpoils;
 		RoguelikeWorldProperty.RareLootbox = config.RareLootbox;
+		RoguelikeWorldProperty.RareLootbox = config.NightmareMode;
 	}
 }

@@ -19,6 +19,7 @@ public class SniperRifle : ModItem {
 		Item.crit = 50;
 		Item.ArmorPenetration = 100;
 		Item.Set_ItemCriticalDamage(2f);
+		Item.Set_InfoItem();
 	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-30, -7);
@@ -163,8 +164,10 @@ public class LegacySniperRiflePlayer : ModPlayer {
 			if (Main.rand.NextFloat() <= .001f) {
 				target.StrikeInstantKill();
 			}
-			if (target.HasBuff<CompletelyShatter>() && target.SuperArmor) {
-				target.SuperArmor = false;
+		}
+		if (target.HasBuff<CompletelyShatter>()) {
+			if (Main.rand.NextFloat() <= .01f) {
+				target.StrikeInstantKill();
 			}
 		}
 	}

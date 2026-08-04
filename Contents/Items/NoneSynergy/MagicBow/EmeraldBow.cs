@@ -1,7 +1,7 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow
+namespace Roguelike.Contents.Items.NoneSynergy.MagicBow
 {
 	internal class EmeraldBow : MagicBow {
 		public override void MagicBowSetDefault(out int mana, out int shoot, out float shootspeed, out int damage, out int useTime, out int dustType) {

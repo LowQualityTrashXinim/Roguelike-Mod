@@ -232,8 +232,11 @@ Volcano.Description:
 	'''
 NightsEdge.Description:
 	'''
-	Create a NightEdge slash everytime you shoot your weapon
-	If your weapon can't shoot then it will automatically convert to shoot it
+	Create a Night Edge slash everytime you shoot your weapon ( CD : 1s )
+	Hitting enemy will also create Night Edge slash at enemy location ( CD : 2s )
+	If weapon is [i:273] then all above effect is replaced with the following: 
+	+ At 5th swing, releases 8 slashes around player dealing 50% weapon damage
+	+ At 10th swing, create a circle of slashes around player dealing 100% weapon damage
 	'''
 CopperShortSword.Description:
 	'''

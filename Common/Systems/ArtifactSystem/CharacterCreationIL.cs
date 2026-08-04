@@ -14,10 +14,12 @@ namespace Roguelike.Common.Systems.ArtifactSystem {
 
 		private static ILHook buildPageHook;
 		public void Load(Mod mod) {
-			buildPageHook = new ILHook(
-				typeof(UICharacterCreation).GetMethod("BuildPage", BindingFlags.NonPublic | BindingFlags.Instance),
-				BuildPageIL
-			);
+			if (!Main.dedServ) {
+				buildPageHook = new ILHook(
+					typeof(UICharacterCreation).GetMethod("BuildPage", BindingFlags.NonPublic | BindingFlags.Instance),
+					BuildPageIL
+				);
+			}
 		}
 
 		public void Unload() {

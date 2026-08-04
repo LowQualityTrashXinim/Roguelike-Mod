@@ -1,5 +1,4 @@
 ﻿using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -9,6 +8,12 @@ public class PowerUp : Perk {
 		textureString = ModUtils.GetTheSameTextureAsEntity<PowerUp>();
 		CanBeStack = true;
 		StackLimit = 3;
+	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 		damage += .25f * StackAmount(player);

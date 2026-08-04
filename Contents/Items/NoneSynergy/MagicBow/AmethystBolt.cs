@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow
+namespace Roguelike.Contents.Items.NoneSynergy.MagicBow
 {
 	internal class AmethystBolt : ModProjectile {
 		public override void SetDefaults() {

@@ -11,6 +11,12 @@ public class Dirt : Perk {
 		StackLimit = 3;
 		textureString = ModUtils.GetTheSameTextureAsEntity<Dirt>();
 	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
+	}
 	public override void UpdateEquip(Player player) {
 		if (--player.GetModPlayer<PerkPlayer>().Dirt_Timer <= 0) {
 			player.GetModPlayer<PerkPlayer>().Dirt_Timer = (int)(ModUtils.ToSecond(1) * player.GetModPlayer<PerkPlayer>().Dirt_Multi_CD);

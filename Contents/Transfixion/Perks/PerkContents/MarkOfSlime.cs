@@ -12,6 +12,12 @@ internal class MarkOfSlime : Perk {
 		StackLimit = 5;
 		DataStorer.AddContext("Perk_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
+	}
 	public override void UpdateEquip(Player player) {
 		player.runSlowdown -= .2f;
 		PlayerStatsHandle modplayer = player.ModPlayerStats();

@@ -16,20 +16,14 @@ class WoodenLootBox : LootBoxBase {
 	}
 	public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
 	public override List<int> Set_ItemPool() {
-		if (NPC.downedMoonlord) {
-			if (Main.rand.NextBool(4)) {
-				return new List<int>() {
-				ItemPool.GetPoolType<UniversalPool>(),
-				ItemPool.GetPoolType<LunarPool>()
-			};
-			}
-			else {
-				return new List<int>() {
-				ItemPool.GetPoolType<UniversalPool>(),
-				ItemPool.GetPoolType<SpacePool>() };
+		List<int> types = new List<int> { ItemPool.GetPoolType<Tier1Pool>() };
+		if (Main.rand.NextFloat() <= .75f) {
+			types.Add(ItemPool.GetPoolType<Tier2Pool>());
+			if (Main.rand.NextFloat() <= .25f) {
+				types.Remove(ItemPool.GetPoolType<Tier1Pool>());
 			}
 		}
-		return new List<int> { ItemPool.GetPoolType<UniversalPool>() };
+		return types;
 	}
 	public override void AbsoluteRightClick(Player player) {
 		if (CanActivateSpoil) {

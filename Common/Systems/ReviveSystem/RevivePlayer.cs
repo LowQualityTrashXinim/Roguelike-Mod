@@ -166,7 +166,7 @@ public class RevivePlayer : ModPlayer {
 		packet.Write(sync ? (byte)Roguelike.MessageType.ReviveSync : (byte)Roguelike.MessageType.Revive);
 
 		// Write the player id
-		packet.Write(Player.whoAmI);
+		packet.Write((byte)Player.whoAmI);
 
 		// Create a new list to hold all the data
 		var flags = new List<bool>();

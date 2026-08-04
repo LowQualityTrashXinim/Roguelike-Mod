@@ -39,7 +39,7 @@ public static class TerrariaArrayID {
 		ItemID.PlatinumAxe,
 	};
 	public readonly static int[] AllWoodSword = {
-		ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.AshWoodSword };
+		ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.AshWoodSword, ItemID.PearlwoodSword};
 	public readonly static int[] AllWoodBowPHM = {
 		ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow, ItemID.AshWoodBow };
 	public readonly static int[] AllGemStaffPHM = {

@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems;
@@ -83,6 +82,7 @@ public class GeneralBuilderToolUI : UIState {
 	public Roguelike_UIImage WallMode;
 	public Roguelike_UIPanel Main_CreateMode_Panel;
 	public Roguelike_UIImage CreateMode;
+	public Roguelike_UIImage QuickCreate;
 	public Roguelike_TextBox txb_width;
 	public Roguelike_TextBox txb_height;
 	public Roguelike_UIImage OutlineMode;
@@ -91,7 +91,7 @@ public class GeneralBuilderToolUI : UIState {
 
 		Panel = new();
 		Panel.Width.Pixels = 350;
-		Panel.Height.Pixels = 400;
+		Panel.Height.Pixels = 200;
 		Panel.Left.Percent = .5f;
 		Panel.Top.Percent = .5f;
 		Panel.BackgroundColor.A = 150;
@@ -152,23 +152,31 @@ public class GeneralBuilderToolUI : UIState {
 		WallMode.HoverText = "Wall";
 		Panel.Append(WallMode);
 
-		Main_CreateMode_Panel = new();
-		Main_CreateMode_Panel.MaxWidth = Panel.Width;
-		Main_CreateMode_Panel.Width.Pixels = 352;
-		Main_CreateMode_Panel.Height.Pixels = 110;
-		Main_CreateMode_Panel.MarginLeft = -11;
-		Main_CreateMode_Panel.MarginRight = -11;
-		Main_CreateMode_Panel.BackgroundColor.A = 100;
-		Main_CreateMode_Panel.MarginTop = DrawMode.GetInnerDimensions().Height + 10;
-		Panel.Append(Main_CreateMode_Panel);
-
 		CreateMode = new(thesameuitextureasvanilla);
 		CreateMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
+		CreateMode.VAlign = .5f;
 		CreateMode.HighlightColor = DrawMode.OriginalColor * .5f;
 		CreateMode.SwapHightlightColorWithOriginalColor();
 		CreateMode.OnLeftClick += CreateMode_OnLeftClick;
 		CreateMode.HoverText = "Create mode";
-		Main_CreateMode_Panel.Append(CreateMode);
+		Panel.Append(CreateMode);
+
+		Main_CreateMode_Panel = new();
+		Main_CreateMode_Panel.Width.Pixels = 352;
+		Main_CreateMode_Panel.Height.Pixels = 110;
+		Main_CreateMode_Panel.MarginLeft = -11;
+		Main_CreateMode_Panel.MarginRight = -11;
+		Main_CreateMode_Panel.Hide = true;
+		Main_CreateMode_Panel.BackgroundColor.A = 100;
+		Append(Main_CreateMode_Panel);
+
+		QuickCreate = new(thesameuitextureasvanilla);
+		QuickCreate.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
+		QuickCreate.HighlightColor = DrawMode.OriginalColor * .5f;
+		QuickCreate.SwapHightlightColorWithOriginalColor();
+		QuickCreate.OnLeftClick += QuickCreate_OnLeftClick;
+		QuickCreate.HoverText = "Create mode";
+		Main_CreateMode_Panel.Append(QuickCreate);
 
 		OutlineMode = new(thesameuitextureasvanilla);
 		OutlineMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Ring));
@@ -193,15 +201,18 @@ public class GeneralBuilderToolUI : UIState {
 		Main_CreateMode_Panel.Append(txb_height);
 	}
 
+	private void CreateMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Create;
+		VisualUpdateBaseOnMode();
+	}
+
 	private void OutlineMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.OutlineMode = !GeneralBuilderToolSystem.OutlineMode;
 		OutlineMode.Highlight = GeneralBuilderToolSystem.OutlineMode;
 	}
 
 	public Vector2 createPosition = Vector2.Zero;
-	private void CreateMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Create;
-		VisualUpdateBaseOnMode();
+	private void QuickCreate_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (createPosition == Vector2.Zero) {
 			return;
 		}
@@ -237,7 +248,8 @@ public class GeneralBuilderToolUI : UIState {
 			if (GeneralBuilderToolSystem.Tile && !SearchedForTile && (item.favorited && item.createTile != -1 || GeneralBuilderToolSystem.DeleteMode)) {
 				for (int x = minX; x <= maxX; x++) {
 					for (int y = minY; y <= maxY; y++) {
-						if ((x == minX || x == maxX || y == minY || y == maxY) && GeneralBuilderToolSystem.OutlineMode || !GeneralBuilderToolSystem.OutlineMode) {
+						if ((x == minX || x == maxX || y == minY || y == maxY) 
+							&& GeneralBuilderToolSystem.OutlineMode || !GeneralBuilderToolSystem.OutlineMode) {
 							if (GeneralBuilderToolSystem.DeleteMode) {
 								WorldGen.KillTile(x, y, noItem: true);
 							}
@@ -332,6 +344,7 @@ public class GeneralBuilderToolUI : UIState {
 				CreateMode.Highlight = true;
 				break;
 		}
+		Main_CreateMode_Panel.Hide = !CreateMode.Highlight;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 	}
@@ -374,6 +387,9 @@ public class GeneralBuilderToolUI : UIState {
 	private Vector2 point1, point2;
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		CalculatedStyle mainPos = Panel.GetOuterDimensions();
+		Main_CreateMode_Panel.Left.Set(mainPos.X - Main_CreateMode_Panel.Width.Pixels, 0);
+		Main_CreateMode_Panel.Top.Set(mainPos.Y, 0);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
@@ -585,6 +601,9 @@ internal class GeneralBuilderTool : ModItem {
 				}
 				SearchedForWall = true;
 				continue;
+			}
+			if (false) {
+				//WorldGen.TileRunner()
 			}
 		}
 	}

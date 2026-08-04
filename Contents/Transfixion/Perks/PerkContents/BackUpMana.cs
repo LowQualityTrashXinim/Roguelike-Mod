@@ -17,6 +17,12 @@ public class BackUpMana : Perk {
 		CanBeStack = true;
 		StackLimit = 3;
 	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
+	}
 	public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
 		mana.Base += 67 * StackAmount(player);
 	}

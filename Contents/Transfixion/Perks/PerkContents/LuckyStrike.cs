@@ -1,12 +1,10 @@
 ﻿using Roguelike.Common.Utils;
-using System;
 using Terraria;
 
 namespace Roguelike.Contents.Transfixion.Perks.PerkContents;
 public class LuckyStrike : Perk {
 	public override void SetDefaults() {
 		textureString = ModUtils.GetTheSameTextureAsEntity<LuckyStrike>();
-		CanBeChoosen = false;
 		CanBeStack = false;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {

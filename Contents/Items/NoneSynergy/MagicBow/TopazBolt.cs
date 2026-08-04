@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow
+namespace Roguelike.Contents.Items.NoneSynergy.MagicBow
 {
 	internal class TopazBolt : ModProjectile {
 		public override void SetDefaults() {

@@ -2,8 +2,8 @@
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Consumable.Ammo;
+using Roguelike.Contents.Items.NoneSynergy.MagicBow;
 using Roguelike.Contents.Items.RelicItem;
-using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicBow;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
@@ -21,14 +21,20 @@ namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 	public bool CanThisProjectileBeDevoured = true;
+
 	public int Source_ItemType = -1;
 	public int Source_ProjectileType = -1;
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
+
 	public bool IsFromMinion = false;
 	public bool IsFromRelic = false;
 	public bool IsFromBoss = false;
+	public bool IsFromNPC = false;
+
 	public int OnKill_ScatterShot = -1;
+
+	public int NPC_WhoAmI = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
 	public float CritDamage = 0;
@@ -82,6 +88,8 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				if (npc.boss) {
 					IsFromBoss = true;
 				}
+				IsFromNPC = true;
+				NPC_WhoAmI = npc.whoAmI;
 			}
 		}
 		Source_CustomContextInfo = source.Context;
@@ -165,6 +173,15 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			return false;
 		}
 		return true;
+	}
+	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
+		if (IsFromNPC) {
+			if (NPC_WhoAmI <= -1 && NPC_WhoAmI >= Main.npc.Length) {
+				if (Main.npc[NPC_WhoAmI].TryGetGlobalNPC(out RoguelikeGlobalNPC global)) {
+					modifiers.SourceDamage = global.DamageIncrease.CombineWith(modifiers.SourceDamage);
+				}
+			}
+		}
 	}
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[projectile.owner];

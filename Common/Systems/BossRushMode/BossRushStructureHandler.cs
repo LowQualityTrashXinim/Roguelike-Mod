@@ -215,12 +215,12 @@ public class BossRushStructureHandler : ModSystem {
 					int amount = Main.rand.Next(20, 26);
 					for (int i = 0; i < amount; i++) {
 						NPC enemy = NPC.NewNPCDirect(NPC.GetSource_NaturalSpawn(), pos, Main.rand.Next(NPCspawnPool));
-						enemy.GetGlobalNPC<RoguelikeGlobalNPC>().DamageReduction += .95f;
+						enemy.GetGlobalNPC<RoguelikeGlobalNPC>().Static_Endurance += .95f;
 					}
 				}
 				if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier6>()) {
 					NPC enemy = NPC.NewNPCDirect(NPC.GetSource_NaturalSpawn(), pos, Main.rand.Next(MiniBossspawnPool));
-					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().DamageReduction += .95f;
+					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().Static_Endurance += .95f;
 				}
 				if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier8>()) {
 					if (num == -1 || num == 200) {

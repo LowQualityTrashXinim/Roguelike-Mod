@@ -562,6 +562,10 @@ Mods: {
 			HeartBreakInstrument_Ghost_Projectile.DisplayName: Heart Break Instrument_ Ghost_ Projectile
 			HeartBreakInstrument_StarProjectile.DisplayName: Heart Break Instrument_ Star Projectile
 			Roguelike_EnchantedSword_Slash_Projectile.DisplayName: Roguelike_ Enchanted Sword_ Slash_ Projectile
+			SlashEdgeProjectile.DisplayName: Slash Edge Projectile
+			MagicBowProjectile.DisplayName: Magic Bow Projectile
+			MagicBowProjectile2.DisplayName: Magic Bow Projectile2
+			MagicBowShootType1.DisplayName: Magic Bow Shoot Type1
 		}
 
 		NPCs: {
@@ -894,7 +898,7 @@ Mods: {
 			}
 
 			ManaStarFury: {
-				Tooltip: Why are they furious anyhow? It's the technique that matters, not size!
+				Tooltip: Why are they furious anyhow? It's the technique that matters, not the size!
 				DisplayName: Manafury
 			}
 
@@ -987,17 +991,23 @@ Mods: {
 			}
 
 			ZapSnapper: {
+				DisplayName: Zap Snapper
 				Tooltip:
 					'''
 					"I'm sure a wizard out there is deeply offended at the underwhelming shape of this..."
-					Shoot out constant thunder shot
-					After a short while shoot out a burst of thundershot
+					Shoots out constant thunder shots
+					After a short while, it shoots out a burst of Thundershots
 					'''
-				DisplayName: Zap Snapper
 			}
 
 			StarLightDistributer: {
-				Tooltip: '''"It's so beautiful under the night sky...!"'''
+				Tooltip:
+					'''
+					"It's so beautiful under the night sky...!"
+					Every 2nd shot, shoot out a arch of 3 projectiles
+					Every 5th shot, shoot a arch of 5 projectiles
+					Every 10th shot, shoot out massive arch of 20 projectiles
+					'''
 				DisplayName: Starlight Distributor
 			}
 
@@ -1043,7 +1053,7 @@ Mods: {
 				Tooltip:
 					'''
 					"... These sapphires are sentient."
-					Alt-attack to activate a special attack at the cost of 75
+					Alt-attack to activate a special attack at the cost of 75 mana
 					'''
 				DisplayName: Sapphire Swotaff
 			}
@@ -1119,9 +1129,8 @@ Mods: {
 			UltimatePistol: {
 				Tooltip:
 					'''
-					It can be many things, but in no way decisive of its identity
-					Shoots many things
-					Right-Click installs a copy of itself on-screen
+					"It can be many things, but in no way is it decisive of its identity"
+					Right-click to create a copy of the weapon on the cursor's position
 					'''
 				DisplayName: ??? Pistol
 			}
@@ -1240,8 +1249,8 @@ Mods: {
 					"They can watch, but you can watch them"
 					Increases defense by 10
 					Increases 5% DR and damage when above 45% hp
-					Increases movment speed and increase damage by 25% when below 45% hp
-					Heal 70% of player health when below 10% hp, have 2 min cooldown
+					Increases movement speed and damage by 25% when below 45% hp
+					Heal 70% of player's health when below 10% hp ( 2 min cooldown ) 
 					'''
 				DisplayName: Evil Eye
 			}
@@ -1598,8 +1607,8 @@ Mods: {
 				DisplayName: Amber Bone Spear
 				Tooltip:
 					'''
-					A ancient magic spear
-					Alt-attack to throw the magic spear toward your foes
+					"An ancient magic spear"
+					Alt-attack to throw the magic spear towards your foes
 					'''
 			}
 
@@ -1790,7 +1799,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A Mana and a Life Crystal merged into 1 single item"
-					Increase health and mana by 40
+					Increases health and mana by 40
 					'''
 				DisplayName: Natural Crystal
 			}
@@ -1799,8 +1808,8 @@ Mods: {
 				DisplayName: Godborn Dice
 				Tooltip:
 					'''
-					"The dice use by god to decide mortal fate"
-					Gives you a roll for each boss kill which will automatically roll for you
+					"The dice used by God to decide mortal's fate"
+					It rolls itself everytime you kill a boss
 					'''
 			}
 
@@ -1883,12 +1892,12 @@ Mods: {
 
 			AntiPoisonPotion: {
 				DisplayName: Anti Poison Potion
-				Tooltip: Give you immunity to most poison debuff
+				Tooltip: Give you immunity to most poison debuffs
 			}
 
 			FireResistancePotion: {
 				DisplayName: Fire Resistance Potion
-				Tooltip: Give you immunity to most fire debuff
+				Tooltip: Give you immunity to most fire debuffs
 			}
 
 			LastingVilePotion: {
@@ -1901,8 +1910,8 @@ Mods: {
 				Tooltip:
 					'''
 					"Extremely lethal"
-					Continue to shoot even you are out of mana
-					Alt-attack to throw out a anti gravity plasma grenade
+					Continues to shoot even when you're out of mana
+					Alt-attack to throw out an anti-gravity plasma grenade
 					'''
 				Guide:
 					'''
@@ -2005,8 +2014,8 @@ Mods: {
 				DisplayName: Wyvern Wrath
 				Tooltip:
 					'''
-					Shoot out powerful magical sword 
-					Upon hitting enemy, summon weaker magical sword dealing 50% weapon damage
+					Shoots out a powerful magical sword
+					Upon hitting an enemy, summons weaker magical swords that deal 50% of the weapon's damage
 					'''
 			}
 
@@ -2213,7 +2222,7 @@ Mods: {
 				Tooltip:
 					'''
 					Swing your sword to summon a floating frozen blade
-					Also function as a sword
+					It also functions like a sword
 					'''
 			}
 
@@ -2278,10 +2287,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Releases the fury of the sky"
-					Replace wooden arrow with fire arrow
-					Have 1 in 5 chance for your arrow to be replaced with hell fire arrow dealing 120% weapon damage
-					Have 1 in 9 chance for your arrow to be replaced with meteor projectile dealing 200% weapon damage
-					When shooting, you will also shoot from the sky too
+					Replaces wooden arrows with fire arrows
+					Have 50% chance to rain down meteor projectile, dealing 200% of the weapon's damage
+					Upon raining down meteor, your weapon will also shoot meteor
 					'''
 			}
 
@@ -2562,8 +2570,15 @@ Mods: {
 					'''
 					"A sniper rifle of a forgotten alternative timeline in a broken alternative universe"
 					Wait for 2s to charge your next shot
-					Charge shot increases damage by 2.0x, have 0.1% to instant kill enemies
-					Charge shot explode enemy on hit inflicting Completely Shatter debuff
+					Charged shot inflicts 2x damage and has a 0.1% chance to instantly kill the enemy
+					Charged shot causes the enemy to explode on hit which
+					inflicting it and nearby enemies with the Completely Shattered debuff
+					'''
+				ExtraInfo:
+					'''
+					Completely Shattered :
+					Multiply target's defenses by 0x
+					Target has 10% chance to be instantly killed
 					'''
 			}
 
@@ -2598,7 +2613,7 @@ Mods: {
 					'''
 					[Community Content Mod : Crossover Weapon]
 					Weapon of black matter, however the shape is rather generic
-					Alt-attack to make all void sword orbitting around you shoot toward cursor
+					Alt-attack to shoot all orbiting void swords towards the cursor
 					'''
 			}
 
@@ -2737,10 +2752,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Fate shall never bind me as I will sever them and save you from endless cycle of tragedy"
-					At 3rd combo attack will create a large forward slash that deal 250% more damage
-					Alt-click will inflict all enemy near cursor with "Thread of Fate"
-					Dealing damage to build up "Thread Cutter"
-					After succeeding in building up "Thread Cutter", alt-click will enhanced the next 3 attack
+					At 3rd combo attack, it creates a large forward slash that deals 250% more damage
+					Alt-click inflicts "Thread of fate" to all nearby enemies
+					Deal damage to build up the "Thread cutter" attack
+					When the "Thread cutter" attack is ready, press alt-click to activate it, enchancing the next 3 attacks
 					'''
 				ExtraInfo:
 					'''
@@ -3021,6 +3036,11 @@ Mods: {
 
 			TheTwinsNoHitReward: {
 				DisplayName: The Twins No Hit Reward
+				Tooltip: ""
+			}
+
+			MagicBow: {
+				DisplayName: Magic Bow
 				Tooltip: ""
 			}
 		}
@@ -4392,6 +4412,19 @@ Mods: {
 						"For those who believe"
 						[-] Everything that deal damage via contact will instantly kill you
 						[-] Your loot drop amount is limited down to 1 regardless
+						'''
+				}
+
+				NightmareMode: {
+					Label: Nightmare mode
+					Tooltip:
+						'''
+						"Your worst imagination came into life"
+						- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
+						- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
+						at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
+						- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
+						- During a boss fight, a celestial portal opened spawning various celestial being.
 						'''
 				}
 

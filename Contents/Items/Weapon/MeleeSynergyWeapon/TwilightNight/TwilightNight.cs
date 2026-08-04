@@ -28,14 +28,14 @@ public class TwilightNight : SynergyModItem {
 				case 1:
 					overhaul.OffSetAnimationPercentage = 1.25f;
 					overhaul.SwingDegree = 140;
-					overhaul.SwingStrength = 9;
+					overhaul.SwingStrength = 6;
 					overhaul.SwingType = BossRushUseStyle.SwipeDown;
 					break;
 				case 2:
 					overhaul.SwingType = BossRushUseStyle.SwipeUp;
 					break;
 				case 3:
-					overhaul.SwingStrength = 15;
+					overhaul.SwingStrength = 4;
 					overhaul.OffSetAnimationPercentage = 1;
 					overhaul.SwingDegree = 70;
 					overhaul.SwingType = BossRushUseStyle.SwipeDown;

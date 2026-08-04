@@ -221,6 +221,19 @@ ___________Weapon balance todo list___________
 - Weapon that act like upgraded to their pre-hardmode will gain the same buff as their pre hardmode counter part
 Otherwise, the weapon shall be nerfed in term of damage to act more inline with mods overall dps
 
+- Beam Sword
+- All of vanilla yoyo ( exlude Chilk )
+Code 1:
+Spawn small line of code that at the completion of the code line deal damage
+Code 2: 
+Spawn small line of code that player can use yoyo yo collect, upon collecting all the line, do said effect
+The EoC:
+- Spectre Staff
+- Inferno Fork
+- Magnet Sphere
+- Shadowbeam Staff
+
+
 ___________Buff balance___________
 Make vanilla buff that work only on player to work also on NPC.
 
@@ -438,7 +451,8 @@ However, your hardship is rewarded to ease the pain:
 24/ Nightmare Mode :
 "*Your worst imagination came into life*"
 - Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
-- Bosses health is increased by 500%,  gain 25% damage reduction, deal 25% percentage damage, at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
+- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
+at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
 - Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
 - Enemy may spawn in group.
 - During a boss fight in pre hardmode, a portal of demon occasionally opened spawning Demon, fire imp and fire bat ( won't drop anything ), defeating Wall of Flesh, the portal is then upgraded to celestial portal spawning random celestial being.

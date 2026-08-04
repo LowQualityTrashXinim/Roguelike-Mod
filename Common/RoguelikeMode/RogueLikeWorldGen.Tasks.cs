@@ -116,23 +116,25 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, List<short>> BiomeGroup = new();
 	public static bool[] StaticNoise255x255 = new bool[65025];
 	public override void OnModLoad() {
-		Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
-		Color[] color = new Color[65025];
-		StaticNoise255x255 = new bool[65025];
-		Main.RunOnMainThread(() => {
-			sprite.Value.GetData(color);
-		}).Wait();
+		if (!Main.dedServ) {
+			Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
+			Color[] color = new Color[65025];
+			StaticNoise255x255 = new bool[65025];
+			Main.RunOnMainThread(() => {
+				sprite.Value.GetData(color);
+			}).Wait();
 
-		for (int i = 0; i < color.Length; i++) {
-			//This is just extra careful
-			if (color[i].R == 0 && color[i].G == 0 && color[i].B == 0) {
-				StaticNoise255x255[i] = false;
+			for (int i = 0; i < color.Length; i++) {
+				//This is just extra careful
+				if (color[i].R == 0 && color[i].G == 0 && color[i].B == 0) {
+					StaticNoise255x255[i] = false;
+				}
+				else {
+					StaticNoise255x255[i] = true;
+				}
 			}
-			else {
-				StaticNoise255x255[i] = true;
-			}
+			Main.RunOnMainThread(sprite.Dispose).Wait();
 		}
-		Main.RunOnMainThread(sprite.Dispose).Wait();
 
 		BiomeID = new();
 		FieldInfo[] field = typeof(Bid).GetFields();

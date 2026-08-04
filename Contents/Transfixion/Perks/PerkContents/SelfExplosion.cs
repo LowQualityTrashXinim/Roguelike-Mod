@@ -1,11 +1,5 @@
 ﻿using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,6 +10,12 @@ public class SelfExplosion : Perk {
 		textureString = ModUtils.GetTheSameTextureAsEntity<SelfExplosion>();
 		CanBeStack = true;
 		StackLimit = 2;
+	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
 	}
 	public override void OnHitByAnything(Player player) {
 		player.Center.LookForHostileNPC(out var npclist, 500);

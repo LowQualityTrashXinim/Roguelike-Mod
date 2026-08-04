@@ -408,13 +408,66 @@ public class NightsEdge : ModEnchantment {
 		ItemIDType = ItemID.NightsEdge;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (item.shoot == ProjectileID.None) {
-			item.shoot = ProjectileID.NightsEdge;
+		if (item.type == ItemID.NightsEdge) {
+			if (globalItem.Item_Counter3[index] >= 0) {
+				if (globalItem.Item_Counter3[index] % 5 == 0) {
+					int damage = player.GetWeaponDamage(player.HeldItem);
+					Vector2 vel = Vector2.UnitX.SafeNormalize(Vector2.Zero).Vector2DistributeEvenly(12, 360, globalItem.Item_Counter3[index] / 5);
+					Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vel * 200, vel * 2, ModContent.ProjectileType<SlashEdgeProjectile>(), damage, 0, player.whoAmI, .1f * player.direction, 30, 1f);
+				}
+				globalItem.Item_Counter3[index]--;
+			}
+			return;
 		}
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (item.type == ItemID.NightsEdge) {
+			if (++globalItem.Item_Counter1[index] >= 5) {
+				globalItem.Item_Counter1[index] = 0;
+				for (int i = 0; i < 8; i++) {
+					Projectile.NewProjectile(source, player.Center, Vector2.UnitX.SafeNormalize(Vector2.Zero).Vector2DistributeEvenly(8, 360, i) * 15, ModContent.ProjectileType<SlashEdgeProjectile>(), (int)(damage * .5f), knockback, player.whoAmI, 5f, 30, .5f);
+				}
+			}
+			if (globalItem.Item_Counter2[index] < 10) {
+				globalItem.Item_Counter2[index]++;
+			}
+			else {
+				if (globalItem.Item_Counter3[index] <= -1) {
+					globalItem.Item_Counter3[index] = 60;
+				}
+				else {
+					globalItem.Item_Counter3[index] += 60;
+				}
+				globalItem.Item_Counter2[index] = 0;
+			}
+			return;
+		}
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 		Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 		Projectile.NewProjectile(source, player.Center, vel, ProjectileID.NightsEdge, damage, knockback, player.whoAmI, -.1f, 30, 1);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter2[index] > 0 || player.HeldItem.type == ItemID.NightsEdge) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 120);
+		if (proj.type != ProjectileID.NightsEdge && proj.type != ModContent.ProjectileType<SlashEdgeProjectile>()) {
+			int damage = player.GetWeaponDamage(player.HeldItem);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center, Vector2.Zero, ModContent.ProjectileType<SlashEdgeProjectile>(), damage, 1, player.whoAmI, -.1f, 30, 1);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter2[index] > 0 || item.type == ItemID.NightsEdge) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 120);
+		int damage = player.GetWeaponDamage(player.HeldItem);
+		Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center, Vector2.Zero, ModContent.ProjectileType<SlashEdgeProjectile>(), damage, 1, player.whoAmI, -.1f, 30, 1);
 	}
 }
 public class Gladius : ModEnchantment {

@@ -511,7 +511,7 @@ public class HeartBreakInstrument_StarProjectile : ModProjectile {
 		Main.instance.LoadItem(Type);
 		Texture2D texture = TextureAssets.Projectile[Type].Value;
 		Vector2 origin = texture.Size() * .5f;
-		Vector2 drawpos = Projectile.Center - Main.screenPosition + origin;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
 		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
 		Main.EntitySpriteDraw(texture, drawpos, null, Color.Cyan, MathHelper.PiOver2, origin, Projectile.scale * 2, SpriteEffects.None);
 		Main.EntitySpriteDraw(texture, drawpos, null, Color.White, MathHelper.PiOver2, origin, Projectile.scale, SpriteEffects.None);
@@ -525,7 +525,7 @@ public class HeartBreakInstrument_StarProjectile : ModProjectile {
 	}
 	private void SpawnVisualTracker() {
 		SpriteTracker track = new(Vector2.Zero, 0, 30);
-		track.position = Projectile.position;
+		track.position = Projectile.Center;
 		track.scale = 2;
 		tracker.Add(track);
 	}
@@ -537,7 +537,7 @@ public class HeartBreakInstrument_StarProjectile : ModProjectile {
 		Vector2 origin2 = texture.Size() * .5f;
 		for (int i = tracker.Count - 1; i >= 0; i--) {
 			SpriteTracker tr = tracker[i];
-			tr.position = Projectile.position;
+			tr.position = Projectile.Center;
 			Color baseOnScale = color * (tr.TimeLeft / 20f);
 			Color baseOnScale2 = color2 * (tr.TimeLeft / 20f);
 			ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
@@ -660,6 +660,7 @@ public class HeartBreakInstrument_Ghost_Projectile : ModProjectile {
 	}
 	public override bool? CanDamage() => Projectile.ai[0] >= 1;
 	public override void AI() {
+
 		if (!Main.player[Projectile.owner].GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy) {
 			ActivateAttack();
 		}

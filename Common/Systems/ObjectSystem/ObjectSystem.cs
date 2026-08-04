@@ -177,7 +177,7 @@ public class ModObject : IModType, ILoadable {
 		obj.position = position;
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
-		obj.OnSpawn(new EntitySource_Misc(null));
+		obj.OnSpawn(new EntitySource_Misc(""));
 		return obj;
 	}
 	/// <summary>

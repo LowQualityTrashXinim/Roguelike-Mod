@@ -25,6 +25,9 @@ public class SwordSlashTrail : ModSystem {
 		swordSlashShaderType = null;
 	}
 	public override void PostAddRecipes() {
+		if (Main.dedServ) {
+			return;
+		}
 		Stopwatch watch = new();
 		watch.Start();
 		foreach (Item item in ModItemLib.List_Weapon.Where(RoguelikeOverhaul_ModSystem.Optimized_CheckItem)) {

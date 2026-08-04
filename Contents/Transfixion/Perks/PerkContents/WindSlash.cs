@@ -9,24 +9,42 @@ namespace Roguelike.Contents.Transfixion.Perks.PerkContents;
 public class WindSlash : Perk {
 	public override void SetDefaults() {
 		textureString = ModUtils.GetTheSameTextureAsEntity<WindSlash>();
-		list_category.Add(PerkCategory.WeaponUpgrade);
-		CanBeStack = false;
+		CanBeStack = true;
+		StackLimit = 5;
+	}
+	public override string ModifyToolTip() {
+		if (StackAmount(Main.LocalPlayer) == 2) {
+			return DescriptionIndex(2);
+		}
+		if (StackAmount(Main.LocalPlayer) > 0) {
+			return DescriptionIndex(1);
+		}
+		return base.ModifyToolTip();
+	}
+	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+		damage.Base += 5 * StackAmount(player);
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetDamage(DamageClass.Melee).Base += 5;
 		if (player.HeldItem.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckVanillaSwingWithModded) && player.HeldItem.DamageType == DamageClass.Melee) {
 			if (Main.mouseLeft && player.itemAnimation == player.itemAnimationMax) {
 				var speed = Vector2.UnitX * player.direction;
 				if (player.HeldItem.CheckUseStyleMelee(ModUtils.MeleeStyle.CheckOnlyModded)) {
 					speed = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 				}
-				int damage = (int)(player.HeldItem.damage * .75f);
-				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
+				int damage = (int)(player.HeldItem.damage * (.75f + StackAmount(player) * .25f));
 				if (player.GetModPlayer<WindSlash_ModPlayer>().StrikeOpportunity) {
 					speed *= 1.5f;
 					damage *= 3;
 				}
-				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
+				if (StackAmount(player) >= 3) {
+					for (int i = 0; i < 3; i++) {
+						Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, speed.Vector2DistributeEvenlyPlus(3, 90, i) * 6, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
+					}
+				}
+				else {
+					float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
+					Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
+				}
 			}
 		}
 	}
