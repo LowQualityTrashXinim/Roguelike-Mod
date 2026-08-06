@@ -811,3 +811,9 @@ Remove fire arrow and hellfire arrow fall from the sky
 > Added Last breath, Final Moment and Last option
 671/ Added in additional hook for projectile global to track the source of projectile
 672/ Added Nightmare mode as a official configuration.
+673/ Added in a projectile that indicate where boss would spawn in boss rush world.
+674/ Reworked Sinister Book:
+[+] Projectile have much less spread on initial phase.
+[+] Increases damage from 17 -> 33
+[+] Reduced usetime from 9 to 4
+[-] Weapon no longer spawn multiple projectiles.

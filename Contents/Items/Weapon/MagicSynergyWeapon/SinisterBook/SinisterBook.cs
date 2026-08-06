@@ -15,7 +15,7 @@ internal class SinisterBook : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DemonScythe, $"[i:{ItemID.DemonScythe}] You occasionally shoot out a ring of demon scythe");
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultMagic(10, 10, 17, 2f, 9, 9, ItemUseStyleID.Shoot, ModContent.ProjectileType<SinisterBolt>(), 2.5f, 14, true);
+		Item.BossRushDefaultMagic(10, 10, 33, 2f, 4, 4, ItemUseStyleID.Shoot, ModContent.ProjectileType<SinisterBolt>(), 2.5f, 14, true);
 		Item.rare = ItemRarityID.Blue;
 		Item.value = Item.buyPrice(platinum: 5);
 		Item.UseSound = SoundID.Item8;
@@ -27,13 +27,11 @@ internal class SinisterBook : SynergyModItem {
 		position = position.PositionOFFSET(velocity, 30);
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-		for (int i = 0; i < Main.rand.Next(3, 5); i++) {
-			Vector2 vel = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(80, 120) * Main.rand.NextBool().ToDirectionInt()));
-			Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
-		}
+		Vector2 vel = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(80, 120) * Main.rand.NextBool().ToDirectionInt()));
+		Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
 		if (player.GetModPlayer<SinisterBook_ModPlayer>().SinisterBook_DemonScythe_Counter >= 20) {
 			for (int i = 0; i < 10; i++) {
-				Vector2 vel = velocity.Vector2DistributeEvenly(10, 360, i);
+				vel = velocity.Vector2DistributeEvenly(10, 360, i);
 				Projectile.NewProjectile(source, position, vel, ProjectileID.DemonScythe, damage, knockback, player.whoAmI);
 			}
 			player.GetModPlayer<SinisterBook_ModPlayer>().SinisterBook_DemonScythe_Counter = 0;
@@ -55,9 +53,10 @@ internal class SinisterBolt : ModProjectile {
 		Projectile.DamageType = DamageClass.Magic;
 		Projectile.light = 0.8f;
 		Projectile.tileCollide = false;
-		Projectile.extraUpdates = 6;
-		ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+		Projectile.extraUpdates = 10;
+		ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
 		ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+		Projectile.timeLeft = 960;
 	}
 	Vector2 MousePosFixed;
 	bool DirectionFace;
@@ -75,18 +74,19 @@ internal class SinisterBolt : ModProjectile {
 			CheckRotation = Projectile.velocity.Y < 0;
 		if (CountMain > 10)
 			Projectile.velocity = !DirectionFace ?
-				CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) :
-				CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f));
-		if (CountMain >= 120) {
+				CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(3f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(-3f)) :
+				CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(-3f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(3f));
+		if (CountMain >= 90) {
 			if (Math.Round(Projectile.velocity.X, 2) != 0 && Math.Round(Projectile.velocity.Y, 2) != 0 && count == 0) {
 				Projectile.velocity -= Projectile.velocity * 0.01f;
 			}
 			else {
 				count++;
 			}
-			if (count >= 12) {
-				CountCount++;
+			if (count >= 24) {
+				CountCount = Math.Clamp(CountCount + 1, 0, 100);
 				Projectile.velocity = (MousePosFixed - Projectile.Center).SafeNormalize(Vector2.UnitX) * CountCount * .033333f;
+				MousePosFixed += Projectile.velocity;
 				if (Vector2.Distance(MousePosFixed, Projectile.Center) <= 5) {
 					Projectile.Kill();
 				}
@@ -105,7 +105,7 @@ internal class SinisterBolt : ModProjectile {
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		Projectile.DrawTrailWithoutColorAdjustment(lightColor, .02f);
+		Projectile.DrawTrailWithoutColorAdjustment(lightColor, .01f);
 		return true;
 	}
 }

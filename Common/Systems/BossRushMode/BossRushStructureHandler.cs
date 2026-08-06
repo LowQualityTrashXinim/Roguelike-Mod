@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using log4net.Core;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.General;
@@ -6,6 +7,8 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Mode.BossRushMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Toggle;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -330,11 +333,12 @@ internal class BossRushModeActivation : ModItem {
 				}
 			}
 			SoundEngine.PlaySound(SoundID.Roar, player.position);
-			if (BossRushStructureHandler.Setting_SpawnOnPlayerCommand && player.ItemAnimationJustStarted) {
+			if (BossRushStructureHandler.Setting_SpawnOnPlayerCommand && player.ItemAnimationJustStarted
+				&& player.ownedProjectileCounts[ModContent.ProjectileType<BossRush_SpawnBoss_Projectile>()] < 1) {
 				if (!handler.Active) {
 					handler.Start_BossRush();
 				}
-				handler.SpawnBoss(true);
+				Projectile.NewProjectile(player.GetSource_FromAI(), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ModContent.ProjectileType<BossRush_SpawnBoss_Projectile>(), 0, 0, player.whoAmI, 0, 0, 600);
 				handler.BossSpawnCD = ModUtils.ToSecond(30);
 				return true;
 			}
@@ -349,6 +353,67 @@ internal class BossRushModeActivation : ModItem {
 			}
 		}
 		return true;
+	}
+}
+public class BossRush_SpawnBoss_Projectile : ModProjectile {
+	public override string Texture => ModTexture.WHITEDOT;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+		ProjectileID.Sets.TrailCacheLength[Type] = 50;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 1;
+		Projectile.tileCollide = false;
+		Projectile.friendly = true;
+		Projectile.damage = 0;
+		Projectile.penetrate = -1;
+		Projectile.ignoreWater = true;
+		Projectile.timeLeft = 9999;
+		Projectile.extraUpdates = 10;
+		Projectile.light = 1;
+	}
+	public override void AI() {
+		var pos = ModContent.GetInstance<BossRushStructureHandler>().Rect_BossRushStructure().Center.ToWorldCoordinates();
+		Projectile.velocity += (pos - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
+		Projectile.velocity *= .995f;
+		if (Projectile.Center.IsCloseToPosition(pos, 10)) {
+			if (--Projectile.ai[2] <= 0) {
+				Projectile.Kill();
+			}
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+
+		lightColor = Color.Red;
+
+		Projectile.DrawTrail(lightColor);
+
+		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+		Texture2D texture2 = ModContent.Request<Texture2D>(ModTexture.Glow_Medium).Value;
+		Vector2 drawpos = Projectile.Center - Main.screenPosition;
+		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
+
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.White with { A = 25 }, 0, texture.Size() * .5f, Projectile.scale + 3, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture2, drawpos, null, Color.White with { A = 100 }, 0, texture2.Size() * .5f, Projectile.scale + 1, SpriteEffects.None);
+
+		Main.EntitySpriteDraw(texture, drawpos, null, lightColor with { A = 25 }, 0, texture.Size() * .5f, Projectile.scale + 2, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture2, drawpos, null, lightColor with { A = 200 }, 0, texture2.Size() * .5f, Projectile.scale, SpriteEffects.None);
+
+		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+		Main.EntitySpriteDraw(texture2, drawpos, null, Color.Black, 0, texture2.Size() * .5f, Projectile.scale, SpriteEffects.None);
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
+		return false;
+	}
+	public override void OnKill(int timeLeft) {
+		ModContent.GetInstance<BossRushStructureHandler>().SpawnBoss(true);
+		ModUtils.DustStar(Projectile.Center, DustID.GemRuby, Color.Red, 50, 24, 0, 15);
+		for (int i = 0; i < 360; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemRuby);
+			dust.noGravity = true;
+			dust.scale += Main.rand.NextFloat(1.4f);
+			dust.velocity = Main.rand.NextVector2CircularEdge(30, 30) * Main.rand.NextFloat(.75f, 1.1f);
+		}
 	}
 }
 public class BossRushModifierUIState : UIState {

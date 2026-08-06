@@ -14,7 +14,7 @@ namespace Roguelike.Contents.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = true;
 			Projectile.ignoreWater = true;
-			Projectile.timeLeft = 2;
+			Projectile.timeLeft = 1;
 			Projectile.alpha = 255;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {

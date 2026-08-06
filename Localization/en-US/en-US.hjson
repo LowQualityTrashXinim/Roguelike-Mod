@@ -566,6 +566,8 @@ Mods: {
 			MagicBowProjectile.DisplayName: Magic Bow Projectile
 			MagicBowProjectile2.DisplayName: Magic Bow Projectile2
 			MagicBowShootType1.DisplayName: Magic Bow Shoot Type1
+			BossRush_SpawnBoss_Projectile.DisplayName: Boss Rush_ Spawn Boss_ Projectile
+			LastOption_Projectile.DisplayName: Last Option_ Projectile
 		}
 
 		NPCs: {
@@ -3043,6 +3045,11 @@ Mods: {
 				DisplayName: Magic Bow
 				Tooltip: ""
 			}
+
+			DiamondSkinPotion: {
+				DisplayName: Diamond Skin Potion
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -4344,6 +4351,11 @@ Mods: {
 			Roguelike_Spagetti_Buff: {
 				DisplayName: Roguelike_ Spagetti_ Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_Spagetti_Buff.Description
+			}
+
+			DiamondSkin_Buff: {
+				DisplayName: Diamond Skin_ Buff
+				Description: Mods.Roguelike.Buffs.DiamondSkin_Buff.Description
 			}
 		}
 

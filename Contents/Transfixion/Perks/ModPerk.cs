@@ -1022,6 +1022,9 @@ public class LastOption : Perk {
 		CanBeStack = false;
 	}
 	public override void UpdateEquip(Player player) {
+		if (!player.HeldItem.IsAWeapon()) {
+			return;
+		}
 		if (++player.GetModPlayer<LastOption_Player>().lastoptionCounter >= 600) {
 			Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15;
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<LastOption_Projectile>(), player.GetWeaponDamage(player.HeldItem) * 5 + 1, 1, player.whoAmI, player.HeldItem.type);
@@ -1071,7 +1074,10 @@ public class LastBreath : Perk {
 		modifiers.SourceDamage += 2;
 	}
 	public override bool PreKill(Player player) {
-		return player.statLife <= 200;
+		if (player.statLifeMax2 > 200) {
+			return false;
+		}
+		return player.statLife > 200;
 	}
 }
 public class FinalMoment : Perk {
@@ -1080,7 +1086,8 @@ public class FinalMoment : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
-		if (player.statLife <= 200 || player.statLife <= player.statLifeMax2 * .2f) {
+		int compare = Math.Min(200, (int)(player.statLifeMax2 * .2f));
+		if (player.statLife <= compare) {
 			player.AddImmuneTime(-1, 10);
 			player.immune = true;
 			handler.UpdateHPRegen *= 0;

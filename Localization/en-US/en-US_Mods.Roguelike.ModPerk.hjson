@@ -267,7 +267,7 @@ BackUpMana: {
 		+ When you are out of mana, instant fill up your mana
 		Have 30s cool down
 		'''
-	Description1: 
+	Description1:
 		'''
 		+ Increases your maximum mana by 67
 		+ When you are out of mana, instant fill up your mana
@@ -284,7 +284,7 @@ Dirt: {
 		Dirt projectile deal 30 damage + 55% weapon damage
 		+ Getting hit will drastically decreases dirt shoot cool down 
 		'''
-	Description1: "Increases amnount of dirt shoot by 1"
+	Description1: Increases amnount of dirt shoot by 1
 }
 
 PeaceWithGod: {
@@ -314,7 +314,7 @@ SelfExplosion: {
 		+ Explode damaging surrounding enemies when you got hit
 		+ After you explode, you gain a small buff that massively increases your life regenaration
 		'''
-	Description1: "+ Increases final explosion damage by 100%"
+	Description1: + Increases final explosion damage by 100%
 }
 
 ProjectileProtection: {
@@ -1115,7 +1115,7 @@ BombshellArtillery: {
 		'''
 }
 
-WeaponThrower: {
+LastOption: {
 	DisplayName: Last option
 	Description:
 		'''
@@ -1129,9 +1129,10 @@ LastBreath: {
 	DisplayName: Last breath
 	Description:
 		'''
-		+ You can't die if your hp is over 200 health
-		But
 		- You take 200% more damage
+		But
+		+ You can't die if your hp is over 200 health
+		Note : If your maximum health is lower than 200, then above effect is nullified
 		'''
 }
 
@@ -1139,7 +1140,7 @@ FinalMoment: {
 	DisplayName: Final Moment
 	Description:
 		'''
-		Upon reaching 200 health or less than 20% maximum health
+		Upon reaching 200 health or less than 20% maximum health ( whichever is lesser )
 		- Health will automatically be drained and disable healing
 		- Instantly kill you upon belowing 10 health
 		+ During health drain, you are immune to every source of damage

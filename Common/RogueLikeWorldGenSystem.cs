@@ -40,7 +40,7 @@ public class StructureUI : UIState {
 		panel = new();
 		panel.HAlign = .5f;
 		panel.VAlign = .5f;
-		panel.UISetWidthHeight(450, 200);
+		panel.UISetWidthHeight(450, 100);
 		panel.OnUpdate += Panel_OnUpdate;
 		Append(panel);
 
@@ -65,6 +65,7 @@ public class StructureUI : UIState {
 		txt_FileName = new("");
 		txt_FileName.HAlign = .5f;
 		txt_FileName.VAlign = .45f;
+		txt_FileName.Width.Percent = 1;
 		txt_FileName.Hide = true;
 		panel.Append(txt_FileName);
 
@@ -512,6 +513,44 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 	}
 }
+/// <summary>
+/// Caution !!!<br/>
+/// <br/>
+/// Use <see cref="Structure_XinimVer"/> if you are developing the mod and want to use a template structure<br/>
+/// Otherwise, use <see cref="Structure_Local"/> if you just want to save locally or cahce a structure during in-game.
+/// </summary>
+public class Structure_Local {
+	public int Width, Height;
+	public Tile[] tile = null;
+	public Structure_Local(int w, int h, Tile[] data) {
+		Width = w;
+		Height = h;
+		tile = data;
+	}
+	public void GenerateStructure(int X, int Y) {
+		if (tile == null) {
+			return;
+		}
+		for (int i = Y; i < Height + Y; i++) {
+			for (int j = X; j < Width + X; j++) {
+				int counterX = j - X;
+				int counterY = i - Y;
+				Tile data = tile[counterX + counterY * Height];
+				Tile main = Main.tile[j, i];
+				main.CopyFrom(data);
+			}
+		}
+	}
+	public void Dispose() {
+		tile = null;
+	}
+}
+/// <summary>
+/// Caution !!!<br/>
+/// <br/>
+/// Use <see cref="Structure_Local"/> in the case you are dynamic saving and loading structure in game<br/>
+/// Otherwise, use <see cref="Structure_XinimVer"/> if you have the structure file already created.
+/// </summary>
 public class Structure_XinimVer {
 	private string filePath = "";
 	private GenPassData[] data = null;

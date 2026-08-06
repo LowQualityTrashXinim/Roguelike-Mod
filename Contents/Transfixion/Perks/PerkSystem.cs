@@ -525,6 +525,11 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
 		public virtual void OnChoose(Player player) { }
 		public virtual bool FreeDodge(Player player, Player.HurtInfo hurtInfo) => false;
+		/// <summary>
+		/// Return true to stop player from being killed
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
 		public virtual bool PreKill(Player player) => false;
 		public virtual void OnPickUp(Player player, Item item) { }
 	}

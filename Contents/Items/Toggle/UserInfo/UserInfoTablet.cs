@@ -385,6 +385,7 @@ namespace Roguelike.Contents.Items.Toggle.UserInfo {
 					textpanel.Append(text);
 					textlist.Add(text, perkType);
 					counter++;
+					Perk perk = ModPerkLoader.GetPerk(perkType);
 				}
 			}
 		}
