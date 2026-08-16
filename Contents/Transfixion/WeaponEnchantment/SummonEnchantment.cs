@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Mono.Cecil;
+using Newtonsoft.Json.Linq;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
@@ -201,7 +202,7 @@ public class HoundiusShootius : ModEnchantment {
 		Projectile.NewProjectile(source, position, velocity, ProjectileID.HoundiusShootiusFireball, (int)(damage * .74f), knockback, player.whoAmI);
 	}
 }
-public class LightningAuraSentry : ModEnchantment {
+public class LightningAuraRod : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DD2LightningAuraT1Popper;
 	}
@@ -216,12 +217,146 @@ public class LightningAuraSentry : ModEnchantment {
 		if (--globalItem.Item_Counter2[index] > 0) {
 			return;
 		}
-		globalItem.Item_Counter2[index] = 10;
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 10);
 		player.Center.LookForHostileNPC(out List<NPC> npclist, 600);
 		foreach (NPC npc in npclist) {
 			int damage = (int)(player.GetWeaponDamage(item) * .25f) + 5;
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, -1));
 			npc.AddBuff(BuffID.Electrified, 90);
+		}
+	}
+}
+
+public class LightningAuraCane : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2LightningAuraT2Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+		for (int i = 0; i < 100; i++) {
+			Dust dust = Dust.NewDustDirect(player.Center + Main.rand.NextVector2CircularEdge(1000, 1000), 0, 0, DustID.Electric);
+			dust.noGravity = true;
+			dust.scale = .2f;
+			dust.velocity = Vector2.Zero;
+		}
+		if (--globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+		if (player.Center.LookForHostileNPC(out NPC npc, 1000)) {
+			float value = 1.25f;
+			if (npc.HasBuff(BuffID.Electrified)) {
+				value += 2;
+			}
+			int damage = (int)(player.GetWeaponDamage(item) * value) + 5;
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, -1));
+			for (int i = 0; i < 30; i++) {
+				Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.Electric);
+				dust.noGravity = true;
+				dust.scale = 1.2f + Main.rand.NextFloat(.2f, .4f);
+				dust.velocity = Main.rand.NextVector2Circular(5, 5);
+			}
+			for (int i = 0; i < 30; i++) {
+				Dust dust = Dust.NewDustDirect(player.Center, 0, 0, DustID.Electric);
+				dust.noGravity = true;
+				dust.scale = 1.2f + Main.rand.NextFloat(.2f, .4f);
+				dust.velocity = Main.rand.NextVector2Circular(5, 5);
+			}
+		}
+	}
+}
+public class LightningAuraStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2LightningAuraT3Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Electrified)) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Electrified)) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.type == ItemID.DD2LightningAuraT1Popper
+			|| item.type == ItemID.DD2LightningAuraT2Popper
+			|| item.type == ItemID.DD2LightningAuraT3Popper) {
+			damage += .4f;
+		}
+	}
+}
+public class FlameburstRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2FlameburstTowerT1Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+		if (--globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
+		if (player.Center.LookForHostileNPC(out NPC npc, 800)) {
+			Vector2 pos = player.Center + Main.rand.NextVector2Circular(50, 50);
+			Vector2 vel = (npc.Center - pos).SafeNormalize(Vector2.Zero) * 17;
+			int damage = (int)(player.GetWeaponDamage(item) * 1.5f) + 5;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.DD2FlameBurstTowerT1Shot, damage, 1, player.whoAmI);
+		}
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += .5f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += .5f;
+		}
+	}
+}
+public class FlameburstCane : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2FlameburstTowerT2Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+		if (--globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+		int damage = (int)(player.GetWeaponDamage(item) * .75f) + 25;
+		for (int i = 0; i < 4; i++) {
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(17, 17), ProjectileID.DD2FlameBurstTowerT2Shot, damage, 1, player.whoAmI);
+		}
+		Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 17, ProjectileID.DD2FlameBurstTowerT2Shot, damage, 1, player.whoAmI);
+	}
+}
+public class FlameburstStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2FlameburstTowerT3Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .3f;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.type == ItemID.DD2FlameburstTowerT1Popper
+			|| item.type == ItemID.DD2FlameburstTowerT2Popper
+			|| item.type == ItemID.DD2FlameburstTowerT3Popper) {
+			damage += .4f;
 		}
 	}
 }

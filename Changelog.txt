@@ -817,3 +817,31 @@ Remove fire arrow and hellfire arrow fall from the sky
 [+] Increases damage from 17 -> 33
 [+] Reduced usetime from 9 to 4
 [-] Weapon no longer spawn multiple projectiles.
+675/ Updated Warrior, Archer, and Mage relic prefixes.
+676/ Added Parallel building function for General Builder Tool, Also updated UI of its.
+677/ Added Dying Status relic set and 1 new weapon effect.
+678/ Fixed a bug with Blood To Power incorrectly increases the blood value.
+679/ Added Mana To Power skill.
+680/ Fixed some of skill localization.
+681/ Buffed T1 to T2 Old one army sentries, and beam sword.
+682/ Added more secret upgrade to Transmutation tablet.
+683/ Changed the skill UI directional placement.
+684/ Added keybinds for Divine Hammer, Skill UI and transmutation.
+685/ Updated the process trigger system.
+686/ Added bunch of new weapon enchantment.
+- LightningAuraStaff
+- LightningAuraCane
+- FlameburstRod
+- FlameburstCane
+- FlameburstStaff
+- Laser Rifle
+- Zapinator Orange
+- CrystalVileShard
+- Life Drain
+- Meteor Staff
+- Poison Staff
+687/ Added intro effect for Bone Sword.
+688/ Added a small function for adding weapon tag.
+689/ Updated README.md.
+690/ Added Ghost Weapon 1 enemy.
+691/ The main item that open gameplay UI now had tooltip displayed the key to open the UI.

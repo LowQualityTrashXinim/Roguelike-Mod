@@ -14,6 +14,7 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -321,11 +322,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public int ResistHitCount = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		NPC_Debuff(ref modifiers);
+		NPC_Debuff(npc, ref modifiers);
 	}
 	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
-		NPC_Debuff(ref modifiers);
+		NPC_Debuff(npc, ref modifiers);
 		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
 			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
 			if (npc.HasBuff<StarRay>()) {
@@ -356,7 +357,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		modifiers.SetMaxDamage((int)(npc.lifeMax * MaxDamageTaken));
 	}
-	private void NPC_Debuff(ref NPC.HitModifiers modifiers) {
+	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<Marked>()) {
+			modifiers.CritDamage += 1;
+		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 		modifiers.SourceDamage *= Math.Clamp(1 - Static_Endurance, 0, 1f);

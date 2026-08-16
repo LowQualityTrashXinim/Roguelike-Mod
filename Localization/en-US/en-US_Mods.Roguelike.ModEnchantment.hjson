@@ -499,6 +499,19 @@ ZapinatorGray.Description:
 	+ Increases damage by 100
 	+ Decreases velocity by 90%
 	+ Shoot out addition projectile
+	If held weapon is [i:514], [i:127], [i:4347] or [i:4348]:
+	+ Above chance is multiplied by 2x
+	'''
+ZapinatorOrange.Description:
+	'''
+	Weapon that shoot have 1 in 200 chance to do following effect:
+	+ Offset position randomly
+	+ Multiply damage by 100
+	+ Increases damage by 1000
+	+ Decreases velocity by 99%
+	+ Shoot out addition 10 projectiles
+	If held weapon is [i:514], [i:127], [i:4347] or [i:4348]:
+	+ Above chance is multiplied by 2x
 	'''
 SpaceGun.Description:
 	'''
@@ -985,11 +998,45 @@ HoundiusShootius.Description:
 	Shooting will be accompany with a Houndius fireball dealing 74% damage
 	If a target is found near you, every 1s shoot out 1 Houndius fireball
 	'''
-LightningAuraSentry.Description:
+LightningAuraRod.Description:
 	'''
 	+30% summon damage
 	Enemies nearby you will recieve a shock dealing 25% damage + 5
 	Additionally they will be inflicted with electrified for 1.5s
+	'''
+LightningAuraCane.Description:
+	'''
+	+30% summon damage
+	Closest enemy will be targeted and dealt 125% weapon damage every 1s
+	If the target has electrified debuff, increased above effect damage by +200%
+	'''
+LightningAuraStaff.Description:
+	'''
+	+30% summon damage
+	Increases damage against electrified enemy by 100%
+	If held weapon is [i:3829], [i:3830] or [i:3831]
+	+ Increases weapon damage by 40%
+	'''
+FlameburstRod.Description:
+	'''
+	+30% summon damage
+	+ Shoot a flameburst toward closest enemy nearby
+	dealing 150% damage + 5 every 0.5s
+	+ Increases damage against on fire enemy by 50%
+	'''
+FlameburstCane.Description:
+	'''
+	+30% summon damage
+	+ Shoot out 4 flamebursts projectile around player randomly
+	dealing 75% damage + 25 every 1s
+	+ Always shoot 1 flameburst projectile toward player cursor
+	'''
+FlameburstStaff.Description:
+	'''
+	+30% summon damage
+	Increases damage against on fire enemy by 100%
+	If held weapon is [i:3818], [i:3819] or [i:3820]
+	+ Increases weapon damage by 40%
 	'''
 FrostStaff.Description:
 	'''
@@ -1002,4 +1049,51 @@ RainbowRod.Description:
 	Increases mana cost by 50%
 	Every 3rd shot, shoot out rainbow bolt
 	Consume 20 mana to shoot additional rainbow bolt
+	'''
+LaserRifle.Description:
+	'''
+	+ Every 5th shot will shoot out additional laser for next 3 shots
+	Have 20% chance to shoot out burst of weaker lasers during the shooting
+	If held weapon is [i:514] or [i:127]
+	+ Increases weapon damage by 50% and critical chance by 5
+	'''
+CrystalVileShard.Description:
+	'''
+	On hitting enemy with item :
+	+ Releases a circle of Crystal vile shard (CD: 2s)
+	On hitting enemy with projectile ( beside minion ) :
+	+ Have 20% chance to spawn Crystal vile shard at enemy location
+	'''
+LifeDrain.Description:
+	'''
+	You drain nearby enemies life force
+	For each nearby enemy, your regeneration increased by 1
+	'''
+MeteorStaff.Description:
+	'''
+	+ Have 5% chance to replace current projectile to meteor
+	Meteor deal 300% weapon damage and have much greater velocity
+	If your weapon is a magic weapon : 
+	+ The above chance is increased up to 100%
+	- However damage dealt reduced to 125%
+	If your weapon is [i:2750] :
+	+ Your weapon now can shoot meteor toward cursor
+	'''
+PoisonStaff.Description:
+	'''
+	+ When shooting, have 10% chance to burst out poisonous bolt
+	Poisonous bolt deal 55% weapon damage
+	If your weapon is a magic weapon :
+	+ Above chance is increases up to 100%
+	If your weapon is [i:2188] or [i:1308] :
+	Shoot out more poisonous bolts 
+	'''
+VenomStaff.Description:
+	'''
+	+ When shooting, have 50% chance to shoot a venomous bolt
+	Venomous bolt deal 80% weapon damage
+	If your weapon is a magic weapon : 
+	+ Venomous bolt deal 100% weapon damage instead
+	If your weapon is [i:2188] :
+	+ After 10th shot, shoot out ring of 12 venomous bolts
 	'''

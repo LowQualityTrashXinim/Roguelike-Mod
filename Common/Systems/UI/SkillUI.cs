@@ -31,8 +31,8 @@ public class SkillUI : UIState {
 	public Roguelike_UIPanel panel_Inventory;
 	public List<btn_SkillSlotHolder> list_inventory = new();
 	public Roguelike_TextBox txb_Search;
-	public const int Row = 8;
-	public const int Column = 12;
+	public const int Row = 15;
+	public const int Column = 5;
 	public override void OnInitialize() {
 		panel = new UIPanel();
 		panel.UISetWidthHeight(820, 80);
@@ -63,15 +63,15 @@ public class SkillUI : UIState {
 		panel.Append(txb_Search);
 
 		panel_ActiveSkill = new();
-		panel_ActiveSkill.UISetWidthHeight(400, 600);
-		panel_ActiveSkill.MarginRight = panel_ActiveSkill.Width.Pixels + 10;
+		panel_ActiveSkill.UISetWidthHeight(820, 300);
+		panel_ActiveSkill.MarginBottom = panel_ActiveSkill.Height.Pixels + 10;
 		panel_ActiveSkill.HAlign = .5f;
 		panel_ActiveSkill.VAlign = .5f;
 		Append(panel_ActiveSkill);
 
 		panel_Inventory = new();
-		panel_Inventory.UISetWidthHeight(400, 600);
-		panel_Inventory.MarginLeft = panel_Inventory.Width.Pixels + 10;
+		panel_Inventory.UISetWidthHeight(820, 300);
+		panel_Inventory.MarginTop = panel_Inventory.Height.Pixels + 10;
 		panel_Inventory.HAlign = .5f;
 		panel_Inventory.VAlign = .5f;
 		Append(panel_Inventory);

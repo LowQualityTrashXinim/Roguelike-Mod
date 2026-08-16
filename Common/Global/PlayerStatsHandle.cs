@@ -458,6 +458,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void UpdateLifeRegen() {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
+		UpdateHPRegen = StatModifier.Default;
 	}
 	public void Add_ExtraLifeWeapon(Item item) {
 		Player.GetModPlayer<RevivePlayer>().ReviveConsumables.Add(item);
@@ -651,7 +652,6 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateJumpBoost = StatModifier.Default;
 		UpdateHPMax = StatModifier.Default;
 		UpdateManaMax = StatModifier.Default;
-		UpdateHPRegen = StatModifier.Default;
 		UpdateManaRegen = StatModifier.Default;
 		UpdateDefenseBase = StatModifier.Default;
 		UpdateDefEff = StatModifier.Default;

@@ -321,7 +321,6 @@ namespace Roguelike.Contents.Items.Lootbox {
 			player.QuickSpawnItem(source, Ammo, Amount);
 		}
 		public void GetArmor(Player player, int loopAmount) {
-			var entitySource = player.GetSource_OpenItem(Type);
 			var Armor = new List<int>();
 			var AllLootID = LootboxItemPool().ToArray();
 			for (int i = 0; i < AllLootID.Length; i++) {
@@ -329,14 +328,13 @@ namespace Roguelike.Contents.Items.Lootbox {
 				Armor.AddRange(pool.ArmorLoot());
 			}
 			for (int i = 0; i < loopAmount; i++) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(Armor));
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, -Vector2.UnitY.Vector2RotateByRandom(45) * (1 + Main.rand.NextFloat()), ModContent.ProjectileType<ItemDropProjectile>(), 0, 0, player.whoAmI, Main.rand.Next(Armor), 1, 0);
 			}
 		}
 		/// <summary>
 		/// Return a random accessory 
 		/// </summary>
 		public void GetAccessories(Player player, int LoopAmount) {
-			var entitySource = player.GetSource_OpenItem(Type);
 			var Accessories = new List<int>();
 			var AllLootID = LootboxItemPool().ToArray();
 			for (int i = 0; i < AllLootID.Length; i++) {
@@ -344,14 +342,13 @@ namespace Roguelike.Contents.Items.Lootbox {
 				Accessories.AddRange(pool.AccessoryLoot());
 			}
 			for (int i = 0; i < LoopAmount; i++) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(Accessories));
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, -Vector2.UnitY.Vector2RotateByRandom(45) * (1 + Main.rand.NextFloat()), ModContent.ProjectileType<ItemDropProjectile>(), 0, 0, player.whoAmI, Main.rand.Next(Accessories), 1, 0);
 			}
 		}
 		/// <summary>
 		/// Return random potion
 		/// </summary>
 		public void GetPotions(Player player, int LoopAmount, int potionAmount) {
-			var entitySource = player.GetSource_OpenItem(Type);
 			var Potion = new List<int>();
 			var AllLootID = LootboxItemPool().ToArray();
 			for (int i = 0; i < AllLootID.Length; i++) {
@@ -359,7 +356,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 				Potion.AddRange(pool.PotionPool());
 			}
 			for (int i = 0; i < LoopAmount; i++) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(Potion), potionAmount);
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, -Vector2.UnitY.Vector2RotateByRandom(45) * (1 + Main.rand.NextFloat()), ModContent.ProjectileType<ItemDropProjectile>(), 0, 0, player.whoAmI, Main.rand.Next(Potion), potionAmount, 0);
 			}
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {

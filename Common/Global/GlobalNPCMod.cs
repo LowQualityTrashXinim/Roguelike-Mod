@@ -19,16 +19,6 @@ using Roguelike.Common.Utils;
 
 namespace Roguelike.Common.Global {
 	class GlobalNPCMod : GlobalNPC {
-		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
-			if (npc.HasBuff<Marked>()) {
-				modifiers.CritDamage += 1;
-			}
-		}
-		public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-			if (npc.HasBuff<Marked>()) {
-				modifiers.CritDamage += 1;
-			}
-		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			var noHit = new LeadingConditionRule(new GitGudMode());

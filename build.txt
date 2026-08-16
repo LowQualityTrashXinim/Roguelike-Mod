@@ -1,4 +1,4 @@
 displayName = Everlasting Unstable Alpha
 author = Xinim
-version = 0.0.19.7
+version = 0.0.19.8
 modReferences  = StructureHelper@3.0, SubworldLibrary

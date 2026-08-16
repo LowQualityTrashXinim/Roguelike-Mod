@@ -42,6 +42,9 @@
 		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
 		public const string DrawBrush = CommonTextureStringPattern + "UI/Brush";
 		public const string BackIcon = CommonTextureStringPattern + "UI/BackIcon";
+		public const string Override = CommonTextureStringPattern + "UI/Override";
+		public const string Parallel = CommonTextureStringPattern + "UI/Parallel";
+		public const string SelectAndMove = CommonTextureStringPattern + "UI/SelectAndMove";
 		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
 		public const string Wave = CommonTextureStringPattern + "Wave";
 

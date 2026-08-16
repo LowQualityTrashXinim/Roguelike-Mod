@@ -568,6 +568,16 @@ Mods: {
 			MagicBowShootType1.DisplayName: Magic Bow Shoot Type1
 			BossRush_SpawnBoss_Projectile.DisplayName: Boss Rush_ Spawn Boss_ Projectile
 			LastOption_Projectile.DisplayName: Last Option_ Projectile
+			MagicBow_AmethystGem.DisplayName: Magic Bow_ Amethyst Gem
+			MagicBow_DiamondGem.DisplayName: Magic Bow_ Diamond Gem
+			MagicBow_EmeraldGem.DisplayName: Magic Bow_ Emerald Gem
+			MagicBow_RubyGem.DisplayName: Magic Bow_ Ruby Gem
+			MagicBow_SapphireGem.DisplayName: Magic Bow_ Sapphire Gem
+			MagicBow_SmallEmerald.DisplayName: Magic Bow_ Small Emerald
+			MagicBow_TopazGem.DisplayName: Magic Bow_ Topaz Gem
+			StructureBuilderProjectile.DisplayName: Structure Builder Projectile
+			Hostile_MagicalProjectile.DisplayName: Hostile_ Magical Projectile
+			Hostile_MagicalProjectile_Small.DisplayName: Hostile_ Magical Projectile_ Small
 		}
 
 		NPCs: {
@@ -603,6 +613,7 @@ Mods: {
 			SwordSage.DisplayName: Sword Sage
 			LootboxLord_Clone.DisplayName: Lootbox Lord_ Clone
 			Roguelike_CookedShrimp_NPC.DisplayName: Roguelike_ Cooked Shrimp_ N P C
+			GhostWeapon1.DisplayName: Ghost Weapon1
 		}
 
 		Items: {
@@ -1706,6 +1717,7 @@ Mods: {
 			SkillOrb: {
 				DisplayName: Skill Orb
 				Tooltip: Allow ability to tinker with skill
+				Keybind: Press {0} to open up UI
 			}
 
 			EnchantmentTablet: {
@@ -1789,11 +1801,6 @@ Mods: {
 
 			WallOfFleshDonHitReward: {
 				DisplayName: Hell Feast
-				Tooltip: ""
-			}
-
-			RelicTransmutator: {
-				DisplayName: Relic Transmutator
 				Tooltip: ""
 			}
 
@@ -2000,11 +2007,7 @@ Mods: {
 					Once activated, the soul will level up based on the total damage dealt with the armor piece equipped.
 					[c/d92b2b:Once activated, you cannot dismantle a soul for later use.]
 					'''
-			}
-
-			Transmutator: {
-				DisplayName: Transmutator
-				Tooltip: ""
+				Keybind: Press {0} to open up UI
 			}
 
 			StructureWand: {
@@ -2353,6 +2356,7 @@ Mods: {
 					Relics can be merged to have up to tier 4, merge relics together to create a even stronger relic
 					You can also transmute 2 items of the same rarity to exchange for another item of same rarity
 					'''
+				Keybind: Press {0} to open up UI
 			}
 
 			ScrollOfHellspawn: {
@@ -2928,7 +2932,13 @@ Mods: {
 
 			FuryEmblem: {
 				DisplayName: Fury Emblem
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Your rage is what turns tides in battle"
+				Increase 5% damage and 5% critical strike chance
+				Upon getting hit, increases 25% damage and critical strike chance for short duration
+				But decreases your defenses by 15% and your regeneration by 5%
+				'''
 			}
 
 			ExampleWhip: {
@@ -3043,7 +3053,49 @@ Mods: {
 
 			MagicBow: {
 				DisplayName: Magic Bow
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Is this a range weapon or a magic weapon ? That is up to you to decide"
+					Attack in a combo styles
+					There are up to 6 attacks
+					After every 6th attack, switch gem mode attack.
+					'''
+				ExtraInfo:
+					'''
+					The first 3 attacks, shoot out slightly inaccurate bolt 
+					The 4th attack burst out 5 projectiles in a arch in quick succesion
+					The 5th attack shoot out a arch of 3 bolts.
+					The 6th attack shoot out a big bolt that shoot a circle of bolts
+					Bolt from big bolt will not create any gem.
+
+					[i:181] Amethyst gem mode: 
+					Hitting enemy with bolt, shoot a amethyst gem upward and
+					it will linger for a short while and then fall down
+					While falling down, the gem gain more damage
+
+					[i:180] Topaz gem mode: 
+					Upon hitting enemy with bolt, Topaz gem is created at where player
+					at and linger for a moment and then explode
+					The longer it is linger, the more damage increased.
+
+					[i:177] Sapphire gem mode:
+					Hitting enemy with bolt create a sapphire gem that act depend on player health
+					If player health is lower than 30%, the sapphire gem will float toward player to heal
+					If player health is higher than 30%, then the sapphire gem will home toward enemy
+
+					[i:179] Emerald gem mode:
+					Hitting enemy with bolt create a emerald gem at where the bolt hit
+					After a short while, it will cracked and burst into 3 mini emerald gem.
+
+					[i:178] Ruby gem mode:
+					Hitting enemy with bolt create a ruby gem that will be inactived
+					After a bolt pass through it, it become active and fly toward cursor
+					Ruby gem after become active gain 100% damage
+
+					[i:182] Diamond gem mode:
+					Hitting enemy with bolt create a diamond gem that after a short while
+					It will fires burst of bolts toward its spawn position
+					'''
 			}
 
 			DiamondSkinPotion: {
@@ -4522,6 +4574,9 @@ Mods: {
 		Keybinds: {
 			"Skill activation.DisplayName": Skill Activation
 			"Weapon action.DisplayName": Alternative Weapon Action
+			"Open divine hammer interface.DisplayName": Open divine hammer interface
+			"Open skill interface.DisplayName": Open skill interface
+			"Open transmutation interface.DisplayName": Open transmutation interface
 		}
 
 		Biomes: {

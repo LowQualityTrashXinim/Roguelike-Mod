@@ -29,6 +29,10 @@ public abstract class RelicPrefix : ModType {
 	public short Type;
 	public string Description => DisplayName + " : " + Language.GetTextValue($"Mods.Roguelike.RelicPrefix.{Name}.Description");
 	public string DisplayName => Language.GetTextValue($"Mods.Roguelike.RelicPrefix.{Name}.DisplayName");
+	/// <summary>
+	/// The mod already handle texture string unavailable in the case where there are no sprite for it yet<br/>
+	/// So it is completely fine to leave this to completely empty or null even
+	/// </summary>
 	public string TextureString = "";
 	public static short GetRelicType<T>() where T : RelicPrefix {
 		return ModContent.GetInstance<T>().Type;
@@ -127,13 +131,16 @@ public class Archer : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("ArcherRelic");
 	}
-	public override void Update(Player player, Relic relic, int index) {
-		player.arrowDamage += .06f;
-	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (player.HeldItem.useAmmo == AmmoID.Arrow && index == 0) {
-			value.Base += 5;
-			return value;
+		foreach (var stats in relic.Relic_Stats) {
+			switch (stats) {
+				case PlayerStats.RangeDMG:
+				case PlayerStats.RangeAtkSpeed:
+				case PlayerStats.RangeCritChance:
+				case PlayerStats.RangeCritDmg:
+				case PlayerStats.RangeNonCritDmg:
+					return value += .2f;
+			}
 		}
 		return value;
 	}
@@ -161,8 +168,15 @@ public class Warrior : RelicPrefix {
 		player.ModPlayerStats().DirectItemDamage.Base += 10;
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (player.HeldItem.DamageType == DamageClass.Melee && index == 0) {
-			return value + .1f;
+		foreach (var stats in relic.Relic_Stats) {
+			switch (stats) {
+				case PlayerStats.MeleeDMG:
+				case PlayerStats.MeleeAtkSpeed:
+				case PlayerStats.MeleeCritChance:
+				case PlayerStats.MeleeCritDmg:
+				case PlayerStats.MeleeNonCritDmg:
+					return value += .2f;
+			}
 		}
 		return value;
 	}
@@ -171,12 +185,16 @@ public class Mage : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = ModUtils.GetTheSameTextureAs<Relic>("StaffRelic");
 	}
-	public override void Update(Player player, Relic relic, int index) {
-		player.manaCost -= .05f;
-	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (Item.staff[player.HeldItem.type] && index == 0) {
-			return value + .2f;
+		foreach (var stats in relic.Relic_Stats) {
+			switch (stats) {
+				case PlayerStats.MagicDMG:
+				case PlayerStats.MagicAtkSpeed:
+				case PlayerStats.MagicCritChance:
+				case PlayerStats.MagicCritDmg:
+				case PlayerStats.MagicNonCritDmg:
+					return value += .2f;
+			}
 		}
 		return value;
 	}

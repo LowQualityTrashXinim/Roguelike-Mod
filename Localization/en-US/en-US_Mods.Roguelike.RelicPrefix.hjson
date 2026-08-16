@@ -30,17 +30,17 @@ Phi: {
 
 Warrior: {
 	DisplayName: Warrior
-	Description: Increases base relic stats by 5 when helding melee weapon, +10 direct item damage
+	Description: Relic contain stats such as melee related gain universal boost by 20%
 }
 
 Archer: {
 	DisplayName: Archer
-	Description: Increases base relic stats by 5 when helding a weapon use arrow, +6% arrow damage
+	Description: Relic contain stats such as ranger related gain universal boost by 20%
 }
 
 Mage: {
 	DisplayName: Mage
-	Description: Increases base relic stats by 5 when helding a magic staff, -5% mana cost
+	Description: Relic contain stats such as magic related gain universal boost by 20%
 }
 
 Defensive: {

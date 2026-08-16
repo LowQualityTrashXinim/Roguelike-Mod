@@ -419,12 +419,12 @@ internal class KingSlime : NPCReworker {
 		Main.EntitySpriteDraw(TextureAssets.Npc[npc.type].Value, npc.Center - screenPos + new Vector2(0, npc.frame.Height / 2 * (1f - currentScale.Y + (1f - npc.scale)) + 8 * npc.scale), npc.frame, drawColor * 0.9f, npc.rotation, npc.frame.Size() / 2f, npc.scale * currentScale, SpriteEffects.None);
 
 		if (crownNPC == null)
-			Main.EntitySpriteDraw(TextureAssets.Extra[39].Value, crownPos - screenPos - new Vector2(0, 8), null, drawColor, npc.rotation, TextureAssets.Extra[39].Size() / 2f, 1f, SpriteEffects.None);
+			Main.EntitySpriteDraw(TextureAssets.Extra[ExtrasID.KingSlimeCrown].Value, crownPos - screenPos - new Vector2(0, 8), null, drawColor, npc.rotation, TextureAssets.Extra[ExtrasID.KingSlimeCrown].Size() / 2f, 1f, SpriteEffects.None);
 
 		if (state == State.SlamJump && Counter >= 140 && Counter < 180) {
 
 			var shaderSettings = new ShaderSettings();
-			shaderSettings.image1 = TextureAssets.Extra[193];
+			shaderSettings.image1 = TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion];
 			shaderSettings.image2 = null;
 			shaderSettings.image3 = null;
 			shaderSettings.Color = Color.Cyan;

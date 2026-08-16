@@ -15,7 +15,7 @@ public class TomahawkProjectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.penetrate = -1;
 		Projectile.timeLeft = 999;
-		Projectile.aiStyle = 2;
+		Projectile.aiStyle = ProjAIStyleID.ThrownProjectile;
 		Projectile.tileCollide = true;
 	}
 	float intialvelocity;

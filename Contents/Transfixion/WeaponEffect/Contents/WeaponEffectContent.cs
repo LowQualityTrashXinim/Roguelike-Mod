@@ -58,6 +58,11 @@ public class Effect10 : WeaponEffect {
 		player.GetModPlayer<WeaponEffectPlayer>().Effect10++;
 	}
 }
+public class Effect11 : WeaponEffect {
+	public override void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+		damage.Base += 30;
+	}
+}
 public class WeaponEffectPlayer : ModPlayer {
 	public bool Effect4 = false;
 	public int Effect5 = 0;

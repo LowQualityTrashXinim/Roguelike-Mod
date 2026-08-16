@@ -54,6 +54,7 @@ TinBow:
 	'''
 BoneSword:
 	'''
+	Intro effect: Every swing shoot out a cursed skull for 9s
 	Every 5th swing summon a fast cursed skull
 	Striking enemy will shoot out a piercing bone upward
 	Wait 1s to deal 1.2x damage and summon arch of 3 cursed skull

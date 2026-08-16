@@ -217,7 +217,7 @@ PerpetuatedCycleArtifact: {
 	Description:
 		'''
 		[c/ffff00:Positive effect] :
-			+ Increases debuff infliction duration by 35% and debuff damage by 10%
+			+ Increases debuff inflicting duration by 35% and debuff damage by 10%
 			+ Hitting enemy inflict Samsara of Retribution for 1 second 
 			+ Re-inflicting Samsara of Retribution will strengthen it
 		[c/ab3e43:Negative effect] :

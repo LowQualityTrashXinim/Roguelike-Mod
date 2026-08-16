@@ -3,10 +3,11 @@
 Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished. If you spot any bug, please consider reporting it in our Discord server.
 Note: Multiplayer is currently in the works.
 
-Roguelike Terraria is an expansive boss rush which aims to offer a fair and diverse randomised experience, all while eliminating the need for grinding.
-Your goal is to defeat Moon Lord by making use of the limited resources from special randomised loot boxs inside a simulated, simplified world.
-
-If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the 'Main Experience' section, as well as enable extra gameplay gimmicks under the 'Difficulty' section inside the mod's config.
+Everlasting is a mod central around roguelike, exploration, and much more ! Most of what you know in terraria is not the same with this mod.
+This is a whole standalone mod but using Tmodloader API as a way to make it easily accessible to most player. It is highly recommend to not play this mod with other mod.
+Multiplayer doesn't works, unless there are extremely high demand for it along with the support that we need, there won't be any plans to make multiplayer playable.
+This mod bring entirely new whole experiences that never seen before in terraria modding, new systems to play around, new weapons to look for and craft, and so much secrets waiting to be discovered !
+Completed vanilla items overhaul, from just visual to new functionality, you maybe shocked what we did to copper shortsword !
 
 Special thanks to :
 DanielTheDragon helping with sprite work !

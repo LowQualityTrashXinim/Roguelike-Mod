@@ -13,6 +13,8 @@ using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
 using Roguelike.Contents.Items.NoneSynergy.SnowballShotgunCannon;
 using Roguelike.Contents.Items.RelicItem;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -29,6 +31,12 @@ public class TransmuteTablet : ModItem {
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;
 		Item.noUseGraphic = true;
+	}
+	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		string keybind = "";
+		List<string> keybindList = ProcessTriggerSystem_Roguelike.Open_TransmutateUI.GetAssignedKeys();
+		keybind = keybindList.FirstOrDefault();
+		tooltips.Add(new TooltipLine(Mod, "Keybind", string.Format(ModUtils.LocalizationText("Items.TransmuteTablet", "Keybind"), $"[c/{Color.Yellow.Hex3()}:{keybind}]")));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
@@ -65,6 +73,7 @@ public partial class TransmutationUIState {
 	Roguelike_UIImage btn_EnergyMode;
 	Roguelike_UIImage btn_RelicMergeMode;
 	Roguelike_UIImage btn_ItemShift;
+	Roguelike_UIImage btn_AugmentationCharge;
 	UIPanel FooterPanel;
 
 	ItemHolderSlot Relicslot1;
@@ -318,11 +327,19 @@ public partial class TransmutationUIState {
 		btn_ItemShift.SetPostTex(ModContent.Request<Texture2D>(ModUtils.GetTheSameTextureAsEntity<TransmuteTablet>()), false);
 		btn_ItemShift.MarginLeft += btn_RelicMergeMode.Width.Pixels * 2 + 20;
 		btn_ItemShift.VAlign = .5f;
-		btn_ItemShift.HighlightColor = btn_EnergyMode.OriginalColor.ScaleRGB(.5f);
+		btn_ItemShift.HighlightColor = btn_ItemShift.OriginalColor.ScaleRGB(.5f);
 		btn_ItemShift.OnLeftClick += btn_Mode_OnLeftClick;
 		btn_ItemShift.SwapHightlightColorWithOriginalColor();
 		headerPanel.Append(btn_ItemShift);
 
+		btn_AugmentationCharge = new(tex);
+		btn_AugmentationCharge.HoverText = "Tablet: Augmentation mode";
+		btn_AugmentationCharge.MarginLeft += btn_ItemShift.Width.Pixels * 3 + 30;
+		btn_AugmentationCharge.VAlign = .5f;
+		btn_AugmentationCharge.HighlightColor = btn_AugmentationCharge.OriginalColor.ScaleRGB(.5f);
+		btn_AugmentationCharge.OnLeftClick += btn_Mode_OnLeftClick;
+		btn_AugmentationCharge.SwapHightlightColorWithOriginalColor();
+		headerPanel.Append(btn_AugmentationCharge);
 
 		btn_exit = new ExitUI(tex);
 		btn_exit.UISetWidthHeight(52, 52);
@@ -673,7 +690,12 @@ public partial class TransmutationUIState {
 				if (Main.rand.NextBool(5)) {
 					return ModContent.ItemType<SharpBoomerang>();
 				}
-				return ItemID.Shroomerang;
+				if(Main.rand.NextBool()) {
+					return ItemID.Shroomerang;
+				}
+				return ItemID.EnchantedBoomerang;
+			case ItemID.Mace:
+				return ItemID.FlamingMace;
 			case ItemID.FlamingMace:
 				return ItemID.Sunfury;
 			case ItemID.CopperBroadsword:
@@ -717,6 +739,38 @@ public partial class TransmutationUIState {
 				return ItemID.FrostStaff;
 			case ItemID.BeeGun:
 				return ItemID.WaspGun;
+
+			case ItemID.DD2LightningAuraT1Popper:
+				return ItemID.DD2LightningAuraT2Popper;
+			case ItemID.DD2FlameburstTowerT1Popper:
+				return ItemID.DD2FlameburstTowerT2Popper;
+			case ItemID.DD2BallistraTowerT1Popper:
+				return ItemID.DD2BallistraTowerT2Popper;
+			case ItemID.DD2ExplosiveTrapT1Popper:
+				return ItemID.DD2ExplosiveTrapT2Popper;
+			case ItemID.DD2LightningAuraT2Popper:
+				return ItemID.DD2LightningAuraT3Popper;
+			case ItemID.DD2FlameburstTowerT2Popper:
+				return ItemID.DD2FlameburstTowerT3Popper;
+			case ItemID.DD2BallistraTowerT2Popper:
+				return ItemID.DD2BallistraTowerT3Popper;
+			case ItemID.DD2ExplosiveTrapT2Popper:
+				return ItemID.DD2ExplosiveTrapT3Popper;
+
+			case ItemID.PurplePhaseblade:
+				return ItemID.PurplePhasesaber;
+			case ItemID.BluePhaseblade:
+				return ItemID.BluePhasesaber;
+			case ItemID.RedPhaseblade:
+				return ItemID.RedPhasesaber;
+			case ItemID.OrangePhaseblade:
+				return ItemID.OrangePhasesaber;
+			case ItemID.WhitePhaseblade:
+				return ItemID.WhitePhasesaber;
+			case ItemID.GreenPhaseblade:
+				return ItemID.GreenPhasesaber;
+			case ItemID.YellowPhaseblade:
+				return ItemID.YellowPhaseblade;
 			default:
 				return 0;
 		}

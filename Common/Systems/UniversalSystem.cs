@@ -135,11 +135,8 @@ internal class UniversalSystem : ModSystem {
 	public BossRushModifierUIState UI_BRmodifier;
 
 	public static bool EnchantingState = false;
-	public static ModKeybind WeaponActionKey { get; private set; }
 	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
 	public override void Load() {
-		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
-
 		GivenBossSpawnItem = new();
 		//UI stuff
 		if (!Main.dedServ) {
@@ -184,7 +181,6 @@ internal class UniversalSystem : ModSystem {
 	}
 
 	public override void Unload() {
-		WeaponActionKey = null;
 		PlayerStatsTabletUI.InfoShowToItem = null;
 		GivenBossSpawnItem = null;
 

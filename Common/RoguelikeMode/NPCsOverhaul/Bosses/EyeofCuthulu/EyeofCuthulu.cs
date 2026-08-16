@@ -195,7 +195,7 @@ public class EvilFlamesProj : ModProjectile {
 
 		var settings = new TrailShaderSettings();
 		settings.Color = Color.Purple;
-		settings.image1 = TextureAssets.Extra[193];
+		settings.image1 = TextureAssets.Extra[ExtrasID.MagicMissileTrailErosion];
 		settings.shaderType = "EvilFlames";
 		settings.oldPos = Projectile.oldPos;
 		settings.oldRot = Projectile.oldRot;

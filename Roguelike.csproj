@@ -17,7 +17,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\BossArena\" />
-	  <Folder Include="Contents\NPCs\EntityOfWeaponry\" />
 	</ItemGroup>
 
 	<!-- References -->

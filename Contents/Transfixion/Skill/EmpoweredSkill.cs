@@ -19,10 +19,26 @@ public class BloodToPower : ModSkill {
 	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
 		int blood = player.statLife / 2;
 		player.statLife -= blood;
-		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
+		player.GetModPlayer<SkillHandlePlayer>().ToPower += blood;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().ToPower * .01f);
+	}
+}
+public class ManaToPower : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAs<BloodToPower>("SacrificialPact");
+	public override void SetDefault() {
+		Skill_EnergyRequire = 570;
+		Skill_Duration = ModUtils.ToSecond(2);
+		Skill_Type = SkillTypeID.Empowered;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
+		int blood = player.statMana / 2;
+		player.statMana -= blood;
+		player.GetModPlayer<SkillHandlePlayer>().ToPower += blood;
+	}
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().ToPower * .01f);
 	}
 }
 

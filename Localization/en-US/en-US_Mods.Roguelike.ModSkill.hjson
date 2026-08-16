@@ -35,7 +35,7 @@ Procrastination: {
 
 SpeedDemon: {
 	DisplayName: Speed Demon
-	Description: Increases your speed by 50% and weapon speed by 150%
+	Description: Increases your movement speed by 50% and weapon speed by 150%
 }
 
 TranquilMind: {
@@ -125,9 +125,18 @@ BloodToPower: {
 	Description: Halves your current health to increase your damage% proportionally to the sacrificed amount
 }
 
+ManaToPower: {
+	DisplayName: Mana to Power
+	Description: Halves your current mana to increase your damage% proportionally to the sacrificed amount
+}
+
 AdAstra: {
 	DisplayName: Ad Astra
-	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed, and defense by 90% for 15 seconds.
+	Description:
+		'''
+		Increases the damage by +500%
+		but then lowers your attack, speed, and defense by 90% for 15 seconds after skill ended.
+		'''
 }
 
 FireDamageUp: {

@@ -389,6 +389,7 @@ The core component will contain the following:
 20/ work on general building tool in-game for builder of the mod
 - Must include copy and paste function and flip function
 - Enable placement preview.
+- Add in drag select function.
 
 21/ Rework User Info Tablet.
 - Separate the 4 classes information into each different sections that player can choose to focus.
@@ -433,11 +434,11 @@ Shooting at close proximity will make the projectile from the weapon deal additi
 
 23/ Cursed mode : 
 "*Pushing once self to absolute extreme, a fine tribute to god !*"
-- Everything take 50% less damage ( multiplicative )
+- Every enemy take 50% less damage ( multiplicative ) ( not to be confused with DR )
 - The following perk become unobtainable:
 > Unnerfed
 > Perk Blocker
-- All form of extra life is disable
+- All form of extra life/revive is disable
 - When hit, life regeneration ( not natural life regen ) is multiply by 0, and slowly goes back up to 1 overtime ( +0.01x/s )
 - Each time getting hit, reduce 1% of player maximum health, up to 40% ( multiplicative ), this slowly regenerate ( 1% per 10s )
 - Boss gain 50% damage reduction and 25% percentage damage

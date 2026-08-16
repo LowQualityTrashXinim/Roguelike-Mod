@@ -15,7 +15,7 @@ public class ThrowShortSwordProjectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.penetrate = 3;
 		Projectile.timeLeft = 150;
-		Projectile.aiStyle = 2;
+		Projectile.aiStyle = ProjAIStyleID.ThrownProjectile;
 		Projectile.tileCollide = true;
 	}
 

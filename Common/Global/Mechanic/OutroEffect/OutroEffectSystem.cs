@@ -198,6 +198,17 @@ internal class OutroEffectSystem : ModSystem {
 		}
 		return tag;
 	}
+	/// <summary>
+	/// Only set this in setdefault or setstaticdefault, anything that run after <see cref="PostSetupContent"/>
+	/// </summary>
+	/// <param name="weaponID"></param>
+	/// <param name="tag"></param>
+	public static void Add_WeaponTag(int weaponID, WeaponTag tag) {
+		if (tag == WeaponTag.None) {
+			return;
+		}
+		Arr_WeaponTag[(int)tag].Add(weaponID);
+	}
 	//All of this mustn't be confused with the actual Add_tag function since these below are more like initialize function
 	private void Add_SwordTag() {
 		int tag = (int)WeaponTag.Sword;
@@ -1384,7 +1395,7 @@ public enum WeaponTag : byte {
 	Whip,
 
 	Other,
-
+	//Weapon tag
 	HallowedGaze,
 	WrathOfBlueMoon,
 	FuryOfTheSun,

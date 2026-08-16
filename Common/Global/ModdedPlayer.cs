@@ -40,18 +40,7 @@ namespace Roguelike.Common.Global {
 
 		public int HowManyBossIsAlive = 0;
 		public bool ItemIsUsedDuringBossFight = false;
-
-		public bool Hold_Shift = false;
-		public bool Press_Shift = false;
-		public bool Pressed_Shift = false;
-		public bool Shift_Option() {
-			if (ModContent.GetInstance<RogueLikeConfig>().HoldShift) {
-				return Hold_Shift;
-			}
-			else {
-				return Press_Shift;
-			}
-		}
+		
 		private Item starterItem = null;
 		public bool UseOnly1ItemSinceTheStartOfTheGame(int type = 0) {
 			if (starterItem == null) {
@@ -67,20 +56,7 @@ namespace Roguelike.Common.Global {
 			}
 			return true;
 		}
-		public override void ProcessTriggers(TriggersSet triggersSet) {
-			if (Main.playerInventory) {
-				Hold_Shift = triggersSet.SmartSelect;
-				if (triggersSet.SmartSelect) {
-					if (!Pressed_Shift) {
-						Press_Shift = !Press_Shift;
-					}
-					Pressed_Shift = true;
-				}
-				else {
-					Pressed_Shift = false;
-				}
-			}
-		}
+
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
 			if (!Player.IsDebugPlayer()) {
@@ -109,7 +85,7 @@ namespace Roguelike.Common.Global {
 				}
 			}
 			if (Main.ActiveWorldFileData.IsValid) {
-				if (Main.ActiveWorldFileData.Name == "Nightmare") {
+				if (RoguelikeWorldProperty.NightmareWorld) {
 					Main.NewText("You have entered Nightmare mode", Color.Black);
 				}
 			}

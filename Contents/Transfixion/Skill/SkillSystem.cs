@@ -169,13 +169,9 @@ public class SkillModSystem : ModSystem {
 	public static ModSkill GetSkill(int type) {
 		return type >= 0 && type < _skill.Count ? _skill[type] : null;
 	}
-	public static ModKeybind SkillActivation { get; private set; }
-
 	public override void Load() {
-		SkillActivation = KeybindLoader.RegisterKeybind(Mod, "Skill activation", Keys.F);
 	}
 	public override void Unload() {
-		SkillActivation = null;
 		_skill = null;
 		dict_skill = null;
 	}
@@ -241,7 +237,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public int Duplicate = 0;
 	int RechargeDelay = 0;
 	public int MaximumDuration = 0;
-	public int BloodToPower = 0;
+	public int ToPower = 0;
 	public int Request_Repeat = 0;
 	List<ModSkill> activeskill = new();
 	List<List<ModSkill>> projectileskillActive = new();
@@ -369,7 +365,7 @@ public class SkillHandlePlayer : ModPlayer {
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
-		if (SkillModSystem.SkillActivation.JustReleased && !Activate) {
+		if (ProcessTriggerSystem_Roguelike.SkillActivation.JustReleased && !Activate) {
 			Activate = true;
 			SkillStatTotal(false, out int energy, out int duration);
 			Duration += duration;
@@ -432,6 +428,7 @@ public class SkillHandlePlayer : ModPlayer {
 				foreach (var skill in activeskill) {
 					skill.OnEnded(Player);
 				}
+				ToPower = 0;
 			}
 		}
 
@@ -671,6 +668,12 @@ public class SkillOrb : ModItem {
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;
 		Item.noUseGraphic = true;
+	}
+	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		string keybind = "";
+		List<string> keybindList = ProcessTriggerSystem_Roguelike.Open_SkillUI.GetAssignedKeys();
+		keybind = keybindList.FirstOrDefault();
+		tooltips.Add(new TooltipLine(Mod, "Keybind", string.Format(ModUtils.LocalizationText("Items.SkillOrb", "Keybind"), $"[c/{Color.Yellow.Hex3()}:{keybind}]")));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {

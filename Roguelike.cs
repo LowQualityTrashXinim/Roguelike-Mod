@@ -14,7 +14,6 @@ namespace Roguelike;
 public partial class Roguelike : Mod {
 	public static Roguelike Instance { get; private set; }
 	public override void Load() {
-
 		Instance = this;
 		base.Load();
 	}

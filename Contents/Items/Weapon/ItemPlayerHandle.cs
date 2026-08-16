@@ -403,7 +403,7 @@ namespace Roguelike.Contents.Items.Weapon {
 				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 			}
 			Player player = Main.LocalPlayer;
-			ModdedPlayer moddedplayer = player.GetModPlayer<ModdedPlayer>();
+			ProcessTriggerPlayer moddedplayer = player.GetModPlayer<ProcessTriggerPlayer>();
 			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
 				int effectID = list_WeaponEffectType[i];
 				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
@@ -478,7 +478,7 @@ namespace Roguelike.Contents.Items.Weapon {
 			if (value == null) {
 				return base.PreDrawTooltip(item, lines, ref x, ref y); ;
 			}
-			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			ProcessTriggerPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ProcessTriggerPlayer>();
 			if (moddedplayer.Shift_Option()) {
 				float width;
 				float height = -16;

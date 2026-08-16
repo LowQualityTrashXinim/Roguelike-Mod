@@ -2,8 +2,8 @@ RelicSet_UniversalGemstone: {
 	DisplayName: Universal Gemstone
 	Description:
 		'''
-		Minor increases to various stats
-		You have a small chance to dodge an attack, and small chance to life steal
+		+ Minor increases to various stats
+		+ You have a small chance to dodge an attack, and small chance to life steal
 		'''
 }
 
@@ -12,10 +12,10 @@ RelicSet_TitanicBlood: {
 	Description:
 		'''
 		"A small snippet strength of the ancient god"
-		Increases damage reduction by 10% when your life is under 50%
-		Increases additional damage reduction by 5% when your life is under 35%
-		Increases additional damage reduction by 5% when your life is under 15%
-		You have 1 in 12 chance to resist an attack
+		+ Increases damage reduction by 10% when your life is under 50%
+		+ Increases additional damage reduction by 5% when your life is under 35%
+		+ Increases additional damage reduction by 5% when your life is under 15%
+		+ You have 1 in 12 chance to resist an attack
 		'''
 }
 
@@ -24,8 +24,8 @@ RelicSet_NatureOfGoodAndEvil: {
 	Description:
 		'''
 		Dealing a critical strike will increases the following for short duration:
-		If your health is above 50%: attack speed by 3%, damage by 5%
-		Otherwise: life regenarate by 10% and life regen by 2hp/s
+		+ If your health is above 50%: attack speed by 3%, damage by 5%
+		+ Otherwise: life regenarate by 10% and life regen by 2hp/s
 		The above effect can be stacked up to 5 times.
 		'''
 }
@@ -34,8 +34,8 @@ RelicSet_HeartOfNature: {
 	DisplayName: Heart of Nature
 	Description:
 		'''
-		Increase maximum health and mana by 40
-		Getting hit both heal back your health and mana for 25% of taken damage
+		+ Increase maximum health and mana by 40
+		+ Getting hit both heal back your health and mana for 25% of taken damage
 		'''
 }
 
@@ -43,10 +43,10 @@ RelicSet_GenocidalPact: {
 	DisplayName: Genocidal Pact
 	Description:
 		'''
-		Increases your first strike damage by 200%
-		Killing a enemy increases your damage by 5% and attack speed by 2.5%
-		You can stack the effect by keep killing enemies
-		The stack effect capped at 5 but can be over stack
+		+ Increases your first strike damage by 200%
+		+ Killing a enemy increases your damage by 5% and attack speed by 2.5%
+		+ You can stack the effect by keep killing enemies
+		+ The stack effect capped at 5 but can be overstacked
 		'''
 }
 
@@ -54,10 +54,10 @@ RelicSet_SpiritEssence: {
 	DisplayName: Spirit Essence
 	Description:
 		'''
-		Increases your max minion, sentry slot by 1
-		Hitting enemy with whip will inflict enemy with Crystalized debuff
-		Minion hitting enemy with Crystalized debuff have chance to deal 55% more damage
-		Or have chance to burst out crystal at enemy position
+		+ Increases your max minion, sentry slot by 1
+		+ Hitting enemy with whip will inflict enemy with Crystalized debuff
+		+ Minion hitting enemy with Crystalized debuff have chance to deal 55% more damage
+		+ Or have chance to burst out crystal at enemy position
 		'''
 }
 
@@ -66,8 +66,8 @@ RelicSet_SpectreArcher: {
 	Description:
 		'''
 		"Grant the user with spectre archer knowledge"
-		Increases range base damage by 10 and arrow velocity by 10%
-		Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( CD: 1s )
+		+ Increases range base damage by 10 and arrow velocity by 10%
+		+ Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( CD: 1s )
 		'''
 }
 
@@ -76,8 +76,8 @@ RelicSet_StarfellStone: {
 	Description:
 		'''
 		"Made from star that keep falling from the sky"
-		Increases synergy damage by 15%
-		Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+		+ Increases synergy damage by 15%
+		+ Upon attack after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
 		'''
 }
 
@@ -85,8 +85,8 @@ RelicSet_StellaCharm: {
 	DisplayName: Stella Charm
 	Description:
 		'''
-		Increases your summon damage by 12%
-		Minion attack will have a chance shooting down star onto your enemy
+		+ Increases your summon damage by 12%
+		+ Minion attack will have a chance shooting down star onto your enemy
 		'''
 }
 
@@ -108,4 +108,17 @@ RelicSet_DefenseMK1: {
 RelicSet_HealingStrike: {
 	DisplayName: Healing Strike
 	Description: Striking enemy have 50% chance to heal you back for 1 to 50 hp ( CD: 2s )
+}
+
+RelicSet_DyingStatus: {
+	DisplayName: Dying Status
+	Description:
+		'''
+		+ Increases debuff damage by 12%
+		+ Dealing damage to enemy with status effect or debuff 
+		will extended the duration of that effect by 1s
+		+ Additionally, each attack have 25% chance to dealt 100% more damage on target
+		Upon dealing extra damage on target, there is a short duration where this will carry
+		to the next extra damage strike.
+		'''
 }

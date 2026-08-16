@@ -40,7 +40,9 @@ internal class Roguelike_BoneSword : GlobalItem {
 		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>().Counter / 180f;
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-
+		if(OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+		}
 		var modplayer = player.GetModPlayer<Roguelike_BoneSword_ModPlayer>();
 		if (modplayer.Counter >= 60) {
 			for (int i = 0; i < 3; i++) {
@@ -62,7 +64,6 @@ internal class Roguelike_BoneSword : GlobalItem {
 		}
 		else if (modplayer.Counter >= 60) {
 			damage *= 1.2f;
-
 		}
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {

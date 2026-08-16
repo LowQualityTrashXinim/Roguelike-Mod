@@ -16,6 +16,9 @@ public class Relic : ModItem {
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
 	List<StatModifier> valuelist = new List<StatModifier>();
+
+	public List<PlayerStats> Relic_Stats => statlist;
+
 	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	public short RelicPrefixedType = -1;
 	public short RelicSetType = -1;
@@ -180,7 +183,7 @@ public class Relic : ModItem {
 				line += "\n";
 			}
 		}
-		if (relicsetLine != null && Main.LocalPlayer.GetModPlayer<ModdedPlayer>().Shift_Option()) {
+		if (relicsetLine != null && Main.LocalPlayer.GetModPlayer<ProcessTriggerPlayer>().Shift_Option()) {
 			relicsetLine.OverrideColor = colorstring_set;
 			tooltips.Insert(index + 1, relicsetLine);
 		}
@@ -299,11 +302,7 @@ public class Relic : ModItem {
 			return false;
 		}
 		RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
-		if (relicprefix == null) {
-			spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
-			return false;
-		}
-		if (string.IsNullOrEmpty(relicprefix.TextureString)) {
+		if (relicprefix == null || string.IsNullOrEmpty(relicprefix.TextureString)) {
 			spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
 			return false;
 		}

@@ -287,7 +287,7 @@ namespace Roguelike.Common.Utils {
 				}
 			}
 			else {
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + (int)(hitbox.Width * quotient), hitbox.Y, 2, hitbox.Height), Color.White);
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + Math.Clamp((int)(hitbox.Width * quotient - 2),0, hitbox.Width), hitbox.Y, 2, hitbox.Height), Color.White);
 			}
 		}
 	}

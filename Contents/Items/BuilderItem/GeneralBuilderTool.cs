@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
+using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -27,6 +28,11 @@ public class GeneralBuilderToolSystem : ModSystem {
 	public static bool MirrorMode = false;
 	public static bool Tile = false;
 	public static bool Wall = false;
+	public static bool Parallel = false;
+	/// <summary>
+	/// This use real game world position
+	/// </summary>
+	public Vector2 ParallelPosition = Vector2.Zero;
 	public Vector2 createPosition = Vector2.Zero;
 	public GeneralBuilderToolUI GeneralBuilderToolState;
 	internal UserInterface userInterface;
@@ -74,24 +80,30 @@ public class GeneralBuilderToolSystem : ModSystem {
 }
 public class GeneralBuilderToolUI : UIState {
 	public UIPanel Panel;
-	public Roguelike_UIImage FillMode;
-	public Roguelike_UIImage DrawMode;
-	public Roguelike_UIImage DeleteMode;
-	public Roguelike_UIImage OverrideMode;
-	public Roguelike_UIImage TileMode;
-	public Roguelike_UIImage WallMode;
+
 	public Roguelike_UIPanel Main_CreateMode_Panel;
-	public Roguelike_UIImage CreateMode;
 	public Roguelike_UIImage QuickCreate;
 	public Roguelike_TextBox txb_width;
 	public Roguelike_TextBox txb_height;
 	public Roguelike_UIImage OutlineMode;
+
+	public Roguelike_UIPanel Panel_Mode;
+	public Roguelike_UIImage FillMode;
+	public Roguelike_UIImage DrawMode;
+	public Roguelike_UIImage CreateMode;
+
+	public Roguelike_UIPanel Panel_Option;
+	public Roguelike_UIImage DeleteMode;
+	public Roguelike_UIImage OverrideMode;
+	public Roguelike_UIImage TileMode;
+	public Roguelike_UIImage WallMode;
+	public Roguelike_UIImage ParallelMode;
 	public override void OnInitialize() {
 		Asset<Texture2D> thesameuitextureasvanilla = TextureAssets.InventoryBack7;
 
 		Panel = new();
 		Panel.Width.Pixels = 350;
-		Panel.Height.Pixels = 200;
+		Panel.Height.Pixels = 300;
 		Panel.Left.Percent = .5f;
 		Panel.Top.Percent = .5f;
 		Panel.BackgroundColor.A = 150;
@@ -100,13 +112,26 @@ public class GeneralBuilderToolUI : UIState {
 		Panel.OnUpdate += Panel_OnUpdate;
 		Append(Panel);
 
+		Panel_Mode = new();
+		Panel_Mode.Width.Percent = 1;
+		Panel_Mode.Height.Percent = .45f;
+		Panel_Mode.OnUpdate += Panel_OnUpdate;
+		Panel.Append(Panel_Mode);
+
+		Panel_Option = new();
+		Panel_Option.Width.Percent = 1;
+		Panel_Option.Height.Percent = .45f;
+		Panel_Option.VAlign = 1f;
+		Panel_Option.OnUpdate += Panel_OnUpdate;
+		Panel.Append(Panel_Option);
+
 		DrawMode = new(thesameuitextureasvanilla);
 		DrawMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.DrawBrush));
 		DrawMode.HighlightColor = DrawMode.OriginalColor * .5f;
 		DrawMode.SwapHightlightColorWithOriginalColor();
 		DrawMode.OnLeftClick += DrawMode_OnLeftClick;
 		DrawMode.HoverText = "Draw mode";
-		Panel.Append(DrawMode);
+		Panel_Mode.Append(DrawMode);
 
 		FillMode = new(thesameuitextureasvanilla);
 		FillMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.FillBucket));
@@ -115,52 +140,68 @@ public class GeneralBuilderToolUI : UIState {
 		FillMode.SwapHightlightColorWithOriginalColor();
 		FillMode.OnLeftClick += FillMode_OnLeftClick;
 		FillMode.HoverText = "Fill mode";
-		Panel.Append(FillMode);
-
-		DeleteMode = new(thesameuitextureasvanilla);
-		DeleteMode.SetPostTex(TextureAssets.Trash);
-		DeleteMode.HAlign = MathHelper.Lerp(0, 1f, 2 / 5f);
-		DeleteMode.HighlightColor = DeleteMode.OriginalColor * .5f;
-		DeleteMode.OnLeftClick += DeleteMode_OnLeftClick;
-		DeleteMode.SwapHightlightColorWithOriginalColor();
-		DeleteMode.HoverText = "Delete mode";
-		Panel.Append(DeleteMode);
-
-		OverrideMode = new(thesameuitextureasvanilla);
-		OverrideMode.HAlign = MathHelper.Lerp(0, 1f, 3 / 5f);
-		OverrideMode.HighlightColor = OverrideMode.OriginalColor * .5f;
-		OverrideMode.OnLeftClick += OverrideMode_OnLeftClick;
-		OverrideMode.SwapHightlightColorWithOriginalColor();
-		OverrideMode.HoverText = "Override mode";
-		Panel.Append(OverrideMode);
-
-		TileMode = new(thesameuitextureasvanilla);
-		TileMode.SetPostTex(TextureAssets.Item[ItemID.StoneBlock], attemptToLoad: true);
-		TileMode.HAlign = MathHelper.Lerp(0, 1f, 4 / 5f);
-		TileMode.HighlightColor = TileMode.OriginalColor * .5f;
-		TileMode.OnLeftClick += TileMode_OnLeftClick;
-		TileMode.SwapHightlightColorWithOriginalColor();
-		TileMode.HoverText = "Tile";
-		Panel.Append(TileMode);
-
-		WallMode = new(thesameuitextureasvanilla);
-		WallMode.SetPostTex(TextureAssets.Item[ItemID.StoneWall], attemptToLoad: true);
-		WallMode.HAlign = 1;
-		WallMode.HighlightColor = WallMode.OriginalColor * .5f;
-		WallMode.OnLeftClick += WallMode_OnLeftClick;
-		WallMode.SwapHightlightColorWithOriginalColor();
-		WallMode.HoverText = "Wall";
-		Panel.Append(WallMode);
+		Panel_Mode.Append(FillMode);
 
 		CreateMode = new(thesameuitextureasvanilla);
 		CreateMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
-		CreateMode.VAlign = .5f;
+		CreateMode.HAlign = MathHelper.Lerp(0, 1f, 2 / 5f);
 		CreateMode.HighlightColor = DrawMode.OriginalColor * .5f;
 		CreateMode.SwapHightlightColorWithOriginalColor();
 		CreateMode.OnLeftClick += CreateMode_OnLeftClick;
 		CreateMode.HoverText = "Create mode";
-		Panel.Append(CreateMode);
+		Panel_Mode.Append(CreateMode);
 
+		Initialize_PanelOption(thesameuitextureasvanilla);
+
+		Initialize_CreateModePanel(thesameuitextureasvanilla);
+	}
+	private void Initialize_PanelOption(Asset<Texture2D> thesameuitextureasvanilla) {
+		DeleteMode = new(thesameuitextureasvanilla);
+		DeleteMode.SetPostTex(TextureAssets.Trash);
+		DeleteMode.HAlign = 0;
+		DeleteMode.HighlightColor = DeleteMode.OriginalColor * .5f;
+		DeleteMode.OnLeftClick += DeleteMode_OnLeftClick;
+		DeleteMode.SwapHightlightColorWithOriginalColor();
+		DeleteMode.HoverText = "Delete mode";
+		Panel_Option.Append(DeleteMode);
+
+		OverrideMode = new(thesameuitextureasvanilla);
+		OverrideMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Override));
+		OverrideMode.HAlign = MathHelper.Lerp(0, 1f, 1 / 5f);
+		OverrideMode.HighlightColor = OverrideMode.OriginalColor * .5f;
+		OverrideMode.OnLeftClick += OverrideMode_OnLeftClick;
+		OverrideMode.SwapHightlightColorWithOriginalColor();
+		OverrideMode.HoverText = "Override mode";
+		Panel_Option.Append(OverrideMode);
+
+		TileMode = new(thesameuitextureasvanilla);
+		TileMode.SetPostTex(TextureAssets.Item[ItemID.StoneBlock], attemptToLoad: true);
+		TileMode.HAlign = MathHelper.Lerp(0, 1f, 2 / 5f);
+		TileMode.HighlightColor = TileMode.OriginalColor * .5f;
+		TileMode.OnLeftClick += TileMode_OnLeftClick;
+		TileMode.SwapHightlightColorWithOriginalColor();
+		TileMode.HoverText = "Tile";
+		Panel_Option.Append(TileMode);
+
+		WallMode = new(thesameuitextureasvanilla);
+		WallMode.SetPostTex(TextureAssets.Item[ItemID.StoneWall], attemptToLoad: true);
+		WallMode.HAlign = MathHelper.Lerp(0, 1f, 3 / 5f);
+		WallMode.HighlightColor = WallMode.OriginalColor * .5f;
+		WallMode.OnLeftClick += WallMode_OnLeftClick;
+		WallMode.SwapHightlightColorWithOriginalColor();
+		WallMode.HoverText = "Wall";
+		Panel_Option.Append(WallMode);
+
+		ParallelMode = new(thesameuitextureasvanilla);
+		ParallelMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Parallel));
+		ParallelMode.HAlign = MathHelper.Lerp(0, 1f, 4 / 5f);
+		ParallelMode.HighlightColor = WallMode.OriginalColor * .5f;
+		ParallelMode.OnLeftClick += ParallelMode_OnLeftClick;
+		ParallelMode.SwapHightlightColorWithOriginalColor();
+		ParallelMode.HoverText = "Parallel";
+		Panel_Option.Append(ParallelMode);
+	}
+	private void Initialize_CreateModePanel(Asset<Texture2D> thesameuitextureasvanilla) {
 		Main_CreateMode_Panel = new();
 		Main_CreateMode_Panel.Width.Pixels = 352;
 		Main_CreateMode_Panel.Height.Pixels = 110;
@@ -201,6 +242,16 @@ public class GeneralBuilderToolUI : UIState {
 		Main_CreateMode_Panel.Append(txb_height);
 	}
 
+	private void ParallelMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+		GeneralBuilderToolSystem.Parallel = !GeneralBuilderToolSystem.Parallel;
+		if (system.ParallelPosition == Vector2.Zero) {
+			system.ParallelPosition = new Vector2((int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y);
+			Main.NewText("Player current position has been choosen to be central position to do parallel building");
+			Main.NewText("You can drag and quickly change the position when helding the item");
+		}
+		ParallelMode.Highlight = GeneralBuilderToolSystem.Parallel;
+	}
 	private void CreateMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Create;
 		VisualUpdateBaseOnMode();
@@ -248,7 +299,7 @@ public class GeneralBuilderToolUI : UIState {
 			if (GeneralBuilderToolSystem.Tile && !SearchedForTile && (item.favorited && item.createTile != -1 || GeneralBuilderToolSystem.DeleteMode)) {
 				for (int x = minX; x <= maxX; x++) {
 					for (int y = minY; y <= maxY; y++) {
-						if ((x == minX || x == maxX || y == minY || y == maxY) 
+						if ((x == minX || x == maxX || y == minY || y == maxY)
 							&& GeneralBuilderToolSystem.OutlineMode || !GeneralBuilderToolSystem.OutlineMode) {
 							if (GeneralBuilderToolSystem.DeleteMode) {
 								WorldGen.KillTile(x, y, noItem: true);
@@ -314,12 +365,22 @@ public class GeneralBuilderToolUI : UIState {
 	}
 
 	private void DrawMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Draw;
+		if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Draw) {
+			GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.None;
+		}
+		else {
+			GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Draw;
+		}
 		VisualUpdateBaseOnMode();
 	}
 
 	private void FillMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Fill;
+		if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Fill) {
+			GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.None;
+		}
+		else {
+			GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Fill;
+		}
 		VisualUpdateBaseOnMode();
 	}
 	/// <summary>
@@ -393,6 +454,20 @@ public class GeneralBuilderToolUI : UIState {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
+		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+
+		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
+		if (system.ParallelPosition != Vector2.Zero) {
+			Vector2 drawpos = system.ParallelPosition - Main.screenPosition;
+			float scale = 1;
+			Color color = Color.Gray;
+			if (Main.MouseWorld.IsCloseToPosition(system.ParallelPosition, 10)) {
+				scale += 1.2f;
+				color = Color.White;
+			}
+			spriteBatch.Draw(tex, drawpos, null, color, 0, tex.Size() * .5f, scale, SpriteEffects.None, 0);
+		}
+
 		int num1, num2;
 		if (!int.TryParse(txb_width.Text, out num1)) {
 			return;
@@ -400,12 +475,11 @@ public class GeneralBuilderToolUI : UIState {
 		if (!int.TryParse(txb_height.Text, out num2)) {
 			return;
 		}
-		createPosition = ModContent.GetInstance<GeneralBuilderToolSystem>().createPosition;
+		createPosition = system.createPosition;
 		if (createPosition == Vector2.Zero || !createPosition.IsCloseToPosition(Main.LocalPlayer.Center, 2000)) {
 			return;
 		}
 		createPosition = createPosition.ToTileCoordinates16().ToVector2();
-		Texture2D tex = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_corner").Value;
 		point1 = createPosition;
 		point2 = createPosition + new Vector2(num1, num2);
 
@@ -469,6 +543,9 @@ internal class GeneralBuilderTool : ModItem {
 		if (GeneralBuilderToolSystem.Wall) {
 			text += "\nPlace wall";
 		}
+		if (GeneralBuilderToolSystem.Parallel) {
+			text += "\nParallel placing";
+		}
 		TooltipLine line = new(Mod, "Text", text);
 		tooltips.Add(line);
 	}
@@ -496,7 +573,18 @@ internal class GeneralBuilderTool : ModItem {
 		else if (GeneralBuilderToolSystem.CurrentMode == GeneralBuilderToolSystem.Create) {
 			return CreateSelection();
 		}
+		else if (GeneralBuilderToolSystem.Parallel && system.ParallelPosition != Vector2.Zero) {
+			return ParallelFunction(player);
+		}
 		return base.UseItem(player);
+	}
+	public bool ParallelFunction(Player player) {
+		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+		if (Main.mouseLeft) {
+			system.ParallelPosition = new Vector2((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y);
+			system.ParallelPosition = system.ParallelPosition.ToTileCoordinates().ToWorldCoordinates();
+		}
+		return false;
 	}
 	public bool DrawFunction(Player player) {
 		Point point = Main.MouseWorld.ToTileCoordinates();
@@ -541,7 +629,7 @@ internal class GeneralBuilderTool : ModItem {
 		}
 		return false;
 	}
-	public static void GeneralPlaceTileFunction(Player player, Point position1, Point position2) {
+	public void GeneralPlaceTileFunction(Player player, Point position1, Point position2) {
 		int minX = Math.Min(position1.X, position2.X);
 		int maxX = Math.Max(position1.X, position2.X);
 		int minY = Math.Min(position1.Y, position2.Y);
@@ -562,48 +650,71 @@ internal class GeneralBuilderTool : ModItem {
 			}
 			Item item = player.inventory[i];
 			if (GeneralBuilderToolSystem.Tile && !SearchedForTile && (item.favorited && item.createTile != -1 || GeneralBuilderToolSystem.DeleteMode)) {
-				for (int x = minX; x <= maxX; x++) {
-					for (int y = minY; y <= maxY; y++) {
-						if (GeneralBuilderToolSystem.DeleteMode) {
-							WorldGen.KillTile(x, y, noItem: true);
-						}
-						else if (GeneralBuilderToolSystem.OverrideMode) {
-							if (Main.tile[x, y].TileType != item.createTile) {
-								WorldGen.KillTile(x, y, noItem: true);
-								WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
-							}
-						}
-						else {
-							WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
-						}
+				PlaceTile(minX, maxX, minY, maxY, item);
+				if (GeneralBuilderToolSystem.Parallel) {
+					GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+					if (minX != maxX) {
+
 					}
+					Point offSetPos = system.ParallelPosition.ToTileCoordinates();
+					int offsetMin = offSetPos.X - minX;
+					int offsetMax = offSetPos.X - maxX;
+					int minXPar = Math.Min(offSetPos.X + offsetMin, offSetPos.X + offsetMax);
+					int maxXPar = Math.Max(offSetPos.X + offsetMin, offSetPos.X + offsetMax);
+					PlaceTile(minXPar, maxXPar, minY, maxY, item);
 				}
 				SearchedForTile = true;
 				continue;
 			}
 			if (GeneralBuilderToolSystem.Wall && !SearchedForWall && (item.favorited && item.createWall != -1 || GeneralBuilderToolSystem.DeleteMode)) {
-				for (int x = minX; x <= maxX; x++) {
-					for (int y = minY; y <= maxY; y++) {
-						if (GeneralBuilderToolSystem.DeleteMode) {
-							Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
-							WorldGen.SquareWallFrame(x, y);
-						}
-						else if (GeneralBuilderToolSystem.OverrideMode) {
-							if (Main.tile[x, y].WallType != item.createWall) {
-								Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
-								WorldGen.PlaceWall(x, y, item.createWall, true);
-							}
-						}
-						else {
-							WorldGen.PlaceWall(x, y, item.createWall, true);
-						}
-					}
+				PlaceWall(minX, maxX, minY, maxY, item);
+				if (GeneralBuilderToolSystem.Parallel) {
+					GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+					Point offSetPos = system.ParallelPosition.ToTileCoordinates();
+					int offsetMin = offSetPos.X - minX;
+					int offsetMax = offSetPos.X - maxX;
+					int minXPar = Math.Min(offSetPos.X + offsetMin, offSetPos.X + offsetMax);
+					int maxXPar = Math.Max(offSetPos.X + offsetMin, offSetPos.X + offsetMax);
+					PlaceWall(minXPar, maxXPar, minY, maxY, item);
 				}
 				SearchedForWall = true;
-				continue;
 			}
-			if (false) {
-				//WorldGen.TileRunner()
+		}
+	}
+	public void PlaceTile(int minX, int maxX, int minY, int maxY, Item item) {
+		for (int x = minX; x <= maxX; x++) {
+			for (int y = minY; y <= maxY; y++) {
+				if (GeneralBuilderToolSystem.DeleteMode) {
+					WorldGen.KillTile(x, y, noItem: true);
+				}
+				else if (GeneralBuilderToolSystem.OverrideMode) {
+					if (Main.tile[x, y].TileType != item.createTile) {
+						WorldGen.KillTile(x, y, noItem: true);
+						WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
+					}
+				}
+				else {
+					WorldGen.PlaceTile(x, y, item.createTile, true, style: item.placeStyle);
+				}
+			}
+		}
+	}
+	public void PlaceWall(int minX, int maxX, int minY, int maxY, Item item) {
+		for (int x = minX; x <= maxX; x++) {
+			for (int y = minY; y <= maxY; y++) {
+				if (GeneralBuilderToolSystem.DeleteMode) {
+					Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
+					WorldGen.SquareWallFrame(x, y);
+				}
+				else if (GeneralBuilderToolSystem.OverrideMode) {
+					if (Main.tile[x, y].WallType != item.createWall) {
+						Main.tile[x, y].Get<WallTypeData>().Type = WallID.None;
+						WorldGen.PlaceWall(x, y, item.createWall, true);
+					}
+				}
+				else {
+					WorldGen.PlaceWall(x, y, item.createWall, true);
+				}
 			}
 		}
 	}

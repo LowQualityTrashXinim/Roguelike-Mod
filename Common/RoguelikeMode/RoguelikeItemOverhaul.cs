@@ -65,6 +65,30 @@ namespace Roguelike.Common.RoguelikeMode {
 				case ItemID.CoinGun:
 					item.useTime = item.useAnimation = 4;
 					break;
+				case ItemID.DD2LightningAuraT1Popper:
+					item.damage = 10;
+					break;
+				case ItemID.DD2FlameburstTowerT1Popper:
+					item.damage = 28;
+					break;
+				case ItemID.DD2BallistraTowerT1Popper:
+					item.damage = 55;
+					break;
+				case ItemID.DD2ExplosiveTrapT1Popper:
+					item.damage = 44;
+					break;
+				case ItemID.DD2LightningAuraT2Popper:
+					item.damage = 30;
+					break;
+				case ItemID.DD2FlameburstTowerT2Popper:
+					item.damage = 55;
+					break;
+				case ItemID.DD2BallistraTowerT2Popper:
+					item.damage = 100;
+					break;
+				case ItemID.DD2ExplosiveTrapT2Popper:
+					item.damage = 80;
+					break;
 			}
 		}
 		private void UpgradeVariant(Item item) {
@@ -74,8 +98,9 @@ namespace Roguelike.Common.RoguelikeMode {
 					break;
 				case ItemID.BeamSword:
 					item.useTime = item.useAnimation;
-					item.damage += 5;
+					item.damage = 105;
 					item.crit += 10;
+					item.shootsEveryUse = true;
 					break;
 			}
 		}
@@ -167,31 +192,10 @@ namespace Roguelike.Common.RoguelikeMode {
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
 		public int PhaseSaberBlade_Counter = 0;
-		/// <summary>
-		/// Use this during ResetEffect and after to set your value
-		/// </summary>
-		public bool WeaponKeyPressed = false;
-		/// <summary>
-		/// Use this during ResetEffect and after to set your value
-		/// </summary>
-		public bool WeaponKeyReleased = false;
-		/// <summary>
-		/// Use this during ResetEffect and after to set your value
-		/// </summary>
-		public bool WeaponKeyHeld = false;
 		public int ReuseDelay = 0;
 		public int FrostBandBurst = 0;
 		public override void ResetEffects() {
-			var item = Player.HeldItem;
-			if (WeaponKeyPressed) {
-			}
 			Player.downedDD2EventAnyDifficulty = true;
-
-		}
-		public override void ProcessTriggers(TriggersSet triggersSet) {
-			WeaponKeyPressed = UniversalSystem.WeaponActionKey.JustPressed;
-			WeaponKeyReleased = UniversalSystem.WeaponActionKey.JustReleased;
-			WeaponKeyHeld = UniversalSystem.WeaponActionKey.Current;
 		}
 		public override bool CanUseItem(Item item) {
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
