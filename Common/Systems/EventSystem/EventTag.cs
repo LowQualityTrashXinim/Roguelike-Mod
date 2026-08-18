@@ -6,6 +6,10 @@ namespace Roguelike.Common.Systems.EventSystem;
 /// Use this class in concurrence with <see cref="ModSystem"/> class
 /// </summary>
 public abstract class Event : ModType {
+	/// <summary>
+	/// Use this to check whenever or not player are in range or fullfil enough condition to run Trigger code
+	/// </summary>
+	/// <returns></returns>
 	public virtual bool IsActive() {
 		return false;
 	}

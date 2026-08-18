@@ -850,3 +850,4 @@ Remove fire arrow and hellfire arrow fall from the sky
 694/ Reworked Cooked Shrimp, and Grape juice food.
 695/ Added the basic of Event modtype.
 696/ Slight adjustment to ModIO handler file.
+697/ Fixed a potential bugs of spoils showing incorrect amount.
