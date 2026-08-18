@@ -1,10 +1,10 @@
 ﻿using Roguelike.Common.Systems.HellishEndeavour;
 using Terraria;
 
-namespace Roguelike.Common.Systems.Achievement.Mastery;
+namespace Roguelike.Common.Systems.Achievement.Extreme;
 public class GodOfChallenge : RoguelikeAchievement {
 	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Mastery;
+		DifficultyTag = AchievementTag.Extreme;
 		CategoryTag = AchievementTag.Challenge;
 	}
 	public override bool Condition() {

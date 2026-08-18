@@ -241,18 +241,10 @@ ___________New weapon tag:___________
 
 ___________Food rework___________
 The following food are missing from food rework:
-- Grape Juice
 - Grup Soup
-- Cooked Shrimp
 
 7/ Work on achievement.
 Content:
-- I am the guardian now !
-> gain 9999 defenses in a run
-- The power level, it is over 9999 !
-> Held a weapon that deal 9999
-- Infinite +1
-> Deal so much damage that the dps meter overflow to negative
 - Completionist
 > Uses every weapon available in the mod and win a run using it.
 

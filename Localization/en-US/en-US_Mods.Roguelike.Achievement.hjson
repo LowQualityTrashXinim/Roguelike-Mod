@@ -164,3 +164,25 @@ RelicFinder: {
 	Description: Your first relic, never will be the last
 	ConditionTip: Obtain your first relic via finding
 }
+
+GuardianNow: {
+	DisplayName: I am the guardian now !
+	Description: You are becoming the very being you die to most often
+	ConditionTip: gain 9999 defenses in a run
+}
+
+Over9000: {
+	DisplayName: It is over 9000 !!!
+	Description: Power level, unmeasurable
+	ConditionTip: Held a weapon have equal or over 9000 damage in a run
+}
+
+InfinitePlusOne: {
+	DisplayName: Infinite +1
+	Description: Damage overflowing
+	ConditionTip:
+		'''
+		Deal so much damage that it overflow the dps counter in a run
+		Note: You don't need to have a dps counter with you to achieve this
+		'''
+}

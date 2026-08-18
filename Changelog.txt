@@ -845,3 +845,8 @@ Remove fire arrow and hellfire arrow fall from the sky
 689/ Updated README.md.
 690/ Added Ghost Weapon 1 enemy.
 691/ The main item that open gameplay UI now had tooltip displayed the key to open the UI.
+692/ Updated build from 0.0.19.8 to 0.0.19.9 ./.
+693/ Reworked Frost brand.
+694/ Reworked Cooked Shrimp, and Grape juice food.
+695/ Added the basic of Event modtype.
+696/ Slight adjustment to ModIO handler file.

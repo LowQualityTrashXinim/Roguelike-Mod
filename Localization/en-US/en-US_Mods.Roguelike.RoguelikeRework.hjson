@@ -116,11 +116,19 @@ CopperBroadSword:
 	'''
 IceBlade:
 	'''
-	Intro effect: When attacking, weapon shoots out more ice bolts is accommpany for 7s
+	Intro effect: When attacking, weapon shoots out more ice bolts for 7s
 	You will do additional ice slash that deal 85% of weapon damage
 	After waiting 2s, the next strike releases bunch of frost strike and weapon deal 4x damage
 	Frost strike after a short while will explode dealing damage to nearby enemy
 	and releases bunch of ice shard
+	'''
+Frostbrand:
+	'''
+	Intro effect: When attacking, weapon shoots out more frost bolts for 7s
+	You will do additional ice slash that deal 85% of weapon damage
+	After waiting 2s, the next strike releases bunch of frost strike and weapon deal 4x damage
+	Frost strike releases bunch of frost bolts dealing 65% weapon damage
+	Additionally also releases a weaker frost strike dealing 56% weapon damage
 	'''
 Revolver:
 	'''
@@ -686,12 +694,10 @@ ShrimpPoBoy:
 	'''
 CookedShrimp:
 	'''
-	every 5s: summons ghost shrimp
+	Every 5s: summons ghost shrimp
 	upon killing ghost shrimp, its launched toward 
 	nearest enemy, explode dealing 50 + 20% weapon damage
-	Work
-	in
-	progress
+	There can only be 10 ghost shrimps active at the time
 	'''
 Escargot:
 	'''
@@ -729,4 +735,10 @@ Spagetti:
 	Become invincible for 5s, Instant life heal,
 	gain 300% attack speed, random item may appear
 	or this buff end immediately
+	'''
+GrapeJuice:
+	'''
+	Upon getting hit explode out bunch of grapes
+	grape deal damage base on 25% of your health
+	Explosion of grapes has 5s cool down
 	'''

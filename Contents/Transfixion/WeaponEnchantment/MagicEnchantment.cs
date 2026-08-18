@@ -1038,7 +1038,7 @@ public class VenomStaff : ModEnchantment {
 /// <summary>
 /// This is a example for mod enchantment and how to utilize most of the stuff
 /// </summary>
-class DirtBlock : ModEnchantment {
+public class DirtBlock : ModEnchantment {
 	public override void SetDefaults() {
 		//This is important as it is required for the enchantment to be recognized and work
 		ItemIDType = ItemID.DirtBlock;

@@ -578,6 +578,9 @@ Mods: {
 			StructureBuilderProjectile.DisplayName: Structure Builder Projectile
 			Hostile_MagicalProjectile.DisplayName: Hostile_ Magical Projectile
 			Hostile_MagicalProjectile_Small.DisplayName: Hostile_ Magical Projectile_ Small
+			FrostBrand_Slash_Projectile.DisplayName: Frost Brand_ Slash_ Projectile
+			Roguelike_CookedShrimp_Projectile.DisplayName: Roguelike_ Cooked Shrimp_ Projectile
+			Roguelike_GrapeJuice_ModProjectile.DisplayName: Roguelike_ Grape Juice_ Mod Projectile
 		}
 
 		NPCs: {
@@ -2932,13 +2935,13 @@ Mods: {
 
 			FuryEmblem: {
 				DisplayName: Fury Emblem
-				Tooltip: 
-				'''
-				"Your rage is what turns tides in battle"
-				Increase 5% damage and 5% critical strike chance
-				Upon getting hit, increases 25% damage and critical strike chance for short duration
-				But decreases your defenses by 15% and your regeneration by 5%
-				'''
+				Tooltip:
+					'''
+					"Your rage is what turns tides in battle"
+					Increase 5% damage and 5% critical strike chance
+					Upon getting hit, increases 25% damage and critical strike chance for short duration
+					But decreases your defenses by 15% and your regeneration by 5%
+					'''
 			}
 
 			ExampleWhip: {
@@ -4408,6 +4411,11 @@ Mods: {
 			DiamondSkin_Buff: {
 				DisplayName: Diamond Skin_ Buff
 				Description: Mods.Roguelike.Buffs.DiamondSkin_Buff.Description
+			}
+
+			Roguelike_GrapeJuice_Buff: {
+				DisplayName: Roguelike_ Grape Juice_ Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_GrapeJuice_Buff.Description
 			}
 		}
 

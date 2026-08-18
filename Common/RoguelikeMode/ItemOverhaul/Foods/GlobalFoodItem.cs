@@ -22,6 +22,10 @@ public abstract class GlobalFoodItem : GlobalItem {
 	public virtual int LifeAmount() => 0;
 	public virtual int ManaAmount() => 0;
 	public virtual int EnergyAmount() => 0;
+	/// <summary>
+	/// When setting tier, it is best to always decreases the tier you want to set by 1
+	/// </summary>
+	/// <returns></returns>
 	public virtual byte Tier() => 0;
 	public void SetBuff(Item item, int type, int time) {
 		item.buffType = type;

@@ -61,12 +61,26 @@ public class BossRushRunnerII : RoguelikeAchievement {
 		return false;
 	}
 }
-public class StraightForTheWall : RoguelikeAchievement {
+public class GuardianNow : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
-		CategoryTag = AchievementTag.Challenge;
+		CategoryTag = AchievementTag.Fun;
 	}
-	public override bool Condition() {
-		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh) || ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFleshEye) && ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count <= 1;
+	public override bool Condition() => Main.ActivePlayerFileData != null && Main.LocalPlayer.statDefense >= 9999;
+}
+
+public class Over9000 : RoguelikeAchievement {
+	public override void SetStaticDefault() {
+		DifficultyTag = AchievementTag.Hard;
+		CategoryTag = AchievementTag.Fun;
 	}
+	public override bool Condition() => Main.ActivePlayerFileData != null && Main.LocalPlayer.GetWeaponDamage(Main.LocalPlayer.HeldItem) >= 9000;
+}
+
+public class InfinitePlusOne : RoguelikeAchievement {
+	public override void SetStaticDefault() {
+		DifficultyTag = AchievementTag.Hard;
+		CategoryTag = AchievementTag.Fun;
+	}
+	public override bool Condition() => Main.ActivePlayerFileData != null && Main.LocalPlayer.getDPS() < 0;
 }

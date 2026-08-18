@@ -18,11 +18,13 @@ using Terraria.UI;
 namespace Roguelike.Common.Systems.Achievement;
 public enum AchievementTag : byte {
 	None,
-	Tutorial,
 	Easy,
 	Hard,
+	Extreme,
 	BossRush,
 	Mastery,
+	Tutorial,
+	Fun,
 	Challenge,
 	Misc
 }
@@ -30,7 +32,15 @@ public enum AchievementTag : byte {
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
 public abstract class RoguelikeAchievement {
+	/// <summary>
+	/// This is extra tag so that player can find your achievement<br/>
+	/// Refer to <see cref="AchievementTag"/> to know what tag to set here
+	/// </summary>
 	public AchievementTag CategoryTag = AchievementTag.None;
+	/// <summary>
+	/// This is for the smart lookup within achievement UI<br/>
+	/// Set this tag appropriately so that player can find your achievement easily
+	/// </summary>
 	public AchievementTag DifficultyTag = AchievementTag.None;
 	public bool Achieved { get; set; }
 	public bool AdditionalConditionTipAfterAchieve = false;

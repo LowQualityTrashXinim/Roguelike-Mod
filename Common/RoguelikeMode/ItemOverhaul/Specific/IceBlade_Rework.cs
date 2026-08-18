@@ -61,7 +61,7 @@ internal class Roguelike_IceBlade : GlobalItem {
 		}
 		if (modplayer.Counter >= 120) {
 			Vector2 rotate = velocity.RotatedBy(MathHelper.PiOver2);
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 15; i++) {
 				Projectile projectile = Projectile.NewProjectileDirect(source, position + velUnit * 35 * (1 + i), rotate.Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt(), ModContent.ProjectileType<IceBlade_Slash_Projectile>(), damage, knockback, player.whoAmI, .1f, 3, 5 + i);
 				if (projectile.ModProjectile is IceBlade_Slash_Projectile slash) {
 					slash.ScaleX = 2 + i * 1.5f;

@@ -2,6 +2,7 @@
 using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Systems.Achievement;
 using Roguelike.Contents.Items.Weapon;
+using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ public static class RoguelikeData {
 	public static Dictionary<string, List<SynergyBonus>> SynergyProgressTracker = new();
 }
 class ModIO : ModSystem {
-	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RoguelikeMode_Data");
+	private static string DirectoryPath => Path.Join(Program.SavePathShared, "Everlasting_Data");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
 	public override void Load() {
@@ -101,9 +102,18 @@ class ModIO : ModSystem {
 			if (File.Exists(AchievementFilePath)) {
 				var tag = TagIO.FromFile(AchievementFilePath);
 				foreach (var achievement in AchievementSystem.Achievements) {
-					if (tag.ContainsKey(achievement.Name)) {
-						achievement.Achieved = true;
+					if (tag.TryGet(achievement.Name, out bool value)) {
+						achievement.Achieved = value;
 					}
+					else {
+						achievement.Achieved = false;
+					}
+				}
+			}
+			else {
+				File.Create(AchievementFilePath);
+				foreach (var achievement in AchievementSystem.Achievements) {
+					achievement.Achieved = false;
 				}
 			}
 		}
@@ -148,9 +158,7 @@ class ModIO : ModSystem {
 
 		var achievementTag = new TagCompound();
 		foreach (var achievement in AchievementSystem.Achievements) {
-			if (achievement.Achieved) {
-				achievementTag.Set(achievement.Name, 0);
-			}
+			achievementTag.Set(achievement.Name, achievement.Achieved);
 		}
 		if (!File.Exists(AchievementFilePath)) {
 			if (!Directory.Exists(DirectoryPath)) {
