@@ -851,3 +851,4 @@ Remove fire arrow and hellfire arrow fall from the sky
 695/ Added the basic of Event modtype.
 696/ Slight adjustment to ModIO handler file.
 697/ Fixed a potential bugs of spoils showing incorrect amount.
+698/ Added Copy and paste function into create panel.

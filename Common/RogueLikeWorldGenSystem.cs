@@ -16,6 +16,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Common;
 public enum StructureUI_State : byte {
@@ -527,16 +528,29 @@ public class Structure_Local {
 		Height = h;
 		tile = data;
 	}
+	public void Set_Structure(Structure_Local local) {
+		Dispose();
+		Width = local.Width;
+		Height = local.Height;
+		tile = local.tile;
+	}
+	public void Set_Structure(int w, int h, Tile[] data) {
+		Dispose();
+		Width = w;
+		Height = h;
+		tile = data;
+	}
 	public void GenerateStructure(int X, int Y) {
 		if (tile == null) {
 			return;
 		}
-		for (int i = Y; i < Height + Y; i++) {
-			for (int j = X; j < Width + X; j++) {
-				int counterX = j - X;
-				int counterY = i - Y;
-				Tile data = tile[counterX + counterY * Height];
-				Tile main = Main.tile[j, i];
+		int count = -1;
+		for (int i = 0; i < Width; i++) {
+			for (int j = 0; j < Height; j++) {
+				int counterX = X + i;
+				int counterY = Y + j;
+				Tile data = tile[++count];
+				Tile main = Main.tile[counterX, counterY];
 				main.CopyFrom(data);
 			}
 		}

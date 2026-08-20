@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
@@ -86,6 +87,10 @@ public class GeneralBuilderToolUI : UIState {
 	public Roguelike_TextBox txb_width;
 	public Roguelike_TextBox txb_height;
 	public Roguelike_UIImage OutlineMode;
+	public Roguelike_UIImage Copy;
+	public Roguelike_UIImage Paste;
+	public Roguelike_UIImage FlipHorizontal;
+	public Roguelike_UIImage FlipVertical;
 
 	public Roguelike_UIPanel Panel_Mode;
 	public Roguelike_UIImage FillMode;
@@ -98,6 +103,7 @@ public class GeneralBuilderToolUI : UIState {
 	public Roguelike_UIImage TileMode;
 	public Roguelike_UIImage WallMode;
 	public Roguelike_UIImage ParallelMode;
+	public Structure_Local local;
 	public override void OnInitialize() {
 		Asset<Texture2D> thesameuitextureasvanilla = TextureAssets.InventoryBack7;
 
@@ -204,7 +210,7 @@ public class GeneralBuilderToolUI : UIState {
 	private void Initialize_CreateModePanel(Asset<Texture2D> thesameuitextureasvanilla) {
 		Main_CreateMode_Panel = new();
 		Main_CreateMode_Panel.Width.Pixels = 352;
-		Main_CreateMode_Panel.Height.Pixels = 110;
+		Main_CreateMode_Panel.Height.Pixels = 220;
 		Main_CreateMode_Panel.MarginLeft = -11;
 		Main_CreateMode_Panel.MarginRight = -11;
 		Main_CreateMode_Panel.Hide = true;
@@ -213,15 +219,15 @@ public class GeneralBuilderToolUI : UIState {
 
 		QuickCreate = new(thesameuitextureasvanilla);
 		QuickCreate.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
-		QuickCreate.HighlightColor = DrawMode.OriginalColor * .5f;
+		QuickCreate.HighlightColor = QuickCreate.OriginalColor * .5f;
 		QuickCreate.SwapHightlightColorWithOriginalColor();
 		QuickCreate.OnLeftClick += QuickCreate_OnLeftClick;
-		QuickCreate.HoverText = "Create mode";
+		QuickCreate.HoverText = "Create";
 		Main_CreateMode_Panel.Append(QuickCreate);
 
 		OutlineMode = new(thesameuitextureasvanilla);
 		OutlineMode.SetPostTex(ModContent.Request<Texture2D>(ModTexture.Ring));
-		OutlineMode.HighlightColor = DrawMode.OriginalColor * .5f;
+		OutlineMode.HighlightColor = OutlineMode.OriginalColor * .5f;
 		OutlineMode.MarginLeft = CreateMode.GetInnerDimensions().Width + 10;
 		OutlineMode.SwapHightlightColorWithOriginalColor();
 		OutlineMode.OnLeftClick += OutlineMode_OnLeftClick;
@@ -240,8 +246,72 @@ public class GeneralBuilderToolUI : UIState {
 		txb_height.Width.Percent = .49f;
 		txb_height.MarginTop = txb_width.GetOuterDimensions().Height + 5;
 		Main_CreateMode_Panel.Append(txb_height);
+
+		Copy = new(thesameuitextureasvanilla);
+		Copy.HighlightColor = Copy.OriginalColor * .5f;
+		Copy.UISetWidthHeight(52, 52);
+		Copy.MarginTop = 62;
+		Copy.SwapHightlightColorWithOriginalColor();
+		Copy.HoverText = "Copy structure";
+		Copy.OnLeftClick += Copy_OnLeftClick;
+		Main_CreateMode_Panel.Append(Copy);
+
+		Paste = new(thesameuitextureasvanilla);
+		Paste.HighlightColor = Paste.OriginalColor * .5f;
+		Paste.UISetWidthHeight(52, 52);
+		Paste.MarginLeft = Copy.GetInnerDimensions().Width + 10;
+		Paste.MarginTop = 62;
+		Paste.SwapHightlightColorWithOriginalColor();
+		Paste.HoverText = "Paste structure";
+		Paste.OnLeftClick += Paste_OnLeftClick;
+		Main_CreateMode_Panel.Append(Paste);
+
+		FlipVertical = new(thesameuitextureasvanilla);
+		FlipVertical.HighlightColor = FlipVertical.OriginalColor * .5f;
+		FlipVertical.UISetWidthHeight(52, 52);
+		FlipVertical.MarginTop = 62 + Paste.MarginTop;
+		FlipVertical.SwapHightlightColorWithOriginalColor();
+		FlipVertical.HoverText = "Flip vertically";
+		FlipVertical.OnLeftClick += FlipVertical_OnLeftClick;
+		Main_CreateMode_Panel.Append(FlipVertical);
+
+		FlipHorizontal = new(thesameuitextureasvanilla);
+		FlipHorizontal.HighlightColor = FlipHorizontal.OriginalColor * .5f;
+		FlipHorizontal.UISetWidthHeight(52, 52);
+		FlipHorizontal.MarginLeft = FlipVertical.GetInnerDimensions().Width + 10;
+		FlipHorizontal.MarginTop = 62 + Paste.MarginTop;
+		FlipHorizontal.SwapHightlightColorWithOriginalColor();
+		FlipHorizontal.HoverText = "Flip horizontal";
+		FlipHorizontal.OnLeftClick += FlipHorizontal_OnLeftClick;
+		Main_CreateMode_Panel.Append(FlipHorizontal);
 	}
 
+	private void FlipHorizontal_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+	}
+
+	private void FlipVertical_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+	}
+
+	private void Copy_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+		Point point = system.createPosition.ToTileCoordinates();
+		int width = (int)(point2.X - point1.X);
+		int height = (int)(point2.Y - point1.Y);
+		if (local != null) {
+			Main.NewText("Copied");
+			local.Set_Structure(GenerationHelper.SaveStructure_Local(new Rectangle(point.X, point.Y, width, height)));
+		}
+		else {
+			local = GenerationHelper.SaveStructure_Local(new Rectangle(point.X, point.Y, width, height));
+		}
+	}
+	private void Paste_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+		Point point = system.createPosition.ToTileCoordinates();
+		if (local != null) {
+			local.GenerateStructure(point.X, point.Y);
+		}
+	}
 	private void ParallelMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
 		GeneralBuilderToolSystem.Parallel = !GeneralBuilderToolSystem.Parallel;
@@ -625,6 +695,29 @@ internal class GeneralBuilderTool : ModItem {
 	}
 	public bool CreateSelection() {
 		if (Main.mouseLeft) {
+			GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
+			GeneralBuilderToolUI UI = system.GeneralBuilderToolState;
+			Vector2 mouse = Main.MouseScreen;
+			if (UI.Panel != null) {
+				if (UI.Panel.ContainsPoint(mouse)) {
+					return false;
+				}
+			}
+			if(UI.txb_height != null) {
+				if(UI.txb_height.ContainsPoint(mouse)) {
+					return false;
+				}
+			}
+			if (UI.txb_width != null) {
+				if (UI.txb_width.ContainsPoint(mouse)) {
+					return false;
+				}
+			}
+			if (UI.Main_CreateMode_Panel != null) {
+				if (UI.Main_CreateMode_Panel.ContainsPoint(mouse)) {
+					return false;
+				}
+			}
 			ModContent.GetInstance<GeneralBuilderToolSystem>().createPosition = Main.MouseWorld;
 		}
 		return false;
