@@ -31,51 +31,14 @@ namespace Roguelike.Contents.Items {
 		}
 	}
 	public class SynergyModPlayer : ModPlayer {
-		public int ItemTypeCurrent = 0;
-		public Item itemOld = null;
-		public int ItemTypeOld = 0;
 		public bool acc_SynergyEnergy = false;
-		public bool IsTheItemInQuestionASynergyItem = false;
-		public bool JustSwitched = false;
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
-			Item item = Player.HeldItem;
-			IsTheItemInQuestionASynergyItem = item.ModItem is SynergyModItem;
-			if (item.type == ItemID.None) {
-				return;
-			}
-			JustSwitched = false;
-			if (ItemTypeCurrent != item.type) {
-				JustSwitched = true;
-			}
-			if (Player.itemAnimation == Player.itemAnimationMax) {
-				if (ItemTypeCurrent != item.type) {
-					ItemTypeCurrent = item.type;
-					if (itemOld != null) {
-						if (itemOld.TryGetGlobalItem(out GlobalItemHandle handler)) {
-							Player.GetModPlayer<OutroEffect_ModPlayer>().Add_OutroEffect(handler.OutroEffect_type);
-						}
-					}
-					itemOld = item;
-				}
-				ItemTypeOld = ItemTypeCurrent;
-			}
 		}
-		public override void PostUpdate() {
-			JustSwitched = false;
-		}
-		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (!CompareOldvsNewItemType) {
-				if (item.ModItem is SynergyModItem) {
-					damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().SynergyDamage);
-				}
-				return;
-			}
 			if (acc_SynergyEnergy) {
 				damage.Base += 5;
 			}
-			damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().SynergyDamage);
 		}
 	}
 }

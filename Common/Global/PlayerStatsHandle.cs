@@ -1288,7 +1288,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (Scatter) {
 			globalhandle.OnKill_ScatterShot += 2;
 		}
-		PlayerStatsHandle handle = null;
+		PlayerStatsHandle handle;
 		if (player.TryGetModPlayer(out PlayerStatsHandle hand)) {
 			handle = hand;
 		}
