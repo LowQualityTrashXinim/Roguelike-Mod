@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 
-namespace Roguelike.Contents.Items.Weapon.ItemVariant;
+namespace Roguelike.Common.Global.ItemVariant;
 internal class VampireKnive_Var1 : ModVariant {
 	public override void SetDefault(Item item) {
 		item.damage = 9;

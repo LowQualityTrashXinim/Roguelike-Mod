@@ -33,7 +33,7 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		if (Main.ActiveWorldFileData.GameMode != GameModeID.Creative && RoguelikeWorldProperty.RoguelikeWorld && SubworldSystem.Current == null) {
-			if (ModContent.GetInstance<UniversalSystem>().UniqueWorldPlayerID == Player.GetModPlayer<UniversalModPlayer>().UniqueWorldID && gen.PlayerPos_WorldCood != Vector2.Zero) {
+			if (ModContent.GetInstance<UniversalSystem>().UniqueWorldPlayerID == Player.GetModPlayer<UniversalPlayer>().UniqueWorldID && gen.PlayerPos_WorldCood != Vector2.Zero) {
 				Player.Center = gen.PlayerPos_WorldCood;
 				Player.fallStart = (int)(gen.PlayerPos_WorldCood.X / 16f);
 				Player.oldPosition = Player.Center;

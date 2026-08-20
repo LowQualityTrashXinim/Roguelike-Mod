@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Utils;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
 using Terraria;
 using Terraria.ModLoader;

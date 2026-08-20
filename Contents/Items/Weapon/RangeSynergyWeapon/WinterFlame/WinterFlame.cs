@@ -104,8 +104,7 @@ public class WinterFlameProjectile : ModProjectile {
 
 	}
 
-
-	public override void Kill(int timeLeft) {
+	public override void OnKill(int timeLeft) {
 		Dust dust;
 
 		for (int i = 0; i < Projectile.oldPos.Length; i++)

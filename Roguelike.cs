@@ -124,7 +124,7 @@ public class ModItemLib : ModSystem {
 				ListLootboxType.Add(item.type);
 				continue;
 			}
-			if (item.ModItem is SynergyModItem) {
+			if (item.ModItem is SynergyBase) {
 				SynergyItem.Add(item);
 				continue;
 			}

@@ -171,7 +171,7 @@ internal class UniversalSystem : ModSystem {
 	}
 
 	private PlayerFileData On_PlayerFileData_CreateAndSave(On_PlayerFileData.orig_CreateAndSave orig, Player player) {
-		if (player.TryGetModPlayer(out UniversalModPlayer modplayer)) {
+		if (player.TryGetModPlayer(out UniversalPlayer modplayer)) {
 			if (modplayer.UniqueID == string.Empty) {
 				modplayer.UniqueID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, player.name);
 			}
@@ -488,9 +488,13 @@ public class UniversalGlobalItem : GlobalItem {
 		}
 	}
 }
-public class UniversalModPlayer : ModPlayer {
+public class UniversalPlayer : ModPlayer {
 	public string UniqueID = "";
 	public string UniqueWorldID = "";
+	public ulong DPStracker = 0;
+	public Dictionary<int, int> ItemUsesToAttack = new();
+	public int HitTakenCounter = 0;
+	public ulong DmgTaken = 0;
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		if (UniqueID == string.Empty) {
@@ -522,16 +526,69 @@ public class UniversalModPlayer : ModPlayer {
 		//	WarnAlready = 1;
 		//}
 	}
+	public void AddItemDps(int ItemType, int damageDealt) {
+		if (ItemUsesToAttack.ContainsKey(ItemType)) {
+			ItemUsesToAttack[ItemType] += damageDealt;
+		}
+		else {
+			ItemUsesToAttack.Add(ItemType, damageDealt);
+		}
+	}
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		HitTakenCounter++;
+		DmgTaken += (ulong)hurtInfo.Damage;
+	}
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		HitTakenCounter++;
+		DmgTaken += (ulong)hurtInfo.Damage;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		DPStracker = DPStracker + (ulong)hit.Damage;
+	}
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		AddItemDps(item.type, hit.Damage);
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		int ItemTypeSource = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType;
+		if (ItemTypeSource > 0) {
+			AddItemDps(ItemTypeSource, hit.Damage);
+		}
+	}
 	int WarnAlready = 0;
 	public override void SaveData(TagCompound tag) {
+		tag["DPSTracker"] = DPStracker;
+		tag["HitTakenCounter"] = HitTakenCounter;
+		tag["DmgTaken"] = DmgTaken;
 		tag.Add("UniqueID", UniqueID);
 		tag.Add("UniqueWorldID", UniqueWorldID);
 		tag.Add("WarnAlready", WarnAlready);
+		tag["WeaponUsesList"] = ItemUsesToAttack.Keys.ToList();
+		tag["DpsFromWeaponUses"] = ItemUsesToAttack.Values.ToList();
 	}
 	public override void LoadData(TagCompound tag) {
+		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
+			this.DPStracker = DPStracker;
+		}
+		if (tag.TryGet("HitTakenCounter", out int HitTakenCounter)) {
+			this.HitTakenCounter = HitTakenCounter;
+		}
+		if (tag.TryGet("DmgTaken", out ulong DmgTaken)) {
+			this.DmgTaken = DmgTaken;
+		}
 		WarnAlready = (int)tag["WarnAlready"];
 		UniqueID = tag.Get<string>("UniqueID");
 		UniqueWorldID = tag.Get<string>("UniqueWorldID");
+		var WeaponUses = tag.Get<List<int>>("WeaponUsesList");
+		var WeaponsDpss = tag.Get<List<int>>("DpsFromWeaponUses");
+		ItemUsesToAttack = WeaponUses.Zip(WeaponsDpss, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		//Attempt to remove item that is either unloaded or don't exist
+		int count = ItemUsesToAttack.Count;
+		for (int i = count - 1; i >= 0; i--) {
+			int type = ItemUsesToAttack.Keys.ElementAt(i);
+			if (ContentSamples.ItemsByType.ContainsKey(type)) {
+				ItemUsesToAttack.Remove(type);
+			}
+		}
 	}
 }
 /// <summary>
@@ -729,7 +786,7 @@ public class DefaultUI : UIState {
 		endofdemo_Main.Append(EndOfDemoPanel);
 
 		weaponPanel_Main = new();
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		UniversalPlayer modplayer = player.GetModPlayer<UniversalPlayer>();
 		dict_itemDps = modplayer.ItemUsesToAttack;
 		int min = Math.Min(itemlimit, dict_itemDps.Count);
 		if (min <= 1) {

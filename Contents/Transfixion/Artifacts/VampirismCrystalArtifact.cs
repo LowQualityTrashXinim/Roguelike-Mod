@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.ItemVariant;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.Weapon.ItemVariant;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using Roguelike.Contents.Transfixion.Augmentation.Contents;
 using Roguelike.Contents.Transfixion.Perks;

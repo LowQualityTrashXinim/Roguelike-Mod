@@ -1,8 +1,9 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using System.Collections.Generic;
 using Roguelike.Contents.Items.Weapon;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.WeaponEffect;
 internal class WeaponEffectSystem : ModSystem {

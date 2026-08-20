@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.RoguelikeMode;
-using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.Weapon.ItemVariant;
 using System;
 using Terraria;
 using Terraria.GameContent;

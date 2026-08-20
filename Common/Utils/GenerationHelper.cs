@@ -315,7 +315,7 @@ internal static partial class GenerationHelper {
 			int indexCounter = 0;
 
 			Tile outSideLoop = new();
-			outSideLoop.TileType = 0;
+			outSideLoop.TileType = TileID.Dirt;
 			int distance = 0;
 			string td = string.Empty;
 			string structureData = string.Empty;
@@ -737,7 +737,7 @@ public struct TileData : ICloneable {
 		else {
 			Tile_Air = true;
 		}
-		if (tile.WallType != 0) {
+		if (tile.WallType != WallID.None) {
 			Tile_WallData = tile.WallType;
 		}
 		if (tile.RedWire) {

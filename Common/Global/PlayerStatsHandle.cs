@@ -26,7 +26,7 @@ namespace Roguelike.Common.Global;
 /// Direct stats increases is much more efficient than using <see cref="AddStatsToPlayer(PlayerStats, StatModifier)"/> or any of the relate<br/>
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
-public class PlayerStatsHandle : ModPlayer {
+public partial class PlayerStatsHandle : ModPlayer {
 	public bool Unnerfed = false;
 	public bool Unnerfed2 = false;
 	public bool DisableNegativeArtifact = false;
@@ -194,7 +194,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public int TemporaryEnergy_Counter = 0;
 	public int TemporaryEnergy_Limit = 0;
 	public int TemporaryEnergy_CounterLimit = 120;
-	public ulong DPStracker = 0;
 	public int NPC_HitCount = 0;
 	public float ItemRangeMultiplier = 1;
 	/// <summary>
@@ -210,31 +209,11 @@ public class PlayerStatsHandle : ModPlayer {
 	public List<int> WhoAmI_Projectile = new();
 	public float Chance_ToInstantKill = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
 	}
-	public void AddItemDps(int ItemType, int damageDealt) {
-		if (ItemUsesToAttack.ContainsKey(ItemType)) {
-			ItemUsesToAttack[ItemType] += damageDealt;
-		}
-		else {
-			ItemUsesToAttack.Add(ItemType, damageDealt);
-		}
-	}
-	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		AddItemDps(item.type, hit.Damage);
-	}
-	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		int ItemTypeSource = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType;
-		if (ItemTypeSource > 0) {
-			AddItemDps(ItemTypeSource, hit.Damage);
-		}
-	}
-	public int HitTakenCounter = 0;
-	public ulong DmgTaken = 0;
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (UpdateThorn.ApplyTo(1) > 0) {
 			NPC.HitInfo newhitinfo = new();
@@ -253,12 +232,6 @@ public class PlayerStatsHandle : ModPlayer {
 				}
 			}
 		}
-		HitTakenCounter++;
-		DmgTaken += (ulong)hurtInfo.Damage;
-	}
-	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		HitTakenCounter++;
-		DmgTaken += (ulong)hurtInfo.Damage;
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (Chance_ToInstantKill > 0) {
@@ -931,61 +904,29 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
-	public Dictionary<int, int> ItemUsesToAttack = new();
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 		var packet = Mod.GetPacket();
 		packet.Write((byte)Roguelike.MessageType.PlayerStatsHandle);
 		packet.Write((byte)Player.whoAmI);
-		packet.Write(DPStracker);
-		packet.Write(HitTakenCounter);
-		packet.Write(DmgTaken);
-		packet.Write(ItemUsesToAttack.Keys.Count);
-		foreach (var item in ItemUsesToAttack.Keys) {
-			packet.Write(item);
-		}
-		foreach (var item in ItemUsesToAttack.Values) {
-			packet.Write(item);
-		}
 		packet.Write(TransmutationPowerMaximum);
 		packet.Write(TransmutationPower);
 		packet.Send(toWho, fromWho);
 	}
 
 	public void ReceivePlayerSync(BinaryReader reader) {
-		DPStracker = reader.ReadUInt64();
-		HitTakenCounter = reader.ReadInt32();
-		DmgTaken = reader.ReadUInt64();
-		int count = reader.ReadInt32();
-		List<int> weapon = new();
-		for (int i = 0; i < count; i++) {
-			weapon.Add(reader.ReadInt32());
-		}
-		List<int> weapondps = new();
-		for (int i = 0; i < count; i++) {
-			weapondps.Add(reader.ReadInt32());
-		}
-		ItemUsesToAttack = weapon.Zip(weapondps, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		TransmutationPowerMaximum = reader.ReadInt32();
 		TransmutationPower = reader.ReadInt32();
 	}
 
 	public override void CopyClientState(ModPlayer targetCopy) {
 		var clone = (PlayerStatsHandle)targetCopy;
-		clone.DPStracker = DPStracker;
-		clone.HitTakenCounter = HitTakenCounter;
-		clone.DmgTaken = DmgTaken;
-		clone.ItemUsesToAttack = ItemUsesToAttack;
 		clone.TransmutationPower = TransmutationPower;
 		clone.TransmutationPowerMaximum = TransmutationPowerMaximum;
 	}
 
 	public override void SendClientChanges(ModPlayer clientPlayer) {
 		var clone = (PlayerStatsHandle)clientPlayer;
-		if (DPStracker != clone.DPStracker
-			|| HitTakenCounter != clone.HitTakenCounter
-			|| DmgTaken != clone.DmgTaken
-			|| ItemUsesToAttack != clone.ItemUsesToAttack
-			|| TransmutationPower != clone.TransmutationPower
+		if (TransmutationPower != clone.TransmutationPower
 			|| TransmutationPowerMaximum != clone.TransmutationPowerMaximum) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
 	public int TransmutationPower = 0;
@@ -1022,35 +963,10 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	Dictionary<PlayerStats, StatModifier> PernamentStats = new();
 	public override void SaveData(TagCompound tag) {
-		tag["DPSTracker"] = DPStracker;
-		tag["HitTakenCounter"] = HitTakenCounter;
-		tag["DmgTaken"] = DmgTaken;
-		tag["WeaponUsesList"] = ItemUsesToAttack.Keys.ToList();
-		tag["DpsFromWeaponUses"] = ItemUsesToAttack.Values.ToList();
 		tag["TransmutationPowerMaximum"] = TransmutationPowerMaximum;
 		tag["TransmutationPower"] = TransmutationPower;
 	}
 	public override void LoadData(TagCompound tag) {
-		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
-			this.DPStracker = DPStracker;
-		}
-		if (tag.TryGet("HitTakenCounter", out int HitTakenCounter)) {
-			this.HitTakenCounter = HitTakenCounter;
-		}
-		if (tag.TryGet("DmgTaken", out ulong DmgTaken)) {
-			this.DmgTaken = DmgTaken;
-		}
-		var WeaponUses = tag.Get<List<int>>("WeaponUsesList");
-		var WeaponsDpss = tag.Get<List<int>>("DpsFromWeaponUses");
-		ItemUsesToAttack = WeaponUses.Zip(WeaponsDpss, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
-		//Attempt to remove item that is either unloaded or don't exist
-		int count = ItemUsesToAttack.Count;
-		for (int i = count - 1; i >= 0; i--) {
-			int type = ItemUsesToAttack.Keys.ElementAt(i);
-			if (ContentSamples.ItemsByType.ContainsKey(type)) {
-				ItemUsesToAttack.Remove(type);
-			}
-		}
 		if (tag.TryGet("TransmutationPowerMaximum", out int TransmutationPowerMaximumA)) {
 			TransmutationPowerMaximum = TransmutationPowerMaximumA;
 		}

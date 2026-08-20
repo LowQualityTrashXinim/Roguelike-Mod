@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Roguelike.Contents.Items.Weapon.ItemVariant;
+namespace Roguelike.Common.Global.ItemVariant;
 internal class None_Var : ModVariant {
 }
