@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
 using System;
 using Terraria;
 using Terraria.ModLoader;

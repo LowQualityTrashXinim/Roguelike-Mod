@@ -11,7 +11,7 @@ using Roguelike.Common.Systems.Achievement;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Common.Global.ItemVariant;
+using Roguelike.Contents.ItemVariant;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {

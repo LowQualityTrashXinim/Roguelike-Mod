@@ -203,4 +203,16 @@ namespace Roguelike.Contents.Items.NoneSynergy
 			|| GambleCrit != clone.GambleCrit) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
+	public class GodDice_GlobalNPC : GlobalNPC {
+		public override void OnKill(NPC npc) {
+			int playerIndex = npc.lastInteraction;
+			if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
+				playerIndex = npc.FindClosestPlayer();
+			}
+			var player = Main.player[playerIndex];
+			if (npc.boss && player.GetModPlayer<GamblePlayer>().GodDice) {
+				player.GetModPlayer<GamblePlayer>().Roll++;
+			}
+		}
+	}
 }

@@ -41,3 +41,15 @@ public class GenocidalPact_ModPlayer : ModPlayer {
 		}
 	}
 }
+public class GenocidealPact_GlobalNPC : GlobalNPC {
+	public override void OnKill(NPC npc) {
+		int playerIndex = npc.lastInteraction;
+		if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
+			playerIndex = npc.FindClosestPlayer();
+		}
+		var player = Main.player[playerIndex];
+		if (player.GetModPlayer<GenocidalPact_ModPlayer>().set) {
+			player.GetModPlayer<GenocidalPact_ModPlayer>().KillCount_Decay++;
+		}
+	}
+}

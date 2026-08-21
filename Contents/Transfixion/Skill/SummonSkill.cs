@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;

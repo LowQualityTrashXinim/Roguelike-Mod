@@ -238,6 +238,13 @@ public class Marked : ModBuff {
 		Main.debuff[Type] = true;
 	}
 }
+public class Marked_GlobalNPC : GlobalNPC {
+	public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers) {
+		if (npc.HasBuff<Marked>()) {
+			modifiers.CritDamage += 1;
+		}
+	}
+}
 public class DemonBow : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DemonBow;

@@ -1,8 +1,8 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using System.Linq;

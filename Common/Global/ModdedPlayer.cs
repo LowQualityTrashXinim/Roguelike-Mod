@@ -22,13 +22,13 @@ using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.Global {
 	/// <summary>

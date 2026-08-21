@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 using System.Collections.Generic;

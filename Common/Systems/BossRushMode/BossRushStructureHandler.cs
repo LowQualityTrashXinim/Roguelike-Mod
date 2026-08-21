@@ -287,6 +287,37 @@ public class BossRushModeGlobalNPC : GlobalNPC {
 		}
 		pool.Clear();
 	}
+	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().InvincibilityFrame += 30;
+		}
+	}
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().InvincibilityFrame += 30;
+		}
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
+		if (ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra) {
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier11>()) {
+				npc.GetGlobalNPC<RoguelikeGlobalNPC>().PositiveLifeRegen = Math.Clamp((int)(npc.lifeMax * .01f), 1, int.MaxValue);
+			}
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier10>()) {
+				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount <= 0) {
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount = 100;
+				}
+			}
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier9>()) {
+				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate <= 0) {
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
+				}
+			}
+			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier4>()) {
+				npc.lifeMax += npc.lifeMax * 9;
+				npc.life = npc.lifeMax;
+			}
+		}
+	}
 	public override void OnKill(NPC npc) {
 		if (!RoguelikeWorldProperty.BossRushWorld) {
 			return;

@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_ChickenNugget : GlobalFoodItem{

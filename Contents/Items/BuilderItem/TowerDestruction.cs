@@ -120,11 +120,12 @@ namespace Roguelike.Contents.Items.BuilderItem {
 		public void killWall(int i, int j) {
 			for (int x = i - 1; x <= i + 1; x++) {
 				for (int y = j - 1; y <= j + 1; y++) {
-					if (Main.tile[x, y] != null && Main.tile[x, y].WallType > 0 && Main.tile[i, j].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer) {
-						WorldGen.KillWall(x, y, false);
-						if (Main.tile[x, y].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer) {
-							NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, x, y, 0f, 0, 0, 0);
-						}
+					if (Main.tile[x, y] == null || Main.tile[x, y].WallType <= WallID.None || Main.tile[i, j].WallType != WallID.None || Main.netMode == NetmodeID.SinglePlayer) {
+						continue;
+					}
+					WorldGen.KillWall(x, y, false);
+					if (Main.tile[x, y].WallType == WallID.None && Main.netMode != NetmodeID.SinglePlayer) {
+						NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, x, y, 0f, 0, 0, 0);
 					}
 				}
 			}

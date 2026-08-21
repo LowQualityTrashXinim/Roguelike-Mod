@@ -56,14 +56,18 @@ public class PerpetuatedCyclePlayer : ModPlayer {
 			this.BossRushSetDefaultDeBuff();
 		}
 		public override bool ReApply(NPC npc, int time, int buffIndex) {
-			npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack = Math.Clamp(++npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack, 0, 1000);
+			npc.GetGlobalNPC<Perpetuation_GlobalNPC>().Perpetuation_PointStack = Math.Clamp(++npc.GetGlobalNPC<Perpetuation_GlobalNPC>().Perpetuation_PointStack, 0, 1000);
 			return base.ReApply(npc, time, buffIndex);
 		}
 		public override void Update(NPC npc, ref int buffIndex) {
-			npc.lifeRegen -= 1 + npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack;
+			npc.lifeRegen -= 1 + npc.GetGlobalNPC<Perpetuation_GlobalNPC>().Perpetuation_PointStack;
 			if (npc.buffTime[buffIndex] <= 0) {
-				npc.GetGlobalNPC<RoguelikeGlobalNPC>().Perpetuation_PointStack = 0;
+				npc.GetGlobalNPC<Perpetuation_GlobalNPC>().Perpetuation_PointStack = 0;
 			}
 		}
+	}
+	public class Perpetuation_GlobalNPC : GlobalNPC {
+		public override bool InstancePerEntity => true;
+		public int Perpetuation_PointStack = 0;
 	}
 }

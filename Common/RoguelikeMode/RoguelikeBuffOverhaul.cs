@@ -57,6 +57,13 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 		}
 	}
 }
+public class RoguelikeOverhaul_Buff_GlobalNPC : GlobalNPC {
+	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
+		if (npc.HasBuff(BuffID.Cursed)) {
+			modifiers.SourceDamage -= .75f;
+		}
+	}
+}
 public class RoguelikeOverhaul_Buff_ModPlayer : ModPlayer {
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (!Player.immune && Player.HasBuff(BuffID.Invisibility) && Main.rand.NextBool(15)) {

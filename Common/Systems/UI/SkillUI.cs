@@ -1,16 +1,10 @@
-﻿using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
-using Steamworks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -103,6 +97,9 @@ public class SkillUI : UIState {
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		btn_SkillSlotHolder btn = (btn_SkillSlotHolder)listeningElement;
 		if (btn.Stack > 0) {
+			if(!SkillModSystem.GetSkill(btn.sKillID).CanBeActive()) {
+				return;
+			}
 			btn.Stack--;
 			modplayer.SkillInventory[btn.sKillID]--;
 			Add_ActiveSkill(btn.sKillID);
@@ -130,15 +127,15 @@ public class SkillUI : UIState {
 			Add_SkillToInventory(btn.SKillID);
 			modplayer.SkillInventory[btn.SKillID]++;
 			modplayer.ActiveSkill.RemoveAt(btn.WhoAmI);
-			Reflesh_ActiveSkill();
+			Refresh_ActiveSkill();
 		}
 		SoundEngine.PlaySound(SoundID.Grab);
 	}
 	/// <summary>
-	/// This will reflesh the skill UI automatically<br/>
+	/// This will refresh the skill UI automatically<br/>
 	/// No need to manually remove the UI yourself
 	/// </summary>
-	public void Reflesh_ActiveSkill() {
+	public void Refresh_ActiveSkill() {
 		Player player = Main.LocalPlayer;
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		for (int i = list_activeskill.Count - 1; i >= 0; i--) {
@@ -150,10 +147,10 @@ public class SkillUI : UIState {
 		}
 	}
 	/// <summary>
-	/// This will reflesh the skill UI automatically<br/>
+	/// This will refresh the skill UI automatically<br/>
 	/// No need to manually remove the UI yourself
 	/// </summary>
-	public void Reflesh_InventorySkill() {
+	public void Refresh_InventorySkill() {
 		Player player = Main.LocalPlayer;
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		for (int i = list_inventory.Count - 1; i >= 0; i--) {
@@ -177,8 +174,8 @@ public class SkillUI : UIState {
 	}
 	public override void OnActivate() {
 		var player = Main.LocalPlayer;
-		Reflesh_ActiveSkill();
-		Reflesh_InventorySkill();
+		Refresh_ActiveSkill();
+		Refresh_InventorySkill();
 	}
 }
 /// <summary>

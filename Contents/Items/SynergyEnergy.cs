@@ -1,12 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Roguelike.Common.Systems;
-
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Common.Global.Mechanic.OutroEffect;
 
 namespace Roguelike.Contents.Items {
 	internal class SynergyEnergy : ModItem {

@@ -1,6 +1,6 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

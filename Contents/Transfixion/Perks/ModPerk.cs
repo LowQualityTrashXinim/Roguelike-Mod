@@ -2,13 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ReviveSystem;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;

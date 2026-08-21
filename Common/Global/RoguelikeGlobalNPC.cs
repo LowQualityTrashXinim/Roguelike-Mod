@@ -1,37 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
-using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
-using Roguelike.Common.Systems;
-using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Items.Consumable.Throwable;
-using Roguelike.Contents.Items.NoneSynergy;
-using Roguelike.Contents.Items.RelicItem.RelicSetContent;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
-using Roguelike.Contents.Projectiles;
-using Roguelike.Contents.Transfixion.Artifacts;
-using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
-using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
-	public int HeatRay_Decay = 0;
-	public int HeatRay_HitCount = 0;
-
-	public int GolemFist_HitCount = 0;
 
 	public bool DRFromFatalAttack = false;
 	public bool OneTimeDR = false;
@@ -60,16 +38,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// </summary>
 	public int PositiveLifeRegen = 0;
 	public int PositiveLifeRegenCount = 0;
-	public int Perpetuation_PointStack = 0;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
 	public bool NPC_SpecialException = false;
 	public int InvincibilityFrame = 0;
-
-	public const int BossHP = 6500;
-	public const int BossDMG = 30;
-	public const int BossDef = 5;
 
 	public StatModifier Static_PercentageDamage = new();
 
@@ -85,90 +58,13 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
 		DamageIncrease = new();
-		StatModifier mod = new();
-		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
-			return;
-		}
-		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
-			if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
-				if (!entity.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException) {
-					entity.lifeMax = (int)(BossHP * GetValueMulti());
-					entity.damage = (int)(BossDMG * GetValueMulti());
-					entity.defense = (int)(BossDef * GetValueMulti(.5f));
-				}
-			}
-			else {
-				float adjustment = 1;
-				if (Main.expertMode)
-					adjustment = 2;
-				else if (Main.masterMode)
-					adjustment = 3;
-
-				entity.lifeMax += (int)(entity.lifeMax / adjustment * GetValueMulti() * .1f);
-				entity.life = entity.lifeMax;
-				entity.damage += (int)(entity.damage / adjustment * GetValueMulti() * .1f);
-				entity.defense += (int)(entity.defense / adjustment * GetValueMulti(.5f) * .1f);
-			}
-			if (RoguelikeWorldProperty.NightmareWorld) {
-				mod += 2;
-				entity.damage *= 2;
-				ExtraUpdate++;
-				if (entity.boss) {
-					mod += 5;
-					Static_Endurance += .25f;
-					Static_PercentageDamage += .1f;
-				}
-				entity.lifeMax = (int)mod.ApplyTo(entity.lifeMax);
-				entity.life = entity.lifeMax;
-			}
-		}
-	}
-	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
-			return;
-		}
-		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
-			if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye
-				&& npc.type != NPCID.MoonLordCore && npc.type != NPCID.MoonLordHand && npc.type != NPCID.MoonLordHead && npc.type != NPCID.MoonLordLeechBlob) {
-				if (!npc.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException) {
-					npc.lifeMax = (int)(BossHP * GetValueMulti());
-					npc.life = npc.lifeMax;
-					npc.damage = (int)(BossDMG * GetValueMulti());
-					npc.defense = (int)(BossDef * GetValueMulti(.5f));
-				}
-			}
-			else {
-				npc.lifeMax += (int)(npc.lifeMax * GetValueMulti() * .1f);
-				if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) {
-					npc.lifeMax = (int)(npc.lifeMax * .7f);
-				}
-				npc.life = npc.lifeMax;
-				npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
-				npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
-			}
-			StatModifier mod = new();
-			if (RoguelikeWorldProperty.NightmareWorld) {
-				mod += 2;
-				npc.damage *= 2;
-				if (npc.boss) {
-					mod += 5;
-				}
-				npc.lifeMax = (int)mod.ApplyTo(npc.lifeMax);
-				npc.life = npc.lifeMax;
-			}
-
-			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier4>()) {
-				npc.lifeMax += npc.lifeMax * 9;
-				npc.life = npc.lifeMax;
-			}
-		}
 	}
 	public override void ResetEffects(NPC npc) {
 		//var player = Main.player[npc.target];
 		//if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
 		//	npc.timeLeft = 600;
 		//}
-		npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
+		//npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		StatDefense = new();
 		DamageIncrease = new();
 		MaxDamageTaken = 1;
@@ -183,49 +79,12 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			DRFromFatalAttack = true;
 		}
 		Endurance = 0;
-		if (npc.boss) {
-			if (npc.life <= npc.lifeMax / 2) {
-				DamageIncrease += 1;
-				MaxDamageTaken -= .99f;
-			}
-		}
-	}
-	public float GetValueMulti(float scale = 1) {
-		float extraMultiply = .05f;
-		if (Main.expertMode) {
-			extraMultiply += .15f;
-		}
-		if (Main.masterMode) {
-			extraMultiply += .3f;
-		}
-		if (Main.ActiveWorldFileData.IsValid) {
-			if (Main.ActiveWorldFileData.Name == "Nightmare") {
-				extraMultiply = 1f;
-				scale += .1f;
-			}
-		}
-		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
-		if (RoguelikeWorldProperty.BossRushWorld) {
-			extraMultiply *= ModContent.GetInstance<UniversalSystem>().Count_BossKill * .25f;
-		}
-		return (1 + counter * .3f + extraMultiply) * scale;
-	}
-	public override void OnSpawn(NPC npc, IEntitySource source) {
-		if (ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra) {
-			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier11>()) {
-				PositiveLifeRegen = Math.Clamp((int)(npc.lifeMax * .01f), 1, int.MaxValue);
-			}
-			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier10>()) {
-				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount <= 0) {
-					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount = 100;
-				}
-			}
-			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier9>()) {
-				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate <= 0) {
-					npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
-				}
-			}
-		}
+		//if (npc.boss) {
+		//	if (npc.life <= npc.lifeMax / 2) {
+		//		DamageIncrease += 1;
+		//		MaxDamageTaken -= .99f;
+		//	}
+		//}
 	}
 	public int Grapefruit = 0;
 	public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {
@@ -253,12 +112,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override Color? GetAlpha(NPC npc, Color drawColor) {
-		if (npc.HasBuff<Urine_Debuff>()) {
-			drawColor.R = 255;
-			drawColor.G = 255;
-			drawColor.B = 90;
-			return drawColor;
-		}
 		if (IsAGhostEnemy) {
 			drawColor.A = 0;
 			drawColor.ScaleRGB(.25f);
@@ -284,12 +137,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			npc.velocity *= .001f;
 		}
 		VelocityMultiplier = 1;
-		if (HeatRay_HitCount > 0) {
-			HeatRay_Decay = ModUtils.CountDown(HeatRay_Decay);
-			if (HeatRay_Decay <= 0) {
-				HeatRay_HitCount--;
-			}
-		}
 		if (BelongToWho >= 0 && BelongToWho < Main.maxNPCs) {
 			var parent = Main.npc[BelongToWho];
 			if (parent != null) {
@@ -311,12 +158,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		InvincibilityFrame = ModUtils.CountDown(InvincibilityFrame);
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
-		if (npc.HasBuff<NPC_Weakness>()) {
-			modifiers.SourceDamage -= .5f;
-		}
-		if (npc.HasBuff(BuffID.Cursed)) {
-			modifiers.SourceDamage -= .75f;
-		}
 		modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .1f);
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageIncrease);
 	}
@@ -324,43 +165,14 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
 		NPC_Debuff(npc, ref modifiers);
 	}
-	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 		NPC_Debuff(npc, ref modifiers);
-		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
-			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
-			if (npc.HasBuff<StarRay>()) {
-				// Apply a flat bonus to every hit
-				modifiers.FlatBonusDamage += StarRay.TagDamage * projTagMultiplier;
-			}
-		}
-		if (projectile.Check_ItemTypeSource(ModContent.ItemType<SkullRevolver>())) {
-			if (npc.HasBuff<CursedStatus>()) {
-				if (++CursedSkullStatus >= 3) {
-					CursedSkullStatus = 3;
-				}
-				if (projectile.type == ProjectileID.BookOfSkullsSkull) {
-					modifiers.SourceDamage += 1;
-				}
-			}
-		}
-		if (projectile.type == ProjectileID.HeatRay) {
-			modifiers.SourceDamage += HeatRay_HitCount * .02f;
-		}
-		if (projectile.type == ProjectileID.GolemFist) {
-			if (++GolemFist_HitCount % 3 == 0) {
-				modifiers.SourceDamage += 1.5f;
-			}
-		}
+	}
+	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
 		if (MaxDamageTaken >= 1) {
 			return;
 		}
 		modifiers.SetMaxDamage((int)(npc.lifeMax * MaxDamageTaken));
-	}
-	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
-		if (npc.HasBuff<Marked>()) {
-			modifiers.CritDamage += 1;
-		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
 		modifiers.SourceDamage *= Math.Clamp(1 - Static_Endurance, 0, 1f);
@@ -371,45 +183,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
-		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
-			InvincibilityFrame += 30;
-		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		HitCount++;
-		if (projectile.type == ProjectileID.HeatRay) {
-			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 200);
-			HeatRay_Decay = 30;
-		}
-		else if (projectile.type == ProjectileID.GolemFist) {
-			if (GolemFist_HitCount % 3 == 0) {
-				for (int i = 0; i < 100; i++) {
-					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.HeatRay);
-					dust.noGravity = true;
-					dust.velocity = Main.rand.NextVector2Circular(20, 20);
-					dust.scale += Main.rand.NextFloat();
-				}
-				for (int i = 0; i < 100; i++) {
-					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.HeatRay);
-					dust.noGravity = true;
-					dust.velocity = Main.rand.NextVector2CircularEdge(25, 25);
-					dust.scale += Main.rand.NextFloat();
-				}
-				SoundEngine.PlaySound(SoundID.Item14, npc.Center);
-				npc.Center.LookForHostileNPC(out List<NPC> npclist, 150);
-				npc.TargetClosest();
-				Player player = Main.player[npc.target];
-				foreach (var target in npclist) {
-					if (target.whoAmI != npc.whoAmI) {
-						player.StrikeNPCDirect(target, target.CalculateHitInfo(hit.Damage, -1));
-					}
-				}
-			}
-		}
-		int badmodifier = ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier;
-		if (badmodifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
-			InvincibilityFrame += 30;
-		}
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;
@@ -417,17 +193,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			playerIndex = npc.FindClosestPlayer();
 		}
 		var player = Main.player[playerIndex];
-		if (player.GetModPlayer<Roguelike_ApplePie_ModPlayer>().ApplePie) {
-			player.Heal((int)(player.statLifeMax2 * .05f + 1));
-		}
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
-		if (npc.boss && player.GetModPlayer<GamblePlayer>().GodDice) {
-			player.GetModPlayer<GamblePlayer>().Roll++;
-		}
-		if (player.GetModPlayer<GenocidalPact_ModPlayer>().set) {
-			player.GetModPlayer<GenocidalPact_ModPlayer>().KillCount_Decay++;
-		}
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {

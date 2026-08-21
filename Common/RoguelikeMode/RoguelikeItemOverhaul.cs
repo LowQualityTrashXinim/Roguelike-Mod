@@ -35,7 +35,6 @@ namespace Roguelike.Common.RoguelikeMode {
 			VanillaBuff(entity);
 			UpgradeVariant(entity);
 			MythicalWeapon(entity);
-			BossWeapon(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal || entity.type == ItemID.LifeFruit) {
 				entity.useTime = entity.useAnimation = 12;
 				entity.autoReuse = true;
@@ -105,24 +104,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					break;
 				case ItemID.TrueExcalibur:
 					item.damage += 15;
-					break;
-			}
-		}
-		private void BossWeapon(Item item) {
-			switch (item.type) {
-				case ItemID.Stynger:
-					item.useTime = 5;
-					item.useAnimation = 40;
-					item.reuseDelay = 30;
-					item.damage += 10;
-					break;
-			}
-		}
-		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			switch (item.type) {
-				case ItemID.Stynger:
-					SoundEngine.PlaySound(item.UseSound);
-					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 					break;
 			}
 		}

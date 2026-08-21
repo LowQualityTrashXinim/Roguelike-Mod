@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
 
 using Roguelike.Texture;
 using Terraria;

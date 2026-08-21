@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Roguelike.Common.Systems.Skill;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Skill;
 public class Skill_Arrow : ModSkill {

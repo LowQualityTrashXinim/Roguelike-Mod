@@ -7,7 +7,7 @@ using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Texture;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class EssenceLanternArtifact : Artifact {
@@ -127,6 +127,7 @@ public class NPC_Weakness : ModBuff {
 	public override void Update(NPC npc, ref int buffIndex) {
 		npc.GetGlobalNPC<RoguelikeGlobalNPC>().VelocityMultiplier -= .35f;
 		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense.Base -= 5;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().DamageIncrease -= .5f;
 	}
 }
 public class EssenceOfKindness : EssenceBuff {

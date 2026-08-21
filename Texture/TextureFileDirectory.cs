@@ -1,6 +1,8 @@
-﻿namespace Roguelike.Texture {
+﻿using Roguelike.Common.Global;
+
+namespace Roguelike.Texture {
 	public static class ModTexture {
-		public const string CommonTextureStringPattern = "Roguelike/Texture/";
+		public const string CommonTextureStringPattern = $"{ModMain.Main}/Texture/";
 		public const string MissingTexture_Folder = "MissingTexture/";
 
 		public const string WHITEDOT = CommonTextureStringPattern + "WhiteDot";

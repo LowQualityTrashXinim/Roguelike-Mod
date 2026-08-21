@@ -1,6 +1,7 @@
-﻿using Terraria;
+﻿using Roguelike.Common.Global;
+using Terraria;
 
-namespace Roguelike.Common.Global.ItemVariant;
+namespace Roguelike.Contents.ItemVariant;
 internal class BreakerBlade_Var1 : ModVariant {
 	public override void SetDefault(Item item) {
 		item.damage = 40;

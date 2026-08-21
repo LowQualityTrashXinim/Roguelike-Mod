@@ -1,30 +1,19 @@
-﻿using log4net.Util;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
+﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Perks;
+using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
 
-namespace Roguelike.Contents.Transfixion.Skill;
+namespace Roguelike.Common.Systems.Skill;
 public static class SkillTypeID {
 	public const byte Skill_None = 0;
 	/// <summary>
@@ -81,6 +70,18 @@ public abstract class ModSkill : ModType {
 		Type = SkillModSystem.Register(this);
 	}
 	/// <summary>
+	/// This code run client side only<br/>
+	/// The code is for whenever or not can this skill which from inventory holder<br/> 
+	/// transfere to active skill holder
+	/// </summary>
+	/// <returns>
+	/// True: to allow being added<br/>
+	/// False: to deny from being added
+	/// </returns>
+	public bool CanBeActive() {
+		return true;
+	}
+	/// <summary>
 	/// This have the same functionality of <see cref="ModifySkillSet(Player, SkillHandlePlayer, ref int, ref StatModifier, ref StatModifier, ref StatModifier)"/><br/>
 	/// But simpified, use this over ModifySkillSet if you are doing less logic
 	/// </summary>
@@ -96,7 +97,7 @@ public abstract class ModSkill : ModType {
 	/// </summary>
 	public virtual void SetDefault() { }
 	/// <summary>
-	/// Use this if you are modifying the skill set in a way<br/>
+	/// Use this if you are modifying the skill set in a complex way<br/>
 	/// This can be use to either skip a skill directly or loop but not recommend for looping as there are no support for that<br/>
 	/// You can also directly modify energy cost, duration and cool down of the next skill
 	/// </summary>
@@ -326,7 +327,7 @@ public class SkillHandlePlayer : ModPlayer {
 			else {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
-			percentageEnergy *= (1 + skill.EnergyRequirePercentage); ;
+			percentageEnergy *= 1 + skill.EnergyRequirePercentage; ;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 		}
@@ -351,7 +352,7 @@ public class SkillHandlePlayer : ModPlayer {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
 			duration += (int)durationS.ApplyTo(skill.Duration);
-			percentageEnergy *= (1 + skill.EnergyRequirePercentage);
+			percentageEnergy *= 1 + skill.EnergyRequirePercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
 			if (!simulated) {
@@ -466,13 +467,13 @@ public class SkillHandlePlayer : ModPlayer {
 		if (Energy <= 0) {
 			return;
 		}
-		Vector2 alwaysShoot = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 5;
-		IEntitySource source = Player.GetSource_Misc("Skill");
+		var alwaysShoot = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 5;
+		var source = Player.GetSource_Misc("Skill");
 		for (int a = 0; a < projectileskillActive.Count; a++) {
 			if (--ProjectileShootCoolDown[a] > 0) {
 				continue;
 			}
-			List<ModSkill> skilllist = projectileskillActive[a];
+			var skilllist = projectileskillActive[a];
 			int amount = 1;
 			List<Vector2> poslist = new() { Player.Center };
 			List<Vector2> vellist = new() { alwaysShoot };
@@ -671,7 +672,7 @@ public class SkillOrb : ModItem {
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		string keybind = "";
-		List<string> keybindList = ProcessTriggerSystem_Roguelike.Open_SkillUI.GetAssignedKeys();
+		var keybindList = ProcessTriggerSystem_Roguelike.Open_SkillUI.GetAssignedKeys();
 		keybind = keybindList.FirstOrDefault();
 		tooltips.Add(new TooltipLine(Mod, "Keybind", string.Format(ModUtils.LocalizationText("Items.SkillOrb", "Keybind"), $"[c/{Color.Yellow.Hex3()}:{keybind}]")));
 	}

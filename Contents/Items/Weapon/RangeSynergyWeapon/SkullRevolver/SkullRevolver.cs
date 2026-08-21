@@ -48,7 +48,7 @@ public class SkullRevolverModPlayer : ModPlayer {
 		if (proj.Check_ItemTypeSource(ModContent.ItemType<SkullRevolver>())) {
 			target.AddBuff(ModContent.BuffType<CursedStatus>(), ModUtils.ToSecond(5));
 			if (target.HasBuff<CursedStatus>()
-				&& target.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus >= 3
+				&& target.GetGlobalNPC<SkullRevolver_GlobalNPC>().CursedSkullStatus >= 3
 				&& proj.type != ProjectileID.BookOfSkullsSkull
 				&& proj.type != ProjectileID.ClothiersCurse) {
 				int amountRandom = Main.rand.Next(1, 4);
@@ -63,19 +63,36 @@ public class SkullRevolverModPlayer : ModPlayer {
 		}
 	}
 }
+public class SkullRevolver_GlobalNPC : GlobalNPC {
+	public override bool InstancePerEntity => true;
+	public int CursedSkullStatus = 0;
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (projectile.Check_ItemTypeSource(ModContent.ItemType<SkullRevolver>())) {
+			if (npc.HasBuff<CursedStatus>()) {
+				if (++CursedSkullStatus >= 3) {
+					CursedSkullStatus = 3;
+				}
+				if (projectile.type == ProjectileID.BookOfSkullsSkull) {
+					modifiers.SourceDamage += 1;
+				}
+			}
+		}
+	}
+}
 public class CursedStatus : ModBuff {
 	public override string Texture => ModTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
+		SkullRevolver_GlobalNPC global = npc.GetGlobalNPC<SkullRevolver_GlobalNPC>();
 		if (npc.buffTime[buffIndex] <= 0) {
-			npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus = 0;
+			global.CursedSkullStatus = 0;
 		}
-		if (npc.HasBuff<CursedStatus>() && npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus > 0) {
-			npc.lifeRegen -= 10 + 5 * npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus;
+		if (npc.HasBuff<CursedStatus>() && global.CursedSkullStatus > 0) {
+			npc.lifeRegen -= 10 + 5 * global.CursedSkullStatus;
 			Color[] colorArr = [Color.Purple, Color.Red, Color.White];
-			for (int i = 0; i < npc.GetGlobalNPC<RoguelikeGlobalNPC>().CursedSkullStatus; i++) {
+			for (int i = 0; i < global.CursedSkullStatus; i++) {
 				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.WhiteTorch);
 				dust.noGravity = true;
 				dust.velocity = Vector2.UnitY * -Main.rand.NextFloat(3);

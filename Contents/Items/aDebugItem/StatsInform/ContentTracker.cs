@@ -8,8 +8,8 @@ using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Transfixion.Augmentation;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Contents.Items.aDebugItem.StatsInform;
 internal class ContentTracker : ModItem {

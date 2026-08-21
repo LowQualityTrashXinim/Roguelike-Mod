@@ -102,10 +102,10 @@ namespace Roguelike.Common.Utils {
 		public static string LocalizationText(string text, string extra = null) {
 			string localizationKey;
 			if (string.IsNullOrEmpty(extra)) {
-				localizationKey = $"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}";
+				localizationKey = $"Mods.{ModMain.Main}.{Regex.Replace(text, @"\s+", "")}";
 			}
 			else {
-				localizationKey = $"Mods.Roguelike.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}";
+				localizationKey = $"Mods.{ModMain.Main}.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}";
 			}
 			string localizationText = Language.GetTextValue(localizationKey);
 			if (localizationText == localizationKey) {

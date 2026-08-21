@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
@@ -199,6 +200,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		RoguelikeWorldProperty.RoguelikeWorld = false;
+		return;
 		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}

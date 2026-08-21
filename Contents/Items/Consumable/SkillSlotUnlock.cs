@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Contents.Items.Consumable;
 internal class SkillSlotUnlock : ModItem {

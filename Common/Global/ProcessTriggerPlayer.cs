@@ -4,9 +4,9 @@ using Terraria.GameInput;
 using Roguelike.Common.General;
 using Roguelike.Common.Systems;
 using Microsoft.Xna.Framework.Input;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Contents.Items.Toggle.Transmutation;
 using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.Global;
 public class ProcessTriggerSystem_Roguelike : ModSystem {

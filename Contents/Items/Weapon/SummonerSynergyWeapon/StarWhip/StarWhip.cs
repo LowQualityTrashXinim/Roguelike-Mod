@@ -1,21 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Roguelike.Common.Graphics.Structs.TrailStructs;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Weapon;
+using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
+
+using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using ReLogic.Content;
-using Terraria.Audio;
 using Terraria.Localization;
-using Roguelike.Contents.Items.Weapon;
- 
-using Roguelike.Texture;
-using Roguelike.Common.Graphics.Structs.TrailStructs;
-using Roguelike.Common.Utils;
+using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {

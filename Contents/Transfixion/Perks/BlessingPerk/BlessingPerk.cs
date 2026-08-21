@@ -206,6 +206,17 @@ public class StarGaze : ModBuff {
 		}
 	}
 }
+public class StarRay_GlobalNPC : GlobalNPC {
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
+			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
+			if (npc.HasBuff<StarRay>()) {
+				// Apply a flat bonus to every hit
+				modifiers.FlatBonusDamage += StarRay.TagDamage * projTagMultiplier;
+			}
+		}
+	}
+}
 public class StarRay : ModBuff {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public static readonly int TagDamage = 10;

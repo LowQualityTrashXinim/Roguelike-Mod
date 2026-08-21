@@ -30,5 +30,15 @@ public class Roguelike_ApplePie_ModPlayer : ModPlayer {
 		ApplePie = false;
 	}
 }
-//Due to the wacky implementation of seeing whenever a NPC is killed, I decide the put the heal code in 
-// RoguelikeGlobalNPC
+public class Roguelike_ApplePie_GlobalNPC : GlobalNPC {
+	public override void OnKill(NPC npc) {
+		int playerIndex = npc.lastInteraction;
+		if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
+			playerIndex = npc.FindClosestPlayer();
+		}
+		var player = Main.player[playerIndex];
+		if (player.GetModPlayer<Roguelike_ApplePie_ModPlayer>().ApplePie) {
+			player.Heal((int)(player.statLifeMax2 * .05f + 1));
+		}
+	}
+}

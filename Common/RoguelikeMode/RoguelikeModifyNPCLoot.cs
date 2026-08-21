@@ -1,6 +1,5 @@
 ﻿//EnragedStuff
 using Terraria.GameContent.ItemDropRules;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
@@ -9,7 +8,6 @@ using Roguelike.Common.General;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
-using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
@@ -17,8 +15,8 @@ using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global {
-	class GlobalNPCMod : GlobalNPC {
+namespace Roguelike.Common.RoguelikeMode {
+	class RoguelikeModifyNPCLoot : GlobalNPC {
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			var noHit = new LeadingConditionRule(new GitGudMode());

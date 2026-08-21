@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;

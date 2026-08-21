@@ -63,22 +63,22 @@ namespace Roguelike.Contents.Items.BuilderItem
 			Tile tile = Main.tile[i, j];
 			if (tile != null) {
 				if (Main.tileDungeon[tile.TileType]
-					|| tile.TileType == 88
-					|| tile.TileType == 21
-					|| tile.TileType == 26
-					|| tile.TileType == 107
-					|| tile.TileType == 108
-					|| tile.TileType == 111
-					|| tile.TileType == 226
-					|| tile.TileType == 237
-					|| tile.TileType == 221
-					|| tile.TileType == 222
-					|| tile.TileType == 223
-					|| tile.TileType == 211
-					|| tile.TileType == 404) {
+					|| tile.TileType == TileID.Dressers
+					|| tile.TileType == TileID.Containers
+					|| tile.TileType == TileID.DemonAltar
+					|| tile.TileType == TileID.Cobalt
+					|| tile.TileType == TileID.Mythril
+					|| tile.TileType == TileID.Adamantite
+					|| tile.TileType == TileID.LihzahrdBrick
+					|| tile.TileType == TileID.LihzahrdAltar
+					|| tile.TileType == TileID.Palladium
+					|| tile.TileType == TileID.Orichalcum
+					|| tile.TileType == TileID.Titanium
+					|| tile.TileType == TileID.Chlorophyte
+					|| tile.TileType == TileID.DesertFossil) {
 					return false;
 				}
-				if (!Main.hardMode && tile.TileType == 58) {
+				if (!Main.hardMode && tile.TileType == TileID.Hellstone) {
 					return false;
 				}
 				if (!TileLoader.CanExplode(i, j)) {
@@ -93,10 +93,10 @@ namespace Roguelike.Contents.Items.BuilderItem
 				for (int y = j - 1; y <= j + 1; y++) {
 					if (Main.tile[x, y] != null
 						&& distanceToTile < explosionRadius * explosionRadius
-						&& Main.tile[x, y].WallType > 0
+						&& Main.tile[x, y].WallType > WallID.None
 						&& WallLoader.CanExplode(x, y, Main.tile[x, y].WallType)) {
 						WorldGen.KillWall(x, y, false);
-						if (Main.tile[x, y].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer) {
+						if (Main.tile[x, y].WallType == WallID.None && Main.netMode != NetmodeID.SinglePlayer) {
 							NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, x, y, 0f, 0, 0, 0);
 						}
 					}

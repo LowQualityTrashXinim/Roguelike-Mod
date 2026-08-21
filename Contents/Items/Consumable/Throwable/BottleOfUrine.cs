@@ -28,6 +28,17 @@ public class Urine_Debuff : ModBuff {
 		dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.1f, .2f);
 	}
 }
+public class Urine_GlobalNPC : GlobalNPC {
+	public override Color? GetAlpha(NPC npc, Color drawColor) {
+		if (npc.HasBuff<Urine_Debuff>()) {
+			drawColor.R = 255;
+			drawColor.G = 255;
+			drawColor.B = 90;
+			return drawColor;
+		}
+		return base.GetAlpha(npc, drawColor);
+	}
+}
 public class BottleOfUrineProjectile : ModProjectile {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<BottleOfUrine>();
 	public override void SetDefaults() {

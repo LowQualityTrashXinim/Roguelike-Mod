@@ -5,7 +5,7 @@ using Terraria.GameContent.ItemDropRules;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.General {
 	public class IsInBossRushMode : IItemDropRuleCondition {

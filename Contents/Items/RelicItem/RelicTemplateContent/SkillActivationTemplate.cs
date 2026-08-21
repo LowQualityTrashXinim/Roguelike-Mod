@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Contents.Transfixion.Skill;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent {
 	public class SkillActivationTemplate : RelicTemplate {
