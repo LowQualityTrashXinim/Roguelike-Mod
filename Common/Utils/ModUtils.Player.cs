@@ -48,7 +48,7 @@ namespace Roguelike.Common.Utils {
 		/// <param name="Type"></param>
 		/// <returns></returns>
 		public static bool Check_SwitchedWeapon(this Player player, int Type) {
-			SynergyModPlayer modplayer = player.GetModPlayer<SynergyModPlayer>();
+			WeaponSwap modplayer = player.GetModPlayer<WeaponSwap>();
 			return modplayer.JustSwitched;
 		}
 		public static bool IsDebugPlayer(this Player player) =>
@@ -94,7 +94,7 @@ namespace Roguelike.Common.Utils {
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
 		public static bool IsThisArmorPiece(this Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
-		public static int OldItemType(this Player player) => player.GetModPlayer<SynergyModPlayer>().ItemTypeOld;
+		public static int OldItemType(this Player player) => player.GetModPlayer<WeaponSwap>().ItemTypeOld;
 		/// <summary>
 		/// Check whenever or not is this item a weapon or not
 		/// </summary>

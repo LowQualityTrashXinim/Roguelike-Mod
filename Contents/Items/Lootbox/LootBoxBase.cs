@@ -1,6 +1,7 @@
 ﻿using log4net.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Common.Global.Prefixes;
+using Roguelike.Common.Global;
 
 namespace Roguelike;
 public partial class Roguelike : Mod {
@@ -124,7 +125,7 @@ public class ModItemLib : ModSystem {
 				ListLootboxType.Add(item.type);
 				continue;
 			}
-			if (item.ModItem is SynergyBase) {
+			if (item.ModItem is SynergyModItem) {
 				SynergyItem.Add(item);
 				continue;
 			}

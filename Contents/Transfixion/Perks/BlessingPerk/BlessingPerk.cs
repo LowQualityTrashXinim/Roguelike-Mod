@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items;
 using Roguelike.Contents.Transfixion.Perks;
@@ -324,7 +325,7 @@ public class BlessingOfSynergy : Perk {
 		player.GetModPlayer<PlayerStatsHandle>().WeaponAmountAddition += StackAmount(player);
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
+		if (player.GetModPlayer<WeaponSwap>().CompareOldvsNewItemType) {
 			damage.Flat += 10 * StackAmount(player);
 		}
 	}

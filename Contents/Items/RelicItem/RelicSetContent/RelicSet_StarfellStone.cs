@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.DataStructures;
@@ -19,7 +20,7 @@ public class StarfellStone_ModPlayer : ModPlayer {
 			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.SynergyDamage, Additive: 1.15f);
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (StarStone && Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
+		if (StarStone && Player.GetModPlayer<WeaponSwap>().CompareOldvsNewItemType) {
 			Vector2 rotate = (Vector2.UnitX * 125).RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(90)));
 			for (int i = 0; i < 3; i++) {
 				Vector2 rotation = rotate.Vector2DistributeEvenly(3, 360, i);

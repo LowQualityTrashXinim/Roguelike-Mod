@@ -852,4 +852,4 @@ Remove fire arrow and hellfire arrow fall from the sky
 696/ Slight adjustment to ModIO handler file.
 697/ Fixed a potential bugs of spoils showing incorrect amount.
 698/ Added Copy and paste function into create panel.
-699/ Organized fields and variables around the project preparing for Everlasting Core. and
+699/ Organized fields and variables around the project preparing for Everlasting Core.
