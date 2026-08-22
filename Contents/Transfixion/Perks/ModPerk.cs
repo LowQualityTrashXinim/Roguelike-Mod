@@ -265,7 +265,7 @@ public class EnergyAbsorption : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		var statplayer = player.GetModPlayer<PlayerStatsHandle>();
-		statplayer.EnergyRegen.Base += 1;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRegen.Base += 1;
 		statplayer.AddStatsToPlayer(PlayerStats.EnergyCap, 1.2f);
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Activate) {

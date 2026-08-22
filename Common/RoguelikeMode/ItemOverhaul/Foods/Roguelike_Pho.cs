@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 internal class Roguelike_Pho : GlobalFoodItem {
@@ -20,10 +21,10 @@ internal class Roguelike_Pho : GlobalFoodItem {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.Set_TemporaryLife(110, 60);
 		handler.Set_TemporaryMana(220, 60);
-		handler.Set_TemporaryEnergy(550, 60);
+		player.GetModPlayer<SkillHandlePlayer>().Set_TemporaryEnergy(550, 60);
 		handler.TemporaryLife += 110;
 		handler.TemporaryMana += 220;
-		handler.TemporaryEnergy += 550;
+		player.GetModPlayer<SkillHandlePlayer>().TemporaryEnergy += 550;
 	}
 }
 public class Roguelike_Pho_ModBuff : FoodItemTier2 {
@@ -32,12 +33,12 @@ public class Roguelike_Pho_ModBuff : FoodItemTier2 {
 		PlayerStatsHandle handler = player.ModPlayerStats();
 		handler.Set_TemporaryLife(110, 60);
 		handler.Set_TemporaryMana(220, 60);
-		handler.Set_TemporaryEnergy(550, 60);
+		player.GetModPlayer<SkillHandlePlayer>().Set_TemporaryEnergy(550, 60);
 		handler.TemporaryLife_CounterLimit += 60;
 		handler.TemporaryMana_CounterLimit += 60;
-		handler.TemporaryEnergy_CounterLimit += 60;
+		player.GetModPlayer<SkillHandlePlayer>().TemporaryEnergy_CounterLimit += 60;
 		handler.UpdateHPRegen *= 1.12f;
 		handler.UpdateManaRegen *= 1.12f;
-		handler.EnergyRegen += .37f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRegen += .37f;
 	}
 }

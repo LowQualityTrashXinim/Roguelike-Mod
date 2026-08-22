@@ -346,6 +346,10 @@ ScatterShot: {
 		Note : There are projectiles which are blocked to work with this perk
 		- Decreases none-minion projectile damage by 33%
 		'''
+	Description1:
+		'''
+		+ Increases amount of scatter shot by 1
+		'''
 }
 
 BloodStrike: {

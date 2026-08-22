@@ -18,6 +18,6 @@ public class Roguelike_Peach_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.Peach;
 	public override void Update(Player player, ref int buffIndex) {
 		player.GetModPlayer<SkillHandlePlayer>().skilldamage += .23f;
-		player.ModPlayerStats().EnergyRecharge += .14f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRecharge += .14f;
 	}
 }

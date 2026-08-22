@@ -1,22 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Roguelike.Common.Systems.ObjectSystem;
-using Roguelike.Common.Systems.ObjectSystem.DataStructures;
 using Roguelike.Common.Systems.ReviveSystem;
-using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
-using Roguelike.Contents.Transfixion.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -134,15 +123,13 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public StatModifier ShieldHealth = new StatModifier();
 	public StatModifier ShieldEffectiveness = new StatModifier();
 	public StatModifier HealEffectiveness = new StatModifier();
-	public StatModifier EnergyCap = new StatModifier();
-	public StatModifier RechargeEnergyCap = new StatModifier();
-	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier UpdateFullHPDamage = new StatModifier();
 	public StatModifier DebuffDamage = new StatModifier();
 	public StatModifier SynergyDamage = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier DirectItemDamage = new();
+	public StatModifier OnKillHealing = new StatModifier();
 	public float Hostile_ProjectileVelocityAddition = 0;
 	//public float LuckIncrease = 0; 
 	/// <summary>
@@ -190,10 +177,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public int TemporaryMana_Counter = 0;
 	public int TemporaryMana_Limit = 0;
 	public int TemporaryMana_CounterLimit = 120;
-	public int TemporaryEnergy = 0;
-	public int TemporaryEnergy_Counter = 0;
-	public int TemporaryEnergy_Limit = 0;
-	public int TemporaryEnergy_CounterLimit = 120;
 	public int NPC_HitCount = 0;
 	public float ItemRangeMultiplier = 1;
 	/// <summary>
@@ -416,9 +399,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 			if (item.IsAir) {
 				continue;
 			}
-			if (item.type == ModContent.ItemType<HeartPistol>()) {
-
-			}
 			if (item.TryGetGlobalItem(out GlobalItemHandle handler)) {
 				handler.InventoryWhoAmI = -1;
 			}
@@ -447,12 +427,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 			TemporaryMana_CounterLimit = counterlimit;
 		}
 	}
-	public void Set_TemporaryEnergy(int limit, int counterlimit) {
-		TemporaryEnergy_Limit += limit;
-		if (TemporaryEnergy_CounterLimit < counterlimit) {
-			TemporaryEnergy_CounterLimit = counterlimit;
-		}
-	}
 	public void Set_TemporaryLife(int limit, int counterlimit) {
 		TemporaryLife_Limit += limit;
 		if (TemporaryLife_CounterLimit < counterlimit) {
@@ -461,21 +435,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	}
 	public StatModifier SummonTagDamage = StatModifier.Default;
 	public float CurrentMinionAmount = 0;
-	/// <summary>
-	/// Player stats for energy regeneration
-	/// </summary>
-	public StatModifier EnergyRegen = StatModifier.Default;
-	/// <summary>
-	/// Player stats for energy regeneration count, this is to count the time so that player can regenerate energy<bt/> 
-	/// once the time is equal or greater <see cref="EnergyRegen_CountLimit"/> then player will regen energy
-	/// </summary>
-	public StatModifier EnergyRegenCount = StatModifier.Default;
-	/// <summary>
-	/// Player stats for modify energy regen count cap, useful for either making the cap longer or shorter
-	/// </summary>
-	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
-	public int EnergyRegen_Count = 0;
-	public int EnergyRegen_CountLimit = 60;
+
 	public int CappedHealthAmount = -1;
 	/// <summary>
 	/// Easy check to see did player just healed
@@ -492,7 +452,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	/// This field is a easier way to check whenever a player has Healed, however you better refer to <see cref="Check_Heal"/>
 	/// </summary>
 	public bool Healed = false;
-	public const short Default_EnergyCap = 1500;
+
 	public const short Default_RelicActivationCap = 10;
 	public byte Healed_timeSinceLastHeal = 0;
 	/// <summary>
@@ -536,7 +496,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 		if (!Player.immune) {
 			Get_DidPlayerDodge = false;
 		}
-		Player.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		CurrentMinionAmount = 0;
 		for (int i = 0; i < Main.projectile.Length; i++) {
 			if (Main.projectile[i].minion && Main.projectile[i].active) {
@@ -544,8 +503,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 			}
 		}
 		synchronize_Counter = ModUtils.Safe_SwitchValue(synchronize_Counter, 216000);
-		var modplayer = Player.GetModPlayer<SkillHandlePlayer>();
-		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(Default_EnergyCap);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeed = UpdateJumpBoost.ApplyTo(Player.jumpSpeed);
 		Player.extraFall += (int)Player.jumpSpeed;
@@ -562,7 +519,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 
 		Player.maxMinions = (int)UpdateMinion.ApplyTo(Player.maxMinions);
 		Player.maxTurrets = (int)UpdateSentry.ApplyTo(Player.maxTurrets);
-		EnergyCap = StatModifier.Default;
 
 		if (TemporaryLife > 0) {
 			if (++TemporaryLife_Counter >= TemporaryLife_CounterLimit) {
@@ -583,17 +539,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 			TemporaryMana_Limit = 0;
 			TemporaryMana_CounterLimit = 0;
 		}
-
-		if (TemporaryEnergy > 0) {
-			if (++TemporaryEnergy_Counter >= TemporaryEnergy_CounterLimit) {
-				TemporaryEnergy--;
-				TemporaryEnergy_Counter = 0;
-			}
-			TemporaryEnergy = Math.Clamp(TemporaryEnergy, 0, TemporaryEnergy_Limit);
-			TemporaryEnergy_Limit = 0;
-			TemporaryEnergy_CounterLimit = 0;
-		}
-
 		if (CappedHealthAmount == -1 || Unnerfed2) {
 			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, int.MaxValue);
 		}
@@ -601,7 +546,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, CappedHealthAmount);
 		}
 		Unnerfed2 = false;
-		EnergyCap.Flat += TemporaryEnergy;
 		CappedHealthAmount = -1;
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2) + TemporaryMana, 1, int.MaxValue);
 
@@ -642,8 +586,6 @@ public partial class PlayerStatsHandle : ModPlayer {
 		ShieldHealth = StatModifier.Default;
 		AttackSpeed = StatModifier.Default;
 		HealEffectiveness = StatModifier.Default;
-		RechargeEnergyCap = StatModifier.Default;
-		EnergyRecharge = StatModifier.Default;
 		DebuffDamage = StatModifier.Default - 1;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
@@ -653,6 +595,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		EnchantmentCoolDown = StatModifier.Default;
 		TransmutationModifier = StatModifier.Default;
 		DamageTaken = StatModifier.Default;
+		OnKillHealing = StatModifier.Default - 1;
 
 		WingUpTime = StatModifier.Default;
 		DodgeChance = 0;
@@ -665,20 +608,12 @@ public partial class PlayerStatsHandle : ModPlayer {
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
 		ItemRangeMultiplier = 1;
+
 		Reset_ShootRequest();
-		EnergyRegen_Count = (int)Math.Ceiling(EnergyRegenCount.ApplyTo(EnergyRegen_Count));
-		if (++EnergyRegen_Count >= EnergyRegen_CountLimit) {
-			EnergyRegen_Count = 0;
-			modplayer.Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
-		}
-		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
+		ScatterShot = 0;
 
 		RelicActivation = RelicPoint <= Default_RelicActivationCap;
 		RelicPoint = 0;
-
-		EnergyRegen = StatModifier.Default;
-		EnergyRegenCount = StatModifier.Default;
-		EnergyRegenCountLimit = StatModifier.Default;
 		TransmutationPowerMaximum = 1000;
 
 		PercentageDamage = 0;
@@ -701,11 +636,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 
 		AlwaysCritValue = 0;
 	}
-	public override void PostUpdateBuffs() {
-		if (Player.HasBuff<Anti_Immunity>()) {
-			Array.Fill(Player.buffImmune, false);
-		}
-	}
+
 	public override void PreUpdateBuffs() {
 	}
 	public bool RelicActivation = true;
@@ -829,13 +760,13 @@ public partial class PlayerStatsHandle : ModPlayer {
 				HealEffectiveness = HealEffectiveness.CombineWith(StatMod);
 				break;
 			case PlayerStats.EnergyCap:
-				EnergyCap = EnergyCap.CombineWith(StatMod);
+				Player.ModSkillPlayer().EnergyCapacity = Player.ModSkillPlayer().EnergyCapacity.CombineWith(StatMod);
 				break;
 			case PlayerStats.EnergyRecharge:
-				EnergyRecharge = EnergyRecharge.CombineWith(StatMod);
+				Player.ModSkillPlayer().EnergyRecharge = Player.ModSkillPlayer().EnergyRecharge.CombineWith(StatMod);
 				break;
 			case PlayerStats.EnergyRechargeCap:
-				RechargeEnergyCap = RechargeEnergyCap.CombineWith(StatMod);
+				Player.ModSkillPlayer().RechargeEnergyCap = Player.ModSkillPlayer().RechargeEnergyCap.CombineWith(StatMod);
 				break;
 			case PlayerStats.FullHPDamage:
 				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
@@ -979,6 +910,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public int request_ShootSpreadExtra { get; private set; } = 0;
 	public float request_AngleSpread { get; private set; } = 0;
 	public float request_VelocityChange { get; private set; } = 0;
+	public int ScatterShot = 0;
 	public void Request_ShootExtra(int extra, float angle) {
 		request_ShootExtra += extra;
 		request_VelocityChange += angle;
@@ -1066,43 +998,18 @@ public partial class PlayerStatsHandle : ModPlayer {
 		return (int)Math.Max(Math.Ceiling(newcooldown), 0);
 	}
 }
-/// <summary>
-/// This is for the second life mechanic
-/// </summary>
-public class ConditionApproved {
-	public bool Condition = false;
-	public bool Approved = false;
-	public float ChanceValue = 0f;
-	public ConditionApproved() {
-		Condition = false;
-		Approved = false;
-		ChanceValue = 0;
-	}
-	public ConditionApproved(bool condition) {
-		Condition = condition;
-		Approved = false;
-		ChanceValue = 0;
-	}
-	public ConditionApproved(float chance) {
-		Condition = false;
-		Approved = false;
-		ChanceValue = chance;
-	}
-	public void SetChanceValue(float chance) {
-		ChanceValue = chance;
-	}
-	public void ChangeCondition(bool condition) {
-		Condition = condition;
-	}
-	public void ApprovedConditionPass() {
-		Approved = true;
-	}
-	public void DeApproved() {
-		Approved = false;
-	}
-	public void Reset() {
-		Condition = false;
-		Approved = false;
+public class PlayerStatsHandle_GlobalNPC : GlobalNPC {
+	public override void OnKill(NPC npc) {
+		int playerIndex = npc.lastInteraction;
+		if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
+			playerIndex = npc.FindClosestPlayer();
+		}
+		var player = Main.player[playerIndex];
+		StatModifier modifier = player.ModPlayerStats().OnKillHealing;
+		float healamount = modifier.ApplyTo(1);
+		if (modifier.ApplyTo(1) > 0) {
+			player.Heal((int)healamount);
+		}
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {
@@ -1147,7 +1054,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		return dmg;
 	}
 	private void On_NPC_DelBuff(On_NPC.orig_DelBuff orig, NPC self, int buffIndex) {
-		if (self.HasBuff<Anti_Immunity>()) {
+		if (self.HasAntiImmunityDebuff()) {
 			if (self.buffImmune[self.buffType[buffIndex]]) {
 				Array.Fill(self.buffImmune, false);
 				return;
@@ -1157,7 +1064,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void On_Player_DelBuff(On_Player.orig_DelBuff orig, Player self, int b) {
-		if (self.HasBuff<Anti_Immunity>()) {
+		if (self.HasAntiImmunityDebuff()) {
 			if (self.buffImmune[self.buffType[b]]) {
 				Array.Fill(self.buffImmune, false);
 				return;
@@ -1271,10 +1178,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void Extra_SpecialMechanic(Player player, Projectile projectile) {
-		bool Scatter = false;
-		if (player.TryGetModPlayer(out PerkPlayer perk)) {
-			Scatter = perk.perk_ScatterShot;
-		}
 		RoguelikeGlobalProjectile globalhandle;
 		if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
 			globalhandle = global;
@@ -1285,9 +1188,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (globalhandle.IsASubProjectile) {
 			return;
 		}
-		if (Scatter) {
-			globalhandle.OnKill_ScatterShot += 2;
-		}
 		PlayerStatsHandle handle;
 		if (player.TryGetModPlayer(out PlayerStatsHandle hand)) {
 			handle = hand;
@@ -1295,6 +1195,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		else {
 			return;
 		}
+		globalhandle.OnKill_ScatterShot += handle.ScatterShot;
 		int shootExtra = handle.request_ShootExtra;
 		int shootSpread = handle.request_ShootSpreadExtra;
 		float angleSpread = handle.request_AngleSpread;
@@ -1309,9 +1210,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 					break;
 				}
 				proj.velocity = proj.velocity.Vector2RotateByRandom(angleChange);
-				if (Scatter) {
-					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-				}
+				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += handle.ScatterShot;
 			}
 		}
 		if (shootSpread > 1) {
@@ -1321,9 +1220,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 					break;
 				}
 				proj.velocity = proj.velocity.Vector2DistributeEvenlyPlus(shootSpread, angleSpread, i);
-				if (Scatter) {
-					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-				}
+				proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += handle.ScatterShot;
 			}
 		}
 	}
@@ -1340,7 +1237,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
-			if (self.HasBuff<Anti_Immunity>()) {
+			if (self.HasAntiImmunityDebuff()) {
 				Array.Fill(self.buffImmune, false);
 			}
 			if (!Main.debuff[type]) {
@@ -1360,7 +1257,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
 		var player = Main.player[self.lastInteraction];
-		if (self.HasBuff<Anti_Immunity>()) {
+		if (self.HasAntiImmunityDebuff()) {
 			Array.Fill(self.buffImmune, false);
 		}
 		if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {

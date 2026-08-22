@@ -22,23 +22,6 @@ public class Roguelike_ApplePie_ModBuff : FoodItemTier3 {
 		player.buffImmune[BuffID.Chilled] = true;
 		player.buffImmune[BuffID.Frozen] = true;
 		player.endurance += .1f;
-	}
-}
-public class Roguelike_ApplePie_ModPlayer : ModPlayer {
-	public bool ApplePie = false;
-	public override void ResetEffects() {
-		ApplePie = false;
-	}
-}
-public class Roguelike_ApplePie_GlobalNPC : GlobalNPC {
-	public override void OnKill(NPC npc) {
-		int playerIndex = npc.lastInteraction;
-		if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
-			playerIndex = npc.FindClosestPlayer();
-		}
-		var player = Main.player[playerIndex];
-		if (player.GetModPlayer<Roguelike_ApplePie_ModPlayer>().ApplePie) {
-			player.Heal((int)(player.statLifeMax2 * .05f + 1));
-		}
+		player.ModPlayerStats().OnKillHealing.Base += player.statLifeMax2 * .05f;
 	}
 }

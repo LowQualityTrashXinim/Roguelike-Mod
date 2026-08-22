@@ -855,3 +855,7 @@ Remove fire arrow and hellfire arrow fall from the sky
 699/ Organized fields and variables around the project preparing for Everlasting Core.
 700/ Deleted Smart Neo Dynamite because seemingly it does nothing.
 701/ Updated mod version from 0.0.19.9 to 0.0.20.0 ./.
+702/ Added new stats which are: 
+- OnKillHealing.
+- ScatterShot.
+703/ Updated Scatter shot perk tooltip.

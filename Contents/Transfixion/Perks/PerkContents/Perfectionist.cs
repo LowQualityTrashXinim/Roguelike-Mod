@@ -1,4 +1,5 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ModLoader;
@@ -17,7 +18,7 @@ internal class Perfectionist : Perk {
 		}
 		if (player.statMana == player.statManaMax2) {
 			handler.UpdateDefenseBase.Base += 20;
-			handler.EnergyRegen.Base += 10;
+			player.GetModPlayer<SkillHandlePlayer>().EnergyRegen.Base += 10;
 			player.endurance += .05f;
 		}
 	}

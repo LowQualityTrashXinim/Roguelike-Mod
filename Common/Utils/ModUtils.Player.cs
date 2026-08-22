@@ -5,7 +5,7 @@ using Roguelike.Common.Global.Mechanic;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.Skill;
-using Roguelike.Contents.Items;
+using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Transfixion.Augmentation;
 using Roguelike.Contents.Transfixion.Perks;
 using System;
@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.Utils {
 	public static partial class ModUtils {
 		public static bool Check_ItemTag(int itemType, WeaponTag tag) => OutroEffectSystem.Get_Arr_WeaponTag[(int)tag].Contains(itemType);
-			
+
 		public static bool CheckDashType(this Player player, string currentDash = "") {
 			return player.dashType == DashID.None && player.ModPlayerStats().CurrentDashType == currentDash;
 		}
@@ -31,6 +31,10 @@ namespace Roguelike.Common.Utils {
 		/// <param name="player"></param>
 		/// <returns></returns>
 		public static PlayerStatsHandle ModPlayerStats(this Player player) => player.GetModPlayer<PlayerStatsHandle>();
+		public static SkillHandlePlayer ModSkillPlayer(this Player player) => player.GetModPlayer<SkillHandlePlayer>();
+		//In the case of the anti immunity debuff is deleted, then please replace them with false.
+		public static bool HasAntiImmunityDebuff(this Player player) => player.HasBuff<Anti_Immunity>();
+		public static bool HasAntiImmunityDebuff(this NPC npc) => npc.HasBuff<Anti_Immunity>();
 		/// <summary>
 		/// This check if player health/life is above x%
 		/// </summary>
@@ -227,8 +231,7 @@ namespace Roguelike.Common.Utils {
 			if (amount <= 0) {
 				return;
 			}
-			var statplayer = player.ModPlayerStats();
-			amount = (int)statplayer.EnergyRecharge.ApplyTo(amount);
+			amount = (int)player.GetModPlayer<SkillHandlePlayer>().EnergyRecharge.ApplyTo(amount);
 			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(amount);
 			CombatTextRevamp(player.Hitbox, Color.Cyan, "" + amount, timeleft: 15);
 		}

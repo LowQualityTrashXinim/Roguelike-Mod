@@ -432,7 +432,35 @@ public class SkillHandlePlayer : ModPlayer {
 				ToPower = 0;
 			}
 		}
-
+	}
+	public const short Default_EnergyCap = 1500;
+	public StatModifier EnergyCapacity = new StatModifier();
+	public StatModifier RechargeEnergyCap = new StatModifier();
+	public StatModifier EnergyRecharge = new StatModifier();
+	public int TemporaryEnergy = 0;
+	public int TemporaryEnergy_Counter = 0;
+	public int TemporaryEnergy_Limit = 0;
+	public int TemporaryEnergy_CounterLimit = 120;
+	/// <summary>
+	/// Player stats for energy regeneration
+	/// </summary>
+	public StatModifier EnergyRegen = StatModifier.Default;
+	/// <summary>
+	/// Player stats for energy regeneration count, this is to count the time so that player can regenerate energy<bt/> 
+	/// once the time is equal or greater <see cref="EnergyRegen_CountLimit"/> then player will regen energy
+	/// </summary>
+	public StatModifier EnergyRegenCount = StatModifier.Default;
+	/// <summary>
+	/// Player stats for modify energy regen count cap, useful for either making the cap longer or shorter
+	/// </summary>
+	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
+	public int EnergyRegen_Count = 0;
+	public int EnergyRegen_CountLimit = 60;
+	public void Set_TemporaryEnergy(int limit, int counterlimit) {
+		TemporaryEnergy_Limit += limit;
+		if (TemporaryEnergy_CounterLimit < counterlimit) {
+			TemporaryEnergy_CounterLimit = counterlimit;
+		}
 	}
 	public override void ResetEffects() {
 		ProjectileCritChance = 0;
@@ -442,6 +470,32 @@ public class SkillHandlePlayer : ModPlayer {
 		ProjectileSpreadMultiplier = 1;
 		ProjectileSpreadAmount = 5;
 		skilldamage = StatModifier.Default;
+		EnergyCap = (int)EnergyCapacity.ApplyTo(Default_EnergyCap);
+		EnergyCapacity = StatModifier.Default;
+		if (TemporaryEnergy > 0) {
+			if (++TemporaryEnergy_Counter >= TemporaryEnergy_CounterLimit) {
+				TemporaryEnergy--;
+				TemporaryEnergy_Counter = 0;
+			}
+			TemporaryEnergy = Math.Clamp(TemporaryEnergy, 0, TemporaryEnergy_Limit);
+			TemporaryEnergy_Limit = 0;
+			TemporaryEnergy_CounterLimit = 0;
+		}
+		EnergyCapacity.Flat += TemporaryEnergy;
+
+		RechargeEnergyCap = StatModifier.Default;
+		EnergyRecharge = StatModifier.Default;
+		if (++EnergyRegen_Count >= EnergyRegen_CountLimit) {
+			EnergyRegen_Count = 0;
+			Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
+		}
+		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
+
+		EnergyRegen = StatModifier.Default;
+		EnergyRegenCount = StatModifier.Default;
+		EnergyRegenCountLimit = StatModifier.Default;
+
+
 		if (!Activate) {
 			return;
 		}
@@ -550,10 +604,9 @@ public class SkillHandlePlayer : ModPlayer {
 	int Rechargebucket = 0;
 	int CurrentbucketAmount = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-		int eGain = (int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(MathF.Ceiling(hit.Damage * .01f)));
+		int eGain = (int)Math.Ceiling(EnergyRecharge.ApplyTo(MathF.Ceiling(hit.Damage * .01f)));
 		if (Rechargebucket == 0) {
-			Rechargebucket = (int)Math.Ceiling(modplayer.RechargeEnergyCap.ApplyTo(hit.Damage));
+			Rechargebucket = (int)Math.Ceiling(RechargeEnergyCap.ApplyTo(hit.Damage));
 		}
 		CurrentbucketAmount += eGain;
 		if (CurrentbucketAmount >= Rechargebucket) {

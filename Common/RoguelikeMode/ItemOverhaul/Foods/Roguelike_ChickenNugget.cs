@@ -20,7 +20,7 @@ public class Roguelike_ChickenNugget_ModBuff : FoodItemTier2 {
 	public override int TypeID => ItemID.ChickenNugget;
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
-		handler.EnergyRecharge *= .35f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRecharge *= .35f;
 		handler.SkillDuration *= .45f;
 		player.GetModPlayer<SkillHandlePlayer>().skilldamage *= 1.25f;
 	}

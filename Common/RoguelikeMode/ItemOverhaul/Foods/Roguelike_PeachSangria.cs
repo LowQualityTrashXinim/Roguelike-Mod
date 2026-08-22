@@ -19,8 +19,8 @@ public class Roguelike_PeachSangria_Buff : FoodItemTier1 {
 	public override int TypeID => ItemID.PeachSangria;
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
-		handler.EnergyCap.Base += 250;
-		handler.EnergyRegen += .13f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyCapacity.Base += 250;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRegen += .13f;
 		handler.SkillDuration += .15f;
 		player.GetModPlayer<SkillHandlePlayer>().skilldamage += .17f;
 	}

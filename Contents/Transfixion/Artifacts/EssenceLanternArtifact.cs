@@ -216,7 +216,7 @@ public class EssenceProjectile : ModProjectile {
 		}
 	}
 	private void OnContactWithPlayer(Player player) {
-		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(player.ModPlayerStats().EnergyCap.ApplyTo(player.GetModPlayer<SkillHandlePlayer>().EnergyCap) * .05f) + 1);
+		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(player.GetModPlayer<SkillHandlePlayer>().EnergyCapacity.ApplyTo(player.GetModPlayer<SkillHandlePlayer>().EnergyCap) * .05f) + 1);
 		if (Projectile.Center.IsCloseToPosition(player.Center, 15)) {
 			switch (EssenceType) {
 				case 0:

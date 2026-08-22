@@ -629,8 +629,9 @@ SugarCookie:
 	'''
 ApplePie:
 	'''
-	immunity to Chilled; +10% damage reduction;
-	upon killing a enemy heal 5% maximum health
+	Immunity to Chilled and Frozne;
+	+10% damage reduction;
+	Upon killing a enemy heal 5% maximum health
 	'''
 ChristmasPudding:
 	'''

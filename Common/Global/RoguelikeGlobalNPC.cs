@@ -64,7 +64,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		//if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
 		//	npc.timeLeft = 600;
 		//}
-		//npc.buffImmune[ModContent.BuffType<Anti_Immunity>()] = false;
 		StatDefense = new();
 		DamageIncrease = new();
 		MaxDamageTaken = 1;

@@ -1,4 +1,5 @@
 ﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;
@@ -19,9 +20,9 @@ public class Roguelike_PadThai_ModBuff : FoodItemTier2 {
 	public override int TypeID => ItemID.PadThai;
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
-		handler.EnergyCap.Base += 420;
-		handler.EnergyRecharge += .25f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyCapacity.Base += 420;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRecharge += .25f;
 		handler.SkillDuration += .34f;
-		handler.EnergyRegen += .32f;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRegen += .32f;
 	}
 }

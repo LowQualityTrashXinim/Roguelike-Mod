@@ -19,7 +19,7 @@ public class Roguelike_TropicalSmoothie_ModBuff : FoodItemTier1 {
 	public override int TypeID => ItemID.TropicalSmoothie;
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle handler = player.ModPlayerStats();
-		handler.EnergyCap.Base += 100;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyCapacity.Base += 100;
 		handler.SkillDuration -= .17f;
 		player.GetModPlayer<SkillHandlePlayer>().skilldamage += .19f;
 		handler.UpdateThorn += .55f;

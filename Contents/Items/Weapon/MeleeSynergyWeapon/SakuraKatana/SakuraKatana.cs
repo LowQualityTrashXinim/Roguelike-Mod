@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Texture;
@@ -153,7 +154,7 @@ public class SakuraKatana_ModPlayer : ModPlayer {
 			statplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1.5f);
 			statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 10);
 			statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
-			statplayer.EnergyRegen.Base += 5;
+			Player.GetModPlayer<SkillHandlePlayer>().EnergyRegen.Base += 5;
 		}
 	}
 }

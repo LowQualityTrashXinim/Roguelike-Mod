@@ -159,7 +159,6 @@ namespace Roguelike.Contents.Transfixion.Perks {
 		public bool perk_AlchemistPotion = false;
 		public bool perk_ImprovedPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
-		public bool perk_ScatterShot = false;
 		public bool perk_EssenceExtraction = false;
 		public bool perk_UntappedPotential = false;
 		public bool perk_HeartOfThorn = false;
@@ -191,7 +190,6 @@ namespace Roguelike.Contents.Transfixion.Perks {
 			perk_PotionCleanse = false;
 			perk_AlchemistPotion = false;
 			perk_ImprovedPotion = false;
-			perk_ScatterShot = false;
 			perk_EssenceExtraction = false;
 			perk_UntappedPotential = false;
 			PerkBlocker = false;

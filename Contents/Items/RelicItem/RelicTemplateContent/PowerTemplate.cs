@@ -30,7 +30,7 @@ internal class PowerTemplate : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.04f, 1.12f), 2), 1, 0, 0);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.EnergyRegen.Base -= 1;
+		player.GetModPlayer<SkillHandlePlayer>().EnergyRegen.Base -= 1;
 		if (player.GetModPlayer<SkillHandlePlayer>().Energy > 0) {
 			modplayer.AddStatsToPlayer(stat, value.Additive * 1.16f, value.Multiplicative, value.Flat * 1.16f, value.Base * 1.16f);
 		}
