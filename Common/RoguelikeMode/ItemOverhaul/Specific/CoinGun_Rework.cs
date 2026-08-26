@@ -17,7 +17,7 @@ public class Roguelike_CoinGun_ModPlayer : ModPlayer {
 	public int Count = 0;
 	public Vector2 randomPos = Vector2.Zero;
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if(item.type == ItemID.CoinGun) {
+		if(item.type != ItemID.CoinGun) {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		if (ShootCustom == 0) {

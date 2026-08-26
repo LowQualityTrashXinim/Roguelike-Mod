@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.UI;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -47,10 +49,17 @@ public abstract class ModSkill : ModType {
 	/// </summary>
 	protected int Skill_Duration = 0;
 	public int Duration { get => Skill_Duration; }
-	protected int Skill_EnergyRequire = 0;
-	public int EnergyRequire { get => Skill_EnergyRequire; }
-	protected float Skill_EnergyRequirePercentage = 0;
-	public float EnergyRequirePercentage { get => Skill_EnergyRequirePercentage; }
+	/// <summary>
+	/// Addition: skill increases % universally
+	/// Multiplicative: skill multiply x universally
+	/// Base: Actual base, you should set this
+	/// Flat: Flat increases
+	/// </summary>
+	protected StatModifier Energy = StatModifier.Default;
+	protected int Skill_EnergyRequire { get => (int)Energy.Base; set => Energy.Base = value; }
+	public float EnergyPercentage { get => (int)Energy.Multiplicative; }
+	public int EnergyRequire { get => (int)Energy.ApplyTo(1); }
+
 	protected int Skill_ShootType = 0;
 	public int ShootType { get => Skill_ShootType; }
 	protected int Skill_Damage = 0;
@@ -147,7 +156,7 @@ public abstract class ModSkill : ModType {
 	/// <param name="skillplayer"></param>
 	/// <param name="activeskill"></param>
 	/// <param name="currentindex"></param>
-	public virtual bool OnAddSkill(Player player, SkillHandlePlayer skillplayer, int[] currentSkill, ref List<ModSkill> activeskill, int currentindex, ref int energy, ref int duration) {
+	public virtual bool OnAddSkill(Player player, SkillHandlePlayer skillplayer, int[] currentSkill, ref List<ModSkill> activeskill, ref int currentindex, ref int energy, ref int duration) {
 		return true;
 	}
 }
@@ -179,10 +188,38 @@ public class SkillModSystem : ModSystem {
 }
 public class SkillLoadOut {
 	public SkillLoadOut() {
-
+		Name = "Empty load out";
 	}
-	public List<int> list_SkillLoadOut = new List<int>();
-	public string Name = "Load Out";
+	public SkillLoadOut(List<int> list, string name = "Empty load out") {
+		if (list_SkillLoadOut != null) {
+			if (list != null) {
+				list_SkillLoadOut.AddRange(list);
+			}
+		}
+		Name = name;
+	}
+	public void Change_LoadOut(List<int> list) {
+		if (list != null) {
+			list_SkillLoadOut.Clear();
+			list_SkillLoadOut.AddRange(list);
+		}
+	}
+	public void Change_Name(string newName) {
+		if (newName != null) {
+			Name = newName;
+		}
+	}
+	public List<int> list_SkillLoadOut { get; private set; } = new List<int>();
+	public string Name { get; private set; } = string.Empty;
+}
+public class SkillLoadout_Serializer : TagSerializer<SkillLoadOut, TagCompound> {
+	public override TagCompound Serialize(SkillLoadOut value) => new TagCompound {
+		["LoadoutName"] = value.Name,
+		["Loadout"] = value.list_SkillLoadOut
+	};
+	public override SkillLoadOut Deserialize(TagCompound tag) => new SkillLoadOut(
+		tag.Get<List<int>>("Loadout"), tag.Get<string>("LoadoutName")
+		);
 }
 public class SkillHandlePlayer : ModPlayer {
 	public float ProjectileSpeedMultiplier = 1;
@@ -315,66 +352,85 @@ public class SkillHandlePlayer : ModPlayer {
 		int[] active = ActiveSkill.ToArray();
 		float percentageEnergy = 1;
 		StatModifier energyS = new(), durationS = new();
-		int seperateEnergy = 0;
+		List<ModSkill> activeInner = new();
+		int duration = 0;
 		for (int i = 0; i < active.Length; i++) {
 			var skill = SkillModSystem.GetSkill(active[i]);
 			if (skill == null) {
 				continue;
 			}
-			if (skill.Type == ModSkill.GetSkillType<PowerSaver>()) {
-				seperateEnergy += skill.EnergyRequire;
-			}
-			else {
-				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
-			}
-			percentageEnergy *= 1 + skill.EnergyRequirePercentage; ;
+			energy += (int)energyS.ApplyTo(skill.EnergyRequire);
+			percentageEnergy *= skill.EnergyPercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
+			if (skill.OnAddSkill(Player, this, active, ref activeInner, ref i, ref energy, ref duration)) {
+				activeInner.Add(skill);
+			}
 		}
-		return (int)(energy * percentageEnergy) + seperateEnergy;
+		return (int)(energy * percentageEnergy);
 	}
-	public void SkillStatTotal(bool simulated, out int energy, out int duration) {
+	public int SimulateSkillDuration() {
+		int energy = 0;
+		int[] active = ActiveSkill.ToArray();
+		float percentageEnergy = 1;
+		StatModifier energyS = new(), durationS = new();
+		List<ModSkill> activeInner = new();
+		int duration = 0;
+		for (int i = 0; i < active.Length; i++) {
+			var skill = SkillModSystem.GetSkill(active[i]);
+			if (skill == null) {
+				continue;
+			}
+			energy += (int)energyS.ApplyTo(skill.EnergyRequire);
+			duration += (int)durationS.ApplyTo(skill.Duration);
+			percentageEnergy *= skill.EnergyPercentage;
+			skill.ModifyNextSkillStats(out energyS, out durationS);
+			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
+			if (skill.OnAddSkill(Player, this, active, ref activeInner, ref i, ref energy, ref duration)) {
+				activeInner.Add(skill);
+			}
+		}
+		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
+		return (int)modplayer.SkillDuration.ApplyTo(duration);
+	}
+	public void SkillStatTotal(out int energy, out int duration) {
+		if (!Activate) {
+			activeskill.Clear();
+		}
 		int[] active = ActiveSkill.ToArray();
 		energy = 0;
 		duration = 0;
 		float percentageEnergy = 1;
 		StatModifier energyS = new(), durationS = new();
-		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
 			var skill = SkillModSystem.GetSkill(active[i]);
 			if (skill == null) {
 				continue;
 			}
-			if (skill.Type == ModSkill.GetSkillType<PowerSaver>()) {
-				seperateEnergy += skill.EnergyRequire;
-			}
-			else {
-				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
-			}
+			energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			duration += (int)durationS.ApplyTo(skill.Duration);
-			percentageEnergy *= 1 + skill.EnergyRequirePercentage;
+			percentageEnergy *= skill.EnergyPercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS);
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS);
-			if (!simulated) {
-				if (skill.OnAddSkill(Player, this, active, ref activeskill, i, ref energy, ref duration)) {
-					activeskill.Add(skill);
-				}
+			if (skill.OnAddSkill(Player, this, active, ref activeskill, ref i, ref energy, ref duration)) {
+				activeskill.Add(skill);
 			}
 		}
 		var modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
-		energy = (int)(energy * percentageEnergy) + seperateEnergy;
+		energy = (int)(energy * percentageEnergy);
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (ProcessTriggerSystem_Roguelike.SkillActivation.JustReleased && !Activate) {
+			SkillStatTotal(out int energy, out int duration);
 			Activate = true;
-			SkillStatTotal(false, out int energy, out int duration);
 			Duration += duration;
 			MaximumDuration = 0;
 			if (energy > Energy) {
 				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
 				Activate = false;
+				activeskill.Clear();
 			}
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
@@ -494,8 +550,6 @@ public class SkillHandlePlayer : ModPlayer {
 		EnergyRegen = StatModifier.Default;
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
-
-
 		if (!Activate) {
 			return;
 		}
@@ -631,11 +685,20 @@ public class SkillHandlePlayer : ModPlayer {
 		ProjectileShootCoolDown.Clear();
 		AlwaysCostEnergy = 0;
 	}
+	public List<SkillLoadOut> loadout = new();
 	public override void SaveData(TagCompound tag) {
 		tag.Add("ActiveSkill", ActiveSkill);
 		tag["SkillStorage"] = SkillInventory.Keys.ToList();
 		tag["SkillStack"] = SkillInventory.Values.ToList();
 		tag.Add("AvailableSkillActiveSlot", AvailableSkillActiveSlot);
+		SkillUI ui = ModContent.GetInstance<UniversalSystem>().skillUIstate;
+		foreach (var item in ui.btn_Loadout) {
+			if (item == null) {
+				continue;
+			}
+			loadout.Add(item.Get_Loadout());
+		}
+		tag.Add("list_Loadout", loadout);
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("ActiveSkill", out List<int> activeskill)) {
@@ -651,6 +714,10 @@ public class SkillHandlePlayer : ModPlayer {
 		SkillInventory = storage.Zip(stack, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		if (tag.TryGet("AvailableSkillActiveSlot", out byte AvailableSkillActiveSlot)) {
 			this.AvailableSkillActiveSlot = AvailableSkillActiveSlot;
+		}
+		if (tag.TryGet("list_Loadout", out List<SkillLoadOut> list)) {
+			loadout.Clear();
+			loadout.AddRange(list);
 		}
 	}
 	//public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {

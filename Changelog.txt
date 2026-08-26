@@ -859,3 +859,6 @@ Remove fire arrow and hellfire arrow fall from the sky
 - OnKillHealing.
 - ScatterShot.
 703/ Updated Scatter shot perk tooltip.
+704/ Added skill system loadout.
+705/ Added skill Replay and Rewind.
+706/ Fixed a critical bug that causes damage to overflow to infinite.

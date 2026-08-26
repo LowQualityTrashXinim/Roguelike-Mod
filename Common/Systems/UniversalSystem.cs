@@ -711,7 +711,8 @@ public class DefaultUI : UIState {
 	}
 	private void EnergyCostBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		energyCostBar.BarProgress = modPlayer.SimulateSkillCost() / (float)modPlayer.EnergyCap;
+		int energy = modPlayer.SimulateSkillCost();
+		energyCostBar.BarProgress = energy / (float)modPlayer.EnergyCap;
 		energyCostBar.SetColorA(colorchanging3.MultiColor(5));
 	}
 	private void WeaponBar_OnUpdate(UIElement affectedElement) {
@@ -719,6 +720,7 @@ public class DefaultUI : UIState {
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
+		energyBar.HideText = false;
 		if (modPlayer.Activate) {
 			energyBar.BarProgress = modPlayer.Duration / (float)modPlayer.MaximumDuration;
 			energyBar.SetColorA(Color.Yellow);

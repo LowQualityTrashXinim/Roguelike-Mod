@@ -54,9 +54,9 @@ public class PowerBank : ModSkill {
 }
 public class PowerSaver : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 900;
 		Skill_Duration = 0;
-		Skill_EnergyRequirePercentage = -.5f;
+		Energy.Flat = 900;
+		Energy *= .5f;
 		Skill_Type = SkillTypeID.Stats;
 	}
 }
@@ -98,7 +98,7 @@ public class PowerCord : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<PowerCord>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 100;
-		Skill_EnergyRequirePercentage = .25f;
+		Energy *= .25f;
 		Skill_Duration = 0;
 		Skill_Type = SkillTypeID.Stats;
 	}

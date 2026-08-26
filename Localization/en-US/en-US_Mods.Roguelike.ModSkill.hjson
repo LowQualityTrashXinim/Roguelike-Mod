@@ -1,11 +1,16 @@
-Replay: {
+Utility_Replay: {
 	DisplayName: Replay
 	Description: Duplicates the preceding skill, but at double its Energy Cost
 }
 
-Rewind: {
+Utility_Rewind: {
 	DisplayName: Rewind
-	Description: Rewinds to the beginning once, but doubles the Energy Cost of preceding skills
+	Description: Rewinds to the beginning once, but skip all of the skill after
+}
+
+Utility_Last: {
+	DisplayName: Last
+	Description: Replace the last skill in place of this skill
 }
 
 FastForward: {
@@ -221,12 +226,12 @@ SacrificialWormhole: {
 
 DamageUp: {
 	DisplayName: Damage +
-	Description: Increase skill damage by 100%
+	Description: Increase universal skill damage by 100%
 }
 
 GreaterDamageUp: {
 	DisplayName: Greater damage +
-	Description: Increase skill damage by 300%
+	Description: Increase universal skill damage by 300%
 }
 
 GhostForm: {

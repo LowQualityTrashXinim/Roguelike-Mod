@@ -8,7 +8,6 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Lootbox;
-using Roguelike.Common.Global.Prefixes;
 using Roguelike.Common.Global;
 
 namespace Roguelike;

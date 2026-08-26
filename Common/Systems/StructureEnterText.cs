@@ -6,6 +6,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Terraria.ModLoader.UI;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Foods;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -18,6 +19,7 @@ public class Roguelike_TextBox : UITextBox {
 	public bool focus = false;
 	public bool mousePressed = false;
 	public string OnHoverText = "";
+	public int MaxText = 999;
 	public override void LeftClick(UIMouseEvent evt) {
 	}
 	public override void LeftMouseUp(UIMouseEvent evt) {
@@ -37,7 +39,7 @@ public class Roguelike_TextBox : UITextBox {
 		ShowInputTicker = focus;
 		if (IgnoresMouseInteraction || Hide || !focus)
 			return;
-		SetTextMaxLength(999);
+		SetTextMaxLength(MaxText);
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}

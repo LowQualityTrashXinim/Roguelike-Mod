@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
+using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -24,9 +25,16 @@ public class SkillUI : UIState {
 	public List<btn_SkillActive> list_activeskill = new();
 	public Roguelike_UIPanel panel_Inventory;
 	public List<btn_SkillSlotHolder> list_inventory = new();
-	public Roguelike_TextBox txb_Search;
+
+	public Roguelike_TextBox txb_Loadout;
+	public Roguelike_UIImageButton btn_Loadout_Add;
+	public Roguelike_UIImageButton btn_Loadout_Remove;
+	public Roguelike_UIImageButton btn_Loadout_Modify;
+	public Roguelike_UIPanel panel_Loadout;
+	public Loadout_TextPanel[] btn_Loadout = new Loadout_TextPanel[10];
 	public const int Row = 15;
 	public const int Column = 5;
+	public int CurrentSelect_btn_Loadout = -1;
 	public override void OnInitialize() {
 		panel = new UIPanel();
 		panel.UISetWidthHeight(820, 80);
@@ -48,14 +56,6 @@ public class SkillUI : UIState {
 		exitUI.VAlign = .5f;
 		panel.Append(exitUI);
 
-		txb_Search = new("");
-		txb_Search.VAlign = .5f;
-		txb_Search.HAlign = 1f;
-		txb_Search.UISetWidthHeight(150, 80);
-		txb_Search.MarginRight = exitUI.Width.Pixels + 10;
-		txb_Search.OnHoverText = "Search";
-		panel.Append(txb_Search);
-
 		panel_ActiveSkill = new();
 		panel_ActiveSkill.UISetWidthHeight(820, 300);
 		panel_ActiveSkill.MarginBottom = panel_ActiveSkill.Height.Pixels + 10;
@@ -69,7 +69,116 @@ public class SkillUI : UIState {
 		panel_Inventory.HAlign = .5f;
 		panel_Inventory.VAlign = .5f;
 		Append(panel_Inventory);
+
+		Initialize_Loadout();
 	}
+
+	private void Initialize_Loadout() {
+		panel_Loadout = new();
+		panel_Loadout.HAlign = .5f;
+		panel_Loadout.VAlign = .5f;
+		panel_Loadout.UISetWidthHeight(200, 610);
+		panel_Loadout.MarginLeft = panel.GetOuterDimensions().Width + panel_Loadout.Width.Pixels + 10;
+		Append(panel_Loadout);
+
+		txb_Loadout = new("");
+		txb_Loadout.VAlign = .5f;
+		txb_Loadout.HAlign = 1f;
+		txb_Loadout.UISetWidthHeight(150, 80);
+		txb_Loadout.MarginRight = exitUI.Width.Pixels + 10;
+		txb_Loadout.OnHoverText = "Loadout name";
+		txb_Loadout.MaxText = 50;
+		panel.Append(txb_Loadout);
+
+		Asset<Texture2D> ass = TextureAssets.InventoryBack10;
+		btn_Loadout_Add = new(ass);
+		btn_Loadout_Add.SetPostTex(ModContent.Request<Texture2D>(ModTexture.AddSprite));
+		btn_Loadout_Add.SetVisibility(.6f, 1);
+		btn_Loadout_Add.MarginRight = txb_Loadout.GetOuterDimensions().Width + 10;
+		btn_Loadout_Add.HAlign = 1;
+		btn_Loadout_Add.OnLeftClick += Btn_Loadout_Add_OnLeftClick;
+		panel.Append(btn_Loadout_Add);
+
+		btn_Loadout_Remove = new(ass);
+		btn_Loadout_Remove.SetPostTex(ModContent.Request<Texture2D>(ModTexture.CrossSprite));
+		btn_Loadout_Remove.SetVisibility(.6f, 1);
+		btn_Loadout_Remove.HAlign = 1;
+
+		btn_Loadout_Remove.MarginRight =
+			+btn_Loadout_Add.GetOuterDimensions().Width + 10;
+
+		btn_Loadout_Remove.OnLeftClick += Btn_Loadout_Remove_OnLeftClick;
+		btn_Loadout_Remove.HoverText = "Remove";
+		panel.Append(btn_Loadout_Remove);
+
+
+		btn_Loadout_Modify = new(ass);
+		btn_Loadout_Modify.SetPostTex(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
+		btn_Loadout_Modify.SetVisibility(.6f, 1);
+		btn_Loadout_Modify.HAlign = 1;
+
+		btn_Loadout_Modify.MarginRight =
+			+btn_Loadout_Remove.GetOuterDimensions().Width + 10;
+
+		btn_Loadout_Modify.OnLeftClick += Btn_Loadout_Modify_OnLeftClick;
+		btn_Loadout_Modify.HoverText = "Modify";
+		panel.Append(btn_Loadout_Modify);
+		for (int i = 0; i < btn_Loadout.Length; i++) {
+			var item = btn_Loadout[i];
+			if (item == null) {
+				continue;
+			}
+			item.Remove();
+		}
+		Player player = Main.LocalPlayer;
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		Array.Fill(btn_Loadout, new Loadout_TextPanel(new()));
+		for (int i = 0; i < btn_Loadout.Length; i++) {
+			SkillLoadOut load = new();
+			if (i <= modplayer.loadout.Count - 1) {
+				load = modplayer.loadout[i];
+			}
+			var item = new Loadout_TextPanel(load);
+			item.Width.Percent = 1;
+			item.Height.Pixels = 80;
+			item.HAlign = .5f;
+			item.VAlign = i / (float)(btn_Loadout.Length - 1);
+			panel_Loadout.Append(item);
+			btn_Loadout[i] = item;
+		}
+	}
+
+	private void Btn_Loadout_Modify_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in btn_Loadout) {
+			if (item.UniqueId == CurrentSelect_btn_Loadout) {
+				Player player = Main.LocalPlayer;
+				SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+				item.Set_Loadout(new(modplayer.ActiveSkill, txb_Loadout.Text));
+				break;
+			}
+		}
+	}
+
+	private void Btn_Loadout_Remove_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in btn_Loadout) {
+			if (item.UniqueId == CurrentSelect_btn_Loadout) {
+				item.Set_Loadout(new());
+				break;
+			}
+		}
+	}
+
+	private void Btn_Loadout_Add_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in btn_Loadout) {
+			if (item.Get_Loadout().list_SkillLoadOut.Count < 1) {
+				Player player = Main.LocalPlayer;
+				SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+				item.Set_Loadout(new(modplayer.ActiveSkill, txb_Loadout.Text));
+				break;
+			}
+		}
+	}
+
 	public void Add_SkillToInventory(int SkillID, int stack = 1) {
 		int count = list_inventory.Count;
 		for (int i = 0; i < count; i++) {
@@ -97,7 +206,7 @@ public class SkillUI : UIState {
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		btn_SkillSlotHolder btn = (btn_SkillSlotHolder)listeningElement;
 		if (btn.Stack > 0) {
-			if(!SkillModSystem.GetSkill(btn.sKillID).CanBeActive()) {
+			if (!SkillModSystem.GetSkill(btn.sKillID).CanBeActive()) {
 				return;
 			}
 			btn.Stack--;
@@ -166,11 +275,24 @@ public class SkillUI : UIState {
 		base.Update(gameTime);
 		Player player = Main.LocalPlayer;
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
-
-		modplayer.SkillStatTotal(true, out int energy, out int duration);
+		int energy = modplayer.SimulateSkillCost();
+		int duration = modplayer.SimulateSkillDuration();
 		var color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
 		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
+
+		txb_Loadout.Disable_MouseItemUsesWhenHoverOverAUI();
+
+		foreach (var item in btn_Loadout) {
+			if (item.UniqueId == CurrentSelect_btn_Loadout) {
+				item.BorderColor = Color.Yellow;
+				item.TextColor = Color.Yellow;
+			}
+			else {
+				item.BorderColor = Color.White;
+				item.TextColor = Color.White;
+			}
+		}
 	}
 	public override void OnActivate() {
 		var player = Main.LocalPlayer;
@@ -272,4 +394,53 @@ public class btn_SkillSlotHolder : UIImageButton {
 		Terraria.Utils.DrawBorderString(spriteBatch, Stack.ToString(), drawpos + origin * .5f, Color.White, 1f);
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
+}
+public class Loadout_TextPanel : Roguelike_UITextPanel {
+	SkillLoadOut Loadout = new();
+	public Loadout_TextPanel(SkillLoadOut loadout, float textScale = 1, bool large = false) : base("Empty loadout", textScale, large) {
+		Loadout = loadout;
+	}
+	public void Set_Loadout(SkillLoadOut loadout) {
+		Loadout.list_SkillLoadOut.Clear();
+		Loadout.Change_Name(loadout.Name);
+		Loadout.Change_LoadOut(loadout.list_SkillLoadOut);
+	}
+	public SkillLoadOut Get_Loadout() => Loadout;
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (Loadout != null) {
+			SetText(Loadout.Name);
+		}
+		timer = ModUtils.CountDown(timer);
+		this.Disable_MouseItemUsesWhenHoverOverAUI();
+	}
+	int timer = 0;
+	public override void LeftClick(UIMouseEvent evt) {
+		SkillUI ui = ModContent.GetInstance<UniversalSystem>().skillUIstate;
+		ui.CurrentSelect_btn_Loadout = this.UniqueId;
+		ui.txb_Loadout.SetText(Loadout.Name);
+		if (timer <= 0) {
+			timer = 60;
+			return;
+		}
+		Player player = Main.LocalPlayer;
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		foreach (int item in modplayer.ActiveSkill) {
+			if (modplayer.SkillInventory.ContainsKey(item)) {
+				modplayer.SkillInventory[item]++;
+			}
+			else {
+				modplayer.SkillInventory.Add(item, 1);
+			}
+		}
+		modplayer.ActiveSkill.Clear();
+		modplayer.ActiveSkill.AddRange(Loadout.list_SkillLoadOut);
+		foreach (int item in modplayer.ActiveSkill) {
+			if (modplayer.SkillInventory.ContainsKey(item)) {
+				modplayer.SkillInventory[item]--;
+			}
+		}
+		ui.Refresh_ActiveSkill();
+		ui.Refresh_InventorySkill();
+	}
 }

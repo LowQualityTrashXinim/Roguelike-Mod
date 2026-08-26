@@ -130,7 +130,7 @@ namespace Roguelike.Common.Utils {
 				barFrame.ImageScale = 0;
 			}
 		}
-		public UIText text;
+		public Roguelike_UIText text;
 		private UIImage barFrame;
 		private Color gradientA;
 		private Color gradientB;
@@ -287,7 +287,7 @@ namespace Roguelike.Common.Utils {
 				}
 			}
 			else {
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + Math.Clamp((int)(hitbox.Width * quotient - 2),0, hitbox.Width), hitbox.Y, 2, hitbox.Height), Color.White);
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + Math.Clamp((int)(hitbox.Width * quotient - 2), 0, hitbox.Width), hitbox.Y, 2, hitbox.Height), Color.White);
 			}
 		}
 	}
@@ -554,6 +554,7 @@ namespace Roguelike.Common.Utils {
 		}
 		public Roguelike_UIImageButton(Asset<Texture2D> texture) : base(texture) {
 			innerTex = texture.Value;
+			this.UISetWidthHeight(innerTex.Width, innerTex.Height);
 		}
 		public bool Hide = false;
 		public override sealed void Update(GameTime gameTime) {
