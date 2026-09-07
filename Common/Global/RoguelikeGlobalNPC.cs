@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
 using Roguelike.Common.Utils;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
@@ -55,6 +56,29 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 
 	public StatModifier DamageIncrease = new();
 	public StatModifier StatDefense = new StatModifier();
+	/// <summary>
+	/// Use this for uniform debuff scaling<br/>
+	/// Modify it as you would to any other statmodifier as the code within <see cref="RoguelikeGlobalNPC"/> will handle all
+	/// </summary>
+	public StatModifier Poison_Inner = StatModifier.Default;
+	Dictionary<string, StatModifier> Poison_Global = new();
+	/// <summary>
+	/// Use this over <see cref="Poison_Inner"/> if the debuff change you made is global for your player
+	/// </summary>
+	/// <param name="key"></param>
+	/// <param name="value"></param>
+	public void Add_PoisonGlobal(string key, StatModifier value) {
+		if(Poison_Global.ContainsKey(key)) {
+			Poison_Global[key] = value;
+		}
+		else {
+			Poison_Global.Add(key, value);
+		}
+	}
+	public StatModifier Poison_Additional = StatModifier.Default - 1;
+	public float Poison_Additional_Timer = 0;
+	public float Poison_Additional_MaxTimer = 60;
+	public int Amount_CurrentDebuffInflicted = 0;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
 		DamageIncrease = new();
@@ -84,6 +108,29 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		//		MaxDamageTaken -= .99f;
 		//	}
 		//}
+	}
+	public override void UpdateLifeRegen(NPC npc, ref int damage) {
+		foreach (var item in Poison_Global.Values) {
+			Poison_Inner = Poison_Inner.CombineWith(item);
+		}
+		npc.lifeRegen = (int)((npc.lifeRegen - Poison_Inner.Base) * Poison_Inner.Additive * Poison_Inner.Multiplicative - Poison_Inner.Flat);
+		Poison_Inner = StatModifier.Default;
+		Amount_CurrentDebuffInflicted = 0;
+		for (int i = 0; i < npc.buffType.Length; i++) {
+			if (npc.buffType[i] <= 0) {
+				continue;
+			}
+			if (Main.debuff[npc.buffType[i]]) {
+				Amount_CurrentDebuffInflicted++;
+			}
+		}
+		if (++Poison_Additional_Timer >= Poison_Additional_MaxTimer) {
+			int additional = (int)((npc.lifeRegen - Poison_Additional.Base) * Poison_Additional.Additive * Poison_Additional.Multiplicative - Poison_Additional.Flat) * -1;
+			npc.lifeRegen -= additional;
+			Poison_Additional = StatModifier.Default - 1;
+			Poison_Additional_Timer = 0;
+		}
+		damage = (int)Math.Ceiling(npc.lifeRegen * -.5f);
 	}
 	public int Grapefruit = 0;
 	public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {

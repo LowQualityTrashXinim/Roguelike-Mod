@@ -552,6 +552,59 @@ public class Structure_Local {
 				Tile data = tile[++count];
 				Tile main = Main.tile[counterX, counterY];
 				main.CopyFrom(data);
+				WorldGen.SquareTileFrame(counterX, counterY);
+				WorldGen.SquareWallFrame(counterX, counterY);
+			}
+		}
+	}
+	public void GenerateStructureFlipHorizontal(int X, int Y) {
+		if (tile == null) {
+			return;
+		}
+		int count = -1;
+		for (int i = Width - 1; i >= 0; i--) {
+			for (int j = 0; j < Height; j++) {
+				int counterX = X + i;
+				int counterY = Y + j;
+				Tile data = tile[++count];
+				Tile main = Main.tile[counterX, counterY];
+				main.CopyFrom(data);
+				WorldGen.SquareTileFrame(counterX, counterY);
+				WorldGen.SquareWallFrame(counterX, counterY);
+			}
+		}
+	}
+	public void GenerateStructureFlipVertical(int X, int Y) {
+		if (tile == null) {
+			return;
+		}
+		int count = -1;
+		for (int i = Width - 1; i >= 0; i--) {
+			for (int j = Height - 1; j >= 0; j--) {
+				int counterX = X + i;
+				int counterY = Y + j;
+				Tile data = tile[++count];
+				Tile main = Main.tile[counterX, counterY];
+				main.CopyFrom(data);
+				WorldGen.SquareTileFrame(counterX, counterY);
+				WorldGen.SquareWallFrame(counterX, counterY);
+			}
+		}
+	}
+	public void GenerateStructureFlipBoth(int X, int Y) {
+		if (tile == null) {
+			return;
+		}
+		int count = -1;
+		for (int i = 0; i < Width; i++) {
+			for (int j = Height - 1; j >= 0; j--) {
+				int counterX = X + i;
+				int counterY = Y + j;
+				Tile data = tile[++count];
+				Tile main = Main.tile[counterX, counterY];
+				main.CopyFrom(data);
+				WorldGen.SquareTileFrame(counterX, counterY);
+				WorldGen.SquareWallFrame(counterX, counterY);
 			}
 		}
 	}

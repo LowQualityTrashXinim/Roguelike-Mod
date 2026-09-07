@@ -1,71 +1,136 @@
-WeaponSpoil: {
+Common_WeaponSpoil: {
 	DisplayName: Weapon Pack
 	Description: Contains {0} weapon(s).
 }
 
-AccessorySpoil: {
+Common_AccessorySpoil: {
 	DisplayName: Accessory Pack
 	Description: Contains {0} accessor(ies).
 }
 
-ArmorSpoil: {
+Common_ArmorSpoil: {
 	DisplayName: Armor Pack
 	Description: Contains {0} randomized armor piece.
 }
 
-PotionSpoil: {
+Common_PotionSpoil: {
 	DisplayName: Potion Pack
 	Description: Contains {0} potion(s) of any type.
 }
 
-RelicSpoil: {
+Common_RelicSpoil: {
 	DisplayName: Relic Pack
 	Description: Contains {0} relic(s).
 }
 
-SkillSpoil: {
+Common_SkillSpoil: {
 	DisplayName: Skill Pack
 	Description: Contains {0} skillbox(es).
 }
 
-PerkSpoil: {
-	DisplayName: Perk Mythic
-	Description: Contains 1 perk blessing.
-}
-
-UpgradeAccSpoil: {
-	DisplayName: Accessory Bundle
-	Description: Contains {0} accessor(ies).
-}
-
-Tier2RelicSpoil: {
-	DisplayName: Relic Bundle
-	Description: Contains {0} [Tier 2] relic(s).
-}
-
-RareRelicSpoil: {
-	DisplayName: Rare Relic
-	Description: Contains {0} [Tier 3] relic(s).
-}
-
-RareArmorPiece: {
-	DisplayName: Armor Special
-	Description: Contains 1 randomized armor set of varying progression.
-}
-
-SuppliesPackage: {
-	DisplayName: Mixed Mythic
-	Description: Contains {0} weapon(s), {1} armor piece, {1} accessory(ies), {1} relic(s) and {1} skillbox(es).
-}
-
-FoodSpoil: {
+Common_FoodSpoil: {
 	DisplayName: Homemade Pack
 	Description: Contains {0} meal(s) of any type.
 }
 
-RareWeaponSpoil: {
+Uncommon_UpgradeAccSpoil: {
+	DisplayName: Accessory Bundle
+	Description: Contains {0} accessor(ies).
+}
+
+Uncommon_RelicSpoil: {
+	DisplayName: Relic Bundle
+	Description: Contains {0} [Tier 2] relic(s).
+}
+
+Uncommon_WeaponPotionSpoil: {
+	DisplayName: Survival Bundle
+	Description: Contains {0} weapon(s), {1} potion(s) & meal(s) of any type.
+}
+
+Uncommon_RareWeaponSpoil: {
 	DisplayName: Weapon Bundle
 	Description: Contains 4 weapons, one for each vanilla class.
+}
+
+Uncommon_SurprisePackage: {
+	DisplayName: Surprise Package
+	Description: Contains {0} weapon(s), have 1 in 3 chance to gain 2 more weapons.
+}
+
+Uncommon_AdventureBundle: {
+	DisplayName: Adventure Bundle
+	Description: Contains {0} weapon(s) and accessory(ies)
+}
+
+Uncommon_GambleSpoil: {
+	DisplayName: Gambler I
+	Description: Randomly choose 2 uncommon or common spoils.
+}
+
+Rare_SkillRelicSpoil: {
+	DisplayName: Utility Special
+	Description: Contains {0} skillbox(es) and {0} relic(s).
+}
+
+Rare_RelicSpoil: {
+	DisplayName: Rare Relic
+	Description: Contains {0} [Tier 3] relic(s).
+}
+
+Rare_ArmorPiece: {
+	DisplayName: Armor Special
+	Description: Contains 1 randomized armor set of varying progression.
+}
+
+Rare_PerkSpoil: {
+	DisplayName: Perk Mythic
+	Description: Contains 1 perk blessing.
+}
+
+Rare_GambleSpoil: {
+	DisplayName: Gambler II
+	Description: Randomly choose 3 rare, uncommon or common spoils.
+}
+
+Rare_GambleSpoil2: {
+	DisplayName: Gambler IV
+	Description: Randomly choose 1 spoil of any rarity.
+}
+
+Rare_WingSpoil: {
+	DisplayName: Gift of Flight
+	Description: Contain 1 randomize wing.
+}
+
+SuperRare_GambleSpoil: {
+	DisplayName: Gambler III
+	Description: Randomly choose 3 super rare, rare, uncommon or common spoils.
+}
+
+SuperRare_SuppliesPackage: {
+	DisplayName: Mixed Mythic
+	Description: Contains {0} weapon(s), {1} armor piece, {1} accessory(ies), {1} relic(s) and {1} skillbox(es).
+}
+
+SuperRare_ArmorAccessorySpoil: {
+	DisplayName: Chivalric Special
+	Description: Contains {0} weapon(s), {0} armor piece(s) and {1} accessor(ies).
+}
+
+SuperRare_RelicSpoil: {
+	DisplayName: Relic Mythic
+	Description: Contains 1 [Tier 4] relic.
+}
+
+SuperRare_PerkSpoil: {
+	DisplayName: Perk Mythic II
+	Description: Contains 1 perk blessing and 1 luck essence.
+}
+
+SSR_PerkSpoil: {
+	DisplayName: Perk Mythic III
+	Description: Contains 1 perk blessing.
 }
 
 SSRPerkSpoil: {
@@ -73,84 +138,14 @@ SSRPerkSpoil: {
 	Description: Contains {0} perk blessing, {0} skillbox(es), {1} tier 3 relic(s), {0} accessory(ies).
 }
 
-WeaponPotionSpoil: {
-	DisplayName: Survival Bundle
-	Description: Contains {0} weapon(s), {1} potion(s) & meal(s) of any type.
-}
-
-ArmorAccessorySpoil: {
-	DisplayName: Chivalric Special
-	Description: Contains {0} weapon(s), {0} armor piece(s) and {1} accessor(ies).
-}
-
-SuperRelicSpoil: {
-	DisplayName: Relic Mythic
-	Description: Contains 1 [Tier 4] relic.
-}
-
-LegendaryRelicSpoil: {
+SSR_RelicSpoil: {
 	DisplayName: Relic Legend
 	Description: Contains 1 [Tier 6] relic.
 }
 
-RoguelikeSpoil: {
-	DisplayName: Utility Special
-	Description: Contains {0} skillbox(es) and {0} relic(s).
-}
-
-StarterPerkSpoil: {
-	DisplayName: Celestial Special
-	Description: Contains 1 Celestial Essence.
-}
-
-RareWingSpoil: {
-	DisplayName: Gift of Flight
-	Description: Contain 1 randomize wing.
-}
-
-PerkSpoil2: {
-	DisplayName: Perk Mythic II
-	Description: Contains 1 perk blessing and 1 luck essence.
-}
-
-PerkSpoil3: {
-	DisplayName: Perk Mythic III
-	Description: Contains 1 perk blessing.
-}
-
-RandomSpoilUncommon: {
-	DisplayName: Gambler I
-	Description: Randomly choose 2 uncommon or common spoils.
-}
-
-RandomSpoilUncommon2: {
-	DisplayName: Gambler II
-	Description: Randomly choose 3 rare, uncommon or common spoils.
-}
-
-RandomSpoilUncommon3: {
-	DisplayName: Gambler III
-	Description: Randomly choose 3 super rare, rare, uncommon or common spoils.
-}
-
-RandomSpoilUncommon4: {
-	DisplayName: Gambler IV
-	Description: Randomly choose 1 spoil of any rarity.
-}
-
-RandomSpoilUncommon5: {
+SSR_GambleSpoil: {
 	DisplayName: Gambler V
 	Description: Randomly choose 3 spoils of any rarity.
-}
-
-SurprisePackage: {
-	DisplayName: Surprise Package
-	Description: Contains {0} weapon(s), have 1 in 3 chance to gain 2 more weapons.
-}
-
-AdventureBundle: {
-	DisplayName: Adventure Bundle
-	Description: Contains {0} weapon(s) and accessory(ies)
 }
 
 SSR_LunarGift: {
@@ -168,7 +163,7 @@ SSR_SuperSpoil: {
 	Description: Open up all "Common", "Uncommon" or "Rare" tier spoil
 }
 
-WealthSpoil: {
+SSR_WealthSpoil: {
 	DisplayName: Wealth spoil
 	Description: Give you 1 coin gun and 9999 platinum coins. PS: Have fun~
 }

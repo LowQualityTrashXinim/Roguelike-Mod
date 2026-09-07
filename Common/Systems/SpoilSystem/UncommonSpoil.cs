@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 public class UncommonSpoil {
-	public class RareWeaponSpoil : ModSpoil {
+	public class Uncommon_RareWeaponSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -27,7 +27,7 @@ public class UncommonSpoil {
 			}
 		}
 	}
-	public class WeaponPotionSpoil : ModSpoil {
+	public class Uncommon_WeaponPotionSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -59,7 +59,7 @@ public class UncommonSpoil {
 			}
 		}
 	}
-	public class UpgradeAccSpoil : ModSpoil {
+	public class Uncommon_UpgradeAccSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -80,7 +80,7 @@ public class UncommonSpoil {
 			}
 		}
 	}
-	public class Tier2RelicSpoil : ModSpoil {
+	public class Uncommon_RelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -102,7 +102,7 @@ public class UncommonSpoil {
 		}
 	}
 
-	public class RandomSpoilUncommon : ModSpoil {
+	public class Uncommon_GambleSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -125,7 +125,7 @@ public class UncommonSpoil {
 			}
 		}
 	}
-	public class SurprisePackage : ModSpoil {
+	public class Uncommon_SurprisePackage : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
@@ -144,7 +144,7 @@ public class UncommonSpoil {
 			ModUtils.GetWeaponSpoil(source, amount);
 		}
 	}
-	public class AdventureBundle : ModSpoil {
+	public class Uncommon_AdventureBundle : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Uncommon;
 		}

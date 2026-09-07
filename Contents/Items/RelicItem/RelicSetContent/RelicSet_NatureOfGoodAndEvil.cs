@@ -33,7 +33,7 @@ public class NatureOfGoodAndEvil_ModPlayer : ModPlayer {
 			modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: 1 + Stack * .03f);
 		}
 		else {
-			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1 + .1f * Stack, Flat: 2 * Stack);
+			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1 + .02f * Stack, Flat: 1 * Stack);
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {

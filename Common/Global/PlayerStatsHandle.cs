@@ -73,7 +73,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		return amount;
 	}
 	/// <summary>
-	/// This must be called before using
+	/// This must be called before using any of the following
 	/// <br/><see cref="weaponAmount"/>
 	/// <br/><see cref="potionTypeAmount"/>
 	/// <br/><see cref="potionNumAmount"/>
@@ -273,22 +273,13 @@ public partial class PlayerStatsHandle : ModPlayer {
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 			modifiers.CritDamage += globalitem.CriticalDamage;
 		}
-		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= HitCountIgnore) {
+		RoguelikeGlobalNPC global = target.GetGlobalNPC<RoguelikeGlobalNPC>();
+		if (global.HitCount <= HitCountIgnore) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
-		bool HasDebuff = false; int count = 0;
-		for (int i = 0; i < target.buffType.Length; i++) {
-			if (target.buffType[i] <= 0) {
-				continue;
-			}
-			if (Main.debuff[target.buffType[i]]) {
-				HasDebuff = true;
-				count++;
-			}
-		}
-		if (HasDebuff) {
+		if (global.Amount_CurrentDebuffInflicted > 0) {
 			if (DebuffDamage.ApplyTo(1) != 1) {
-				DebuffDamage *= 1 + count * 0.1f;
+				DebuffDamage *= 1 + global.Amount_CurrentDebuffInflicted * 0.1f;
 				modifiers.SourceDamage.Base += DebuffDamage.ApplyTo(Player.GetWeaponDamage(item));
 			}
 		}

@@ -17,6 +17,7 @@ RelicSet_TitanicBlood: {
 		+ Increases additional damage reduction by 5% when your life is under 15%
 		+ You have 1 in 12 chance to resist an attack
 		'''
+	Description1: Increases life condition by 5%.
 }
 
 RelicSet_NatureOfGoodAndEvil: {
@@ -25,9 +26,10 @@ RelicSet_NatureOfGoodAndEvil: {
 		'''
 		Dealing a critical strike will increases the following for short duration:
 		+ If your health is above 50%: attack speed by 3%, damage by 5%
-		+ Otherwise: life regenarate by 10% and life regen by 2hp/s
+		+ Otherwise: life regenarate by 2% and flat life regen by flat 1 hp/s
 		The above effect can be stacked up to 5 times.
 		'''
+	Description1: Increases stack effect by 1.
 }
 
 RelicSet_HeartOfNature: {
@@ -35,8 +37,9 @@ RelicSet_HeartOfNature: {
 	Description:
 		'''
 		+ Increase maximum health and mana by 40
-		+ Getting hit both heal back your health and mana for 25% of taken damage
+		+ Getting hit heal back your health and mana for 25% of taken damage
 		'''
+	Description1: Increases amount of heal back by 5%.
 }
 
 RelicSet_GenocidalPact: {
@@ -48,6 +51,7 @@ RelicSet_GenocidalPact: {
 		+ You can stack the effect by keep killing enemies
 		+ The stack effect capped at 5 but can be overstacked
 		'''
+	Description1: Increases stack effect by 1.
 }
 
 RelicSet_SpiritEssence: {
@@ -118,7 +122,7 @@ RelicSet_DyingStatus: {
 		+ Dealing damage to enemy with status effect or debuff 
 		will extended the duration of that effect by 1s
 		+ Additionally, each attack have 25% chance to dealt 100% more damage on target
-		Upon dealing extra damage on target, there is a short duration where this will carry
-		to the next extra damage strike.
+		Upon dealing extra damage on target, there is a short duration where this 
+		attack bonus will carry to the next extra damage strike.
 		'''
 }

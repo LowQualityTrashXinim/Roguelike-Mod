@@ -57,7 +57,7 @@ public class GenericTemplate : RelicTemplate {
 			}
 		}
 		else if (perkplayer.HasPerk<BlessingOfSynergy>()) {
-			if (Main.rand.NextFloat() <= .5f) {
+			if (Main.rand.NextBool()) {
 				return PlayerStats.SynergyDamage;
 			}
 		}
@@ -131,7 +131,7 @@ public class GenericTemplate : RelicTemplate {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.03f, 1.1f), 2), 1);
 		}
 		if (stat == PlayerStats.Thorn) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(10, 30));
+			return new StatModifier(1, 1, 0, Main.rand.Next(10, 31));
 		}
 		if (stat == PlayerStats.DebuffDamage) {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.12f), 2), 1, 0, 0);

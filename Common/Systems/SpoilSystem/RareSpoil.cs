@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class RareSpoil {
-	public class RoguelikeSpoil : ModSpoil {
+	public class Rare_SkillRelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -34,7 +34,7 @@ internal class RareSpoil {
 			ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 2);
 		}
 	}
-	public class RareArmorPiece : ModSpoil {
+	public class Rare_ArmorPiece : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -45,7 +45,7 @@ internal class RareSpoil {
 			ModUtils.GetArmorPiece(new EntitySource_Misc("Spoil"), player);
 		}
 	}
-	public class PerkSpoil : ModSpoil {
+	public class Rare_PerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -56,7 +56,7 @@ internal class RareSpoil {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<WorldEssence>());
 		}
 	}
-	public class RareRelicSpoil : ModSpoil {
+	public class Rare_RelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -77,7 +77,7 @@ internal class RareSpoil {
 			}
 		}
 	}
-	public class RareWingSpoil : ModSpoil {
+	public class Rare_WingSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -88,7 +88,7 @@ internal class RareSpoil {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), Main.rand.Next(TerrariaArrayID.AllWing));
 		}
 	}
-	public class RandomSpoilUncommon2 : ModSpoil {
+	public class Rare_GambleSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}
@@ -99,8 +99,8 @@ internal class RareSpoil {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (spoil.RareValue != SpoilDropRarity.Rare 
-					&& spoil.RareValue != SpoilDropRarity.Uncommon 
+				if (spoil.RareValue != SpoilDropRarity.Rare
+					&& spoil.RareValue != SpoilDropRarity.Uncommon
 					&& spoil.RareValue != SpoilDropRarity.Common) {
 					SpoilList.Remove(spoil);
 				}
@@ -112,7 +112,7 @@ internal class RareSpoil {
 			}
 		}
 	}
-	public class RandomSpoilUncommon4 : ModSpoil {
+	public class Rare_GambleSpoil2 : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
 		}

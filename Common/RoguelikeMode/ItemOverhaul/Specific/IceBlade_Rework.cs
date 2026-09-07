@@ -56,18 +56,19 @@ internal class Roguelike_IceBlade : GlobalItem {
 		if (OutroEffect_ModPlayer.Check_IntroEffect(player, item.type)) {
 			int amount = Main.rand.Next(1, 5);
 			for (int i = 0; i < amount; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RandomSpread(Main.rand.NextFloat(1,2), Main.rand.NextFloat(.91f, 1.1f)).Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.Vector2RandomSpread(Main.rand.NextFloat(1, 2), Main.rand.NextFloat(.91f, 1.1f)).Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
 			}
 		}
 		if (modplayer.Counter >= 120) {
 			Vector2 rotate = velocity.RotatedBy(MathHelper.PiOver2);
 			for (int i = 0; i < 15; i++) {
-				Projectile projectile = Projectile.NewProjectileDirect(source, position + velUnit * 35 * (1 + i), rotate.Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt(), ModContent.ProjectileType<IceBlade_Slash_Projectile>(), damage, knockback, player.whoAmI, .1f, 3, 5 + i);
+				Projectile projectile = Projectile.NewProjectileDirect(source, position + velUnit * 30 * (1 + i), rotate.Vector2RotateByRandom(55) * Main.rand.NextBool().ToDirectionInt(), ModContent.ProjectileType<IceBlade_Slash_Projectile>(), damage, knockback, player.whoAmI, .1f, 3, 5 + i);
 				if (projectile.ModProjectile is IceBlade_Slash_Projectile slash) {
-					slash.ScaleX = 2 + i * 1.5f;
-					slash.ScaleY = .5f + i * .25f;
+					slash.ScaleX = 2 + i * .5f;
+					slash.ScaleY = .5f + i * .05f;
 					slash.ProjectileColor = Color.Cyan;
 					slash.ExtraDelay = 30;
+					slash.ExcessScaling = false;
 				}
 			}
 			modplayer.Counter = -player.itemAnimationMax;

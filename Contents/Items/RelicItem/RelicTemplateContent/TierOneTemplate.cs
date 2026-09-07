@@ -1,0 +1,40 @@
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using Roguelike.Common.Utils;
+using System;
+using Terraria;
+using Terraria.ModLoader;
+
+namespace Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
+internal class TierOneTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+		RelicTierUPValue = .1f;
+	}
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return Main.rand.Next([
+			PlayerStats.MeleeDMG,
+			PlayerStats.RangeDMG,
+			PlayerStats.MagicDMG,
+			PlayerStats.SummonDMG,
+		]);
+	}
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		string Number = RelicTemplateLoader.RelicValueToPercentage(value.Additive);
+		return string.Format(Description, [Color.Yellow.Hex3(), Name, Number]);
+	}
+
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.04f, 1.12f), 2), 1, 0, 0);
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		if (relic.RelicTier == 1) {
+			modplayer.AddStatsToPlayer(stat, value.Additive * 1.25f, value.Multiplicative, value.Flat * 1.16f, value.Base * 1.16f);
+		}
+		else {
+			modplayer.AddStatsToPlayer(stat, value);
+		}
+	}
+}
+

@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 
-public class WeaponSpoil : ModSpoil {
+public class Common_WeaponSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.IronBroadsword);
 	}
@@ -23,7 +23,7 @@ public class WeaponSpoil : ModSpoil {
 	}
 }
 
-public class AccessorySpoil : ModSpoil {
+public class Common_AccessorySpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.HermesBoots);
 	}
@@ -36,7 +36,7 @@ public class AccessorySpoil : ModSpoil {
 	}
 }
 
-public class ArmorSpoil : ModSpoil {
+public class Common_ArmorSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
@@ -51,7 +51,7 @@ public class ArmorSpoil : ModSpoil {
 	}
 }
 
-public class PotionSpoil : ModSpoil {
+public class Common_PotionSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.WrathPotion);
 	}
@@ -65,7 +65,7 @@ public class PotionSpoil : ModSpoil {
 	}
 }
 
-public class RelicSpoil : ModSpoil {
+public class Common_RelicSpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 	}
@@ -73,7 +73,7 @@ public class RelicSpoil : ModSpoil {
 		ModUtils.GetRelic(new EntitySource_Misc("Spoil"), player, 2);
 	}
 }
-public class SkillSpoil : ModSpoil {
+public class Common_SkillSpoil : ModSpoil {
 	public override string FinalDescription() {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2, true));
 	}
@@ -81,7 +81,7 @@ public class SkillSpoil : ModSpoil {
 		ModUtils.GetSkillLootbox(new EntitySource_Misc("Spoil"), player, 2);
 	}
 }
-public class FoodSpoil : ModSpoil {
+public class Common_FoodSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		return DisplayName.FormatWith(ItemID.Burger);
 	}

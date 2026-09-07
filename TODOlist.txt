@@ -421,8 +421,7 @@ Hitting enemy in this state will create a small explosion
 - Knife Revolver
 Shooting at close proximity will make the projectile from the weapon deal additional slash at 100% weapon damage ( the slash have no cool down )
 
-1st : remove Magic gem bow synergy status and replace them with a centralize magic bow synergy, do the same with swotaff
-2nd : the following synergy weapon gain additional buff
+1st : the following synergy weapon gain additional buff
 
 23/ Cursed mode : 
 "*Pushing once self to absolute extreme, a fine tribute to god !*"
@@ -523,6 +522,7 @@ this mode doesn't count as difficulty increases
 29/ Relic adjustment :
 - Relic set name visable all time and only collapse the description
 - Remove some relic set and move them to Perk and strengthen some of relic set effect.
+- Relic set now have tier of activation to them, exceeding max activation will do nothing
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

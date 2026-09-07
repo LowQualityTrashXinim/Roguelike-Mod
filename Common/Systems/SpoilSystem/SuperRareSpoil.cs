@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
-	public class SuppliesPackage : ModSpoil {
+	public class SuperRare_SuppliesPackage : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
@@ -40,7 +40,7 @@ internal class SuperRareSpoil {
 			}
 		}
 	}
-	public class SuperRelicSpoil : ModSpoil {
+	public class SuperRare_RelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
@@ -54,7 +54,7 @@ internal class SuperRareSpoil {
 			}
 		}
 	}
-	public class ArmorAccessorySpoil : ModSpoil {
+	public class SuperRare_ArmorAccessorySpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
@@ -87,7 +87,7 @@ internal class SuperRareSpoil {
 			ModUtils.GetWeaponSpoil(new EntitySource_Misc("Spoil"), chestplayer.weaponAmount);
 		}
 	}
-	public class PerkSpoil2 : ModSpoil {
+	public class SuperRare_PerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
@@ -99,7 +99,7 @@ internal class SuperRareSpoil {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<WorldEssence>());
 		}
 	}
-	public class RandomSpoilUncommon3 : ModSpoil {
+	public class SuperRare_GambleSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SuperRare;
 		}

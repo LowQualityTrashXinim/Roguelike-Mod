@@ -73,7 +73,7 @@ public class Roguelike_Grapefruit_ModDeBuff : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.lifeRegen -= npc.GetGlobalNPC<RoguelikeGlobalNPC>().Grapefruit + 1;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Poison_Inner.Base = npc.GetGlobalNPC<RoguelikeGlobalNPC>().Grapefruit + 1;
 	}
 }
 public class Roguelike_Grapefruit_Item : ModItem {

@@ -42,7 +42,7 @@ internal class SSRspoil {
 			ModUtils.GetAccessories(source, player, count);
 		}
 	}
-	public class LegendaryRelicSpoil : ModSpoil {
+	public class SSR_RelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SSR;
 		}
@@ -68,7 +68,7 @@ internal class SSRspoil {
 			}
 		}
 	}
-	public class PerkSpoil3 : ModSpoil {
+	public class SSR_PerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SSR;
 		}
@@ -79,7 +79,7 @@ internal class SSRspoil {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<GlitchWorldEssence>());
 		}
 	}
-	public class RandomSpoilUncommon5 : ModSpoil {
+	public class SSR_GambleSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SSR;
 		}
@@ -166,7 +166,7 @@ internal class SSRspoil {
 			}
 		}
 	}
-	public class WealthSpoil : ModSpoil {
+	public class SSR_WealthSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.SSR;
 		}

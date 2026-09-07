@@ -123,6 +123,11 @@ IncreasesJumpBoost: {
 	Description: + Increases jump boost by 10%
 }
 
+IncreasesDamageOverTime: {
+	DisplayName: Damage overtime boost [Common]
+	Description: + Increases damage overtime by 10%
+}
+
 PerkBlocker: {
 	DisplayName: Perk Blocker
 	Description: Block common perk to appear
@@ -132,11 +137,10 @@ LuckyStrike: {
 	DisplayName: Lucky Strike
 	Description:
 		'''
-		Your attack have 20% chance to do the following
+		Your attack have 20% chance to do any of the following
 		+ Your damage increases range from 15% to 100% when striking enemy
 		+ Multiply your damage by 2.0x
 		+ Healing you from 1 to 50 health
-		All of the above chance effect can all activate at once
 		'''
 }
 
@@ -147,7 +151,6 @@ UncertainStrike: {
 		Your strike have
 		+ 33% chance to vary your damage from -15% to 55%
 		+ 15% chance to ignore 20 defenses or reduce damage by 20
-		All of the above chance effect can all activate at once
 		'''
 }
 

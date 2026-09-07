@@ -862,3 +862,19 @@ Remove fire arrow and hellfire arrow fall from the sky
 704/ Added skill system loadout.
 705/ Added skill Replay and Rewind.
 706/ Fixed a critical bug that causes damage to overflow to infinite.
+707/ Updated debuffer playstyle:
+- Added Poison_Inner variable.
+The Inner_Poison variable is there for easier time to manage DoT damage and make it easier to scale them.
+From now on, use Inner_Poison.Base over direct substract npc.lifeRegen, tho both work the same.
+- Added Poison_Additional variable.
+This is a global debuff damage which dealt damage based on current target lifeRegen value every 1s
+By default this have value of 0 so it is not activated.
+- Added Amount_CurrentDebuffInclift value.
+A easy way for modder to access amount of debuff a NPC is currently having atm
+- Added "Add_PoisonGlobal" method and dictionary to contain it
+Use this over Poison_Inner if you want to made changes toward damage overtime
+calculation that is global and is not debuff specific like accessory or armor.
+708/ Added IncreasesDamageOverTime perk.
+709/ Nerfed Nature of Good and Evil relic set.
+710/ Added 5 new relic template and reworked ArcherMasteryTemplate and MagicCostTemplate
+711/ Updated all of the inner name of spoil for better clarification.

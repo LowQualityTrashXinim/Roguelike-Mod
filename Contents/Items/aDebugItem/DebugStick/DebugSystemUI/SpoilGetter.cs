@@ -110,7 +110,7 @@ public class SpoilUIDebugButton : Roguelike_UIImageButton {
 				Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
-				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
+				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription() + $"\n{spoil.Name}", spoil.RareValue);
 			}
 		}
 		else {

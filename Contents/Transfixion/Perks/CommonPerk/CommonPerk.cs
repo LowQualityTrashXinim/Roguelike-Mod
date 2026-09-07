@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Contents.Transfixion.Perks.CommonPerk;
 public class MeleeDamage : Perk {
@@ -285,5 +286,20 @@ public class IncreasesJumpBoost : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.ModPlayerStats().UpdateJumpBoost += .1f * StackAmount(player);
+	}
+}
+public class IncreasesDamageOverTime : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 10;
+	}
+	public override bool SelectChoosing() {
+		return !Main.LocalPlayer.GetModPlayer<PerkPlayer>().PerkBlocker;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.GetGlobalNPC<RoguelikeGlobalNPC>().Add_PoisonGlobal("Perk_DoT", new StatModifier(StackAmount(player), .1f, 0, 0));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.GetGlobalNPC<RoguelikeGlobalNPC>().Add_PoisonGlobal("Perk_DoT", new StatModifier(StackAmount(player), .1f, 0, 0));
 	}
 }

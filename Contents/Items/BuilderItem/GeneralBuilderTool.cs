@@ -30,6 +30,8 @@ public class GeneralBuilderToolSystem : ModSystem {
 	public static bool Tile = false;
 	public static bool Wall = false;
 	public static bool Parallel = false;
+	public static bool Horizontal = false;
+	public static bool Vertical = false;
 	/// <summary>
 	/// This use real game world position
 	/// </summary>
@@ -287,9 +289,13 @@ public class GeneralBuilderToolUI : UIState {
 	}
 
 	private void FlipHorizontal_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem.Horizontal = !GeneralBuilderToolSystem.Horizontal;
+		FlipHorizontal.Highlight = GeneralBuilderToolSystem.Horizontal;
 	}
 
 	private void FlipVertical_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GeneralBuilderToolSystem.Vertical = !GeneralBuilderToolSystem.Vertical;
+		FlipVertical.Highlight = GeneralBuilderToolSystem.Vertical;
 	}
 
 	private void Copy_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -309,7 +315,20 @@ public class GeneralBuilderToolUI : UIState {
 		GeneralBuilderToolSystem system = ModContent.GetInstance<GeneralBuilderToolSystem>();
 		Point point = system.createPosition.ToTileCoordinates();
 		if (local != null) {
-			local.GenerateStructure(point.X, point.Y);
+			bool horizontal = GeneralBuilderToolSystem.Horizontal;
+			bool vertical = GeneralBuilderToolSystem.Vertical;
+			if (!horizontal && !vertical) {
+				local.GenerateStructure(point.X, point.Y);
+			}
+			else if (horizontal && !vertical) {
+				local.GenerateStructureFlipHorizontal(point.X, point.Y);
+			}
+			else if (!horizontal && vertical) {
+				local.GenerateStructureFlipVertical(point.X, point.Y);
+			}
+			else if (horizontal && vertical) {
+				local.GenerateStructureFlipBoth(point.X, point.Y);
+			}
 		}
 	}
 	private void ParallelMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -571,7 +590,16 @@ public class GeneralBuilderToolUI : UIState {
 		ModUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)Math.Sin(Main.GameUpdateCount * 0.2f)));
 		spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
 
-		spriteBatch.Draw(tex, createPosition * 16 - Main.screenPosition, null, Color.Yellow, 0, tex.Size() * .5f, 1, SpriteEffects.None, 0);
+		float scaleCorner = 1;
+		Color colorCorner = Color.Yellow;
+		if (Main.MouseWorld.IsCloseToPosition(topLeft.ToWorldCoordinates(), 10)) {
+			scaleCorner = 1.2f;
+			colorCorner = Color.White;
+		}
+
+		spriteBatch.Draw(tex, topLeft.ToVector2() * 16 - Main.screenPosition, null, colorCorner, 0, tex.Size() * .5f, scaleCorner, SpriteEffects.None, 0);
+
+		spriteBatch.Draw(tex, (bottomRight.ToVector2() + Vector2.One) * 16 - Main.screenPosition, null, Color.Yellow, 0, tex.Size() * .5f, 1, SpriteEffects.None, 0);
 	}
 }
 internal class GeneralBuilderTool : ModItem {
@@ -703,8 +731,8 @@ internal class GeneralBuilderTool : ModItem {
 					return false;
 				}
 			}
-			if(UI.txb_height != null) {
-				if(UI.txb_height.ContainsPoint(mouse)) {
+			if (UI.txb_height != null) {
+				if (UI.txb_height.ContainsPoint(mouse)) {
 					return false;
 				}
 			}
