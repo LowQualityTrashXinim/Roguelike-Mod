@@ -86,7 +86,6 @@ public partial class TransmutationUIState {
 	Roguelike_UITextPanel EquivalentExchange;
 	Roguelike_UITextPanel UpgradeRarity;
 	ItemHolderSlot ItemShiftSlot;
-	ItemHolderSlot ItemResultSlotShift;
 	Roguelike_UIImageButton btn_ItemShiftConfirm;
 	ItemHolderSlot ItemAccSelection;
 	ItemHolderSlot ItemArmorSelection;
@@ -121,7 +120,6 @@ public partial class TransmutationUIState : UIState {
 		optimization = ModUtils.FastDropItem(Relicslot2.item, optimization);
 		optimization = ModUtils.FastDropItem(Relicresultslot.item, optimization);
 		optimization = ModUtils.FastDropItem(ItemShiftSlot.item, optimization);
-		optimization = ModUtils.FastDropItem(ItemResultSlotShift.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot1.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot2.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot3.item, optimization);
@@ -139,36 +137,7 @@ public partial class TransmutationUIState : UIState {
 
 		}
 		else if (btn_ItemShift.Highlight) {
-			var item = ItemShiftSlot.item;
-			if (item.type == 0) {
-				shiftTextInfo.SetText("");
-				return;
-			}
-			int rareval1 = item.OriginalRarity;
-			byte rareOffset = 0;
-			if (UpgradeRarityMode) {
-				rareOffset = 1;
-			}
-			float extra = .5f;
-			if (ItemAccSelection.Highlight) {
-				if (!item.accessory) {
-					extra += .55f;
-				}
-			}
-			else if (ItemWeaponSelection.Highlight) {
-				if (!item.IsAWeapon()) {
-					extra += .5f;
-				}
-				if (UpgradeRarityMode && SpecialWeaponShifting(item.type) != 0) {
-					extra += 2;
-				}
-			}
-			else if (ItemArmorSelection.Highlight) {
-				if (item.headSlot <= 0 && item.bodySlot <= 0 && item.legSlot <= 0) {
-					extra += .35f;
-				}
-			}
-			int cost = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+			int cost = CalculateCost();
 			if (modplayer.TransmutationPower < cost) {
 				shiftTextInfo.SetText("Insufficient energy\nRequired energy cost : " + cost);
 			}
@@ -207,7 +176,7 @@ public partial class TransmutationUIState {
 		EquivalentExchange.BorderColor = Color.Yellow;
 		slotPanel.Append(EquivalentExchange);
 
-		UpgradeRarity = new("Upgrade Rarity");
+		UpgradeRarity = new("Upgrade");
 		UpgradeRarity.OnLeftClick += ItemShiftOptionPanel_OnLeftClick;
 		UpgradeRarity.Width.Set(0, .45f);
 		UpgradeRarity.Hide = true;
@@ -228,13 +197,6 @@ public partial class TransmutationUIState {
 		btn_ItemShiftConfirm.SetVisibility(.6f, 1f);
 		btn_ItemShiftConfirm.Hide = true;
 		slotPanel.Append(btn_ItemShiftConfirm);
-
-		ItemResultSlotShift = new ItemHolderSlot(tex);
-		ItemResultSlotShift.MarginLeft = (52 + 10) * 2;
-		ItemResultSlotShift.VAlign = .5f;
-		ItemResultSlotShift.OnLeftClick += ItemShift_OnLeftClick;
-		ItemResultSlotShift.Hide = true;
-		slotPanel.Append(ItemResultSlotShift);
 
 		ItemAccSelection = new(tex);
 		ItemAccSelection.HighlightColor = ItemAccSelection.OriginalColor.ScaleRGB(.7f);
@@ -331,15 +293,6 @@ public partial class TransmutationUIState {
 		btn_ItemShift.OnLeftClick += btn_Mode_OnLeftClick;
 		btn_ItemShift.SwapHightlightColorWithOriginalColor();
 		headerPanel.Append(btn_ItemShift);
-
-		btn_AugmentationCharge = new(tex);
-		btn_AugmentationCharge.HoverText = "Tablet: Augmentation mode";
-		btn_AugmentationCharge.MarginLeft += btn_ItemShift.Width.Pixels * 3 + 30;
-		btn_AugmentationCharge.VAlign = .5f;
-		btn_AugmentationCharge.HighlightColor = btn_AugmentationCharge.OriginalColor.ScaleRGB(.5f);
-		btn_AugmentationCharge.OnLeftClick += btn_Mode_OnLeftClick;
-		btn_AugmentationCharge.SwapHightlightColorWithOriginalColor();
-		headerPanel.Append(btn_AugmentationCharge);
 
 		btn_exit = new ExitUI(tex);
 		btn_exit.UISetWidthHeight(52, 52);
@@ -525,35 +478,35 @@ public partial class TransmutationUIState {
 		}
 	}
 	private void Btn_ItemShiftConfirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (ItemShiftSlot.item.type != 0 && ItemResultSlotShift.item.type == 0) {
+		if (ItemShiftSlot.item.type != ItemID.None) {
 			var player = Main.LocalPlayer;
 			var modplayer = player.ModPlayerStats();
-			var item = ItemShiftSlot.item;
+			var item = ItemShiftSlot.item.Clone();
 			int rareval1 = item.OriginalRarity;
 			byte rareOffset = 0;
 			if (UpgradeRarityMode) {
 				rareOffset = 1;
 			}
-			float extra = .5f;
 			int itemType = ItemID.None;
-			if (ItemAccSelection.Highlight) {
-				if (!item.accessory) {
-					extra += .55f;
+			if (item.type == ModContent.ItemType<Relic>() && UpgradeRarityMode) {
+				if (item.ModItem is Relic relic) {
+					rareval1 = 4 / relic.RelicTier;
+					int costRelic = CalculateCost();
+					if (modplayer.Modify_TransmutationPower(-costRelic)) {
+						UpgradeRelic(ref ItemShiftSlot.item, ref relic);
+						return;
+					}
 				}
+			}
+			if (ItemAccSelection.Highlight) {
 				itemType = GetItemRarityDB(rareval1 + rareOffset, 2);
 			}
 			else if (ItemWeaponSelection.Highlight) {
-				if (!item.IsAWeapon()) {
-					extra += .5f;
-				}
 				if (UpgradeRarityMode) {
 					itemType = SpecialWeaponShifting(item.type);
 				}
 				if (itemType == 0) {
 					itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
-				}
-				else {
-					extra += 2;
 				}
 			}
 			else if (ItemArmorSelection.Highlight) {
@@ -567,11 +520,10 @@ public partial class TransmutationUIState {
 					itemType = GetItemRarityDB(rareval1 + rareOffset, 5);
 				}
 				else {
-					extra += .35f;
 					itemType = GetItemRarityDB(rareval1 + rareOffset, Main.rand.Next(3, 6));
 				}
 			}
-			int cost = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+			int cost = CalculateCost();
 			if (!modplayer.Modify_TransmutationPower(-cost)) {
 				return;
 			}
@@ -580,27 +532,61 @@ public partial class TransmutationUIState {
 				return;
 			}
 			ModUtils.AmmoForWeapon(player, itemType);
-			ItemResultSlotShift.item = new Item(itemType);
-			ItemShiftSlot.item.TurnToAir();
+			ItemShiftSlot.item = new Item(itemType);
 		}
+	}
+	private int CalculateCost() {
+		var item = ItemShiftSlot.item;
+		int rareval1 = item.OriginalRarity;
+		byte rareOffset = 0;
+		if (UpgradeRarityMode) {
+			rareOffset = 1;
+		}
+		float extra = .5f;
+
+		if (item.type == ModContent.ItemType<Relic>() && UpgradeRarityMode) {
+			if (item.ModItem is Relic relic) {
+				//the number 4 refers to the maximum tier of a relic that can be achieved in normal gameplay
+				rareval1 = 4 / relic.RelicTier;
+				extra += 2;
+				int costRelic = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+				return costRelic;
+			}
+		}
+		if (ItemAccSelection.Highlight) {
+			if (!item.accessory) {
+				extra += .55f;
+			}
+		}
+		else if (ItemWeaponSelection.Highlight) {
+			if (!item.IsAWeapon()) {
+				extra += .5f;
+			}
+			else if (SpecialWeaponShifting(item.type) != 0) {
+				extra += 2;
+			}
+		}
+		else if (ItemArmorSelection.Highlight) {
+			if (item.headSlot == ItemID.None && item.bodySlot == ItemID.None && item.legSlot == ItemID.None) {
+				extra += .35f;
+			}
+		}
+		return EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+	}
+	private void UpgradeRelic(ref Item item, ref Relic relic) {
+		int index = Main.rand.Next(0, relic.TemplateCount);
+		StatModifier modify = relic.Relic_StatsValue[index];
+		modify = new StatModifier(MathF.Round(modify.Additive + ((modify.Additive - 1) * Main.rand.NextFloat(.1f, .3f)), 2),
+			MathF.Round(modify.Multiplicative + ((modify.Multiplicative - 1) * Main.rand.NextFloat(.1f, .3f)), 2),
+			MathF.Round(modify.Flat * (1 + Main.rand.NextFloat(.1f, .3f)), 2),
+			MathF.Round(modify.Base * (1 + Main.rand.NextFloat(.1f, .3f)), 2));
+		relic.ModifyRelic(relic.Relic_template[index], relic.Relic_Stats[index], modify, index);
+		ItemShiftSlot.item = item.Clone();
 	}
 	private void ItemShift_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		var player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == ItemShiftSlot.UniqueId) {
-			var item = Main.mouseItem;
 			ModUtils.SimpleItemMouseExchange(player, ref ItemShiftSlot.item);
-		}
-		else if (listeningElement.UniqueId == ItemResultSlotShift.UniqueId) {
-			var item = Main.mouseItem;
-			if (item.type != 0) {
-				return;
-			}
-			if (ItemResultSlotShift.item.type == 0) {
-				return;
-			}
-			Main.mouseItem = ItemResultSlotShift.item.Clone();
-			Main.LocalPlayer.inventory[58] = ItemResultSlotShift.item.Clone();
-			ItemResultSlotShift.item.TurnToAir();
 		}
 	}
 	private void Resultslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -660,7 +646,7 @@ public partial class TransmutationUIState {
 	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		var player = Main.LocalPlayer;
 		var item = Main.mouseItem;
-		if (item.type != ModContent.ItemType<Relic>() && item.type != 0) {
+		if (item.type != ModContent.ItemType<Relic>() && item.type != ItemID.None) {
 			return;
 		}
 		if (listeningElement.UniqueId == Relicslot1.UniqueId) {
@@ -690,7 +676,7 @@ public partial class TransmutationUIState {
 				if (Main.rand.NextBool(5)) {
 					return ModContent.ItemType<SharpBoomerang>();
 				}
-				if(Main.rand.NextBool()) {
+				if (Main.rand.NextBool()) {
 					return ItemID.Shroomerang;
 				}
 				return ItemID.EnchantedBoomerang;
@@ -770,7 +756,7 @@ public partial class TransmutationUIState {
 			case ItemID.GreenPhaseblade:
 				return ItemID.GreenPhasesaber;
 			case ItemID.YellowPhaseblade:
-				return ItemID.YellowPhaseblade;
+				return ItemID.YellowPhasesaber;
 			default:
 				return 0;
 		}
@@ -800,7 +786,6 @@ public partial class TransmutationUIState {
 	}
 	public void Visual_ItemShift(bool hide) {
 		ItemShiftSlot.Hide = hide;
-		ItemResultSlotShift.Hide = hide;
 		btn_ItemShiftConfirm.Hide = hide;
 		ItemAccSelection.Hide = hide;
 		ItemArmorSelection.Hide = hide;
@@ -817,5 +802,5 @@ public partial class TransmutationUIState {
 		btn_energy.Hide = hide;
 		energyinfo.Hide = hide;
 	}
-	public int RelicMergeCost(int Tier1, int Tier2) => EnergyPoint(Tier1) + EnergyPoint(Tier2) * (Tier1 + Tier2);
+	public int RelicMergeCost(int Tier1, int Tier2) => (EnergyPoint(Tier1) + EnergyPoint(Tier2)) * (Tier1 + Tier2);
 }

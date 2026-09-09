@@ -2,11 +2,13 @@
 using Roguelike.Common.Utils;
 using System;
 using Terraria;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Critical : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.Orange;
+		ItemTypeID = ItemID.EyeoftheGolem;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();

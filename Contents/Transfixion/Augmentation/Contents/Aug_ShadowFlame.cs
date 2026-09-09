@@ -7,6 +7,7 @@ namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class ShadowFlame : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.MediumPurple;
+		ItemTypeID = ItemID.ShadowFlameHexDoll;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.ShadowFlame, ModUtils.ToSecond(Main.rand.Next(1, 3)));

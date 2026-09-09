@@ -6,6 +6,7 @@ namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Fire : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.Red;
+		ItemTypeID = ItemID.MagmaStone;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.OnFire, ModUtils.ToSecond(Main.rand.Next(1, 3)));

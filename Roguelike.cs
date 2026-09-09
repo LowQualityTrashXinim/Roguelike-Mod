@@ -57,31 +57,31 @@ public class ModItemLib : ModSystem {
 		if (WeaponRarityDB.ContainsKey(rare)) {
 			return Main.rand.Next(WeaponRarityDB[rare]);
 		}
-		return ItemID.None;
+		return ItemID.DirtBlock;
 	}
 	public static int Safe_GetAccRarity(int rare) {
 		if (AccRarityDB.ContainsKey(rare)) {
 			return Main.rand.Next(AccRarityDB[rare]);
 		}
-		return ItemID.None;
+		return ItemID.DirtBlock;
 	}
 	public static int Safe_GetHeadRarity(int rare) {
 		if (HeadArmorRarityDB.ContainsKey(rare)) {
 			return Main.rand.Next(HeadArmorRarityDB[rare]);
 		}
-		return ItemID.None;
+		return ItemID.DirtBlock;
 	}
 	public static int Safe_GetBodyRarity(int rare) {
 		if (BodyArmorRarityDB.ContainsKey(rare)) {
 			return Main.rand.Next(BodyArmorRarityDB[rare]);
 		}
-		return ItemID.None;
+		return ItemID.DirtBlock;
 	}
 	public static int Safe_GetLegsRarity(int rare) {
 		if (LegsArmorRarityDB.ContainsKey(rare)) {
 			return Main.rand.Next(LegsArmorRarityDB[rare]);
 		}
-		return ItemID.None;
+		return ItemID.DirtBlock;
 	}
 	public override void OnModLoad() {
 		TrueDebuff = new();

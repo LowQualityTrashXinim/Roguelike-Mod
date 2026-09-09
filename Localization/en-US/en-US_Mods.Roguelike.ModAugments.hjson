@@ -88,7 +88,8 @@ Alchemist: {
 	DisplayName: Alchemist
 	Description: Increases debuff damage by 6%
 	Description1: For each debuff/buff you have, increases life regeneration by 1
-	Description2: For each debuff/buff you have, increases damage by 4%
+	Description2: For each debuff/buff you have, increases damage by 12%
+	Description3: For each debuff/buff you have, increases debuff damage by 24%
 }
 
 Light: {
@@ -110,9 +111,9 @@ Strengthen: {
 	DisplayName: Strengthen
 	Description: Grant minor increases in various stats
 	Description1: Strengthen the 1st effect by small amount
-	Description2: Strengthen the 1st effect by another small amount
+	Description2: Strengthen the 1st effect by small amount
 	Description3: Strengthen the 1st effect by medium amount
-	Description4: Combined all the previous boost and increases stats by that amount
+	Description4: Combined all the boost effect and increases stats by that amount
 }
 
 Ghost: {
@@ -142,13 +143,15 @@ ReactiveDefenses: {
 VitalityStrike: {
 	DisplayName: Vitality Strike
 	Description: Your maximum life contribute to your output damage
-	Description1: Increases your critical strike chance base on your maximum health
+	Description1: Increases your critical strike chance based on your maximum health
+	Description2: Increases your defenses based on your maximum health
 }
 
 ArcaneStrike: {
 	DisplayName: Arcane Strike
 	Description: Your maximum mana contribute to your output damage
 	Description1: Increases your critical strike chance base on your maximum mana
+	Description2: Increases your defenses based on your maximum mana
 }
 
 StealthStrike: {

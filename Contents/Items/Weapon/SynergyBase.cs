@@ -61,10 +61,7 @@ public class SynergyBonus_System : ModSystem {
 					}
 				}
 				if (item.accessory) {
-					AugmentsWeapon.AddAugments(ref item, Main.rand.Next(1, AugmentsLoader.TotalCount));
-					if (item.TryGetGlobalItem(out AugmentsWeapon acc)) {
-						acc.Modify_Charge(Main.rand.Next(255));
-					}
+					AugmentsWeapon.SetAugments(ref item, Main.rand.Next(1, AugmentsLoader.TotalCount));
 				}
 			}
 		}

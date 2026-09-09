@@ -1,10 +1,12 @@
 ﻿using Roguelike.Common.Global;
 using Terraria;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Titan : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.Blue;
+		ItemTypeID = ItemID.AdamantiteBar;
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		int damage = (int)player.GetWeaponKnockback(item);

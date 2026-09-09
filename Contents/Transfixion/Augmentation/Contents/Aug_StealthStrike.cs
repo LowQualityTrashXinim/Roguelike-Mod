@@ -1,11 +1,13 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Terraria;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class StealthStrike : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.DarkGray;
+		ItemTypeID = ItemID.ShadowOrb;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.FullHPDamage, 2f);

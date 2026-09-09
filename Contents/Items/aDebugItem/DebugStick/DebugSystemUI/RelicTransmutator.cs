@@ -387,7 +387,9 @@ class RelicTransmuteUI : UIState {
 	}
 
 	private void Btn_confirmation_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		Item.NewItem(Item.GetSource_None(), Main.LocalPlayer.Center, relic.Item);
+		Item.NewItem(Item.GetSource_None(), Main.LocalPlayer.Center, relic.Item.Clone());
+		relic = new Item(ModContent.ItemType<Relic>()).ModItem as Relic;
+		slot.item = relic.Item;
 	}
 
 	private void Btn_AddRelic_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

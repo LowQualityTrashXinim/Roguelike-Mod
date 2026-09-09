@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using Roguelike.Texture;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using System;
+using Terraria.ID;
+using Microsoft.Build.Framework;
+using System.Linq;
 
 namespace Roguelike.Contents.Transfixion.Augmentation;
 internal class AugmentsLoader : ModSystem {
@@ -31,14 +35,15 @@ public class AugmentsWeapon : GlobalItem {
 		if (Augments == null) {
 			return;
 		}
-		var line = Augments.ModifyDescription(Main.LocalPlayer, this, item, Check_ChargeConvertToStackAmount());
-		line.Text = $"{Augments.ModifyName(Main.LocalPlayer, this, item, Check_ChargeConvertToStackAmount())} : {line.Text}";
+		var line = Augments.ModifyDescription(Main.LocalPlayer, this, item);
+		line.Text = $"{Augments.ModifyName(Main.LocalPlayer, this, item, AugmentUpgrade.Where(i => i != 0).Count())} : {line.Text}";
 		ModUtils.AddTooltip(ref tooltips, line);
 	}
 	public override bool InstancePerEntity => true;
 	public int Augment = -1;
-	public int AugmentCharge = -1;
-	public static void AddAugments<T>(ref Item item) where T : ModAugments {
+	public int[] AugmentUpgrade = new int[5];
+	protected int AugmentCharge = -1;
+	public static void SetAugments<T>(ref Item item) where T : ModAugments {
 		if (!item.accessory) {
 			return;
 		}
@@ -52,7 +57,7 @@ public class AugmentsWeapon : GlobalItem {
 			acc.Augment = type;
 		}
 	}
-	public static void AddAugments(ref Item item, int type) {
+	public static void SetAugments(ref Item item, int type) {
 		if (!item.accessory) {
 			return;
 		}
@@ -65,12 +70,9 @@ public class AugmentsWeapon : GlobalItem {
 			acc.Augment = type;
 		}
 	}
-	public void Modify_Charge(int amount) {
-		AugmentCharge += amount;
-	}
 	public int Check_ChargeConvertToStackAmount() {
-		int Amount = AugmentCharge / 50;
-		if (AugmentCharge >= 250) {
+		int Amount = AugmentCharge;
+		if (AugmentCharge >= 4) {
 			return Amount;
 		}
 		else if (AugmentCharge == 0) {
@@ -82,6 +84,7 @@ public class AugmentsWeapon : GlobalItem {
 		if (target.TryGetGlobalItem(out AugmentsWeapon acc)) {
 			acc.Augment = -1;
 			acc.AugmentCharge = -1;
+			Array.Fill(AugmentUpgrade, 0);
 		}
 		return base.NewInstance(target);
 	}
@@ -90,6 +93,7 @@ public class AugmentsWeapon : GlobalItem {
 		if (from.TryGetGlobalItem(out AugmentsWeapon acc)) {
 			clone.Augment = acc.Augment;
 			clone.AugmentCharge = acc.AugmentCharge;
+			Array.Copy(acc.AugmentUpgrade, clone.AugmentUpgrade, 5);
 		}
 		return clone;
 	}
@@ -114,23 +118,55 @@ public class AugmentsWeapon : GlobalItem {
 }
 public abstract class ModAugments : ModType {
 	public int Type { get; internal set; }
-	protected override void Register() {
+	/// <summary>
+	/// Set this to any item ID that is in vanilla terraria
+	/// </summary>
+	protected int ItemTypeID = ItemID.None;
+	public int CoreItemID => ItemTypeID;
+	protected override sealed void Register() {
 		Type = AugmentsLoader.Register(this);
 		SetStaticDefaults();
 	}
+	public override sealed bool IsLoadingEnabled(Mod mod) {
+		return base.IsLoadingEnabled(mod);
+	}
+	public override sealed bool Equals(object obj) {
+		return base.Equals(obj);
+	}
+	public override sealed int GetHashCode() {
+		return base.GetHashCode();
+	}
+	public override sealed void Load() {
+		base.Load();
+	}
+	public override sealed void SetupContent() {
+		base.SetupContent();
+	}
+	public override sealed string ToString() {
+		return base.ToString();
+	}
 	public static int GetAugmentType<T>() where T : ModAugments => ModContent.GetInstance<T>().Type;
+	public string Get_FormattedDescription(AugmentsWeapon acc, string description, int ID) {
+		if (acc.AugmentUpgrade.Contains(ID)) {
+			return $"[i:{ID}]{description}";
+		}
+		else {
+			return $"[i:{ID}][c/{Color.Gray.Hex3()}:{description}]";
+		}
+	}
 	public Color tooltipColor = Color.White;
 	public string DisplayName => ModUtils.LocalizationText("ModAugments", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("ModAugments", $"{Name}.Description");
-	protected string Description2(string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.Description{Extra}");
-	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, Item item, int stack) {
+	public virtual string Description2(Player player, AugmentsWeapon acc, Item item, string Extra) => ModUtils.LocalizationText("ModAugments", $"{Name}.Description{Extra}");
+	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, Item item) {
 		string desc = "";
-		for (int i = 0; i < stack; i++) {
+		//Hardcoded value 5 because we aren't making augmentation that have more than 5 upgrades.
+		for (int i = 0; i < 5; i++) {
 			string num = i.ToString();
 			if (i == 0) {
 				num = string.Empty;
 			}
-			string text = Description2(num);
+			string text = Description2(player, acc, item, num);
 			if (string.IsNullOrEmpty(text)) {
 				break;
 			}
@@ -140,6 +176,9 @@ public abstract class ModAugments : ModType {
 		return line;
 	}
 	public string ColorWrapper(string Name) => $"[c/{tooltipColor.Hex3()}:{Name}]";
+	public virtual int[] UpgradeAvailable() {
+		return Array.Empty<int>();
+	}
 	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc) { }
 	public virtual string ModifyName(Player player, AugmentsWeapon acc, Item item, int stack) {
 		string name = DisplayName;
@@ -159,7 +198,7 @@ public class Augmentation : ModItem {
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		if (Aug_Type == -1) {
-			Aug_Type = Main.rand.Next(AugmentsLoader.TotalCount);
+			Aug_Type = Main.rand.Next(1 , AugmentsLoader.TotalCount);
 		}
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {

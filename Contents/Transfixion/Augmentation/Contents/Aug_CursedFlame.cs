@@ -7,6 +7,7 @@ namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class CursedFlame : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.ForestGreen;
+		ItemTypeID = ItemID.CursedFlame;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc,  Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.CursedInferno, ModUtils.ToSecond(Main.rand.Next(1, 3)));

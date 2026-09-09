@@ -7,6 +7,7 @@ using Roguelike.Contents.Transfixion.WeaponEnchantment;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -175,15 +176,34 @@ public class DivineHammerUIState : UIState {
 			if (AugmentsLoader.GetAugments(aug.Aug_Type) == null) {
 				return;
 			}
-			if (item.GetGlobalItem<AugmentsWeapon>().Augment == aug.Type) {
-				item.GetGlobalItem<AugmentsWeapon>().Modify_Charge(50);
-			}
-			else {
-				AugmentsWeapon.AddAugments(ref item, aug.Aug_Type);
-			}
+			AugmentsWeapon.SetAugments(ref item, aug.Aug_Type);
 			AccSacrificeAugmentSlot.item.TurnToAir();
 			AccAugmentResult.item = item.Clone();
 			AccAugmentSlot.item.TurnToAir();
+		}
+		else {
+			int accAug = AccAugmentSlot.item.GetGlobalItem<AugmentsWeapon>().Augment;
+			ModAugments InnerAug = AugmentsLoader.GetAugments(accAug);
+			if (InnerAug != null) {
+				int[] upgrade = InnerAug.UpgradeAvailable();
+				if (upgrade.Contains(AccSacrificeAugmentSlot.item.type)) {
+					AccAugmentSlot.item.GetGlobalItem<AugmentsWeapon>().AugmentUpgrade.Prepend(AccSacrificeAugmentSlot.item.type);
+					AccSacrificeAugmentSlot.item.TurnToAir();
+					AccAugmentResult.item = item.Clone();
+					AccAugmentSlot.item.TurnToAir();
+				}
+				return;
+			}
+			List<ModAugments> aug_list = AugmentsLoader.ReturnListOfAugment();
+			foreach (ModAugments au in aug_list) {
+				if (au.CoreItemID == AccSacrificeAugmentSlot.item.type) {
+					AugmentsWeapon.SetAugments(ref item, au.Type);
+					AccSacrificeAugmentSlot.item.TurnToAir();
+					AccAugmentResult.item = item.Clone();
+					AccAugmentSlot.item.TurnToAir();
+					return;
+				}
+			}
 		}
 	}
 
@@ -195,7 +215,7 @@ public class DivineHammerUIState : UIState {
 				return;
 			}
 			ModUtils.SimpleItemMouseExchange(player, ref AccAugmentSlot.item);
-			if (AccAugmentSlot.item.type == ItemID.None) {
+			if (AccAugmentSlot.item.type != ItemID.None) {
 				AccAugmentSlot.drawInfo.Hide = true;
 			}
 			else {

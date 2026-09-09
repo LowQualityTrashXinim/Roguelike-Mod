@@ -7,6 +7,7 @@ namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Poison : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.PaleGreen;
+		ItemTypeID = ItemID.Bezoar;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Poisoned, ModUtils.ToSecond(Main.rand.Next(1, 3)));

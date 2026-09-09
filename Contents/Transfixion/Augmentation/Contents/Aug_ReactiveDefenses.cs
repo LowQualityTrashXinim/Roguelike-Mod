@@ -3,12 +3,14 @@ using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class ReactiveDefenses : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.MediumBlue;
+		ItemTypeID = ItemID.TurtleShell;
 	}
 	public override void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) {
 		if (Main.rand.NextBool(3)) {

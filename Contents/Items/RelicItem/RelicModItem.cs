@@ -17,7 +17,9 @@ public class Relic : ModItem {
 	List<PlayerStats> statlist = new List<PlayerStats>();
 	List<StatModifier> valuelist = new List<StatModifier>();
 
+	public List<int> Relic_template => templatelist;
 	public List<PlayerStats> Relic_Stats => statlist;
+	public List<StatModifier> Relic_StatsValue => valuelist;
 
 	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	public short RelicPrefixedType = -1;
@@ -209,6 +211,14 @@ public class Relic : ModItem {
 			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(this, player));
 			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]));
 		}
+	}
+	public void ModifyRelic(int template, PlayerStats stat, StatModifier modify, int index) {
+		if (index < 0 || index >= TemplateCount) {
+			return;
+		}
+		templatelist[index] = template;
+		statlist[index] = stat;
+		valuelist[index] = modify;
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();

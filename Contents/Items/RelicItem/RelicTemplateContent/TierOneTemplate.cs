@@ -30,7 +30,7 @@ internal class TierOneTemplate : RelicTemplate {
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (relic.RelicTier == 1) {
-			modplayer.AddStatsToPlayer(stat, value.Additive * 1.25f, value.Multiplicative, value.Flat * 1.16f, value.Base * 1.16f);
+			modplayer.AddStatsToPlayer(stat, value.Additive * 1.25f, value.Multiplicative * 1.25f, value.Flat * 1.25f, value.Base * 1.25f);
 		}
 		else {
 			modplayer.AddStatsToPlayer(stat, value);

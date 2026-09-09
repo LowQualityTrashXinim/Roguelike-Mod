@@ -12,6 +12,7 @@ namespace Roguelike.Contents.Transfixion.Augmentation;
 public class TrueStatus : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Yellow;
+		ItemTypeID = ItemID.BrokenHeroSword;
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		int damage = (int)(player.GetWeaponDamage(item) * .1f);
@@ -28,6 +29,7 @@ public class TrueStatus : ModAugments {
 public class Terra : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Green;
+		ItemTypeID = ItemID.TerraBlade;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		TerraStrike(player, npc, player.HeldItem, hitInfo);
@@ -62,6 +64,7 @@ public class Terra : ModAugments {
 public class Light : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Pink;
+		ItemTypeID = ItemID.SoulofLight;
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() > .8f)
@@ -76,6 +79,7 @@ public class Light : ModAugments {
 public class Dark : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Purple;
+		ItemTypeID = ItemID.SoulofNight;
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() < .4f)
@@ -90,6 +94,7 @@ public class Dark : ModAugments {
 public class Union : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Bisque;
+		ItemTypeID = ItemID.WorldGlobe;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		float damageIncreasement = 0;
@@ -109,6 +114,7 @@ public class Union : ModAugments {
 public class Ghost : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Wheat;
+		ItemTypeID = ItemID.Ectoplasm;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (!player.immune) {
@@ -121,6 +127,7 @@ public class Ghost : ModAugments {
 public class ExtraLife : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.White;
+		ItemTypeID = ItemID.AngelWings;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);

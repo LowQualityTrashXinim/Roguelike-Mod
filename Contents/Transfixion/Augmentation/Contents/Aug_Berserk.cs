@@ -2,12 +2,14 @@
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Berserk : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.OrangeRed;
+		ItemTypeID = ItemID.AvengerEmblem;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		int chargeNum = acc.Check_ChargeConvertToStackAmount();

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 internal class PaperDefense : ModAugments {
 	public override void SetStaticDefaults() {
-		tooltipColor = Color.Red;
+		tooltipColor = Color.White with { A = 0 };
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		int counter = acc.Check_ChargeConvertToStackAmount();

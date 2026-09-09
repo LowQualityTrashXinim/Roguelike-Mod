@@ -1,11 +1,13 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Terraria;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Vampire : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.DarkRed;
+		ItemTypeID = ItemID.VampireKnives;
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().LifeSteal += 0.01f;

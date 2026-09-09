@@ -878,3 +878,7 @@ calculation that is global and is not debuff specific like accessory or armor.
 709/ Nerfed Nature of Good and Evil relic set.
 710/ Added 5 new relic template and reworked ArcherMasteryTemplate and MagicCostTemplate
 711/ Updated all of the inner name of spoil for better clarification.
+712/ Updated transmutation UI to now included upgrade function for relic.
+713/ Fixed Relic creative menu upon creating relic, the created relic is still linked to the system.
+714/ Refactor transmutation code.
+715/ Finished up the new augmentation system.

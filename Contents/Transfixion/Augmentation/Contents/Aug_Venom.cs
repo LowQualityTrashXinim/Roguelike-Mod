@@ -7,6 +7,10 @@ namespace Roguelike.Contents.Transfixion.Augmentation.Contents;
 public class Venom : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Microsoft.Xna.Framework.Color.Purple;
+		ItemTypeID = ItemID.SpiderFang;
+	}
+	public override int[] UpgradeAvailable() {
+		return base.UpgradeAvailable();
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Venom, ModUtils.ToSecond(Main.rand.Next(1, 3)));
