@@ -33,9 +33,8 @@ public class TransmuteTablet : ModItem {
 		Item.noUseGraphic = true;
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		string keybind = "";
 		List<string> keybindList = ProcessTriggerSystem_Roguelike.Open_TransmutateUI.GetAssignedKeys();
-		keybind = keybindList.FirstOrDefault();
+		string keybind = keybindList.FirstOrDefault();
 		tooltips.Add(new TooltipLine(Mod, "Keybind", string.Format(ModUtils.LocalizationText("Items.TransmuteTablet", "Keybind"), $"[c/{Color.Yellow.Hex3()}:{keybind}]")));
 	}
 	public override bool? UseItem(Player player) {

@@ -2,6 +2,7 @@
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,18 +13,31 @@ public class ReactiveDefenses : ModAugments {
 		tooltipColor = Microsoft.Xna.Framework.Color.MediumBlue;
 		ItemTypeID = ItemID.TurtleShell;
 	}
+	public override int[] UpgradeAvailable() => [ItemID.FrozenTurtleShell, ItemID.CobaltShield, ItemID.BandofRegeneration];
+	public override string Description2(Player player, AugmentsWeapon acc, Item item, string Extra) {
+		string desc = base.Description2(player, acc, item, Extra);
+		switch (Extra) {
+			case "1":
+				return Get_FormattedDescription(acc, desc, ItemID.BandofRegeneration);
+			case "2":
+				return Get_FormattedDescription(acc, desc, ItemID.FrozenTurtleShell);
+			case "3":
+				return Get_FormattedDescription(acc, desc, ItemID.CobaltShield);
+			default:
+				return desc;
+		}
+	}
 	public override void OnHitByNPC(Player player, AugmentsWeapon acc, NPC npc, Player.HurtInfo info) {
 		if (Main.rand.NextBool(3)) {
 			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
-		int chargeNum = acc.Check_ChargeConvertToStackAmount();
-		if (chargeNum >= 1 && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.BandofRegeneration) && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
-		if (chargeNum >= 2 && Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.FrozenTurtleShell) && Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
-		if (chargeNum >= 3 && Main.rand.NextBool(10) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.CobaltShield) && Main.rand.NextBool(10) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
@@ -31,14 +45,13 @@ public class ReactiveDefenses : ModAugments {
 		if (Main.rand.NextBool(3)) {
 			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
-		int chargeNum = acc.Check_ChargeConvertToStackAmount();
-		if (chargeNum >= 1 && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.BandofRegeneration) && Main.rand.NextFloat() <= .15f && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
-		if (chargeNum >= 2 && Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.FrozenTurtleShell) && Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
-		if (chargeNum >= 3 && Main.rand.NextBool(10) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
+		if (acc.AugmentUpgrade.Contains(ItemID.CobaltShield) && Main.rand.NextBool(10) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), ModUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}

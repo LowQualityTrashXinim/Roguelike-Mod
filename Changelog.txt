@@ -882,3 +882,5 @@ calculation that is global and is not debuff specific like accessory or armor.
 713/ Fixed Relic creative menu upon creating relic, the created relic is still linked to the system.
 714/ Refactor transmutation code.
 715/ Finished up the new augmentation system.
+716/ Added a fail safe for getting rarity item.
+717/ Updated all of augmentation contents.

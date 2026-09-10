@@ -63,23 +63,23 @@ Terra: {
 	Description: Your strike have 5% to deal 2nd strike as True damage
 }
 
-Titan: {
-	DisplayName: Titan
+TitanPower: {
+	DisplayName: Titan Power
 	Description: Knock back value are added into base damage
 	Description1: Knock back strength are increased by 5% of weapon damage
 }
 
 Critical: {
 	DisplayName: Critical
-	Description: Increases critical chance by 5 but reduce critical damage by 10%
+	Description: Increases critical chance by 5 and critical damage by 10%
 	Description1: Critical strike ignore 50% of enemy defense
 	Description2: Critically strike a enemy will heal player for 1% of player health
-	Description3: Critical strike will roll again increasing critical strike damage by 100%
+	Description3: Critical strike will roll again to increase critical strike damage by 100%
 }
 
 Vampire: {
 	DisplayName: Vampire
-	Description: Increase Life steal by 1%
+	Description: Increase life steal by 1%
 	Description1: Below 60% health, your critical hit is more fatal
 	Description2: Below 80% health, your regeneration is increases by 25%
 }

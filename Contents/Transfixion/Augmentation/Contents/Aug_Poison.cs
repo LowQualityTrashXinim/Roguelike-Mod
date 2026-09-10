@@ -1,5 +1,6 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 
@@ -9,6 +10,18 @@ public class Poison : ModAugments {
 		tooltipColor = Microsoft.Xna.Framework.Color.PaleGreen;
 		ItemTypeID = ItemID.Bezoar;
 	}
+	public override int[] UpgradeAvailable() => [ItemID.Stinger, ItemID.JungleSpores];
+	public override string Description2(Player player, AugmentsWeapon acc, Item item, string Extra) {
+		string desc = base.Description2(player, acc, item, Extra);
+		switch (Extra) {
+			case "1":
+				return Get_FormattedDescription(acc, desc, ItemID.Stinger);
+			case "2":
+				return Get_FormattedDescription(acc, desc, ItemID.JungleSpores);
+			default:
+				return desc;
+		}
+	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Poisoned, ModUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
@@ -17,24 +30,22 @@ public class Poison : ModAugments {
 			npc.AddBuff(BuffID.Poisoned, ModUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		int chargeNum = acc.Check_ChargeConvertToStackAmount();
 		if (target.HasBuff(BuffID.Poisoned)) {
-			if (chargeNum >= 1) {
+			if (acc.AugmentUpgrade.Contains(ItemID.Stinger)) {
 				modifiers.SourceDamage += .2f;
 			}
-			if (chargeNum >= 2) {
+			if (acc.AugmentUpgrade.Contains(ItemID.JungleSpores)) {
 				modifiers.Knockback += .4f;
 			}
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type! && proj.minion) {
-			int chargeNum = acc.Check_ChargeConvertToStackAmount();
 			if (target.HasBuff(BuffID.Poisoned)) {
-				if (chargeNum >= 1) {
+				if (acc.AugmentUpgrade.Contains(ItemID.Stinger)) {
 					modifiers.SourceDamage += .2f;
 				}
-				if (chargeNum >= 2) {
+				if (acc.AugmentUpgrade.Contains(ItemID.JungleSpores)) {
 					modifiers.Knockback += .4f;
 				}
 			}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,9 +12,18 @@ public class Berserk : ModAugments {
 		tooltipColor = Color.OrangeRed;
 		ItemTypeID = ItemID.AvengerEmblem;
 	}
+	public override int[] UpgradeAvailable() => [ItemID.SoulofFright];
+	public override string Description2(Player player, AugmentsWeapon acc, Item item, string Extra) {
+		string desc = base.Description2(player, acc, item, Extra);
+		switch (Extra) {
+			case "1":
+				return Get_FormattedDescription(acc, desc, ItemID.SoulofFright);
+			default:
+				return desc;
+		}
+	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
-		int chargeNum = acc.Check_ChargeConvertToStackAmount();
-		if (chargeNum >= 1) {
+		if (acc.AugmentUpgrade.Contains(ItemID.SoulofFright)) {
 			if (!player.IsHealthAbovePercentage(.7f)) {
 				player.GetDamage(DamageClass.Generic) += .25f;
 			}

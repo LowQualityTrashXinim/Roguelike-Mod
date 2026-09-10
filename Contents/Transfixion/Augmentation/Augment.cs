@@ -42,7 +42,6 @@ public class AugmentsWeapon : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public int Augment = -1;
 	public int[] AugmentUpgrade = new int[5];
-	protected int AugmentCharge = -1;
 	public static void SetAugments<T>(ref Item item) where T : ModAugments {
 		if (!item.accessory) {
 			return;
@@ -70,20 +69,9 @@ public class AugmentsWeapon : GlobalItem {
 			acc.Augment = type;
 		}
 	}
-	public int Check_ChargeConvertToStackAmount() {
-		int Amount = AugmentCharge;
-		if (AugmentCharge >= 4) {
-			return Amount;
-		}
-		else if (AugmentCharge == 0) {
-			return 0;
-		}
-		return Amount + 1;
-	}
 	public override GlobalItem NewInstance(Item target) {
 		if (target.TryGetGlobalItem(out AugmentsWeapon acc)) {
 			acc.Augment = -1;
-			acc.AugmentCharge = -1;
 			Array.Fill(AugmentUpgrade, 0);
 		}
 		return base.NewInstance(target);
@@ -92,7 +80,6 @@ public class AugmentsWeapon : GlobalItem {
 		var clone = (AugmentsWeapon)base.Clone(from, to);
 		if (from.TryGetGlobalItem(out AugmentsWeapon acc)) {
 			clone.Augment = acc.Augment;
-			clone.AugmentCharge = acc.AugmentCharge;
 			Array.Copy(acc.AugmentUpgrade, clone.AugmentUpgrade, 5);
 		}
 		return clone;

@@ -219,16 +219,11 @@ public class DivineHammerUIState : UIState {
 				AccAugmentSlot.drawInfo.Hide = true;
 			}
 			else {
-				if (Main.mouseItem.type == ItemID.None) {
-					AccAugmentSlot.drawInfo.Hide = false;
-				}
+				AccAugmentSlot.drawInfo.Hide = false;
 			}
 		}
 		else if (listeningElement.UniqueId == AccSacrificeAugmentSlot.UniqueId) {
-			Item item = Main.mouseItem;
-			if (item.type != ItemID.None && item.ModItem is Augmentation) {
-				ModUtils.SimpleItemMouseExchange(player, ref AccSacrificeAugmentSlot.item);
-			}
+			ModUtils.SimpleItemMouseExchange(player, ref AccSacrificeAugmentSlot.item);
 		}
 		else if (listeningElement.UniqueId == AccAugmentResult.UniqueId) {
 			Item item = Main.mouseItem;

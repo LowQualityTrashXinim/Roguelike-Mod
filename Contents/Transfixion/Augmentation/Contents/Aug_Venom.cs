@@ -1,5 +1,6 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 
@@ -9,8 +10,17 @@ public class Venom : ModAugments {
 		tooltipColor = Microsoft.Xna.Framework.Color.Purple;
 		ItemTypeID = ItemID.SpiderFang;
 	}
-	public override int[] UpgradeAvailable() {
-		return base.UpgradeAvailable();
+	public override int[] UpgradeAvailable() => [ItemID.VenomStaff, ItemID.VialofVenom];
+	public override string Description2(Player player, AugmentsWeapon acc, Item item, string Extra) {
+		string desc = base.Description2(player, acc, item, Extra);
+		switch (Extra) {
+			case "1":
+				return Get_FormattedDescription(acc, desc, ItemID.VenomStaff);
+			case "2":
+				return Get_FormattedDescription(acc, desc, ItemID.VialofVenom);
+			default:
+				return desc;
+		}
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Venom, ModUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -20,24 +30,22 @@ public class Venom : ModAugments {
 			npc.AddBuff(BuffID.Venom, ModUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		int chargeNum = acc.Check_ChargeConvertToStackAmount();
 		if (target.HasBuff(BuffID.Venom)) {
-			if (chargeNum >= 1) {
+			if (acc.AugmentUpgrade.Contains(ItemID.VenomStaff)) {
 				modifiers.SourceDamage += .2f;
 			}
-			if (chargeNum >= 2) {
+			if (acc.AugmentUpgrade.Contains(ItemID.VialofVenom)) {
 				modifiers.Knockback += .4f;
 			}
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type && !proj.minion) {
-			int chargeNum = acc.Check_ChargeConvertToStackAmount();
 			if (target.HasBuff(BuffID.Venom)) {
-				if (chargeNum >= 1) {
+				if (acc.AugmentUpgrade.Contains(ItemID.VenomStaff)) {
 					modifiers.SourceDamage += .2f;
 				}
-				if (chargeNum >= 2) {
+				if (acc.AugmentUpgrade.Contains(ItemID.VialofVenom)) {
 					modifiers.Knockback += .4f;
 				}
 			}

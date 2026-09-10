@@ -520,6 +520,9 @@ namespace Roguelike.Common.Utils {
 			if (!string.IsNullOrEmpty(HoverText) && IsMouseHovering) {
 				Main.instance.MouseText(HoverText);
 			}
+			if(drawInfo.Hide) {
+				return;
+			}
 			if (postTex != null) {
 				Vector2 origin2 = innerTex.Size() * .5f;
 				Vector2 drawpos = this.GetInnerDimensions().Position();

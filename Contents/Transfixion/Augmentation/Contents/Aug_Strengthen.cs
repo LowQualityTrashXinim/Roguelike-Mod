@@ -26,7 +26,6 @@ public class Strengthen : ModAugments {
 		}
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
-		int charge = acc.Check_ChargeConvertToStackAmount();
 		var stathandle = player.ModPlayerStats();
 		float multiplier = 1;
 		multiplier += acc.AugmentUpgrade.Where(i =>
