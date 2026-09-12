@@ -308,6 +308,7 @@ public class GeneralBuilderToolUI : UIState {
 			local.Set_Structure(GenerationHelper.SaveStructure_Local(new Rectangle(point.X, point.Y, width, height)));
 		}
 		else {
+			Main.NewText("Copied");
 			local = GenerationHelper.SaveStructure_Local(new Rectangle(point.X, point.Y, width, height));
 		}
 	}

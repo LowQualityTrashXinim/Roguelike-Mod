@@ -42,7 +42,9 @@ internal class FleshChamberStructure : ModSystem {
 		if (player.Center.IsCloseToPosition(Pos_structure.Center().ToWorldCoordinates(), 1500)) {
 			if (!IsWithinRange) {
 				var worldPos = (Pos_structure.Location + Point_ModObject).ToWorldCoordinates();
-				ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_Eye>());
+				if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<Sealed_Eye>())) {
+					ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_Eye>());
+				}
 			}
 			IsWithinRange = true;
 		}
@@ -53,7 +55,7 @@ internal class FleshChamberStructure : ModSystem {
 }
 public class Fix_SusEye : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return entity.type == ItemID.SlimeCrown;
+		return entity.type == ItemID.SuspiciousLookingEye;
 	}
 	public override bool CanUseItem(Item item, Player player) {
 		return (ModContent.GetInstance<FleshChamberStructure>().Pos_structure.Center.ToWorldCoordinates() - player.Center).LengthSquared() <= 360000;
@@ -88,18 +90,20 @@ public class Sealed_Eye : NPCSealedObject {
 			frameCounter = ModUtils.Safe_SwitchValue(frameCounter, 3);
 			Counter = 0;
 		}
-		if (NPC.downedBoss1 || NPC.AnyNPCs(NPCID.EyeofCthulhu)) {
+		if (NPC.downedBoss1 || NPC.AnyNPCs(NPCID.EyeofCthulhu) || !ModContent.GetInstance<FleshChamberStructure>().IsWithinRange) {
 			Kill();
 		}
 	}
 	public override void Inner_Draw(SpriteBatch spritebatch) {
 		Main.instance.LoadNPC(NPCTypeToFollow);
 		var texture = TextureAssets.Npc[NPCTypeToFollow].Value;
-		var origin = texture.Size() * .5f;
-		var drawpos = position - Main.screenPosition + origin * .75f;
+		Vector2 size = texture.Size();
+		var origin = new Vector2(size.X, size.Y / (float)frame) * .5f;
+
+		var drawpos = position - Main.screenPosition;
 		var color = Color.White;
 		frameCounter = Math.Clamp(frameCounter, 0, frame);
-		spritebatch.Draw(texture, drawpos, texture.Frame(1, frame, 0, frameCounter), color, 0, origin, 1f, SpriteEffects.None, 1);
-		BasicSealAuraEffect(spritebatch, AuraCounter, Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / frame * .5f, Color.IndianRed, 4f);
+		spritebatch.Draw(texture, drawpos - origin, texture.Frame(1, frame, 0, frameCounter), color, 0, origin, 1f, SpriteEffects.None, 1);
+		BasicSealAuraEffect(spritebatch, AuraCounter, -origin, Color.IndianRed, 4f);
 	}
 }

@@ -12,7 +12,7 @@ internal class PaperDefense : ModAugments {
 		tooltipColor = Color.White with { A = 0 };
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, Item item) {
-		int counter = 2
+		int counter = 2;
 		var handle = player.ModPlayerStats();
 		handle.UpdateDefenseBase.Base += 1;
 		var paper = player.GetModPlayer<PaperDefense_ModPlayer>();

@@ -444,15 +444,14 @@ internal static partial class GenerationHelper {
 		}
 	}
 	public static Structure_Local SaveStructure_Local(Rectangle target) {
-		Tile[] tiles = new Tile[target.Width * target.Height];
-		int count = -1;
-		for (int x = target.X; x < target.X + target.Width; x++) {
-			for (int y = target.Y; y < target.Y + target.Height; y++) {
+		List<Tile> tiles = new();
+		for (int x = target.X; x <= target.X + target.Width; x++) {
+			for (int y = target.Y; y <= target.Y + target.Height; y++) {
 				//Since this just saving, it is completely fine to be slow
-				tiles[++count] = Framing.GetTileSafely(x, y);
+				tiles.Add(Framing.GetTileSafely(x, y));
 			}
 		}
-		Structure_Local local = new(target.Width, target.Height, tiles);
+		Structure_Local local = new(target.Width + 1, target.Height + 1, tiles.ToArray());
 		return local;
 	}
 	public static void Create_WorldBiome(int width, int height, BiomeDataBundle bundle) {

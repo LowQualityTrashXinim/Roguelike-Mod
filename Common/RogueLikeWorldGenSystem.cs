@@ -8,6 +8,7 @@ using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.IO;
 using System.Text;
 using Terraria;
@@ -544,6 +545,7 @@ public class Structure_Local {
 		if (tile == null) {
 			return;
 		}
+		Dictionary<Point, Tile> placingFurniture = new();
 		int count = -1;
 		for (int i = 0; i < Width; i++) {
 			for (int j = 0; j < Height; j++) {
@@ -551,16 +553,27 @@ public class Structure_Local {
 				int counterY = Y + j;
 				Tile data = tile[++count];
 				Tile main = Main.tile[counterX, counterY];
-				main.CopyFrom(data);
-				WorldGen.SquareTileFrame(counterX, counterY);
+				if (!Main.tileNoAttach[main.TileType] && Main.tileFrameImportant[main.TileType]) {
+					main.CopyFrom(data);
+					WorldGen.SquareTileFrame(counterX, counterY);
+				}
+				else {
+					placingFurniture.Add(new Point(counterX, counterY), data);
+				}
 				WorldGen.SquareWallFrame(counterX, counterY);
 			}
+		}
+		foreach (Point point in placingFurniture.Keys) {
+			Tile main = Main.tile[point.X, point.Y];
+			Tile data = placingFurniture[point];
+			main.CopyFrom(data);
 		}
 	}
 	public void GenerateStructureFlipHorizontal(int X, int Y) {
 		if (tile == null) {
 			return;
 		}
+		Dictionary<Point, Tile> placingFurniture = new();
 		int count = -1;
 		for (int i = Width - 1; i >= 0; i--) {
 			for (int j = 0; j < Height; j++) {
@@ -569,9 +582,20 @@ public class Structure_Local {
 				Tile data = tile[++count];
 				Tile main = Main.tile[counterX, counterY];
 				main.CopyFrom(data);
-				WorldGen.SquareTileFrame(counterX, counterY);
+				if (!Main.tileNoAttach[data.TileType] && !Main.tileFrameImportant[data.TileType] || TileID.Sets.Platforms[main.TileType]) {
+					WorldGen.SquareTileFrame(counterX, counterY);
+				}
+				else {
+					placingFurniture.Add(new Point(counterX, counterY), data);
+				}
 				WorldGen.SquareWallFrame(counterX, counterY);
 			}
+		}
+		foreach (Point point in placingFurniture.Keys) {
+			Tile main = Main.tile[point.X, point.Y];
+			Tile data = placingFurniture[point];
+			main.CopyFrom(data);
+			WorldGen.SquareTileFrame(point.X, point.Y, false);
 		}
 	}
 	public void GenerateStructureFlipVertical(int X, int Y) {
@@ -586,7 +610,9 @@ public class Structure_Local {
 				Tile data = tile[++count];
 				Tile main = Main.tile[counterX, counterY];
 				main.CopyFrom(data);
-				WorldGen.SquareTileFrame(counterX, counterY);
+				if (!Main.tileNoAttach[main.TileType] && !Main.tileFrameImportant[main.TileType] || TileID.Sets.Platforms[main.TileType]) {
+					WorldGen.SquareTileFrame(counterX, counterY);
+				}
 				WorldGen.SquareWallFrame(counterX, counterY);
 			}
 		}
@@ -603,7 +629,9 @@ public class Structure_Local {
 				Tile data = tile[++count];
 				Tile main = Main.tile[counterX, counterY];
 				main.CopyFrom(data);
-				WorldGen.SquareTileFrame(counterX, counterY);
+				if (!Main.tileNoAttach[main.TileType] && !Main.tileFrameImportant[main.TileType] || TileID.Sets.Platforms[main.TileType]) {
+					WorldGen.SquareTileFrame(counterX, counterY);
+				}
 				WorldGen.SquareWallFrame(counterX, counterY);
 			}
 		}

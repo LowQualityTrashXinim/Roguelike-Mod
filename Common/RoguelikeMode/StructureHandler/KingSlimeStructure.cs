@@ -41,8 +41,10 @@ internal class KingSlimeStructure : ModSystem {
 		var player = Main.LocalPlayer;
 		if (player.Center.IsCloseToPosition(Pos_KSstructure.Center().ToWorldCoordinates(), 1500)) {
 			if (!IsWithinRange) {
-				var worldPos = (Pos_KSstructure.Location + Point_ModObject_KingSlime).ToWorldCoordinates();
-				ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_KingSlime>());
+				if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<Sealed_KingSlime>())) {
+					var worldPos = (Pos_KSstructure.Location + Point_ModObject_KingSlime).ToWorldCoordinates();
+					ModObject.NewModObject(worldPos, Vector2.Zero, ModObject.GetModObjectType<Sealed_KingSlime>());
+				}
 			}
 			IsWithinRange = true;
 		}

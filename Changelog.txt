@@ -884,3 +884,10 @@ calculation that is global and is not debuff specific like accessory or armor.
 715/ Finished up the new augmentation system.
 716/ Added a fail safe for getting rarity item.
 717/ Updated all of augmentation contents.
+718/ Fixed critical bugs with handling Mod Object in roguelike world ( in structure handle folder ).
+719/ Updated Corruption realm generation.
+720/ Fixed a bug with copy and paste function ( mainly the local structure saver ).
+721/ Fixed a critical error that causes Eye container to be duplicated in roguelike world.
+722/ Same as change log 721 but for king slime
+723/ Updated Structure_Local placing structure function to better support tile.
+724/ Preparing foundation for Mod command.
