@@ -2,14 +2,68 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Consumable.Scrolls;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Systems.NightmareMode;
 internal class NightmareModeSystem : ModSystem {
+	public override void Load() {
+		On_NPC.NewNPC += On_NPC_NewNPC;
+	}
+
+	private int On_NPC_NewNPC(On_NPC.orig_NewNPC orig, IEntitySource source, int X, int Y, int Type, int Start, float ai0, float ai1, float ai2, float ai3, int Target) {
+		int whoAmI = orig(source, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target);
+		NPC npc = Main.npc[whoAmI];
+		if (npc.boss || npc.friendly || npc.life <= 5 || Type == NPCID.TargetDummy) {
+			return whoAmI;
+		}
+		else {
+			if (source.Context != "MassSpawn") {
+				if (Main.rand.NextBool(10)) {
+					IEntitySource subsource = new EntitySource_Misc("MassSpawn");
+					int amount = Main.rand.Next(4, 10);
+					for (int i = 0; i < amount; i++) {
+						NPC.NewNPC(subsource, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target);
+					}
+				}
+			}
+		}
+		return whoAmI;
+	}
+
+	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		base.ModifyWorldGenTasks(tasks, ref totalWeight);
+		if (!Main.masterMode) {
+			Main.ActiveWorldFileData.GameMode = GameModeID.Master;
+		}
+	}
+	public int Cooldown = 0;
 	public override void PostUpdateEverything() {
+		bool AnyBossAlive = ModUtils.IsAnyVanillaBossAlive();
+		if (AnyBossAlive) {
+			Cooldown = ModUtils.CountDown(Cooldown);
+			if (Cooldown <= 0) {
+				Cooldown = ModUtils.ToSecond(Main.rand.Next(30, 40));
+			}
+			else {
+				return;
+			}
+			Player player = Main.LocalPlayer;
+			if (Main.hardMode) {
+				ModObject.NewModObject(new EntitySource_Misc("Misc"), player.Center + Main.rand.NextVector2CircularEdge(300, 300), Vector2.Zero, ModObject.GetModObjectType<CelestialPortal>());
+			}
+			else {
+				ModObject.NewModObject(new EntitySource_Misc("Misc"), player.Center + Main.rand.NextVector2CircularEdge(300, 300), Vector2.Zero, ModObject.GetModObjectType<HellSpawnObject>());
+			}
+		}
+		else {
+			Cooldown = 0;
+		}
 	}
 }
 public class CelestialPortal : ModObject {
