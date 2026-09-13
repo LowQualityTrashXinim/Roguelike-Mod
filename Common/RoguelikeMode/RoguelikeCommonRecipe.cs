@@ -17,12 +17,8 @@ namespace Roguelike.Common.RoguelikeMode {
 			recipe.Register();
 		}
 		public override void PostAddRecipes() {
-			var config = ModContent.GetInstance<RogueLikeConfig>();
 			foreach (var recipe in Main.recipe) {
 				SynergyRecipe(recipe);
-				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					BossRush_Recipe(recipe);
-				}
 			}
 		}
 		private void SynergyRecipe(Recipe recipe) {

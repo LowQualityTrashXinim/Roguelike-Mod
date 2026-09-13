@@ -31,7 +31,7 @@ public class Strengthen : ModAugments {
 		multiplier += acc.AugmentUpgrade.Where(i =>
 		i == ItemID.MoonStone
 		|| i == ItemID.SunStone).Count();
-		multiplier += acc.AugmentUpgrade.Contains(ItemID.CelestialShell) ? 1.5f : 0;
+		multiplier += acc.AugmentUpgrade.Contains(ItemID.CelestialStone) ? 1.5f : 0;
 		multiplier += acc.AugmentUpgrade.Contains(ItemID.CelestialShell) ? 2 : 0;
 
 		stathandle.AddStatsToPlayer(PlayerStats.PureDamage, 1.03f * multiplier);

@@ -190,9 +190,6 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeGroup = null;
 		StaticNoise255x255 = null;
 	}
-	public override void PreSaveAndQuit() {
-		PlayerPos_WorldCood = Main.LocalPlayer.Center;
-	}
 	public override void Load() {
 	}
 	public static int GridPart_X = Main.maxTilesX / 24;
@@ -200,16 +197,14 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-			return;
+		if (RoguelikeWorldProperty.RoguelikeWorld) {
+			tasks.ForEach(g => g.Disable());
+			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
-		tasks.ForEach(g => g.Disable());
-		tasks.AddRange(((ITaskCollection)this).Tasks);
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
 	public static List<Rectangle> TrialArea = new();
 	private Dictionary<string, Rectangle> StructureLocation = new();
-	public Vector2 PlayerPos_WorldCood = Vector2.Zero;
 	public void SaveStructureLocation(string structureName, Rectangle location) {
 		if (StructureLocation.ContainsKey(structureName)) {
 			StructureLocation[structureName] = location;
@@ -227,7 +222,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 	}
 	public override void SaveWorldData(TagCompound tag) {
-		tag["PlayerPos_WorldCood"] = PlayerPos_WorldCood;
+		if (ModUtils.Is_EnteringOrInASubWorld()) {
+			return;
+		}
 		if (Biome == null) {
 			return;
 		}
@@ -238,11 +235,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["TrialArea"] = TrialArea;
 		tag["ForestZone"] = ForestZone;
 
-
 		StructureLocation.Clear();
 	}
 	public override void LoadWorldData(TagCompound tag) {
-		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
+		if (ModUtils.Is_EnteringOrInASubWorld()) {
+			return;
+		}
 		var Type = tag.Get<List<short>>("BiomeType");
 		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
 		var StructureName = tag.Get<List<string>>("StructureName");
@@ -433,6 +431,9 @@ public partial class RogueLikeWorldGen {
 	bool IsUsingHorizontal = false;
 	int offsetcount = 0;
 	int additionaloffset = -1;
+	/// <summary>
+	/// Under no any circumstances change this
+	/// </summary>
 	public string[] BiomeMapping = new string[24 * 24];
 
 	/// <summary>

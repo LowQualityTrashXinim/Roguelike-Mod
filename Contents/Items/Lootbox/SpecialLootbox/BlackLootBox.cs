@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Systems;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
@@ -52,7 +53,7 @@ namespace Roguelike.Contents.Items.Lootbox.SpecialLootbox {
 						break;
 				}
 			}
-			if (Main.rand.NextBool(25) && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || Main.rand.NextBool(100)) {
+			if (Main.rand.NextBool(25) && RoguelikeWorldProperty.BossRushWorld || Main.rand.NextBool(100)) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
 			}
 			switch (Main.rand.Next(11)) {

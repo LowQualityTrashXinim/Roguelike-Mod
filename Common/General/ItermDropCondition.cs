@@ -44,10 +44,7 @@ namespace Roguelike.Common.General {
 	public class GitGudMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
-					&& (
-					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| info.player.IsDebugPlayer());
+				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0;
 			}
 			return false;
 		}
@@ -57,10 +54,7 @@ namespace Roguelike.Common.General {
 	public class DontHitBoss : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return !info.player.GetModPlayer<ModdedPlayer>().ItemIsUsedDuringBossFight
-					&& (
-					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| info.player.IsDebugPlayer());
+				return !info.player.GetModPlayer<ModdedPlayer>().ItemIsUsedDuringBossFight;
 			}
 			return false;
 		}
@@ -70,33 +64,28 @@ namespace Roguelike.Common.General {
 	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1
-					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 3
-					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5
-					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 8
-					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 10;
+				if (RoguelikeWorldProperty.BossRushWorld || RoguelikeWorldProperty.RoguelikeWorld) {
+					return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1
+						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 3
+						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5
+						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 8
+						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 10;
+				}
+				else {
+					return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count > 0 && info.npc.boss;
+				}
+
 			}
 			return false;
 		}
 		public bool CanShowItemDropInUI() => false;
 		public string GetConditionDescription() => "";
 	}
-	public class SkillUnlockRule : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count >= 3 && info.player.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot <= 9 &&
-					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "";
-	}
 	public class LifeCrystalDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return info.player.ConsumedLifeCrystals < Player.LifeCrystalMax &&
-					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+					RoguelikeWorldProperty.BossRushWorld;
 			}
 			return false;
 		}
@@ -109,7 +98,7 @@ namespace Roguelike.Common.General {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return info.player.ConsumedManaCrystals < Player.ManaCrystalMax &&
-					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+					RoguelikeWorldProperty.BossRushWorld;
 			}
 			return false;
 		}

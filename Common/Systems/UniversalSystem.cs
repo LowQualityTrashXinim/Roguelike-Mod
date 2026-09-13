@@ -55,24 +55,11 @@ internal class UniversalSystem : ModSystem {
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
+
 	/// <summary>
-	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
-	/// </summary>
-	/// <param name="player"></param>
-	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
-	/// <returns></returns>
-	public static bool CanAccessContent(Player player, string context) {
-		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (context == HELLISH_MODE)
-			return config.HellishEndeavour;
-		if (context == BOSSRUSH_MODE)
-			return config.BossRushMode;
-		if (player.difficulty != PlayerDifficultyID.Hardcore)
-			return false;
-		return false;
-	}
-	/// <summary>
-	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
+	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="RogueLikeConfig"/><br/>
+	/// Only use this in location where you know world generation take place after the logic<br/>
+	/// And even so, it is highly not recommend to not do so
 	/// </summary>
 	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
@@ -211,7 +198,7 @@ internal class UniversalSystem : ModSystem {
 		UI_BRmodifier = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if (!CanAccessContent(BOSSRUSH_MODE)) {
+		if (!RoguelikeWorldProperty.BossRushWorld && !RoguelikeWorldProperty.RoguelikeWorld) {
 			orig();
 		}
 		else {

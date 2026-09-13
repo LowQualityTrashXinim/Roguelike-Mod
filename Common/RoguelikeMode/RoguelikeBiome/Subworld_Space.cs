@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode.RoguelikeBiome.GeneralGenPassess;
 using Roguelike.Common.Utils;
 using SubworldLibrary;
@@ -19,6 +20,9 @@ internal class Subworld_Space : Subworld {
 			new GeneralGenPass_PlayerSpawnLocaltion(.5f, .8f),
 			new GenPass_Space("Generating Space",0),
 		};
+	public override void OnExit() {
+		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
+	}
 }
 public class GenPass_Space : GenPass {
 	public GenPass_Space(string name, double loadWeight) : base(name, loadWeight) {

@@ -30,21 +30,6 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 	public SlotId insideBlizzardSound = SlotId.Invalid;
 	public float shaderdeerclop = 0;
 	public float strongblizzVol = 1f;
-	public override void OnEnterWorld() {
-		var gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		if (Main.ActiveWorldFileData.GameMode != GameModeID.Creative && RoguelikeWorldProperty.RoguelikeWorld && SubworldSystem.Current == null) {
-			if (ModContent.GetInstance<UniversalSystem>().UniqueWorldPlayerID == Player.GetModPlayer<UniversalPlayer>().UniqueWorldID && gen.PlayerPos_WorldCood != Vector2.Zero) {
-				Player.Center = gen.PlayerPos_WorldCood;
-				Player.fallStart = (int)(gen.PlayerPos_WorldCood.X / 16f);
-				Player.oldPosition = Player.Center;
-				Player.teleportTime = 1f;
-				Player.ForceUpdateBiomes();
-			}
-			if (gen.BiomeMapping[0] == null) {
-				ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
-			}
-		}
-	}
 	public int Space_Counter = 0;
 	public override void ResetEffects() {
 		CurrentBiome.Clear();
@@ -646,6 +631,9 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 }
 internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+		if(!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
+			return;
+		}
 		if (RoguelikeWorldProperty.RoguelikeWorld) {
 			pool.Clear();
 		}

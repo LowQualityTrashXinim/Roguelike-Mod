@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Systems;
 using Roguelike.Common.RoguelikeMode.StructureHandler;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeStructureHandler : ModSystem {
@@ -16,7 +17,7 @@ internal class RoguelikeStructureHandler : ModSystem {
 	const int FailSafe = 9999;
 	int CD = 0;
 	public override void PreUpdateProjectiles() {
-		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+		if(RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (SubworldSystem.Current != null) {

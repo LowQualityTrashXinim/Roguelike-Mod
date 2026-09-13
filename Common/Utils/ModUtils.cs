@@ -99,6 +99,15 @@ namespace Roguelike.Common.Utils {
 				}
 			}
 		}
+		/// <summary>
+		/// Check whenever or not if player are currently entering a subworld<br/>
+		/// This is to prevent normal world setting logic
+		/// </summary>
+		/// <returns>
+		/// <b>True</b> if player are currently in a subworld or is entering once<br/>
+		/// <b>False</b> if player aren't in any subworld
+		/// </returns>
+		public static bool Is_EnteringOrInASubWorld() => SubworldSystem.Current != null;
 		public static string LocalizationText(string text, string extra = null) {
 			string localizationKey;
 			if (string.IsNullOrEmpty(extra)) {

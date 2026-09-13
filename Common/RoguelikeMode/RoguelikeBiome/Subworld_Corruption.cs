@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.RoguelikeMode;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.RoguelikeMode.RoguelikeBiome.GeneralGenPassess;
 using Roguelike.Common.Utils;
 using SubworldLibrary;
@@ -20,6 +21,10 @@ internal class Subworld_Corruption : Subworld {
 			new GenPass_CorruptionSurface("Generating corrupted surface", 0),
 			new GenPass_ApplyingCorruptedStone("Placing stone", 0)
 		};
+
+	public override void OnExit() {
+		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
+	}
 }
 public class GenPass_CorruptionSW : GenPass {
 	public GenPass_CorruptionSW(string name, double loadWeight) : base(name, loadWeight) {
@@ -77,11 +82,11 @@ public class GenPass_ApplyingCorruptedStone : GenPass {
 	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 		int PlayerSpawnYPos = Main.spawnTileY + 50;
 		int FarOffSet = PlayerSpawnYPos + 200;
-		int amount = RogueLikeWorldGen.Rand.Next(30,50);
+		int amount = RogueLikeWorldGen.Rand.Next(30, 50);
 		for (int i = 0; i < amount; i++) {
 
 			WorldGen.TileRunner(Main.rand.Next(20, Main.maxTilesX - 19), Main.rand.Next(PlayerSpawnYPos, FarOffSet),
-				WorldGen.genRand.NextFloat(50), Main.rand.Next(10, 50), TileID.Ebonstone, 
+				WorldGen.genRand.NextFloat(50), Main.rand.Next(10, 50), TileID.Ebonstone,
 				speedX: WorldGen.genRand.NextFloat(),
 				speedY: WorldGen.genRand.NextFloat());
 		}

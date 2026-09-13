@@ -891,3 +891,6 @@ calculation that is global and is not debuff specific like accessory or armor.
 722/ Same as change log 721 but for king slime
 723/ Updated Structure_Local placing structure function to better support tile.
 724/ Preparing foundation for Mod command.
+725/ Added Terraria Mode ( what ?? ).
+726/ Patched up the mod overall mode logic.
+727/ Fixed subworld not returning player to their original position before entering subworld.

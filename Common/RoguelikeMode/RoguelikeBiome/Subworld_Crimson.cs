@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.RoguelikeMode;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using SubworldLibrary;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using Terraria.IO;
 using Terraria.WorldBuilding;
 
@@ -19,6 +21,9 @@ internal class Subworld_Crimson : Subworld {
 		new() {
 			new GenPass_CrimsonSW("Generating Crimson",0)
 		};
+	public override void OnExit() {
+		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
+	}
 }
 public class GenPass_CrimsonSW : GenPass {
 	public GenPass_CrimsonSW(string name, double loadWeight) : base(name, loadWeight) {

@@ -7,6 +7,8 @@ namespace Roguelike.Common.General {
 
 		[Header($"GameModeHeader")]
 		[DefaultValue(true)]
+		public bool TerrariaMode{ get; set; }
+		[DefaultValue(false)]
 		public bool BossRushMode { get; set; }
 		[ReloadRequired]
 		[DefaultValue(false)]

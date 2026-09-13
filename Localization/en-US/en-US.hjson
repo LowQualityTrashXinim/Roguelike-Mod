@@ -4432,6 +4432,20 @@ Mods: {
 					GameHeader: Game option
 				}
 
+				TerrariaMode: {
+					Label: Terraria mode
+					Tooltip:
+						'''
+						The normal terraria experience but with this mod contents !
+						[+] Most of the story, quest, and exploreable structures is locked.
+						[+] Enjoy a normal playthrough of the mod in vanilla setting :)
+						[+] Most contents are adjusted, and trying to enable other mode in the same category 
+						will automatically disable
+						[+] Mod's achievement is also disable when playing in this setting
+						[+] Most secret is also disable when playing in this setting.
+						'''
+				}
+
 				BossRushMode: {
 					Label: Boss Rush Mode
 					Tooltip:

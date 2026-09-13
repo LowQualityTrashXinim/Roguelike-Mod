@@ -40,7 +40,7 @@ namespace Roguelike.Common.Global {
 
 		public int HowManyBossIsAlive = 0;
 		public bool ItemIsUsedDuringBossFight = false;
-		
+
 		private Item starterItem = null;
 		public bool UseOnly1ItemSinceTheStartOfTheGame(int type = 0) {
 			if (starterItem == null) {
@@ -60,7 +60,9 @@ namespace Roguelike.Common.Global {
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
 			if (!Player.IsDebugPlayer()) {
-				Player.difficulty = PlayerDifficultyID.Hardcore;
+				if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+					Player.difficulty = PlayerDifficultyID.Hardcore;
+				}
 			}
 			Player.itemAnimation = 0;
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
@@ -139,10 +141,13 @@ namespace Roguelike.Common.Global {
 			}
 			return base.CanUseItem(item);
 		}
-		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia";
-		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
-		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";
-		public bool Secert_PerkOverload => Player.name == "MrPerk";
+		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secert_PerkOverload => Player.name == "MrPerk" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secret_NinjaMode => Player.name == "Ninja" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secret_TrueGod => Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
+		public bool Secret_Druggies => Player.name.ToLower().Trim() == "drugaddict" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			if (UniversalSystem.Check_TotalRNG()) {
 				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
@@ -183,16 +188,16 @@ namespace Roguelike.Common.Global {
 			else {
 				yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			}
-			if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
+			if (Secret_TrueGod) {
 				yield return new Item(ModContent.ItemType<RainbowLootBox>());
 			}
-			if (Player.name.ToLower().Trim() == "drugaddict") {
+			if (Secret_Druggies) {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 			}
 			//if (Player.IsDebugPlayer()) {
 			//	yield return new Item(ModContent.ItemType<MainDebugStick>());
 			//}
-			if (Player.name.Contains("Ninja")) {
+			if (Secret_NinjaMode) {
 				yield return new Item(ItemID.Katana);
 				yield return new Item(ItemID.Shuriken, 100);
 				yield return new Item(ItemID.ThrowingKnife, 100);
@@ -236,7 +241,7 @@ namespace Roguelike.Common.Global {
 		}
 
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
-			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.BOSSRUSH_MODE)) {
+			if (RoguelikeWorldProperty.BossRushWorld) {
 				itemsByMod["Terraria"].Clear();
 			}
 		}

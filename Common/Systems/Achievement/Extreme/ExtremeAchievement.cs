@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.Systems.HellishEndeavour;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.Systems.HellishEndeavour;
 using Terraria;
 
 namespace Roguelike.Common.Systems.Achievement.Extreme;
@@ -9,7 +10,7 @@ public class GodOfChallenge : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
-			&& HellishEndeavorSystem.Hellish()
+			&& RoguelikeWorldProperty.HellishEndeavour
 			&& (Main.expertMode || Main.masterMode);
 	}
 }

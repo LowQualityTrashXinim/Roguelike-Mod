@@ -1,7 +1,9 @@
-﻿using Roguelike.Common.RoguelikeMode;
+﻿using Roguelike.Common.Global;
+using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using SubworldLibrary;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.IO;
 using Terraria.WorldBuilding;
 
@@ -15,6 +17,9 @@ internal class SubWorld_Dungeon : Subworld {
 		new() {
 			new GenPass_DungeonSW("Generating dungeon",0)
 		};
+	public override void OnExit() {
+		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
+	}
 }
 public class GenPass_DungeonSW : GenPass {
 	public GenPass_DungeonSW(string name, double loadWeight) : base(name, loadWeight) {

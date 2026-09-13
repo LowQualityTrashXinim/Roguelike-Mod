@@ -28,7 +28,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			orig(self, onWhichPlayer, sItem);
 		}
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!UniversalSystem.CanAccessContent(self, UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
+			if (!RoguelikeWorldProperty.BossRushWorld || self.difficulty == PlayerDifficultyID.Creative) {
 				orig(self);
 				return;
 			}
@@ -63,11 +63,10 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			}
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				return;
+			if (RoguelikeWorldProperty.BossRushWorld) {
+				tasks.ForEach(g => g.Disable());
+				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}
-			tasks.ForEach(g => g.Disable());
-			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 		public bool IsABossAlive = false;
 		public override void SaveWorldData(TagCompound tag) {
