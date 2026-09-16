@@ -14,9 +14,20 @@ using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Common.Global;
+using Roguelike.Contents.Items.Toggle.Transmutation;
+using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Common.RoguelikeMode {
 	class RoguelikeModifyNPCLoot : GlobalNPC {
+		public override void ModifyShop(NPCShop shop) {
+			if(shop.NpcType == NPCID.GoblinTinkerer) {
+				shop.Add(ModContent.ItemType<TransmuteTablet>(), new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
+				shop.Add(ModContent.ItemType<SkillOrb>(), new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
+				shop.Add(ModContent.ItemType<DivineHammer>(),new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
+			}
+		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			var noHit = new LeadingConditionRule(new GitGudMode());

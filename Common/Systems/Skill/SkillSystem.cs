@@ -789,6 +789,7 @@ public class SkillOrb : ModItem {
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;
 		Item.noUseGraphic = true;
+		Item.value = Item.buyPrice(5);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		string keybind = "";

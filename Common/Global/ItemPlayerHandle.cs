@@ -63,7 +63,6 @@ namespace Roguelike.Common.Global {
 		}
 		public bool CheckVariant() => VariantType >= 0 && VariantType != ModVariant.GetVariantType<None_Var>();
 		public override void OnCreated(Item item, ItemCreationContext context) {
-			item.prefix = 0;
 		}
 		public override void SetDefaults(Item entity) {
 			if (OutroEffect_type == -1) {
@@ -75,7 +74,6 @@ namespace Roguelike.Common.Global {
 					variant.SetDefault(entity);
 				}
 			}
-			entity.prefix = 0;
 		}
 		public override bool CanUseItem(Item item, Player player) {
 			return base.CanUseItem(item, player);

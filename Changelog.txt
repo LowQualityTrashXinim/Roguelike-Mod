@@ -896,3 +896,10 @@ calculation that is global and is not debuff specific like accessory or armor.
 727/ Fixed subworld not returning player to their original position before entering subworld.
 728/ Re-organize all of the logic and world gen and world data property all to one main file.
 729/ Finished up Nightmare mode.
+730/ Added Unholy Trident, NettleBurst and BatScepter enchantment.
+731/ Fixed subworld messing up overworld values.
+732/ Added Holy Flame debuff.
+733/ Added a way to get divine hammer, transmute tablet and skill orb in Terraria mode.
+734/ Added Blizzard Staff, Inferno Fork, ShadowbeamStaff, Razorpine, Crystal Storm and Spectre Staff enchantment.
+735/ Added Cursed Flames, Magnet sphere, Golden Shower, Heat ray and Leaf Blower enchantment.
+736/ After a lot of debating, the lead dev ( Xinim ) decided to readd the vanilla prefix system.

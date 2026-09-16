@@ -581,6 +581,7 @@ Mods: {
 			FrostBrand_Slash_Projectile.DisplayName: Frost Brand_ Slash_ Projectile
 			Roguelike_CookedShrimp_Projectile.DisplayName: Roguelike_ Cooked Shrimp_ Projectile
 			Roguelike_GrapeJuice_ModProjectile.DisplayName: Roguelike_ Grape Juice_ Mod Projectile
+			Enchantment_MagnetOrbProjectile.DisplayName: Enchantment_ Magnet Orb Projectile
 		}
 
 		NPCs: {
@@ -4416,6 +4417,11 @@ Mods: {
 			Roguelike_GrapeJuice_Buff: {
 				DisplayName: Roguelike_ Grape Juice_ Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_GrapeJuice_Buff.Description
+			}
+
+			HolyFlame: {
+				DisplayName: Holy Flame
+				Description: Mods.Roguelike.Buffs.HolyFlame.Description
 			}
 		}
 

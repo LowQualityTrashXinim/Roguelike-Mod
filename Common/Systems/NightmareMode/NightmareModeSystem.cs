@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Consumable.Scrolls;
+using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
@@ -19,7 +22,7 @@ internal class NightmareModeSystem : ModSystem {
 	private int On_NPC_NewNPC(On_NPC.orig_NewNPC orig, IEntitySource source, int X, int Y, int Type, int Start, float ai0, float ai1, float ai2, float ai3, int Target) {
 		int whoAmI = orig(source, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target);
 		NPC npc = Main.npc[whoAmI];
-		if (npc.boss || npc.friendly || npc.life <= 5 || Type == NPCID.TargetDummy) {
+		if (npc.boss || npc.friendly || npc.life <= 5 || Type == NPCID.TargetDummy || !RoguelikeWorldProperty.NightmareWorld) {
 			return whoAmI;
 		}
 		else {
@@ -38,12 +41,15 @@ internal class NightmareModeSystem : ModSystem {
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		base.ModifyWorldGenTasks(tasks, ref totalWeight);
-		if (!Main.masterMode) {
+		if (!Main.masterMode && RoguelikeWorldProperty.NightmareWorld) {
 			Main.ActiveWorldFileData.GameMode = GameModeID.Master;
 		}
 	}
 	public int Cooldown = 0;
 	public override void PostUpdateEverything() {
+		if(!RoguelikeWorldProperty.NightmareWorld) {
+			return;
+		}
 		bool AnyBossAlive = ModUtils.IsAnyVanillaBossAlive();
 		if (AnyBossAlive) {
 			Cooldown = ModUtils.CountDown(Cooldown);
@@ -93,6 +99,35 @@ public class CelestialPortal : ModObject {
 		}
 	}
 	public override void Draw(SpriteBatch spritebatch) {
-		base.Draw(spritebatch);
+		ModUtils.Draw_SetUpToDrawGlowAdditive(spritebatch);
+		Main.instance.LoadProjectile(ProjectileID.PiercingStarlight);
+		Texture2D texture = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawpos = Center - Main.screenPosition;
+		float length = origin.Length();
+		for (int i = 0; i < 4; i++) {
+			float rotationInner = MathHelper.PiOver2 * i + MathHelper.ToRadians(timeLeft);
+			Vector2 drawPos = drawpos.PositionOFFSET(Vector2.UnitX.RotatedBy(rotationInner), length);
+			Color col = Color.White;
+			switch (i) {
+				case 0:
+					col = Color.Orange;
+					break;
+				case 1:
+					col = Color.Cyan;
+					break;
+				case 2:
+					col = Color.Pink;
+					break;
+				case 3:
+					col = Color.SpringGreen;
+					break;
+			}
+			spritebatch.Draw(texture, drawPos, null, col, rotationInner, origin, new Vector2(1, .5f), SpriteEffects.None, 0);
+		}
+		texture = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
+		origin = texture.Size() * .5f;
+		spritebatch.Draw(texture, drawpos, null, Color.White with { A = 50 }, rotation, origin, 2f, SpriteEffects.None, 0);
+		ModUtils.Draw_ResetToNormal(spritebatch);
 	}
 }

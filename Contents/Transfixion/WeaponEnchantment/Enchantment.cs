@@ -67,7 +67,7 @@ namespace Roguelike.Contents.Transfixion.WeaponEnchantment {
 		/// <param name="player"></param>
 		public virtual void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) { }
 		/// <summary>
-		/// This shall make it so that it update when you held the item
+		/// The function make it so that it update when player is helding the item
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="item"></param>

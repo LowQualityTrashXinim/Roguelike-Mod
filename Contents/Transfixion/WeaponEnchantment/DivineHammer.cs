@@ -16,6 +16,7 @@ internal class DivineHammer : ModItem {
 		Item.rare = ItemRarityID.Red;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.UseSound = SoundID.Item37;
+		Item.value = Item.buyPrice(platinum: 10);
 		Item.Set_InfoItem();
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {

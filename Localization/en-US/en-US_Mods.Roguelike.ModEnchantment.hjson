@@ -1097,3 +1097,105 @@ VenomStaff.Description:
 	If your weapon is [i:2188] :
 	+ After 10th shot, shoot out ring of 12 venomous bolts
 	'''
+UnholyTrident.Description:
+	'''
+	+ When shooting, shoot out mini trident at the same time at 35% weapon damage
+	If your weapon is a magic weapon :
+	+ Using magic will also shoot unholy trident at the same time (CD: 1s)
+	( doesn't replaced above effect )
+	+ Increases magic damage by 35% but increases mana cost by 20%
+	If your weapon is [i:683] :
+	+ Unholy trident will inflict various flames debuff along
+	+ Dealing damage to debuffed enemy will deal 1.2x more damage
+	'''
+NettleBurst.Description:
+	'''
+	Hitting enemy with item have 10% chance to spawn a vine
+	Hitting enemy with projectile have 5% chance to spawn a vine
+	'''
+BatScepter.Description:
+	'''
+	When helding this weapon, increases life steal by 1 
+	But decreases weapon damage by 35%
+	If your weapon is a magic weapon :
+	+ Shoot out bat along side attacking
+	If your weapon is [i:1801] :
+	+ Bat shooting out from this weapon heal player for 1 life
+	Have fixed 1s cool down between each heal
+	'''
+BlizzardStaff.Description:
+	'''
+	Shoot out blizzard shard
+	Enhanced blizzard shard shoot from this weapon to inflict frost burn
+	After 100 blizzard shards released:
+	For the next second, releases storm of blizzard shards.
+	'''
+InfernoFork.Description:
+	'''
+	Shoot out powerful inferno explosion deal 500% weapon damage (CD: 5s)
+	Increases weapon damage by 100% but decreases attack speed by 50%
+	Dealing damage to on fire enemy increases damage dealt by 2x
+	'''
+ShadowbeamStaff.Description:
+	'''
+	Shoot shadow beam deal 200% weapon damage (CD: 1.5s)
+	if your weapon is a magic weapon :
+	+ The above cool down is reduced to 1s instead
+	if your weapon is [i:1444] :
+	+ Above effect is ignored but shoot out 2 shadow beam 
+	instead with no cool down but deal 100% weapon damage
+	'''
+SpectreStaff.Description:
+	'''
+	If your weapon is not a magic weapon :
+	+ Replace your magic projectile with lost soul
+	Otherwise :
+	+ Shoot lost soul along with your weapon
+	'''
+Razorpine.Description:
+	'''
+	Increases weapon attack speed by 25%
+	If your weapon is a magic weapon :
+	+ Occasionally shoots out pine along side your attack
+	+ Increases weapon attack speed by 25%
+	'''
+CrystalStorm.Description:
+	'''
+	Decreases mana cost by 15%
+	Dealing damage to enemy spawn magical crystal shards around the target
+	When missing mana, player releases crystal shard surround them for 3s (CD: 5s)
+	'''
+CursedFlames.Description:
+	'''
+	Increases mana cost by 35%
+	Increases damage by 47% when hitting a enemy have cursed inferno
+	Every 5th shot, shoot out a cursed ball
+	Consume 5 mana to increases fire cursed damage by 20
+	'''
+MagnetSphere.Description:
+	'''
+	Create a magical magnet sphere that follow player
+	The magnet sphere update damage dynamically base on weapon damage
+	There can only 1 magnet sphere alive at all time
+	'''
+GoldenShower.Description:
+	'''
+	Your attack will always inflict ichor debuff
+	When attacking with weapon, ichor shot are created and shoot randomly
+	Ichor shot damage are massively increased when hitting enemy with ichor debuff
+	'''
+LeafBlower.Description:
+	'''
+	Have 10% chance to shoot leaf while shooting
+	If your weapon is a magic weapon :
+	+ Have 33% chance to shoot leaf while shooting
+	If your weapon is [i:1178] :
+	+ Shoot additional leaf projectile dealing 45% weapon damage
+	'''
+HeatRay.Description:
+	'''
+	Every 0.125s, shoot out heat ray to nearby enemies dealing 35% weapon damage + 10
+	The heat ray will increases damage after each shot like the original weapon
+	if your weapon is [i:1295] :
+	+ Accelerate the damage increases after each shot done by heat ray
+	'''

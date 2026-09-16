@@ -31,6 +31,7 @@ public class TransmuteTablet : ModItem {
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;
 		Item.noUseGraphic = true;
+		Item.value = Item.buyPrice(1);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		List<string> keybindList = ProcessTriggerSystem_Roguelike.Open_TransmutateUI.GetAssignedKeys();
