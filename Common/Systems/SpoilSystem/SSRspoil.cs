@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Contents.Transfixion.Perks;
@@ -176,6 +177,17 @@ internal class SSRspoil {
 		public override void OnChoose(Player player) {
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ItemID.CoinGun);
 			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ItemID.PlatinumCoin, 9999);
+		}
+	}
+	public class SSR_SynergySpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SSR;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.SSRDrop();
+		}
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(new EntitySource_Misc("Spoil"), ModContent.ItemType<SynergyEnergy>());
 		}
 	}
 }

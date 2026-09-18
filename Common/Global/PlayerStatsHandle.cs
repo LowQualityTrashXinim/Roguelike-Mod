@@ -996,6 +996,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 			drawInfo.stealth = 1f;
 			drawInfo.colorDisplayDollSkin = drawInfo.legsGlowColor = drawInfo.armGlowColor = drawInfo.bodyGlowColor = drawInfo.headGlowColor = drawInfo.colorLegs = drawInfo.colorShoes = drawInfo.colorPants = drawInfo.colorUnderShirt = drawInfo.colorShirt = drawInfo.colorBodySkin = drawInfo.colorHead = drawInfo.colorHair = drawInfo.colorEyes = drawInfo.colorEyeWhites = drawInfo.colorArmorLegs = drawInfo.colorArmorBody = drawInfo.colorArmorHead = Color.Transparent;
 			drawInfo.itemColor = Color.Transparent;
+			Player.immuneAlpha = 255;
 		}
 	}
 }

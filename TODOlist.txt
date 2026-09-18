@@ -515,7 +515,6 @@ Note: the monster will has its stats increases by 1% + 1 flat for every minute p
 this mode doesn't count as difficulty increases
 
 28/ Synergy energy alternative obtain method: 
-- Have 50% chance to replace a SSR spoil
 - Synergy lootbox or Black lootbox have 25% to drop synergy energy
 - Rainbow lootbox have 100% chance to drop synergy energy
 

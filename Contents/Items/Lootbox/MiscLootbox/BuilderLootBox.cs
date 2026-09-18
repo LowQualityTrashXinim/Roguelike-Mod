@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Contents.Items.BuilderItem;
 
-namespace Roguelike.Contents.Items.Lootbox {
+namespace Roguelike.Contents.Items.Lootbox.MiscLootbox {
 	internal class BuilderLootBox : ModItem {
 		public override void SetDefaults() {
 			Item.width = 30;

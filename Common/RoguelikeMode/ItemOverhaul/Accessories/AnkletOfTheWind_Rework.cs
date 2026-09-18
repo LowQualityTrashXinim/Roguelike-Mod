@@ -54,13 +54,15 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 			Player.ModPlayerStats().Hide = true;
 			Player.velocity = ReappliedMovement;
 			if (DashTimer == 1) {
-				Player.velocity = Player.velocity * .1f;
+				Player.velocity = Player.velocity * .25f;
 			}
-			Dust dust = Dust.NewDustDirect(Player.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Cloud);
-			dust.noGravity = true;
-			dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.75f, 1.2f);
-			dust.scale = Main.rand.NextFloat(1, 1.4f);
-			dust.color = Color.White with { A = 0 };
+			for (int i = 0; i < 3; i++) {
+				Dust dust = Dust.NewDustDirect(Player.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Cloud);
+				dust.noGravity = true;
+				dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.75f, 1.2f);
+				dust.scale = Main.rand.NextFloat(1, 1.4f) + 1;
+				dust.color = Color.White with { A = 0 };
+			}
 			//Player.eocDash = DashTimer;
 			DashTimer--;
 		}
@@ -111,7 +113,7 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 			Player.immune = true;
 			Player.immuneTime = 2;
 			Player.immuneNoBlink = true;
-			//Player.ModPlayerStats().Hide = true;
+			Player.ModPlayerStats().Hide = true;
 		}
 		AnkletOfTheWind = false;
 	}

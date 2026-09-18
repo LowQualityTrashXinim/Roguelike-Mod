@@ -911,3 +911,5 @@ calculation that is global and is not debuff specific like accessory or armor.
 742/ Reworked Titanium Sword enchantment.
 743/ Fixed a inproper used of a function in Death Sickle enchantment.
 744/ Added Nimbus Rod, Medusa head, Spirit flames enchantment.
+745/ Added Synergy spoil.
+746/ Updated the build number from 0.0.20.0 -> 0.0.20.2 ./.
