@@ -142,7 +142,7 @@ internal class SwordProjectile2 : ModProjectile {
 		ProjectileID.Sets.TrailingMode[Type] = 0;
 		ProjectileID.Sets.TrailCacheLength[Type] = 10;
 	}
-	public override void SetDefaults() {
+	public override sealed void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.penetrate = -1;
 		Projectile.friendly = true;
@@ -153,15 +153,23 @@ internal class SwordProjectile2 : ModProjectile {
 	public int ItemIDtextureValue = ItemID.WoodenSword;
 	Vector2 vel = Vector2.Zero;
 	Vector2 mousePos = Vector2.Zero;
-	public override void OnSpawn(IEntitySource source) {
-		mousePos = Main.MouseWorld;
+	public Vector2 SetPos = Vector2.Zero;
+	public override sealed void OnSpawn(IEntitySource source) {
+		if (ExtraSetting == 0) {
+			mousePos = Main.MouseWorld;
+		}
 	}
 	public float Counter { get => Projectile.ai[0]; set => Projectile.ai[0] = value; }
 	public float State { get => Projectile.ai[1]; set => Projectile.ai[1] = value; }
-	public override bool? CanDamage() {
+	/// <summary>
+	/// Setting this so that you can set your own position of the projectile <br/>
+	/// This is a way to bypass OnSpawn hook
+	/// </summary>
+	public float ExtraSetting { get => Projectile.ai[2]; set => Projectile.ai[2] = value; }
+	public override sealed bool? CanDamage() {
 		return State != 1;
 	}
-	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+	public override sealed bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 		if (Projectile.Center.Y >= mousePos.Y - 50) {
 			return true;
 		}
@@ -169,7 +177,11 @@ internal class SwordProjectile2 : ModProjectile {
 			return false;
 		}
 	}
-	public override void AI() {
+	public override sealed void AI() {
+		if(ExtraSetting > 0) {
+			ExtraSetting--;
+			mousePos = SetPos;
+		}
 		if (State == 1) {
 			if (Projectile.timeLeft > 30) {
 				Projectile.timeLeft = 30;
@@ -194,16 +206,16 @@ internal class SwordProjectile2 : ModProjectile {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		}
 	}
-	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+	public override sealed void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[Projectile.owner];
 
 		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
 		modifiers.HitDirectionOverride = directionTo;
 	}
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+	public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		State = 1;
 	}
-	public override bool OnTileCollide(Vector2 oldVelocity) {
+	public override sealed bool OnTileCollide(Vector2 oldVelocity) {
 		if (State != 1) {
 			State = 1;
 			Projectile.position += Projectile.velocity * 2;
@@ -211,7 +223,7 @@ internal class SwordProjectile2 : ModProjectile {
 		}
 		return false;
 	}
-	public override bool PreDraw(ref Color lightColor) {
+	public override sealed bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);
 		Texture2D texture = ModContent.Request<Texture2D>(ModUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
 		Vector2 origin = texture.Size() * .5f;

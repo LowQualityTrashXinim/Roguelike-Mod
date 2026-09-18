@@ -4,6 +4,7 @@ using Mono.Cecil;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
@@ -947,10 +948,62 @@ public class OrichalcumHalberd : OrichalcumEnchantment {
 	}
 }
 
-public class TitaniumSword : TitaniumEnchantment {
-
+public class TitaniumSword : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TitaniumSword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter3[index] = ModUtils.CountDown(globalItem.Item_Counter3[index]);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 45);
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is SwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+		if (globalItem.Item_Counter3[index] > 0) {
+			return;
+		}
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			globalItem.Item_Counter3[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(5));
+			int damage = player.GetWeaponDamage(item);
+			float knockback = player.GetWeaponKnockback(item);
+			var newpos = new Vector2(target.Center.X, target.Center.Y - 1100) + Main.rand.NextVector2Circular(100, 100);
+			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(item), newpos, (target.Center - newpos).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<AshwoodSwordProjectile>(), damage * 5, knockback, player.whoAmI, 1, 0, 1);
+			Main.projectile[projec].penetrate = 10;
+			Main.projectile[projec].maxPenetrate = 10;
+			Main.projectile[projec].scale += 7;
+
+			globalItem.Item_Counter2[index] = 0;
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 45);
+			Vector2 offsetVel = player.Center - target.Center;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center.PositionOFFSET(offsetVel, 20), Vector2.Zero, ModContent.ProjectileType<SwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[projectile].ModProjectile is SwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+		if (globalItem.Item_Counter3[index] > 0) {
+			return;
+		}
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			globalItem.Item_Counter3[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(5));
+			int damage = player.GetWeaponDamage(player.HeldItem);
+			float knockback = player.GetWeaponKnockback(player.HeldItem);
+			var newpos = new Vector2(target.Center.X, target.Center.Y - 1100) + Main.rand.NextVector2Circular(100, 100);
+			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), newpos, (target.Center - newpos).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<SwordProjectile2>(), damage * 3 + 45, knockback, player.whoAmI, 1, 0, 1);
+			Main.projectile[projec].penetrate = 10;
+			Main.projectile[projec].maxPenetrate = 10;
+			Main.projectile[projec].scale += 7;
+			if (Main.projectile[projec].ModProjectile is SwordProjectile2 sword) {
+				sword.SetPos = target.Center;
+				sword.ItemIDtextureValue = ItemIDType;
+			}
+			globalItem.Item_Counter2[index] = 0;
+		}
 	}
 
 }
@@ -970,11 +1023,17 @@ public class DeathSickle : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.5f);
 	}
-	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (!target.boss && Main.rand.NextBool(100)) {
-			target.StrikeInstantKill();
-			return;
+			modifiers.SetInstantKill();
 		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (!target.boss && Main.rand.NextBool(100)) {
+			modifiers.SetInstantKill();
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		globalItem.Item_Counter1[index]++;
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;

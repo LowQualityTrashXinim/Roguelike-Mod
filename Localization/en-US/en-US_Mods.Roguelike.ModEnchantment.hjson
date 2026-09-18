@@ -147,11 +147,10 @@ PlatinumBroadsword.Description:
 	'''
 CactusSword.Description:
 	'''
-	   Striking with a item will shoot out a friendly rolling cactus ( CD : 3s )
-	   + Rolling cactus deal equal to 300% weapon damage + 300 base damage
-	   Taking damage while held this weapon will burst cactus spike around you dealing 100% weapon damage
+	Striking with a item will shoot out a friendly rolling cactus ( CD : 3s )
+	+ Rolling cactus deal equal to 300% weapon damage + 300 base damage
+	Taking damage while held this weapon will burst cactus spike around you dealing 100% weapon damage
 	Thorn damage will also affected the above damage multiplier
-	   
 	'''
 EnchantedSword.Description:
 	'''
@@ -535,6 +534,7 @@ CrimsonRod.Description:
 	Reduce mana cost by 8%
 	Create blood rain that rain down above cursor ( CD : 0.12s )
 	When missing mana, rain down blood rain for 3s
+	Note : not to be confused with blood rain cloud
 	'''
 MagicMissile.Description:
 	'''
@@ -727,11 +727,10 @@ PurpleClubberfish.Description:
 	'''
 TitaniumSword.Description:
 	'''
-	Attacking enemy will summon titanium sword from the sky dealing 300% weapon damage (CD:5s)
-	After the sword successfully strike a enemy, after 1s releases a giant strike 
-	dealing 50% of titanium sword damage at strike position
-	If your weapon is a sword:
-	A ghost Titanium Sword also swing along with your swing
+	Hitting a enemy will create a ghost sword that swing ( CD : 0.75s )
+	After 10 successful attack ( from any source ) :
+	Attacking enemy will summon giant titanium sword from the sky ( CD:5s )
+	The summoned giant sword deal 300% weapon damage + 45 damage
 	'''
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumTrident.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
@@ -912,7 +911,7 @@ HallowedRepeater.Description:
 	'''
 ChlorophyteShotbow.Description:
 	'''
-	Shot out additional 3 wooden arrow (CD: 2s)
+	Shoot out additional 3 wooden arrow (CD: 2s)
 	Have 1 in 3 chance to replace above arrow to chlorophyte arrow
 	'''
 StakeLauncher.Description:
@@ -934,7 +933,7 @@ Uzi.Description:
 	'''
 	Shoot additional high velocity bullet
 	Decreases weapon damage by 30%
-	If weapon use bullet then instead decreases by 10%
+	If weapon use bullet then instead it decreases by 10%
 	'''
 Megashark.Description:
 	'''
@@ -952,10 +951,10 @@ VenusMagnum.Description:
 	'''
 TacticalShotgun.Description:
 	'''
+	Decreases weapon damage by 10% and crit chance by 10
 	Have 1 in 4 chance to shoot out burst of bullet
 	If weapon use ammo bullet:
 	The above effect is strengthen
-	Decreases weapon damage by 10% and crit chance by 10
 	'''
 SniperRifle.Description:
 	'''
@@ -984,12 +983,12 @@ FalconBlade.Description:
 	'''
 Eventide.Description:
 	'''
-	Shoot additional light lance.
+	Shoot out a additional light lance.
 	+50% first strike damage
 	'''
 Tsunami.Description:
 	'''
-	Shoot out 5 additional projectile every 15 shot.
+	Shoot out 5 additional projectiles every 15 shot.
 	+20% damage
 	'''
 HoundiusShootius.Description:
@@ -1198,4 +1197,29 @@ HeatRay.Description:
 	The heat ray will increases damage after each shot like the original weapon
 	if your weapon is [i:1295] :
 	+ Accelerate the damage increases after each shot done by heat ray
+	'''
+MagicDagger.Description:
+	'''
+	Increases damage by 15% and magic damage by 30%
+	Hitting enemy with item will cause several magic dagger to burst out from you (CD: 1s)
+	Hitting enemy with projectile cause several magic dagger to burst out from enemy (CD: 3s)
+	'''
+NimbusRod.Description:
+	'''
+	Create a magical rain cloud that follow player
+	The magical rain cloud update damage dynamically base on weapon damage
+	There can only 1 magical rain cloud alive at all time
+	'''
+MedusaHead.Description:
+	'''
+	Grant immunity to stoned debuff
+	Increases damage by 10%
+	Note : I know this is pretty bad, but think outside of the box
+	'''
+SpiritFlame.Description:
+	'''
+	Increases damage by 10% and magic damage by 35%
+	Every 3 shoot, spawn in a spirit flame near player deal 100% weapon damage
+	If a enemy is nearby, the spirit flame will automatically be spawned every 3s
+	Spirit flame spawned naturally deal 150% weapon damage + 20 damage
 	'''

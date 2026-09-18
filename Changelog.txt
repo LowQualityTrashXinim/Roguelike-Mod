@@ -903,3 +903,11 @@ calculation that is global and is not debuff specific like accessory or armor.
 734/ Added Blizzard Staff, Inferno Fork, ShadowbeamStaff, Razorpine, Crystal Storm and Spectre Staff enchantment.
 735/ Added Cursed Flames, Magnet sphere, Golden Shower, Heat ray and Leaf Blower enchantment.
 736/ After a lot of debating, the lead dev ( Xinim ) decided to readd the vanilla prefix system.
+737/ Added a hide player field in PlayerStatsHandle.
+738/ Added a keybind for custom dash mechanic that is in the mod.
+739/ Updated AnkletOfTheWind rework to use the 2 above changelogs implementation.
+740/ Updated AnkletOfTheWind rework dash to be less affected by gravity and more like a teleport
+741/ Added Magic Dagger enchantment.
+742/ Reworked Titanium Sword enchantment.
+743/ Fixed a inproper used of a function in Death Sickle enchantment.
+744/ Added Nimbus Rod, Medusa head, Spirit flames enchantment.

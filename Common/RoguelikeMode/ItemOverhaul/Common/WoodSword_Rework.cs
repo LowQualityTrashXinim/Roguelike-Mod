@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 using Microsoft.Xna.Framework;
 using Roguelike.Contents.Projectiles;
-using Roguelike.Common.RoguelikeMode;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
 internal class Roguelike_WoodSword : GlobalItem {
@@ -52,17 +51,6 @@ internal class Roguelike_WoodSword : GlobalItem {
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI, 1);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 spear) {
 				spear.ItemIDtextureValue = item.type;
-			}
-			if (item.type == ItemID.AshWoodSword) {
-				Main.projectile[projec].scale += 2;
-				Main.projectile[projec].damage *= 2;
-				if (i == 10) {
-					int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), damage * 5, knockback, player.whoAmI, 1);
-					if (Main.projectile[proj2].ModProjectile is SwordProjectile2 spear2) {
-						spear2.ItemIDtextureValue = item.type;
-					}
-					Main.projectile[proj2].scale += 10;
-				}
 			}
 		}
 	}

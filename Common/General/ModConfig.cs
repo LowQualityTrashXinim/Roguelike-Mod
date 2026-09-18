@@ -45,7 +45,10 @@ namespace Roguelike.Common.General {
 		public bool EnablePracticeMode { get; set; }
 		public bool SkipCutscene { get; set; }
 		[Header($"GameHeader")]
+		[DefaultValue(false)]
 		public bool HoldShift { get; set; }
+		[DefaultValue(true)]
+		public bool DashKey { get; set; }
 		[DefaultValue(false)]
 		public bool DisableRingVisual { get; set; }
 		[DefaultValue(false)]

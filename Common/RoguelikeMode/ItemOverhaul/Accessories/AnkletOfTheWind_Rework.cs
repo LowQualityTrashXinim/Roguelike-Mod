@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.General;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,42 +31,58 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 
 	public const float DashVelocity = 7.5f;
 
-	public int DashDir = -1;
+	public bool DashDir = false;
 
 	public int DashDelay = 0;
 	public int DashTimer = 0;
+	public Vector2 ReappliedMovement = Vector2.Zero;
 	public override void PreUpdateMovement() {
-		if (CanUseDash() && DashDir != -1 && DashDelay == 0) {
-			var newVelocity = Player.velocity;
-			DashDelay = DashCooldown;
-			DashTimer = DashDuration;
-			var vel = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 15;
-			newVelocity.X = vel.X;
-			newVelocity.Y = vel.Y;
-			Player.velocity = newVelocity;
-			Player.AddBuff<WindDashCoolDown>(ModUtils.ToSecond(5));
+		if (CanUseDash() && DashDir && DashDelay == 0) {
+			DashTimer = 10;
+			DashDelay = DashTimer * 3 + DashTimer;
+			var vel = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 35;
+			ReappliedMovement = vel;
+			Player.velocity = vel;
 			Modify_WindHealth(25);
+			Player.direction = Player.velocity.X > 0 ? 1 : -1;
 		}
 
 		if (DashDelay > 0)
 			DashDelay--;
 
 		if (DashTimer > 0) {
-			Player.eocDash = DashTimer;
+			Player.ModPlayerStats().Hide = true;
+			Player.velocity = ReappliedMovement;
+			if (DashTimer == 1) {
+				Player.velocity = Player.velocity * .1f;
+			}
+			Dust dust = Dust.NewDustDirect(Player.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Cloud);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.75f, 1.2f);
+			dust.scale = Main.rand.NextFloat(1, 1.4f);
+			dust.color = Color.White with { A = 0 };
+			//Player.eocDash = DashTimer;
 			DashTimer--;
+		}
+		else {
+			ReappliedMovement = Vector2.Zero;
 		}
 	}
 	private bool CanUseDash() {
 		return Player.CheckDashType("Wind")
 			&& !Player.setSolar
-			&& !Player.mount.Active
-			&& !Player.HasBuff<WindDashCoolDown>();
+			&& !Player.mount.Active;
 	}
 	public bool AnkletOfTheWind = false;
 	public const int WindShield_Health_Default = 100;
 	public int WindShield_Health = 0;
 	public int WindShield_Cooldown = 0;
 	public int WindShield_Health_Count = 0;
+	public override void ProcessTriggers(TriggersSet triggersSet) {
+		if (ModContent.GetInstance<RogueLikeConfig>().DashKey && AnkletOfTheWind) {
+			DashDir = ProcessTriggerSystem_Roguelike.Key_Dash.JustPressed;
+		}
+	}
 	public override void ResetEffects() {
 		if (!AnkletOfTheWind) {
 			WindShield_Health = 0;
@@ -74,20 +93,25 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 				WindShield_Health = WindShield_Health_Default;
 			}
 			WindShield_Cooldown = ModUtils.CountDown(WindShield_Cooldown);
-			// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
-			// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
-			// If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-			if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
-				DashDir = DashRight;
-			}
-			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
-				DashDir = DashLeft;
-			}
-			else {
-				DashDir = -1;
+			if (!ModContent.GetInstance<RogueLikeConfig>().DashKey) {
+				if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
+					DashDir = true;
+				}
+				else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
+					DashDir = true;
+				}
+				else {
+					DashDir = false;
+				}
 			}
 			Player.ModPlayerStats().CurrentDashType = "Wind";
 			Player.AddBuff<WindShield>(2);
+		}
+		if (DashTimer > 0) {
+			Player.immune = true;
+			Player.immuneTime = 2;
+			Player.immuneNoBlink = true;
+			//Player.ModPlayerStats().Hide = true;
 		}
 		AnkletOfTheWind = false;
 	}
@@ -137,14 +161,6 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 		if (WindShield_Health <= 0) {
 			WindShield_Cooldown = 300;
 		}
-	}
-}
-public class WindDashCoolDown : ModBuff {
-	public override string Texture => ModTexture.EMPTYDEBUFF;
-	public override void SetStaticDefaults() {
-		Main.debuff[Type] = true;
-		Main.buffNoSave[Type] = true;
-		Main.buffNoTimeDisplay[Type] = false;
 	}
 }
 

@@ -14,11 +14,13 @@ public class ProcessTriggerSystem_Roguelike : ModSystem {
 	public static ModKeybind Open_SkillUI { get; private set; }
 	public static ModKeybind Open_DivineUI { get; private set; }
 	public static ModKeybind Open_TransmutateUI { get; private set; }
+	public static ModKeybind Key_Dash { get; private set; }
 	public override void Load() {
 		SkillActivation = KeybindLoader.RegisterKeybind(Mod, "Skill activation", Keys.F);
 		Open_SkillUI = KeybindLoader.RegisterKeybind(Mod, "Open skill interface", Keys.J);
 		Open_DivineUI = KeybindLoader.RegisterKeybind(Mod, "Open divine hammer interface", Keys.L);
 		Open_TransmutateUI = KeybindLoader.RegisterKeybind(Mod, "Open transmutation interface", Keys.K);
+		Key_Dash = KeybindLoader.RegisterKeybind(Mod, "Dash", Keys.Z);
 	}
 	public override void Unload() {
 		SkillActivation = null;

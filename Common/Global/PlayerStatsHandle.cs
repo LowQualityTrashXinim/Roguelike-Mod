@@ -988,6 +988,16 @@ public partial class PlayerStatsHandle : ModPlayer {
 		float newcooldown = handle.EnchantmentCoolDown.ApplyTo(cooldown);
 		return (int)Math.Max(Math.Ceiling(newcooldown), 0);
 	}
+	public bool Hide = false;
+	public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
+		if (Hide) {
+			Hide = false;
+			drawInfo.hideEntirePlayer = true;
+			drawInfo.stealth = 1f;
+			drawInfo.colorDisplayDollSkin = drawInfo.legsGlowColor = drawInfo.armGlowColor = drawInfo.bodyGlowColor = drawInfo.headGlowColor = drawInfo.colorLegs = drawInfo.colorShoes = drawInfo.colorPants = drawInfo.colorUnderShirt = drawInfo.colorShirt = drawInfo.colorBodySkin = drawInfo.colorHead = drawInfo.colorHair = drawInfo.colorEyes = drawInfo.colorEyeWhites = drawInfo.colorArmorLegs = drawInfo.colorArmorBody = drawInfo.colorArmorHead = Color.Transparent;
+			drawInfo.itemColor = Color.Transparent;
+		}
+	}
 }
 public class PlayerStatsHandle_GlobalNPC : GlobalNPC {
 	public override void OnKill(NPC npc) {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Mono.Cecil;
 using Roguelike.Common.Global;
-using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.RoguelikeMode.ItemOverhaul.Specific;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
@@ -1391,7 +1390,7 @@ public class MagnetSphere : ModEnchantment {
 			Projectile.ignoreWater = true;
 			Main.projFrames[Type] = 5;
 		}
-
+		public override bool? CanDamage() => false;
 		private void MovementHandle(Player player) {
 			Projectile.velocity *= .98f;
 			Vector2 positionToBeAt = player.Center + Vector2.UnitX * 50 * -player.direction;
@@ -1516,8 +1515,8 @@ public class HeatRay : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(proj.type == ProjectileID.HeatRay) {
-			int count  = target.GetGlobalNPC<Roguelike_HeatRay_GlobalNPC>().HeatRay_HitCount;
+		if (proj.type == ProjectileID.HeatRay) {
+			int count = target.GetGlobalNPC<Roguelike_HeatRay_GlobalNPC>().HeatRay_HitCount;
 			count = Math.Clamp(count + 1, 0, 200);
 			target.GetGlobalNPC<Roguelike_HeatRay_GlobalNPC>().HeatRay_HitCount = count;
 		}
@@ -1527,10 +1526,160 @@ public class MagicDagger : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.MagicDagger;
 	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .15f;
+		if (item.DamageType == DamageClass.Magic) {
+			damage += .3f;
+		}
+	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		base.OnHitNPCWithItem(index, player, globalItem, item, target, hit, damageDone);
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+		int damage = player.GetWeaponDamage(item);
+		int amount = Main.rand.Next(7, 14);
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.8f, 1.2f), ProjectileID.MagicDagger, damage, 1, player.whoAmI);
+		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		base.OnHitNPCWithProj(index, player, globalItem, proj, target, hit, damageDone);
+		if (globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 180);
+		int damage = player.GetWeaponDamage(player.HeldItem);
+		int amount = Main.rand.Next(7, 14);
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(10, 10) * Main.rand.NextFloat(.8f, 1.2f), ProjectileID.MagicDagger, damage, 1, player.whoAmI);
+		}
+	}
+}
+public class NimbusRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.NimbusRod;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (globalItem.Item_Counter1[index] >= 1000 || globalItem.Item_Counter1[index] < 0) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_NimbusRodProjectile>()] < 1) {
+				globalItem.Item_Counter1[index] = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<Enchantment_NimbusRodProjectile>(), 1, 1, player.whoAmI);
+			}
+		}
+		else {
+			Projectile proj = Main.projectile[globalItem.Item_Counter1[index]];
+			if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+				if (proj.active) {
+					proj.timeLeft = 100;
+				}
+				else {
+					globalItem.Item_Counter1[index] = -1;
+				}
+			}
+		}
+	}
+	public class Enchantment_NimbusRodProjectile : ModProjectile {
+		public override string Texture => ModUtils.GetVanillaTexture<Projectile>(ProjectileID.RainCloudRaining);
+		public override void SetDefaults() {
+			Main.projFrames[Type] = Main.projFrames[ProjectileID.RainCloudRaining];
+			Projectile.width = Projectile.height = 40;
+			Projectile.penetrate = -1;
+			Projectile.friendly = true;
+			Projectile.tileCollide = false;
+			Projectile.ignoreWater = true;
+		}
+		public override bool? CanDamage() => false;
+		private void MovementHandle(Player player) {
+			Projectile.velocity *= .98f;
+			Vector2 positionToBeAt = player.Center + Vector2.UnitY * -150;
+			if (!Projectile.Center.IsCloseToPosition(player.Center, 2000)) {
+				Projectile.Center = player.Center;
+			}
+			if (!Projectile.Center.IsCloseToPosition(positionToBeAt, 200)) {
+				Projectile.velocity += (positionToBeAt - Projectile.Center).SafeNormalize(Vector2.Zero) / 32f * 20;
+			}
+			else if (!Projectile.Center.IsCloseToPosition(positionToBeAt, 100)) {
+				Projectile.velocity += (positionToBeAt - Projectile.Center).SafeNormalize(Vector2.Zero) / 64f * 20;
+			}
+			else {
+				Projectile.velocity += (positionToBeAt - Projectile.Center).SafeNormalize(Vector2.Zero) / 128f * 20;
+			}
+		}
+		public override void AI() {
+			if (Projectile.timeLeft < 100) {
+				Projectile.alpha = (byte)MathHelper.Lerp(255, 0, Projectile.timeLeft / 100f);
+			}
+			else {
+				Projectile.alpha = ModUtils.CountDown(Projectile.alpha);
+			}
+			Player player = Main.player[Projectile.owner];
+			Projectile.damage = player.GetWeaponDamage(player.HeldItem) + 1;
+			MovementHandle(player);
+			if (Main.rand.NextBool(5)) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Electric);
+				dust.velocity = Main.rand.NextVector2CircularEdge(10, 10);
+				dust.noGravity = true;
+				dust.scale = Main.rand.NextFloat(.2f, .6f);
+			}
+
+			Projectile.rotation = 0;
+
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter > 6) {
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Type])
+					Projectile.frame = 0;
+			}
+
+			if (++Projectile.ai[2] < 3) {
+				return;
+			}
+			Projectile.NewProjectile(Projectile.GetSource_FromAI(),
+				Projectile.Center + Main.rand.NextVector2Circular(20, 10),
+				Vector2.UnitY * Main.rand.NextFloat(3, 9),
+				ProjectileID.RainFriendly,
+				Projectile.damage,
+				1,
+				Projectile.owner);
+			Projectile.ai[2] = 0;
+		}
+	}
+}
+public class MedusaHead : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.MedusaHead;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.buffImmune[BuffID.Stoned] = true;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .1f;
+	}
+}
+public class SpiritFlame : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SpiritFlame;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.Center.LookForAnyHostileNPC(500)) {
+			if (globalItem.Item_Counter2[index] <= 0) {
+				int damage = (int)(player.GetWeaponDamage(item) * 1.5f) + 20;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 1.2f), Vector2.Zero, ProjectileID.SpiritFlame, damage, 1f, player.whoAmI);
+				globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 180);
+			}
+		}
+		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .1f;
+		if (item.DamageType == DamageClass.Magic) {
+			damage += .35f;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] >= 3) {
+			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(100, 100) * Main.rand.NextFloat(.8f, 1.2f), Vector2.Zero, ProjectileID.SpiritFlame, damage, knockback, player.whoAmI);
+			globalItem.Item_Counter1[index] = 0;
+		}
 	}
 }

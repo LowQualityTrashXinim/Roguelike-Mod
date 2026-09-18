@@ -582,6 +582,7 @@ Mods: {
 			Roguelike_CookedShrimp_Projectile.DisplayName: Roguelike_ Cooked Shrimp_ Projectile
 			Roguelike_GrapeJuice_ModProjectile.DisplayName: Roguelike_ Grape Juice_ Mod Projectile
 			Enchantment_MagnetOrbProjectile.DisplayName: Enchantment_ Magnet Orb Projectile
+			Enchantment_NimbusRodProjectile.DisplayName: Enchantment_ Nimbus Rod Projectile
 		}
 
 		NPCs: {
@@ -4596,6 +4597,15 @@ Mods: {
 						= Player are forced to select a modifier, if not the game will do it for them
 						'''
 				}
+
+				DashKey: {
+					Label: Dash Key
+					Tooltip:
+						'''
+						Enable this to make modded item or custom dash mechanic to use keybind
+						Otherwise it will follow the vanilla dash key system.
+						'''
+				}
 			}
 		}
 
@@ -4605,6 +4615,7 @@ Mods: {
 			"Open divine hammer interface.DisplayName": Open divine hammer interface
 			"Open skill interface.DisplayName": Open skill interface
 			"Open transmutation interface.DisplayName": Open transmutation interface
+			Dash.DisplayName: Dash
 		}
 
 		Biomes: {
@@ -4612,6 +4623,19 @@ Mods: {
 				DisplayName: Roguelike_ Space
 				TownNPCDialogueName: the Roguelike_ Space
 			}
+		}
+
+		Prefixes: {
+			Alchemic.DisplayName: Alchemic
+			Cunning.DisplayName: Cunning
+			Energetic.DisplayName: Energetic
+			Evasive.DisplayName: Evasive
+			Holy.DisplayName: Holy
+			Jumpy.DisplayName: Jumpy
+			Spiky.DisplayName: Spiky
+			Stealthy.DisplayName: Stealthy
+			Vampiric.DisplayName: Vampiric
+			Vital.DisplayName: Vital
 		}
 	}
 }
