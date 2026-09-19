@@ -136,11 +136,16 @@ public class EnchantmentModplayer : ModPlayer {
 	/// <summary>
 	/// Be aware, everything this does is the opposite
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>
+	/// <b>True</b> if the item and enchantment is valid<br/>
+	/// <b>False</b> if the item is invalid or the enchantment is invalid
+	/// </returns>
 	private bool CommonEnchantmentCheck() {
-		bool initial = Player.HeldItem.IsAWeapon() && globalItem != null && globalItem.EnchantmenStlot != null;
-		if (!initial) {
-			return true;
+		if (item == null || !item.IsAWeapon()) {
+			return false;
+		}
+		if (globalItem == null || globalItem.EnchantmenStlot == null) {
+			return false;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			ModEnchantment enchant = EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]);
@@ -149,7 +154,7 @@ public class EnchantmentModplayer : ModPlayer {
 			}
 			return !enchant.ApplyCondition(i, Player, globalItem, item);
 		}
-		return true;
+		return false;
 	}
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
@@ -174,7 +179,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -184,7 +189,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -195,7 +200,7 @@ public class EnchantmentModplayer : ModPlayer {
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void OnMissingMana(Item item, int neededMana) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -206,7 +211,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponCrit(Item item, ref float crit) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -217,7 +222,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyItemScale(Item item, ref float scale) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -228,7 +233,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -239,7 +244,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -250,7 +255,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -261,7 +266,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -272,7 +277,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -282,8 +287,18 @@ public class EnchantmentModplayer : ModPlayer {
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithProj(i, Player, globalItem, proj, target, hit, damageDone);
 		}
 	}
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		if (!CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyHitByNPC(i, Player, globalItem, Player.HeldItem, npc, ref modifiers);
+		}
+	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -294,8 +309,18 @@ public class EnchantmentModplayer : ModPlayer {
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByNPC(i, globalItem, Player, npc, hurtInfo);
 		}
 	}
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (!CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyHitByProj(i, Player, globalItem, Player.HeldItem, proj, ref modifiers);
+		}
+	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -307,7 +332,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void OnConsumeMana(Item item, int manaConsumed) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -318,7 +343,7 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 	}
 	public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -330,7 +355,7 @@ public class EnchantmentModplayer : ModPlayer {
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = base.UseSpeedMultiplier(item);
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return useSpeed;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
@@ -342,7 +367,7 @@ public class EnchantmentModplayer : ModPlayer {
 		return useSpeed;
 	}
 	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-		if (CommonEnchantmentCheck()) {
+		if (!CommonEnchantmentCheck()) {
 			return;
 		}
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {

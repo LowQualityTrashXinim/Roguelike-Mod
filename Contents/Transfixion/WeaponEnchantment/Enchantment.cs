@@ -81,6 +81,8 @@ namespace Roguelike.Contents.Transfixion.WeaponEnchantment {
 		public virtual void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 		public virtual void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }
+		public virtual void ModifyHitByNPC(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref Player.HurtModifiers modifiers) { }
+		public virtual void ModifyHitByProj(int index, Player player, EnchantmentGlobalItem globalItem, Item item, Projectile proj, ref Player.HurtModifiers modifiers) { }
 		public virtual void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(int index, EnchantmentGlobalItem globalItem, Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 		public virtual void OnConsumeMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int consumedMana) { }

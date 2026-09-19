@@ -586,17 +586,40 @@ FlowerOfFrost.Description:
 	'''
 BabyBirdStaff.Description:
 	'''
-	+8% summoner damage
+	+18% summoner damage
 	Spawn elite baby bird to aid you during fight
+	Baby bird deal 14 + 150% weapon damage
 	Elite baby bird also shoot whatever you are shooting dealing 25% of original damage
+	There can only be 1 elite baby bird
 	'''
 BabySlimeStaff.Description:
 	'''
 	+12% summoner damage
 	Spawn spiked baby slime to aid you during fight
+	Baby slime deal 30 + 100% weapon damage
 	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
-FlinxStaff.Description: Spawn 2 flinx minions to aid you
+FlinxStaff.Description:
+	'''
+	Spawn 2 flinx minions to aid you
+	The 2 flinx minions doesn't cost minion slot
+	Flinx minion deal 18 damage + 50% weapon damage
+	Flinx minion inflict frost burn
+	'''
+VampireFrogStaff.Description:
+	'''
+	Increases life steal by 10%
+	Spawn a vampire frog that doesn't cost a minion slot
+	Vampire frog deal 20 damage + 25% weapon damage
+	While helding the weapon, vampire frog have life steal property
+	'''
+AbigailsFlower.Description:
+	'''
+	Increases summon damage by 50%
+	Increases direct minion contact damage by 100%
+	Grant protection that protect you from fatal damage (CD: 30s)
+	Protection will prevent you from taking more than 50 damage
+	'''
 EnchantedBoomerang.Description:
 	'''
 	+20% weapon damage

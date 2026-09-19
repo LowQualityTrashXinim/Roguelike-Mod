@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Contents.Items.NoneSynergy;
 internal class Snowstorm : ModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(78, 24, 22, 1f, 40, 40, ItemUseStyleID.Shoot, 1, 8f, true, AmmoID.Gel);
+		Item.BossRushDefaultRange(78, 24, 22, 1f, 35, 35, ItemUseStyleID.Shoot, 1, 8f, true, AmmoID.Gel);
 		Item.UseSound = SoundID.Item42;
 	}
 	public override Vector2? HoldoutOffset() {

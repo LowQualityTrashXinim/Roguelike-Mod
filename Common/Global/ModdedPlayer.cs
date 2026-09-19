@@ -29,6 +29,7 @@ using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 using Roguelike.Common.Systems.Skill;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -194,9 +195,9 @@ namespace Roguelike.Common.Global {
 			if (Secret_Druggies) {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 			}
-			//if (Player.IsDebugPlayer()) {
-			//	yield return new Item(ModContent.ItemType<MainDebugStick>());
-			//}
+			if (Player.IsDebugPlayer()) {
+				yield return new Item(ModContent.ItemType<MainDebugStick>());
+			}
 			if (Secret_NinjaMode) {
 				yield return new Item(ItemID.Katana);
 				yield return new Item(ItemID.Shuriken, 100);
@@ -241,7 +242,7 @@ namespace Roguelike.Common.Global {
 		}
 
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
-			if (RoguelikeWorldProperty.BossRushWorld) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				itemsByMod["Terraria"].Clear();
 			}
 		}

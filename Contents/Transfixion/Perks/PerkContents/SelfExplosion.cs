@@ -21,7 +21,7 @@ public class SelfExplosion : Perk {
 		player.Center.LookForHostileNPC(out var npclist, 500);
 		foreach (var npc in npclist) {
 			int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-			npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount(player), direction, false, 10));
+			npc.StrikeNPC(npc.CalculateHitInfo((80 + player.statLife / 2) * StackAmount(player), direction, false, 10));
 		}
 		for (int i = 0; i < 150; i++) {
 			int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);

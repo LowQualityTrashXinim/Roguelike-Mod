@@ -18,24 +18,35 @@ public class BabyBirdStaff : ModEnchantment {
 	}
 	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
 		player.ClearBuff(BuffID.BabyBird);
-		Main.projectile[globalItem.Item_Counter2[index]].Kill();
-	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (item.type != player.HeldItem.type) {
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
 			return;
 		}
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.08f);
-		if (player.ownedProjectileCounts[ProjectileID.BabyBird] < 1) {
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabyBird, player.GetWeaponDamage(item), 0, player.whoAmI);
-			Main.projectile[proj].minionSlots = 0;
-			globalItem.Item_Counter2[index] = proj;
+		Main.projectile[globalItem.Item_Counter1[index]].Kill();
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.18f);
+		int damage = 14 + (int)(player.GetWeaponDamage(item) * 1.5f);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabyBird, damage, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
 		}
 		player.AddBuff(BuffID.BabyBird, 60);
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!ContentSamples.ProjectilesByType[type].minion) {
-			Projectile proj = Main.projectile[globalItem.Item_Counter2[index]];
-			Projectile.NewProjectile(source, proj.Center, (Main.MouseWorld - proj.Center).SafeNormalize(Vector2.Zero) * velocity.Length(), type, (int)(damage * .25f), knockback * .25f, player.whoAmI);
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+				return;
+			}
+			Projectile.NewProjectile(source, projectile.Center, (Main.MouseWorld - projectile.Center).SafeNormalize(Vector2.Zero) * velocity.Length(), type, (int)(damage * .25f), knockback * .25f, player.whoAmI);
 		}
 	}
 }
@@ -46,22 +57,29 @@ public class BabySlimeStaff : ModEnchantment {
 	}
 	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
 		player.ClearBuff(BuffID.BabySlime);
-		Main.projectile[globalItem.Item_Counter2[index]].Kill();
-	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (item.type != player.HeldItem.type) {
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
 			return;
 		}
+		Main.projectile[globalItem.Item_Counter1[index]].Kill();
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.12f);
-		if (player.ownedProjectileCounts[ProjectileID.BabySlime] < 1) {
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabySlime, player.GetWeaponDamage(item), 0, player.whoAmI);
-			Main.projectile[proj].minionSlots = 0;
-			globalItem.Item_Counter2[index] = proj;
+		int damage = 30 + player.GetWeaponDamage(item);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabySlime, damage, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
 		}
 		player.AddBuff(BuffID.BabySlime, 60);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.whoAmI == globalItem.Item_Counter2[index] && proj.type == ProjectileID.BabySlime) {
+		if (proj.type == ProjectileID.BabySlime) {
 			float Amount = Main.rand.Next(1, 3);
 			for (int i = 0; i < Amount; i++) {
 				Vector2 vel = Main.rand.NextVector2Unit(-(MathHelper.PiOver2 + MathHelper.PiOver4 * .5f), MathHelper.PiOver4) * Main.rand.NextFloat(5, 7);
@@ -79,22 +97,113 @@ public class FlinxStaff : ModEnchantment {
 	}
 	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
 		player.ClearBuff(BuffID.FlinxMinion);
-		Main.projectile[globalItem.Item_Counter1[index]].Kill();
-		Main.projectile[globalItem.Item_Counter2[index]].Kill();
+		if (globalItem.Item_Counter1[index] >= 0 && globalItem.Item_Counter1[index] < 1000) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+		if (globalItem.Item_Counter2[index] >= 0 && globalItem.Item_Counter2[index] < 1000) {
+			Main.projectile[globalItem.Item_Counter2[index]].Kill();
+		}
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (item.type != player.HeldItem.type) {
-			return;
-		}
-		if (player.ownedProjectileCounts[ProjectileID.FlinxMinion] < 1) {
-			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.FlinxMinion, player.GetWeaponDamage(item), 0, player.whoAmI);
+		int damage = 18 + player.GetWeaponDamage(item) / 2;
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.FlinxMinion, damage, 0, player.whoAmI);
 			Main.projectile[proj1].minionSlots = 0;
 			globalItem.Item_Counter1[index] = proj1;
-			int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.FlinxMinion, player.GetWeaponDamage(item), 0, player.whoAmI);
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		if (globalItem.Item_Counter2[index] < 0 || globalItem.Item_Counter2[index] >= 1000) {
+			int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.FlinxMinion, damage, 0, player.whoAmI);
 			Main.projectile[proj2].minionSlots = 0;
 			globalItem.Item_Counter2[index] = proj2;
 		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter2[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter2[index] = -1;
+			}
+		}
 		player.AddBuff(BuffID.FlinxMinion, 60);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.FlinxMinion) {
+			target.AddBuff(BuffID.Frostburn, 120);
+		}
+	}
+}
+public class VampireFrogStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.VampireFrogStaff;
+		ForcedCleanCounter = true;
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.VampireFrog);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			return;
+		}
+		if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().LifeSteal += .1f;
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.VampireFrog,
+				20 + player.GetWeaponDamage(item) / 4, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.VampireFrog, 60);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.VampireFrog) {
+			player.Heal(1);
+		}
+	}
+}
+public class AbigailsFlower : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.AbigailsFlower;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetDamage(DamageClass.Summon) += .5f;
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.minion) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+	public override void ModifyHitByNPC(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref Player.HurtModifiers modifiers) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			modifiers.SetMaxDamage(50);
+		}
+	}
+	public override void ModifyHitByProj(int index, Player player, EnchantmentGlobalItem globalItem, Item item, Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			modifiers.SetMaxDamage(50);
+		}
+	}
+	public override void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (hurtInfo.Damage >= 50) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(30));
+		}
+	}
+	public override void OnHitByProjectile(int index, EnchantmentGlobalItem globalItem, Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		if (hurtInfo.Damage >= 50) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, ModUtils.ToSecond(30));
+		}
 	}
 }
 

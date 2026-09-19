@@ -913,3 +913,9 @@ calculation that is global and is not debuff specific like accessory or armor.
 744/ Added Nimbus Rod, Medusa head, Spirit flames enchantment.
 745/ Added Synergy spoil.
 746/ Updated the build number from 0.0.20.0 -> 0.0.20.2 ./.
+747/ Fixed incorrected usages of world property.
+748/ Made snowstorm shoot a bit quicker.
+749/ Nerfed Healing Explosion perk damage.
+750/ Added AbigailsFlower and VampireFlogStaff enchantment.
+751/ Fixed new possible loop hole for previous summoning minion enchantment and buffing them in the process.
+752/ Fixed the mess of a old code in enchantment code.
