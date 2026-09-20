@@ -3,6 +3,7 @@ using Mono.Cecil;
 using Newtonsoft.Json.Linq;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
+using Roguelike.Texture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -206,7 +207,204 @@ public class AbigailsFlower : ModEnchantment {
 		}
 	}
 }
-
+public class BladeStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Smolstar; ForcedCleanCounter = true;
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.Smolstar);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			return;
+		}
+		if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.Smolstar,
+				10 + player.GetWeaponDamage(item) / 10, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.Smolstar, 60);
+	}
+}
+public class SpiderStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SpiderStaff; ForcedCleanCounter = true;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .2f;
+		}
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.SpiderMinion);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			return;
+		}
+		if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.DangerousSpider,
+				30 + player.GetWeaponDamage(item) / 10, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.SpiderMinion, 60);
+	}
+}
+public class PirateStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PirateStaff; ForcedCleanCounter = true;
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.PirateMinion);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			return;
+		}
+		if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.OneEyedPirate,
+				30 + player.GetWeaponDamage(item) / 10, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.PirateMinion, 60);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.OneEyedPirate
+			|| proj.type == ProjectileID.PirateCaptain
+			|| proj.type == ProjectileID.SoulscourgePirate) {
+			player.QuickSpawnItem(player.GetSource_FromThis(), ItemID.CopperCoin);
+		}
+	}
+}
+public class SanguineStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SanguineStaff; ForcedCleanCounter = true;
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.BatOfLight);
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			return;
+		}
+		if (Main.projectile[globalItem.Item_Counter1[index]] != null) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().UpdateHPRegen.Base += 2;
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BatOfLight,
+				15 + player.GetWeaponDamage(item) / 2, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.BatOfLight, 60);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.BatOfLight) {
+			player.Heal(1);
+		}
+	}
+}
+public class OpticStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.OpticStaff;
+		ForcedCleanCounter = true;
+	}
+	public override void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) {
+		player.ClearBuff(BuffID.TwinEyesMinion);
+		if (globalItem.Item_Counter1[index] >= 0 && globalItem.Item_Counter1[index] < 1000) {
+			Main.projectile[globalItem.Item_Counter1[index]].Kill();
+		}
+		if (globalItem.Item_Counter2[index] >= 0 && globalItem.Item_Counter2[index] < 1000) {
+			Main.projectile[globalItem.Item_Counter2[index]].Kill();
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		int damage = 28 + player.GetWeaponDamage(item) / 3;
+		if (globalItem.Item_Counter1[index] < 0 || globalItem.Item_Counter1[index] >= 1000) {
+			int proj1 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.Spazmamini, damage, 0, player.whoAmI);
+			Main.projectile[proj1].minionSlots = 0;
+			globalItem.Item_Counter1[index] = proj1;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter1[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter1[index] = -1;
+			}
+		}
+		if (globalItem.Item_Counter2[index] < 0 || globalItem.Item_Counter2[index] >= 1000) {
+			int proj2 = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.Retanimini, damage, 0, player.whoAmI);
+			Main.projectile[proj2].minionSlots = 0;
+			globalItem.Item_Counter2[index] = proj2;
+		}
+		else {
+			Projectile projectile = Main.projectile[globalItem.Item_Counter2[index]];
+			if (projectile == null || !projectile.active || projectile.timeLeft <= 0) {
+				globalItem.Item_Counter2[index] = -1;
+			}
+		}
+		player.AddBuff(BuffID.TwinEyesMinion, 60);
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.type == ProjectileID.Spazmamini && target.HasBuff<Enchantment_Marked>()) {
+			modifiers.SourceDamage += 2;
+			target.RequestBuffRemoval(ModContent.BuffType<Enchantment_Marked>());
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.Spazmamini) {
+			target.AddBuff(BuffID.CursedInferno, 120);
+		}
+		if (proj.type == ProjectileID.MiniRetinaLaser) {
+			target.AddBuff<Enchantment_Marked>(ModUtils.ToSecond(5));
+		}
+	}
+	public class Enchantment_Marked : ModBuff {
+		public override string Texture => ModTexture.EMPTYDEBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(NPC npc, ref int buffIndex) {
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense -= .1f;
+		}
+	}
+}
 public class LeatherWhip : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlandWhip;

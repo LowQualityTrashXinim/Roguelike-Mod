@@ -477,7 +477,7 @@ DemonScythe.Description:
 	'''
 	Increases mana cost by 10% 
 	Increases universal damage by 1.1x
-	Shoot out 3 demon scythe ( CD : 1s )
+	Your attack are accompany with 3 demon scythe ( CD : 1s )
 	'''
 BookOfSkulls.Description:
 	'''
@@ -564,7 +564,7 @@ FlowerOfFire.Description:
 	'''
 	Increases damage by 27% when hitting a enemy on fire
 	Every 5th shot, shoot out a fire ball
-	Consume 5 mana to increases fire ball damage
+	Consume 5 mana to increases fire ball damage by 20
 	'''
 SkyFacture.Description:
 	'''
@@ -582,7 +582,7 @@ FlowerOfFrost.Description:
 	'''
 	Increases damage by 27% when hitting enemy with frost burn
 	Every 5th shot, shoot out a frost ball
-	Consume 5 mana to increases frost ball damage
+	Consume 5 mana to increases frost ball damage by 20
 	'''
 BabyBirdStaff.Description:
 	'''
@@ -619,6 +619,39 @@ AbigailsFlower.Description:
 	Increases direct minion contact damage by 100%
 	Grant protection that protect you from fatal damage (CD: 30s)
 	Protection will prevent you from taking more than 50 damage
+	'''
+BladeStaff.Description:
+	'''
+	Summon a tiny blade that doesn't cost a minion slot
+	Tiny blade deal 10 damage + 10% weapon damage
+	'''
+SpiderStaff.Description:
+	'''
+	Increases summon damage by 20%
+	Summon a baby spider that doesn't cost a minion slot
+	Baby spider deal 30 damage + 10% weapon damage
+	'''
+PirateStaff.Description:
+	'''
+	Summon a tiny pirate that doesn't cost a minion slot
+	Tiny pirate deal 50 damage
+	Each time tiny pirate hit a enemy, give player 1 copper coin
+	'''
+SanguineStaff.Description:
+	'''
+	Summon a blood bat that doesn't cost a minion slot
+	Blood bat deal 15 damage + 50% weapon damage
+	Helding the weapon increases your regeneration by 2
+	And blood bat will heal you for 1 health per hit
+	'''
+OpticStaff.Description:
+	'''
+	Summon the mini twin that doesn't cost a minion cost
+	The mini twin deal 28 damage + 33% weapon damage
+	The mini spazm inflict Cursed Inferno on hit
+	The mini retan's laser inflict marked debuff
+	Marked debuff made mini spazm deal 200% more damage and remove the debuff
+	and also reduce enemy's defense by 10%
 	'''
 EnchantedBoomerang.Description:
 	'''
@@ -1192,7 +1225,7 @@ CursedFlames.Description:
 	Increases mana cost by 35%
 	Increases damage by 47% when hitting a enemy have cursed inferno
 	Every 5th shot, shoot out a cursed ball
-	Consume 5 mana to increases fire cursed damage by 20
+	Consume 5 mana to increases cursed ball damage by 20
 	'''
 MagnetSphere.Description:
 	'''

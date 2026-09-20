@@ -40,6 +40,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int CustomDataValue = 0;
 	public bool ComeFromSkill = false;
 	/// <summary>
+	/// A force timer that will delete projectile<br/>
+	/// By default, it is set to -1<br/>
+	/// Setting it to 0 will force a deletion of a projectile
+	/// </summary>
+	public int Force_TimeLeft = -1;
+	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>
 	/// </summary>
@@ -104,6 +110,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		return base.PreAI(projectile);
 	}
 	public override void PostAI(Projectile projectile) {
+		if (Force_TimeLeft != -1) {
+			Force_TimeLeft--;
+			if (Force_TimeLeft == 0) {
+				projectile.Kill();
+			}
+		}
 		if (projectile.type == ProjectileID.ShadowFlameArrow && CustomDataValue == 1) {
 			for (int i = 0; i < 2; i++) {
 				Dust flame = Dust.NewDustDirect(projectile.Center, 0, 0, DustID.Shadowflame);
@@ -159,12 +171,15 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	int BouncyCollide = 0;
 	public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
 		var player = Main.player[projectile.owner];
-		if (player.GetModPlayer<SlimyChalicePlayer>().Bouncy && !projectile.minion && !projectile.hostile) {
+		RoguelikeGlobalProjectile global = projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>();
+		if (player.GetModPlayer<SlimyChalicePlayer>().Bouncy && !projectile.minion && !projectile.hostile
+			&& projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType != ItemID.None) {
 			projectile.tileCollide = true;
 			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
 			if (projectile.velocity.X != oldVelocity.X) projectile.velocity.X = -oldVelocity.X;
 			if (projectile.velocity.Y != oldVelocity.Y) projectile.velocity.Y = -oldVelocity.Y;
-			if (projectile.timeLeft > 180) projectile.timeLeft = 180;
+			if (projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Force_TimeLeft == -1)
+				projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Force_TimeLeft = 180;
 			if (++BouncyCollide > 1) return false;
 			projectile.damage = (int)(projectile.damage * 1.2f);
 			return false;

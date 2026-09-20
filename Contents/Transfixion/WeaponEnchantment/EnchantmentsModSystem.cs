@@ -160,7 +160,7 @@ public class EnchantmentModplayer : ModPlayer {
 		if (Player.HeldItem.type == ItemID.None)
 			return;
 		if (item != Player.HeldItem) {
-			if (item != null && !CommonEnchantmentCheck()) {
+			if (CommonEnchantmentCheck()) {
 				for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 					if (globalItem.EnchantmenStlot[i] == 0)
 						continue;

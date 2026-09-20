@@ -147,7 +147,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	/// This have a forced cool down so that it is not OP <br/>
 	/// The cool down are made public and free to be modify cause fun
 	/// </summary>
-	public StatModifier LifeSteal = StatModifier.Default - 1;
+	public StatModifier LifeSteal = StatModifier.Default;
 	public StatModifier DamageTaken = StatModifier.Default;
 	/// <summary>
 	/// This is the public count cool down of <see cref="LifeSteal"/>
@@ -192,8 +192,16 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public List<int> WhoAmI_Projectile = new();
 	public float Chance_ToInstantKill = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
-			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
+		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.ApplyTo(0) > 0) {
+			int caculated = (int)Math.Ceiling((LifeSteal - 1).ApplyTo(hit.Damage));
+			if (caculated > 0) {
+				Player.Heal(caculated);
+			}
+			else {
+				if(LifeSteal.Base > 0) {
+					Player.Heal((int)Math.Ceiling(LifeSteal.Base * LifeSteal.Multiplicative + LifeSteal.Flat));
+				}
+			}
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
 	}
@@ -580,7 +588,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		DebuffDamage = StatModifier.Default - 1;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
-		LifeSteal = StatModifier.Default - 1;
+		LifeSteal = StatModifier.Default;
 		SkillDuration = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;

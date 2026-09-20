@@ -4424,6 +4424,11 @@ Mods: {
 				DisplayName: Holy Flame
 				Description: Mods.Roguelike.Buffs.HolyFlame.Description
 			}
+
+			Enchantment_Marked: {
+				DisplayName: Enchantment_ Marked
+				Description: Mods.Roguelike.Buffs.Enchantment_Marked.Description
+			}
 		}
 
 		Configs: {

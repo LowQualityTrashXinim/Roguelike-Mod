@@ -919,3 +919,10 @@ calculation that is global and is not debuff specific like accessory or armor.
 750/ Added AbigailsFlower and VampireFlogStaff enchantment.
 751/ Fixed new possible loop hole for previous summoning minion enchantment and buffing them in the process.
 752/ Fixed the mess of a old code in enchantment code.
+753/ Added Blade Staff, Spider Staff, Pirate Staff, Sanguine Staff and Optic Staff enchantment.
+754/ Fixed Slimy Chalice make certain projectile stay alive for ever after bounce.
+755/ Updated the build number from 0.0.20.2 -> 0.0.20.3 ./.
+756/ Added a Force_TimeLeft which forced a projectile to die after certain time.
+757/ Fixed a bug causes item can't have enchantment to return null exception.
+758/ Updated the build number from 0.0.20.3 -> 0.0.20.4 ./.
+759/ Fixed Nightmare mode stats scaler accidentally 2x it's scale.

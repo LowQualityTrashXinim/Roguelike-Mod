@@ -53,16 +53,11 @@ internal class NPCStatsHandlers : GlobalNPC {
 				entity.defense += (int)(entity.defense / adjustment * GetValueMulti(.5f) * .1f);
 			}
 			if (RoguelikeWorldProperty.NightmareWorld) {
-				mod += 2;
-				entity.damage *= 2;
-				//ExtraUpdate++;
-				//if (entity.boss) {
-				//	mod += 5;
-				//	Static_Endurance += .25f;
-				//	Static_PercentageDamage += .1f;
-				//}
-				entity.lifeMax = (int)mod.ApplyTo(entity.lifeMax);
-				entity.life = entity.lifeMax;
+				entity.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
+				if (entity.boss) {
+					entity.GetGlobalNPC<RoguelikeGlobalNPC>().Static_Endurance += .25f;
+					entity.GetGlobalNPC<RoguelikeGlobalNPC>().Static_PercentageDamage += .1f;
+				}
 			}
 		}
 	}

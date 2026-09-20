@@ -6,8 +6,10 @@ namespace Roguelike.Common.General {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header($"GameModeHeader")]
+		[ReloadRequired]
 		[DefaultValue(true)]
 		public bool TerrariaMode{ get; set; }
+		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool BossRushMode { get; set; }
 		[ReloadRequired]
