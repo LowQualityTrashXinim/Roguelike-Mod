@@ -33,6 +33,8 @@ internal class KingSlime : NPCReworker {
 	bool lockedIn = false;
 	Vector2 targetDirectionPredicate = Vector2.Zero;
 	NPC crownNPC = null;
+	int AggressiveSlameTime = 0;
+	const int AggressiveSlameMax = 7;
 	State state {
 
 		get { return (State)AIStateSync; }
@@ -98,7 +100,8 @@ internal class KingSlime : NPCReworker {
 		RubySpray,
 		Spike,
 		LaserRotate,
-		bouncing
+		bouncing,
+		AggressiveSlaming
 	}
 	public override void OnKill(NPC npc) {
 		if (crownNPC != null)
@@ -161,17 +164,11 @@ internal class KingSlime : NPCReworker {
 
 						break;
 					}
-
-
 				case State.Jump: {
-
 						currentScale = Vector2.One.ClampedLerp(new Vector2(1.5f, 0.7f), Counter / 15f);
-
 						Counter++;
-
 						if (Counter < 15)
 							return;
-
 						Counter = 0;
 						// i love calculas! (said by someone who got below F on calculas class)
 
@@ -189,10 +186,7 @@ internal class KingSlime : NPCReworker {
 						state = State.Jumping;
 						break;
 					}
-
 				case State.Jumping: {
-
-
 						currentScale.X = 1f + npc.velocity.Y * 0.025f;
 						currentScale.Y = 1f - npc.velocity.Y * 0.025f;
 						afterimages = true;
@@ -249,8 +243,6 @@ internal class KingSlime : NPCReworker {
 
 					}
 				case State.Slamming: {
-
-
 						currentScale.X = 1f - npc.velocity.Y * 0.025f;
 						currentScale.Y = 1f + npc.velocity.Y * 0.025f;
 						afterimages = true;
@@ -274,7 +266,6 @@ internal class KingSlime : NPCReworker {
 
 
 					}
-
 				case State.LaserRotate: {
 
 						Counter++;
@@ -309,7 +300,6 @@ internal class KingSlime : NPCReworker {
 
 						break;
 					}
-
 				case State.RubySpray: {
 
 						Counter++;
@@ -393,6 +383,8 @@ internal class KingSlime : NPCReworker {
 
 						break;
 					}
+				case State.AggressiveSlaming:
+					break;
 
 			}
 		crownPos = npc.Center - new Vector2(-npc.velocity.X, MathHelper.Lerp(0, 40, npc.scale - (1 - npc.scale)) * currentScale.Y);

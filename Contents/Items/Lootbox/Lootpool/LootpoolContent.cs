@@ -82,6 +82,9 @@ public class UniversalPool : ItemPool {
 		ItemID.Nazar, ItemID.TrifoldMap, ItemID.FastClock, ItemID.Vitamins
 		];
 }
+public class Tier3Pool : ItemPool {
+
+}
 public class Tier2Pool : ItemPool {
 	public override HashSet<int> MeleeLoot()
 		=> [

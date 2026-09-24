@@ -138,8 +138,8 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 		foreach (var value in TileEntity.ByID.Values) {
 			value.Update();
 		}
-
 		TileEntity.UpdateEnd();
+
 		Liquid.skipCount++;
 		if (Liquid.skipCount > 1) {
 			Liquid.UpdateLiquid();

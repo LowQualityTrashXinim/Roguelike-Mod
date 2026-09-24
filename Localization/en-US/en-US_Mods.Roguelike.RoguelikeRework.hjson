@@ -242,11 +242,11 @@ SorcererEmblem:
 	'''
 AnkletoftheWind:
 	'''
-	Increases jump boost by 150% and gain short directional dash toward your cursor
-	During the dash, you are completely immune to damage
 	Gain a wind shield that can regenerate itself
 	Wind shield reduce damage taken directly by 20% and projectile damage by 80%
 	Wind shield multiply taken knockback taken directly by 0.7x and projectile knockback by 0x
+	Increases jump boost by 150% and gain short directional dash toward your cursor
+	During the dash, you are completely immune to damage and consumes 25% wind shield health
 	'''
 FeralClaws:
 	'''

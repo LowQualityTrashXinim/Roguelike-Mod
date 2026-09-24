@@ -178,6 +178,7 @@ public class ModObject : IModType, ILoadable {
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
 		obj.OnSpawn(new EntitySource_Misc(""));
+		ObjectSystem.Objects[whoAmI] = obj;
 		return obj;
 	}
 	/// <summary>
@@ -207,6 +208,7 @@ public class ModObject : IModType, ILoadable {
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
 		obj.OnSpawn(source);
+		ObjectSystem.Objects[whoAmI] = obj;
 		return obj;
 	}
 	public static int GetModObjectType<T>() where T : ModObject {

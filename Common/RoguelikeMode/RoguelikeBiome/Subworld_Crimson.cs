@@ -21,9 +21,6 @@ internal class Subworld_Crimson : Subworld {
 		new() {
 			new GenPass_CrimsonSW("Generating Crimson",0)
 		};
-	public override void OnExit() {
-		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
-	}
 }
 public class GenPass_CrimsonSW : GenPass {
 	public GenPass_CrimsonSW(string name, double loadWeight) : base(name, loadWeight) {

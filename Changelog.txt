@@ -926,3 +926,11 @@ calculation that is global and is not debuff specific like accessory or armor.
 757/ Fixed a bug causes item can't have enchantment to return null exception.
 758/ Updated the build number from 0.0.20.3 -> 0.0.20.4 ./.
 759/ Fixed Nightmare mode stats scaler accidentally 2x it's scale.
+760/ Added Tower Structure and Monster Portal Mod Object.
+761/ Removed player's old world position before exiting world due to being too buggy and also conflicted with a certain mechanic.
+762/ Fixed Vitamin not giving extra buff when player are hit by projectile.
+763/ Added Tower to world gen step.
+764/ Added a "Create_AttemptToPlaceChest" method for easier time add chest.
+765/ Added in a method for getting common structure file path string.
+766/ Made marker wand UI a tiny bit easier to use.
+767/ Fixed AddLoot method not working.

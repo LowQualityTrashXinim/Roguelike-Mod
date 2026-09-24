@@ -17,9 +17,6 @@ internal class SubWorld_JungleTemple : Subworld {
 		new() {
 			new GenPass_JungleTemple("Generating jungle temple",0)
 		};
-	public override void OnExit() {
-		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
-	}
 }
 public class GenPass_JungleTemple : GenPass {
 	public GenPass_JungleTemple(string name, double loadWeight) : base(name, loadWeight) {

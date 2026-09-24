@@ -84,7 +84,6 @@ namespace Roguelike.Contents.Projectiles {
 				localPlayer.tileInteractAttempted = true;
 				localPlayer.tileInteractionHappened = true;
 				localPlayer.releaseUseTile = false;
-				RoguelikeWorldProperty.PlayerPos_WorldCood = localPlayer.Center;
 				Subworld_ToEnter();
 			}
 		}

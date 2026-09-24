@@ -21,9 +21,6 @@ internal class Subworld_FleshRealm : Subworld {
 		new() {
 			new GenPass_FleshRealmSW("Generating Flesh realm",0)
 		};
-	public override void OnExit() {
-		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
-	}
 }
 public class GenPass_FleshRealmSW : GenPass {
 	public GenPass_FleshRealmSW(string name, double loadWeight) : base(name, loadWeight) {

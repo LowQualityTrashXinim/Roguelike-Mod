@@ -366,6 +366,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
+		HasDodgeInThisInstance = info.Dodgeable;
 		if (Main.rand.NextFloat() <= DodgeChance) {
 			Player.immune = true;
 			Player.AddImmuneTime(info.CooldownCounter, DodgeTimer);

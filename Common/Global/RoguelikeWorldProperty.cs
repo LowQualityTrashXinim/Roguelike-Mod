@@ -19,7 +19,6 @@ internal class RoguelikeWorldProperty : ModSystem {
 
 	public override void Load() {
 		On_WorldGen.GenerateWorld += On_WorldGen_GenerateWorld;
-		PlayerPos_WorldCood = Vector2.Zero;
 	}
 	private void On_WorldGen_GenerateWorld(On_WorldGen.orig_GenerateWorld orig, int seed, GenerationProgress customProgressObject) {
 		if (config.TerrariaMode) {
@@ -44,15 +43,10 @@ internal class RoguelikeWorldProperty : ModSystem {
 	public static bool RareSpoils = true;
 	public static bool RareLootbox = true;
 	public static bool DataSaved = false;
-	public static Vector2 PlayerPos_WorldCood = Vector2.Zero;
-	public override void PreSaveAndQuit() {
-		PlayerPos_WorldCood = Main.LocalPlayer.Center;
-	}
 	public override void SaveWorldData(TagCompound tag) {
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
-		tag["PlayerPos_WorldCood"] = PlayerPos_WorldCood;
 		if (DataSaved) {
 			return;
 		}
@@ -68,7 +62,6 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Setting_Nightmare"] = NightmareWorld;
 	}
 	public override void LoadWorldData(TagCompound tag) {
-		PlayerPos_WorldCood = tag.Get<Vector2>("PlayerPos_WorldCood");
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
@@ -83,22 +76,11 @@ internal class RoguelikeWorldProperty : ModSystem {
 		RareLootbox = tag.Get<bool>("Setting_RareLootbox");
 		NightmareWorld = tag.Get<bool>("Setting_Nightmare");
 	}
-	public static void Set_PlayerLocation(Player player) {
-		if (RoguelikeWorld &&
-			PlayerPos_WorldCood != Vector2.Zero) {
-			player.Center = PlayerPos_WorldCood;
-			player.fallStart = (int)(PlayerPos_WorldCood.X / 16f);
-			player.oldPosition = player.Center;
-			player.teleportTime = 1f;
-			player.ForceUpdateBiomes();
-		}
-	}
 }
 public class RoguelikeWorldProperty_Player : ModPlayer {
 	public override void OnEnterWorld() {
 		var config = RoguelikeWorldProperty.config;
 		if (!ModUtils.Is_EnteringOrInASubWorld()) {
-			RoguelikeWorldProperty.Set_PlayerLocation(Player);
 			ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
 		}
 		RoguelikeWorldProperty.BossRush_Set_Progression = config.BossRushMode_Setting_FightBossInProgression;

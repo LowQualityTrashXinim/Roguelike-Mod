@@ -22,9 +22,6 @@ internal class Subworld_Corruption : Subworld {
 			new GenPass_ApplyingCorruptedStone("Placing stone", 0)
 		};
 
-	public override void OnExit() {
-		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
-	}
 }
 public class GenPass_CorruptionSW : GenPass {
 	public GenPass_CorruptionSW(string name, double loadWeight) : base(name, loadWeight) {

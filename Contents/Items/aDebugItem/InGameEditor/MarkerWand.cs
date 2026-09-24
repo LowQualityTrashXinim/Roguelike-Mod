@@ -196,6 +196,7 @@ public class MarkerWandUI : UIState {
 		btn_cancel = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
 		btn_cancel.HAlign = 0f;
 		btn_cancel.VAlign = 1f;
+		btn_cancel.HoverText = "Cancel ?";
 		btn_cancel.OnLeftClick += Btn_cancel_OnLeftClick;
 		btn_cancel.UISetWidthHeight(52, 52);
 		btn_cancel.Hide = true;
@@ -204,6 +205,7 @@ public class MarkerWandUI : UIState {
 		btn_confirm = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
 		btn_confirm.HAlign = 1f;
 		btn_confirm.VAlign = 1f;
+		btn_confirm.HoverText = "Confirm ?";
 		btn_confirm.UISetWidthHeight(52, 52);
 		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
 		btn_confirm.Hide = true;
@@ -429,7 +431,7 @@ internal class MarkerWand : ModItem {
 			}
 			if (system.position2.X == 0 && system.position2.Y == 0) {
 				system.position2 = Main.MouseWorld.ToTileCoordinates();
-				Main.NewText("Second position selected, ready to fill tile");
+				Main.NewText("Second position selected, continue pressing to reset position");
 				return false;
 			}
 			system.position1 = new();
@@ -452,6 +454,7 @@ internal class MarkerWand : ModItem {
 				}
 			}
 			system.list_Point.Add(new Marker(Main.MouseWorld.ToTileCoordinates(), ModContent.GetInstance<MarkerWandSystem>().PosWandUI.txt_note.Text));
+			ModContent.GetInstance<MarkerWandSystem>().PosWandUI.txt_note.SetText("");
 			Main.NewText("Added position");
 			return false;
 		}

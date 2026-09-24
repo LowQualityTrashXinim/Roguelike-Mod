@@ -417,7 +417,6 @@ public class LeatherWhip : ModEnchantment {
 }
 
 public class Snapthorn : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ThornWhip;
 	}
@@ -433,8 +432,6 @@ public class Snapthorn : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		player.AddBuff(BuffID.ThornWhipPlayerBuff, ModUtils.ToSecond(1.5f));
 	}
-
-
 }
 
 public class SpinalTap : ModEnchantment {

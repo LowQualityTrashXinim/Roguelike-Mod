@@ -195,9 +195,9 @@ namespace Roguelike.Common.Global {
 			if (Secret_Druggies) {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 			}
-			if (Player.IsDebugPlayer()) {
-				yield return new Item(ModContent.ItemType<MainDebugStick>());
-			}
+			//if (Player.IsDebugPlayer()) {
+			//	yield return new Item(ModContent.ItemType<MainDebugStick>());
+			//}
 			if (Secret_NinjaMode) {
 				yield return new Item(ItemID.Katana);
 				yield return new Item(ItemID.Shuriken, 100);

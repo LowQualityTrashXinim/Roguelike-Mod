@@ -134,7 +134,6 @@ public class EnchantmentModplayer : ModPlayer {
 		SlotUnlock = 2;
 	}
 	/// <summary>
-	/// Be aware, everything this does is the opposite
 	/// </summary>
 	/// <returns>
 	/// <b>True</b> if the item and enchantment is valid<br/>

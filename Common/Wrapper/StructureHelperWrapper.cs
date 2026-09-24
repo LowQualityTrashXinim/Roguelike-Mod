@@ -4,21 +4,17 @@ using StructureHelper.Models;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace Roguelike.Common.Wrapper
-{
-    public static partial class ModWrapper
-    {
-        public static StructureData Get_StructureData(string path, Mod mod)
-        {
+namespace Roguelike.Common.Wrapper {
+	public static partial class ModWrapper {
+		public static string Get_CommonStructureFilePath(string structureFileName) => $"Assets/{structureFileName}";
+		public static StructureData Get_StructureData(string path, Mod mod) {
 			return Generator.GetStructureData(path, mod);
-        }
-        public static void GenerateFromData(StructureData data, Point16 pos)
-        {
-            Generator.GenerateFromData(data, pos);
-        }
-        public static bool IsInBound(StructureData data, Point16 pos)
-        {
-            return Generator.IsInBounds(data, pos);
-        }
-    }
+		}
+		public static void GenerateFromData(StructureData data, Point16 pos) {
+			Generator.GenerateFromData(data, pos);
+		}
+		public static bool IsInBound(StructureData data, Point16 pos) {
+			return Generator.IsInBounds(data, pos);
+		}
+	}
 }

@@ -405,6 +405,56 @@ public partial class RogueLikeWorldGen {
 		Y = Y * 16;
 		int whoAmI = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), X, Y, type);
 	}
+	/// <summary>
+	/// This is the safest way to place a chest within a structure bound.
+	/// </summary>
+	/// <param name="re">Localition of the structure</param>
+	/// <param name="retryAmount">retry amount, the lower this amount, the better performance</param>
+	/// <param name="innerRetry">inner retry, attempt to place a chest by increasesing Y axis by 1, the lower this number is the better it performance</param>
+	/// <param name="amount">amount to loop</param>
+	private void Create_AttemptToPlaceChest(Rectangle re, int retryAmount = 200, int innerRetry = 10, int amount = 1) {
+		bool chestplaced = false;
+		int chestAttempt = retryAmount;
+		//Attempt to place chest randomly
+		for (int i = 0; i < amount; i++) {
+			for (int a = 0; a < chestAttempt; a++) {
+				Point randomPoint = new Point(Main.rand.Next(re.X, re.X + re.Width), Main.rand.Next(re.Y, re.Y + re.Height));
+				int chest = -1;
+				for (int attempt = 0; attempt < innerRetry; attempt++) {
+					chest = WorldGen.PlaceChest(randomPoint.X, randomPoint.Y);
+					if (chest == -1) {
+						randomPoint.Y++;
+						if (randomPoint.Y >= re.Y) {
+							break;
+						}
+						continue;
+					}
+				}
+				if (chest == -1) {
+					continue;
+				}
+				chestplaced = true;
+				AddLoot(Main.chest[chest]);
+				//Add loot here
+				break;
+			}
+			for (int x = re.X; x < re.X + re.Width; x++) {
+				if (chestplaced) {
+					break;
+				}
+				for (int y = re.Y; y < re.Y + re.Height; y++) {
+					int chest = WorldGen.PlaceChest(x, y);
+					if (chest == -1) {
+						continue;
+					}
+					chestplaced = true;
+					AddLoot(Main.chest[chest]);
+					//Add loot here
+					break;
+				}
+			}
+		}
+	}
 	private bool ValidBiome(int ID) =>
 		ID != Bid.Space
 		&& ID != Bid.Ocean
@@ -1255,17 +1305,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Create ocean step :" + watch.ToString());
 	}
 	public static void AddLoot(Chest chest) {
-		if (Main.rand.NextBool(50)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
+		if (Rand.NextBool(50)) {
+			chest.item[0] = new Item(ModContent.ItemType<GoldLootBox>());
 		}
-		else if (Main.rand.NextBool(25)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<SilverLootBox>()));
+		else if (Rand.NextBool(25)) {
+			chest.item[0] = new Item(ModContent.ItemType<SilverLootBox>());
 		}
-		else if (Main.rand.NextBool(10)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<IronLootBox>()));
+		else if (Rand.NextBool(10)) {
+			chest.item[0] = new Item(ModContent.ItemType<IronLootBox>());
 		}
 		else {
-			chest.AddItemToShop(new Item(ModContent.ItemType<WoodenLootBox>()));
+			chest.item[0] = new Item(ModContent.ItemType<WoodenLootBox>());
 		}
 	}
 	/// <summary>
@@ -1388,6 +1438,65 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Abandon structure step: " + watch.ToString());
 	}
 	[Task]
+	public void Generate_Tower() {
+		Stopwatch watch = new();
+		watch.Start();
+		List<Rectangle> places = new();
+		int amount = Rand.Next(9, 16);
+		StructureData data = ModWrapper.Get_StructureData(ModWrapper.Get_CommonStructureFilePath("Tower"), Mod);
+		for (int i = 0; i < amount; i++) {
+			int xdex = Main.rand.Next(1, 23);
+			int ydex = Main.rand.Next(1, 22);
+			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
+			if (ID == Bid.Space
+			|| ID == Bid.Ocean
+			|| ID == Bid.None) {
+				i--;
+				continue;
+			}
+			Point zonecachedPoint = new(GridPart_X * xdex + Main.rand.Next(0, GridPart_X), GridPart_Y * ydex + Main.rand.Next(0, GridPart_Y));
+			Rectangle re = Rect_CentralizeRect(zonecachedPoint.X, zonecachedPoint.Y, data.width, data.height);
+			bool canBeAdded = true;
+			foreach (var item in ZoneToBeIgnored) {
+				if (item.Intersects(re)) {
+					canBeAdded = false;
+					break;
+				}
+			}
+			foreach (var item in places) {
+				if (item.Intersects(re) || item.Center().ToWorldCoordinates().IsCloseToPosition(re.Center().ToWorldCoordinates(), 1500)) {
+					canBeAdded = false;
+					break;
+				}
+			}
+			if(!canBeAdded) {
+				Mod.Logger.Info($"Currently stuck on step : {i} due to conflicting with zone");
+				i--;
+				continue;
+			}
+			short centralID = Get_BiomeIDViaPos(re.Center, 0);
+			short topleftID = Get_BiomeIDViaPos(re.TopLeft().ToPoint(), 0);
+			short toprightID = Get_BiomeIDViaPos(re.TopRight().ToPoint(), 0);
+			short bottomleftID = Get_BiomeIDViaPos(re.BottomLeft().ToPoint(), 0);
+			short bottomrightID = Get_BiomeIDViaPos(re.BottomRight().ToPoint(), 0);
+			if (centralID != topleftID || centralID != toprightID || centralID != bottomleftID || centralID != bottomrightID) {
+				Mod.Logger.Info($"Currently stuck on step : {i} due to mismatched biome");
+				i--;
+				continue;
+			}
+			Set_MapIgnoredZoneIntoWorldGen(re);
+			ZoneToBeIgnored.Add(re);
+			ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
+			Create_AttemptToPlaceChest(re, 10, 10, 7);
+			places.Add(re);
+		}
+		foreach (var item in places) {
+			ModContent.GetInstance<Tower_Structure_ModSystem>().list_StructureLocation.Add(item, false);
+		}
+		watch.Stop();
+		Mod.Logger.Info("Tower structure step: " + watch.ToString());
+	}
+	[Task]
 	public void Generate_SmallVillage() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -1506,36 +1615,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			Set_MapIgnoredZoneIntoWorldGen(re);
 			ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
-			bool chestplaced = false;
-			int chestAttempt = 200;
-			for (int a = 0; a < chestAttempt; a++) {
-				Point randomPoint = new Point(Main.rand.Next(re.X, re.X + re.Width), Main.rand.Next(re.Y, re.Y + re.Height));
-				int chest = WorldGen.PlaceChest(randomPoint.X, randomPoint.Y);
-				if (chest == -1) {
-					continue;
-				}
-				Set_MapIgnoredZoneIntoWorldGen(randomPoint.X, randomPoint.Y, 2, 2);
-				chestplaced = true;
-				AddLoot(Main.chest[chest]);
-				//Add loot here
-				break;
-			}
-			for (int x = re.X; x < re.X + re.Width; x++) {
-				if (chestplaced) {
-					break;
-				}
-				for (int y = re.Y; y < re.Y + re.Height; y++) {
-					int chest = WorldGen.PlaceChest(x, y);
-					if (chest == -1) {
-						continue;
-					}
-					Set_MapIgnoredZoneIntoWorldGen(x, y, 2, 2);
-					chestplaced = true;
-					AddLoot(Main.chest[chest]);
-					//Add loot here
-					break;
-				}
-			}
+			Create_AttemptToPlaceChest(re, innerRetry: 1);
 			placed.Add(re);
 		}
 		watch.Stop();

@@ -42,8 +42,8 @@ public class Roguelike_Vitamin_ModPlayer : ModPlayer {
 		if (Vitamin)
 			Counter++;
 	}
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		//if (Vitamin)
-		//	Counter++;
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		if (Vitamin)
+			Counter++;
 	}
 }

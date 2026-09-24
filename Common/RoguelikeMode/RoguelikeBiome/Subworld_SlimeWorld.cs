@@ -16,9 +16,6 @@ internal class Subworld_SlimeWorld : Subworld {
 			new GeneralGenPass_PlayerSpawnLocaltion(.05f, .5f),
 			new GenPass_SlimeWorldSW("Generating Slime",0),
 		};
-	public override void OnExit() {
-		RoguelikeWorldProperty.Set_PlayerLocation(Main.LocalPlayer);
-	}
 }
 public class GenPass_SlimeWorldSW : GenPass {
 	public GenPass_SlimeWorldSW(string name, double loadWeight) : base(name, loadWeight) {

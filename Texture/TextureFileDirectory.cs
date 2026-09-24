@@ -28,6 +28,7 @@ namespace Roguelike.Texture {
 		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";
 		public const string Eye = CommonTextureStringPattern + "EyeOutline";
 		public const string EyePupil = CommonTextureStringPattern + "EyePupil";
+		public const string MonsterPortal = CommonTextureStringPattern + "MonsterPortal";
 		//UI related
 		public const string EXAMPLEUI = CommonTextureStringPattern + "ExampleFrame";
 		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";

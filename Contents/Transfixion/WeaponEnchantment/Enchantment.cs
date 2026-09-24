@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment {
+	//Hello, this is Xinim from Sept2026, wtf was the context below ??
 	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
