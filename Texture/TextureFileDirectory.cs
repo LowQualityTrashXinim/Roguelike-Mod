@@ -53,6 +53,14 @@ namespace Roguelike.Texture {
 
 		public const string NotePaper = CommonTextureStringPattern + "Note";
 		/// <summary>
+		/// The texture is 150x150 in size but it's actual size is 100x100
+		/// </summary>
+		public const string Glow_SuperBig = CommonTextureStringPattern + "100x100Glow";
+		/// <summary>
+		/// The texture is 100x100 in size but it's actual size is 50x50
+		/// </summary>
+		public const string Glow_VeryBig = CommonTextureStringPattern + "50x50Glow";
+		/// <summary>
 		/// The texture is 38x38 in size
 		/// </summary>
 		public const string Glow_Big = CommonTextureStringPattern + "Glow";

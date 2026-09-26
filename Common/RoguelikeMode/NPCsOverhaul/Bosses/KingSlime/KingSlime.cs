@@ -15,7 +15,6 @@ using Roguelike.Common.Graphics.Structs.QuadStructs;
 using Roguelike.Texture;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Graphics;
-using Roguelike.Common.RoguelikeMode.NPCsOverhaul;
 
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.Bosses.KingSlime;
 internal class KingSlime : NPCReworker {

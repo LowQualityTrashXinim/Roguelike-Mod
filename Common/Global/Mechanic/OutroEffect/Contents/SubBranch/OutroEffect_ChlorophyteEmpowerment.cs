@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.SubBranch;
 internal class OutroEffect_ChlorophyteEmpowerment : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(15);

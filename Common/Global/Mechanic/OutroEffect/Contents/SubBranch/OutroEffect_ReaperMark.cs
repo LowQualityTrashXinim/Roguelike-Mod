@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.SubBranch;
 internal class OutroEffect_ReaperMark : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(12);

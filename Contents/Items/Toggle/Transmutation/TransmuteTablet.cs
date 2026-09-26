@@ -73,7 +73,6 @@ public partial class TransmutationUIState {
 	Roguelike_UIImage btn_EnergyMode;
 	Roguelike_UIImage btn_RelicMergeMode;
 	Roguelike_UIImage btn_ItemShift;
-	Roguelike_UIImage btn_AugmentationCharge;
 	UIPanel FooterPanel;
 
 	ItemHolderSlot Relicslot1;

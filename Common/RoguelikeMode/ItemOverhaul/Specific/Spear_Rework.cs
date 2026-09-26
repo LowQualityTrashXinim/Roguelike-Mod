@@ -12,7 +12,7 @@ internal class Roguelike_Spear_Item : GlobalItem {
 		return entity.type == ItemID.Spear;
 	}
 	public override void SetDefaults(Item entity) {
-		entity.shoot = ModContent.ProjectileType<Roguelike_Spear>();
+		entity.shoot = ModContent.ProjectileType<Roguelike_Spear_Projectile>();
 		entity.useTime = entity.useAnimation = 60;
 		entity.damage = 80;
 	}
@@ -33,4 +33,9 @@ public class SpearCoolDown : ModBuff {
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}
+}
+public class Roguelike_Spear_Projectile : SpearReworkProjectile {
+	protected override float HoldoutRangeMax => 65;
+	protected override float HoldoutRangeMin => -10;
+	protected override int SpearType => ProjectileID.Spear;
 }

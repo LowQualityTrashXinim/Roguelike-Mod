@@ -2,14 +2,14 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
-internal class OutroEffect_Whip : OutroEffect {
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.MainBranch;
+internal class OutroEffect_Blunt : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(30);
 	}
 	public override void WeaponDamage(Player player, Item item, ref StatModifier damage) {
-		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Whip].Contains(item.type)) {
-			damage += .15f;
+		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Blunt].Contains(item.type)) {
+			damage += .25f;
 		}
 	}
 }

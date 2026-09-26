@@ -3,11 +3,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Projectiles;
+/// <summary>
+/// This is abstract class for reworking spear projectile<br/>
+/// Provide very minimal editing power, if you want a whole new spear attack chain, please create a new class<br/>
+/// It is important to override <see cref="SpearType"/> so that the spear can be drawn with right sprite<br/>
+/// override <see cref="SpawnProjectile"/> if you want to change how the white strike appear<br/>
+/// Modify <see cref="HoldoutRangeMax"/> and <see cref="HoldoutRangeMin"/> to change spear attack distance<br/>
+/// </summary>
 public abstract class SpearReworkProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -22,6 +30,9 @@ public abstract class SpearReworkProjectile : ModProjectile {
 		Projectile.tileCollide = false;
 		Projectile.friendly = true;
 	}
+	/// <summary>
+	/// This use <see cref="ProjectileID"/> not <see cref="ItemID"/>
+	/// </summary>
 	protected virtual int SpearType => ProjectileID.Spear;
 	protected virtual float HoldoutRangeMin => 50f;
 	protected virtual float HoldoutRangeMax => 200f;
@@ -86,11 +97,6 @@ public abstract class SpearReworkProjectile : ModProjectile {
 		return false;
 	}
 }
-public class Roguelike_Spear : SpearReworkProjectile {
-	protected override float HoldoutRangeMax => 65;
-	protected override float HoldoutRangeMin => -10;
-	protected override int SpearType => ProjectileID.Spear;
-}
 public class SpearThrownProjectile : ModProjectile {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -118,8 +124,8 @@ public class SpearThrownProjectile : ModProjectile {
 	}
 	public override void AI() {
 		Projectile.rotation = Projectile.velocity.ToRotation();
-		if (++Projectile.ai[0] >= 5) {
-			Projectile.ai[0] = 0;
+		if (++Projectile.localAI[0] >= 5) {
+			Projectile.localAI[0] = 0;
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, ModContent.DustType<SpearDust_Extra>());
 			dust.noGravity = true;
 			dust.velocity = Projectile.velocity * .1f;

@@ -1,7 +1,7 @@
 ﻿using Roguelike.Common.Utils;
 using Terraria;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.ShortBurst;
 internal class OutroEffect_SoulSweep : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = ModUtils.ToSecond(5);

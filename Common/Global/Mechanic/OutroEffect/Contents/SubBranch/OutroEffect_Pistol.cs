@@ -2,10 +2,10 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.SubBranch;
 internal class OutroEffect_Pistol : OutroEffect {
 	public override void SetStaticDefaults() {
-		Duration = ModUtils.ToSecond(30);
+		Duration = ModUtils.ToSecond(20);
 	}
 	public override void WeaponDamage(Player player, Item item, ref StatModifier damage) {
 		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Pistol].Contains(item.type)) {

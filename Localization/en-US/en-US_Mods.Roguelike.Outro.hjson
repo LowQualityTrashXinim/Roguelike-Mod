@@ -10,7 +10,7 @@ OutroEffect_Sword: {
 
 OutroEffect_Bow: {
 	DisplayName: Bow empowerment
-	Description: +15% damage for "Bow" weapon
+	Description: +25% damage for "Bow" weapon
 	Tooltip: Increases damage for "bow" weapon for {0} duration
 }
 
@@ -30,7 +30,7 @@ OutroEffect_Pistol: {
 
 OutroEffect_Gun: {
 	DisplayName: Gun empowerment
-	Description: +15% damage for "Gun" weapon
+	Description: +25% damage for "Gun" weapon
 	Tooltip: Increases damage for "Gun" weapon for {0}s duration
 }
 
@@ -39,7 +39,7 @@ OutroEffect_Rifle: {
 	Description:
 		'''
 		+15% damage for "Rifle" weapon
-		50% to deal 10% more damage for "Rifle" weapon
+		50% to deal 40% more damage for "Rifle" weapon
 		Ignore 10% enemy DEF for "Rifle" weapon
 		'''
 	Tooltip:
@@ -87,19 +87,19 @@ OutroEffect_SoulSweep: {
 
 OutroEffect_Blunt: {
 	DisplayName: Blunt empowerment
-	Description: +15% damage for "Blunt" weapon
+	Description: +25% damage for "Blunt" weapon
 	Tooltip: Increases damage for "Blunt" weapon for {0}s duration
 }
 
 OutroEffect_Whip: {
 	DisplayName: Whip empowerment
-	Description: +15% damage for "Whip" weapon
+	Description: +25% damage for "Whip" weapon
 	Tooltip: Increases damage for "Whip" weapon for {0}s duration
 }
 
 OutroEffect_Spear: {
 	DisplayName: Spear empowerment
-	Description: +15% damage for "Spear" weapon
+	Description: +25% damage for "Spear" weapon
 	Tooltip: Increases damage for "Spear" weapon for {0}s duration
 }
 
@@ -108,7 +108,7 @@ OutroEffect_Greatsword: {
 	Description:
 		'''
 		+25% damage and knockback for "Greatsword" weapon
-		Deal 1% of current NPC health
+		And "Greatsword" weapon deal 1% of current NPC health
 		'''
 	Tooltip:
 		'''
@@ -129,5 +129,20 @@ OutroEffect_ChlorophyteEmpowerment: {
 		'''
 		Increases damage and have small chance to create spore cloud for {0}s duration
 		"Chlorophyte empowerment" weapon deal extra damage
+		'''
+}
+
+OutroEffect_DeathSickle: {
+	DisplayName: Reaper's hand
+	Description:
+		'''
+		+50% damage and +200% critical damage
+		Deal 5% of current enemy's health ( capped at 2000 health )
+		"ReaperMark" weapon gain 50% critical strike chance
+		'''
+	Tooltip:
+		'''
+		Massively increases damage and critical damage
+		"ReaperMark" weapon gain massive boost in critical chance
 		'''
 }

@@ -934,3 +934,21 @@ calculation that is global and is not debuff specific like accessory or armor.
 765/ Added in a method for getting common structure file path string.
 766/ Made marker wand UI a tiny bit easier to use.
 767/ Fixed AddLoot method not working.
+768/ Reworked Katana, Trident and Death Sickle.
+769/ Made synergy weapon "MagicGrenade" projectile in mid air upon pressing alt click.
+770/ Added Death Sickle outro effect.
+771/ Categorize outro effect and buff some outro effect:
+- Blunt : dmg+ 15% -> dmg+ 25%
+- Bow : dmg+ 15% -> dmg+ 25%
+- Spear : dmg+ 15% -> dmg+ 25%
+- Whip : dmg+ 15% -> dmg+ 25%
+- Gun : dmg+ 15% -> dmg+ 25%
+- Rifle : 50% dmg+ 10% -> 50% dmg+ 40%
+As for the categorization, there are now 3 new classifications ( they won't be show in game however ) which are :
+- Main branch
+- Sub branches
+- Short burst
+772/ Buffed Pulse Rifle damage from 34 -> 48.
+773/ Buffed HeartBreakInstrument damage from 55 -> 65 and Gclef can now spawn sword slash strike every time it attacked in Tragedy mode.
+774/ Added 100x100 Glow and 50x50 Glow assets to the mod.
+775/ Updated the build number from 0.0.20.4 -> 0.0.20.5 ./.

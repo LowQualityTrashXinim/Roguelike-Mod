@@ -435,7 +435,6 @@ public class Snapthorn : ModEnchantment {
 }
 
 public class SpinalTap : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BoneWhip;
 	}

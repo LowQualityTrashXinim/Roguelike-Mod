@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents.SubBranch;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;

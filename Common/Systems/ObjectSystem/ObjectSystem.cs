@@ -71,6 +71,7 @@ public class ObjectSystem : ModSystem {
 				else {
 					modobject.OnKill();
 					modobject.active = false;
+					Objects[i] = null;
 					continue;
 				}
 			}
@@ -96,6 +97,7 @@ public class ObjectSystem : ModSystem {
 				continue;
 			}
 			modobject.Kill();
+			Objects[i] = null;
 		}
 	}
 }

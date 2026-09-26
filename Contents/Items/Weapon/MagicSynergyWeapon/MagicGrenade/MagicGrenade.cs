@@ -42,6 +42,9 @@ namespace Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Projectile.penetrate = 1;
 		}
 		public override void AI() {
+			if (Main.mouseRight) {
+				Projectile.Kill();
+			}
 			Lighting.AddLight(Projectile.Center, Color.Purple.ToVector3());
 			if (Projectile.velocity != Vector2.Zero) {
 				Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * .5f) * (Projectile.velocity.X > 0 ? 1 : -1);

@@ -17,7 +17,7 @@ internal class PulseRifle : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Summon 3 version of itself around the player");
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(94, 34, 34, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
+		Item.BossRushDefaultRange(94, 34, 48, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
 		Item.scale = .78f;
 		Item.crit = 12;
 		Item.UseSound = SoundID.Item75 with { Pitch = 1 };

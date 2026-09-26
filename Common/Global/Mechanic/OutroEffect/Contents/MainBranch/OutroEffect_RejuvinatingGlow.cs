@@ -2,10 +2,10 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.MainBranch;
 internal class OutroEffect_RejuvinatingGlow : OutroEffect {
 	public override void SetStaticDefaults() {
-		Duration = ModUtils.ToSecond(40);
+		Duration = ModUtils.ToSecond(60);
 	}
 	public override void Update(Player player) {
 		if (player.ModPlayerStats().Check_Heal()) {

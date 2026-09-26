@@ -583,6 +583,10 @@ Mods: {
 			Roguelike_GrapeJuice_ModProjectile.DisplayName: Roguelike_ Grape Juice_ Mod Projectile
 			Enchantment_MagnetOrbProjectile.DisplayName: Enchantment_ Magnet Orb Projectile
 			Enchantment_NimbusRodProjectile.DisplayName: Enchantment_ Nimbus Rod Projectile
+			Roguelike_Spear_Projectile.DisplayName: Roguelike_ Spear_ Projectile
+			Roguelike_Trident_Projectile.DisplayName: Roguelike_ Trident_ Projectile
+			Roguelike_Trident_ThrownProjectile.DisplayName: Roguelike_ Trident_ Thrown Projectile
+			Roguelike_DeathSickle_SoulProjectile.DisplayName: Roguelike_ Death Sickle_ Soul Projectile
 		}
 
 		NPCs: {
@@ -4428,6 +4432,16 @@ Mods: {
 			Enchantment_Marked: {
 				DisplayName: Enchantment_ Marked
 				Description: Mods.Roguelike.Buffs.Enchantment_Marked.Description
+			}
+
+			TridentCoolDown: {
+				DisplayName: Trident Cool Down
+				Description: Mods.Roguelike.Buffs.TridentCoolDown.Description
+			}
+
+			Roguelike_DeathSickle_ModBuff: {
+				DisplayName: Roguelike_ Death Sickle_ Mod Buff
+				Description: Mods.Roguelike.Buffs.Roguelike_DeathSickle_ModBuff.Description
 			}
 		}
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents.MainBranch;
 using Roguelike.Common.Graphics;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
@@ -18,11 +18,15 @@ public class Roguelike_CobaltSword : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.CobaltSword;
 	}
-	public static readonly WeaponProgress progress = new() {
+	public static WeaponProgress progress = new() {
 
 	};
 	public override void SetStaticDefaults() {
+		progress = new();
 		progress.Set_Progress(150 / 300f, 165 / 300f, new Color(10, 150, 250));
+	}
+	public override void Unload() {
+		progress = null;
 	}
 	public override void SetDefaults(Item entity) {
 		entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();

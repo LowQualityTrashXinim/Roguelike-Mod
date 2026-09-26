@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+using Roguelike.Common.Global.Mechanic.OutroEffect.Contents.ShortBurst;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -55,7 +56,7 @@ public static class HeartBreakInstrument_Tool {
 }
 public class HeartBreakInstrument : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultMeleeShootCustomProjectile(102, 102, 55, 4f, 24, 24, ItemUseStyleID.Swing, 1, 1f, true);
+		Item.BossRushDefaultMeleeShootCustomProjectile(102, 102, 65, 4f, 24, 24, ItemUseStyleID.Swing, 1, 1f, true);
 		Item.UseSound = SoundID.Item1 with { Pitch = -1f };
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul global)) {
 			global.SwingType = BossRushUseStyle.SwipeDown;
@@ -1009,6 +1010,16 @@ public class Gclef : ModProjectile {
 		var modplayer = player.GetModPlayer<HeartBreakInstrument_ModPlayer>();
 		if (!modplayer.ClimaxOfTradegy) {
 			player.GetModPlayer<HeartBreakInstrument_ModPlayer>().ClimaxOfTradegy_Count++;
+		}
+		else {
+			for (int i = 0; i < 3; i++) {
+				Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<HeartBreakInstrument_Slash_Projectile>(), (int)(Projectile.damage * .45f), 0, player.whoAmI, 5 * Main.rand.NextBool().ToDirectionInt(), 12, 5 * i);
+				if (projectile.ModProjectile is HeartBreakInstrument_Slash_Projectile proj) {
+					proj.ScaleX = 5f;
+					proj.ScaleY = .35f;
+					projectile.scale = 2;
+				}
+			}
 		}
 		Projectile.scale = 1.35f;
 		Lighting.AddLight(Projectile.Center, Color.AliceBlue.ToVector3());

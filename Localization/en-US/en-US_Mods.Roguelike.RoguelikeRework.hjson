@@ -205,6 +205,19 @@ EnchantedBoomerang:
 	Throw out enchanted boomerang when reach it peak, shoot out a enchanted beam
 	Alt click to redirect all boomerang toward your cursor
 	'''
+Katana:
+	'''
+	Waiting for 1s will make the next strike release a slash 
+	And increases the critical chance by 50%
+	The slash deal 500% weapon damage and will appear at cursor position
+	'''
+DeathSickle:
+	'''
+	While helding item:
+	+ Increases chance to instant kill by 1%
+	+ Killing enemy while helding death sickle may spawn a soul.
+	Collecting the soul grant temporary power boost
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

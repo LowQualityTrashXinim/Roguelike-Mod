@@ -25,7 +25,7 @@ public static class GeneralWorldGenTask {
 		if (chest == -1) {
 			return;
 		}
-		RogueLikeWorldGen.AddLoot(Main.chest[chest]);
+		RogueLikeWorldGen.AddLoot(ref Main.chest[chest]);
 		Main.chest[chest].AddItemToShop(new Item(Rand.Next(TerrariaArrayID.RandomAssortment)));
 		if (itemLoot != null) {
 			foreach (var item in itemLoot) {

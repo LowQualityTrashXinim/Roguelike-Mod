@@ -22,8 +22,10 @@ public class MonsterPortalObject : ModObject {
 	float ColorSwaping = 0;
 	int timer = 0;
 	const int maxTimer = 120;
+	public int SpawnActivate = 0;
 	public override void AI() {
-		if (!Main.LocalPlayer.Center.IsCloseToPosition(position, 1500)) {
+		Player player = Main.LocalPlayer;
+		if (!player.Center.IsCloseToPosition(position, 1500)) {
 			timeLeft = 9999;
 			return;
 		}
@@ -39,23 +41,30 @@ public class MonsterPortalObject : ModObject {
 				direction = 1;
 			}
 		}
-		Lighting.AddLight(position, (Color.Red with { A = 125 }).ToVector3());
+		float scale = 1;
+
+		if (timeLeft <= 60) {
+			scale = timeLeft / 60f;
+		}
+		Lighting.AddLight(position, (Color.Red with { A = (byte)(125 * scale) }).ToVector3());
 		Dust dust = Dust.NewDustDirect(position, 0, 0, ModContent.DustType<Monster_Dust>());
 		dust.color = Main.rand.Next([Color.Black, Color.Red]);
 		if (dust.color == Color.Red) {
 			dust.color = dust.color with { A = 0 };
-			dust.velocity = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * Main.rand.NextFloat()) * Main.rand.NextFloat(9, 17);
 		}
 		else {
 			dust.color = dust.color with { A = 100 };
-			dust.velocity = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * Main.rand.NextFloat()) * Main.rand.NextFloat(4, 7);
 		}
 		dust.rotation += Main.rand.NextFloat();
-		dust.velocity = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * Main.rand.NextFloat()) * Main.rand.NextFloat(4, 7);
-		dust.scale += Main.rand.NextFloat(.5f, .7f) + .5f;
+		dust.velocity = (Vector2.UnitX.RotatedBy(MathHelper.TwoPi * Main.rand.NextFloat()) * Main.rand.NextFloat(4, 7)) * scale;
+		dust.scale += Main.rand.NextFloat(.5f, .7f) + .5f * scale;
 		ColorSwaping = timer / (float)maxTimer;
 		rotation += MathHelper.ToRadians(1f);
-		if (Main.LocalPlayer.Center.IsCloseToPosition(position, 200)) {
+		SpawnActivate = ModUtils.CountDown(SpawnActivate);
+		if (Main.LocalPlayer.Center.IsCloseToPosition(position, 200) && Collision.CanHitLine(player.Center, 1, 1, position, 1, 1)) {
+			if (!CloseEnoughToStart) {
+				SpawnActivate = 90;
+			}
 			CloseEnoughToStart = true;
 		}
 		if (!CloseEnoughToStart) {
@@ -64,8 +73,18 @@ public class MonsterPortalObject : ModObject {
 		else {
 			if (timeLeft % 60 == 0) {
 				if (list_NPCID.Count < 1) {
-					Kill();
+					if (timeLeft > 60) {
+						timeLeft = 60;
+					}
 					return;
+				}
+				for (int i = 0; i < 150; i++) {
+					Dust dustRotate = Dust.NewDustDirect(position, 0, 0, ModContent.DustType<Monster_Dust>());
+					dustRotate.color = Main.rand.Next([Color.OrangeRed, Color.Red]);
+					dustRotate.color = dustRotate.color with { A = 0 };
+					dustRotate.rotation += Main.rand.NextFloat();
+					dustRotate.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.1f);
+					dustRotate.scale += Main.rand.NextFloat(.5f, .7f);
 				}
 				int X = (int)position.X;
 				int Y = (int)position.Y;
@@ -75,18 +94,35 @@ public class MonsterPortalObject : ModObject {
 		}
 	}
 	public override void Draw(SpriteBatch spritebatch) {
+		float scale = 1;
+
+		if (timeLeft <= 60) {
+			scale = timeLeft / 60f;
+		}
 		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.MonsterPortal).Value;
 		Vector2 drawpos = position - Main.screenPosition;
 		Vector2 origin = texture.Size() * .5f;
 
-		Texture2D glowy = ModContent.Request<Texture2D>(ModTexture.Glow_Big).Value;
+		Texture2D glowy = ModContent.Request<Texture2D>(ModTexture.Glow_VeryBig).Value;
 		Vector2 originGlow = glowy.Size() * .5f;
 		ModUtils.Draw_SetUpToDrawGlowAdditive(Main.spriteBatch);
-		Main.EntitySpriteDraw(glowy, drawpos, null, Color.Lerp(Color.OrangeRed, Color.Red, ColorSwaping), rotation, originGlow, 2, SpriteEffects.None);
+		Main.EntitySpriteDraw(glowy, drawpos, null, Color.Lerp(Color.OrangeRed, Color.Red, ColorSwaping), rotation, originGlow, 2 * scale, SpriteEffects.None);
+
+		if (SpawnActivate > 0) {
+			Texture2D auradraw = ModContent.Request<Texture2D>(ModTexture.OuterInnerGlow).Value;
+			Vector2 auraOrigin = auradraw.Size() * .5f;
+			Main.EntitySpriteDraw(auradraw, drawpos, null,
+				Color.Lerp(Color.OrangeRed, Color.Red, SpawnActivate / 90f) with { A = (byte)(255 * (SpawnActivate / 90f)) },
+				rotation,
+				auraOrigin,
+				7 * ModUtils.OutExpo(1 - SpawnActivate / 90f, 8f),
+				SpriteEffects.None);
+		}
+
 		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
 
-		Main.EntitySpriteDraw(texture, drawpos, null, Color.Lerp(Color.DarkRed, Color.Black, ColorSwaping) with { A = 50 }, rotation, origin, .75f, SpriteEffects.FlipHorizontally);
-		Main.EntitySpriteDraw(texture, drawpos, null, Color.Lerp(Color.OrangeRed, Color.Black, 1 - ColorSwaping), rotation, origin, .5f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Lerp(Color.DarkRed, Color.Black, ColorSwaping) with { A = 50 }, rotation, origin, .75f * scale, SpriteEffects.FlipHorizontally);
+		Main.EntitySpriteDraw(texture, drawpos, null, Color.Lerp(Color.OrangeRed, Color.Black, 1 - ColorSwaping), rotation, origin, .5f * scale, SpriteEffects.None);
 
 	}
 }

@@ -26,7 +26,7 @@ internal class Tower_Structure_ModSystem : ModSystem {
 	/// Values : Whenever or not if the Mod Object is loaded.
 	/// </summary>
 	public Dictionary<Rectangle, bool> list_StructureLocation = new();
-	public int[] Monster_Pool = [
+	public readonly int[] Monster_Pool = [
 		NPCID.DemonEye,
 		NPCID.Zombie,
 		NPCID.FireImp,

@@ -637,7 +637,6 @@ public class DefaultUI : UIState {
 		WeaponBar.HAlign = .5f;
 		WeaponBar.Width.Set(100, 0);
 		WeaponBar.Height.Set(20, 0);
-		WeaponBar.OnUpdate += WeaponBar_OnUpdate;
 		Append(WeaponBar);
 
 		WeaponEff = new();
@@ -701,8 +700,6 @@ public class DefaultUI : UIState {
 		int energy = modPlayer.SimulateSkillCost();
 		energyCostBar.BarProgress = energy / (float)modPlayer.EnergyCap;
 		energyCostBar.SetColorA(colorchanging3.MultiColor(5));
-	}
-	private void WeaponBar_OnUpdate(UIElement affectedElement) {
 	}
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();

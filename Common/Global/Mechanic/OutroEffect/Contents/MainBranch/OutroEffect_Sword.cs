@@ -2,10 +2,10 @@
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
+namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.MainBranch;
 internal class OutroEffect_Sword : OutroEffect {
 	public override void SetStaticDefaults() {
-		Duration = ModUtils.ToSecond(30);
+		Duration = ModUtils.ToSecond(50);
 	}
 	public override void Update(Player player) {
 		if (OutroEffectSystem.Get_Arr_WeaponTag[(int)WeaponTag.Sword].Contains(player.HeldItem.type)) {

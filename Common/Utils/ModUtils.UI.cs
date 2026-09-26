@@ -291,7 +291,15 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 	}
-
+	/// <summary>
+	/// Provide easy access to charging UI which is premade and handle universally in the mod<br/>
+	/// It is important to unload this class if you are setting it static in your item<br/>
+	/// If your charging have timing mechanic to it, set <see cref="Charge"/> to false ( by default it is false )<br/>
+	/// And then in your "SetStaticDefaults", use <see cref="Set_Progress(float, float, Color)"/> to set timing window<br/>
+	/// For this system to actually work, find something equivilant to <see cref="ModItem.HoldItem(Player)"/><br/>
+	/// And then in <see cref="UniversalSystem.defaultUI"/>, set your weapon progress in <see cref="DefaultUI.WeaponBar"/> via <see cref="Roguelike_WeaponUIFrame.SetWeaponProgress(WeaponProgress)"/><br/>
+	/// For the UI bar to show charging progression, again above but at <see cref="DefaultUI.WeaponBar"/>, change from SetWeaponProgress to barProgress
+	/// </summary>
 	public class WeaponProgress {
 		public int ItemType = 0;
 		/// <summary>
@@ -303,9 +311,14 @@ namespace Roguelike.Common.Utils {
 		public WeaponProgress() {
 
 		}
-		public void Set_Progress(float progress) {
-			Setting.Add(new(progress, progress, Color.White));
-		}
+		/// <summary>
+		/// Use this to set timing window if <see cref="Charge"/> is set to false<br/>
+		/// However it can also be used to add in indicator for different state of weapon<br/>
+		/// Value which need to be set here here is percentage from 0 to 1f
+		/// </summary>
+		/// <param name="p1">start of timing window</param>
+		/// <param name="p2">end of timing window</param>
+		/// <param name="color"></param>
 		public void Set_Progress(float p1, float p2, Color color) {
 			Setting.Add(new(p1, p2, color));
 		}
