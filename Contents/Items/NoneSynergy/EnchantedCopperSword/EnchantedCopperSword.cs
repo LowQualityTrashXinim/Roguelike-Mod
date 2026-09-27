@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.NoneSynergy;
+namespace Roguelike.Contents.Items.NoneSynergy.EnchantedCopperSword;
 
 public class EnchantedCopperSword : ModItem {
 	public override void SetDefaults() {

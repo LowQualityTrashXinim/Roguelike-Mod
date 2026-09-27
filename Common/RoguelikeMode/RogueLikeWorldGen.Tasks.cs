@@ -9,6 +9,7 @@ using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Wrapper;
 using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Items.RelicItem.RelicTemplateContent;
 using Roguelike.Texture;
@@ -1304,7 +1305,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Create ocean step :" + watch.ToString());
 	}
 	public static void AddLoot(ref Chest chest) {
-		if (Rand.NextBool(50)) {
+		if(Rand.NextBool(3000)) {
+			chest.AddItemToShop(new Item(ModContent.ItemType<RainbowLootBox>()));
+		}
+		else if (Rand.NextBool(50)) {
 			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
 		}
 		else if (Rand.NextBool(25)) {

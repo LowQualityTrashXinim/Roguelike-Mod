@@ -952,3 +952,10 @@ As for the categorization, there are now 3 new classifications ( they won't be s
 773/ Buffed HeartBreakInstrument damage from 55 -> 65 and Gclef can now spawn sword slash strike every time it attacked in Tragedy mode.
 774/ Added 100x100 Glow and 50x50 Glow assets to the mod.
 775/ Updated the build number from 0.0.20.4 -> 0.0.20.5 ./.
+776/ Changed how outro effect can be given, if a intro effect currently active then outro effect from any weapon is denied from being added.
+777/ Wait, hold up, I just hit the JACK POT !!!
+Side note : Rainbow lootbox have 1 in 3000 chance to replace any lootbox that found in overworld chest
+And significantly reworked Rainbow lootbox loot pool.
+778/ Added sprite for Arcane Round, Light Speed Round and Fragment Round.
+779/ Arcane round, Light speed round and Fragment round now all can be obtained via lootbox.
+780/ Buffed Fragment round damage and it's fragment damage from 7dmg -> 12dmg and 45% original dmg -> 85% original dmg.

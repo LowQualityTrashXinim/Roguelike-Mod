@@ -1,5 +1,8 @@
 ﻿using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.NoneSynergy;
+using Roguelike.Contents.Items.NoneSynergy.BlueMinishark;
+using Roguelike.Contents.Items.NoneSynergy.ComplexBow;
+using Roguelike.Contents.Items.NoneSynergy.EnchantedCopperSword;
 using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
 using Roguelike.Contents.Items.NoneSynergy.FrozenShark;
 using Roguelike.Contents.Items.NoneSynergy.GenericBlackSword;
@@ -8,6 +11,7 @@ using Roguelike.Contents.Items.NoneSynergy.Gunmerang;
 using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
 using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
 using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
+using Roguelike.Contents.Items.NoneSynergy.OldFlamingWoodSword;
 using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
 using Roguelike.Contents.Items.NoneSynergy.RectangleShotgun;
 using Roguelike.Contents.Items.NoneSynergy.RifleShotgun;

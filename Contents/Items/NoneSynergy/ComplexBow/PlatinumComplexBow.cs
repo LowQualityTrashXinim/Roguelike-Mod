@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.NoneSynergy;
+namespace Roguelike.Contents.Items.NoneSynergy.ComplexBow;
 internal class PlatinumComplexBow : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(34, 42, 16, 3f, 29, 29, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 12f, true, AmmoID.Arrow);

@@ -7,6 +7,7 @@ namespace Roguelike.Common.Global.Mechanic.OutroEffect.Contents.ShortBurst;
 internal class OutroEffect_HeartBreakInstrument : OutroEffect {
 	public override void SetStaticDefaults() {
 		Duration = 2;
+		Hide = true;
 	}
 	public override void Update(Player player) {
 		var position = player.Center;

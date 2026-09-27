@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria;
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.NoneSynergy;
+namespace Roguelike.Contents.Items.NoneSynergy.OldFlamingWoodSword;
 internal class OldFlamingWoodSword : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushSetDefault(32, 36, 22, 5f, 4, 40, 1, false);

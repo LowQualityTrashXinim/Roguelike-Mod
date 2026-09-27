@@ -8,9 +8,8 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Consumable.Ammo;
 internal class FragmentRound : ModItem {
-	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.Item_DefaultToAmmo(32, 32, 7, 0, 1.9f, 10, ModContent.ProjectileType<FragmentRound_Projectile>(), AmmoID.Bullet);
+		Item.Item_DefaultToAmmo(32, 32, 12, 0, 1.9f, 10, ModContent.ProjectileType<FragmentRound_Projectile>(), AmmoID.Bullet);
 		Item.DamageType = DamageClass.Ranged;
 		Item.rare = ItemRarityID.Green;
 		Item.value = 10;
@@ -36,7 +35,7 @@ public class FragmentRound_Projectile : ModProjectile {
 		if (Projectile.timeLeft <= 4) {
 			int amount = Main.rand.Next(2, 4);
 			for (int i = 0; i < amount; i++) {
-				var bullet = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(30).Vector2RandomSpread(2, Main.rand.NextFloat(.8f, 1.1f)), ProjectileID.Bullet, (int)(Projectile.damage * .45f), Projectile.knockBack * .5f, Projectile.owner);
+				var bullet = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(30).Vector2RandomSpread(2, Main.rand.NextFloat(.8f, 1.1f)), ProjectileID.Bullet, (int)(Projectile.damage * .85f), Projectile.knockBack * .5f, Projectile.owner);
 				bullet.scale -= .5f;
 				bullet.Resize(2, 2);
 				var smoke = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Scale: Main.rand.NextFloat(.95f, 1.25f));

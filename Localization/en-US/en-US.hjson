@@ -3111,6 +3111,33 @@ Mods: {
 				DisplayName: Diamond Skin Potion
 				Tooltip: ""
 			}
+
+			FailGoldBroadsword: {
+				DisplayName: Fail Gold Broadsword
+				Tooltip: 
+				'''
+				"A disgusting synergy abomnation between it's broad sword and short sword"
+				Have absolute no special effect
+				'''
+			}
+
+			FailPlatinumSword: {
+				DisplayName: Fail Platinum Sword
+				Tooltip: 
+				'''
+				"A disgusting synergy abomnation between it's broad sword and short sword"
+				Have absolute no special effect
+				'''
+			}
+
+			FailMuramasa: {
+				DisplayName: Fail Muramasa
+				Tooltip:
+				'''
+				"A disgusting synergy abomnation between it's broad sword and Muramasa"
+				Have absolute no special effect
+				'''
+			}
 		}
 
 		Buffs: {

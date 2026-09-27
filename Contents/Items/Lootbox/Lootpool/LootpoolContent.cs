@@ -1,9 +1,49 @@
 ﻿using Terraria.ID;
 using Roguelike.Common.Utils;
 using System.Collections.Generic;
-using Terraria;
 
 namespace Roguelike.Contents.Items.Lootbox.Lootpool;
+public class RainbowLootboxPool : ItemPool {
+	public override HashSet<int> MeleeLoot() => [
+		.. TerrariaArrayID.MeleePreBoss,
+		.. TerrariaArrayID.MeleePreEoC,
+		.. TerrariaArrayID.MeleeEvilBoss,
+		..TerrariaArrayID.MeleeHM,
+		..TerrariaArrayID.MeleeQS,
+		..TerrariaArrayID.MeleePostAllMechs,
+		..TerrariaArrayID.MeleePostPlant,
+		..TerrariaArrayID.MeleePostGolem,
+		..TerrariaArrayID.MeleePreLuna,
+];
+	public override HashSet<int> RangeLoot() => [.. TerrariaArrayID.RangePreBoss, .. TerrariaArrayID.RangePreEoC,..TerrariaArrayID.RangeHM, ..TerrariaArrayID.RangePostAllMech, ..TerrariaArrayID.RangePostPlant,
+		..TerrariaArrayID.RangePostGolem, ..TerrariaArrayID.RangePreLuna,
+		];
+	public override HashSet<int> MagicLoot() => [
+		..TerrariaArrayID.MagicPreBoss,
+		..TerrariaArrayID.MagicPreEoC,
+		..TerrariaArrayID.MagicEvilBoss,
+		..TerrariaArrayID.MagicHM,
+		..TerrariaArrayID.MagicPostAllMech,
+		..TerrariaArrayID.MagicPostPlant,
+		..TerrariaArrayID.MagicPostGolem,
+		..TerrariaArrayID.MagicPreLuna,
+		];
+	public override HashSet<int> SummonLoot() => [
+		..TerrariaArrayID.SummonPreBoss,
+		..TerrariaArrayID.SummonerPreEoC,
+		..TerrariaArrayID.SummonHM,
+		..TerrariaArrayID.SummonPostAllMech,
+		..TerrariaArrayID.SummonPostPlant,
+		..TerrariaArrayID.SummonPostGolem,
+		..TerrariaArrayID.SummonPreLuna,
+		];
+	public override HashSet<int> PotionPool() => [
+		..TerrariaArrayID.NonMovementPotion,
+		..TerrariaArrayID.MovementPotion,
+		];
+	public override HashSet<int> ArmorLoot() => [.. TerrariaArrayID.EveryArmorPiece];
+	public override HashSet<int> AccessoryLoot() => [.. TerrariaArrayID.EveryCombatHealtMovehAcc, .. TerrariaArrayID.IsInfoAcc, .. TerrariaArrayID.NonHelpfulCombatAcc];
+}
 public class LunarPool : ItemPool {
 
 }
@@ -108,10 +148,10 @@ public class Tier2Pool : ItemPool {
 		=> [
 			ItemID.ThunderStaff, ItemID.AmberStaff, ItemID.Vilethorn, ItemID.CrimsonRod,
 			ItemID.WeatherPain, ItemID.MagicMissile, ItemID.AquaScepter, ItemID.FlowerofFire, ItemID.Flamelash,
-			ItemID.ZapinatorGray, ItemID.SpaceGun, ItemID.BeeGun, 
+			ItemID.ZapinatorGray, ItemID.SpaceGun, ItemID.BeeGun,
 			ItemID.WaterBolt, ItemID.BookofSkulls, ItemID.DemonScythe,
 			];
-	public override HashSet<int> SummonLoot() 
+	public override HashSet<int> SummonLoot()
 		=> [
 			ItemID.HornetStaff, ItemID.VampireFrogStaff, ItemID.ImpStaff, ItemID.HoundiusShootius,
 			ItemID.DD2BallistraTowerT1Popper, ItemID.DD2ExplosiveTrapT1Popper, ItemID.DD2FlameburstTowerT1Popper, ItemID.DD2LightningAuraT1Popper,
@@ -124,7 +164,7 @@ public class Tier2Pool : ItemPool {
 		[
 		ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.HandWarmer, ItemID.Blindfold, ItemID.ArmorPolish, ItemID.Megaphone,
 		ItemID.Nazar, ItemID.TrifoldMap, ItemID.FastClock, ItemID.Vitamins,
-		ItemID.FrogLeg, ItemID.BlizzardinaBottle, ItemID.SandstorminaBottle, ItemID.FlyingCarpet, ItemID.LavaCharm, ItemID.Magiluminescence, 
+		ItemID.FrogLeg, ItemID.BlizzardinaBottle, ItemID.SandstorminaBottle, ItemID.FlyingCarpet, ItemID.LavaCharm, ItemID.Magiluminescence,
 		ItemID.SpectreBoots
 		];
 	public override HashSet<int> ArmorLoot()

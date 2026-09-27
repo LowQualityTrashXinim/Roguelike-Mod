@@ -103,7 +103,7 @@ TokenOfSlothArtifact: {
 		[c/ffff00:Positive effect] : 
 			+ Increases defenses by 10%, maximum health by 15% 
 			+ Standing still will gain sloth status, which grant player 1 hit resistance
-			Note : Maximum sloth status is 2
+			Note : Maximum sloth status is 4
 		[c/ab3e43:Negative effect] : 
 			- Decreases your attack speed by 35% and movement speed by 10%
 		'''
@@ -187,23 +187,6 @@ EssenceLanternArtifact: {
 			+ The orb also provide positive and negative effect
 		[c/ab3e43:Negative effect] : 
 			- Essence of Wither orb are present which are hamrful
-		'''
-}
-
-FuryEmblemArtifact: {
-	DisplayName: Fury Emblem [To be Removed]
-	Description:
-		'''
-		"Your rage is what turns tides in battle"
-		[c/00ff47:Starter item] :
-			{0}
-		[c/ffff00:Positive effect] :
-			+ Increase 5% damage, 5% critical strike chance
-			+ Upon getting hit, increases 25% damage and critical strike chance for short duration
-		[c/ab3e43:Negative effect] : 
-			- Getting hit shatter your defense and cut your life regen for short duration
-		[c/9b9c76:Neutral effect] :
-			= The buff will reset its life time when you got hit again
 		'''
 }
 

@@ -10,7 +10,6 @@ using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

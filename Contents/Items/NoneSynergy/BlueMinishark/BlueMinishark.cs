@@ -3,10 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
- 
+
 using Roguelike.Common.Utils;
 
-namespace Roguelike.Contents.Items.NoneSynergy
+namespace Roguelike.Contents.Items.NoneSynergy.BlueMinishark
 {
 	class BlueMinishark : ModItem {
 		public override void SetDefaults() {

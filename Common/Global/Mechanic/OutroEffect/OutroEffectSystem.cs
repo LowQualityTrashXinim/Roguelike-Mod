@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.NoneSynergy;
+using Roguelike.Contents.Items.NoneSynergy.BlueMinishark;
+using Roguelike.Contents.Items.NoneSynergy.ComplexBow;
+using Roguelike.Contents.Items.NoneSynergy.EnchantedCopperSword;
 using Roguelike.Contents.Items.NoneSynergy.EnhancedKatana;
 using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 using Roguelike.Contents.Items.NoneSynergy.FrozenEnchantedSword;
@@ -12,6 +15,7 @@ using Roguelike.Contents.Items.NoneSynergy.HuntingRifle;
 using Roguelike.Contents.Items.NoneSynergy.LongerMusket;
 using Roguelike.Contents.Items.NoneSynergy.MagicBow;
 using Roguelike.Contents.Items.NoneSynergy.ManaStarFury;
+using Roguelike.Contents.Items.NoneSynergy.OldFlamingWoodSword;
 using Roguelike.Contents.Items.NoneSynergy.OvergrownMinishark;
 using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
 using Roguelike.Contents.Items.NoneSynergy.RectangleShotgun;
@@ -1190,6 +1194,9 @@ public class OutroEffect_ModPlayer : ModPlayer {
 		IntroEffect_ItemType = -1;
 	}
 	public void Add_OutroEffect() {
+		if (IntroEffect_Duration > 0) {
+			return;
+		}
 		var ef = OutroEffectSystem.GetOutroEffect(OutroEffect_Current);
 		if (ef == null) {
 			return;
@@ -1197,6 +1204,9 @@ public class OutroEffect_ModPlayer : ModPlayer {
 		Add_OutroEffect(ef);
 	}
 	public void Add_OutroEffect(int type) {
+		if (IntroEffect_Duration > 0) {
+			return;
+		}
 		var ef = OutroEffectSystem.GetOutroEffect(type);
 		if (ef == null) {
 			return;
@@ -1339,6 +1349,10 @@ public class OutroEffect_GlobalItem : GlobalItem {
 public abstract class OutroEffect : ModType {
 	public short Type = -1;
 	public int Duration = 0;
+	/// <summary>
+	/// This will hide the outro effect from ever appearing on the UI when hover.
+	/// </summary>
+	public bool Hide = false;
 	public string DisplayName => ModUtils.LocalizationText("Outro", $"{Name}.DisplayName");
 	public string Description => ModUtils.LocalizationText("Outro", $"{Name}.Description");
 	protected string Tooltip => ModUtils.LocalizationText("Outro", $"{Name}.Tooltip");
@@ -1473,6 +1487,9 @@ public class UIImage_OutroEffectShower : Roguelike_UIImage {
 			var modplayer = player.GetModPlayer<OutroEffect_ModPlayer>();
 			for (int i = 0; i < modplayer.Easy_OutroEffectFollow.Count; i++) {
 				var eff = OutroEffectSystem.GetOutroEffect(modplayer.Easy_OutroEffectFollow[i]);
+				if (eff.Hide) {
+					continue;
+				}
 				if (i == modplayer.Easy_OutroEffectFollow.Count - 1) {
 					textEf += $"[{eff.DisplayName}] : [{modplayer.Arr_OutroEffect[modplayer.Easy_OutroEffectFollow[i]] / 60}] \n{eff.Description}";
 					continue;

@@ -51,7 +51,7 @@ public class TokenOfSlothPlayer : ModPlayer {
 			}
 			if (!Player.ItemAnimationActive) {
 				if (++Counter_Sloth >= ThreeSecond) {
-					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 2);
+					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 4);
 					Counter_Sloth = 0;
 				}
 			}

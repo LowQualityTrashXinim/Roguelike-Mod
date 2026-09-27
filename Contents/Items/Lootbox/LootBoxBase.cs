@@ -5,6 +5,7 @@ using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Consumable.Ammo;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
@@ -30,6 +31,10 @@ namespace Roguelike.Contents.Items.Lootbox {
 		public virtual void LootPoolSetStaticDefaults() {
 
 		}
+		/// <summary>
+		/// <b>True</b>: automatically handle lootbox tooltip<br/>
+		/// <b>False</b>: the tooltip is disable<br/>
+		/// </summary>
 		public virtual bool ChestUseOwnLogic => false;
 		public virtual List<int> Set_ItemPool() {
 			return new();
@@ -254,6 +259,9 @@ namespace Roguelike.Contents.Items.Lootbox {
 			}
 			else if (weapontoCheck.useAmmo == AmmoID.Bullet) {
 				AmmoPool.AddRange(TerrariaArrayID.defaultBullet);
+				AmmoPool.Add(ModContent.ItemType<ArcaneRound>());
+				AmmoPool.Add(ModContent.ItemType<LightSpeedRound>());
+				AmmoPool.Add(ModContent.ItemType<FragmentRound>());
 				if (Main.hardMode) {
 					AmmoPool.AddRange(TerrariaArrayID.BulletHM);
 				}
@@ -413,10 +421,17 @@ public class ItemDropProjectile : ModProjectile {
 		Projectile.extraUpdates = 10;
 		Projectile.light = 1;
 	}
+	int TypeLootbox = 0;
 	int itemID = ItemID.DirtBlock;
 	int count = 1;
 	int Level = 0;
 	public override void OnSpawn(IEntitySource source) {
+		if (source is EntitySource_ItemUse entity) {
+			if(entity.Item.type == ModContent.ItemType<RainbowLootBox>()) {
+				TypeLootbox = entity.Item.type;
+			}
+		}
+
 		itemID = (int)Projectile.ai[0];
 		count = (int)Projectile.ai[1];
 		Level = (int)Projectile.ai[2];
@@ -436,6 +451,9 @@ public class ItemDropProjectile : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Type);
+		if(TypeLootbox == ModContent.ItemType<RainbowLootBox>()) {
+			lightColor = Main.DiscoColor;
+		}
 
 		Projectile.DrawTrail(lightColor);
 
