@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
-using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Utils;
 using Terraria;
 using Terraria.ID;

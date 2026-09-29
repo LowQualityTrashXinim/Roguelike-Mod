@@ -22,7 +22,7 @@ internal class ArmorlessTemplate : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, [Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value.Base)]);
+		return string.Format(Description, [Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToPercentage(value.Additive)]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.07f, 1.15f), 2), 1, 0, 0);

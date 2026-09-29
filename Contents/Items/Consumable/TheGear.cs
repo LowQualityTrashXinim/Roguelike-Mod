@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.RoguelikeMode;
+using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
@@ -13,7 +15,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Roguelike.Contents.Items.Consumable;
-internal class ConfrontTrueGod : ModItem {
+internal class TheGear : ModItem {
 	public override string Texture => ModTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
@@ -23,11 +25,11 @@ internal class ConfrontTrueGod : ModItem {
 	int CurrentItemTexture = 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		string text = "";
+		if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(Main.LocalPlayer.position.ToTileCoordinates())).Any()) {
+			text = "Made an offer and you shall receive";
+		}
 		if (NPC.downedMoonlord) {
 			text = "There are more to be discover...";
-		}
-		else if (Main.hardMode) {
-			text = "Now is not the time...";
 		}
 		if (text == "") {
 			return;
@@ -40,13 +42,10 @@ internal class ConfrontTrueGod : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (!player.dead && player.ItemAnimationJustStarted) {
-			if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(player.position.ToPoint())).Any()) {
-				if (Main.rand.NextBool()) {
-					player.QuickSpawnItem(new EntitySource_Misc("Gift"), ModContent.ItemType<WorldEssence>());
-				}
-				else {
-					KillPlayer(player);
-				}
+			if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(player.position.ToTileCoordinates())).Any()) {
+				player.GetModPlayer<SpoilsPlayer>().SpoilsGift = ModSpoilSystem.GetSpoilsList().Where(s => s.RareValue == 999).Select(x => x.Name).ToList();
+				ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
+				return true;
 			}
 			else {
 				KillPlayer(player);
@@ -59,7 +58,7 @@ internal class ConfrontTrueGod : ModItem {
 		if (!NPC.downedMoonlord) {
 			whoAmI = "\"True\" God";
 		}
-		player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} has confront {whoAmI}")), 9999999999, 1);
+		player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} fail to confront {whoAmI}")), 9999999999, 1);
 	}
 	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 		int length = TextureAssets.Item.Length;

@@ -73,6 +73,9 @@ public static class SpoilDropRarity {
 
 		if (rare == 10)
 			black = new Color(255, 40, 100);
+
+		if (rare == 999)
+			black = Main.DiscoColor;
 		return black;
 	}
 }
@@ -84,6 +87,12 @@ public abstract class ModSpoil {
 	public virtual void SetStaticDefault() { }
 	public virtual string FinalDisplayName() => DisplayName;
 	public virtual string FinalDescription() => Description;
+	/// <summary>
+	/// <b>True</b> : make the spoil available in spoil pool<br/>
+	/// <b>False</b> : remove the spoil from spoil pool
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
 	public virtual bool IsSelectable(Player player) {
 		return true;
 	}
@@ -99,7 +108,7 @@ public class SpoilsPlayer : ModPlayer {
 	}
 }
 public class SpoilsUIState : UIState {
-	public int Limit_Spoils = 5;
+	public int Limit_Spoils = 3;
 	public List<SpoilsUIButton> btn_List;
 	public UITextPanel<string> panel;
 	public override void OnInitialize() {
@@ -116,7 +125,7 @@ public class SpoilsUIState : UIState {
 		SpoilsPlayer modplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
 		Player player = Main.LocalPlayer;
 		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
-		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1) {
+		if (modplayer.SpoilsGift.Count >= Limit_Spoils) {
 			SpoilList.Clear();
 			SpoilList = modplayer.SpoilsGift.Select(ModSpoilSystem.GetSpoils).ToList();
 			modplayer.SpoilsGift.Clear();
@@ -200,33 +209,18 @@ public class SpoilsUIButton : UIImageButton {
 				Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
-				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
+				if (spoil.RareValue == 999) {
+					Main.instance.MouseText($"[c/{SpoilDropRarity.ColorBaseOnRareValue(999).Hex3()}:{spoil.FinalDisplayName()}]", spoil.FinalDescription());
+				}
+				else {
+					Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
+				}
 			}
 		}
 		else {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
 				Main.instance.MouseText("");
 			}
-		}
-	}
-}
-internal class SpoilBag : ModItem {
-	public override string Texture => ModTexture.PLACEHOLDERCHEST;
-	public override void SetDefaults() {
-		Item.height = 60;
-		Item.width = 56;
-		Item.value = 0;
-		Item.rare = ItemRarityID.Purple;
-		Item.useAnimation = 30;
-		Item.useTime = 30;
-		Item.useStyle = ItemUseStyleID.HoldUp;
-		Item.scale = .5f;
-		Item.maxStack = 9999;
-	}
-	public override bool CanRightClick() => true;
-	public override void RightClick(Player player) {
-		if (player.whoAmI == Main.myPlayer) {
-			ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
 		}
 	}
 }

@@ -167,3 +167,38 @@ SSR_WealthSpoil: {
 	DisplayName: Wealth spoil
 	Description: Give you 1 coin gun and 9999 platinum coins. PS: Have fun~
 }
+
+Hidden_RelicSpoilTier8: {
+	DisplayName: True
+	Description: Grant thy. Supreme tier 8 relic
+}
+
+Hidden_RelicSpoilTier1: {
+	DisplayName: First
+	Description: Grant thy. Supreme tier 1 relic
+}
+
+Hidden_WeaponSpoil: {
+	DisplayName: Alpha
+	Description: Grant thy. High level weapon
+}
+
+Hidden_Creator: {
+	DisplayName: Creator
+	Description: Grant thy. stick
+}
+
+Hidden_Difficulty: {
+	DisplayName: Alice
+	Description: Twist thy fate. Change player's difficulty to classic
+}
+
+Hidden_WeaponSpoil2: {
+	DisplayName: Omega
+	Description: Grant thy. Supreme weapon
+}
+
+Hidden_World: {
+	DisplayName: World
+	Description: Grant thy. Essence
+}

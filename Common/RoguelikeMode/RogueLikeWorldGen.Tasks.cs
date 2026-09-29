@@ -1305,20 +1305,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Mod.Logger.Info("Create ocean step :" + watch.ToString());
 	}
 	public static void AddLoot(ref Chest chest) {
-		if(Rand.NextBool(3000)) {
+		if (Rand.NextBool(3000)) {
 			chest.AddItemToShop(new Item(ModContent.ItemType<RainbowLootBox>()));
 		}
-		else if (Rand.NextBool(50)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<GoldLootBox>()));
-		}
-		else if (Rand.NextBool(25)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<SilverLootBox>()));
-		}
-		else if (Rand.NextBool(10)) {
-			chest.AddItemToShop(new Item(ModContent.ItemType<IronLootBox>()));
-		}
 		else {
-			chest.AddItemToShop(new Item(ModContent.ItemType<WoodenLootBox>()));
+			chest.AddItemToShop(new Item(ModContent.ItemType<SpoilBag>()));
 		}
 	}
 	/// <summary>
@@ -1724,6 +1715,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_PostWorld() {
+		return;
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				if (i % GridPart_X == 0) {

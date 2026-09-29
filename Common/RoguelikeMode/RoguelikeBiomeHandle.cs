@@ -49,10 +49,10 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 			}
 			if (Space_Counter % 60 == 0) {
 				Color color = Color.White;
-				if(Space_Counter >= 300) {
+				if (Space_Counter >= 300) {
 					color = Color.Yellow;
 				}
-				if(Space_Counter >= 420) {
+				if (Space_Counter >= 420) {
 					color = Color.Red;
 				}
 				Main.NewText($"Entering space subword in {10 - Space_Counter / 60}", color);
@@ -631,7 +631,7 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 }
 internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if(!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld) {
 			return;
 		}
 		if (RoguelikeWorldProperty.RoguelikeWorld) {
@@ -645,30 +645,135 @@ internal class RoguelikeBiomeHandle_GlobalNPC : GlobalNPC {
 			pool.Add(new(NPCID.RedSlime, 1f));
 		}
 		if (modplayer.CurrentBiome.Contains(Bid.Slime)) {
-			pool.Add(new(NPCID.BlueSlime, 1f));
-			pool.Add(new(NPCID.GreenSlime, 1f));
-			pool.Add(new(NPCID.PurpleSlime, 1f));
-			pool.Add(new(NPCID.RedSlime, 1f));
-			pool.Add(new(NPCID.MotherSlime, 1f));
-			pool.Add(new(NPCID.BlackSlime, 1f));
-			pool.Add(new(NPCID.JungleSlime, .1f));
-			pool.Add(new(NPCID.IceSlime, 1f));
-			pool.Add(new(NPCID.Slimer2, 1f));
-
-			pool.Add(new(NPCID.SlimeSpiked, .5f));
-			pool.Add(new(NPCID.SpikedIceSlime, .5f));
-			pool.Add(new(NPCID.SpikedJungleSlime, .5f));
-
-			pool.Add(new(NPCID.Slimeling, .1f));
-			pool.Add(new(NPCID.ToxicSludge, .1f));
-			pool.Add(new(NPCID.RainbowSlime, .1f));
-			pool.Add(new(NPCID.Pinky, .1f));
-
-			pool.Add(new(NPCID.GoldenSlime, .01f));
+			SpawnPool_SlimeBiome(pool);
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Caven)) {
+			SpawnPool_Caven(pool);
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Tundra)) {
+			SpawnPool_Tundra(pool);
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Corruption)) {
+			SpawnPool_Corruption(pool);
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Crimson)) {
+			SpawnPool_Crimson(pool);
+		}
+		if (modplayer.CurrentBiome.Contains(Bid.Jungle)) {
+			SpawnPool_Jungle(pool);
 		}
 	}
+	private void SpawnPool_SlimeBiome(IDictionary<int, float> pool) {
+		pool.Add(new(NPCID.BlueSlime, 1f));
+		pool.Add(new(NPCID.GreenSlime, 1f));
+		pool.Add(new(NPCID.PurpleSlime, 1f));
+		pool.Add(new(NPCID.RedSlime, 1f));
+		pool.Add(new(NPCID.MotherSlime, 1f));
+		pool.Add(new(NPCID.BlackSlime, 1f));
+		pool.Add(new(NPCID.JungleSlime, .1f));
+		pool.Add(new(NPCID.IceSlime, 1f));
+		pool.Add(new(NPCID.Slimer2, 1f));
+		//Rare
+		pool.Add(new(NPCID.SlimeSpiked, .5f));
+		pool.Add(new(NPCID.SpikedIceSlime, .5f));
+		pool.Add(new(NPCID.SpikedJungleSlime, .5f));
+		//Super rare
+		pool.Add(new(NPCID.Slimeling, .1f));
+		pool.Add(new(NPCID.ToxicSludge, .1f));
+		pool.Add(new(NPCID.RainbowSlime, .1f));
+		pool.Add(new(NPCID.Pinky, .1f));
+		//Mini boss rare
+
+		//Straight up rare
+		pool.Add(new(NPCID.GoldenSlime, .01f));
+	}
+	private void SpawnPool_Caven(IDictionary<int, float> pool) {
+		//Common
+		pool.Add(new(NPCID.CaveBat, 1f));
+		pool.Add(new(NPCID.Skeleton, 1f));
+		pool.Add(new(NPCID.MotherSlime, 1f));
+		pool.Add(new(NPCID.BlackSlime, 1f));
+		//Rare
+		pool.Add(new(NPCID.UndeadMiner, .5f));
+		//Super rare
+		pool.Add(new(NPCID.Ghost, .1f));
+		pool.Add(new(NPCID.Tim, .1f));
+		pool.Add(new(NPCID.ArmoredSkeleton, .1f));
+		pool.Add(new(NPCID.SkeletonArcher, .1f));
+		//Mini boss rare
+		pool.Add(new(NPCID.RockGolem, .05f));
+		pool.Add(new(NPCID.RuneWizard, .05f));
+	}
+	private void SpawnPool_Tundra(IDictionary<int, float> pool) {
+		//Common
+		pool.Add(new(NPCID.IceBat, 1f));
+		pool.Add(new(NPCID.IceSlime, 1f));
+		pool.Add(new(NPCID.SnowFlinx, 1f));
+		pool.Add(new(NPCID.ZombieEskimo, 1f));
+		//Rare
+		pool.Add(new(NPCID.SpikedIceSlime, .5f));
+		pool.Add(new(NPCID.Wolf, .5f));
+		//Super rare
+		pool.Add(new(NPCID.UndeadViking, .1f));
+		pool.Add(new(NPCID.IceElemental, .1f));
+		pool.Add(new(NPCID.IcyMerman, .1f));
+		pool.Add(new(NPCID.IceTortoise, .1f));
+		//Mini boss rare
+		pool.Add(new(NPCID.IceGolem, .05f));
+	}
+	private void SpawnPool_Corruption(IDictionary<int, float> pool) {
+		//Common
+		pool.Add(new(NPCID.EaterofSouls, 1f));
+		pool.Add(new(NPCID.DevourerHead, 1f));
+		pool.Add(new(NPCID.Slimeling, 1f));
+		pool.Add(new(NPCID.Slimer2, 1f));
+		//Rare
+		pool.Add(new(NPCID.Corruptor, .5f));
+		pool.Add(new(NPCID.CorruptSlime, .5f));
+		pool.Add(new(NPCID.Slimer, .5f));
+		pool.Add(new(NPCID.Clinger, .5f));
+		//Super rare
+		pool.Add(new(NPCID.SeekerHead, .1f));
+		pool.Add(new(NPCID.CursedHammer, .1f));
+		//Mini boss rare
+	}
+	private void SpawnPool_Crimson(IDictionary<int, float> pool) {
+		//Common
+		pool.Add(new(NPCID.BloodCrawler, 1f));
+		pool.Add(new(NPCID.FaceMonster, 1f));
+		pool.Add(new(NPCID.Crimera, 1f));
+		pool.Add(new(NPCID.Crimslime, 1f));
+		//Rare
+		pool.Add(new(NPCID.Herpling, .5f));
+		pool.Add(new(NPCID.FloatyGross, .5f));
+		pool.Add(new(NPCID.IchorSticker, .5f));
+		//Super rare
+		pool.Add(new(NPCID.CrimsonAxe, .1f));
+		//Mini boss rare
+	}
+	private void SpawnPool_Jungle(IDictionary<int, float> pool) {
+		//Common
+		pool.Add(new(NPCID.Hornet, 1f));
+		pool.Add(new(NPCID.Snatcher, 1f));
+		pool.Add(new(NPCID.JungleBat, 1f));
+		pool.Add(new(NPCID.JungleSlime, 1f));
+		//Rare
+		pool.Add(new(NPCID.ManEater, .5f));
+		pool.Add(new(NPCID.SpikedJungleSlime, .5f));
+		pool.Add(new(NPCID.Bee, .5f));
+		//Super rare
+		pool.Add(new(NPCID.JungleBat, .1f));
+		pool.Add(new(NPCID.Turtle, .1f));
+		pool.Add(new(NPCID.MossHornet, .1f));
+		pool.Add(new(NPCID.JungleCreeper, .1f));
+		pool.Add(new(NPCID.DoctorBones, .1f));
+		pool.Add(new(NPCID.AngryTrapper, .1f));
+		//Mini boss rare
+		pool.Add(new(NPCID.Moth, .05f));
+	}
 	public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
-		base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
+		//spawnRate = 100;
+		//maxSpawns = 20;
 	}
 	public override void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY, ref int safeRangeX, ref int safeRangeY) {
 		base.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);

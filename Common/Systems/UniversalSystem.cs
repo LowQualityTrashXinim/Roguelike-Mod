@@ -351,7 +351,7 @@ internal class UniversalSystem : ModSystem {
 	/// <summary>
 	/// Activate spoils ui state
 	/// <summary>
-	public void ActivateSpoilsUI() {
+	public void ActivateSpoilsUI(int selectionNumber = 3) {
 		DeactivateUI();
 		if (Check_TotalRNG()) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
@@ -364,6 +364,7 @@ internal class UniversalSystem : ModSystem {
 			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer);
 			return;
 		}
+		spoilsState.Limit_Spoils = selectionNumber;
 		user2ndInterface.SetState(spoilsState);
 	}
 	public void ActivateBRmodifierUI() {

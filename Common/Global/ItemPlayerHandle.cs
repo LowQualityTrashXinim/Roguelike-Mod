@@ -42,8 +42,9 @@ namespace Roguelike.Common.Global {
 		public int OutroEffect_type = -1;
 		public int InventoryWhoAmI = -1;
 		public List<int> list_WeaponEffectType = new();
+		public int ItemEffectCap = 5;
 		public void SetItemLevel(int level) {
-			int amountAdd = level / 5;
+			int amountAdd = Math.Clamp(level / 5, 0, ItemEffectCap);
 			if (amountAdd > 0) {
 				for (int i = 0; i < amountAdd; i++) {
 					list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
@@ -65,6 +66,9 @@ namespace Roguelike.Common.Global {
 		public override void OnCreated(Item item, ItemCreationContext context) {
 		}
 		public override void SetDefaults(Item entity) {
+			ItemEffectCap = 5;
+			ItemLevel = 0;
+			CriticalDamage = 0;
 			if (OutroEffect_type == -1) {
 				OutroEffect_type = OutroEffect.GetOutroEffectType<OutroEffect_None>();
 			}

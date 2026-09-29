@@ -1,4 +1,122 @@
+Version 0.0.3:
 Version 0.0.2:
+701/ Updated mod version from 0.0.19.9 to 0.0.20.0 ./.
+702/ Added new stats which are: 
+- OnKillHealing.
+- ScatterShot.
+703/ Updated Scatter shot perk tooltip.
+704/ Added skill system loadout.
+705/ Added skill Replay and Rewind.
+706/ Fixed a critical bug that causes damage to overflow to infinite.
+707/ Updated debuffer playstyle:
+- Added Poison_Inner variable.
+The Inner_Poison variable is there for easier time to manage DoT damage and make it easier to scale them.
+From now on, use Inner_Poison.Base over direct substract npc.lifeRegen, tho both work the same.
+- Added Poison_Additional variable.
+This is a global debuff damage which dealt damage based on current target lifeRegen value every 1s
+By default this have value of 0 so it is not activated.
+- Added Amount_CurrentDebuffInclift value.
+A easy way for modder to access amount of debuff a NPC is currently having atm
+- Added "Add_PoisonGlobal" method and dictionary to contain it
+Use this over Poison_Inner if you want to made changes toward damage overtime
+calculation that is global and is not debuff specific like accessory or armor.
+708/ Added IncreasesDamageOverTime perk.
+709/ Nerfed Nature of Good and Evil relic set.
+710/ Added 5 new relic template and reworked ArcherMasteryTemplate and MagicCostTemplate
+711/ Updated all of the inner name of spoil for better clarification.
+712/ Updated transmutation UI to now included upgrade function for relic.
+713/ Fixed Relic creative menu upon creating relic, the created relic is still linked to the system.
+714/ Refactor transmutation code.
+715/ Finished up the new augmentation system.
+716/ Added a fail safe for getting rarity item.
+717/ Updated all of augmentation contents.
+718/ Fixed critical bugs with handling Mod Object in roguelike world ( in structure handle folder ).
+719/ Updated Corruption realm generation.
+720/ Fixed a bug with copy and paste function ( mainly the local structure saver ).
+721/ Fixed a critical error that causes Eye container to be duplicated in roguelike world.
+722/ Same as change log 721 but for king slime
+723/ Updated Structure_Local placing structure function to better support tile.
+724/ Preparing foundation for Mod command.
+725/ Added Terraria Mode ( what ?? ).
+726/ Patched up the mod overall mode logic.
+727/ Fixed subworld not returning player to their original position before entering subworld.
+728/ Re-organize all of the logic and world gen and world data property all to one main file.
+729/ Finished up Nightmare mode.
+730/ Added Unholy Trident, NettleBurst and BatScepter enchantment.
+731/ Fixed subworld messing up overworld values.
+732/ Added Holy Flame debuff.
+733/ Added a way to get divine hammer, transmute tablet and skill orb in Terraria mode.
+734/ Added Blizzard Staff, Inferno Fork, ShadowbeamStaff, Razorpine, Crystal Storm and Spectre Staff enchantment.
+735/ Added Cursed Flames, Magnet sphere, Golden Shower, Heat ray and Leaf Blower enchantment.
+736/ After a lot of debating, the lead dev ( Xinim ) decided to readd the vanilla prefix system.
+737/ Added a hide player field in PlayerStatsHandle.
+738/ Added a keybind for custom dash mechanic that is in the mod.
+739/ Updated AnkletOfTheWind rework to use the 2 above changelogs implementation.
+740/ Updated AnkletOfTheWind rework dash to be less affected by gravity and more like a teleport
+741/ Added Magic Dagger enchantment.
+742/ Reworked Titanium Sword enchantment.
+743/ Fixed a inproper used of a function in Death Sickle enchantment.
+744/ Added Nimbus Rod, Medusa head, Spirit flames enchantment.
+745/ Added Synergy spoil.
+746/ Updated the build number from 0.0.20.0 -> 0.0.20.2 ./.
+747/ Fixed incorrected usages of world property.
+748/ Made snowstorm shoot a bit quicker.
+749/ Nerfed Healing Explosion perk damage.
+750/ Added AbigailsFlower and VampireFlogStaff enchantment.
+751/ Fixed new possible loop hole for previous summoning minion enchantment and buffing them in the process.
+752/ Fixed the mess of a old code in enchantment code.
+753/ Added Blade Staff, Spider Staff, Pirate Staff, Sanguine Staff and Optic Staff enchantment.
+754/ Fixed Slimy Chalice make certain projectile stay alive for ever after bounce.
+755/ Updated the build number from 0.0.20.2 -> 0.0.20.3 ./.
+756/ Added a Force_TimeLeft which forced a projectile to die after certain time.
+757/ Fixed a bug causes item can't have enchantment to return null exception.
+758/ Updated the build number from 0.0.20.3 -> 0.0.20.4 ./.
+759/ Fixed Nightmare mode stats scaler accidentally 2x it's scale.
+760/ Added Tower Structure and Monster Portal Mod Object.
+761/ Removed player's old world position before exiting world due to being too buggy and also conflicted with a certain mechanic.
+762/ Fixed Vitamin not giving extra buff when player are hit by projectile.
+763/ Added Tower to world gen step.
+764/ Added a "Create_AttemptToPlaceChest" method for easier time add chest.
+765/ Added in a method for getting common structure file path string.
+766/ Made marker wand UI a tiny bit easier to use.
+767/ Fixed AddLoot method not working.
+768/ Reworked Katana, Trident and Death Sickle.
+769/ Made synergy weapon "MagicGrenade" projectile in mid air upon pressing alt click.
+770/ Added Death Sickle outro effect.
+771/ Categorize outro effect and buff some outro effect:
+- Blunt : dmg+ 15% -> dmg+ 25%
+- Bow : dmg+ 15% -> dmg+ 25%
+- Spear : dmg+ 15% -> dmg+ 25%
+- Whip : dmg+ 15% -> dmg+ 25%
+- Gun : dmg+ 15% -> dmg+ 25%
+- Rifle : 50% dmg+ 10% -> 50% dmg+ 40%
+As for the categorization, there are now 3 new classifications ( they won't be show in game however ) which are :
+- Main branch
+- Sub branches
+- Short burst
+772/ Buffed Pulse Rifle damage from 34 -> 48.
+773/ Buffed HeartBreakInstrument damage from 55 -> 65 and Gclef can now spawn sword slash strike every time it attacked in Tragedy mode.
+774/ Added 100x100 Glow and 50x50 Glow assets to the mod.
+775/ Updated the build number from 0.0.20.4 -> 0.0.20.5 ./.
+776/ Changed how outro effect can be given, if a intro effect currently active then outro effect from any weapon is denied from being added.
+777/ Wait, hold up, I just hit the JACK POT !!!
+Side note : Rainbow lootbox have 1 in 3000 chance to replace any lootbox that found in overworld chest
+And significantly reworked Rainbow lootbox loot pool.
+778/ Added sprite for Arcane Round, Light Speed Round and Fragment Round.
+779/ Arcane round, Light speed round and Fragment round now all can be obtained via lootbox.
+780/ Buffed Fragment round damage and it's fragment damage from 7dmg -> 12dmg and 45% original dmg -> 85% original dmg.
+781/ Added a tiny secret.
+782/ Added Item Effect Cap for Weapon Effect system.
+783/ Fixed ArmorlessTemplate incorrectly display stats.
+784/ Added Spoil Bag sprite to spoil bag item.
+785/ Added spawn pool for Caven, Tundra, Jungle, Corruption and Crimson biome.
+786/ Fixed a out of bound color case for special spoil rarity.
+787/ Added in ability to change spoil selection amount for developer.
+788/ Some minor name changing variable.
+789/ Fixed a stupid bug in the code where range pool get magic weapon and magic pool get range weapon
+790/ Replaced lootbox from overworld with spoil bag.
+791/ Attempt to fix Man Eater AI.
+
 Version 0.0.1:
 1/ Ported the mod into a new repository.
 2/ Fixes all the error caused by the port.
@@ -854,108 +972,3 @@ Remove fire arrow and hellfire arrow fall from the sky
 698/ Added Copy and paste function into create panel.
 699/ Organized fields and variables around the project preparing for Everlasting Core.
 700/ Deleted Smart Neo Dynamite because seemingly it does nothing.
-701/ Updated mod version from 0.0.19.9 to 0.0.20.0 ./.
-702/ Added new stats which are: 
-- OnKillHealing.
-- ScatterShot.
-703/ Updated Scatter shot perk tooltip.
-704/ Added skill system loadout.
-705/ Added skill Replay and Rewind.
-706/ Fixed a critical bug that causes damage to overflow to infinite.
-707/ Updated debuffer playstyle:
-- Added Poison_Inner variable.
-The Inner_Poison variable is there for easier time to manage DoT damage and make it easier to scale them.
-From now on, use Inner_Poison.Base over direct substract npc.lifeRegen, tho both work the same.
-- Added Poison_Additional variable.
-This is a global debuff damage which dealt damage based on current target lifeRegen value every 1s
-By default this have value of 0 so it is not activated.
-- Added Amount_CurrentDebuffInclift value.
-A easy way for modder to access amount of debuff a NPC is currently having atm
-- Added "Add_PoisonGlobal" method and dictionary to contain it
-Use this over Poison_Inner if you want to made changes toward damage overtime
-calculation that is global and is not debuff specific like accessory or armor.
-708/ Added IncreasesDamageOverTime perk.
-709/ Nerfed Nature of Good and Evil relic set.
-710/ Added 5 new relic template and reworked ArcherMasteryTemplate and MagicCostTemplate
-711/ Updated all of the inner name of spoil for better clarification.
-712/ Updated transmutation UI to now included upgrade function for relic.
-713/ Fixed Relic creative menu upon creating relic, the created relic is still linked to the system.
-714/ Refactor transmutation code.
-715/ Finished up the new augmentation system.
-716/ Added a fail safe for getting rarity item.
-717/ Updated all of augmentation contents.
-718/ Fixed critical bugs with handling Mod Object in roguelike world ( in structure handle folder ).
-719/ Updated Corruption realm generation.
-720/ Fixed a bug with copy and paste function ( mainly the local structure saver ).
-721/ Fixed a critical error that causes Eye container to be duplicated in roguelike world.
-722/ Same as change log 721 but for king slime
-723/ Updated Structure_Local placing structure function to better support tile.
-724/ Preparing foundation for Mod command.
-725/ Added Terraria Mode ( what ?? ).
-726/ Patched up the mod overall mode logic.
-727/ Fixed subworld not returning player to their original position before entering subworld.
-728/ Re-organize all of the logic and world gen and world data property all to one main file.
-729/ Finished up Nightmare mode.
-730/ Added Unholy Trident, NettleBurst and BatScepter enchantment.
-731/ Fixed subworld messing up overworld values.
-732/ Added Holy Flame debuff.
-733/ Added a way to get divine hammer, transmute tablet and skill orb in Terraria mode.
-734/ Added Blizzard Staff, Inferno Fork, ShadowbeamStaff, Razorpine, Crystal Storm and Spectre Staff enchantment.
-735/ Added Cursed Flames, Magnet sphere, Golden Shower, Heat ray and Leaf Blower enchantment.
-736/ After a lot of debating, the lead dev ( Xinim ) decided to readd the vanilla prefix system.
-737/ Added a hide player field in PlayerStatsHandle.
-738/ Added a keybind for custom dash mechanic that is in the mod.
-739/ Updated AnkletOfTheWind rework to use the 2 above changelogs implementation.
-740/ Updated AnkletOfTheWind rework dash to be less affected by gravity and more like a teleport
-741/ Added Magic Dagger enchantment.
-742/ Reworked Titanium Sword enchantment.
-743/ Fixed a inproper used of a function in Death Sickle enchantment.
-744/ Added Nimbus Rod, Medusa head, Spirit flames enchantment.
-745/ Added Synergy spoil.
-746/ Updated the build number from 0.0.20.0 -> 0.0.20.2 ./.
-747/ Fixed incorrected usages of world property.
-748/ Made snowstorm shoot a bit quicker.
-749/ Nerfed Healing Explosion perk damage.
-750/ Added AbigailsFlower and VampireFlogStaff enchantment.
-751/ Fixed new possible loop hole for previous summoning minion enchantment and buffing them in the process.
-752/ Fixed the mess of a old code in enchantment code.
-753/ Added Blade Staff, Spider Staff, Pirate Staff, Sanguine Staff and Optic Staff enchantment.
-754/ Fixed Slimy Chalice make certain projectile stay alive for ever after bounce.
-755/ Updated the build number from 0.0.20.2 -> 0.0.20.3 ./.
-756/ Added a Force_TimeLeft which forced a projectile to die after certain time.
-757/ Fixed a bug causes item can't have enchantment to return null exception.
-758/ Updated the build number from 0.0.20.3 -> 0.0.20.4 ./.
-759/ Fixed Nightmare mode stats scaler accidentally 2x it's scale.
-760/ Added Tower Structure and Monster Portal Mod Object.
-761/ Removed player's old world position before exiting world due to being too buggy and also conflicted with a certain mechanic.
-762/ Fixed Vitamin not giving extra buff when player are hit by projectile.
-763/ Added Tower to world gen step.
-764/ Added a "Create_AttemptToPlaceChest" method for easier time add chest.
-765/ Added in a method for getting common structure file path string.
-766/ Made marker wand UI a tiny bit easier to use.
-767/ Fixed AddLoot method not working.
-768/ Reworked Katana, Trident and Death Sickle.
-769/ Made synergy weapon "MagicGrenade" projectile in mid air upon pressing alt click.
-770/ Added Death Sickle outro effect.
-771/ Categorize outro effect and buff some outro effect:
-- Blunt : dmg+ 15% -> dmg+ 25%
-- Bow : dmg+ 15% -> dmg+ 25%
-- Spear : dmg+ 15% -> dmg+ 25%
-- Whip : dmg+ 15% -> dmg+ 25%
-- Gun : dmg+ 15% -> dmg+ 25%
-- Rifle : 50% dmg+ 10% -> 50% dmg+ 40%
-As for the categorization, there are now 3 new classifications ( they won't be show in game however ) which are :
-- Main branch
-- Sub branches
-- Short burst
-772/ Buffed Pulse Rifle damage from 34 -> 48.
-773/ Buffed HeartBreakInstrument damage from 55 -> 65 and Gclef can now spawn sword slash strike every time it attacked in Tragedy mode.
-774/ Added 100x100 Glow and 50x50 Glow assets to the mod.
-775/ Updated the build number from 0.0.20.4 -> 0.0.20.5 ./.
-776/ Changed how outro effect can be given, if a intro effect currently active then outro effect from any weapon is denied from being added.
-777/ Wait, hold up, I just hit the JACK POT !!!
-Side note : Rainbow lootbox have 1 in 3000 chance to replace any lootbox that found in overworld chest
-And significantly reworked Rainbow lootbox loot pool.
-778/ Added sprite for Arcane Round, Light Speed Round and Fragment Round.
-779/ Arcane round, Light speed round and Fragment round now all can be obtained via lootbox.
-780/ Buffed Fragment round damage and it's fragment damage from 7dmg -> 12dmg and 45% original dmg -> 85% original dmg.

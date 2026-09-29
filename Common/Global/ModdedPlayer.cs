@@ -113,6 +113,15 @@ namespace Roguelike.Common.Global {
 				Player.GetModPlayer<PlayerStatsHandle>().UpdateRangeChanceMutilplier += 3;
 			}
 		}
+		public override void PostUpdate() {
+			var modplayer = Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
+			if (Main.IsItDay() && modplayer.CurrentBiome.Contains(Bid.Forest)) {
+				return;
+			}
+			else {
+				Lighting.AddLight(Player.Center, Color.White.ToVector3());
+			}
+		}
 		private void CheckHowManyHit() {
 			HowManyBossIsAlive = 0;
 			bool FoundEater = false;
@@ -188,6 +197,7 @@ namespace Roguelike.Common.Global {
 			}
 			else {
 				yield return new Item(ModContent.ItemType<WoodenLootBox>());
+				yield return new Item(ItemID.GrapplingHook);
 			}
 			if (Secret_TrueGod) {
 				yield return new Item(ModContent.ItemType<RainbowLootBox>());

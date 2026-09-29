@@ -1685,7 +1685,7 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ConfrontTrueGod: {
+			TheGear: {
 				DisplayName: The Gear
 				Tooltip: End this run so early ?
 				ExtraInfo: To my future, using this in specific location may or may not be benefitial
@@ -3114,29 +3114,29 @@ Mods: {
 
 			FailGoldBroadsword: {
 				DisplayName: Fail Gold Broadsword
-				Tooltip: 
-				'''
-				"A disgusting synergy abomnation between it's broad sword and short sword"
-				Have absolute no special effect
-				'''
+				Tooltip:
+					'''
+					"A disgusting synergy abomnation between it's broad sword and short sword"
+					Have absolute no special effect
+					'''
 			}
 
 			FailPlatinumSword: {
 				DisplayName: Fail Platinum Sword
-				Tooltip: 
-				'''
-				"A disgusting synergy abomnation between it's broad sword and short sword"
-				Have absolute no special effect
-				'''
+				Tooltip:
+					'''
+					"A disgusting synergy abomnation between it's broad sword and short sword"
+					Have absolute no special effect
+					'''
 			}
 
 			FailMuramasa: {
 				DisplayName: Fail Muramasa
 				Tooltip:
-				'''
-				"A disgusting synergy abomnation between it's broad sword and Muramasa"
-				Have absolute no special effect
-				'''
+					'''
+					"A disgusting synergy abomnation between it's broad sword and Muramasa"
+					Have absolute no special effect
+					'''
 			}
 		}
 

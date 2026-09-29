@@ -178,8 +178,8 @@ namespace Roguelike.Contents.Items.Lootbox {
 			for (int i = 0; i < AllLootID.Length; i++) {
 				var pool = LootboxSystem.GetItemPool(AllLootID[i]);
 				Melee.AddRange(pool.MeleeLoot());
-				Range.AddRange(pool.MagicLoot());
-				Magic.AddRange(pool.RangeLoot());
+				Range.AddRange(pool.RangeLoot());
+				Magic.AddRange(pool.MagicLoot());
 				Summon.AddRange(pool.SummonLoot());
 			}
 			int rng;
@@ -218,6 +218,7 @@ namespace Roguelike.Contents.Items.Lootbox {
 						return;
 				}
 				int level = WeaponLevelRangeRandomizer(player);
+				//Spawn item via projectile for extra visual effect
 				Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, -Vector2.UnitY.Vector2RotateByRandom(45) * (1 + Main.rand.NextFloat()), ModContent.ProjectileType<ItemDropProjectile>(), 0, 0, player.whoAmI, ReturnWeapon, 1, level);
 				//Item item = Main.item[whoAmI];
 				//if (level > 0 && item != null && item.IsAWeapon()) {

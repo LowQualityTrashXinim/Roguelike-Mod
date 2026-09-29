@@ -13,7 +13,7 @@ public class LootboxSystem : ModSystem {
 	public static ItemPool GetItemPool(int type) => LootBoxDropPool.Where(i => i.Type == type).FirstOrDefault();
 	public static ItemPool GetItemPool<T>() where T : ItemPool {
 		foreach (var item in LootBoxDropPool) {
-			if (item.GetType() is T) {
+			if (item is T) {
 				return item;
 			}
 		}
@@ -60,11 +60,11 @@ public abstract class ItemPool : ModType {
 	/// Call this when you know it will get update 
 	/// </summary>
 	public HashSet<int> AllWeaponPool() {
-		HashSet<int> _cachedAllWeapon = new HashSet<int>();
-		_cachedAllWeapon.UnionWith(MeleeLoot());
-		_cachedAllWeapon.UnionWith(RangeLoot());
-		_cachedAllWeapon.UnionWith(MagicLoot());
-		_cachedAllWeapon.UnionWith(SummonLoot());
-		return _cachedAllWeapon;
+		HashSet<int> weapons = new HashSet<int>();
+		weapons.UnionWith(MeleeLoot());
+		weapons.UnionWith(RangeLoot());
+		weapons.UnionWith(MagicLoot());
+		weapons.UnionWith(SummonLoot());
+		return weapons;
 	}
 }

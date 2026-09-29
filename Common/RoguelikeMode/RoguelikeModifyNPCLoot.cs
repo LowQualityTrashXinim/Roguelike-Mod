@@ -29,6 +29,12 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+			if (!npc.boss 
+				|| npc.type != NPCID.EaterofWorldsHead
+				|| npc.type != NPCID.EaterofWorldsBody
+				|| npc.type != NPCID.EaterofWorldsTail) {
+				return;
+			}
 			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			var noHit = new LeadingConditionRule(new GitGudMode());
 			var dontHit = new LeadingConditionRule(new DontHitBoss());
@@ -70,7 +76,7 @@ namespace Roguelike.Common.RoguelikeMode {
 
 				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
 					npcLoot.Disable_BossBagDropRule(ItemID.BrainOfCthulhuBossBag);
-				
+
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.QueenBee) {
