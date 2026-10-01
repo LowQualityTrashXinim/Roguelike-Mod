@@ -2460,15 +2460,6 @@ Mods: {
 					'''
 			}
 
-			SharkToothNecklace: {
-				DisplayName: Shark Tooth Necklace
-				Tooltip:
-					'''
-					Gain +1.5% Total Damage per 1 Armor Penetration
-					+5 Armor Penetration
-					'''
-			}
-
 			Toolbelt: {
 				DisplayName: Toolbelt
 				Tooltip: For Each Owned Nearby Minions Gain +4 Defense
@@ -2481,11 +2472,6 @@ Mods: {
 					defeating a boss while equipped grants your next Lootbox to drop extra weapons (weapons amount scales with luck)
 					Gain +0.05 Luck per boss killed while this accessory is equipped
 					'''
-			}
-
-			LuckyCoin: {
-				DisplayName: Lucky Coin
-				Tooltip: ""
 			}
 
 			HandmadeLauncher: {

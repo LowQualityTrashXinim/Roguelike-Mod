@@ -31,43 +31,23 @@ public static class RoguelikeData {
 	/// <b></b>
 	/// </summary>
 	public static Dictionary<string, List<SynergyBonus>> SynergyProgressTracker = new();
+	/// <summary>
+	/// Key : item ID<br/>
+	/// Value : Has player seen at least once<br/>
+	/// 
+	/// <b>True:</b> if player seen at least once<br/>
+	/// <b>False:</b> if player never seen it at all
+	/// </summary>
+	public static Dictionary<int, bool> EnchantmentProgressTracker = new();
 }
 class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "Everlasting_Data");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
 	public override void Load() {
-		//string projectPath2 = GetThisFilePath();
-		//string[] strArr = projectPath2.Split("\\");
-		//string truePath = "";
-		//foreach (var item in strArr) {
-		//	if (item == "Roguelike") {
-		//		int index = Array.IndexOf(strArr, item);
-		//		if (index == -1) {
-		//			break;
-		//		}
-		//		for (int i = 0; i <= index; i++) {
-		//			truePath += strArr[i] + "\\";
-		//		}
-		//		break;
-		//	}
-		//}
-		//string[] filesPath = Directory.GetFiles(truePath);
-		//foreach (string path in filesPath) {
-		//	try {
-		//		Assembly asm = Assembly.LoadFrom(path);
-		//		if (asm == null) {
-		//			continue;
-		//		}
-		//		Type[] types = asm.GetTypes().Where(a => !a.IsAbstract).ToArray();
-		//		if (types == null) {
-		//			continue;
-		//		}
-		//	}
-		//	catch {
-		//		continue;
-		//	}
-		//}
+		RoguelikeData.SynergyProgressTracker = new();
+		RoguelikeData.EnchantmentProgressTracker = new();
+
 		foreach (var type in Mod.Code.GetTypes()) {
 			if (!type.IsAbstract) {
 				if (type.IsAssignableTo(typeof(RoguelikeAchievement))) {
@@ -123,6 +103,8 @@ class ModIO : ModSystem {
 		On_Main.Main_Exiting += On_Main_Main_Exiting;
 	}
 	public override void Unload() {
+		RoguelikeData.SynergyProgressTracker = null;
+		RoguelikeData.EnchantmentProgressTracker = null;
 		SavingModData();
 	}
 	private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {

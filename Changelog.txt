@@ -116,6 +116,11 @@ And significantly reworked Rainbow lootbox loot pool.
 789/ Fixed a stupid bug in the code where range pool get magic weapon and magic pool get range weapon
 790/ Replaced lootbox from overworld with spoil bag.
 791/ Attempt to fix Man Eater AI.
+792/ Reworked Lucky Coin and Shark tooth neckless
+793/ Add in shine potion effect without the actual shine potion buff when playering in roguelike world with certain condition.
+794/ Deleted BiomeData due to being completely useless.
+795/ De-bloat abandon house so that player won't get a advantage over decoration in it.
+796/ Prepare code for skeletron rework.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

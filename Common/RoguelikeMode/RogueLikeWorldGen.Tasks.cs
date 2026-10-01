@@ -324,6 +324,7 @@ public partial class RogueLikeWorldGen {
 					"AbandonHouse6",
 					"AbandonHouse7",
 					"AbandonHouse8",
+					"AbandonHouse9"
 				};
 				data = Generator.GetStructureData($"Assets/AbandonHouse/{Main.rand.Next(arr_stringpath)}", mod);
 				break;
@@ -1535,7 +1536,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 				Set_MapIgnoredZoneIntoWorldGen(re);
 				ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
-				Create_AttemptToPlaceChest(re, innerRetry: 1);
+				if (Rand.NextBool(4)) {
+					Create_AttemptToPlaceChest(re, innerRetry: 1);
+				}
 				placed.Add(re);
 			}
 		}
@@ -1582,7 +1585,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			Set_MapIgnoredZoneIntoWorldGen(re);
 			ModWrapper.GenerateFromData(data, re.TopLeft().ToPoint16());
-			Create_AttemptToPlaceChest(re, innerRetry: 1);
+			if (Rand.NextBool(4)) {
+				Create_AttemptToPlaceChest(re, innerRetry: 1);
+			}
 			placed.Add(re);
 		}
 		watch.Stop();

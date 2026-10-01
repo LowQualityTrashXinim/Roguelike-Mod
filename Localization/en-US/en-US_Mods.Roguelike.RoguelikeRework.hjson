@@ -313,6 +313,18 @@ Vitamins:
 	Getting hit will increases above stats for short period
 	The above effect can be stack repeatedly without cap
 	'''
+LuckyCoin:
+	'''
+	Increases luck by 15%
+	Getting hit have 50% chance to massively reduce damage taken
+	Dealing damage have 50% chance to increases the damage dealt by 50%
+	There is a very rare chance to increase damage dealt by 1000%
+	'''
+SharkToothNecklace:
+	'''
+	Increases damage by 10% and critical damage by 20%
+	Dealing damage have 25% chance to deal additional attack (CD:1s)
+	'''
 InvisibilityPotion: Increases critical damage by 15% and critical strike chance by 5%
 Apple:
 	'''

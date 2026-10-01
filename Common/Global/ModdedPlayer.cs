@@ -24,12 +24,10 @@ using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.Items.Toggle.Transmutation;
-using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 using Roguelike.Common.Systems.Skill;
-using Roguelike.Contents.Items.aDebugItem.DebugStick;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -114,6 +112,9 @@ namespace Roguelike.Common.Global {
 			}
 		}
 		public override void PostUpdate() {
+			if(RoguelikeWorldProperty.BossRushWorld) {
+				return;
+			}
 			var modplayer = Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
 			if (Main.IsItDay() && modplayer.CurrentBiome.Contains(Bid.Forest)) {
 				return;

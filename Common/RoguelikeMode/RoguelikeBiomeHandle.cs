@@ -75,41 +75,10 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 		}
 	}
 }
-public abstract class BiomeData : ModType {
-	public short BiomeID = Bid.None;
-	public ushort Type = 0;
-	protected override void Register() {
-		Type = RoguelikeBiomeHandle_ModSystem.Register(this);
-	}
-	public struct RoguelikeSpawnInfo {
-		/// <summary>
-		/// Type of NPC to be spawned
-		/// </summary>
-		public int Type = 0;
-		/// <summary>
-		/// Their weight range from 0 to 1f with 0 being unlikely to spawn and 1f being common<br/>
-		/// </summary>
-		public float Weight = 1f;
-
-		public RoguelikeSpawnInfo() {
-		}
-	}
-}
 public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 	FieldInfo blizzardsetting = null;
 	FieldInfo blizzardsoundset = null;
-	public static Dictionary<short, BiomeData> dict_BiomeData { get; private set; } = new();
-	public static ushort Register(BiomeData data) {
-		ModTypeLookup<BiomeData>.Register(data);
-		if (!dict_BiomeData.TryAdd(data.BiomeID, data)) {
-			dict_BiomeData[data.BiomeID] = data;
-		}
-		return (ushort)dict_BiomeData.Keys.Count;
-	}
 	public override void Load() {
-		if (dict_BiomeData == null) {
-			dict_BiomeData = new();
-		}
 		if (blizzardsetting == null) {
 			blizzardsetting = typeof(Player).GetField("disabledBlizzardGraphic", BindingFlags.NonPublic | BindingFlags.Static);
 		}
@@ -145,10 +114,6 @@ public class RoguelikeBiomeHandle_ModSystem : ModSystem {
 			Liquid.UpdateLiquid();
 			Liquid.skipCount = 0;
 		}
-	}
-
-	public override void Unload() {
-		dict_BiomeData.Clear();
 	}
 
 	private void On_Main_DrawBlack(On_Main.orig_DrawBlack orig, Main self, bool force) {
