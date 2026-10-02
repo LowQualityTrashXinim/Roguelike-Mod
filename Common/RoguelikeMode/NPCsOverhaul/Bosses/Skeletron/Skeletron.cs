@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using System;
 using Terraria;
@@ -10,19 +11,24 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.Bosses.Skeletron;
 internal class Skeletron : GlobalNPC {
 	enum State {
-		Skeletron,
 		DungeonGuardian,
 		Hover,
 		Spin,
+		SpinDash,
+		CircleAttack,
+		Desperation,
 		Despawn,
 	}
 	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHead;
 	public override bool InstancePerEntity => true;
 	public override void SetDefaults(NPC entity) {
-		state = State.Skeletron;
+		state = State.Hover;
 		entity.aiStyle = -1;
 	}
-	State state = State.Skeletron;
+	public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position) {
+		return false;
+	}
+	State state = State.Hover;
 	private bool DG_AI(NPC npc) {
 		if (state == State.DungeonGuardian) {
 			npc.damage = 1000;
@@ -69,8 +75,22 @@ internal class Skeletron : GlobalNPC {
 			Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f ||
 			Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f) {
 			npc.TargetClosest();
-			if (Main.player[npc.target].dead || Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f || Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f)
+			if (Main.player[npc.target].dead) {
 				state = State.Despawn;
+			}
+			if (Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f || Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f) {
+				SoundEngine.PlaySound(SoundID.Roar, npc.position);
+				Vector2 pos = Main.player[npc.target].Center + Vector2.UnitX.Vector2RotateByRandom(30) * 750 * Main.player[npc.target].direction;
+				npc.TeleportCommon(pos);
+				ModUtils.DustStar(npc.Center, DustID.GemDiamond, Color.Azure, 20, 30, 0, 20);
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.GemDiamond);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.34f);
+					dust.scale = Main.rand.NextFloat(.9f, 1.4f);
+				}
+				npc.velocity = Vector2.Zero;
+			}
 		}
 	}
 	private void ShootCursedSkull(NPC npc, int handsCount) {
@@ -88,13 +108,11 @@ internal class Skeletron : GlobalNPC {
 			Main.projectile[num160].timeLeft = 300;
 		}
 	}
-	private void ShootProjectile(NPC npc, Vector2 vel, int Type) {
+	private void ShootProjectile(NPC npc, Vector2 vel, int Type, int customTimeLeft = 300) {
 		Vector2 center3 = npc.Center;
-
-		Vector2 playerCenter = Main.player[npc.target].Center + Main.rand.NextVector2Circular(50, 50);
 		int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(17f, 17f);
 		int num160 = Projectile.NewProjectile(npc.GetSource_FromAI(), center3, vel, Type, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
-		Main.projectile[num160].timeLeft = 300;
+		Main.projectile[num160].timeLeft = customTimeLeft;
 		Main.projectile[num160].hostile = true;
 		Main.projectile[num160].friendly = false;
 	}
@@ -102,6 +120,7 @@ internal class Skeletron : GlobalNPC {
 		if (DG_AI(npc)) {
 			return;
 		}
+		Lighting.AddLight(npc.Center, 50, 50, 50);
 		npc.reflectsProjectiles = false;
 		npc.defense = npc.defDefense;
 
@@ -114,16 +133,35 @@ internal class Skeletron : GlobalNPC {
 				handsCount++;
 		}
 		npc.defense += handsCount * 25;
-
-
-		if (state == State.Hover) {
-			Hover(npc, handsCount);
+		if (npc.GetLifePercent() <= .75f) {
+			handsCount = 0;
 		}
-		else if (state == State.Spin) {
-			SpinAttack(npc, handsCount);
+
+		if (npc.GetLifePercent() <= .05f && state != State.Desperation && state != State.Despawn) {
+			state = State.Desperation;
+			npc.ai[2] = 0;
+			npc.ai[1] = 0;
+			npc.velocity = Vector2.Zero;
 		}
-		else if (state == State.Despawn) {
-			Despawn(npc);
+		switch (state) {
+			case State.Hover:
+				Hover(npc, handsCount);
+				break;
+			case State.Spin:
+				SpinAttack(npc, handsCount);
+				break;
+			case State.SpinDash:
+				SpinDash(npc);
+				break;
+			case State.Despawn:
+				Despawn(npc);
+				break;
+			case State.CircleAttack:
+				CircleAttack(npc);
+				break;
+			case State.Desperation:
+				Desperation(npc);
+				break;
 		}
 
 		DustEffect(npc, handsCount);
@@ -143,14 +181,27 @@ internal class Skeletron : GlobalNPC {
 		}
 
 		npc.damage = npc.defDamage;
-		if (++npc.ai[2] >= 800f) {
+		float decreases = 700 * (1 - npc.GetLifePercent());
+		if (++npc.ai[2] >= 800f - decreases) {
 			npc.ai[2] = 0f;
-			state = State.Spin;
+			if (handsCount > 0) {
+				state = State.Spin;
+			}
+			else {
+				switch (npc.ai[3]) {
+					case 1:
+						state = State.Spin;
+						break;
+					case 2:
+						state = State.SpinDash;
+						break;
+					case 3:
+						state = State.CircleAttack;
+						break;
+				}
+				npc.ai[3] = ModUtils.Safe_SwitchValue((int)npc.ai[3], 3, 1);
+			}
 			npc.TargetClosest();
-			npc.netUpdate = true;
-		}
-
-		if (npc.ai[2] % 400 == 0) {
 			Vector2 center3 = npc.Center;
 			for (int i = 0; i < 16; i++) {
 				Vector2 playerCenter = Main.player[npc.target].Center + Main.rand.NextVector2Circular(50, 50);
@@ -161,6 +212,7 @@ internal class Skeletron : GlobalNPC {
 					, ProjectileID.Skull, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
 				Main.projectile[num160].timeLeft = 300;
 			}
+			npc.netUpdate = true;
 		}
 
 		npc.rotation = npc.velocity.X / 15f;
@@ -206,31 +258,47 @@ internal class Skeletron : GlobalNPC {
 		npc.ai[2] += 1f;
 		if (npc.ai[2] == 2f)
 			SoundEngine.PlaySound(SoundID.Roar, npc.position);
+		if (handsCount <= 0) {
+			if (npc.ai[2] % 40 == 0) {
+				Vector2 vel = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(60);
+				ShootProjectile(npc, vel * 5, ProjectileID.Skull);
+			}
 
-		if (npc.ai[2] % 40 == 0) {
-			Vector2 vel = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(60);
-			ShootProjectile(npc, vel * 5, ProjectileID.Skull);
+			if (npc.ai[2] % 10 == 0) {
+				Vector2 vel = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+				ShootProjectile(npc, -vel, ProjectileID.DemonScythe);
+			}
+
+			if (npc.ai[2] % 120 == 0) {
+				Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+				for (int i = 1; i <= 24; i++) {
+					Vector2 vel = velOrigin.RotatedBy(MathHelper.TwoPi * MathHelper.Lerp(0, 1, (i % 8) / 8f));
+					ShootProjectile(npc, vel * (i / 8 + 8),
+						ProjectileID.ClothiersCurse);
+				}
+				for (int i = 0; i < 16; i++) {
+					Vector2 vel = velOrigin.Vector2DistributeEvenlyPlus(16, 360, i) * 2 + velOrigin * 15;
+					ShootProjectile(npc, vel, ProjectileID.WaterBolt);
+				}
+			}
 		}
-
-
-		if (npc.ai[2] % 10 == 0) {
-			Vector2 vel = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
-			ShootProjectile(npc, -vel, ProjectileID.DemonScythe);
-		}
-
-		if (npc.ai[2] % 120 == 0) {
-			Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
-			for (int i = 1; i <= 24; i++) {
-				Vector2 vel = velOrigin.RotatedBy(MathHelper.TwoPi * MathHelper.Lerp(0, 1, (i % 8) / 8f));
-				ShootProjectile(npc, vel * (i / 8 + 4),
-					ProjectileID.ClothiersCurse);
+		else {
+			if (npc.ai[2] % 40 == 0) {
+				Vector2 vel = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+				ShootProjectile(npc, vel * 15, ProjectileID.DemonScythe);
 			}
 		}
 		if (npc.ai[2] >= 400f) {
 			npc.ai[2] = 0f;
 			state = State.Hover;
+			if (handsCount <= 0) {
+				Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+				for (int i = 0; i < 16; i++) {
+					Vector2 vel = velOrigin.Vector2DistributeEvenlyPlus(16, 360, i) * 2 + velOrigin * 15;
+					ShootProjectile(npc, vel, ProjectileID.WaterBolt);
+				}
+			}
 		}
-
 		npc.rotation += npc.direction * 0.3f;
 		Vector2 npcCenter = npc.Center;
 		Vector2 playerCenter = Main.player[npc.target].Center;
@@ -275,6 +343,224 @@ internal class Skeletron : GlobalNPC {
 
 		num174 = num175 / num174;
 		npc.velocity = (playerCenter - npcCenter) * num174;
+	}
+	private void Desperation(NPC npc) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .8f;
+		if (npc.ai[2] == 2f)
+			SoundEngine.PlaySound(SoundID.Roar, npc.position);
+
+		npc.rotation += npc.direction * 0.3f;
+
+		Player player = Main.player[npc.target];
+		npc.ai[2]++;
+		if (npc.ai[2] % 240 == 0) {
+			Vector2 center3 = player.Center + Vector2.UnitX * 1000 * player.direction;
+			Vector2 vel = (player.Center - center3).SafeNormalize(Vector2.Zero) * 14;
+			int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(17f, 17f);
+			for (int i = -7; i <= 7; i++) {
+				int num160 = Projectile.NewProjectile(npc.GetSource_FromAI(), center3.Add(0, i * 30), vel, ProjectileID.ClothiersCurse, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
+				Main.projectile[num160].timeLeft = 150;
+				Main.projectile[num160].hostile = true;
+				Main.projectile[num160].friendly = false;
+			}
+		}
+
+		if (++npc.ai[1] >= 20) {
+			if (npc.ai[1] == 20) {
+				SoundEngine.PlaySound(SoundID.Roar, npc.position);
+				Vector2 pos = player.Center + Vector2.UnitX.Vector2RotateByRandom(30) * 750 * player.direction;
+				npc.TeleportCommon(pos);
+				ModUtils.DustStar(npc.Center, DustID.GemDiamond, Color.Azure, 20, 30, 0, 20);
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.GemDiamond);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.34f);
+					dust.scale = Main.rand.NextFloat(.9f, 1.4f);
+				}
+				npc.velocity = Vector2.Zero;
+			}
+			npc.rotation += npc.direction * 0.1f;
+			if (npc.ai[1] >= 60 && npc.ai[1] <= 105) {
+				if (npc.ai[1] == 60) {
+					Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+					for (int i = 1; i <= 16; i++) {
+						Vector2 vel = velOrigin.InverseVector2DistributeEvenly(16, 360, i) * 10;
+						ShootProjectile(npc, vel, ProjectileID.WaterBolt);
+					}
+					npc.velocity = (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * 35;
+				}
+				for (int i = 0; i < 8; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.BoneTorch);
+					dust.noGravity = true;
+					dust.position += Main.rand.NextVector2Circular(npc.width, npc.height);
+					dust.velocity = npc.velocity * .35f;
+					dust.scale = Main.rand.NextFloat(.9f, 1.4f);
+				}
+				if (npc.ai[1] % 6 == 0) {
+					Vector2 toward = npc.velocity.SafeNormalize(Vector2.Zero);
+					for (int i = -1; i < 2; i++) {
+						if (i == 0) {
+							ShootProjectile(npc, (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * 5, ProjectileID.Skull);
+						}
+						else {
+							ShootProjectile(npc, toward.RotatedBy(MathHelper.PiOver2 * i), ProjectileID.DemonScythe);
+						}
+					}
+				}
+				npc.velocity += (player.Center - npc.Center).SafeNormalize(Vector2.Zero) / 8f;
+			}
+			if (npc.ai[1] >= 105) {
+				npc.velocity = Vector2.Zero;
+				if (npc.ai[1] % 20 == 0) {
+					Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+					ShootProjectile(npc, velOrigin * 10, ProjectileID.ClothiersCurse);
+				}
+				if (npc.ai[1] >= 210) {
+					npc.ai[1] = 0;
+				}
+			}
+		}
+		else {
+			npc.velocity += (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * .1f;
+			if (npc.ai[1] >= 30 && npc.ai[1] % 10 == 0) {
+				ShootCursedSkull(npc, 0);
+			}
+		}
+	}
+	private void SpinDash(NPC npc) {
+		npc.defense -= 10;
+		npc.ai[2] += 1f;
+
+		if (npc.ai[2] == 2f)
+			SoundEngine.PlaySound(SoundID.Roar, npc.position);
+
+		npc.rotation += npc.direction * 0.3f;
+
+		Player player = Main.player[npc.target];
+
+		if (++npc.ai[1] >= 40) {
+			if (npc.ai[1] == 40) {
+				SoundEngine.PlaySound(SoundID.Roar, npc.position);
+				Vector2 pos = player.Center + Vector2.UnitX.Vector2RotateByRandom(30) * 750 * player.direction;
+				npc.TeleportCommon(pos);
+				ModUtils.DustStar(npc.Center, DustID.GemDiamond, Color.Azure, 20, 30, 0, 20);
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.GemDiamond);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.34f);
+					dust.scale = Main.rand.NextFloat(.9f, 1.4f);
+				}
+				npc.velocity = Vector2.Zero;
+			}
+			npc.rotation += npc.direction * 0.1f;
+			if (npc.ai[1] >= 90) {
+				if (npc.ai[1] == 90) {
+					Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
+					for (int i = 1; i <= 24; i++) {
+						Vector2 vel = velOrigin.RotatedBy(MathHelper.TwoPi * MathHelper.Lerp(0, 1, (i % 8) / 8f));
+						ShootProjectile(npc, vel * (i / 8 + 4),
+							ProjectileID.ClothiersCurse);
+					}
+					npc.velocity = (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * 30;
+				}
+				for (int i = 0; i < 8; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.BoneTorch);
+					dust.noGravity = true;
+					dust.position += Main.rand.NextVector2Circular(npc.width, npc.height);
+					dust.velocity = npc.velocity * .35f;
+					dust.scale = Main.rand.NextFloat(.9f, 1.4f);
+				}
+				if (npc.ai[1] % 6 == 0) {
+					Vector2 toward = npc.velocity.SafeNormalize(Vector2.Zero);
+					for (int i = -1; i < 2; i++) {
+						ShootProjectile(npc, toward.RotatedBy(MathHelper.PiOver2 * i), ProjectileID.DemonScythe);
+					}
+				}
+				npc.velocity += (player.Center - npc.Center).SafeNormalize(Vector2.Zero) / 8f;
+			}
+			if (npc.ai[1] >= 145) {
+				npc.velocity = Vector2.Zero;
+				npc.ai[1] = 0;
+			}
+		}
+		else {
+			npc.velocity += (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * .1f;
+			if (npc.ai[1] >= 30 && npc.ai[1] % 10 == 0) {
+				ShootCursedSkull(npc, 0);
+			}
+		}
+
+		if (npc.ai[2] >= 600f) {
+			npc.ai[2] = 0f;
+			npc.ai[1] = 0;
+			state = State.Hover;
+		}
+
+	}
+	Vector2 playerPosition = Vector2.Zero;
+	private void CircleAttack(NPC npc) {
+		npc.defense -= 10;
+		npc.ai[2] += 1f;
+		if (npc.ai[2] == 2f)
+			SoundEngine.PlaySound(SoundID.Roar, npc.position);
+
+		npc.rotation += npc.direction * 0.3f;
+
+
+		Player player = Main.player[npc.target];
+		if (playerPosition == Vector2.Zero) {
+			playerPosition = player.Center;
+		}
+		if (!playerPosition.IsCloseToPosition(player.Center, 200)) {
+			playerPosition += (player.Center - playerPosition).SafeNormalize(Vector2.Zero) * ((player.Center - playerPosition).Length() / 8f);
+		}
+		Vector2 offSet = playerPosition + Vector2.One.RotatedBy(MathHelper.ToRadians(npc.ai[2] * 5)) * 550;
+		npc.velocity = (offSet - npc.Center).SafeNormalize(Vector2.Zero) * ((offSet - npc.Center).Length() / 2f);
+
+		//Half a second delay
+		if (npc.ai[2] >= 30) {
+			Vector2 velOrigin = (player.Center - npc.Center).SafeNormalize(Vector2.Zero);
+			if (npc.ai[2] % 10 == 0) {
+				int type = ProjectileID.Skull;
+				switch (++npc.ai[1]) {
+					case 0:
+						type = ProjectileID.Skull;
+						break;
+					case 1:
+						type = ProjectileID.ClothiersCurse;
+						break;
+				}
+				if (npc.ai[1] >= 1) {
+					npc.ai[1] = -1;
+				}
+				ShootProjectile(npc, velOrigin * 7, type);
+			}
+			if (npc.ai[2] % 2 == 0) {
+				ShootProjectile(npc, npc.velocity.SafeNormalize(Vector2.Zero), ProjectileID.DemonScythe, 120);
+			}
+			if (npc.ai[2] % 120 == 0) {
+				for (int i = 0; i < 6; i++) {
+					ShootProjectile(npc, velOrigin.Vector2DistributeEvenlyPlus(6, 60, i) * 7, ProjectileID.WaterBolt);
+				}
+			}
+			if (npc.ai[2] % 240 == 0) {
+				Vector2 center3 = player.Center + Vector2.UnitX * 1000 * player.direction;
+				Vector2 vel = (player.Center - center3).SafeNormalize(Vector2.Zero) * 14;
+				int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(17f, 17f);
+				for (int i = -5; i <= 5; i++) {
+					int num160 = Projectile.NewProjectile(npc.GetSource_FromAI(), center3.Add(0, i * 30), vel, ProjectileID.ClothiersCurse, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
+					Main.projectile[num160].timeLeft = 300;
+					Main.projectile[num160].hostile = true;
+					Main.projectile[num160].friendly = false;
+				}
+			}
+		}
+		if (npc.ai[2] >= 480) {
+			npc.velocity *= .1f;
+			npc.ai[2] = 0f;
+			npc.ai[1] = 0;
+			state = State.Hover;
+		}
 	}
 	private void Despawn(NPC npc) {
 		npc.velocity.Y += 0.1f;

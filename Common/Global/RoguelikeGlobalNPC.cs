@@ -68,7 +68,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// <param name="key"></param>
 	/// <param name="value"></param>
 	public void Add_PoisonGlobal(string key, StatModifier value) {
-		if(Poison_Global.ContainsKey(key)) {
+		if (Poison_Global.ContainsKey(key)) {
 			Poison_Global[key] = value;
 		}
 		else {
@@ -215,13 +215,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		NPC_Debuff(npc, ref modifiers);
 	}
 	private void NPC_Debuff(NPC npc, ref NPC.HitModifiers modifiers) {
-		if (MaxDamageTaken >= 1) {
-			return;
+		if (MaxDamageTaken < 1) {
+			modifiers.SetMaxDamage((int)(npc.lifeMax * MaxDamageTaken));
 		}
-		modifiers.SetMaxDamage((int)(npc.lifeMax * MaxDamageTaken));
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
-		modifiers.SourceDamage *= Math.Clamp(1 - Endurance, 0, 1f);
-		modifiers.SourceDamage *= Math.Clamp(1 - Static_Endurance, 0, 1f);
+		modifiers.SourceDamage *= Math.Clamp(1 - (Endurance + Static_Endurance), 0, 1f);
 		if (--ResistHitCount > 0) {
 			modifiers.SetMaxDamage(1);
 		}

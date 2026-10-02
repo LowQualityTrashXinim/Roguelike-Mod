@@ -121,6 +121,8 @@ And significantly reworked Rainbow lootbox loot pool.
 794/ Deleted BiomeData due to being completely useless.
 795/ De-bloat abandon house so that player won't get a advantage over decoration in it.
 796/ Prepare code for skeletron rework.
+797/ Skeletron reworked.
+798/ Fixed a bug that cause Endurance value to not work
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
