@@ -10,8 +10,8 @@ using Roguelike.Common.Systems.Skill;
 namespace Roguelike.Common.General {
 	public class IsInBossRushMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
-				return ModContent.GetInstance<RogueLikeConfig>().BossRushMode && RoguelikeWorldProperty.BossRushWorld;
+			if (!info.IsInSimulation) {
+				return RoguelikeWorldProperty.BossRushWorld;
 			}
 			return false;
 		}

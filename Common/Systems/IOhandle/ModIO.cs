@@ -39,6 +39,7 @@ public static class RoguelikeData {
 	/// <b>False:</b> if player never seen it at all
 	/// </summary>
 	public static Dictionary<int, bool> EnchantmentProgressTracker = new();
+	public static Dictionary<int, bool> WeaponProgressTracker = new();
 }
 class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "Everlasting_Data");
@@ -66,7 +67,17 @@ class ModIO : ModSystem {
 				var type = typeof(RoguelikeData);
 				var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 				foreach (var field in fields) {
-					if (!tag.ContainsKey(field.Name)) {
+					if (field.Name == "WeaponProgressTracker") {
+						object obj = field.GetValue(null);
+						if (obj is Dictionary<int, bool> tracker) {
+							var keyObj = tag.Get<List<int>>("WeaponProgressTracker_Key");
+							var valueObj = tag.Get<List<bool>>("WeaponProgressTracker_Value");
+							tracker = keyObj.Zip(valueObj, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+							field.SetValue(null, tracker);
+						}
+						continue;
+					}
+					if (field.Name == "SynergyProgressTracker") {
 						object obj = field.GetValue(null);
 						if (obj is Dictionary<string, List<SynergyBonus>> tracker) {
 							var keyObj = tag.Get<List<string>>("SynergyProgressTracker_Key");
@@ -76,9 +87,13 @@ class ModIO : ModSystem {
 						}
 						continue;
 					}
+					if (field.Name == "EnchantmentProgressTracker") {
+						continue;
+					}
 					field.SetValue(null, tag[field.Name]);
 				}
 			}
+			var v = RoguelikeData.WeaponProgressTracker;
 			if (File.Exists(AchievementFilePath)) {
 				var tag = TagIO.FromFile(AchievementFilePath);
 				foreach (var achievement in AchievementSystem.Achievements) {
@@ -103,9 +118,9 @@ class ModIO : ModSystem {
 		On_Main.Main_Exiting += On_Main_Main_Exiting;
 	}
 	public override void Unload() {
+		SavingModData();
 		RoguelikeData.SynergyProgressTracker = null;
 		RoguelikeData.EnchantmentProgressTracker = null;
-		SavingModData();
 	}
 	private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
 		SavingModData();
@@ -123,12 +138,20 @@ class ModIO : ModSystem {
 			var type = typeof(RoguelikeData);
 			var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 			foreach (var field in fields) {
-				object objValue = field.GetValue(null);
-				if (objValue is Dictionary<string, List<SynergyBonus>> bonus) {
-					tag.Set(field.Name + "_Key", bonus.Keys.ToList());
-					tag.Set(field.Name + "_Value", bonus.Values.ToList());
+				if (field.Name == "SynergyProgressTracker") {
+					tag.Set(field.Name + "_Key", RoguelikeData.SynergyProgressTracker.Keys.ToList());
+					tag.Set(field.Name + "_Value", RoguelikeData.SynergyProgressTracker.Values.ToList());
+				}
+				else if (field.Name == "WeaponProgressTracker") {
+					tag.Set(field.Name + "_Key", RoguelikeData.WeaponProgressTracker.Keys.ToList());
+					tag.Set(field.Name + "_Value", RoguelikeData.WeaponProgressTracker.Values.ToList());
+				}
+				else if (field.Name == "EnchantmentProgressTracker") {
+					//tag.Set(field.Name + "_Key", RoguelikeData.WeaponProgressTracker.Keys.ToList());
+					//tag.Set(field.Name + "_Value", RoguelikeData.WeaponProgressTracker.Values.ToList());
 				}
 				else {
+					object objValue = field.GetValue(null);
 					tag.Set(field.Name, field.GetValue(null));
 				}
 			}

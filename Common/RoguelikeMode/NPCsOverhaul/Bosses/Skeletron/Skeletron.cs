@@ -17,6 +17,7 @@ internal class Skeletron : GlobalNPC {
 		SpinDash,
 		CircleAttack,
 		Desperation,
+		Stationary,
 		Despawn,
 	}
 	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHead;
@@ -24,6 +25,9 @@ internal class Skeletron : GlobalNPC {
 	public override void SetDefaults(NPC entity) {
 		state = State.Hover;
 		entity.aiStyle = -1;
+		if (!Main.dedServ) {
+			//entity.soun = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LootboxLord_BossMusic");
+		}
 	}
 	public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position) {
 		return false;
@@ -51,6 +55,7 @@ internal class Skeletron : GlobalNPC {
 		return false;
 	}
 	public override void OnSpawn(NPC npc, IEntitySource source) {
+
 		state = State.Hover;
 		if (Main.netMode != NetmodeID.MultiplayerClient) {
 			SoundEngine.PlaySound(SoundID.Roar, npc.position);
@@ -69,6 +74,12 @@ internal class Skeletron : GlobalNPC {
 			Main.npc[num148].netUpdate = true;
 
 		}
+	}
+	public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) {
+		if (state == State.CircleAttack) {
+			return false;
+		}
+		return base.CanHitPlayer(npc, target, ref cooldownSlot);
 	}
 	private void CheckPlayerDead(NPC npc) {
 		if (Main.player[npc.target].dead ||
@@ -159,6 +170,9 @@ internal class Skeletron : GlobalNPC {
 			case State.CircleAttack:
 				CircleAttack(npc);
 				break;
+			case State.Stationary:
+				Stationary(npc);
+				break;
 			case State.Desperation:
 				Desperation(npc);
 				break;
@@ -174,6 +188,12 @@ internal class Skeletron : GlobalNPC {
 
 			if (Main.getGoodWorld)
 				num151 *= 0.8f;
+
+			if (npc.GetLifePercent() < .5f) {
+				float percentageAdjust = npc.GetLifePercent() + .25f;
+				num151 *= percentageAdjust;
+				num151 = (int)num151;
+			}
 
 			if (Main.netMode != NetmodeID.MultiplayerClient && npc.ai[2] % num151 == 0f) {
 				ShootCursedSkull(npc, handsCount);
@@ -198,8 +218,11 @@ internal class Skeletron : GlobalNPC {
 					case 3:
 						state = State.CircleAttack;
 						break;
+					case 4:
+						state = State.Stationary;
+						break;
 				}
-				npc.ai[3] = ModUtils.Safe_SwitchValue((int)npc.ai[3], 3, 1);
+				npc.ai[3] = ModUtils.Safe_SwitchValue((int)npc.ai[3], 4, 1);
 			}
 			npc.TargetClosest();
 			Vector2 center3 = npc.Center;
@@ -272,12 +295,12 @@ internal class Skeletron : GlobalNPC {
 			if (npc.ai[2] % 120 == 0) {
 				Vector2 velOrigin = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero);
 				for (int i = 1; i <= 24; i++) {
-					Vector2 vel = velOrigin.RotatedBy(MathHelper.TwoPi * MathHelper.Lerp(0, 1, (i % 8) / 8f));
+					Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * MathHelper.Lerp(0, 1, (i % 8) / 8f));
 					ShootProjectile(npc, vel * (i / 8 + 8),
 						ProjectileID.ClothiersCurse);
 				}
 				for (int i = 0; i < 16; i++) {
-					Vector2 vel = velOrigin.Vector2DistributeEvenlyPlus(16, 360, i) * 2 + velOrigin * 15;
+					Vector2 vel = velOrigin.Vector2DistributeEvenlyPlus(16, 360, i) + velOrigin * 7;
 					ShootProjectile(npc, vel, ProjectileID.WaterBolt);
 				}
 			}
@@ -345,7 +368,7 @@ internal class Skeletron : GlobalNPC {
 		npc.velocity = (playerCenter - npcCenter) * num174;
 	}
 	private void Desperation(NPC npc) {
-		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .8f;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .5f;
 		if (npc.ai[2] == 2f)
 			SoundEngine.PlaySound(SoundID.Roar, npc.position);
 
@@ -485,7 +508,7 @@ internal class Skeletron : GlobalNPC {
 		}
 		else {
 			npc.velocity += (player.Center - npc.Center).SafeNormalize(Vector2.Zero) * .1f;
-			if (npc.ai[1] >= 30 && npc.ai[1] % 10 == 0) {
+			if (npc.ai[1] >= 30 && npc.ai[1] % 5 == 0) {
 				ShootCursedSkull(npc, 0);
 			}
 		}
@@ -562,6 +585,33 @@ internal class Skeletron : GlobalNPC {
 			state = State.Hover;
 		}
 	}
+	private void Stationary(NPC npc) {
+		npc.ai[2] += 1f;
+		npc.velocity *= .96f;
+		if (npc.ai[2] == 2f)
+			SoundEngine.PlaySound(SoundID.Roar, npc.position);
+
+		npc.rotation = Terraria.Utils.AngleTowards(npc.rotation, 0, MathHelper.ToRadians(10));
+		npc.rotation += MathHelper.ToRadians(Main.rand.NextFloat(-5, 5));
+		if (npc.ai[2] >= 120) {
+			Player player = Main.player[npc.target];
+			Vector2 towardPlayer = (player.Center - npc.Center).SafeNormalize(Vector2.Zero);
+			if (npc.ai[2] % 4 == 0) {
+				ShootProjectile(npc, Vector2.One.RotatedBy(MathHelper.ToRadians(npc.ai[2] * 10)) * .1f, ProjectileID.DemonScythe);
+			}
+			if (npc.ai[2] % 5 == 0) {
+				ShootProjectile(npc, towardPlayer.Vector2RotateByRandom(10) * Main.rand.NextFloat(8, 13), ProjectileID.ClothiersCurse);
+			}
+			if (npc.ai[2] % 20 == 0) {
+				ShootProjectile(npc, towardPlayer.Vector2RotateByRandom(30) * Main.rand.NextFloat(3, 6), ProjectileID.Skull);
+			}
+		}
+		if (npc.ai[2] >= 420) {
+			npc.ai[2] = 0f;
+			npc.ai[1] = 0;
+			state = State.Hover;
+		}
+	}
 	private void Despawn(NPC npc) {
 		npc.velocity.Y += 0.1f;
 		if (npc.velocity.Y < 0f)
@@ -585,5 +635,12 @@ internal class Skeletron : GlobalNPC {
 				Main.dust[num179].velocity.Y += 5f;
 			}
 		}
+	}
+}
+public class Everlasting_Skeletron_Scene : ModSceneEffect {
+	public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Skeletron_BossMusic");
+	public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
+	public override bool IsSceneEffectActive(Player player) {
+		return NPC.AnyNPCs(NPCID.SkeletronHead);
 	}
 }

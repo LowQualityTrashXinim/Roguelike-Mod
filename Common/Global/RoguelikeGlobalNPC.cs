@@ -239,6 +239,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		var player = Main.player[playerIndex];
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
+		if (npc.boss)
+			Main.NewText($"[c/{Color.Red.Hex3()}:<Everlasting> World progression has been increased by 1.]");
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {

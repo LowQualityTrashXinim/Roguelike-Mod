@@ -59,6 +59,17 @@ Mods: {
 				While enemy is inflicted with chilled, frozen debuff damage taken is increased by 1000%
 				After dealt damage, remove the chilled or frozen debuff on the enemy
 				'''
+			WorldProgression:
+				'''
+				World progression:
+				Everytime you defeated a boss, the boss gain a stats boosted.
+				All of the enemies also gain a stats boost.
+				At certain progression line, some aspect of the world become much more hazardous
+
+				Do your best to survive <3.
+
+				May you reach the possibilitiy you wish for !
+				'''
 		}
 
 		Conditions.RoguelikeModeCursed: The recipe is locked while you are playing this mod.

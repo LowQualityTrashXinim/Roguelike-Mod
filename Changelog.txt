@@ -123,6 +123,18 @@ And significantly reworked Rainbow lootbox loot pool.
 796/ Prepare code for skeletron rework.
 797/ Skeletron reworked.
 798/ Fixed a bug that cause Endurance value to not work
+799/ Fixed a bug that caused enchantment to not work no matter what.
+800/ Added in a text announcement and a explanation in info.
+801/ Updated mod version from 0.0.20.5 to 0.0.20.6 ./.
+802/ Changed Synergy weapon library to weapon library.
+Along with above change, this UI section will also be repurposed.
+803/ Added filter option to weapon library.
+804/ Implemented weapon progress tracker and use it in Weapon library.
+805/ Added custom music for Skeletron rework cause funny.
+806/ Simplified "IsInBossRushMode" item drop rule condition.
+807/ Added "World progression" information for information tab.
+808/ Everytime player kill boss, a chat announcer will notified player that mod progression is increased.
+809/ Added sound for Longer musket weapon.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

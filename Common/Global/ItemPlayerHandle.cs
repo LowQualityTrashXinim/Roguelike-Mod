@@ -3,6 +3,7 @@ using ReLogic.Graphics;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.ItemVariant;
 using Roguelike.Contents.Transfixion.WeaponEffect;
@@ -196,7 +197,7 @@ namespace Roguelike.Common.Global {
 							if (OutroEffect_type != -1) {
 								OutroEffect ef = OutroEffectSystem.GetOutroEffect(OutroEffect_type);
 								if (ef != null && ef.Type != OutroEffect.GetOutroEffectType<OutroEffect_None>()) {
-									value += $"\nOutro effect: \n{ef.DisplayName}\n- {ef.ModifyTooltip()}";
+									value += $"\nOutro effect: {ef.DisplayName}\n- {ef.ModifyTooltip()}";
 								}
 							}
 							tooltips.Add(new TooltipLine(Mod, "Shift_Info", value) { OverrideColor = new Color(255, 255, 0, 0) });
@@ -279,6 +280,23 @@ namespace Roguelike.Common.Global {
 			VariantType = tag.Get<short>("VariantType");
 			list_WeaponEffectType = tag.Get<List<int>>("WeaponEffectList");
 			ItemLevel = tag.Get<int>("ItemLevel");
+		}
+	}
+	public class GlobalItemSystem : ModSystem {
+		public override void Load() {
+			On_Player.PickupItem += On_Player_PickupItem;
+		}
+
+		private Item On_Player_PickupItem(On_Player.orig_PickupItem orig, Player self, int playerIndex, int worldItemArrayIndex, Item itemToPickUp) {
+			if (itemToPickUp.IsAWeapon()) {
+				if (RoguelikeData.WeaponProgressTracker.ContainsKey(itemToPickUp.type)) {
+					RoguelikeData.WeaponProgressTracker[itemToPickUp.type] = true;
+				}
+				else {
+					RoguelikeData.WeaponProgressTracker.Add(itemToPickUp.type, true);
+				}
+			}
+			return orig(self, playerIndex, worldItemArrayIndex, itemToPickUp);
 		}
 	}
 }

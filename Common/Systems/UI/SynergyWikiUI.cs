@@ -2,55 +2,67 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems.Achievement;
+using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Roguelike.Common.Systems.UI;
 public class SynergyButton : Roguelike_UIImageButton {
-	public string SynergyInternalName = "";
+	public bool ItemLocked = true;
 	public int InteralItemID = 0;
+	Asset<Texture2D> Lock;
+	Texture2D _texture;
 	public SynergyButton(Asset<Texture2D> texture) : base(texture) {
 		SetVisibility(.67f, 1f);
-		//InteralItemID = ModItemLib.SynergyItem.FirstOrDefault(s => s.ModItem.Name == SynergyInternalName).type;
+		Lock = ModContent.Request<Texture2D>(ModTexture.Lock);
+		_texture = texture.Value;
 	}
-	public void SetSynergyItem(string synergyName) {
-		SynergyInternalName = synergyName;
-		if (!string.IsNullOrEmpty(synergyName)) {
-			InteralItemID = ModItemLib.SynergyItem.Where(s => s.ModItem.Name == synergyName).FirstOrDefault().type;
+	public override void UpdateOuter(GameTime gametime) {
+		if (RoguelikeData.WeaponProgressTracker.ContainsKey(InteralItemID)) {
+			ItemLocked = !RoguelikeData.WeaponProgressTracker[InteralItemID];
 		}
 	}
 	public override void DrawImage(SpriteBatch spriteBatch) {
-		if (InteralItemID >= TextureAssets.Item.Length || string.IsNullOrEmpty(SynergyInternalName)) {
+		if (InteralItemID >= TextureAssets.Item.Length || InteralItemID < 0) {
+			return;
+		}
+		if (ItemLocked) {
+			Texture2D locktex = Lock.Value;
+			Vector2 origin2 = locktex.Size() * .5f;
+			Vector2 drawpos2 = GetDimensions().Position() + _texture.Size() * .5f;
+			spriteBatch.Draw(locktex, drawpos2, null, new Color(255, 255, 255), 0, origin2, .9f, SpriteEffects.None, 0);
 			return;
 		}
 		if (IsMouseHovering) {
-			Main.instance.MouseText(SynergyInternalName);
+			Item item = ContentSamples.ItemsByType[InteralItemID];
+			Main.HoverItem = item.Clone();
+			Main.hoverItemName = item.HoverName;
 		}
-		if (InteralItemID == 0 && !string.IsNullOrEmpty(SynergyInternalName)) {
-			InteralItemID = ModItemLib.SynergyItem.Where(s => s.ModItem.Name == SynergyInternalName).FirstOrDefault().type;
-		}
+		//if (InteralItemID == 0 && !string.IsNullOrEmpty(SynergyInternalName)) {
+		//	InteralItemID = ModItemLib.SynergyItem.Where(s => s.ModItem.Name == SynergyInternalName).FirstOrDefault().type;
+		//}
 		Main.instance.LoadItem(InteralItemID);
-		Texture2D item = TextureAssets.Item[InteralItemID].Value;
-		Vector2 origin = item.Size() * .5f;
+		Texture2D itemSprite = TextureAssets.Item[InteralItemID].Value;
+		Vector2 origin = itemSprite.Size() * .5f;
 		Vector2 drawPos = GetInnerDimensions().Position() + new Vector2(26, 26);
 		float scale;
 		if (origin.X < 27 && origin.Y < 27) {
 			scale = .8f;
 		}
 		else {
-			scale = ScaleCalculation(new(52, 52), item.Size() * 2f);
+			scale = ScaleCalculation(new(52, 52), itemSprite.Size() * 2f);
 		}
-		spriteBatch.Draw(item, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
+		spriteBatch.Draw(itemSprite, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
 	}
 	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / textureSize.Length();
 }
@@ -62,6 +74,12 @@ public class SynergyMenuWikiUI : UIState {
 	public ExitUI exit;
 	Roguelike_UIImageButton buttonLeft;
 	Roguelike_UIImageButton buttonRight;
+
+	Roguelike_UIImage Filter_Melee;
+	Roguelike_UIImage Filter_Range;
+	Roguelike_UIImage Filter_Magic;
+	Roguelike_UIImage Filter_Summon;
+
 	List<PageImage> pagnitation = new();
 	int pageIndex = 0;
 	int maxPage = 1;
@@ -73,17 +91,20 @@ public class SynergyMenuWikiUI : UIState {
 		pageIndex = Math.Clamp(index, 0, maxPage);
 	}
 	public override void OnInitialize() {
+		pagnitation.Clear();
+		Row = 10;
+		Line = 10;
 		synegybuttonList = new();
 
 		holderPanel = new();
-		holderPanel.UISetWidthHeight(500, 500);
+		holderPanel.UISetWidthHeight(700, 800);
 		holderPanel.HAlign = .5f;
 		holderPanel.VAlign = .5f;
 		Append(holderPanel);
 
 		mainPanel = new();
 		mainPanel.Width.Percent = 1;
-		mainPanel.Height.Percent = .7f;
+		mainPanel.Height.Percent = .8f;
 		mainPanel.HAlign = .5f;
 		mainPanel.VAlign = .5f;
 		holderPanel.Append(mainPanel);
@@ -94,6 +115,41 @@ public class SynergyMenuWikiUI : UIState {
 		headerPanel.PaddingTop = 5;
 		headerPanel.PaddingBottom = 5;
 		holderPanel.Append(headerPanel);
+
+		Filter_Melee = new(TextureAssets.InventoryBack);
+		Filter_Melee.SetPostTex(TextureAssets.Item[ItemID.WarriorEmblem], attemptToLoad: true);
+		Filter_Melee.UISetWidthHeight(52, 52);
+		Filter_Melee.VAlign = .5f;
+		Filter_Melee.HighlightColor = Filter_Melee.OriginalColor.ScaleRGB(.4f);
+		Filter_Melee.OnLeftClick += Filter_Melee_OnLeftClick;
+		headerPanel.Append(Filter_Melee);
+
+		Filter_Range = new(TextureAssets.InventoryBack);
+		Filter_Range.SetPostTex(TextureAssets.Item[ItemID.RangerEmblem], attemptToLoad: true);
+		Filter_Range.UISetWidthHeight(52, 52);
+		Filter_Range.VAlign = .5f;
+		Filter_Range.HighlightColor = Filter_Range.OriginalColor.ScaleRGB(.4f);
+		Filter_Range.OnLeftClick += Filter_Range_OnLeftClick;
+		Filter_Range.MarginLeft = Filter_Melee.GetInnerDimensions().Width + 10;
+		headerPanel.Append(Filter_Range);
+
+		Filter_Magic = new(TextureAssets.InventoryBack);
+		Filter_Magic.SetPostTex(TextureAssets.Item[ItemID.SorcererEmblem], attemptToLoad: true);
+		Filter_Magic.UISetWidthHeight(52, 52);
+		Filter_Magic.VAlign = .5f;
+		Filter_Magic.HighlightColor = Filter_Magic.OriginalColor.ScaleRGB(.4f);
+		Filter_Magic.OnLeftClick += Filter_Magic_OnLeftClick;
+		Filter_Magic.MarginLeft = (Filter_Melee.GetInnerDimensions().Width + 10) * 2;
+		headerPanel.Append(Filter_Magic);
+
+		Filter_Summon = new(TextureAssets.InventoryBack);
+		Filter_Summon.SetPostTex(TextureAssets.Item[ItemID.SummonerEmblem], attemptToLoad: true);
+		Filter_Summon.UISetWidthHeight(52, 52);
+		Filter_Summon.VAlign = .5f;
+		Filter_Summon.HighlightColor = Filter_Summon.OriginalColor.ScaleRGB(.4f);
+		Filter_Summon.OnLeftClick += Filter_Summon_OnLeftClick;
+		Filter_Summon.MarginLeft = (Filter_Melee.GetInnerDimensions().Width + 10) * 3;
+		headerPanel.Append(Filter_Summon);
 
 		footerPanel = new();
 		footerPanel.VAlign = 1;
@@ -123,14 +179,17 @@ public class SynergyMenuWikiUI : UIState {
 		buttonRight.postTex = ModContent.Request<Texture2D>(ModTexture.Arrow_Right);
 		footerPanel.Append(buttonRight);
 
-		maxPage = (int)Math.Ceiling(ModItemLib.SynergyItem.Count / (float)(Line * Row));
+		List<Item> list = [.. ModItemLib.List_Weapon, .. ModItemLib.SynergyItem];
+
+
+		maxPage = (int)Math.Ceiling(list.Count / (float)(Line * Row));
 
 		for (int i = 0; i < Line; i++) {
 			for (int j = 0; j < Row; j++) {
 				SynergyButton btn = new(TextureAssets.InventoryBack);
 				int index = Line * i + j;
-				if (index < ModItemLib.SynergyItem.Count) {
-					btn.SynergyInternalName = ModItemLib.SynergyItem[index].ModItem.Name;
+				if (index < list.Count) {
+					btn.InteralItemID = list[index].type;
 				}
 				btn.HAlign = j / (Row - 1f);
 				btn.VAlign = i / (Line - 1f);
@@ -156,45 +215,135 @@ public class SynergyMenuWikiUI : UIState {
 			footerPanel.Append(img);
 		}
 	}
+	private void Disable_HighlightForFilter() {
+		Filter_Melee.Highlight = false;
+		Filter_Range.Highlight = false;
+		Filter_Magic.Highlight = false;
+		Filter_Summon.Highlight = false;
+	}
+	private void Filter_Summon_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (!Filter_Summon.Highlight) {
+			Disable_HighlightForFilter();
+			Filter_Summon.Highlight = true;
+			pageIndex = 0;
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Summon);
+		}
+		else {
+			Filter_Summon.Highlight = false;
+			RefleshSelectionUIBaseOnPageIndex();
+		}
+	}
+
+	private void Filter_Magic_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (!Filter_Magic.Highlight) {
+			Disable_HighlightForFilter();
+			Filter_Magic.Highlight = true;
+			pageIndex = 0;
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Magic);
+		}
+		else {
+			Filter_Magic.Highlight = false;
+			RefleshSelectionUIBaseOnPageIndex();
+		}
+	}
+
+	private void Filter_Range_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (!Filter_Range.Highlight) {
+			Disable_HighlightForFilter();
+			Filter_Range.Highlight = true;
+			pageIndex = 0;
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Ranged);
+		}
+		else {
+			Filter_Range.Highlight = false;
+			RefleshSelectionUIBaseOnPageIndex();
+		}
+	}
+
+	private void Filter_Melee_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (!Filter_Melee.Highlight) {
+			Disable_HighlightForFilter();
+			Filter_Melee.Highlight = true;
+			pageIndex = 0;
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Melee);
+		}
+		else {
+			Filter_Melee.Highlight = false;
+			RefleshSelectionUIBaseOnPageIndex();
+		}
+	}
 
 	private void Img_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SetPageIndex(pagnitation.Select(el => el.UniqueId).ToList().IndexOf(listeningElement.UniqueId));
-		RefleshSelectionUIBaseOnPageIndex();
+		Reflesh();
 	}
 
 	private void ButtonRight_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (pageIndex < maxPage - 1) {
 			pageIndex++;
 		}
-		RefleshSelectionUIBaseOnPageIndex();
+		Reflesh();
 	}
 
 	private void ButtonLeft_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (pageIndex > 0) {
 			pageIndex--;
 		}
-		RefleshSelectionUIBaseOnPageIndex();
+		Reflesh();
 	}
-
-	public void RefleshSelectionUIBaseOnPageIndex() {
-		if (pageIndex > maxPage || pageIndex < 0 || maxPage <= 1) {
-			return;
+	private void Reflesh() {
+		if (Filter_Melee.Highlight) {
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Melee);
 		}
-		int maxcount = ModItemLib.SynergyItem.Count;
+		else if (Filter_Range.Highlight) {
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Ranged);
+		}
+		else if (Filter_Magic.Highlight) {
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Magic);
+		}
+		else if (Filter_Summon.Highlight) {
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Summon);
+		}
+		else {
+			RefleshSelectionUIBaseOnPageIndex();
+		}
+	}
+	public void RefleshSelectionUIBaseOnCondition(Func<int, bool> func) {
+		List<int> list = RoguelikeData.WeaponProgressTracker.Keys.Where(func).ToList();
+
+
+		maxPage = (int)Math.Ceiling(list.Count / (float)(Line * Row));
+		int maxcount = list.Count;
 		int startingPoint = Line * Row * pageIndex;
 		for (int i = 0; i < Line; i++) {
 			for (int j = 0; j < Row; j++) {
-				string name = "";
 				int index = Line * i + j + startingPoint;
-				if (index < ModItemLib.SynergyItem.Count) {
-					name = ModItemLib.SynergyItem[index].ModItem.Name;
-				}
 				SynergyButton btn = synegybuttonList[Line * i + j];
 				if (index >= maxcount) {
-					btn.SetSynergyItem(string.Empty);
+					btn.InteralItemID = -1;
 					continue;
 				}
-				btn.SetSynergyItem(name);
+				btn.InteralItemID = list[index];
+			}
+		}
+	}
+	public void RefleshSelectionUIBaseOnPageIndex() {
+		List<int> list = RoguelikeData.WeaponProgressTracker.Keys.ToList();
+		maxPage = (int)Math.Ceiling(list.Count / (float)(Line * Row));
+		if (pageIndex > maxPage || pageIndex < 0 || maxPage <= 1) {
+			return;
+		}
+		int maxcount = list.Count;
+		int startingPoint = Line * Row * pageIndex;
+		for (int i = 0; i < Line; i++) {
+			for (int j = 0; j < Row; j++) {
+				int index = Line * i + j + startingPoint;
+				SynergyButton btn = synegybuttonList[Line * i + j];
+				if (index >= maxcount) {
+					btn.InteralItemID = -1;
+					continue;
+				}
+				btn.InteralItemID = list[index];
 			}
 		}
 	}

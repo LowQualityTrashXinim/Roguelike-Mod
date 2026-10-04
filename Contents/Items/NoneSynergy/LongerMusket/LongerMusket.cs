@@ -24,6 +24,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.LongerMusket
 			Item.DamageType = DamageClass.Ranged;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
+			Item.UseSound = SoundID.Item38;
 		}
 
 		public override Vector2? HoldoutOffset() {

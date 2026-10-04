@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.IOhandle;
 
 namespace Roguelike;
 public partial class Roguelike : Mod {
@@ -118,6 +119,10 @@ public class ModItemLib : ModSystem {
 		CanBeAffectByLastingVile = BuffID.Sets.Factory.CreateBoolSet(true, ModContent.BuffType<LastingVileBuff>());
 		AdvancedRPGItem = ItemID.Sets.Factory.CreateBoolSet();
 		List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
+		bool AddItemToProgressList = false;
+		if (RoguelikeData.WeaponProgressTracker.Count < 1) {
+			AddItemToProgressList = true;
+		}
 		for (int i = 0; i < cacheitemList.Count; i++) {
 			Item item = cacheitemList[i];
 			if (item.ModItem is LootBoxBase) {
@@ -126,6 +131,9 @@ public class ModItemLib : ModSystem {
 			}
 			if (item.ModItem is SynergyModItem) {
 				SynergyItem.Add(item);
+				if (AddItemToProgressList && item.IsAWeapon()) {
+					RoguelikeData.WeaponProgressTracker.Add(item.type, false);
+				}
 				continue;
 			}
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
@@ -196,6 +204,9 @@ public class ModItemLib : ModSystem {
 					if (ContentSamples.ProjectilesByType[item.shoot].minion) {
 						MinionPetMountBuff.Add(item.buffType);
 					}
+				}
+				if (AddItemToProgressList) {
+					RoguelikeData.WeaponProgressTracker.Add(item.type, false);
 				}
 				List_Weapon.Add(item);
 				if (!WeaponRarityDB.ContainsKey(item.rare)) {

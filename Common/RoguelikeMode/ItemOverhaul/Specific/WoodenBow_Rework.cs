@@ -29,7 +29,7 @@ public class Roguelike_WoodenBow : GlobalItem {
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		int Counter = player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter;
-		player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter = 0;
+		player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter = -player.itemAnimationMax;
 		if (Counter >= 90) {
 			Counter -= 90;
 			int amount = Counter / 10 + 3;

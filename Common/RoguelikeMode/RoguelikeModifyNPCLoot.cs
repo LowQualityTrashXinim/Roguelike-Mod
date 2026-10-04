@@ -29,12 +29,6 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (!npc.boss 
-				|| npc.type != NPCID.EaterofWorldsHead
-				|| npc.type != NPCID.EaterofWorldsBody
-				|| npc.type != NPCID.EaterofWorldsTail) {
-				return;
-			}
 			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			var noHit = new LeadingConditionRule(new GitGudMode());
 			var dontHit = new LeadingConditionRule(new DontHitBoss());

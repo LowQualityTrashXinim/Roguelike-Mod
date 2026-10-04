@@ -911,7 +911,7 @@ class UISystemMenu : UIState {
 		open_AchievmentUI.HAlign = .5f;
 		panel.Append(open_AchievmentUI);
 
-		open_SynergyWikiUI = new("Synergy weapon library", 1.5f);
+		open_SynergyWikiUI = new("Weapon library", 1.5f);
 		open_SynergyWikiUI.OnLeftClick += Open_WikiUI_OnLeftClick;
 		open_SynergyWikiUI.OnUpdate += Universal_OnUpdate;
 		open_SynergyWikiUI.OnMouseOver += Universal_MouseOver;

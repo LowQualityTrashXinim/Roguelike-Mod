@@ -519,10 +519,10 @@ SpaceGun.Description:
 	'''
 BeeGun.Description:
 	'''
-	Shooting weapon have 20% to shoot out a friendly bee that deal 20 damage 
-	( note : increases to 50% if player have Hive Pack )
-	Player on getting hit will put them in honey buff for 6s and release 5 bees that deal 30 damage
-	( note : 10% of your weapon damage will contribute to bee damage exclusive to enchantment )
+	Shooting weapon have 20% to shoot out a friendly bee that deal 20 + 10% weapon damage 
+	On getting hit, put player in honey buff for 6s and release 5 bees dealing 30 + 10% weapon damage
+	If player is equipping [i:3333] : 
+	Shooting weapon have 50% chance instead
 	'''
 Vilethorn.Description:
 	'''

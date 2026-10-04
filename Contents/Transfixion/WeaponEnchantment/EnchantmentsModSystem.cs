@@ -146,14 +146,7 @@ public class EnchantmentModplayer : ModPlayer {
 		if (globalItem == null || globalItem.EnchantmenStlot == null) {
 			return false;
 		}
-		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
-			ModEnchantment enchant = EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]);
-			if (enchant == null) {
-				continue;
-			}
-			return !enchant.ApplyCondition(i, Player, globalItem, item);
-		}
-		return false;
+		return true;
 	}
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
