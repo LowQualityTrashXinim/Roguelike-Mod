@@ -136,6 +136,7 @@ Along with above change, this UI section will also be repurposed.
 808/ Everytime player kill boss, a chat announcer will notified player that mod progression is increased.
 809/ Added sound for Longer musket weapon.
 810/ Updated README.md .
+811/ Fixed a bug that can caused modded weapon have incorrect progression unlock in Weapon library.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

@@ -132,7 +132,12 @@ public class ModItemLib : ModSystem {
 			if (item.ModItem is SynergyModItem) {
 				SynergyItem.Add(item);
 				if (AddItemToProgressList && item.IsAWeapon()) {
-					RoguelikeData.WeaponProgressTracker.Add(item.type, false);
+					if (item.ModItem != null) {
+						RoguelikeData.WeaponProgressTracker.Add(item.ModItem.Name + "_" + Mod.Name, false);
+					}
+					else {
+						RoguelikeData.WeaponProgressTracker.Add(item.Name, false);
+					}
 				}
 				continue;
 			}
@@ -206,7 +211,12 @@ public class ModItemLib : ModSystem {
 					}
 				}
 				if (AddItemToProgressList) {
-					RoguelikeData.WeaponProgressTracker.Add(item.type, false);
+					if (item.ModItem != null) {
+						RoguelikeData.WeaponProgressTracker.Add(item.ModItem.Name + "_" + Mod.Name, false);
+					}
+					else {
+						RoguelikeData.WeaponProgressTracker.Add(item.Name, false);
+					}
 				}
 				List_Weapon.Add(item);
 				if (!WeaponRarityDB.ContainsKey(item.rare)) {

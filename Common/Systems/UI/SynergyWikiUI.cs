@@ -8,6 +8,7 @@ using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -19,6 +20,7 @@ using Terraria.UI;
 namespace Roguelike.Common.Systems.UI;
 public class SynergyButton : Roguelike_UIImageButton {
 	public bool ItemLocked = true;
+	public string InternalItemName = "";
 	public int InteralItemID = 0;
 	Asset<Texture2D> Lock;
 	Texture2D _texture;
@@ -26,10 +28,14 @@ public class SynergyButton : Roguelike_UIImageButton {
 		SetVisibility(.67f, 1f);
 		Lock = ModContent.Request<Texture2D>(ModTexture.Lock);
 		_texture = texture.Value;
+		InternalItemName = string.Empty;
 	}
 	public override void UpdateOuter(GameTime gametime) {
-		if (RoguelikeData.WeaponProgressTracker.ContainsKey(InteralItemID)) {
-			ItemLocked = !RoguelikeData.WeaponProgressTracker[InteralItemID];
+		if (string.IsNullOrEmpty(InternalItemName)) {
+			return;
+		}
+		if (RoguelikeData.WeaponProgressTracker.ContainsKey(InternalItemName)) {
+			ItemLocked = !RoguelikeData.WeaponProgressTracker[InternalItemName];
 		}
 	}
 	public override void DrawImage(SpriteBatch spriteBatch) {
@@ -226,7 +232,9 @@ public class SynergyMenuWikiUI : UIState {
 			Disable_HighlightForFilter();
 			Filter_Summon.Highlight = true;
 			pageIndex = 0;
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Summon);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Summon);
 		}
 		else {
 			Filter_Summon.Highlight = false;
@@ -239,7 +247,9 @@ public class SynergyMenuWikiUI : UIState {
 			Disable_HighlightForFilter();
 			Filter_Magic.Highlight = true;
 			pageIndex = 0;
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Magic);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Magic);
 		}
 		else {
 			Filter_Magic.Highlight = false;
@@ -252,7 +262,9 @@ public class SynergyMenuWikiUI : UIState {
 			Disable_HighlightForFilter();
 			Filter_Range.Highlight = true;
 			pageIndex = 0;
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Ranged);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Ranged);
 		}
 		else {
 			Filter_Range.Highlight = false;
@@ -265,7 +277,9 @@ public class SynergyMenuWikiUI : UIState {
 			Disable_HighlightForFilter();
 			Filter_Melee.Highlight = true;
 			pageIndex = 0;
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Melee);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Melee);
 		}
 		else {
 			Filter_Melee.Highlight = false;
@@ -293,23 +307,31 @@ public class SynergyMenuWikiUI : UIState {
 	}
 	private void Reflesh() {
 		if (Filter_Melee.Highlight) {
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Melee);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Melee);
 		}
 		else if (Filter_Range.Highlight) {
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Ranged);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Ranged);
 		}
 		else if (Filter_Magic.Highlight) {
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Magic);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Magic);
 		}
 		else if (Filter_Summon.Highlight) {
-			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType[a].DamageType == DamageClass.Summon);
+			RefleshSelectionUIBaseOnCondition(a => ContentSamples.ItemsByType.Values.Where(item => item.Name == a
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == a)
+			.FirstOrDefault().DamageType == DamageClass.Summon);
 		}
 		else {
 			RefleshSelectionUIBaseOnPageIndex();
 		}
 	}
-	public void RefleshSelectionUIBaseOnCondition(Func<int, bool> func) {
-		List<int> list = RoguelikeData.WeaponProgressTracker.Keys.Where(func).ToList();
+	public void RefleshSelectionUIBaseOnCondition(Func<string, bool> func) {
+		List<string> list = RoguelikeData.WeaponProgressTracker.Keys.Where(func).ToList();
 
 
 		maxPage = (int)Math.Ceiling(list.Count / (float)(Line * Row));
@@ -323,12 +345,19 @@ public class SynergyMenuWikiUI : UIState {
 					btn.InteralItemID = -1;
 					continue;
 				}
-				btn.InteralItemID = list[index];
+				var item = ContentSamples.ItemsByType.Values.Where(
+					item => item.Name == list[index]
+					|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == list[index]).FirstOrDefault();
+				if (item == null) {
+					continue;
+				}
+				btn.InteralItemID = item.type;
+				btn.InternalItemName = list[index];
 			}
 		}
 	}
 	public void RefleshSelectionUIBaseOnPageIndex() {
-		List<int> list = RoguelikeData.WeaponProgressTracker.Keys.ToList();
+		List<string> list = RoguelikeData.WeaponProgressTracker.Keys.ToList();
 		maxPage = (int)Math.Ceiling(list.Count / (float)(Line * Row));
 		if (pageIndex > maxPage || pageIndex < 0 || maxPage <= 1) {
 			return;
@@ -343,7 +372,14 @@ public class SynergyMenuWikiUI : UIState {
 					btn.InteralItemID = -1;
 					continue;
 				}
-				btn.InteralItemID = list[index];
+				var item = ContentSamples.ItemsByType.Values.Where(
+									item => item.Name == list[index]
+									|| item.ModItem != null && item.ModItem.Name + "_" + item.ModItem.Mod.Name == list[index]).FirstOrDefault();
+				if (item == null) {
+					continue;
+				}
+				btn.InteralItemID = item.type;
+				btn.InternalItemName = list[index];
 			}
 		}
 	}

@@ -39,7 +39,11 @@ public static class RoguelikeData {
 	/// <b>False:</b> if player never seen it at all
 	/// </summary>
 	public static Dictionary<int, bool> EnchantmentProgressTracker = new();
-	public static Dictionary<int, bool> WeaponProgressTracker = new();
+	/// <summary>
+	/// Keys : Item name + Mod<br/>
+	/// Value : Has player seen at least once<br/>
+	/// </summary>
+	public static Dictionary<string, bool> WeaponProgressTracker = new();
 }
 class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "Everlasting_Data");
@@ -69,8 +73,8 @@ class ModIO : ModSystem {
 				foreach (var field in fields) {
 					if (field.Name == "WeaponProgressTracker") {
 						object obj = field.GetValue(null);
-						if (obj is Dictionary<int, bool> tracker) {
-							var keyObj = tag.Get<List<int>>("WeaponProgressTracker_Key");
+						if (obj is Dictionary<string, bool> tracker) {
+							var keyObj = tag.Get<List<string>>("WeaponProgressTracker_Key");
 							var valueObj = tag.Get<List<bool>>("WeaponProgressTracker_Value");
 							tracker = keyObj.Zip(valueObj, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 							field.SetValue(null, tracker);

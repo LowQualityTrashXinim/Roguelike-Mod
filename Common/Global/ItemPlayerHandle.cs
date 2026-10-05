@@ -289,11 +289,21 @@ namespace Roguelike.Common.Global {
 
 		private Item On_Player_PickupItem(On_Player.orig_PickupItem orig, Player self, int playerIndex, int worldItemArrayIndex, Item itemToPickUp) {
 			if (itemToPickUp.IsAWeapon()) {
-				if (RoguelikeData.WeaponProgressTracker.ContainsKey(itemToPickUp.type)) {
-					RoguelikeData.WeaponProgressTracker[itemToPickUp.type] = true;
+				if (itemToPickUp.ModItem == null) {
+					if (RoguelikeData.WeaponProgressTracker.ContainsKey(itemToPickUp.Name)) {
+						RoguelikeData.WeaponProgressTracker[itemToPickUp.Name] = true;
+					}
+					else {
+						RoguelikeData.WeaponProgressTracker.Add(itemToPickUp.Name, true);
+					}
 				}
 				else {
-					RoguelikeData.WeaponProgressTracker.Add(itemToPickUp.type, true);
+					if (RoguelikeData.WeaponProgressTracker.ContainsKey(itemToPickUp.ModItem.Name + "_" + Mod.Name)) {
+						RoguelikeData.WeaponProgressTracker[itemToPickUp.ModItem.Name + "_" + Mod.Name] = true;
+					}
+					else {
+						RoguelikeData.WeaponProgressTracker.Add(itemToPickUp.ModItem.Name + "_" + Mod.Name, true);
+					}
 				}
 			}
 			return orig(self, playerIndex, worldItemArrayIndex, itemToPickUp);
