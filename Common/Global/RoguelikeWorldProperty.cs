@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.General;
 using Roguelike.Common.RoguelikeMode;
+using Roguelike.Common.Systems.DifficultySettingSystem;
 using Roguelike.Common.Utils;
 using SubworldLibrary;
 using System.Collections.Generic;
@@ -60,6 +61,23 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Setting_RareSpoils"] = RareSpoils;
 		tag["Setting_RareLootbox"] = RareLootbox;
 		tag["Setting_Nightmare"] = NightmareWorld;
+
+		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		tag["Difficulty_Enemy_HP"] = system.Enemy_HP;
+		tag["Difficulty_Enemy_DMG"] = system.Enemy_DMG;
+		tag["Difficulty_Boss_DMG"] = system.Boss_DMG;
+		tag["Difficulty_Boss_HP"] = system.Boss_HP;
+		tag["Difficulty_Boss_DMGPercentage"] = system.Boss_DMGPercentage;
+		tag["Difficulty_Boss_ProgressionLock"] = system.Boss_ProgressionLock;
+		tag["Difficulty_Player_ReviveCurse"] = system.Player_ReviveCurse;
+		tag["Difficulty_Player_HitTakenEffectiveness"] = system.Player_HitTakenEffectiveness;
+		tag["Difficulty_Player_TimeRestriction"] = system.Player_TimeRestriction;
+		tag["Difficulty_Player_TimeRestriction_Scale"] = system.Player_TimeRestriction_Scale;
+		tag["Difficulty_World_ReduceHouseLoot"] = system.World_ReduceHouseLoot;
+		tag["Difficulty_World_IncreasesSpawnRate"] = system.World_IncreasesSpawnRate;
+		tag["Difficulty_World_EnemyToElite"] = system.World_EnemyToElite;
+		tag["Difficulty_World_EnemyRevive"] = system.World_EnemyRevive;
+		tag["Difficulty_World_BiomeModifier"] = system.World_BiomeModifier;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
@@ -75,6 +93,23 @@ internal class RoguelikeWorldProperty : ModSystem {
 		RareSpoils = tag.Get<bool>("Setting_RareSpoils");
 		RareLootbox = tag.Get<bool>("Setting_RareLootbox");
 		NightmareWorld = tag.Get<bool>("Setting_Nightmare");
+
+		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		system.Enemy_HP = tag.Get<byte>("Difficulty_Enemy_HP");
+		system.Enemy_DMG = tag.Get<byte>("Difficulty_Enemy_DMG");
+		system.Boss_DMG = tag.Get<byte>("Difficulty_Boss_DMG");
+		system.Boss_HP = tag.Get<byte>("Difficulty_Boss_HP");
+		system.Boss_DMGPercentage = tag.Get<byte>("Difficulty_Boss_DMGPercentage");
+		system.Boss_ProgressionLock = tag.Get<byte>("Difficulty_Boss_ProgressionLock");
+		system.Player_ReviveCurse = tag.Get<bool>("Difficulty_Player_ReviveCurse");
+		system.Player_HitTakenEffectiveness = tag.Get<bool>("Difficulty_Player_HitTakenEffectiveness");
+		system.Player_TimeRestriction = tag.Get<bool>("Difficulty_Player_TimeRestriction");
+		system.Player_TimeRestriction_Scale = tag.Get<byte>("Difficulty_Player_TimeRestriction_Scale");
+		system.World_ReduceHouseLoot = tag.Get<byte>("Difficulty_World_ReduceHouseLoot");
+		system.World_IncreasesSpawnRate = tag.Get<byte>("Difficulty_World_IncreasesSpawnRate");
+		system.World_EnemyToElite = tag.Get<byte>("Difficulty_World_EnemyToElite");
+		system.World_EnemyRevive = tag.Get<bool>("Difficulty_World_EnemyRevive");
+		system.World_BiomeModifier = tag.Get<bool>("Difficulty_World_BiomeModifier");
 	}
 }
 public class RoguelikeWorldProperty_Player : ModPlayer {

@@ -137,6 +137,10 @@ Along with above change, this UI section will also be repurposed.
 809/ Added sound for Longer musket weapon.
 810/ Updated README.md .
 811/ Fixed a bug that can caused modded weapon have incorrect progression unlock in Weapon library.
+812/ Added 2 new achievements.
+813/ Fixed a bug with the skill system that caused it to cost 1 extra energy.
+814/ Added a world setting UI into world creation UI.
+815/ Added a lot of difficulty setting.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

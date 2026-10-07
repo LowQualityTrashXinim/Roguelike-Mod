@@ -88,6 +88,8 @@ internal class Skeletron : GlobalNPC {
 			npc.TargetClosest();
 			if (Main.player[npc.target].dead) {
 				state = State.Despawn;
+				npc.EncourageDespawn(50);
+				return;
 			}
 			if (Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f || Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f) {
 				SoundEngine.PlaySound(SoundID.Roar, npc.position);
@@ -114,14 +116,14 @@ internal class Skeletron : GlobalNPC {
 			Vector2 playerCenter = Main.player[npc.target].Center + Main.rand.NextVector2Circular(50, 50);
 			Vector2 vector19 = (playerCenter - center3).SafeNormalize(Vector2.Zero) * (num155 + Vector2.Distance(playerCenter, center3) * .1f);
 			vector19 += npc.velocity;
-			int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(17f, 17f);
+			int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(30f, 30f);
 			int num160 = Projectile.NewProjectile(npc.GetSource_FromAI(), center3, vector19, ProjectileID.Skull, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
 			Main.projectile[num160].timeLeft = 300;
 		}
 	}
 	private void ShootProjectile(NPC npc, Vector2 vel, int Type, int customTimeLeft = 300) {
 		Vector2 center3 = npc.Center;
-		int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(17f, 17f);
+		int attackDamage_ForProjectiles = npc.GetAttackDamage_ForProjectiles(30f, 30f);
 		int num160 = Projectile.NewProjectile(npc.GetSource_FromAI(), center3, vel, Type, attackDamage_ForProjectiles, 0f, Main.myPlayer, -1f);
 		Main.projectile[num160].timeLeft = customTimeLeft;
 		Main.projectile[num160].hostile = true;
@@ -147,6 +149,8 @@ internal class Skeletron : GlobalNPC {
 		if (npc.GetLifePercent() <= .75f) {
 			handsCount = 0;
 		}
+		float value = (1 - npc.life / (float)npc.lifeMax) * .5f; 
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += value;
 
 		if (npc.GetLifePercent() <= .05f && state != State.Desperation && state != State.Despawn) {
 			state = State.Desperation;
@@ -368,7 +372,7 @@ internal class Skeletron : GlobalNPC {
 		npc.velocity = (playerCenter - npcCenter) * num174;
 	}
 	private void Desperation(NPC npc) {
-		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .5f;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .2f;
 		if (npc.ai[2] == 2f)
 			SoundEngine.PlaySound(SoundID.Roar, npc.position);
 
@@ -537,7 +541,7 @@ internal class Skeletron : GlobalNPC {
 		if (!playerPosition.IsCloseToPosition(player.Center, 200)) {
 			playerPosition += (player.Center - playerPosition).SafeNormalize(Vector2.Zero) * ((player.Center - playerPosition).Length() / 8f);
 		}
-		Vector2 offSet = playerPosition + Vector2.One.RotatedBy(MathHelper.ToRadians(npc.ai[2] * 5)) * 550;
+		Vector2 offSet = playerPosition + Vector2.One.RotatedBy(MathHelper.ToRadians(npc.ai[2] * 5)) * 500;
 		npc.velocity = (offSet - npc.Center).SafeNormalize(Vector2.Zero) * ((offSet - npc.Center).Length() / 2f);
 
 		//Half a second delay
@@ -556,14 +560,14 @@ internal class Skeletron : GlobalNPC {
 				if (npc.ai[1] >= 1) {
 					npc.ai[1] = -1;
 				}
-				ShootProjectile(npc, velOrigin * 7, type);
+				ShootProjectile(npc, velOrigin * 5, type);
 			}
 			if (npc.ai[2] % 2 == 0) {
 				ShootProjectile(npc, npc.velocity.SafeNormalize(Vector2.Zero), ProjectileID.DemonScythe, 120);
 			}
 			if (npc.ai[2] % 120 == 0) {
 				for (int i = 0; i < 6; i++) {
-					ShootProjectile(npc, velOrigin.Vector2DistributeEvenlyPlus(6, 60, i) * 7, ProjectileID.WaterBolt);
+					ShootProjectile(npc, velOrigin.Vector2DistributeEvenlyPlus(6, 60, i) * 4, ProjectileID.WaterBolt);
 				}
 			}
 			if (npc.ai[2] % 240 == 0) {

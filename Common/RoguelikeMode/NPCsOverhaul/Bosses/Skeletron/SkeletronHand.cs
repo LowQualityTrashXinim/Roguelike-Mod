@@ -26,7 +26,7 @@ internal class SkeletronHand : GlobalNPC {
 
 		if (!boss.Center.IsCloseToPosition(npc.Center, 700)) {
 			npc.ai[2] = 0f;
-			npc.velocity *= .9f;
+			npc.velocity += (boss.Center - npc.Center).SafeNormalize(Vector2.Zero) * (boss.Center - npc.Center).Length() / 32f;
 		}
 
 		if (npc.ai[2] == 0f || npc.ai[2] == 3f) {

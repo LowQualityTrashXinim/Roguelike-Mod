@@ -58,7 +58,7 @@ public abstract class ModSkill : ModType {
 	protected StatModifier Energy = StatModifier.Default;
 	protected int Skill_EnergyRequire { get => (int)Energy.Base; set => Energy.Base = value; }
 	public float EnergyPercentage { get => (int)Energy.Multiplicative; }
-	public int EnergyRequire { get => (int)Energy.ApplyTo(1); }
+	public int EnergyRequire { get => (int)Energy.ApplyTo(0); }
 
 	protected int Skill_ShootType = 0;
 	public int ShootType { get => Skill_ShootType; }

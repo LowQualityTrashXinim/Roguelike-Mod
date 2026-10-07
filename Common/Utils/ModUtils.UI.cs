@@ -395,12 +395,28 @@ namespace Roguelike.Common.Utils {
 		}
 	}
 	public class Roguelike_UITextPanel : UITextPanel<string> {
+		public bool Highlight = false;
+		public Color OriginalColor = Color.White;
+		public Color HighlightColor = Color.White;
 		public bool Hide = false;
 		public bool UseCustmSetHeight = false;
+		public string HoverText = "";
+		public void SwapHightlightColorWithOriginalColor() {
+			Color origin = OriginalColor;
+			OriginalColor = HighlightColor;
+			HighlightColor = origin;
+		}
 		public Roguelike_UITextPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+			OriginalColor = BorderColor;
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
+			if (Highlight) {
+				BorderColor = HighlightColor;
+			}
+			else {
+				BorderColor = OriginalColor;
+			}
 			this.IgnoresMouseInteraction = Hide;
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -412,6 +428,9 @@ namespace Roguelike.Common.Utils {
 		public override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {
 				return;
+			}
+			if (!string.IsNullOrEmpty(HoverText) && IsMouseHovering) {
+				UICommon.TooltipMouseText(HoverText);
 			}
 			if (!UseCustmSetHeight) {
 				Vector2 stringsize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Text, Vector2.UnitY);
@@ -533,7 +552,7 @@ namespace Roguelike.Common.Utils {
 			if (!string.IsNullOrEmpty(HoverText) && IsMouseHovering) {
 				Main.instance.MouseText(HoverText);
 			}
-			if(drawInfo.Hide) {
+			if (drawInfo.Hide) {
 				return;
 			}
 			if (postTex != null) {

@@ -82,5 +82,7 @@ namespace Roguelike.Texture {
 		public const string dust_5x5Type2 = CommonTextureStringPattern + "Dust/5x5dustType2";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
+
+		public const string Mod_icon = $"{ModMain.Main}/icon";
 	}
 }

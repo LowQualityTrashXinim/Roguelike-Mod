@@ -42,7 +42,7 @@ namespace Roguelike.Contents.Items.NoneSynergy.SnowballShotgunCannon
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
 				position += muzzleOffset;
 			}
-			float projectileNum = 2 + Main.rand.Next(3);
+			float projectileNum = 4 + Main.rand.Next(5);
 			float rotation = MathHelper.ToRadians(5);
 			for (int i = 0; i < projectileNum; i++) {
 				var Rotate = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (projectileNum - 1)));

@@ -76,6 +76,31 @@ Mods: {
 		Bestiary.LootBoxLord: After our investigation, we uncovered that this entity is a ancient god whose purpose are to guard the gate of so called "World Vault", this is our first ever confirmation of there being another world, however without seeing the "world vault" there aren't any evidence would support our theory, so this can't really be reported back to our superior. However the entity is rather interesting, we had done multiple attempts of trying to neutralize the entity, even resulting to using our on broad giant rail gun which in previous record could easily pieced a super size eye ball but when against this entity it done next to no damage, as such we decided best to not engaged any further until further notice from above.
 
 		SystemTooltip: {
+			TerrariaMode:
+				'''
+				The normal terraria experience but with this mod contents !
+				[+] Most of the story, quest, and exploreable structures is locked.
+				[+] Enjoy a normal playthrough of the mod in vanilla setting :)
+				[+] Most contents are adjusted, and trying to enable other mode in the same category 
+				will automatically disable
+				[+] Mod's achievement is also disable when playing in this setting
+				[+] Most secret is also disable when playing in this setting.
+				'''
+			BossRushMode:
+				'''
+				"Good for wanting something fast pace"
+				[+] Player are given custom starting loot
+				[+] Custom world generation for boss rush mode
+				'''
+			NightmareMode:
+				'''
+				"Your worst imagination came into life"
+				- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
+				- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
+				at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
+				- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
+				- During a boss fight, a celestial portal opened spawning various celestial being.
+				'''
 			NotSupported.Warning: WARNING: Not Supported By The Terraria Roguelike Mod
 
 			DemoEnding: {
@@ -4482,29 +4507,6 @@ Mods: {
 					GameHeader: Game option
 				}
 
-				TerrariaMode: {
-					Label: Terraria mode
-					Tooltip:
-						'''
-						The normal terraria experience but with this mod contents !
-						[+] Most of the story, quest, and exploreable structures is locked.
-						[+] Enjoy a normal playthrough of the mod in vanilla setting :)
-						[+] Most contents are adjusted, and trying to enable other mode in the same category 
-						will automatically disable
-						[+] Mod's achievement is also disable when playing in this setting
-						[+] Most secret is also disable when playing in this setting.
-						'''
-				}
-
-				BossRushMode: {
-					Label: Boss Rush Mode
-					Tooltip:
-						'''
-						Player are given custom starting loot
-						Custom world generation for boss rush mode
-						'''
-				}
-
 				AutoRandomizeCharacter: {
 					Label: Auto randomize character appearance
 					Tooltip: This will automatically change character apprearance
@@ -4548,19 +4550,6 @@ Mods: {
 						"For those who believe"
 						[-] Everything that deal damage via contact will instantly kill you
 						[-] Your loot drop amount is limited down to 1 regardless
-						'''
-				}
-
-				NightmareMode: {
-					Label: Nightmare mode
-					Tooltip:
-						'''
-						"Your worst imagination came into life"
-						- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
-						- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
-						at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
-						- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
-						- During a boss fight, a celestial portal opened spawning various celestial being.
 						'''
 				}
 
@@ -4641,6 +4630,11 @@ Mods: {
 						'''
 				}
 
+				BossRushMode: {
+					Label: Boss Rush Mode
+					Tooltip: ""
+				}
+
 				DashKey: {
 					Label: Dash Key
 					Tooltip:
@@ -4648,6 +4642,16 @@ Mods: {
 						Enable this to make modded item or custom dash mechanic to use keybind
 						Otherwise it will follow the vanilla dash key system.
 						'''
+				}
+
+				TerrariaMode: {
+					Label: Terraria Mode
+					Tooltip: ""
+				}
+
+				NightmareMode: {
+					Label: Nightmare Mode
+					Tooltip: ""
 				}
 			}
 		}

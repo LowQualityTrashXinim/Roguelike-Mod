@@ -186,3 +186,19 @@ InfinitePlusOne: {
 		Note: You don't need to have a dps counter with you to achieve this
 		'''
 }
+
+SynergyFever: {
+	DisplayName: Synergy fever
+	Description: Inventory full of synergetic property
+	ConditionTip:
+		'''
+		Fill up your entire inventory with synergy weapon excluding coins, armors
+		and accessories slots.
+		'''
+}
+
+Nightmarish: {
+	DisplayName: Nightmarish
+	Description: What a terrible dream to have !
+	ConditionTip: Beat the mod in Nightmare mode.
+}

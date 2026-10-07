@@ -51,7 +51,15 @@ namespace Roguelike.Common.Systems;
 /// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
-	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => NPC.downedMoonlord && BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
+	public static bool DidPlayerBeatTheMod() {
+		if(RoguelikeWorldProperty.BossRushWorld) {
+			return NPC.downedAncientCultist;
+		}
+		if(RoguelikeWorldProperty.RoguelikeWorld) {
+			return NPC.downedMoonlord;
+		}
+		return NPC.downedMoonlord;
+	}
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
