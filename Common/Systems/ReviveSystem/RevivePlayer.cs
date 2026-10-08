@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ObjectSystem.DataStructures;
 using System.Collections.Generic;
@@ -68,6 +69,7 @@ public class RevivePlayer : ModPlayer {
 	}
 
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+		bool CanDie = true;
 		// 1) evaluate all the chance based revives
 		foreach (var revive in ReviveSystem.Revives) {
 			if (!revive.IsActive(Player)) {
@@ -79,7 +81,8 @@ public class RevivePlayer : ModPlayer {
 					if (Player.whoAmI == Main.myPlayer) {
 						revive.RecalculateChance(Player);
 					}
-					return false;
+					CanDie = false;
+					break;
 				}
 				else {
 					if (Player.whoAmI == Main.myPlayer) {
@@ -115,7 +118,8 @@ public class RevivePlayer : ModPlayer {
 
 			revive.Used(Player);
 
-			return false;
+			CanDie = false;
+			break;
 		}
 
 		// 4) use revive item
@@ -135,6 +139,13 @@ public class RevivePlayer : ModPlayer {
 
 			Player.Heal(Player.statLifeMax2 / 2);
 
+			CanDie = false;
+		}
+
+		if(!CanDie) {
+			if(ModContent.GetInstance<DifficultySettingSystem>().Player_ReviveCurse) {
+
+			}
 			return false;
 		}
 

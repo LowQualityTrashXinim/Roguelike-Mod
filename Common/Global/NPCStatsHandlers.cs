@@ -1,5 +1,6 @@
 ﻿using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.BossRushMode;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,15 +29,30 @@ internal class NPCStatsHandlers : GlobalNPC {
 		return (1 + counter * .3f + extraMultiply) * scale;
 	}
 	public override void SetDefaults(NPC entity) {
-		StatModifier mod = new();
+		DifficultySettingSystem difficulty = ModContent.GetInstance<DifficultySettingSystem>();
+		StatModifier HPmod = new();
+		StatModifier DMGmod = new();
+		HPmod += .1f * difficulty.Enemy_HP;
+		DMGmod += .05f * difficulty.Enemy_DMG;
+		if (entity.boss) {
+			HPmod += .25f * difficulty.Boss_HP;
+			DMGmod += .025f * difficulty.Boss_DMG;
+			entity.GetGlobalNPC<RoguelikeGlobalNPC>().Static_PercentageDamage += .025f * difficulty.Boss_DMGPercentage;
+		}
 		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
 			return;
 		}
 		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+			float value = GetValueMulti();
 			if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
 				if (!entity.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException) {
-					entity.lifeMax = (int)(BossHP * GetValueMulti());
-					entity.damage = (int)(BossDMG * GetValueMulti());
+					if (entity.type == NPCID.Retinazer || entity.type == NPCID.Spazmatism) {
+						entity.lifeMax = (int)(entity.lifeMax * .7f);
+					}
+					HPmod += value;
+					DMGmod += value;
+					entity.lifeMax = (int)HPmod.ApplyTo(BossHP);
+					entity.damage = (int)DMGmod.ApplyTo(BossDMG);
 					entity.defense = (int)(BossDef * GetValueMulti(.5f));
 				}
 			}
@@ -47,10 +63,11 @@ internal class NPCStatsHandlers : GlobalNPC {
 				else if (Main.masterMode)
 					adjustment = 3;
 
-				entity.lifeMax += (int)(entity.lifeMax / adjustment * GetValueMulti() * .1f);
-				entity.life = entity.lifeMax;
-				entity.damage += (int)(entity.damage / adjustment * GetValueMulti() * .1f);
+				HPmod += adjustment * value * .1f;
+				DMGmod += adjustment * value * .1f;
 				entity.defense += (int)(entity.defense / adjustment * GetValueMulti(.5f) * .1f);
+				entity.lifeMax = (int)HPmod.ApplyTo(entity.lifeMax);
+				entity.damage = (int)DMGmod.ApplyTo(entity.damage);
 			}
 			if (RoguelikeWorldProperty.NightmareWorld) {
 				entity.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
@@ -65,22 +82,17 @@ internal class NPCStatsHandlers : GlobalNPC {
 		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
 			return;
 		}
+		DifficultySettingSystem difficulty = ModContent.GetInstance<DifficultySettingSystem>();
+		if (Main.rand.NextFloat() <= difficulty.World_EnemyToElite * .2f && !npc.boss) {
+			npc.lifeMax += 1000 + npc.lifeMax;
+			npc.defense += 30;
+			npc.damage += 50 + npc.damage / 2; 
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
+		}
 		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
-			if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye
-			&& npc.type != NPCID.MoonLordCore && npc.type != NPCID.MoonLordHand && npc.type != NPCID.MoonLordHead && npc.type != NPCID.MoonLordLeechBlob) {
-				if (!npc.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException) {
-					npc.lifeMax = (int)(BossHP * GetValueMulti());
-					npc.life = npc.lifeMax;
-					npc.damage = (int)(BossDMG * GetValueMulti());
-					npc.defense = (int)(BossDef * GetValueMulti(.5f));
-				}
-			}
-			else {
+			if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye
+			|| npc.type == NPCID.MoonLordCore || npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead || npc.type == NPCID.MoonLordLeechBlob) {
 				npc.lifeMax += (int)(npc.lifeMax * GetValueMulti() * .1f);
-				if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) {
-					npc.lifeMax = (int)(npc.lifeMax * .7f);
-				}
-				npc.life = npc.lifeMax;
 				npc.damage += (int)(npc.damage * GetValueMulti() * .1f);
 				npc.defense += (int)(npc.defense * GetValueMulti(.5f) * .1f);
 			}

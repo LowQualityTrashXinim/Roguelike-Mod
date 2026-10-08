@@ -141,6 +141,9 @@ Along with above change, this UI section will also be repurposed.
 813/ Fixed a bug with the skill system that caused it to cost 1 extra energy.
 814/ Added a world setting UI into world creation UI.
 815/ Added a lot of difficulty setting.
+816/ Added new synergy weapon named "Uselessly overly complicated sword".
+817/ Slightly buff Bleeding debuff on NPC.
+818/ Implemented most of the difficulty option into the mod.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

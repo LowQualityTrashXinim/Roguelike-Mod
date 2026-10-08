@@ -18,6 +18,7 @@ using Roguelike.Common.Systems.ShopSystem;
 using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Systems.SpoilSystem;
 using Roguelike.Common.Systems.UI;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
@@ -491,6 +492,11 @@ public class UniversalPlayer : ModPlayer {
 	public Dictionary<int, int> ItemUsesToAttack = new();
 	public int HitTakenCounter = 0;
 	public ulong DmgTaken = 0;
+	/// <summary>
+	/// Please use second not tick for this value<br/>
+	/// By default it is 0, meaning it is not activated
+	/// </summary>
+	public ulong TimeLimit = 0;
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		if (UniqueID == string.Empty) {
@@ -515,12 +521,23 @@ public class UniversalPlayer : ModPlayer {
 			NPC.NewNPC(Terraria.Entity.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
 			uiSystemInstance.DivineHammer_uiState.weaponEnchantmentUIslot.DropItem(Player);
 		}
+		if(ModContent.GetInstance<DifficultySettingSystem>().Player_TimeRestriction) {
+			TimeLimit = (ulong)(60 * 60 * 3 - 60 * 5 * ModContent.GetInstance<DifficultySettingSystem>().Player_TimeRestriction_Scale);
+		}
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
 		//if (false && WarnAlready == 0) {
 		//	WarnAlready = 1;
 		//}
+	}
+	public override void PostUpdate() {
+		if(TimeLimit == 0) {
+			return;
+		}
+		if(Main.ActivePlayerFileData.GetPlayTime().TotalSeconds >= TimeLimit) {
+			Player.EasyKillPlayer($"{Player.name} has reached the time limit", 9999999);
+		}
 	}
 	public void AddItemDps(int ItemType, int damageDealt) {
 		if (ItemUsesToAttack.ContainsKey(ItemType)) {

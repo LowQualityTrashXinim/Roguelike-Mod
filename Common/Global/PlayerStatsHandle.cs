@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems.ReviveSystem;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;
@@ -198,7 +199,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 				Player.Heal(caculated);
 			}
 			else {
-				if(LifeSteal.Base > 0) {
+				if (LifeSteal.Base > 0) {
 					Player.Heal((int)Math.Ceiling(LifeSteal.Base * LifeSteal.Multiplicative + LifeSteal.Flat));
 				}
 			}
@@ -377,6 +378,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	}
 	public float Rapid_CacheLife;
 	public float Rapid_CacheMana;
+	public bool ReviveCurse = false;
 	public override void PreUpdate() {
 		for (int i = 0; i < Player.inventory.Length; i++) {
 			Item item = Player.inventory[i];
@@ -540,6 +542,9 @@ public partial class PlayerStatsHandle : ModPlayer {
 			TemporaryMana_CounterLimit = 0;
 		}
 		if (CappedHealthAmount == -1 || Unnerfed2) {
+			if (ReviveCurse) {
+				UpdateHPMax -= .2f;
+			}
 			Player.statLifeMax2 = Math.Clamp((int)Math.Ceiling(UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife), 1, int.MaxValue);
 		}
 		else {
@@ -635,6 +640,14 @@ public partial class PlayerStatsHandle : ModPlayer {
 		LootboxCanDropSpecialPotion = false;
 
 		AlwaysCritValue = 0;
+
+		HitTakenEffectivenessCoolDown = ModUtils.CountDown(HitTakenEffectivenessCoolDown);
+		if (HitTakenEffectivenessCoolDown <= 0 && HitTakenEffectiveness > 0) {
+			HitTakenEffectiveness -= .1f;
+			if (HitTakenEffectiveness < 0) {
+				HitTakenEffectiveness = 0;
+			}
+		}
 	}
 
 	public override void PreUpdateBuffs() {
@@ -665,11 +678,23 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 		return MathF.Round(global.ApplyTo(useSpeed), 2);
 	}
+	public float HitTakenEffectiveness = 0;
+	public int HitTakenEffectivenessCoolDown = 0;
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
+		modifiers.SourceDamage += HitTakenEffectiveness;
+		if (ModContent.GetInstance<DifficultySettingSystem>().Player_HitTakenEffectiveness) {
+			HitTakenEffectiveness += .1f;
+			HitTakenEffectivenessCoolDown = 120;
+		}
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
+		modifiers.SourceDamage += HitTakenEffectiveness;
+		if (ModContent.GetInstance<DifficultySettingSystem>().Player_HitTakenEffectiveness) {
+			HitTakenEffectiveness += .1f;
+			HitTakenEffectivenessCoolDown = 120;
+		}
 	}
 	/// <summary>
 	/// This should be uses in always update code
@@ -896,6 +921,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public override void SaveData(TagCompound tag) {
 		tag["TransmutationPowerMaximum"] = TransmutationPowerMaximum;
 		tag["TransmutationPower"] = TransmutationPower;
+		tag["ReviveCurse"] = ReviveCurse;
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("TransmutationPowerMaximum", out int TransmutationPowerMaximumA)) {
@@ -903,6 +929,9 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 		if (tag.TryGet("TransmutationPower", out int TransmutationPowerA)) {
 			TransmutationPower = TransmutationPowerA;
+		}
+		if (tag.TryGet("ReviveCurse", out bool reviveValue)) {
+			ReviveCurse = reviveValue;
 		}
 	}
 	public int successfullyKillNPCcount = 0;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.General;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,13 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// </summary>
 	public float Endurance = 0;
 	public float Static_Endurance = 0;
-
+	/// <summary>
+	/// This is a always reset value, will increases damage NPC via ModifyHit hook and can be applied to projectile
+	/// </summary>
 	public StatModifier DamageIncrease = new();
+
+	public StatModifier Static_DamageIncrease = new();
+
 	public StatModifier StatDefense = new StatModifier();
 	/// <summary>
 	/// Use this for uniform debuff scaling<br/>
@@ -83,6 +89,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		StatDefense = new();
 		DamageIncrease = new();
 	}
+	public int TimeLimit = -1;
 	public override void ResetEffects(NPC npc) {
 		//var player = Main.player[npc.target];
 		//if (npc.Center.IsCloseToPosition(player.Center, 1500)) {
@@ -205,7 +212,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .1f);
-		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageIncrease);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageIncrease.CombineWith(Static_DamageIncrease));
 	}
 	public int ResistHitCount = 0;
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
@@ -241,6 +248,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
 		if (npc.boss)
 			Main.NewText($"[c/{Color.Red.Hex3()}:<Everlasting> World progression has been increased by 1.]");
+	}
+	public override bool CheckDead(NPC npc) {
+		return ModContent.GetInstance<DifficultySettingSystem>().World_EnemyRevive && Main.rand.NextBool(3) && !npc.boss;
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {

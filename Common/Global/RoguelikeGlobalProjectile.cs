@@ -190,7 +190,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		if (IsFromNPC) {
 			if (NPC_WhoAmI <= -1 && NPC_WhoAmI >= Main.npc.Length) {
 				if (Main.npc[NPC_WhoAmI].TryGetGlobalNPC(out RoguelikeGlobalNPC global)) {
-					modifiers.SourceDamage = global.DamageIncrease.CombineWith(modifiers.SourceDamage);
+					modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(global.DamageIncrease.CombineWith(global.Static_DamageIncrease));
 				}
 			}
 		}

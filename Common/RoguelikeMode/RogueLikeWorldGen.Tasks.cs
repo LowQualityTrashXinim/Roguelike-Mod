@@ -1,11 +1,13 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Core.Platforms;
 using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode.StructureHandler;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.ObjectSystem;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Common.Wrapper;
 using Roguelike.Contents.Items.Lootbox;
@@ -1497,9 +1499,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Generate_SmallVillage() {
 		Stopwatch watch = new();
 		watch.Start();
+		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		int amountVillage = (int)(24 * .05f * system.World_ReduceHouseLoot);
 		for (int b = 0; b < 24; b++) {
 			List<Rectangle> placed = new();
-			int amount = Rand.Next(10, 20);
+			int amount = Rand.Next(5, 11);
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
@@ -1550,7 +1554,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Stopwatch watch = new();
 		watch.Start();
 		List<Rectangle> placed = new();
-		for (int i = 0; i < 100; i++) {
+		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		int amount = (int)(100 * .05f * system.World_ReduceHouseLoot);
+		for (int i = 0; i < amount; i++) {
 			StructureData data = Get_RandomizeAbandonStructure(Mod);
 			int xdex = Main.rand.Next(1, 23);
 			int ydex = Main.rand.Next(1, 22);

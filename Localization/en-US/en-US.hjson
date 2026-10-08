@@ -3129,6 +3129,40 @@ Mods: {
 					'''
 			}
 
+			UselesslyComplicated: {
+				DisplayName: Uselessly overly complicated sword
+				Tooltip:
+					'''
+					"The average effect bloat, be creative with it"
+					While helding the sword: 
+					- Every attack have 1% to deal extra 1000 damage from every source
+					- Striking enemy will increases that enemy taken damage by 1% - 100%
+					- Have 1 in 100 chance to roll a critical strike
+					- Have 1 in 100 chance to roll a super critical strike which deal additional 500% damage
+					on top of critical hit
+					- Increases defenses by 1, health regeneration by 1, damage reduction by 1%
+					- Striking enemy with On Fire, Frost burn, Cursed inferno, Shadowflame
+					will deal 1% of their current health as damage ( capped at 100 damage )
+					- Attacking have 1 in 150 chance to heal player for 1 - 500 health
+					- During attack, have 1 in 25 chance to gain buff that 
+					increases damage dealt by 10%, 25%, 50%, 100%, 200%, 500%, 1000% for 3s
+					The above buff can stack with each other
+					- Have 1 in 90 chance for every second to gain power surge 
+					which increases damage dealt by 50% for 5s
+					- Every source of damage have 1 in 75 chance to inflict the following debuff
+					On Fire, Frost burn, Cursed Inferno, Electrified, Shadow flame, Frozen, Bleeding, 
+					Broken Armor, Poison, Venom and Holy Flame for 5 to 7s
+					- Have 0.1% to instant kill normal enemy
+					- Grant 100% knock back immunity
+					- Attack have 10% to be strike twice which can roll itself again
+					Getting hit while helding the sword :
+					- Reduce the taken hit by 1% to 99%
+					- Have 1 in 75 chance to heal from 1 to 500 health
+					- Deal 50 damage back to enemy that hit player
+					- Have 1 in 30 chance to deal 1000 damage to enemy that hit player
+					'''
+			}
+
 			DiamondSkinPotion: {
 				DisplayName: Diamond Skin Potion
 				Tooltip: ""
@@ -4491,6 +4525,46 @@ Mods: {
 			Roguelike_DeathSickle_ModBuff: {
 				DisplayName: Roguelike_ Death Sickle_ Mod Buff
 				Description: Mods.Roguelike.Buffs.Roguelike_DeathSickle_ModBuff.Description
+			}
+
+			UselesslyOverlyComplicated_Buff1: {
+				DisplayName: Uselessly Overly Complicated 1
+				Description: Increases damage dealt by 10%
+			}
+
+			UselesslyOverlyComplicated_Buff2: {
+				DisplayName: Uselessly Overly Complicate 2
+				Description: Increases damage dealt by 25%
+			}
+
+			UselesslyOverlyComplicated_Buff3: {
+				DisplayName: Uselessly Overly Complicated 3
+				Description: Increases damage dealt by 50%
+			}
+
+			UselesslyOverlyComplicated_Buff4: {
+				DisplayName: Uselessly Overly Complicated 4
+				Description: Increases damage dealt by 100%
+			}
+
+			UselesslyOverlyComplicated_Buff5: {
+				DisplayName: Uselessly Overly Complicated 5
+				Description: Increases damage dealt by 200%
+			}
+
+			UselesslyOverlyComplicated_Buff6: {
+				DisplayName: Uselessly Overly Complicated 6
+				Description: Increases damage dealt by 500%
+			}
+
+			UselesslyOverlyComplicated_Buff7: {
+				DisplayName: Uselessly Overly Complicated 7
+				Description: Increases damage dealt by 1000%
+			}
+
+			UselesslyOverlyComplicated_Buff8: {
+				DisplayName: Power surged
+				Description: Increases damage dealt by 50%
 			}
 		}
 

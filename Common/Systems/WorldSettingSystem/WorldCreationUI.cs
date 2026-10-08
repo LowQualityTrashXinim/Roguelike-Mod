@@ -1,25 +1,20 @@
-﻿using Humanizer;
-using Microsoft.CodeAnalysis.Options;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
-using System.Net.Sockets;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Roguelike.Common.Systems.DifficultySettingSystem;
+namespace Roguelike.Common.Systems.WorldSettingSystem;
 public class DifficultySettingSystem : ModSystem {
 	public override void Load() {
 		On_UIWorldCreation.BuildPage += On_UIWorldCreation_BuildPage;
@@ -325,77 +320,77 @@ public class WorldDifficultyUI : UIState {
 		Arr_difficulty[index].Finish(main_panel, index * .1f);
 	}
 	private void Enemy_HP_scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(0, listeningElement.UniqueId,
 			(i) => { system.Enemy_HP = i; },
 			() => { system.Enemy_HP = 0; });
 	}
 	private void Enemy_Damage_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(1, listeningElement.UniqueId, (i) => { system.Enemy_DMG = i; }, () => { system.Enemy_DMG = 0; });
 	}
 	private void Boss_Health_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(2, listeningElement.UniqueId, (i) => { system.Boss_HP = i; }, () => { system.Boss_HP = 0; });
 	}
 	private void Boss_Damage_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(3, listeningElement.UniqueId, (i) => { system.Boss_DMG = i; }, () => { system.Boss_DMG = 0; });
 	}
 	private void Boss_PercentageDamage_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(4, listeningElement.UniqueId, (i) => { system.Boss_DMGPercentage = i; }, () => { system.Boss_DMGPercentage = 0; });
 	}
 	private void Boss_Progression_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(5, listeningElement.UniqueId, (i) => { system.Boss_ProgressionLock = i; }, () => { system.Boss_ProgressionLock = 0; });
 	}
 	private void Player_Revival_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		Arr_difficulty[6].toggler.Highlight = !Arr_difficulty[6].toggler.Highlight;
 		system.Player_ReviveCurse = Arr_difficulty[6].toggler.Highlight;
 	}
 	private void Player_HitTakenEffective_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		Arr_difficulty[7].toggler.Highlight = !Arr_difficulty[7].toggler.Highlight;
 		system.Player_HitTakenEffectiveness = Arr_difficulty[7].toggler.Highlight;
 	}
 	private void Player_TimeRestriction_Toggle(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		Arr_difficulty[8].toggler.Highlight = !Arr_difficulty[8].toggler.Highlight;
 		system.Player_TimeRestriction = Arr_difficulty[8].toggler.Highlight;
 	}
 	private void Player_TimeRestriction_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(8, listeningElement.UniqueId,
 			(i) => { system.Player_TimeRestriction_Scale = i; },
 			() => { system.Player_TimeRestriction_Scale = 0; });
 	}
 	private void World_ReduceHouse_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(9, listeningElement.UniqueId,
 			(i) => { system.World_ReduceHouseLoot = i; },
 			() => { system.World_ReduceHouseLoot = 0; });
 	}
 	private void World_SpawnRate_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(0, listeningElement.UniqueId,
 			(i) => { system.World_IncreasesSpawnRate = i; },
 			() => { system.World_IncreasesSpawnRate = 0; });
 	}
 	private void World_EnemyElite_Scale(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		CommonScale(1, listeningElement.UniqueId,
 			(i) => { system.World_EnemyToElite = i; },
 			() => { system.World_EnemyToElite = 0; });
 	}
 	private void World_EnemyRevive_Toggle(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		Arr_difficulty[2].toggler.Highlight = !Arr_difficulty[2].toggler.Highlight;
 		system.World_EnemyRevive = Arr_difficulty[2].toggler.Highlight;
 	}
 	private void World_BiomeModifier_Toggle(UIMouseEvent evt, UIElement listeningElement) {
-		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+		var system = ModContent.GetInstance<DifficultySettingSystem>();
 		Arr_difficulty[3].toggler.Highlight = !Arr_difficulty[3].toggler.Highlight;
 		system.World_BiomeModifier = Arr_difficulty[3].toggler.Highlight;
 	}
@@ -456,8 +451,8 @@ public class Special_ExitUI : UIImageButton {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-		Texture2D texture = ModContent.Request<Texture2D>(ModTexture.CrossSprite).Value;
-		Vector2 rect = this.GetDimensions().Position() + textureInner.Size() * .5f + Vector2.One;
+		var texture = ModContent.Request<Texture2D>(ModTexture.CrossSprite).Value;
+		var rect = GetDimensions().Position() + textureInner.Size() * .5f + Vector2.One;
 		spriteBatch.Draw(texture, rect, null, Color.White, 0, textureInner.Size() * .5f, .7f, SpriteEffects.None, 0);
 	}
 	public override void Update(GameTime gameTime) {

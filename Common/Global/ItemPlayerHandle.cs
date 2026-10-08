@@ -4,6 +4,7 @@ using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents;
 using Roguelike.Common.Systems;
 using Roguelike.Common.Systems.IOhandle;
+using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.ItemVariant;
 using Roguelike.Contents.Transfixion.WeaponEffect;
@@ -81,6 +82,12 @@ namespace Roguelike.Common.Global {
 			}
 		}
 		public override bool CanUseItem(Item item, Player player) {
+			DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
+			if (item.type == ItemID.CelestialSigil) {
+				bool condition = system.Boss_ProgressionLock <= 0
+					|| system.Boss_ProgressionLock >= ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.ToHashSet().Count;
+				return condition;
+			}
 			return base.CanUseItem(item, player);
 		}
 		public override void HoldItem(Item item, Player player) {

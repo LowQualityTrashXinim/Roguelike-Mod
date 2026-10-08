@@ -44,6 +44,9 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 		if (type == BuffID.WitheredArmor || type == BuffID.BrokenArmor) {
 			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= .5f;
 		}
+		if(type == BuffID.Bleeding) {
+			npc.lifeRegen -= 10;
+		}
 	}
 	public override void Update(int type, Player player, ref int buffIndex) {
 		if (type == BuffID.Frostburn) {
