@@ -37,7 +37,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.KingSlimeBossBag);
 
 
@@ -48,7 +48,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCDonHitReward>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.EyeOfCthulhuBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -58,7 +58,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWDonHitReward>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.EaterOfWorldsBossBag);
 
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -68,7 +68,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCDonHitReward>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.BrainOfCthulhuBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -78,7 +78,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeDonHitReward>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.QueenBeeBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -89,7 +89,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronDonHitReward>()));
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new NoHitAndIsRakan(), ItemID.Handgun));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.SkeletronBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -100,7 +100,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopDonHitReward>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.DeerclopsBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -110,7 +110,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
 				noHit.OnSuccess(ItemDropRule.ByCondition(new NoHitAndIsRakan(), ModContent.ItemType<WeaponBluePrint>())).OnFailedConditions(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WeaponBluePrint>(), 100));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.WallOfFleshBossBag);
 
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
@@ -124,16 +124,16 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 			else if (npc.type == NPCID.QueenSlimeBoss) {
 				//NoHit mode drop
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.QueenSlimeBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
 			}
 			else if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime) {
 				//NoHit mode drop
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.DestroyerBossBag);
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.SkeletronPrimeBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -143,7 +143,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//NoHit Mode drop
 
 				//Expert mode drop
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.TwinsBossBag);
 
 				leadingConditionRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WoodenLootBox>()));
@@ -151,7 +151,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 			else if (npc.type == NPCID.Plantera) {
 				//NoHit mode drop
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.PlanteraBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -159,7 +159,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.GolemBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -170,7 +170,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//Enraged boss drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressLootBox>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.FairyQueenBossBag);
 
 				//Normal boss drop
@@ -180,7 +180,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//NoHit mode drop
 
 				//Enraged boss drop
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.FishronBossBag);
 
 				npcLoot.Add(ItemDropRule.ByCondition(new IsInBossRushMode(), ModContent.ItemType<WoodenLootBox>()));
@@ -199,7 +199,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonLootBox>()));
 
-				if (!ModContent.GetInstance<RogueLikeConfig>().TerrariaMode)
+				if (!RoguelikeWorldProperty.TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.MoonLordBossBag);
 			}
 			LeadingConditionRule perkrule = new(new PerkDrop());

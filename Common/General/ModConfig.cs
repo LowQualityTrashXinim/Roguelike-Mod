@@ -7,12 +7,6 @@ namespace Roguelike.Common.General {
 
 		[Header($"GameModeHeader")]
 		[ReloadRequired]
-		[DefaultValue(true)]
-		public bool TerrariaMode{ get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool BossRushMode { get; set; }
-		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool BossRushMode_Setting_FightBossInProgression { get; set; }
 		[ReloadRequired]
@@ -25,8 +19,6 @@ namespace Roguelike.Common.General {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool BossRushMode_Extra { get; set; }
-		[DefaultValue(false)]
-		public bool NightmareMode { get; set; }
 		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
 		//Replace Cursed skull

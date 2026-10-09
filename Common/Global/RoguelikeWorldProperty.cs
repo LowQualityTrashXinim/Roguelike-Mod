@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Roguelike.Common.General;
+﻿using Roguelike.Common.General;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
-using SubworldLibrary;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -13,6 +10,7 @@ using Terraria.WorldBuilding;
 namespace Roguelike.Common.Global;
 internal class RoguelikeWorldProperty : ModSystem {
 	public static RogueLikeConfig config => ModContent.GetInstance<RogueLikeConfig>();
+	public static bool TerrariaWorld => !RoguelikeWorld && !BossRushWorld;
 	public static bool RoguelikeWorld = false;
 	public static bool BossRushWorld = false;
 	public static bool NightmareWorld = false;
@@ -22,19 +20,6 @@ internal class RoguelikeWorldProperty : ModSystem {
 		On_WorldGen.GenerateWorld += On_WorldGen_GenerateWorld;
 	}
 	private void On_WorldGen_GenerateWorld(On_WorldGen.orig_GenerateWorld orig, int seed, GenerationProgress customProgressObject) {
-		if (config.TerrariaMode) {
-			RoguelikeWorld = BossRushWorld = false;
-		}
-		else if (config.BossRushMode) {
-			RoguelikeWorld = false;
-			BossRushWorld = !RoguelikeWorld;
-		}
-		else {
-			RoguelikeWorld = true;
-			BossRushWorld = !RoguelikeWorld;
-		}
-		HellishEndeavour = config.HellishEndeavour;
-		NightmareWorld = config.NightmareMode;
 		orig(seed, customProgressObject);
 	}
 
@@ -123,6 +108,5 @@ public class RoguelikeWorldProperty_Player : ModPlayer {
 		RoguelikeWorldProperty.TotalRNG = config.TotalRNG;
 		RoguelikeWorldProperty.RareSpoils = config.RareSpoils;
 		RoguelikeWorldProperty.RareLootbox = config.RareLootbox;
-		RoguelikeWorldProperty.RareLootbox = config.NightmareMode;
 	}
 }

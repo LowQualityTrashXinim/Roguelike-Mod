@@ -351,12 +351,6 @@ Depending on weapon held tag, player gain ability to gain energy with the follow
 
 Add in a visual background for skill that different classifaction/catagory
 
-16/ Rework the following Enchantment according to the WE localization:
-- Titanium Sword
-- Cactus Sword
-- Bat Bat
-- Volcano
-
 17/ Rework and reimplement lootbox into the mod:
 Wooden, Iron, Silver, Gold lootbox is normally can be found in these following place:
 - Shop
@@ -379,7 +373,6 @@ The core component will contain the following:
 - Every pre HM ore broad sword beside copper broadsword.
 
 20/ work on general building tool in-game for builder of the mod
-- Must include copy and paste function and flip function
 - Enable placement preview.
 - Add in drag select function.
 
@@ -409,10 +402,6 @@ Add more swing attack to it
 > 3rd attack : Circle swing -> Create a heat aura around you for a short moment
 - Master Sword
 Fix up the attack to make it look more smooth.
-- DrainingVeilBlade
-The Shadow clone sword should be consistent with player and also follow player.
-Turn the on attack ability to Alt click ability with 5s CD
-
 - Rectangle shotgun
 Shoot out slow moving rectangle shape bullets
 If the rectangle bullet collide with each other, a explosion will occur dealing combined damage of all nearby rectangle bullet

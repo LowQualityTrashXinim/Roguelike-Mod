@@ -175,7 +175,7 @@ BatBat.Description:
 	+12% movement speed and 30% jump boost
 	On striking enemy with item, heal for 1 HP ( CD : 0.2s )
 	striking or shooting have 1 in 10 chance to spawn a bat dealing 35% of original damage
-	Bat spawned by this weapon gain ability to randomly heal you for 1 hp 
+	Bat spawned when helding this weapon gain ability to randomly heal you for 1 hp 
 	'''
 BoneSword.Description:
 	'''
@@ -223,7 +223,7 @@ BladeOfGrass.Description:
 	'''
 Volcano.Description:
 	'''
-	Inflict On Fire onto target for 2s
+	Inflict On Fire onto target for 5s
 	Critical hitting enemy will create a large explosion around player
 	Hitting a enemy with a projectile will create a small explosion ( CD : 4s)
 	Hitting a enemy with a sword will create a small explosion ( CD : 1s )

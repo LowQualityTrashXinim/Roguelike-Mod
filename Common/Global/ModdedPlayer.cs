@@ -55,45 +55,6 @@ namespace Roguelike.Common.Global {
 			}
 			return true;
 		}
-
-		public override void OnEnterWorld() {
-			Mod.Reflesh_GlobalItem(Player);
-			if (!Player.IsDebugPlayer()) {
-				if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
-					Player.difficulty = PlayerDifficultyID.Hardcore;
-				}
-			}
-			Player.itemAnimation = 0;
-			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
-				Player.itemAnimationMax = Player.HeldItem.useAnimation;
-			}
-			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
-			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
-			if (Player.IsDebugPlayer()) {
-				Main.NewText("You have entered debug mode", Color.Red);
-			}
-			if (Secert_PerkOverload) {
-				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
-				for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
-					Perk perk = ModPerkLoader.GetPerk(i);
-					if (perk == null) {
-						continue;
-					}
-					if (!perk.CanBeChoosen) {
-						continue;
-					}
-					perkplayer.perks.Add(perk.Type, perk.StackLimit);
-				}
-			}
-			if (Main.ActiveWorldFileData.IsValid) {
-				if (RoguelikeWorldProperty.NightmareWorld) {
-					Main.NewText("You have entered Nightmare mode", Color.Black);
-				}
-			}
-			//if (Main.ActiveWorldFileData.GameMode == 0) {
-			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
-			//}
-		}
 		public override void PreUpdate() {
 			if (starterItem == null) {
 				var item = Player.HeldItem;
@@ -112,7 +73,7 @@ namespace Roguelike.Common.Global {
 			}
 		}
 		public override void PostUpdate() {
-			if(RoguelikeWorldProperty.BossRushWorld) {
+			if (RoguelikeWorldProperty.BossRushWorld) {
 				return;
 			}
 			var modplayer = Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
@@ -152,26 +113,80 @@ namespace Roguelike.Common.Global {
 			}
 			return base.CanUseItem(item);
 		}
-		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secert_PerkOverload => Player.name == "MrPerk" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secret_NinjaMode => Player.name == "Ninja" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secret_TrueGod => Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public bool Secret_Druggies => Player.name.ToLower().Trim() == "drugaddict" && !ModContent.GetInstance<RogueLikeConfig>().TerrariaMode;
-		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
-			if (UniversalSystem.Check_TotalRNG()) {
-				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
-			}
-			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
-			if (arti != null) {
-				var moreStarter = arti.AddStartingItems(Player);
-				if (moreStarter != null) {
-					foreach (var item in moreStarter) {
-						yield return item;
-					}
+		public override void OnEnterWorld() {
+			Mod.Reflesh_GlobalItem(Player);
+			if (!Player.IsDebugPlayer()) {
+				if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+					Player.difficulty = PlayerDifficultyID.Hardcore;
 				}
 			}
+			Player.itemAnimation = 0;
+			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
+				Player.itemAnimationMax = Player.HeldItem.useAnimation;
+			}
+			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
+			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
+			if (Player.IsDebugPlayer()) {
+				Main.NewText("You have entered debug mode", Color.Red);
+			}
+			if (Secert_PerkOverload) {
+				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
+				for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+					Perk perk = ModPerkLoader.GetPerk(i);
+					if (perk == null) {
+						continue;
+					}
+					if (!perk.CanBeChoosen) {
+						continue;
+					}
+					perkplayer.perks.Add(perk.Type, perk.StackLimit);
+				}
+			}
+			if (Main.ActiveWorldFileData.IsValid) {
+				if (RoguelikeWorldProperty.NightmareWorld) {
+					Main.NewText("You have entered Nightmare mode", Color.Black);
+				}
+			}
+			IEnumerable<Item> itemList = StartingItem();
+			int index = 0;
+			int length = 50;
+			foreach (var item in itemList) {
+				if (index >= length) {
+					Player.QuickSpawnItem(Player.GetSource_FromThis(), item);
+					continue;
+				}
+				for (int i = index; i < length; i++) {
+					if (Player.inventory[index] != null
+						|| Player.inventory[index].type != ItemID.None) {
+						index++;
+						continue;
+					}
+					Player.inventory[index] = item;
+					break;
+				}
+
+			}
+			//if (Main.ActiveWorldFileData.GameMode == 0) {
+			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
+			//}
+		}
+		public bool Secert_PapyroVer =>
+			Player.name == "Papyro"
+			|| Player.name == "WhoAmI"
+			|| Player.name == "IdentityCrisis"
+			|| Player.name == "Dysmorphia"
+			&& !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato" && !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994" && !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secert_PerkOverload => Player.name == "MrPerk" && !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secret_NinjaMode => Player.name == "Ninja" && !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secret_TrueGod => Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim" && !RoguelikeWorldProperty.TerrariaWorld;
+		public bool Secret_Druggies => Player.name.ToLower().Trim() == "drugaddict" && !RoguelikeWorldProperty.TerrariaWorld;
+		/// <summary>
+		/// This is so that the item is given to player when player enter the world.
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<Item> StartingItem() {
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
 			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
@@ -250,6 +265,20 @@ namespace Roguelike.Common.Global {
 			}
 			yield return new Item(ItemID.LifeCrystal, LifeCrystal);
 			yield return new Item(ItemID.ManaCrystal, ManaCrystal);
+		}
+		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+			if (UniversalSystem.Check_TotalRNG()) {
+				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
+			}
+			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
+			if (arti != null) {
+				var moreStarter = arti.AddStartingItems(Player);
+				if (moreStarter != null) {
+					foreach (var item in moreStarter) {
+						yield return item;
+					}
+				}
+			}
 		}
 
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {

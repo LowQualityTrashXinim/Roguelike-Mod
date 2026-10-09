@@ -27,9 +27,20 @@ public class CactusSword : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
+	public override void OnHitByAnything(Player player) {
+		int number = Main.rand.Next(5, 11);
+		int damage = (int)player.ModPlayerStats().UpdateThorn.ApplyTo(player.GetWeaponDamage(player.HeldItem) + 1);
+		for (int i = 0; i < number; i++) {
+			Projectile proj = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.8f, 1), ProjectileID.RollingCactusSpike, damage, 1, player.whoAmI);
+			proj.friendly = true;
+			proj.hostile = false;
+			proj.penetrate = 1;
+		}
+	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(13, 15), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3 + 100, item.knockBack, player.whoAmI);
+			int damage = (int)player.ModPlayerStats().UpdateThorn.ApplyTo(player.GetWeaponDamage(item) * 3 + 300);
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(13, 15), ProjectileID.RollingCactus, damage, item.knockBack, player.whoAmI);
 			Main.projectile[projectile].friendly = true;
 			Main.projectile[projectile].hostile = false;
 			Main.projectile[projectile].penetrate = -1;
@@ -139,6 +150,9 @@ public class BatBat : ModEnchantment {
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		LifeSteal(index, player, globalItem);
+		if (proj.type == ProjectileID.Bat && Main.rand.NextBool(3)) {
+			player.Heal(1);
+		}
 		if (Main.rand.NextBool(10)) {
 			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(target.width + 10, target.height + 10);
 			Vector2 vel = (position - target.Center).SafeNormalize(Vector2.Zero) * 5f;
@@ -354,54 +368,68 @@ public class Volcano : ModEnchantment {
 		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(2));
-		if (globalItem.Item_Counter1[index] > 0) {
-			return;
+		target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(5));
+		if (hit.Crit) {
+			ExplosionOnCrit(player, player.HeldItem);
 		}
-		proj.Center.LookForHostileNPC(out List<NPC> npclist, 125);
-		foreach (NPC npc in npclist) {
-			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
-				ModUtils.DirectionFromPlayerToNPC(proj.Center.X, npc.Center.X)));
-		}
-		for (int i = 0; i < 35; i++) {
-			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
-			Main.dust[smokedust].noGravity = true;
-			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
-			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
-			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
-			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-			int dust3 = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(125, 125), 0, 0, DustID.Torch);
-			Main.dust[dust3].noGravity = true;
-			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
-		}
-		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 240);
-	}
-	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(6));
 		if (globalItem.Item_Counter2[index] > 0) {
 			return;
 		}
-		target.Center.LookForHostileNPC(out List<NPC> npclist, 125);
+		ExplosionOnHitEnemey(target, player, player.HeldItem);
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 240);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.OnFire, ModUtils.ToSecond(5));
+		if (hit.Crit) {
+			ExplosionOnCrit(player, item);
+		}
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		ExplosionOnHitEnemey(target, player, item);
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+	}
+	private void ExplosionOnCrit(Player player, Item item) {
+		int radius = 150;
+		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 		foreach (NPC npc in npclist) {
-			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f),
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f + 30),
+				ModUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+		}
+		for (int i = 0; i < 35; i++) {
+			int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
+			Main.dust[smokedust].noGravity = true;
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust3 = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
+			Main.dust[dust3].noGravity = true;
+			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
+		}
+	}
+	private void ExplosionOnHitEnemey(NPC target, Player player, Item item) {
+		int radius = 125;
+		target.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		foreach (NPC npc in npclist) {
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f + 30),
 				ModUtils.DirectionFromPlayerToNPC(target.Center.X, npc.Center.X)));
 		}
 		for (int i = 0; i < 35; i++) {
 			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
 			Main.dust[smokedust].noGravity = true;
-			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-			int dust3 = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(125, 125), 0, 0, DustID.Torch);
+			int dust3 = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
 			Main.dust[dust3].noGravity = true;
 			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
 		}
-		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 	}
 }
 public class NightsEdge : ModEnchantment {

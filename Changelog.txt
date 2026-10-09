@@ -144,6 +144,12 @@ Along with above change, this UI section will also be repurposed.
 816/ Added new synergy weapon named "Uselessly overly complicated sword".
 817/ Slightly buff Bleeding debuff on NPC.
 818/ Implemented most of the difficulty option into the mod.
+819/ Deleted mode configuration to avoid confliction.
+820/ Implement mod's "add starter item" due to the new implementation of mod's mode.
+821/ Added difficulty tracker debug to ModStatDebugger.
+822/ Reworked BatBat, Cactus Sword and Volcano enchantment.
+823/ Made changed to DrainingVeilBlade to no longer automatically spawn a shadow clone of itself, instead via alt attack.
+824/ Add a bit more information on how to use Relentless Abomination
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

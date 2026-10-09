@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Contents.Items.Consumable.Potion;
 using Roguelike.Contents.Items.Consumable.SpecialReward;
+using Roguelike.Common.Systems.WorldSettingSystem;
 
-namespace Roguelike.Contents.Items.aDebugItem.StatsInform
-{
+namespace Roguelike.Contents.Items.aDebugItem.StatsInform {
 	internal class ModStatsDebugger : ModItem {
 		public override string Texture => ModTexture.MissingTexture_Default;
 		public override void SetDefaults() {
@@ -22,6 +22,7 @@ namespace Roguelike.Contents.Items.aDebugItem.StatsInform
 			var drugplayer = Main.LocalPlayer.GetModPlayer<WonderDrugPlayer>();
 			var nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
 			var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
+			DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
 			chestplayer.GetAmount();
 			var line = new TooltipLine(Mod, "StatsShowcase",
 				$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
@@ -30,7 +31,19 @@ namespace Roguelike.Contents.Items.aDebugItem.StatsInform
 				$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 				$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 				$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
-				$"\nCurrent active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}"
+				$"\nCurrent active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}" +
+
+				$"\nEnemy HP value : {system.Enemy_HP}" +
+				$"\nEnemy DMG value : {system.Enemy_DMG}" +
+				$"\nBoss HP value : {system.Boss_HP}" +
+				$"\nBoss DMG value : {system.Boss_DMG}" +
+				$"\nBoss %DMG value : {system.Boss_DMGPercentage}" +
+				$"\nBoss progression lock value : {system.Boss_ProgressionLock}" +
+				$"\nPlayer hit taken effectiveness : {system.Player_HitTakenEffectiveness}" +
+				$"\nPlayer revive curses : {system.Player_ReviveCurse}" +
+				$"\nPlayer time restriction : {system.Player_TimeRestriction}" +
+				$"\nPlayer time restriction value : {system.Player_TimeRestriction_Scale}" +
+				$"\nWorld loot reduction : {system.World_ReduceHouseLoot}"
 				);
 			tooltips.Add(line);
 		}

@@ -18,16 +18,17 @@ namespace Roguelike.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbominati
 			}
 			Item.scale = 1.2f;
 			Item.UseSound = SoundID.Item1 with { Pitch = -1 };
+			Item.Set_InfoItem();
 		}
 		public int Get_ProjectileType() {
-			return Main.rand.Next(new int[] {
+			return Main.rand.Next([
 				ModContent.ProjectileType<RA_AntlionClaw>(),
 				ModContent.ProjectileType<RA_BatBat>(),
 				ModContent.ProjectileType<RA_BeeKeeper>(),
 				ModContent.ProjectileType<RA_BoneSword>(),
 				ModContent.ProjectileType<RA_PurpleClubberfish>(),
 				ModContent.ProjectileType<RA_ZombieArm>(),
-			});
+			]);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			CanShootItem = false;

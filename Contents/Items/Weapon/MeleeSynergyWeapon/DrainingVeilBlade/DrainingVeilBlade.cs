@@ -23,16 +23,18 @@ public class DrainingVeilBlade : SynergyModItem {
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 20);
 	}
-	int cooldown = 120;
+	int counter = 0;
 	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
-		cooldown = ModUtils.CountDown(cooldown);
 	}
+	public override bool AltFunctionUse(Player player) => true;
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-		if (cooldown <= 0) {
-			Projectile.NewProjectile(source, position + Main.rand.NextVector2CircularEdge(300, 300) * Main.rand.NextFloat(1, 1.5f), Vector2.Zero, ModContent.ProjectileType<DrainingVeilBlade_AfterImage_Projectile>(), damage, knockback, player.whoAmI);
-			cooldown = 300 + player.itemAnimationMax;
-		}
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		if (!player.HasBuff<DrainingVeilBlade_SpawnCoolDown_Buff>() && player.altFunctionUse == 2) {
+			counter = ModUtils.Safe_SwitchValue(counter, 8);
+			player.AddBuff<DrainingVeilBlade_SpawnCoolDown_Buff>(300 + player.itemAnimationMax);
+			type = ModContent.ProjectileType<DrainingVeilBlade_AfterImage_Projectile>();
+			Projectile.NewProjectile(source, position + Vector2.One.RotatedBy(MathHelper.PiOver4 * counter) * 150, Vector2.Zero, type, damage, knockback, player.whoAmI);
+		}
 	}
 	public override void AddRecipes() {
 		CreateRecipe()
@@ -40,6 +42,12 @@ public class DrainingVeilBlade : SynergyModItem {
 			.AddIngredient(ItemID.ClingerStaff)
 			.AddRecipeGroup("Wood Sword")
 			.Register();
+	}
+}
+public class DrainingVeilBlade_SpawnCoolDown_Buff : ModBuff {
+	public override string Texture => ModTexture.EMPTYDEBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
 	}
 }
 public class DrainingVeilBlade_AfterImage_Projectile : ModProjectile {
@@ -67,10 +75,20 @@ public class DrainingVeilBlade_AfterImage_Projectile : ModProjectile {
 	public int Set_AnimationTimeEnd = -1;
 	public int AttackAinimationTime = 0;
 	float outrotation = 0;
+	Vector2 offsetFromPlayerPosition = Vector2.Zero;
 	public override void OnSpawn(IEntitySource source) {
 		if (Projectile.ai[2] == 0) {
 			Projectile.ai[2] = 60f;
 		}
+		directionToMouse = Projectile.velocity;
+		if (directionToMouse == Vector2.Zero) {
+			directionToMouse = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+		}
+		oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
+		if (Set_AnimationTimeEnd == -1) {
+			Set_AnimationTimeEnd = 60;
+		}
+		offsetFromPlayerPosition = Main.player[Projectile.owner].Center - oldCenter;
 	}
 	public override bool? CanDamage() {
 		if (player == null) {
@@ -80,20 +98,11 @@ public class DrainingVeilBlade_AfterImage_Projectile : ModProjectile {
 	}
 	public override void AI() {
 		player = Main.player[Projectile.owner];
-		if (Projectile.timeLeft == 1200) {
-			directionToMouse = Projectile.velocity;
-			if (directionToMouse == Vector2.Zero) {
-				directionToMouse = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
-			}
-			oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
-			if (Set_AnimationTimeEnd == -1) {
-				Set_AnimationTimeEnd = 60;
-			}
-		}
 		if (player.dead || !player.active) {
 			Projectile.Kill();
 			return;
 		}
+		oldCenter = player.Center + offsetFromPlayerPosition;
 		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax) {
 			AttackAinimationTime = player.itemAnimationMax;
 			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<DrainingVeilBlade_Wave_Projectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner, -600);

@@ -74,8 +74,6 @@ internal class UniversalSystem : ModSystem {
 	/// <returns></returns>
 	public static bool CanAccessContent(string context) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (context == BOSSRUSH_MODE)
-			return config.BossRushMode;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
 		return false;

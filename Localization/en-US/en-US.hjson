@@ -2314,7 +2314,28 @@ Mods: {
 
 			RelentlessAbomination: {
 				DisplayName: Relentless Abomination
-				Tooltip: '''"Sword made from horror"'''
+				Tooltip:
+					'''
+					"Sword made from horror"
+					Swing will always accompany with a mini sword version that this weapon made of
+					Hitting enemy will spawn more mini sword version toward the enemy
+					'''
+				ExtraInfo:
+					'''
+					[i:3772] : Accelerate toward target, damage increases base on projectile's velocity
+					After hitting the target, stick to the target and deal continous damage for a while.
+					[i:1166] : Have 10 armor penetration and on hitting enemy, 
+					burst into bones dealing 20% weapon damage
+					and have 1 in 5 chance to turn into bone cross dealing 60% weapon damage
+					[i:1304] : On hit target, inflict rotting debuff 
+					which decreases target defenses by 5 and do 20 DoT
+					[i:5097] : On hit target, heal user by 1
+					[i:2330] : Swim toward target in a helix pattern and
+					have infinite piercing with lossless damage
+					[i:1123] : On hitting target, spawn bee deal 25% weapon damage
+					Equipping [i:3333] will strengthen the effect by changing bee to giant bee
+					and giant bee deal 50% weapon damage instead
+					'''
 			}
 
 			NPCProgressionStatsResetter: {
@@ -2729,8 +2750,8 @@ Mods: {
 					'''
 					Each swing is accompany with a red wave that upon hitting enemy heal you for 1hp
 					The red wave leave a hidden trail of cursed flame, that after a short while, burst into a wall of flame
-					Summon a shadow version of itself near the player (CD: 5s)
 					The shadow version will swing out a weaker version of red wave
+					Alt attack to summon a shadow version of itself near the player (CD: 5s)
 					'''
 			}
 
@@ -4565,6 +4586,11 @@ Mods: {
 			UselesslyOverlyComplicated_Buff8: {
 				DisplayName: Power surged
 				Description: Increases damage dealt by 50%
+			}
+
+			DrainingVeilBlade_SpawnCoolDown_Buff: {
+				DisplayName: Draining Veil Blade_ Spawn Cool Down_ Buff
+				Description: Mods.Roguelike.Buffs.DrainingVeilBlade_SpawnCoolDown_Buff.Description
 			}
 		}
 

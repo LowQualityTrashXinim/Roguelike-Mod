@@ -86,12 +86,14 @@ public class WorldDifficultyUI : UIState {
 		terrariaMode = new("Terraria mode");
 		terrariaMode.Width.Pixels = 150;
 		terrariaMode.HighlightColor = Color.Yellow;
+		terrariaMode.Highlight = RoguelikeWorldProperty.TerrariaWorld;
 		terrariaMode.OnLeftClick += TerrariaMode_OnLeftClick;
 		terrariaMode.VAlign = .5f;
 		header_panel.Append(terrariaMode);
 
 		bossrushMode = new("Boss rush mode");
 		bossrushMode.Width.Pixels = 150;
+		bossrushMode.Highlight = RoguelikeWorldProperty.BossRushWorld;
 		bossrushMode.HighlightColor = Color.Yellow;
 		bossrushMode.OnLeftClick += BossrushMode_OnLeftClick;
 		bossrushMode.VAlign = .5f;
@@ -101,6 +103,7 @@ public class WorldDifficultyUI : UIState {
 		nightmareMode = new("Nightmare mode");
 		nightmareMode.Width.Pixels = 150;
 		nightmareMode.HighlightColor = Color.Yellow;
+		nightmareMode.Highlight = RoguelikeWorldProperty.NightmareWorld;
 		nightmareMode.OnLeftClick += NightmareMode_OnLeftClick;
 		nightmareMode.VAlign = .5f;
 		nightmareMode.MarginLeft = 320;

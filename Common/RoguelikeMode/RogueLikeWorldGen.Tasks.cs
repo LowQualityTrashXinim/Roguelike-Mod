@@ -1500,7 +1500,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Stopwatch watch = new();
 		watch.Start();
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
-		int amountVillage = (int)(24 * .05f * system.World_ReduceHouseLoot);
+		int amountVillage = (int)(24 - 24 * .05f * system.World_ReduceHouseLoot);
 		for (int b = 0; b < 24; b++) {
 			List<Rectangle> placed = new();
 			int amount = Rand.Next(5, 11);
@@ -1555,7 +1555,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		watch.Start();
 		List<Rectangle> placed = new();
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
-		int amount = (int)(100 * .05f * system.World_ReduceHouseLoot);
+		int amount = (int)(100 - 100 * .05f * system.World_ReduceHouseLoot);
 		for (int i = 0; i < amount; i++) {
 			StructureData data = Get_RandomizeAbandonStructure(Mod);
 			int xdex = Main.rand.Next(1, 23);

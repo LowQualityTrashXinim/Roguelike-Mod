@@ -14,7 +14,7 @@ class WoodenLootBox : LootBoxBase {
 		Item.height = 30;
 		Item.rare = ItemRarityID.White;
 	}
-	public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().BossRushMode;
+	public override bool CanActivateSpoil => RoguelikeWorldProperty.BossRushWorld;
 	public override List<int> Set_ItemPool() {
 		List<int> types = new List<int> { ItemPool.GetPoolType<Tier1Pool>() };
 		if (Main.rand.NextFloat() <= .75f) {
