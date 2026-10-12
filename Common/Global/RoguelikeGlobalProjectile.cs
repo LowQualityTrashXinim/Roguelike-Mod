@@ -93,6 +93,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				}
 				IsFromNPC = true;
 				NPC_WhoAmI = npc.whoAmI;
+				
 			}
 		}
 		Source_CustomContextInfo = source.Context;
@@ -188,7 +189,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	}
 	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
 		if (IsFromNPC) {
-			if (NPC_WhoAmI <= -1 && NPC_WhoAmI >= Main.npc.Length) {
+			if (NPC_WhoAmI >= 0 && NPC_WhoAmI < Main.npc.Length) {
 				if (Main.npc[NPC_WhoAmI].TryGetGlobalNPC(out RoguelikeGlobalNPC global)) {
 					modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(global.DamageIncrease.CombineWith(global.Static_DamageIncrease));
 				}

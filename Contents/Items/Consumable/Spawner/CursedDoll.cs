@@ -15,7 +15,7 @@ namespace Roguelike.Contents.Items.Consumable.Spawner {
 		}
 		public override bool UseSpecialSpawningMethod => true;
 		public override void SpecialSpawningLogic(Player player) {
-			int spawnY = 750;
+			int spawnY = 550;
 			NPC.SpawnBoss((int)player.Center.X, (int)(player.Center.Y - spawnY), NPCtypeToSpawn[0], player.whoAmI);
 			for (int i = 0; i <= spawnY; i++) {
 				Dust.NewDustPerfect(player.Center - new Vector2((float)(Math.Sin(i * 8) * (i * 0.25)), i * 1.2f), DustID.PurpleTorch);

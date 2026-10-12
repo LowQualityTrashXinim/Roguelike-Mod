@@ -10,6 +10,7 @@ internal class SkeletronHand : GlobalNPC {
 	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHand;
 	public override void SetDefaults(NPC entity) {
 		entity.aiStyle = -1;
+		entity.lifeMax /= 2;
 	}
 	public override void AI(NPC npc) {
 		npc.spriteDirection = -(int)npc.ai[0];
@@ -24,7 +25,7 @@ internal class SkeletronHand : GlobalNPC {
 		}
 		NPC boss = Main.npc[(int)npc.ai[1]];
 
-		if (!boss.Center.IsCloseToPosition(npc.Center, 700)) {
+		if (!boss.Center.IsCloseToPosition(npc.Center, 800)) {
 			npc.ai[2] = 0f;
 			npc.velocity += (boss.Center - npc.Center).SafeNormalize(Vector2.Zero) * (boss.Center - npc.Center).Length() / 32f;
 		}

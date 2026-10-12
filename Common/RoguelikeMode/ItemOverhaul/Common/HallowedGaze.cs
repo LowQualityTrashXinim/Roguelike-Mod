@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Utils;
-using Roguelike.Contents.BuffAndDebuff;
-using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
 using System;
 using Terraria;
@@ -49,7 +47,7 @@ public class Roguelike_HallowedGaze_GlobalNPC : GlobalNPC {
 		if (npc.HasBuff<HallowedGaze>()) {
 			if (HallowedGaze_Count >= 12) {
 				Vector2 playerPos = player.Center;
-				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
+				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-50, 50), playerPos.Y - 800);
 				Projectile.NewProjectile(projectile.GetSource_FromAI(), pos, (npc.Center - pos), ModContent.ProjectileType<HitScanShotv2>(), 1, 0, player.whoAmI);
 			}
 		}
@@ -58,7 +56,7 @@ public class Roguelike_HallowedGaze_GlobalNPC : GlobalNPC {
 		if (npc.HasBuff<HallowedGaze>()) {
 			if (HallowedGaze_Count >= 12) {
 				Vector2 playerPos = player.Center;
-				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-100, 100), playerPos.Y - 800);
+				Vector2 pos = new Vector2(npc.Center.X + Main.rand.Next(-50, 50), playerPos.Y - 800);
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (npc.Center - pos), ModContent.ProjectileType<HitScanShotv2>(), 1, 0, player.whoAmI);
 			}
 		}
@@ -83,16 +81,13 @@ internal class HitScanShotv2 : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.tileCollide = false;
 		Projectile.timeLeft = 120;
-		Projectile.usesLocalNPCImmunity = true;
-		Projectile.localNPCHitCooldown = 4;
+		Projectile.usesIDStaticNPCImmunity= true;
+		Projectile.idStaticNPCHitCooldown = 4;
 		Projectile.stopsDealingDamageAfterPenetrateHits = true;
 		Projectile.scale = 4;
 	}
 	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		if (Projectile.timeLeft < 15) {
-			return false;
-		}
-		if (!Collision.CanHitLine(Projectile.Center, 1, 1, targetHitbox.Center(), 1, 1)) {
 			return false;
 		}
 		return ModUtils.Collision_PointAB_EntityCollide(targetHitbox, Projectile.Center, Projectile.Center.IgnoreTilePositionOFFSET(ToMouseDirection, 3000));

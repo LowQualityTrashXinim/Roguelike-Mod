@@ -81,6 +81,25 @@ namespace Roguelike.Common.Global {
 				}
 			}
 		}
+		//public static IGlobalType? GetGlobalByTypeName(this Item item, string typeName) {
+		//	var list = item!.Globals;
+		//	foreach (var global in list) {
+		//		if (global is null || global.Name == "UnloadedGlobalItem") {
+		//			continue;
+		//		}
+				
+		//		if (global. is not IGlobalType result) {
+		//			continue;
+		//		}
+
+		//		if(result.TypeName != typeName) {
+		//			continue;
+		//		}
+
+		//		return result;
+		//	}
+		//	return null;
+		//}
 		public override bool CanUseItem(Item item, Player player) {
 			DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
 			if (item.type == ItemID.CelestialSigil) {

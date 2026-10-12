@@ -123,7 +123,18 @@ public class KnifeRevolverThrown_Projectile : ModProjectile {
 		if (NPC_whoAmI == -1) {
 			NPC_whoAmI = target.whoAmI;
 			offsetFromCenter = Projectile.Center - target.Center;
-			Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * .1f, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .45f), 2f, Projectile.owner, 2f + Main.rand.NextFloat(2));
+			int amount = Main.rand.Next(5, 8);
+			for (int i = 0; i < amount; i++) {
+				Projectile direct = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * .1f, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .45f), 2f, Projectile.owner, 2f + Main.rand.NextFloat(2), 5, (1 + i) * 5);
+				if (direct.ModProjectile is SimplePiercingProjectile2 proj) {
+					proj.ScaleX += 4 + i * .25f;
+					proj.ScaleY += .5f + i * .05f;
+					proj.ExcessScaling = true;
+					direct.usesLocalNPCImmunity = true;
+					direct.localNPCHitCooldown = 10;
+					direct.usesIDStaticNPCImmunity = false;
+				}
+			}
 		}
 		Player player = Main.player[Projectile.owner];
 		if (!player.GetModPlayer<KnifeRevolverPlayer>().SpecialShotReady) {
@@ -154,11 +165,20 @@ public class DeathshotMark : ModBuff {
 	}
 }
 public class KnifeRevolverPlayer : ModPlayer {
+	public override void Initialize() {
+		DataStorer.AddContext("KnifeRevolver_Ring", new(300, Vector2.Zero, false, Color.Wheat));
+	}
 	public bool SpecialShotReady = false;
 	public int shootCounter = 0;
 	public override void PreUpdate() {
 		if (Player.HeldItem.type != ModContent.ItemType<KnifeRevolver>()) {
 			return;
+		}
+		if (Player.Center.LookForAnyHostileNPC(300)) {
+			DataStorer.ActivateContext(Player, "KnifeRevolver_Ring");
+		}
+		else {
+			DataStorer.DeActivateContext("KnifeRevolver_Ring");
 		}
 		if (Main.mouseRight) {
 			Player.HeldItem.UseSound = SoundID.Item1;
@@ -169,6 +189,13 @@ public class KnifeRevolverPlayer : ModPlayer {
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.Check_ItemTypeSource<KnifeRevolver>()) {
+			if (target.Center.IsCloseToPosition(Player.Center, 300) && proj.type != ModContent.ProjectileType<SimplePiercingProjectile2>()) {
+				Projectile projectile = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(Player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<SimplePiercingProjectile2>(), hit.Damage, 1, Player.whoAmI, 15, 10);
+				if (projectile.ModProjectile is SimplePiercingProjectile2 slash) {
+					slash.ScaleX = 4;
+					slash.ScaleY = .5f;
+				}
+			}
 			if (target.HasBuff<DeathshotMark>()) {
 				SpecialShotReady = true;
 				target.DelBuff(target.FindBuffIndex(ModContent.BuffType<DeathshotMark>()));
@@ -178,6 +205,7 @@ public class KnifeRevolverPlayer : ModPlayer {
 					target.AddBuff<DeathshotMark>(120);
 			}
 		}
+
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (SpecialShotReady && Player.HeldItem.type == ModContent.ItemType<KnifeRevolver>() && Player.altFunctionUse != 2) {

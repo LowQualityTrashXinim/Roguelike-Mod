@@ -228,6 +228,8 @@ Spawn small line of code that at the completion of the code line deal damage
 Code 2: 
 Spawn small line of code that player can use yoyo yo collect, upon collecting all the line, do said effect
 The EoC:
+
+
 - Spectre Staff
 - Inferno Fork
 - Magnet Sphere
@@ -247,20 +249,6 @@ The following food are missing from food rework:
 Content:
 - Completionist
 > Uses every weapon available in the mod and win a run using it.
-
-8/ Work on Synergy weapon lib, also change its named to Synergy weapon checklist.
-- The mod should remember what Synergy weapon player has ever used.
-When player is helding or have a synergy weapon in the inventory, the mod should do a quick check to see if it already there
-if True
-> skip the entire process.
-if False
-> Save the synergy weapon ID or name into a json file.
-- The mod should also remember what synergy bonus that got activated.
-When player activated a synergy bonus, the synergy bonus tooltip should send a check
-if True
-> skip the entire process.
-if False
-> Find the synergy weapon ID and then save the item ID that activated the synergy bonus.
 
 9/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
@@ -287,25 +275,6 @@ if False
 11/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
-
-12/ Rebalancing Boss Rush:
-- Bring back old lootbox system.
-- While player are in boss rush world, treasure bag only drop expert mode item.
-- rework spoils to feel more like a shop (past convo); uses coins you get from defeating bosses as currency
-
-13/ Rebalancing WO:
-- Focus on varied Charge Shot delays (Starfury 2.5s is fine but the rest should be shorter)
-- tweak some descriptions to add crucial information (Red Ryder: 3x buff duration) and simplify explanations (long process)
-- bridge balancing between Vanilla and Boss Rush / Everlasting
-- give the mod its own identity as more than an Everlasting sub mod 
-(because your current audience doesn't care as much about "Everlasting the Story" but rather all the individual systems that make up a playthrough)
-
-14/ Rework on Augmentation.
-Introduce: Overcharged
-- Overcharged happen when the player intentionally overcharged their accessories, 
-doing so will buff all previous effects of augmentation.
-- Upon overcharging, a decay timer is started, 
-the rate of decay is depend on that accessory decay condition ( or none at all ).
 
 15/ Rework skill system.
 Balance & Changes:
@@ -407,10 +376,6 @@ Shoot out slow moving rectangle shape bullets
 If the rectangle bullet collide with each other, a explosion will occur dealing combined damage of all nearby rectangle bullet
 After a while the bullet will correct itself to move horizontally, increasing its damage by 100% but lose ability to pierce
 Hitting enemy in this state will create a small explosion
-- Knife Revolver
-Shooting at close proximity will make the projectile from the weapon deal additional slash at 100% weapon damage ( the slash have no cool down )
-
-1st : the following synergy weapon gain additional buff
 
 23/ Cursed mode : 
 "*Pushing once self to absolute extreme, a fine tribute to god !*"
@@ -429,20 +394,8 @@ However, your hardship is rewarded to ease the pain:
 - You always spawn with 2 extra perks
 - Double amount of money/point gained
 
-24/ Nightmare Mode :
-"*Your worst imagination came into life*"
-- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
-- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
-at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
-- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
-- Enemy may spawn in group.
-- During a boss fight in pre hardmode, a portal of demon occasionally opened spawning Demon, fire imp and fire bat ( won't drop anything ), defeating Wall of Flesh, the portal is then upgraded to celestial portal spawning random celestial being.
-- Your immunity frame is halve.
-- Automatically turned your world into Master mode difficulty ( can exist along with FTW )
 
 25/ Skill idea to implement
-Skill 1: ( C: 100 )
-- Copy the last skill in your list at double the cost
 
 Skill 2: ( C: 100 )
 - Copy the first skill in your list at halve the cost
@@ -503,14 +456,26 @@ Note: the monster will has its stats increases by 1% + 1 flat for every minute p
 
 this mode doesn't count as difficulty increases
 
-28/ Synergy energy alternative obtain method: 
-- Synergy lootbox or Black lootbox have 25% to drop synergy energy
-- Rainbow lootbox have 100% chance to drop synergy energy
-
 29/ Relic adjustment :
 - Relic set name visable all time and only collapse the description
 - Remove some relic set and move them to Perk and strengthen some of relic set effect.
 - Relic set now have tier of activation to them, exceeding max activation will do nothing
+
+Feedback recompile : 
+- World generation should always be somewhat predictable such as biome and "key" location. However not so important location can be randomized.
+- Having unique loot and gimmick in biome are welcome as long it is not powercreep. If each biome provide a tool that allow player to beat the game
+Then even better.
+- Miner paradise was used as a example of a unique biome and would player goes there or not, the example was prove posisitve because 
+Miner paradise contain all range of ore beside luminite, which enable player to obtain HM weapon.
+- Avoid grinding at all. Instead go for skill check or RNG exploration,
+- When player are going toward biome, these are the 3 aspects that immediately come to mind
+Decision on where to go, Unique items in that biome and unique mechanic in that biome. 
+- Player should be able to have fast travel between biome and interest point.
+- Add in blazing wheel attack for Skeletron.
+
+
+
+
 
 Testing TODO:
 1/ Testing the common gameplay of the Roguelike mode.

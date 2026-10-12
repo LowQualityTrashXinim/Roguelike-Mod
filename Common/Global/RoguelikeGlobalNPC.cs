@@ -250,7 +250,14 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			Main.NewText($"[c/{Color.Red.Hex3()}:<Everlasting> World progression has been increased by 1.]");
 	}
 	public override bool CheckDead(NPC npc) {
-		return ModContent.GetInstance<DifficultySettingSystem>().World_EnemyRevive && Main.rand.NextBool(3) && !npc.boss;
+		if (ModContent.GetInstance<DifficultySettingSystem>().World_EnemyRevive) {
+			bool check = Main.rand.NextBool(3) && !npc.boss;
+			if (check) {
+				npc.life = npc.lifeMax;
+			}
+			return check;
+		}
+		return base.CheckDead(npc);
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {

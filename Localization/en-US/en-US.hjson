@@ -786,6 +786,7 @@ Mods: {
 					Every 3rd shot will be imblued with Deathshot marked for 2s
 					Hitting enemy while having Deathshot marked will hypercharges your next shot and delete the debuff
 					Alt-Click throw the gun toward cursor, upon contact hypercharges your next shot
+					While enemy are in close proximity, shooting enemy will do a slash deal 100% weapon damage
 					'''
 				DisplayName: Knife Revolver
 			}

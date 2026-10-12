@@ -107,7 +107,7 @@ public class Roguelike_IceBlade_ModPlayer : ModPlayer {
 /// </summary>
 public class IceBlade_Slash_Projectile : SimplePiercingProjectile2 {
 	public override void OnKill(int timeLeft) {
-		int amount = Main.rand.Next(4, 9);
+		int amount = Main.rand.Next(1, 4);
 		for (int i = 0; i < amount; i++) {
 			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.5f, 1.2f), ModContent.ProjectileType<ReworkIceShards>(), (int)(Projectile.damage * .25f), Projectile.knockBack, Projectile.owner);
 			projectile.hostile = false;
@@ -117,10 +117,10 @@ public class IceBlade_Slash_Projectile : SimplePiercingProjectile2 {
 			projectile.tileCollide = true;
 			projectile.scale = Main.rand.NextFloat(.5f, .7f);
 		}
-		amount = 3;
+		amount = 1;
 		for (int i = 0; i < amount; i++) {
 			Vector2 vel = Main.rand.NextVector2CircularEdge(2, 2);
-			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + vel * 10, vel, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .67f), Projectile.knockBack, Projectile.owner, .1f, 15, 0);
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + vel * 10, vel, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(Projectile.damage * .37f), Projectile.knockBack, Projectile.owner, .1f, 15, 0);
 			if (projectile.ModProjectile is SimplePiercingProjectile2 slash) {
 				slash.ScaleX = 4 + i * .05f;
 				slash.ScaleY = .25f;

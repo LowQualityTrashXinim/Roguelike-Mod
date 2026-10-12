@@ -150,6 +150,12 @@ Along with above change, this UI section will also be repurposed.
 822/ Reworked BatBat, Cactus Sword and Volcano enchantment.
 823/ Made changed to DrainingVeilBlade to no longer automatically spawn a shadow clone of itself, instead via alt attack.
 824/ Add a bit more information on how to use Relentless Abomination
+825/ Buffed Knife Revolver to be a lot stronger.
+826/ Nerfed Ice Blade charged attack.
+827/ Buffed skeletron once more.
+828/ Frost bite slower movement no longer applied to boss due to how bad it mess up the player.
+829/ Hallowed gaze light beam now have better chance of hitting the target.
+830/ Updated mod version from 0.0.20.6 to 0.0.20.7 ./.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

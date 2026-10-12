@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global;
 internal class NPCStatsHandlers : GlobalNPC {
-	public const int BossHP = 6500;
+ 	public const int BossHP = 6500;
 	public const int BossDMG = 30;
 	public const int BossDef = 5;
 	public float GetValueMulti(float scale = 1) {

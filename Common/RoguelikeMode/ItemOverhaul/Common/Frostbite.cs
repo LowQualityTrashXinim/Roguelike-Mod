@@ -63,6 +63,7 @@ public class Frostbite : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
+		if(!npc.boss)
 		npc.GetGlobalNPC<RoguelikeGlobalNPC>().VelocityMultiplier -= .34f;
 		if (npc.buffTime[buffIndex] <= 0) {
 			Frostbite_GlobalNPC global = npc.GetGlobalNPC<Frostbite_GlobalNPC>();
