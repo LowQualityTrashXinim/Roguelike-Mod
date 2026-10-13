@@ -3378,8 +3378,8 @@ Mods: {
 					'''
 			}
 
-			EssenceOfDrowsy: {
-				DisplayName: Essence Of Drowsy
+			UnnamedPotion6_Buff: {
+				DisplayName: Unnamed Buff 6
 				Description:
 					'''
 					Increases your damage reduction by 15%
@@ -3387,8 +3387,8 @@ Mods: {
 					'''
 			}
 
-			EssenceOfKindness: {
-				DisplayName: Essence Of Kindness
+			UnnamedPotion7_Buff : {
+				DisplayName: Unnamed buff 7
 				Description:
 					'''
 					Increases healing effectiveness by 25% and immunity frame by 35%
@@ -3396,8 +3396,8 @@ Mods: {
 					'''
 			}
 
-			EssenceOfRage: {
-				DisplayName: Essence Of Rage
+			UnnamedPotion2_Buff: {
+				DisplayName: Unnamed Buff 2
 				Description:
 					'''
 					Increases your critical chance by 5% and critical damage by 15%
@@ -3405,18 +3405,18 @@ Mods: {
 					'''
 			}
 
-			EssenceOfRejuvenate: {
-				DisplayName: Essence Of Rejuvenate
+			UnnamedPotion3_Buff: {
+				DisplayName: Unnamed Buff 3
 				Description:
 					'''
-					Increases your life regen by 27%
-					When this buff end, heal you for 100 hp
+					Increases your life regen by 15% and base life regen by 1
+					When this buff end, heal you for 25 hp
 					Decreases your damage by 12%
 					'''
 			}
 
-			EssenceOfSwift: {
-				DisplayName: Essence Of Swift
+			UnnamedPotion5_Buff: {
+				DisplayName: Unnamed Buff 5
 				Description:
 					'''
 					Increases your movement speed by 14% and attack speed by 8%
@@ -3424,8 +3424,8 @@ Mods: {
 					'''
 			}
 
-			EssenceOfTitan: {
-				DisplayName: Essence Of Titan
+			UnnamedPotion4_Buff: {
+				DisplayName: Unnamed Buff 4
 				Description:
 					'''
 					Increases your defense by 15
@@ -3447,8 +3447,8 @@ Mods: {
 				Description: Decreases your regeneration ability by 100% and you slowly lose life
 			}
 
-			EssenceOfWrath: {
-				DisplayName: Essence Of Wrath
+			UnnamedPotion1_Buff : {
+				DisplayName: Unnamed buff 1
 				Description:
 					'''
 					Increases your damage by 12%

@@ -176,17 +176,16 @@ AlchemistKnowledgeArtifact: {
 }
 
 EssenceLanternArtifact: {
-	DisplayName: Essence Lantern
+	DisplayName: Energy Lantern
 	Description:
 		'''
 		"Enable new world perspective"
 		[c/9b9c76:Neutral effect] :
 			= Your attack spawn essence orb every 10s
 		[c/ffff00:Positive effect] :
-			+ Collecting the orb will increases skill energy ( by 5% of your maximum skill energy battery)
-			+ The orb also provide positive and negative effect
+			+ Collecting the orb will increases skill energy
 		[c/ab3e43:Negative effect] : 
-			- Essence of Wither orb are present which are hamrful
+			- Decreases weapon damage by 50% and attack speed by 50%
 		'''
 }
 

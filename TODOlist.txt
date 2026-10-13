@@ -456,11 +456,6 @@ Note: the monster will has its stats increases by 1% + 1 flat for every minute p
 
 this mode doesn't count as difficulty increases
 
-29/ Relic adjustment :
-- Relic set name visable all time and only collapse the description
-- Remove some relic set and move them to Perk and strengthen some of relic set effect.
-- Relic set now have tier of activation to them, exceeding max activation will do nothing
-
 Feedback recompile : 
 - World generation should always be somewhat predictable such as biome and "key" location. However not so important location can be randomized.
 - Having unique loot and gimmick in biome are welcome as long it is not powercreep. If each biome provide a tool that allow player to beat the game
