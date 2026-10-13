@@ -147,6 +147,10 @@ namespace Roguelike.Common.Global {
 					Main.NewText("You have entered Nightmare mode", Color.Black);
 				}
 			}
+			if (AlreadyGotItem) {
+				return;
+			}
+			AlreadyGotItem = true;
 			IEnumerable<Item> itemList = StartingItem();
 			int index = 0;
 			int length = 50;
@@ -288,6 +292,7 @@ namespace Roguelike.Common.Global {
 		}
 		public int amountOfTimeGotHit = 0;
 		public bool AllowForAchievement = true;
+		public bool AlreadyGotItem = false;
 		public override void OnHurt(Player.HurtInfo info) {
 			if (ModUtils.IsAnyVanillaBossAlive())
 				amountOfTimeGotHit++;
@@ -310,6 +315,7 @@ namespace Roguelike.Common.Global {
 			tag["EnchantingEnable"] = EnchantingEnable;
 			tag["SkillEnable"] = SkillEnable;
 			tag["AllowForAchievement"] = AllowForAchievement;
+			tag["AlreadyGotItem"] = AlreadyGotItem;
 		}
 		public override void LoadData(TagCompound tag) {
 			if (tag.TryGet("EnchantingEnable", out int value1)) {
@@ -320,6 +326,9 @@ namespace Roguelike.Common.Global {
 			}
 			if (tag.TryGet("AllowForAchievement", out bool all)) {
 				AllowForAchievement = all;
+			}
+			if (tag.TryGet("AlreadyGotItem", out bool value)) {
+				AlreadyGotItem = value;
 			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {

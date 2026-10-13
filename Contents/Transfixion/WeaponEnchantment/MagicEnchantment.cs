@@ -11,7 +11,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Roguelike.Contents.Transfixion.WeaponEnchantment.MagnetSphere;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {

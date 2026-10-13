@@ -120,12 +120,12 @@ public class ManaOverloader : RoguelikeAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<ManaOverloaderArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
-public class EssenceLantern : RoguelikeAchievement {
+public class EnergyLantern : RoguelikeAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Easy;
 	}
 	public override bool Condition() {
-		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<EssenceLanternArtifact>() && UniversalSystem.NotNormalMode();
+		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<EnergyLanternArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class AlchemistKnowledge : RoguelikeAchievement {

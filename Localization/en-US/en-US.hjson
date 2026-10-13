@@ -3216,6 +3216,41 @@ Mods: {
 					Have absolute no special effect
 					'''
 			}
+
+			UnnamedPotion1: {
+				DisplayName: Unnamed Potion1
+				Tooltip: ""
+			}
+
+			UnnamedPotion2: {
+				DisplayName: Unnamed Potion2
+				Tooltip: ""
+			}
+
+			UnnamedPotion3: {
+				DisplayName: Unnamed Potion3
+				Tooltip: ""
+			}
+
+			UnnamedPotion4: {
+				DisplayName: Unnamed Potion4
+				Tooltip: ""
+			}
+
+			UnnamedPotion5: {
+				DisplayName: Unnamed Potion5
+				Tooltip: ""
+			}
+
+			UnnamedPotion6: {
+				DisplayName: Unnamed Potion6
+				Tooltip: ""
+			}
+
+			UnnamedPotion7: {
+				DisplayName: Unnamed Potion7
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3387,7 +3422,7 @@ Mods: {
 					'''
 			}
 
-			UnnamedPotion7_Buff : {
+			UnnamedPotion7_Buff: {
 				DisplayName: Unnamed buff 7
 				Description:
 					'''
@@ -3447,7 +3482,7 @@ Mods: {
 				Description: Decreases your regeneration ability by 100% and you slowly lose life
 			}
 
-			UnnamedPotion1_Buff : {
+			UnnamedPotion1_Buff: {
 				DisplayName: Unnamed buff 1
 				Description:
 					'''
@@ -4592,6 +4627,11 @@ Mods: {
 			DrainingVeilBlade_SpawnCoolDown_Buff: {
 				DisplayName: Draining Veil Blade_ Spawn Cool Down_ Buff
 				Description: Mods.Roguelike.Buffs.DrainingVeilBlade_SpawnCoolDown_Buff.Description
+			}
+
+			EssenceOfKindness: {
+				DisplayName: Essence Of Kindness
+				Description: Mods.Roguelike.Buffs.EssenceOfKindness.Description
 			}
 		}
 

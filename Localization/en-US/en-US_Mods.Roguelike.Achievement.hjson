@@ -97,8 +97,8 @@ ManaOverloader: {
 	ConditionTip: Beat the mod with ManaOverloader artifact in expert or higher difficulty
 }
 
-EssenceLantern: {
-	DisplayName: Essence Lantern
+EnergyLantern: {
+	DisplayName: Energy Lantern
 	Description: Enable new world perspective, shine light on the 3rd world
 	ConditionTip: Beat the mod with Essence Lantern artifact in expert or higher difficulty
 }
