@@ -74,26 +74,6 @@ public class FastForward : ModSkill {
 		energy -= .5f;
 	}
 }
-public class Skip1 : ModSkill {
-	public override string Texture => ModUtils.GetTheSameTextureAsEntity<Skip1>();
-	public override void SetDefault() {
-		Skill_EnergyRequire = 0;
-		Skill_Duration = 0;
-		Skill_Type = SkillTypeID.Stats;
-	}
-	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
-		int[] currentskillset = modplayer.ActiveSkill.ToArray();
-		for (int i = index + 1; i < currentskillset.Length; i++) {
-			var skill = SkillModSystem.GetSkill(currentskillset[i]);
-			if (skill == null) {
-				continue;
-			}
-			index = i;
-			energy.Base -= 600;
-			break;
-		}
-	}
-}
 public class PowerCord : ModSkill {
 	public override string Texture => ModUtils.GetTheSameTextureAsEntity<PowerCord>();
 	public override void SetDefault() {

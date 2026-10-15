@@ -167,3 +167,23 @@ public class Utility_Last : ModSkill {
 		return false;
 	}
 }
+public class Utility_Skip1 : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAs<Utility_Skip1>("Skip1");
+	public override void SetDefault() {
+		Skill_EnergyRequire = 0;
+		Skill_Duration = 0;
+		Skill_Type = SkillTypeID.Utility;
+	}
+	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration) {
+		int[] currentskillset = modplayer.ActiveSkill.ToArray();
+		for (int i = index + 1; i < currentskillset.Length; i++) {
+			var skill = SkillModSystem.GetSkill(currentskillset[i]);
+			if (skill == null) {
+				continue;
+			}
+			index = i;
+			energy.Base -= 600;
+			break;
+		}
+	}
+}

@@ -158,6 +158,9 @@ Along with above change, this UI section will also be repurposed.
 830/ Updated mod version from 0.0.20.6 to 0.0.20.7 ./.
 831/ Changed Essence Lantern to Energy Lantern.
 832/ Added unnamed potion 1 to 7.
+833/ Slightly reworked HeartBreakInstrument.
+834/ Skip1 is changed to be utility skill not stats skill.
+835/ Slight fix to Anklet of the wind rework so that player can't abuse automatic dash
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

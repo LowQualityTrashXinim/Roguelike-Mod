@@ -89,6 +89,7 @@ public class Roguelike_AnkletOfTheWind_ModPlayer : ModPlayer {
 		if (!AnkletOfTheWind) {
 			WindShield_Health = 0;
 			WindShield_Cooldown = 0;
+			DashDir = false;
 		}
 		else {
 			if (WindShield_Health <= 0 && WindShield_Cooldown <= 0) {

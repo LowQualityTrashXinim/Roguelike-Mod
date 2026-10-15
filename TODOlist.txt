@@ -188,9 +188,8 @@ and once player activated this option, they will be left with 3 hours to beat th
 > Normal mode [true/false] [+0%]
 > Expert mode [true/false] [+50%]
 > Master mode [true/false] [+75%] //Do not stack with Expert mode
-> Nightmare mode [true/false] [+50%] //Stack with any mode above
-> Cursed mode [true/false] [+100%] //Stack with any mode above
-=> When player enable all of the above difficulty, the maximum increases for difficulty will be 1325%
+> Nightmare mode [true/false] [+250%] //Stack with any mode above
+> Cursed mode [true/false] [+250%] //Stack with any mode above
 
 5/ Rework rarity system and tranmutation system. (put on hold due to different in idea )
 Transumtation changes:
@@ -277,38 +276,19 @@ Content:
 - Event tag is a quick and easy way to add story to every run
 
 15/ Rework skill system.
-Balance & Changes:
-- Rework skill holder to be skill preset.
-Skill preset can only be changed after player current skill duration die out.
-- Player no longer can delete skill.
 
 UI related changes:
-- Update new skill UI allowing player unlimited skill slot.
-- Completely changed how skill inventory system UI is presented
 - Skill UI is now added next to player skill energy bar and can only be open when player have inventory up.
 
 New addition:
-- New skill modifiers type: ( new classification )
->> Projectile // Added
->> AI addon // Added as "Modify"
-- New skill utility: ( new classification )
 >> Bundle
->> Other // Added as "Utlity"
 
 - Skill system projectile now follow a certain rule that is enforced upon skill
 - Only 1 projectile can be applied to 1 skill unless a bundle is used.
 - Same goes with AI addon modifier for skill, projectile modifier and Ai addon modifier can coexist.
 - A skill now have multiple classification.
 
-QoL changes:
-- Player can view what skill preset is being used by hovering over skill orb icon
-- Player can make preset and then save it later under their own naming the preset.
-- Keybind are set up so that player can move from 1 preset to another.
-- Preset order can be set up so that player can uses keybind to move from 1 preset to another.
-
 Implementation and optimization:
-- Due to the new demand of skill, each projectile will hold a list of skill id
-During activation, the skill ID is sent on Projectile spawn.
 - All projectile that spawn from skill have their GetSource_Misc("Skill") as standard.
 - UI optimization to make every UI instant.
 
@@ -353,22 +333,7 @@ The core component will contain the following:
 - Allow for full customisability of what information player want to pay close attention to.
 
 22/ Listing problematic content that need adjustment:
-- Essence Lantern ( artifact )
 - Token of Pride.
-- HeartBreak Instrument
-Remove the instrument and instead replaced it with the sword itself
-During attack, the sword will also attack together with you
-Make the alt attack a bit more unique rather than 4 small slash 
-Make the thrust attack animation more instant.
-> Alt attack summon a ghost version of the sword ( custom sprite ) and will attack along side you
-> During the climax of tragedy, instead of summoning the 4 intruments, instead create a clone of the sword but in different form 
-Each attack you do will do a random set attack
-- Flameing Wood Sword
-Create a custom wave sprite for the flame wood slash
-Add more swing attack to it
-> 1st attack : downward chop -> shoot out bunch of flame creating a flamewall
-> 2nd attack : upward slash -> shoot out a flame wave that travel a short distance
-> 3rd attack : Circle swing -> Create a heat aura around you for a short moment
 - Master Sword
 Fix up the attack to make it look more smooth.
 - Rectangle shotgun
