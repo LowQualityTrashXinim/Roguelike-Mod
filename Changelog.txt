@@ -160,7 +160,11 @@ Along with above change, this UI section will also be repurposed.
 832/ Added unnamed potion 1 to 7.
 833/ Slightly reworked HeartBreakInstrument.
 834/ Skip1 is changed to be utility skill not stats skill.
-835/ Slight fix to Anklet of the wind rework so that player can't abuse automatic dash
+835/ Slight fix to Anklet of the wind rework so that player can't abuse automatic dash.
+836/ Added Energy to Power skill.
+837/ Deleted Help in the Roguelike Menu because it have the same usages as Info.
+838/ Reworked Enchantment wiki to support filter and make it bigger.
+839/ Fix a bug caused by newly implemented Energy To Power skill which caused energy to go into negative.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

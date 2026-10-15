@@ -905,7 +905,6 @@ class UISystemMenu : UIState {
 	UIText open_AchievmentUI;
 	UIText open_SynergyWikiUI;
 	UIText open_EnchantmentWIkiUI;
-	UIText open_HelpMenu;
 	UIText open_InfoMenu;
 	UIText exit_Menu;
 	public override void OnInitialize() {
@@ -950,19 +949,11 @@ class UISystemMenu : UIState {
 		open_EnchantmentWIkiUI.HAlign = .5f;
 		panel.Append(open_EnchantmentWIkiUI);
 
-		open_HelpMenu = new("Help", 1.5f);
-		open_HelpMenu.OnLeftClick += OpenHelp_OnLeftClick;
-		open_HelpMenu.OnUpdate += Universal_OnUpdate;
-		open_HelpMenu.OnMouseOver += Universal_MouseOver;
-		open_HelpMenu.MarginTop = open_EnchantmentWIkiUI.MarginTop + open_EnchantmentWIkiUI.Height.Pixels + 40;
-		open_HelpMenu.HAlign = .5f;
-		panel.Append(open_HelpMenu);
-
 		open_InfoMenu = new("Info", 1.5f);
 		open_InfoMenu.OnLeftClick += Open_InfoMenu_OnLeftClick;
 		open_InfoMenu.OnUpdate += Universal_OnUpdate;
 		open_InfoMenu.OnMouseOver += Universal_MouseOver;
-		open_InfoMenu.MarginTop = open_HelpMenu.MarginTop + open_HelpMenu.Height.Pixels + 40;
+		open_InfoMenu.MarginTop = open_EnchantmentWIkiUI.MarginTop + open_EnchantmentWIkiUI.Height.Pixels + 40;
 		open_InfoMenu.HAlign = .5f;
 		panel.Append(open_InfoMenu);
 
@@ -973,10 +964,6 @@ class UISystemMenu : UIState {
 		exit_Menu.HAlign = .5f;
 		exit_Menu.VAlign = 1f;
 		panel.Append(exit_Menu);
-	}
-
-	private void OpenHelp_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}
 	private void Open_InfoMenu_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -1020,14 +1007,6 @@ class UISystemMenu : UIState {
 			}
 			else {
 				open_SynergyWikiUI.TextColor = Color.White;
-			}
-		}
-		else if (affectedElement.UniqueId == open_HelpMenu.UniqueId) {
-			if (affectedElement.IsMouseHovering) {
-				open_HelpMenu.TextColor = Color.Yellow;
-			}
-			else {
-				open_HelpMenu.TextColor = Color.White;
 			}
 		}
 		else if (affectedElement.UniqueId == open_InfoMenu.UniqueId) {

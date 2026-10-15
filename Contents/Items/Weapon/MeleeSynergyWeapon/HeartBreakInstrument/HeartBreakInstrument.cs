@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
-using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Global.Mechanic.OutroEffect.Contents.ShortBurst;
 using Roguelike.Common.RoguelikeMode;
-using Roguelike.Common.RoguelikeMode.ItemOverhaul.Accessories;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Texture;
@@ -186,7 +184,7 @@ public class HeartBreakInstrument : SynergyModItem {
 			else {
 				if (!heartplayer.OnCoolDown) {
 					if (ClimaxOfTragedy) {
-						player.AddBuff<HeartBreakInstrument_Buff>(ModUtils.ToSecond(15));
+						player.AddBuff<HeartBreakInstrument_Buff>(ModUtils.ToSecond(30));
 						for (int i = 0; i < 4; i++) {
 							Projectile.NewProjectile(source, position, Vector2.One, ModContent.ProjectileType<HeartBreakInstrument_StarProjectile>(), damage, knockback, player.whoAmI, 300, i);
 						}
@@ -361,13 +359,7 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 		}
 		return (Gclef)Main.projectile[Projectile_WhoAmI].ModProjectile;
 	}
-	public const int DashCooldown = 50;
-	public const int DashDuration = 35;
-
-	public const float DashVelocity = 7.5f;
-
 	public bool DashDir = false;
-
 	public int DashDelay = 0;
 	public int DashTimer = 0;
 	public Vector2 ReappliedMovement = Vector2.Zero;
@@ -437,7 +429,7 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 			}
 			Projectile_WhoAmI = -1;
 			ClimaxOfTradegy_Count = 0;
-			ClimaxOfTradegy = false;
+			ClimaxOfTradegy = Player.HasBuff<HeartBreakInstrument_Buff>();
 			Effect = false;
 		}
 		else {
@@ -469,29 +461,36 @@ public class HeartBreakInstrument_ModPlayer : ModPlayer {
 				VisualEffect();
 			}
 		}
-		else if (ClimaxOfTradegy_Count >= 30 && ClimaxOfTradegy) {
+		else if (!Player.HasBuff<HeartBreakInstrument_Buff>() && ClimaxOfTradegy) {
 			if (!Effect) {
 				Effect = true;
-				VisualEffect();
+				VisualEffectEnded();
 			}
 			if (!Player.ItemAnimationActive) {
-				if (Main.mouseLeft) {
-					ClimaxOfTradegy_Count = 0;
-					ClimaxOfTradegy = false;
-					Effect = false;
-				}
-				else if (Main.mouseRight) {
-					ClimaxOfTradegy_Count = 0;
-					ClimaxOfTradegy = false;
-					Effect = false;
-				}
+				ClimaxOfTradegy_Count = 0;
+				ClimaxOfTradegy = false;
+				Effect = false;
 			}
 		}
 		if (ClimaxOfTradegy) {
-			Dust dust = Dust.NewDustDirect(Player.Center + Main.rand.NextVector2Circular(20, 20), 0, 0, ModContent.DustType<HeartBreakInstrument_Extra>());
-			dust.velocity = -Vector2.UnitY;
+			VisualEffectClimaxTragedy();
+		}
+	}
+	private void VisualEffectClimaxTragedy() {
+		Dust dust = Dust.NewDustDirect(Player.Center + Main.rand.NextVector2Circular(20, 20), 0, 0, ModContent.DustType<HeartBreakInstrument_Extra>());
+		dust.velocity = -Vector2.UnitY;
+		dust.rotation = dust.velocity.ToRotation();
+		dust.scale = Main.rand.NextFloat(.7f, 1.3f);
+		dust.color = Color.DodgerBlue;
+		dust.noGravity = true;
+	}
+	private void VisualEffectEnded() {
+		for (int i = 0; i < 50; i++) {
+			Vector2 pos = Player.Center + Main.rand.NextVector2CircularEdge(100, 100);
+			Dust dust = Dust.NewDustDirect(pos, 0, 0, ModContent.DustType<HeartBreakInstrument_Extra>());
+			dust.velocity = Vector2.UnitY * Main.rand.NextFloat(.1f, 3f);
 			dust.rotation = dust.velocity.ToRotation();
-			dust.scale = Main.rand.NextFloat(.7f, 1.3f);
+			dust.scale = Main.rand.NextFloat(1.4f, 1.8f);
 			dust.color = Color.DodgerBlue;
 			dust.noGravity = true;
 		}

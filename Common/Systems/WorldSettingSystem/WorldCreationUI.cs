@@ -60,6 +60,7 @@ public class DifficultySettingSystem : ModSystem {
 public class WorldDifficultyUI : UIState {
 	public Roguelike_UIPanel main_panel;
 	public DifficultyOption[] Arr_difficulty;
+	public int SettingPage_DifficultyValue = 0;
 	public int SettingPage1_DifficultyValue = 0;
 	public int SettingPage2_DifficultyValue = 0;
 	public Special_ExitUI exit;
@@ -131,6 +132,12 @@ public class WorldDifficultyUI : UIState {
 	private void NightmareMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		nightmareMode.Highlight = !nightmareMode.Highlight;
 		RoguelikeWorldProperty.NightmareWorld = nightmareMode.Highlight;
+		if (nightmareMode.Highlight) {
+			SettingPage_DifficultyValue += 250;
+		}
+		else {
+			SettingPage_DifficultyValue -= 250;
+		}
 	}
 
 	private void BossrushMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

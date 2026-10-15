@@ -113,3 +113,18 @@ public class Weaken : ModSkill {
 		skillplayer.skilldamage -= .2f;
 	}
 }
+public class EnergyToPower : ModSkill {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<EnergyToPower>();
+	public override void SetDefault() {
+		Skill_EnergyRequire = 500;
+		Skill_Duration = 0;
+		Skill_Type = SkillTypeID.Stats;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) {
+		skillplayer.ToPower += skillplayer.Energy;
+		skillplayer.Modify_EnergyAmount(-99999999);
+	}
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().ToPower * .01f);
+	}
+}

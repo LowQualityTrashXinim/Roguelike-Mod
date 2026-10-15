@@ -2839,22 +2839,25 @@ Mods: {
 				DisplayName: Instrumental Heart Break
 				Tooltip:
 					'''
-					"Even if my mind falls apart, even if we are separated by universe, I will still find and love you"
+					"Even if my mind falls apart,
+					even if we are separated by universe, 
+					I will still search for you and love you dearly my penpal"
+
 					Gclef attack alongside you which build up [c/0088ff:Climax of Tragedy]
-					Right click to summon 4 small weak blades that attack with you
+					Alt attack to do a dash attack toward your cursor.
 					'''
 				ExtraInfo:
 					'''
-					When [c/0088ff:Climax of Tragedy] reached its peak (30 stacks), right click to activate [c/0088ff:Climax of Tragedy] for 40s
-					During the duration, every normal attack is enhanced and you summon 4 musical instruments
+					When [c/0088ff:Climax of Tragedy] reached its peak (30 stacks), 
+					right click to activate [c/0088ff:Climax of Tragedy] for 30s
+					During the duration, every normal attack is enhanced and
+					you gain a buff that massively boost your stats
+					Right click the buff icon to end the state early.
 
-					During [c/0088ff:Climax of Tragedy], normal attack will increases stack instead of Gclef
-					Reaching the 30 stacks will make the next attack releases a skill
-
-					At the [c/0088ff:Climax of Tragedy] peak (30 stacks):
-					Left click: make every musical instruments do a final attack dealing 100 + 1500% weapon damage
-					Right click: make every musical instrument fly rotate around you and heal you for 100 + 5% maximum health 
-					and granting you 20% damage, 10% crit chance, 20 hp regen, 15 DEF and 30% movement speed for 15s
+					Alt attack during the state will instead summon for 4 copy of your swords and stars
+					And attacking will shoot the swords toward your cursor.
+					The Star after a while will explode and deal damage to 
+					surrounding enemy and heal you for 5% of max health.
 					'''
 			}
 
@@ -3431,6 +3434,15 @@ Mods: {
 					'''
 			}
 
+			UnnamedPotion1_Buff: {
+				DisplayName: Unnamed buff 1
+				Description:
+					'''
+					Increases your damage by 12%
+					Decreases your defense by 10
+					'''
+			}
+
 			UnnamedPotion2_Buff: {
 				DisplayName: Unnamed Buff 2
 				Description:
@@ -3480,15 +3492,6 @@ Mods: {
 			EssenceOfWither: {
 				DisplayName: Essence Of Wither
 				Description: Decreases your regeneration ability by 100% and you slowly lose life
-			}
-
-			UnnamedPotion1_Buff: {
-				DisplayName: Unnamed buff 1
-				Description:
-					'''
-					Increases your damage by 12%
-					Decreases your defense by 10
-					'''
 			}
 
 			LifeForce: {

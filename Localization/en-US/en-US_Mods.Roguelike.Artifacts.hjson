@@ -179,9 +179,9 @@ EssenceLanternArtifact: {
 	DisplayName: Energy Lantern
 	Description:
 		'''
-		"Enable new world perspective"
+		"Passively generate energy around you"
 		[c/9b9c76:Neutral effect] :
-			= Your attack spawn essence orb every 10s
+			= Your attack spawn energy orb every 10s
 		[c/ffff00:Positive effect] :
 			+ Collecting the orb will increases skill energy
 		[c/ab3e43:Negative effect] : 

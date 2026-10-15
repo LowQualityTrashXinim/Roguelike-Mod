@@ -29,6 +29,10 @@ Implementation TODO:
 >> Duke Fishron : subworld and summon by releasing glowing shroom worm in there.
 >> Empress of Light : Hallow but also no plan of summon method.
 
+- Each biome will contain a pylon for biome quick travel, additional will also contain a bed nearby for player to set spawn.
+
+Create biome modifier.
+
 2/ Work on debuff and buff sprite and many missing sprite in the mod.
 The following are the list for missing sprite in the mod:
 __________Skill related__________
@@ -157,41 +161,7 @@ When boss rush world gen is selected:
 > Boss spawn on player decision
 > Randomize spawning boss order
 
-- Difficulty selection (by default the base difficulty% is 100%):
-#For more information check the task after this
-
-4/Welcome to difficulty modifier, in this we will rate how hard is a modifier is and rate it on %, by default the base difficulty% is 100% 
-Selectable difficulty Format : 
-> "Name" [stats value/option] [cap] [%difficulty]
-The following below are a list of difficulty modifier:
-> Enemies's HP increases [+10%] [max 10] [+10%/stack]
-> Bosses health increases [+25%] [max 10] [+10%/stack]
-> Damage increases [+5%] [max 10] [+10%/stack]
-> Bosses damage% scale [+2.5%] [max 10] [+5%/stack]
-> Progression lock [+1] [max vanilla boss] [+10%/stack]
-Progression lock: lock final boss of the boss behind optional boss
-> Revive reduce maximum heath [true/false] [+20% on true]
-Revive reduce maximum heath: Getting revived will reduce you maximum health by 20%, this will only occur once
-> Hit taken effectiveness [true/false] [+30%]
-Hit taken effectiveness : Taking multiple hit will increases the damage of next taken hit by 10% ( stackable / 2s duration )
-> Time restriction [true/false | -5 min] [max 24] [+30% on true | +10%/stack]
-Time restriction : Reduce the time that is available to the player to beat the mod, by default player have unlimited time, 
-and once player activated this option, they will be left with 3 hours to beat the mod.
----- if the world is not boss rush mode ----
-> Reduce amount of abandon house [+5%] [max 10] [+5%/stack]
-> Increases spawn rate [+10%] [max 10] [+5%/stack]
-> Increases chance of enemy spawn with elite status [+20%] [max 5] [+10%/stack]
-> Normal enemy have 1 in 3 chance to completely revive [true/false] [+30% on true]
-> Biome modifier [true/false] [+20% on true]
----- Extra selectable difficulty calculation ----
-> Journey mode [true/false] [-100%]
-> Normal mode [true/false] [+0%]
-> Expert mode [true/false] [+50%]
-> Master mode [true/false] [+75%] //Do not stack with Expert mode
-> Nightmare mode [true/false] [+250%] //Stack with any mode above
-> Cursed mode [true/false] [+250%] //Stack with any mode above
-
-5/ Rework rarity system and tranmutation system. (put on hold due to different in idea )
+4/ Rework rarity system and tranmutation system. (put on hold due to different in idea )
 Transumtation changes:
 - Equivalent exchange now changes to Transmute mode.
 >> Work the exact same but instead you can transmute anything to everything.
@@ -199,7 +169,7 @@ Transumtation changes:
 >> Player can choose what kind of item that they wish their item to be transmute to
 >> When using this mode, the cost is 5x
 
-6/ 
+5/ 
 ___________Rework weapon subclass such as Boomerang, yoyo, axe and hammer___________
 - Boomerang: ( turn into sub/sup dps weapon )
 >> Become a support weapon instead of dps type weapon but still leave possibility of player turning it into dps weapon.
@@ -244,12 +214,12 @@ ___________Food rework___________
 The following food are missing from food rework:
 - Grup Soup
 
-7/ Work on achievement.
+6/ Work on achievement.
 Content:
 - Completionist
 > Uses every weapon available in the mod and win a run using it.
 
-9/ Merged Help with Info together and also add content for Help and Info.
+7/ Merged Help with Info together and also add content for Help and Info.
 >>> These are the following contents that should be in Help:
 - Transmutation
 - Weapon enchantment
@@ -269,13 +239,13 @@ Content:
 - Content in "Help" is suppose to be general guide on how to use the content.
 - Content in "Info" is detailed information of how supposed content gonna act.
 
-10/ Work on Weapon Essences consumable.
+8/ Work on Weapon Essences consumable.
 
-11/ Add in a event tag system
+9/ Add in a event tag system
 - Event tag should be load during the start of mod and only load once and never again, the next time it attempt to load event tag it should be checking whenever or not the tag exist, if it already does then skip
 - Event tag is a quick and easy way to add story to every run
 
-15/ Rework skill system.
+10/ Rework skill system.
 
 UI related changes:
 - Skill UI is now added next to player skill energy bar and can only be open when player have inventory up.
@@ -300,7 +270,7 @@ Depending on weapon held tag, player gain ability to gain energy with the follow
 
 Add in a visual background for skill that different classifaction/catagory
 
-17/ Rework and reimplement lootbox into the mod:
+11/ Rework and reimplement lootbox into the mod:
 Wooden, Iron, Silver, Gold lootbox is normally can be found in these following place:
 - Shop
 - Bosses drop
@@ -312,28 +282,22 @@ Specialize lootbox above will still uses standard loot drop but will have 50/50 
 Failing the 50/50 chance will instead drop normal SSR weapon.
 Specialize lootbox when dropping weapon, will drop item level the same as gold lootbox
 
-18/ Make a core component for the mod and for the off brand mod.
-The core component will contain the following:
-- Player Stats Handle.
-- Projectile global.
-- NPC global.
 
-19/ Add in charge bar for the following weapon:
+12/ Add in charge bar for the following weapon:
 - Every pre HM ore broad sword beside copper broadsword.
 
-20/ work on general building tool in-game for builder of the mod
+13/ work on general building tool in-game for builder of the mod
 - Enable placement preview.
 - Add in drag select function.
 
-21/ Rework User Info Tablet.
+14/ Rework User Info Tablet.
 - Separate the 4 classes information into each different sections that player can choose to focus.
 - Add in a main state UI panel that hold focus information.
 - Turn all of the information that player should know into InfoType class.
 - Add in more clarity for what each section, panel will inform you of.
 - Allow for full customisability of what information player want to pay close attention to.
 
-22/ Listing problematic content that need adjustment:
-- Token of Pride.
+15/ Listing problematic content that need adjustment:
 - Master Sword
 Fix up the attack to make it look more smooth.
 - Rectangle shotgun
@@ -342,7 +306,7 @@ If the rectangle bullet collide with each other, a explosion will occur dealing 
 After a while the bullet will correct itself to move horizontally, increasing its damage by 100% but lose ability to pierce
 Hitting enemy in this state will create a small explosion
 
-23/ Cursed mode : 
+16/ Cursed mode : (250% difficulty value)
 "*Pushing once self to absolute extreme, a fine tribute to god !*"
 - Every enemy take 50% less damage ( multiplicative ) ( not to be confused with DR )
 - The following perk become unobtainable:
@@ -360,7 +324,7 @@ However, your hardship is rewarded to ease the pain:
 - Double amount of money/point gained
 
 
-25/ Skill idea to implement
+17/ Skill idea to implement
 
 Skill 2: ( C: 100 )
 - Copy the first skill in your list at halve the cost
@@ -390,7 +354,7 @@ A is the amount of spell before it
 Skill 8: ( C: 300 )
 - For each skill after this skill activate, increases duration of skill list by 1s
 
-26/ Implement training room.
+18/ Implement training room.
 The training room in the mod would be a randomly generated variable that consist of sets of weapons and armor,
 collection of perks, potions, skills and artifacts all randomly set in player varible
 And player are given a randomly generated arena and their goal is to beat a boss along with constantly generated mobs spawn
@@ -400,7 +364,7 @@ to see the complexity of the idea and act as a anchor point to be implemented in
 The loot that is set to player inventory is always pulled from existing pool of loot.
 > This is so that player is never given a unfair situation
 
-27/ Evo mode:
+19/ Evo mode:
 "*A change of pace is always nice*"
 
 The blessings are to be follow:
@@ -421,7 +385,7 @@ Note: the monster will has its stats increases by 1% + 1 flat for every minute p
 
 this mode doesn't count as difficulty increases
 
-Feedback recompile : 
+20/ Feedback recompile : 
 - World generation should always be somewhat predictable such as biome and "key" location. However not so important location can be randomized.
 - Having unique loot and gimmick in biome are welcome as long it is not powercreep. If each biome provide a tool that allow player to beat the game
 Then even better.

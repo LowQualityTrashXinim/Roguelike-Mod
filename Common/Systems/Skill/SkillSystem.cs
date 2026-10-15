@@ -462,7 +462,7 @@ public class SkillHandlePlayer : ModPlayer {
 					}
 				}
 				MaximumDuration += Duration;
-				Energy -= energy;
+				Energy = Math.Clamp(Energy - energy,0, EnergyCap);
 			}
 		}
 	}
