@@ -165,6 +165,7 @@ Along with above change, this UI section will also be repurposed.
 837/ Deleted Help in the Roguelike Menu because it have the same usages as Info.
 838/ Reworked Enchantment wiki to support filter and make it bigger.
 839/ Fix a bug caused by newly implemented Energy To Power skill which caused energy to go into negative.
+840/ Added BallistaRod, BallistaCane, BallistaStaff, ExplosiveTrapRod, ExplosiveTrapCane and ExplosiveTrapStaff enchantment.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

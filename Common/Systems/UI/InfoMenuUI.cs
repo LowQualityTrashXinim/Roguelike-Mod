@@ -202,3 +202,6 @@ public class Frostbite_ModInfo : ModInformation {
 public class WorldProgression_ModInfo : ModInformation {
 	public override string LocalizationName => "WorldProgression";
 }
+public class PiercingDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "PiercingDamage";
+}

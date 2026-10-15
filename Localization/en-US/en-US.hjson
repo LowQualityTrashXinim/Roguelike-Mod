@@ -70,6 +70,11 @@ Mods: {
 
 				May you reach the possibilitiy you wish for !
 				'''
+			PiercingDamage:
+				'''
+				Piercing damage :
+				Everytime your weapon pierce, increases the damage dealt on next hit.
+				'''
 		}
 
 		Conditions.RoguelikeModeCursed: The recipe is locked while you are playing this mod.

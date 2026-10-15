@@ -1093,6 +1093,50 @@ FlameburstStaff.Description:
 	If held weapon is [i:3818], [i:3819] or [i:3820]
 	+ Increases weapon damage by 40%
 	'''
+ExplosiveTrapRod.Description:
+	'''
+	+30% summon damage
+	+ Getting hit will releases a explosion
+	dealing 250 damage + 100% weapon damage (CD: 3s)
+	If held weapon is [i:3832], [i:3833] or [i:3834] :
+	+ Above explosion damage is increased by 100%
+	'''
+ExplosiveTrapCane.Description:
+	'''
+	+50% summon damage and 10 base damage
+	Minion contact damage will release a explosion
+	dealing 100 damage (CD: 3s)
+	'''
+ExplosiveTrapStaff.Description:
+	'''
+	+30% summon damage
+	Every 1s release a random explosion near you
+	The explosion deal 300% weapon damage
+	If held weapon is [i:3832], [i:3833] or [i:3834] :
+	+ Above explosion damage is increased by flat 100 and 100%
+	'''
+BallistaRod.Description:
+	'''
+	+50% summon damage
+	Increases piercing damage by 30%
+	If held weapon is [i:3824], [i:3825] or [i:3826] :
+	+ Above piercing damage increased by another 70%
+	'''
+BallistaCane.Description:
+	'''
+	+50% summon damage
+	Every 0.5s shoot a piercing bolt toward cursor
+	dealing 100% weapon damage + 45 damage
+	If held weapon is [i:3824], [i:3825] or [i:3826] :
+	+ Above damage increased by another 50%
+	'''
+BallistaStaff.Description:
+	'''
+	+50% summon damage
+	+ Getting hit will give you "Ballista Panic!" buff for 5s
+	During the buff, while helding this weapon :
+	+ Rapidly shoot out piercing bolt dealing 100% weapon damage + 25 damage
+	'''
 FrostStaff.Description:
 	'''
 	Have 1 in 10 chance to shoot frost bolt

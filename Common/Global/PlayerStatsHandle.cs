@@ -255,6 +255,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public StatModifier RangeAtkSpeed = StatModifier.Default;
 	public StatModifier MagicAtkSpeed = StatModifier.Default;
 	public StatModifier SummonAtkSpeed = StatModifier.Default;
+	public StatModifier PiercingDamage = StatModifier.Default;
 	/// <summary>
 	/// True damage will always deal damage to enemy regardless of defense or DR
 	/// </summary>
@@ -355,6 +356,9 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 		else if (value < 0) {
 			modifiers.DisableCrit();
+		}
+		if (!proj.minion && proj.penetrate > 1 || proj.penetrate == -1) {
+			proj.damage = (int)PiercingDamage.ApplyTo(proj.damage);
 		}
 		if (!proj.minion && !proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().IsFromMinion || Unnerfed) {
 			modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
@@ -601,7 +605,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		TransmutationModifier = StatModifier.Default;
 		DamageTaken = StatModifier.Default;
 		OnKillHealing = StatModifier.Default - 1;
-
+		PiercingDamage = StatModifier.Default;
 		WingUpTime = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;

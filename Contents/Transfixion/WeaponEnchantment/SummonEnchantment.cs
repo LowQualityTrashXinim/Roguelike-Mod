@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Roguelike.Contents.Transfixion.WeaponEnchantment;
 
@@ -529,7 +530,6 @@ public class LightningAuraRod : ModEnchantment {
 		}
 	}
 }
-
 public class LightningAuraCane : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DD2LightningAuraT2Popper;
@@ -661,5 +661,188 @@ public class FlameburstStaff : ModEnchantment {
 			|| item.type == ItemID.DD2FlameburstTowerT3Popper) {
 			damage += .4f;
 		}
+	}
+}
+public class ExplosiveTrapRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2ExplosiveTrapT1Popper;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .3f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			AWWWMAN(player.HeldItem, player);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 180);
+		}
+	}
+	public override void OnHitByProjectile(int index, EnchantmentGlobalItem globalItem, Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			AWWWMAN(player.HeldItem, player);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 180);
+		}
+	}
+	private void AWWWMAN(Item item, Player player) {
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 500);
+		int damage = 250 + player.GetWeaponDamage(item);
+		if (item.type == ItemID.DD2ExplosiveTrapT1Popper
+			|| item.type == ItemID.DD2ExplosiveTrapT2Popper
+			|| item.type == ItemID.DD2ExplosiveTrapT3Popper) {
+			damage *= 2;
+		}
+		float radius = 500;
+		for (int i = 0; i < 35; i++) {
+			int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
+			Main.dust[smokedust].noGravity = true;
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust3 = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
+			Main.dust[dust3].noGravity = true;
+			Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
+		}
+		if (npclist.Count > 0) {
+			foreach (var npc in npclist) {
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, -npc.direction));
+			}
+		}
+	}
+}
+public class ExplosiveTrapCane : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2ExplosiveTrapT2Popper;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .5f;
+			damage.Base += 10;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.minion && globalItem.Item_Counter1[index] <= 0) {
+			player.Center.LookForHostileNPC(out List<NPC> npclist, 250);
+			int damage = 100;
+			float radius = 250;
+			for (int i = 0; i < 35; i++) {
+				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
+				Main.dust[smokedust].noGravity = true;
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+				int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+				int dust3 = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
+				Main.dust[dust3].noGravity = true;
+				Main.dust[dust3].scale = Main.rand.NextFloat(.75f, 1f);
+			}
+			if (npclist.Count > 0) {
+				foreach (var npc in npclist) {
+					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, -1));
+				}
+			}
+		}
+	}
+}
+public class ExplosiveTrapStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2ExplosiveTrapT3Popper;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .3f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (globalItem.Item_Counter1[index] <= 0) {
+			int damage = player.GetWeaponDamage(item) * 3;
+			if (item.type == ItemID.DD2ExplosiveTrapT1Popper
+				|| item.type == ItemID.DD2ExplosiveTrapT2Popper
+				|| item.type == ItemID.DD2ExplosiveTrapT3Popper) {
+				damage *= 2;
+				damage += 100;
+			}
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + Main.rand.NextVector2Circular(300, 300), Vector2.Zero, ProjectileID.DD2ExplosiveTrapT3Explosion, damage, 1, player.whoAmI);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+		}
+	}
+}
+public class BallistaRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2BallistraTowerT1Popper;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .5f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		if (item.type == ItemID.DD2ExplosiveTrapT1Popper
+			|| item.type == ItemID.DD2ExplosiveTrapT2Popper
+			|| item.type == ItemID.DD2ExplosiveTrapT3Popper) {
+			handler.PiercingDamage += .7f;
+		}
+		handler.PiercingDamage += .3f;
+	}
+}
+public class BallistaCane : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2BallistraTowerT2Popper;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Summon) {
+			damage += .5f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (globalItem.Item_Counter1[index] <= 0) {
+			int damage = player.GetWeaponDamage(item) + 45;
+			if (item.type == ItemID.DD2ExplosiveTrapT1Popper
+				|| item.type == ItemID.DD2ExplosiveTrapT2Popper
+				|| item.type == ItemID.DD2ExplosiveTrapT3Popper) {
+				damage = (int)(damage * 1.5f);
+			}
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center,
+				(Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15
+				, ProjectileID.DD2BallistraProj, damage, 1, player.whoAmI);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
+		}
+	}
+}
+public class BallistaStaff : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DD2BallistraTowerT3Popper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (player.HasBuff(BuffID.BallistaPanic)) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 20);
+				int damage = player.GetWeaponDamage(item) + 25;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center,
+					Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.2f), ProjectileID.DD2BallistraProj, damage, 1, player.whoAmI);
+			}
+		}
+
+	}
+	public override void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		player.AddBuff(BuffID.BallistaPanic, ModUtils.ToSecond(5));
+	}
+	public override void OnHitByProjectile(int index, EnchantmentGlobalItem globalItem, Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		player.AddBuff(BuffID.BallistaPanic, ModUtils.ToSecond(5));
 	}
 }
