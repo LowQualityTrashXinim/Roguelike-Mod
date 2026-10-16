@@ -74,7 +74,7 @@ internal class InfoMenuUI : UIState {
 			if (string.IsNullOrEmpty(text.Text)) {
 				return;
 			}
-			textpanel.InfoText = text.info.Localization;
+			textpanel.InfoText = text.info.ModifyDescription();
 		}
 	}
 
@@ -140,11 +140,11 @@ public class InfoMenuPanelThatCanScroll : Roguelike_UIPanel {
 			out int lineCount
 		).Where(line => line is not null).ToArray();
 
-		maxLinePosition = Math.Max(lines.Length - 15, 0);
+		maxLinePosition = Math.Max(lines.Length - 20, 0);
 		linePosition = Math.Clamp(linePosition, 0, maxLinePosition);
 
 		float yOffset = 0f;
-		for (int i = linePosition; i < Math.Min(linePosition + 15, lines.Length); i++) {
+		for (int i = linePosition; i < Math.Min(linePosition + 20, lines.Length); i++) {
 			string text2 = lines[i];
 			ChatManager.DrawColorCodedStringWithShadow(
 				spriteBatch,
@@ -180,6 +180,9 @@ public abstract class ModInformation : ModType {
 	}
 	public virtual string LocalizationName => "";
 	public string Localization => ModUtils.LocalizationText("Info", LocalizationName);
+	public string ModifyDescription() {
+		return Localization;
+	}
 }
 public class HallowedGaze_ModInfo : ModInformation {
 	public override string LocalizationName => "HallowedGaze";
@@ -204,4 +207,13 @@ public class WorldProgression_ModInfo : ModInformation {
 }
 public class PiercingDamage_ModInfo : ModInformation {
 	public override string LocalizationName => "PiercingDamage";
+}
+public class SynergyDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "SynergyDamage";
+}
+public class DebuffDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "DebuffDamage";
+}
+public class TrueDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "TrueDamage";
 }

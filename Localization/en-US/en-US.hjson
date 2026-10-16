@@ -62,6 +62,7 @@ Mods: {
 			WorldProgression:
 				'''
 				World progression:
+
 				Everytime you defeated a boss, the boss gain a stats boosted.
 				All of the enemies also gain a stats boost.
 				At certain progression line, some aspect of the world become much more hazardous
@@ -73,7 +74,43 @@ Mods: {
 			PiercingDamage:
 				'''
 				Piercing damage :
-				Everytime your weapon pierce, increases the damage dealt on next hit.
+
+				Everytime your projectile pierce, increases the damage dealt of that projectile.
+				Piercing damage does not applied to minion that does contact attack damage.
+				'''
+			DebuffDamage:
+				'''
+				Debuff damage :
+
+				Not to be confused with damage overtime increases !
+				Debuff damage referred to extra damage dealt on enemy with debuff active on them.
+				The debuff damage is increased as a base value for target's taken damage
+				For every instance of active debuff on enemy, increases debuff damage multiplier by 10%
+				'''
+			SynergyDamage:
+				'''
+				Synergy damage :
+
+				Synergy damage is damage increases applied after you switch weapon.
+				This make the next attack in the new weapon dealt increases damage.
+				If the item is a synergy item however, the damage is instead treated as 
+				normal weapon damage increases.
+				'''
+			TrueDamage:
+				'''
+				True damage :
+
+				There are 3 different kinds of true damage in this mod however they all have 1 
+				same attribute being that ability to ignore target's defenses and damage reduction.
+
+				- True damage conversion
+				This will instead converse part of your weapon damage into true damage
+
+				- True damage stats
+				Your attack gain extra more damage as true damage
+
+				- True damage type
+				If your weapon has true damage type, meaning it will inherit true damage attribute.
 				'''
 		}
 

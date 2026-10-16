@@ -1118,9 +1118,9 @@ ExplosiveTrapStaff.Description:
 BallistaRod.Description:
 	'''
 	+50% summon damage
-	Increases piercing damage by 30%
+	Increases piercing damage by 10%
 	If held weapon is [i:3824], [i:3825] or [i:3826] :
-	+ Above piercing damage increased by another 70%
+	+ Above piercing damage increased by another 10%
 	'''
 BallistaCane.Description:
 	'''

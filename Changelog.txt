@@ -166,6 +166,10 @@ Along with above change, this UI section will also be repurposed.
 838/ Reworked Enchantment wiki to support filter and make it bigger.
 839/ Fix a bug caused by newly implemented Energy To Power skill which caused energy to go into negative.
 840/ Added BallistaRod, BallistaCane, BallistaStaff, ExplosiveTrapRod, ExplosiveTrapCane and ExplosiveTrapStaff enchantment.
+841/ Buffed Trimarang, Blade of Grass, Light's Bane, Blood Butcherer, Volcano, Tentacle Spike, Candy Cane Sword and Hand gun.
+842/ Renamed bunch of files in the mods.
+843/ Slight modification to information modtype for easier time changing description and information UI itself to show text better.
+844/ Added in explanation for Debuff damage, Piercing damage, Synergy Damage and True damage
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

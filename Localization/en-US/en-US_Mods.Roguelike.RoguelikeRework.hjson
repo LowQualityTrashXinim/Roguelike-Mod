@@ -218,6 +218,11 @@ DeathSickle:
 	+ Killing enemy while helding death sickle may spawn a soul.
 	Collecting the soul grant temporary power boost
 	'''
+Handgun:
+	'''
+	Waiting for 1s will make the next shot deal extra 20 damage
+	And if weapon is using normal bullet then it will be changed to high velocity bullet
+	'''
 MechanicalLens:
 	'''
 	Increases critical strike damage by 55%

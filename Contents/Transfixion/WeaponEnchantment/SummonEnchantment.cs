@@ -793,9 +793,9 @@ public class BallistaRod : ModEnchantment {
 		if (item.type == ItemID.DD2ExplosiveTrapT1Popper
 			|| item.type == ItemID.DD2ExplosiveTrapT2Popper
 			|| item.type == ItemID.DD2ExplosiveTrapT3Popper) {
-			handler.PiercingDamage += .7f;
+			handler.PiercingDamage += .1f;
 		}
-		handler.PiercingDamage += .3f;
+		handler.PiercingDamage += .1f;
 	}
 }
 public class BallistaCane : ModEnchantment {
