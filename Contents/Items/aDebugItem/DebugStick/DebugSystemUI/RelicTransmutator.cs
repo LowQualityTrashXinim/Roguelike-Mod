@@ -100,7 +100,7 @@ class RelicTransmuteUI : UIState {
 		panel_sidePanel.Width.Pixels = 72;
 		panel_Main.Append(panel_sidePanel);
 
-		exit = new(TextureAssets.InventoryBack7);
+		exit = new();
 		exit.UISetWidthHeight(52, 52);
 		panel_sidePanel.Append(exit);
 

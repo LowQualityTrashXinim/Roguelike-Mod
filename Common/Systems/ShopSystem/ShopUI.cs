@@ -55,7 +55,7 @@ public class ShopUI : UIState {
 		txpanel_ShopHeaderText.Height.Percent = .1f;
 		panel_Shop.Append(txpanel_ShopHeaderText);
 
-		exitButton = new(TextureAssets.InventoryBack);
+		exitButton = new();
 		exitButton.HAlign = 1f;
 		exitButton.VAlign = .5f;
 		exitButton.UISetWidthHeight(52, 52);

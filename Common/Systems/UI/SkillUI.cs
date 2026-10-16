@@ -50,7 +50,7 @@ public class SkillUI : UIState {
 		durationText.VAlign = 1f;
 		panel.Append(durationText);
 
-		exitUI = new ExitUI(TextureAssets.InventoryBack10);
+		exitUI = new();
 		exitUI.UISetWidthHeight(52, 52);
 		exitUI.HAlign = 1f;
 		exitUI.VAlign = .5f;

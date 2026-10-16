@@ -71,7 +71,7 @@ class SkillGetterUI : UIState {
 	List<btn_Skill> btn_list;
 	public const int SKILL_MAXLINE = 10;
 	public override void OnInitialize() {
-		btn_select = new ExitUI(TextureAssets.InventoryBack);
+		btn_select = new();
 		btn_select.HAlign = .65f;
 		btn_select.VAlign = .5f;
 		Append(btn_select);

@@ -171,6 +171,11 @@ Along with above change, this UI section will also be repurposed.
 843/ Slight modification to information modtype for easier time changing description and information UI itself to show text better.
 844/ Added in explanation for Debuff damage, Piercing damage, Synergy Damage and True damage
 845/ Added Night Infection weapon tag.
+846/ Fixed a typo in perk named "GreedPrivilege" and "Sloth Vessel".
+847/ Reworked Crimson Armor to be stronger than it's vanilla variant in what it suppose to do.
+848/ Exit button is now changed to UI text.
+849/ Fixed a bug in the debug spoil menu.
+848/ Updated mod version from 0.0.20.7 to 0.0.20.8 ./.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems.Achievement;
+using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.ReviveSystem;
 using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.BuffAndDebuff;
 using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Projectiles;
+using Roguelike.Contents.Transfixion.Artifacts;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
 using Roguelike.Texture;
@@ -1092,6 +1095,124 @@ public class FinalMoment : Perk {
 			if (player.statLife <= 10) {
 				player.EasyKillPlayer($"{player.name} had decessed", 90000);
 			}
+		}
+	}
+}
+public class GreedPrivilege : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 2;
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+		handle.ChanceDropModifier += .35F;
+		float stats = 1;
+		foreach (var item in player.inventory) {
+			if (item.IsAWeapon()) {
+				stats += .001f * StackAmount(player);
+			}
+		}
+		handle.AddStatsToPlayer(PlayerStats.PureDamage, Additive: stats);
+	}
+}
+public class TheBigMoment : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 5;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		float chance = player.GetModPlayer<PlayerStatsHandle>().DropModifier.ApplyTo(1);
+		if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
+			modifiers.SourceDamage *= 2;
+		}
+		else if (Main.rand.NextFloat() <= chance * .025f * StackAmount(player)) {
+			modifiers.SourceDamage += 1;
+		}
+		else if (Main.rand.NextFloat() <= chance * .05f * StackAmount(player)) {
+			player.Heal((int)chance);
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		float chance = player.GetModPlayer<PlayerStatsHandle>().DropModifier.ApplyTo(1);
+		if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
+			modifiers.SourceDamage *= 2;
+		}
+		else if (Main.rand.NextFloat() <= chance * .025f * StackAmount(player)) {
+			modifiers.SourceDamage += 1;
+		}
+		else if (Main.rand.NextFloat() <= chance * .05f * StackAmount(player)) {
+			player.Heal((int)chance);
+		}
+	}
+}
+public class EndlessHunger : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override void UpdateEquip(Player player) {
+		player.endurance += .05f * StackAmount(player);
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (player.endurance >= .2f && player.statLife <= 50) {
+			player.Heal((int)(hurtInfo.SourceDamage * Safe_MultiScale(player.endurance)));
+		}
+	}
+	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		if (player.endurance >= .2f && player.statLife <= 50) {
+			player.Heal((int)(hurtInfo.SourceDamage * Safe_MultiScale(player.endurance)));
+		}
+	}
+	private static float Safe_MultiScale(float endurance) => Main.rand.NextFloat(Math.Min(endurance, 1f), Math.Max(endurance, 1f));
+}
+public class Satisfaction : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override void UpdateEquip(Player player) {
+		if (!player.IsHealthAbovePercentage(.4f)) {
+			player.endurance += .1f * StackAmount(player);
+		}
+		else if (player.statLife >= player.statLifeMax2) {
+			player.endurance += 1f;
+		}
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!player.IsHealthAbovePercentage(.6f)) {
+			player.Heal(Math.Clamp((int)(hit.Damage * .1f), 0, 100));
+		}
+	}
+}
+public class SlothVessel : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<TokenOfSlothArtifact>() || AchievementSystem.IsAchieved("TokenOfSloth");
+	}
+	public override void UpdateEquip(Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Iframe, 1 + .1f * StackAmount(player));
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (player.immune || player.immuneTime > 0 && Main.rand.NextFloat() <= .05f * StackAmount(player)) {
+			player.Heal((int)(item.damage * .1f));
+		}
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (player.immune || player.immuneTime > 0 && Main.rand.NextFloat() <= .05f * StackAmount(player)) {
+			player.Heal((int)(proj.damage * .1f));
+		}
+	}
+	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .1f * StackAmount(player)) {
+			modifiers.SetMaxDamage(1);
+		}
+	}
+	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .1f * StackAmount(player)) {
+			modifiers.SetMaxDamage(1);
 		}
 	}
 }

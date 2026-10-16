@@ -91,7 +91,7 @@ internal class PerkDebugUI : UIState {
 			}
 		}
 
-		exit = new(TextureAssets.InventoryBack);
+		exit = new();
 		exit.UISetWidthHeight(52, 52);
 		exit.HAlign = 1f;
 		panel_Head.Append(exit);

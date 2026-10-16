@@ -81,7 +81,7 @@ internal class ArtifactDebugMenu : UIState {
 		textpanel_ArtifactDesc.DrawPanel = false;
 		panel_ArtifactBody.Append(textpanel_ArtifactDesc);
 
-		exit = new(TextureAssets.InventoryBack);
+		exit = new();
 		exit.UISetWidthHeight(52, 52);
 		exit.HAlign = 1f;
 		panel_ArtifactHeader.Append(exit);

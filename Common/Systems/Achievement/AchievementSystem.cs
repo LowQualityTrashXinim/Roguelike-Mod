@@ -172,7 +172,7 @@ public class AchievementUI : UIState {
 		achievementSelectingPanel.MarginRight = 100;
 		main.Append(achievementSelectingPanel);
 
-		exitbtn = new(asset);
+		exitbtn = new();
 		exitbtn.UISetWidthHeight(52, 52);
 		exitbtn.HAlign = 1f;
 		exitbtn.VAlign = .5f;

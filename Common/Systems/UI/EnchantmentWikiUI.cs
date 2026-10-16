@@ -110,7 +110,7 @@ public class EnchantmentMenuWikiUI : UIState {
 		footerPanel.PaddingBottom = 5;
 		holderPanel.Append(footerPanel);
 
-		exit = new(TextureAssets.InventoryBack);
+		exit = new();
 		exit.HAlign = 1f;
 		exit.VAlign = .5f;
 		headerPanel.Append(exit);

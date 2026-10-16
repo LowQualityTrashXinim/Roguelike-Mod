@@ -53,7 +53,7 @@ public class DivineHammerUIState : UIState {
 		BodyPanel.HAlign = 0;
 		Mainpanel.Append(BodyPanel);
 
-		exit = new ExitUI(tex);
+		exit = new();
 		exit.UISetWidthHeight(52, 52);
 		exit.HAlign = 1f;
 		HeaderPanel.Append(exit);

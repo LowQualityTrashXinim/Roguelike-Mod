@@ -295,7 +295,7 @@ public partial class TransmutationUIState {
 		btn_ItemShift.SwapHightlightColorWithOriginalColor();
 		headerPanel.Append(btn_ItemShift);
 
-		btn_exit = new ExitUI(tex);
+		btn_exit = new();
 		btn_exit.UISetWidthHeight(52, 52);
 		btn_exit.HAlign = 1f;
 		btn_exit.VAlign = .5f;

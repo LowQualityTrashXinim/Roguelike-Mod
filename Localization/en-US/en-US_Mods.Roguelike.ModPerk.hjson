@@ -669,8 +669,8 @@ TitanPower: {
 		'''
 }
 
-GreedPrivilage: {
-	DisplayName: Greed Privilage
+GreedPrivilege: {
+	DisplayName: Greed Privilege
 	Description:
 		'''
 		+ Increases your chance for extra loot by 35%
@@ -848,8 +848,8 @@ SoulShatter: {
 		'''
 }
 
-SlothVessle: {
-	DisplayName: Sloth Vessle
+SlothVessel: {
+	DisplayName: Sloth Vessel
 	Description:
 		'''
 		+ You have 10% chance to resist an attack

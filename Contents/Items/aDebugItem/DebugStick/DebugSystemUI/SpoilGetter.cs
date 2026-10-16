@@ -35,7 +35,7 @@ class SpoilGetterUI : UIState {
 
 		btn_list = new();
 
-		btn_select = new ExitUI(TextureAssets.InventoryBack);
+		btn_select = new();
 		btn_select.HAlign = .65f;
 		btn_select.VAlign = .5f;
 		Append(btn_select);
@@ -110,7 +110,12 @@ public class SpoilUIDebugButton : Roguelike_UIImageButton {
 				Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
-				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription() + $"\n{spoil.Name}", spoil.RareValue);
+				if (spoil.RareValue == 999) {
+					Main.instance.MouseText($"[c/{SpoilDropRarity.ColorBaseOnRareValue(999).Hex3()}:{spoil.FinalDisplayName()}]", spoil.FinalDescription());
+				}
+				else {
+					Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
+				}
 			}
 		}
 		else {

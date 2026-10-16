@@ -83,35 +83,3 @@ public class TokenOfSlothPlayer : ModPlayer {
 		}
 	}
 }
-public class SlothVessle : Perk {
-	public override void SetDefaults() {
-		CanBeStack = true;
-		StackLimit = 3;
-	}
-	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfSlothArtifact>() || AchievementSystem.IsAchieved("TokenOfSloth");
-	}
-	public override void UpdateEquip(Player player) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Iframe, 1 + .1f * StackAmount(player));
-	}
-	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (player.immune || player.immuneTime > 0 && Main.rand.NextFloat() <= .05f * StackAmount(player)) {
-			player.Heal((int)(item.damage * .1f));
-		}
-	}
-	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (player.immune || player.immuneTime > 0 && Main.rand.NextFloat() <= .05f * StackAmount(player)) {
-			player.Heal((int)(proj.damage * .1f));
-		}
-	}
-	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
-		if (Main.rand.NextFloat() <= .1f * StackAmount(player)) {
-			modifiers.SetMaxDamage(1);
-		}
-	}
-	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (Main.rand.NextFloat() <= .1f * StackAmount(player)) {
-			modifiers.SetMaxDamage(1);
-		}
-	}
-}

@@ -1,3 +1,12 @@
+!!! MASSIVE WARNING FOR PLAYTESTER !!!
+
+Do not play this mod without back up prior, the mod will add in new property and those new property if added into the current world
+the consequences is irreversible indefinitely even after unsubcribing to the mod.
+
+YOU SHOULD CREATE A WORLD AND PLAYER BACKUP BEFORE ENABLING THIS MOD
+
+The mod is extremely unstable so please report to in the main discord server in the dev channel
+
 "Welcome back, I have been waiting for you...Now, shall we venture in ?"
 
 Everlasting is a mod central around roguelike, exploration, and much more ! Most of what you know in terraria is not the same with this mod.
@@ -5,3 +14,5 @@ This is a whole standalone mod but using Tmodloader API as a way to make it easi
 Multiplayer doesn't works, unless there are extremely high demand for it along with the support that we need, there won't be any plans to make multiplayer playable.
 This mod bring entirely new whole experiences that never seen before in terraria modding, new systems to play around, new weapons to look for and craft, and so much secrets waiting to be discovered !
 Completed vanilla items overhaul, from just visual to new functionality, you maybe shocked what we did to copper shortsword !
+
+For more information please join our discord server : https://discord.gg/YqN5z5WVaS

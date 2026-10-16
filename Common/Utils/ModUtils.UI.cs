@@ -631,11 +631,9 @@ namespace Roguelike.Common.Utils {
 			}
 		}
 	}
-	public class ExitUI : UIImageButton {
-		Texture2D textureInner;
-		public ExitUI(Asset<Texture2D> texture) : base(texture) {
-			SetVisibility(.7f, 1f);
-			textureInner = texture.Value;
+	public class ExitUI : UIText {
+		public ExitUI(float textScale = 1, bool large = false) : base("Close", textScale, large) {
+
 		}
 
 		public override void LeftClick(UIMouseEvent evt) {
@@ -643,17 +641,17 @@ namespace Roguelike.Common.Utils {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
+			if (IsMouseHovering) {
+				TextColor = Color.Yellow;
+			}
+			else {
+				TextColor = Color.White;
+			}
 			base.Draw(spriteBatch);
-			Texture2D texture = ModContent.Request<Texture2D>(ModTexture.CrossSprite).Value;
-			Vector2 rect = this.GetDimensions().Position() + textureInner.Size() * .5f + Vector2.One;
-			spriteBatch.Draw(texture, rect, null, Color.White, 0, textureInner.Size() * .5f, .7f, SpriteEffects.None, 0);
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
-			if (IsMouseHovering) {
-				Main.instance.MouseText("Exit");
-			}
 		}
 	}
 	public class ItemHolderSlot : Roguelike_UIImage {

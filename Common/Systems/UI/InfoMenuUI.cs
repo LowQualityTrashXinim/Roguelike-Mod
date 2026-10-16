@@ -33,7 +33,7 @@ internal class InfoMenuUI : UIState {
 		headerPanel.UISetWidthHeight(600, 80);
 		mainPanel.Append(headerPanel);
 
-		exit = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT));
+		exit = new();
 		exit.HAlign = 1f;
 		exit.VAlign = 1f;
 		exit.UISetWidthHeight(52, 52);

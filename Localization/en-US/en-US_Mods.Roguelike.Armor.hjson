@@ -467,3 +467,15 @@ MeteorArmor: {
 		+50% Jump boost
 		'''
 }
+
+CrimsonArmor: {
+	SetBonus:
+		'''
+		Increases movement speed by 25%
+		and jump boost by 30%
+		Strengthen masive regeneration ability
+		'''
+	Head: +1 life regeneration
+	Body: +1 life regeneration
+	Leg: +1 life regeneration
+}

@@ -154,7 +154,7 @@ namespace Roguelike.Contents.Items.Toggle.UserInfo {
 			//Artifact
 			ArtifactPage_Initialization(ref marginTopForButton);
 
-			btn_Exit = new ExitUI(TextureAssets.InventoryBack);
+			btn_Exit = new();
 			btn_Exit.HAlign = .5f;
 			btn_Exit.VAlign = 1;
 			btn_Exit.UISetWidthHeight(52, 52);
