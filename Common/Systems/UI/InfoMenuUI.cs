@@ -202,6 +202,9 @@ public class ElectricConductor_ModInfo : ModInformation {
 public class Frostbite_ModInfo : ModInformation {
 	public override string LocalizationName => "Frostbite";
 }
+public class NightInfection_ModInfo : ModInformation {
+	public override string LocalizationName => "NightInfection";
+}
 public class WorldProgression_ModInfo : ModInformation {
 	public override string LocalizationName => "WorldProgression";
 }

@@ -170,6 +170,7 @@ Along with above change, this UI section will also be repurposed.
 842/ Renamed bunch of files in the mods.
 843/ Slight modification to information modtype for easier time changing description and information UI itself to show text better.
 844/ Added in explanation for Debuff damage, Piercing damage, Synergy Damage and True damage
+845/ Added Night Infection weapon tag.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

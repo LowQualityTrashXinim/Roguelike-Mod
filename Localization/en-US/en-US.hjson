@@ -59,6 +59,17 @@ Mods: {
 				While enemy is inflicted with chilled, frozen debuff damage taken is increased by 1000%
 				After dealt damage, remove the chilled or frozen debuff on the enemy
 				'''
+			NightInfection:
+				'''
+				[c/6f00ab:Night Infection]:
+				Deal 10 DoT that get stronger after each hit and decreases target defenses by 20.
+				Striking enemy while enemy have [c/6f00ab:Night Infection] 
+				debuff will increases their taken damage by 5%, up to 100%.
+				If enemy have both [c/6f00ab:Night Infection] and Shadow flame debuff,
+				the damage taken is multiplied by 1.25x.
+				Everytime striking enemy with [c/6f00ab:Night Infection] active,
+				It have 1 in 5 chance to create 3 shadow flame tentacle at target location.
+				'''
 			WorldProgression:
 				'''
 				World progression:
