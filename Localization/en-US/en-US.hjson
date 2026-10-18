@@ -123,6 +123,39 @@ Mods: {
 				- True damage type
 				If your weapon has true damage type, meaning it will inherit true damage attribute.
 				'''
+			LootBox:
+				'''
+				Each lootbox have their own loot pool and also chance of item level, 
+				the higher the lootbox tier is, the better the loot become
+
+				The following are each tier of lootboxes in order from above to below:
+				Tier1 : Wooden Lootbox
+				Tier2 : Iron Lootbox
+				Tier3 : Silver Lootbox
+				Tier4 : Gold Lootbox
+				Tier5 : Shadow Lootbox
+
+				The following lootboxes are exception where it inherit properties of Tier 3 to Tier 5 lootbox
+				but contain their exclusive lootbox along with normal loot pool
+
+				- Blood lootbox 
+				- Ice lootbox
+				- Corruption lootbox
+				- Crimson lootbox
+				- Crystal lootbox
+				- Mechanical lootbox
+				- Nature lootbox
+				- Honey lootbox
+				- Duke lootbox
+				- Empress lootbox,
+				- Lunatic lootbox
+				- Moon lootbox
+
+				The last few lootbox are exception to all above rule
+
+				- Black lootbox
+				- Rainbow Lootbox
+				'''
 		}
 
 		Conditions.RoguelikeModeCursed: The recipe is locked while you are playing this mod.

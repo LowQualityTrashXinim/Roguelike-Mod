@@ -23,6 +23,9 @@ class WoodenLootBox : LootBoxBase {
 				types.Remove(ItemPool.GetPoolType<Tier1Pool>());
 			}
 		}
+		if(Main.rand.NextFloat() <= .05f) {
+			types.Add(ItemPool.GetPoolType<Tier3Pool>());
+		}
 		return types;
 	}
 	public override void AbsoluteRightClick(Player player) {

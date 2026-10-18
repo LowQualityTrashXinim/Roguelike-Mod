@@ -5,6 +5,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Systems.BossRushMode
 {
@@ -12,7 +13,7 @@ namespace Roguelike.Common.Systems.BossRushMode
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		}
 		public override bool PreAI(NPC npc) {
-			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (RoguelikeWorldProperty.TerrariaWorld) {
 				return base.PreAI(npc);
 			}
 			if (npc.type == NPCID.OldMan) {

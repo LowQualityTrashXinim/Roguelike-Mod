@@ -61,23 +61,9 @@ internal class UniversalSystem : ModSystem {
 		}
 		return NPC.downedMoonlord;
 	}
-	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 
-	/// <summary>
-	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="RogueLikeConfig"/><br/>
-	/// Only use this in location where you know world generation take place after the logic<br/>
-	/// And even so, it is highly not recommend to not do so
-	/// </summary>
-	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
-	/// <returns></returns>
-	public static bool CanAccessContent(string context) {
-		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
-		if (context == HELLISH_MODE)
-			return config.HellishEndeavour;
-		return false;
-	}
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
@@ -497,22 +483,22 @@ public class UniversalPlayer : ModPlayer {
 	public ulong TimeLimit = 0;
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (UniqueID == string.Empty) {
-			ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using a unrecognized player character ");
-			UniqueID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, Player.name + Main.worldName);
-		}
-		else {
-			if (UniqueWorldID == string.Empty) {
-				UniqueWorldID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, Player.name + Main.worldName);
-				uiSystemInstance.UniqueWorldPlayerID = UniqueWorldID;
-				RoguelikeData.Run_Amount++;
-			}
-			else {
-				if (UniqueWorldID != uiSystemInstance.UniqueWorldPlayerID) {
-					ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using different player character in adifferent world");
-				}
-			}
-		}
+		//if (UniqueID == string.Empty) {
+		//	ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using a unrecognized player character ");
+		//	UniqueID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, Player.name + Main.worldName);
+		//}
+		//else {
+		//	if (UniqueWorldID == string.Empty) {
+		//		UniqueWorldID = RoguelikeData.Run_Amount + ModUtils.JumboString(Main.rand, Player.name + Main.worldName);
+		//		uiSystemInstance.UniqueWorldPlayerID = UniqueWorldID;
+		//		RoguelikeData.Run_Amount++;
+		//	}
+		//	else {
+		//		if (UniqueWorldID != uiSystemInstance.UniqueWorldPlayerID) {
+		//			ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using different player character in a different world");
+		//		}
+		//	}
+		//}
 		if (uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
 			ModUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");
 			Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;

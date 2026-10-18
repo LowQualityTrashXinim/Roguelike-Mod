@@ -28,6 +28,7 @@ using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Contents.Items.Lootbox.MiscLootbox;
 using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
 using Roguelike.Common.Systems.Skill;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -154,6 +155,13 @@ namespace Roguelike.Common.Global {
 			IEnumerable<Item> itemList = StartingItem();
 			int index = 0;
 			int length = 50;
+			for (int i = 0; i < Player.inventory.Length; i++) {
+				Item item = Player.inventory[i];
+				if (item == null || item.type == ItemID.None) {
+					break;
+				}
+				item.TurnToAir();
+			}
 			foreach (var item in itemList) {
 				if (index >= length) {
 					Player.QuickSpawnItem(Player.GetSource_FromThis(), item);
@@ -193,31 +201,33 @@ namespace Roguelike.Common.Global {
 		public IEnumerable<Item> StartingItem() {
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
-			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				yield return new Item(ModContent.ItemType<LunchBox>());
-				LifeCrystal += 15;
-				ManaCrystal += 9;
-				if (UniversalSystem.CanEnchantmentBeAccess()) {
-					yield return new Item(ModContent.ItemType<DivineHammer>());
-				}
-				if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
-					if (Main.rand.NextBool(10)) {
-						yield return new Item(ModContent.ItemType<WorldEssence>());
+			if (!RoguelikeWorldProperty.TerrariaWorld) {
+				if (RoguelikeWorldProperty.BossRushWorld) {
+					yield return new Item(ModContent.ItemType<LunchBox>());
+					LifeCrystal += 15;
+					ManaCrystal += 9;
+					if (UniversalSystem.CanEnchantmentBeAccess()) {
+						yield return new Item(ModContent.ItemType<DivineHammer>());
 					}
+					if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
+						if (Main.rand.NextBool(10)) {
+							yield return new Item(ModContent.ItemType<WorldEssence>());
+						}
+					}
+					yield return new Item(ModContent.ItemType<UserInfoTablet>());
+					yield return new Item(ModContent.ItemType<TransmuteTablet>());
+					yield return new Item(ModContent.ItemType<SkillOrb>());
+					yield return new Item(ItemID.DiamondHook);
+					yield return new Item(ItemID.CloudinaBottle);
+					yield return new Item(ItemID.HermesBoots);
+					yield return new Item(ModContent.ItemType<BossRushModeActivation>());
+					yield return new Item(ModContent.ItemType<SpoilBag>(), 7);
+					yield return new Item(ModContent.ItemType<StarterLootBox>());
 				}
-				yield return new Item(ModContent.ItemType<UserInfoTablet>());
-				yield return new Item(ModContent.ItemType<TransmuteTablet>());
-				yield return new Item(ModContent.ItemType<SkillOrb>());
-				yield return new Item(ItemID.DiamondHook);
-				yield return new Item(ItemID.CloudinaBottle);
-				yield return new Item(ItemID.HermesBoots);
-				yield return new Item(ModContent.ItemType<BossRushModeActivation>());
-				yield return new Item(ModContent.ItemType<SpoilBag>(), 7);
-				yield return new Item(ModContent.ItemType<StarterLootBox>());
-			}
-			else {
-				yield return new Item(ModContent.ItemType<WoodenLootBox>());
-				yield return new Item(ItemID.GrapplingHook);
+				else {
+					yield return new Item(ModContent.ItemType<WoodenLootBox>());
+					yield return new Item(ItemID.GrapplingHook);
+				}
 			}
 			if (Secret_TrueGod) {
 				yield return new Item(ModContent.ItemType<RainbowLootBox>());
@@ -225,9 +235,9 @@ namespace Roguelike.Common.Global {
 			if (Secret_Druggies) {
 				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 			}
-			//if (Player.IsDebugPlayer()) {
-			//	yield return new Item(ModContent.ItemType<MainDebugStick>());
-			//}
+			if (Player.IsDebugPlayer()) {
+				yield return new Item(ModContent.ItemType<MainDebugStick>());
+			}
 			if (Secret_NinjaMode) {
 				yield return new Item(ItemID.Katana);
 				yield return new Item(ItemID.Shuriken, 100);
@@ -282,12 +292,6 @@ namespace Roguelike.Common.Global {
 						yield return item;
 					}
 				}
-			}
-		}
-
-		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
-			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				itemsByMod["Terraria"].Clear();
 			}
 		}
 		public int amountOfTimeGotHit = 0;

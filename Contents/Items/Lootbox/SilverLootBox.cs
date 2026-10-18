@@ -13,7 +13,17 @@ namespace Roguelike.Contents.Items.Lootbox {
 			Item.rare = ItemRarityID.Green;
 		}
 		public override List<int> Set_ItemPool() {
-			return new List<int> { ItemPool.GetPoolType<UniversalPool>() };
+			List<int> types = new List<int> { ItemPool.GetPoolType<Tier1Pool>() };
+			if (Main.rand.NextFloat() <= .8f) {
+				types.Add(ItemPool.GetPoolType<Tier2Pool>());
+				if (Main.rand.NextFloat() <= .25f) {
+					types.Remove(ItemPool.GetPoolType<Tier1Pool>());
+				}
+			}
+			if (Main.rand.NextFloat() <= .1f) {
+				types.Add(ItemPool.GetPoolType<Tier3Pool>());
+			}
+			return types;
 		}
 		public override int WeaponLevelRangeRandomizer(Player player) {
 			return Main.rand.Next(1, 5);

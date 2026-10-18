@@ -65,7 +65,7 @@ ___________Rework weapon subclass such as Boomerang, yoyo, axe and hammer_______
 >> Using knock back value, attacking using hammer will release a shockwave
 >> Hammer deal blunt damage, and blunt weapon use a custom mechanic called Trauma shock.
 Trauma shock upon reaching full stack will make NPC much slower and more lose all defense.
-During Trauma shock, if NPC is being attacked, they will intake damage pernamenntly increases by 2%.
+During Trauma shock, if NPC is being attacked, they will taken damage pernamenntly increases by 2%.
 
 ___________Weapon balance todo list___________
 - Weapon that act like upgraded to their pre-hardmode will gain the same buff as their pre hardmode counter part

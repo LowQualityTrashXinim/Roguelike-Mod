@@ -176,6 +176,11 @@ Along with above change, this UI section will also be repurposed.
 848/ Exit button is now changed to UI text.
 849/ Fixed a bug in the debug spoil menu.
 848/ Updated mod version from 0.0.20.7 to 0.0.20.8 ./.
+849/ Disable different player and different world detection due to how wrong it is most of the time.
+850/ Deleted CanAccessContent check in Universal System.
+851/ Added Tier 3 loot drop.
+852/ Modified Wooden, Iron, Silver, Gold loot pool.
+853/ Attempted to fix starter item again.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
