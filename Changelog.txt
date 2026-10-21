@@ -181,6 +181,15 @@ Along with above change, this UI section will also be repurposed.
 851/ Added Tier 3 loot drop.
 852/ Modified Wooden, Iron, Silver, Gold loot pool.
 853/ Attempted to fix starter item again.
+854/ Updated mod version from 0.0.20.8 to 0.0.20.9 ./.
+855/ Fixed up ridicolous HP and damage scale of bosses.
+856/ Fixed up item not dropping in stack.
+857/ Deleted the code that responisble for deleting boss treasure bag but instead delete lootbox.
+858/ Reverted skeletron health stats that was used for showcasing.
+859/ Reduce BoC health exclusively cause it is currently too boring.
+860/ Added 2 new weapon effects.
+861/ Nerf Lucky Strike perk overall.
+862 / Updated mod version from 0.0.20.9 to 0.0.20.10 ./.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

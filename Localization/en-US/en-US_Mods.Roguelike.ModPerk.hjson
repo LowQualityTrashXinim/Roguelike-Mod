@@ -139,8 +139,8 @@ LuckyStrike: {
 		'''
 		Your attack have 20% chance to do any of the following
 		+ Your damage increases range from 15% to 100% when striking enemy
-		+ Multiply your damage by 2.0x
-		+ Healing you from 1 to 50 health
+		+ Multiply your damage by 1.25x to 2.0x
+		+ Healing you from 1 to 3 health
 		'''
 }
 

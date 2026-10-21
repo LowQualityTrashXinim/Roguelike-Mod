@@ -25,7 +25,6 @@ internal class Skeletron : GlobalNPC {
 	public override void SetDefaults(NPC entity) {
 		state = State.Hover;
 		entity.aiStyle = -1;
-		entity.lifeMax *= 4;
 		if (!Main.dedServ) {
 			//entity.soun = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LootboxLord_BossMusic");
 		}
@@ -879,7 +878,7 @@ internal class Skeletron : GlobalNPC {
 }
 public class Everlasting_Skeletron_Scene : ModSceneEffect {
 	public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Skeletron_BossMusic");
-	public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
+	public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
 	public override bool IsSceneEffectActive(Player player) {
 		return NPC.AnyNPCs(NPCID.SkeletronHead);
 	}

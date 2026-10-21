@@ -64,6 +64,18 @@ public class Effect11 : WeaponEffect {
 		damage.Base += 30;
 	}
 }
+public class Effect12 : WeaponEffect {
+	public override void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+		damage += .025f * (1 - player.statLife / (float)player.statLifeMax2) / .01f;
+	}
+}
+public class Effect13 : WeaponEffect {
+	public override void ModifyWeaponCrit(Player player, Item item, ref float crit) {
+		if (!player.IsHealthAbovePercentage(.5f)) {
+			crit += 30;
+		}
+	}
+}
 public class WeaponEffectPlayer : ModPlayer {
 	public bool Effect4 = false;
 	public int Effect5 = 0;

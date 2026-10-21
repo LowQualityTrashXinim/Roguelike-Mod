@@ -164,7 +164,7 @@ namespace Roguelike.Common.Global {
 			}
 			foreach (var item in itemList) {
 				if (index >= length) {
-					Player.QuickSpawnItem(Player.GetSource_FromThis(), item);
+					Player.QuickSpawnItem(Player.GetSource_FromThis(), item, item.stack);
 					continue;
 				}
 				for (int i = index; i < length; i++) {
