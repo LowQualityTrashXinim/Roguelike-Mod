@@ -57,14 +57,14 @@ Mods: {
 				Each stack will increases damage taken by 2% and each attack have 50% to deal extra 50% damage
 				At the 20th stack, the next strike will remove all stack and deal 420% damage
 				While enemy is inflicted with chilled, frozen debuff damage taken is increased by 1000%
-				After dealt damage, remove the chilled or frozen debuff on the enemy
+				After dealt damage, remove the chilled or frozen debuff which ever are active on the enemy
 				'''
 			NightInfection:
 				'''
 				[c/6f00ab:Night Infection]:
 				Deal 10 DoT that get stronger after each hit and decreases target defenses by 20.
-				Striking enemy while enemy have [c/6f00ab:Night Infection] 
-				debuff will increases their taken damage by 5%, up to 100%.
+				Striking enemy while enemy have [c/6f00ab:Night Infection] debuff 
+				will increases their taken damage by 5%, up to 100%.
 				If enemy have both [c/6f00ab:Night Infection] and Shadow flame debuff,
 				the damage taken is multiplied by 1.25x.
 				Everytime striking enemy with [c/6f00ab:Night Infection] active,
@@ -122,6 +122,25 @@ Mods: {
 
 				- True damage type
 				If your weapon has true damage type, meaning it will inherit true damage attribute.
+				'''
+			WeaponTag:
+				'''
+				Weapon tag and Weapon tag effect are 2 entirely different catagory
+
+				For weapon tag :
+				Almost every weapon contain a tag which is called weapon tag.
+				Weapon tag are to clarify outro effect specification of application
+
+				For Weapon tag effect :
+				Weapon tag effect will provide effect without needing any extra condition
+				while still act like a weapon tag. Example: Hallowed Gaze is a weapon tag 
+				'''
+			NegativeStatus:
+				'''
+				Not to be confused with debuff.
+
+				Negative status is a custom form of a status effect that is not considered to be a debuff
+				So this mean that debuff related mechanic won't be applied to negative status.
 				'''
 			LootBox:
 				'''
@@ -2940,10 +2959,14 @@ Mods: {
 					you gain a buff that massively boost your stats
 					Right click the buff icon to end the state early.
 
-					Alt attack during the state will instead summon for 4 copy of your swords and stars
-					And attacking will shoot the swords toward your cursor.
+					Entering Climax of Tragedy will immediately spawn 4 stars off screen which fly 
+					toward you slowly expanded. 
 					The Star after a while will explode and deal damage to 
 					surrounding enemy and heal you for 5% of max health.
+					Along with the start, also ummon 4 weak copy of your swords
+					Left click to make the sword shoot toward your cursor direciton.
+
+					During Climax of Tragedy, alt click even during cool down still alow you to dash.
 					'''
 			}
 

@@ -184,6 +184,9 @@ public abstract class ModInformation : ModType {
 		return Localization;
 	}
 }
+public class NegativeStatus_ModInfo : ModInformation {
+	public override string LocalizationName => "NegativeStatus";
+}
 public class HallowedGaze_ModInfo : ModInformation {
 	public override string LocalizationName => "HallowedGaze";
 }

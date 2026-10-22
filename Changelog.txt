@@ -189,7 +189,9 @@ Along with above change, this UI section will also be repurposed.
 859/ Reduce BoC health exclusively cause it is currently too boring.
 860/ Added 2 new weapon effects.
 861/ Nerf Lucky Strike perk overall.
-862 / Updated mod version from 0.0.20.9 to 0.0.20.10 ./.
+862/ Updated mod version from 0.0.20.9 to 0.0.20.10 ./.
+863/ Added information for negative status.
+864/ Fixed up Heart Break Instrument and readjust it's attacks again.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
