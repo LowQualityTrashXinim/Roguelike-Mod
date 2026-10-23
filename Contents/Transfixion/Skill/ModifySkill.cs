@@ -53,3 +53,109 @@ public class Modify_DistanceCast : ModSkill {
 		}
 	}
 }
+public class Modify_CastOffSetUp : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			position[i] = position[i].Add(0, 100);
+		}
+	}
+}
+public class Modify_CastOffSetLeft : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			position[i] = position[i].Add(-100, 0);
+		}
+	}
+}
+
+public class Modify_CastOffSetRight : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			position[i] = position[i].Add(100, 0);
+		}
+	}
+}
+
+public class Modify_CastOffSetDown : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			position[i] = position[i].Add(0, -100);
+		}
+	}
+}
+public class Modify_CastUp : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			Vector2 vel = velocity[i];
+			vel.Y = -1 * velocity[i].Length();
+			velocity[i] = vel;
+		}
+	}
+}
+public class Modify_CastDown : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			Vector2 vel = velocity[i];
+			vel.Y = 1 * velocity[i].Length();
+			velocity[i] = vel;
+		}
+	}
+}
+public class Modify_CastLeft : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			Vector2 vel = velocity[i];
+			vel.X = -1 * velocity[i].Length();
+			velocity[i] = vel;
+		}
+	}
+}
+public class Modify_CastRight : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 50;
+		Skill_Duration = 60;
+		Skill_Type = SkillTypeID.Modify;
+	}
+	public override void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) {
+		for (int i = 0; i < position.Count; i++) {
+			Vector2 vel = velocity[i];
+			vel.X = 1 * velocity[i].Length();
+			velocity[i] = vel;
+		}
+	}
+}

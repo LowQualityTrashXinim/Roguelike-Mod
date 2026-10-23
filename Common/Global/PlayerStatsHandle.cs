@@ -645,6 +645,8 @@ public partial class PlayerStatsHandle : ModPlayer {
 
 		AlwaysCritValue = 0;
 
+
+		Hostile_ProjectileVelocityAddition = 0;
 		HitTakenEffectivenessCoolDown = ModUtils.CountDown(HitTakenEffectivenessCoolDown);
 		if (HitTakenEffectivenessCoolDown <= 0 && HitTakenEffectiveness > 0) {
 			HitTakenEffectiveness -= .1f;

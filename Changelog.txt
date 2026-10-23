@@ -192,6 +192,13 @@ Along with above change, this UI section will also be repurposed.
 862/ Updated mod version from 0.0.20.9 to 0.0.20.10 ./.
 863/ Added information for negative status.
 864/ Fixed up Heart Break Instrument and readjust it's attacks again.
+865/ Added 8 new basic modify skills.
+866/ Added 2 new methods for developer to further modify projectile itself.
+867/ Slight improvement to skill debug UI.
+868/ Added a basic projectile AI modify mod type class.
+869/ Some code organizing.
+870/ Small clean up and documentation for the codebase.
+871/ Skill background are now different base on the skill type/classification.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

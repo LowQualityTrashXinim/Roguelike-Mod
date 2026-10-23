@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Roguelike.Common.General;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Texture;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Utils {
@@ -51,6 +54,31 @@ namespace Roguelike.Common.Utils {
 			}
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+		}
+		public static Asset<Texture2D> Get_SkillbackgroundTexture(int skillType) {
+			ModSkill skill = SkillModSystem.GetSkill(skillType);
+
+			if (skill == null)
+				return TextureAssets.InventoryBack10;
+
+			switch (skill.Skill_Type) {
+				case SkillTypeID.Projectile:
+					return TextureAssets.InventoryBack;
+				case SkillTypeID.Stats:
+					return TextureAssets.InventoryBack2;
+				case SkillTypeID.Modify:
+					return TextureAssets.InventoryBack3;
+				case SkillTypeID.Empowered:
+					return TextureAssets.InventoryBack15;
+				case SkillTypeID.Utility:
+					return TextureAssets.InventoryBack5;
+				case SkillTypeID.Summon:
+					return TextureAssets.InventoryBack6;
+				case SkillTypeID.Bundle:
+					return TextureAssets.InventoryBack7;
+				default:
+					return TextureAssets.InventoryBack10;
+			}
 		}
 	}
 }

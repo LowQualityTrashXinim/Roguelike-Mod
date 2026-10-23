@@ -24,7 +24,6 @@ using Roguelike.Contents.Items.NoneSynergy.SharpBoomerang;
 using Roguelike.Contents.Items.NoneSynergy.SingleBarrelMinishark;
 using Roguelike.Contents.Items.NoneSynergy.SnowballRifle;
 using Roguelike.Contents.Items.NoneSynergy.TrueEnchantedSword;
-using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.MoonStarBow;
 using Roguelike.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
 using Roguelike.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;

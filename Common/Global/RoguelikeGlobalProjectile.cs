@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems.Skill;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.BuilderItem;
 using Roguelike.Contents.Items.Consumable.Ammo;
@@ -9,6 +10,7 @@ using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.Unforgiving;
 using Roguelike.Contents.Projectiles;
 using Roguelike.Contents.Transfixion.Perks.PerkContents;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -19,6 +21,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 	public bool CanThisProjectileBeDevoured = true;
 
+	//This is the source controller, in the future we will add in more data type for source controller
+	//But if any of the following below that doesn't match what you want or find, you can instead use Source_CustomContextInfo
+	//To check your own source information and make your own declaration via parameter "misc"
 	public int Source_ItemType = -1;
 	public int Source_ProjectileType = -1;
 	public string Source_CustomContextInfo = string.Empty;
@@ -30,6 +35,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public bool IsFromNPC = false;
 
 	public int OnKill_ScatterShot = -1;
+	public bool ComeFromSkill = false;
 
 	public int NPC_WhoAmI = -1;
 	public float TravelDistanceBeforeKill = -1f;
@@ -38,7 +44,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int EnergyRegainOnHit = 0;
 	public int SetCrit = 0;
 	public int CustomDataValue = 0;
-	public bool ComeFromSkill = false;
 	/// <summary>
 	/// A force timer that will delete projectile<br/>
 	/// By default, it is set to -1<br/>
@@ -50,6 +55,10 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	/// <b>Return true if it is from duplication</b>
 	/// </summary>
 	public bool IsASubProjectile = false;
+	/// <summary>
+	/// This is time left that is set in SetDefaults, <br/>
+	/// any modification later set in the code or outside scope of NewProjectile will be ignored
+	/// </summary>
 	public int InitialTimeLeft { get; private set; } = 0;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
@@ -93,7 +102,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				}
 				IsFromNPC = true;
 				NPC_WhoAmI = npc.whoAmI;
-				
+
 			}
 		}
 		Source_CustomContextInfo = source.Context;
@@ -102,21 +111,18 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override bool PreAI(Projectile projectile) {
+		Pre_VelocityHandler(projectile);
+		return base.PreAI(projectile);
+	}
+	private void Pre_VelocityHandler(Projectile projectile) {
 		if (VelocityMultiplier != 0) {
 			projectile.velocity /= VelocityMultiplier;
 		}
 		else {
 			projectile.velocity /= .001f;
 		}
-		return base.PreAI(projectile);
 	}
-	public override void PostAI(Projectile projectile) {
-		if (Force_TimeLeft != -1) {
-			Force_TimeLeft--;
-			if (Force_TimeLeft == 0) {
-				projectile.Kill();
-			}
-		}
+	private void HardCodedInteractionFromUnforgiving(Projectile projectile) {
 		if (projectile.type == ProjectileID.ShadowFlameArrow && CustomDataValue == 1) {
 			for (int i = 0; i < 2; i++) {
 				Dust flame = Dust.NewDustDirect(projectile.Center, 0, 0, DustID.Shadowflame);
@@ -128,20 +134,31 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center + Main.rand.NextVector2Circular(12, 12), Vector2.Zero, ModContent.ProjectileType<Roguelike_SpiritFlame>(), (int)(projectile.damage * .7f), 2, projectile.owner);
 			}
 		}
+	}
+	private void Post_VelocityHandler(Projectile projectile, Player player) {
 		if (VelocityMultiplier != 0) {
 			projectile.velocity *= VelocityMultiplier;
 		}
 		else {
 			projectile.velocity *= .001f;
 		}
-		var player = Main.player[projectile.owner];
 		if (projectile.hostile) {
 			VelocityMultiplier = 1f + player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition;
-			player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition = 0;
 		}
 		else {
 			VelocityMultiplier = 1f;
 		}
+	}
+	public override void PostAI(Projectile projectile) {
+		HardCodedInteractionFromUnforgiving(projectile);
+		if (Force_TimeLeft != -1) {
+			Force_TimeLeft--;
+			if (Force_TimeLeft == 0) {
+				projectile.Kill();
+			}
+		}
+		var player = Main.player[projectile.owner];
+		Post_VelocityHandler(projectile, player);
 		if (TravelDistanceBeforeKill > 0 && Vector2.DistanceSquared(player.Center, projectile.Center) >= TravelDistanceBeforeKill * TravelDistanceBeforeKill) {
 			projectile.Kill();
 		}
@@ -160,14 +177,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
 		}
-	}
-	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
-		if (projectile.type == ProjectileID.StarCannonStar
-			|| projectile.type == ProjectileID.Starfury
-			|| projectile.type == ProjectileID.StarWrath) {
-			fallThrough = true;
-		}
-		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
 	}
 	int BouncyCollide = 0;
 	public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
@@ -218,6 +227,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.aiStyle == ProjAIStyleID.HeldProjectile
 			|| projectile.aiStyle == ProjAIStyleID.Yoyo
 			|| projectile.aiStyle == ProjAIStyleID.HorizontalRay
+			|| projectile.aiStyle == ProjAIStyleID.Hook
 			|| projectile.type == ProjectileID.PhantasmArrow
 			|| projectile.type == ProjectileID.IchorDart
 			|| projectile.type == ProjectileID.ExplosiveBunny
@@ -226,7 +236,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.PortalGunBolt
 			|| projectile.type == ProjectileID.PortalGunGate
 			|| projectile.type == ProjectileID.LightsBane
-			|| projectile.aiStyle == ProjAIStyleID.Hook
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
 			|| projectile.type == ModContent.ProjectileType<AngelicSmgHeld>()
 			|| projectile.type == ModContent.ProjectileType<MagicBullet>()//This is to prevent lag
@@ -243,5 +252,70 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			int proj = Projectile.NewProjectile(projectile.GetSource_Misc("OnKill_ScatterShot"), projectile.Center, projectile.velocity.Vector2RotateByRandom(360), projectile.type, (int)(projectile.damage * .65f), projectile.knockBack * .55f, projectile.owner);
 			Main.projectile[proj].timeLeft = 120;
 		}
+	}
+}
+public class ProjectileModify_System : ModSystem {
+	private static List<ProjectileAIModify> _modify = new();
+	public static int TotalCount => _modify.Count;
+	public static short Register(ProjectileAIModify skill) {
+		if (_modify == null) {
+			_modify = new();
+		}
+		ModTypeLookup<ProjectileAIModify>.Register(skill);
+		_modify.Add(skill);
+		return (short)(_modify.Count - 1);
+	}
+	public static ProjectileAIModify Get_Modify(int type) {
+		return type >= 0 && type < _modify.Count ? _modify[type] : null;
+	}
+	public override void Unload() {
+		_modify = null;
+	}
+}
+public abstract class ProjectileAIModify : ModType {
+	short Type = 0;
+	public static short Get_ModifyType<T>() where T : ProjectileAIModify => ModContent.GetInstance<T>().Type;
+	#region sealing basic hook 
+	protected sealed override void Register() {
+		Type = ProjectileModify_System.Register(this);
+	}
+	public override sealed void SetupContent() {
+		base.SetupContent();
+	}
+	public override sealed void Load() { }
+	public override sealed bool Equals(object obj) {
+		return base.Equals(obj);
+	}
+	public override sealed void SetStaticDefaults() {
+		base.SetStaticDefaults();
+	}
+	public override sealed bool IsLoadingEnabled(Mod mod) {
+		return base.IsLoadingEnabled(mod);
+	}
+	public override sealed int GetHashCode() {
+		return base.GetHashCode();
+	}
+	public override sealed void Unload() {
+		base.Unload();
+	}
+	public override sealed string ToString() {
+		return base.ToString();
+	}
+	public override sealed string Name => base.Name;
+	#endregion
+	public virtual void OnAdded(Projectile projectile) {
+
+	}
+	public virtual void PreAI(Projectile projectile) {
+
+	}
+	public virtual void PostAI(Projectile projectile) {
+
+	}
+	public virtual void OnHitNPC(Projectile projectile, NPC target) {
+
+	}
+	public virtual void OnKill(Projectile projectile) {
+
 	}
 }

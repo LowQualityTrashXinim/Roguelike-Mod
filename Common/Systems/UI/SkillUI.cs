@@ -148,6 +148,7 @@ public class SkillUI : UIState {
 		}
 	}
 
+
 	private void Btn_Loadout_Modify_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		foreach (var item in btn_Loadout) {
 			if (item.UniqueId == CurrentSelect_btn_Loadout) {
@@ -190,7 +191,7 @@ public class SkillUI : UIState {
 		if (panel_Inventory == null) {
 			ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
 		}
-		btn_SkillSlotHolder btn = new(TextureAssets.InventoryBack10, SkillID);
+		btn_SkillSlotHolder btn = new(ModUtils.Get_SkillbackgroundTexture(SkillID), SkillID);
 		btn.OverflowHidden = true;
 		btn.Stack = stack;
 		btn.HAlign = (count % Row) / (Row - 1f);
@@ -218,7 +219,7 @@ public class SkillUI : UIState {
 	}
 	public void Add_ActiveSkill(int skillID) {
 		int count = list_activeskill.Count;
-		btn_SkillActive btn = new(TextureAssets.InventoryBack10, skillID, count);
+		btn_SkillActive btn = new(ModUtils.Get_SkillbackgroundTexture(skillID), skillID, count);
 		btn.OverflowHidden = true;
 		btn.HAlign = (count % Row) / (Row - 1f);
 		btn.VAlign = (count / Row) / (Column - 1f);

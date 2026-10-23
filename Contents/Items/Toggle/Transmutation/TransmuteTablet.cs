@@ -125,7 +125,6 @@ public partial class TransmutationUIState : UIState {
 		optimization = ModUtils.FastDropItem(energyItemslot2.item, optimization);
 		optimization = ModUtils.FastDropItem(energyItemslot3.item, optimization);
 		_ = ModUtils.FastDropItem(energyItemslot4.item, optimization);
-
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);

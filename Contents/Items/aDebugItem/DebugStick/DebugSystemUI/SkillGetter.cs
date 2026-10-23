@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Systems.Skill;
+using Roguelike.Common.Systems.UI;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
@@ -66,6 +67,8 @@ class btn_Skill : UIImageButton {
 class SkillGetterUI : UIState {
 	ExitUI btn_select;
 	UIPanel panel;
+	Roguelike_UIText Set_AllSkill;
+	Roguelike_UIText Set_NoSkill;
 
 	private int linePosition;
 	List<btn_Skill> btn_list;
@@ -73,7 +76,7 @@ class SkillGetterUI : UIState {
 	public override void OnInitialize() {
 		btn_select = new();
 		btn_select.HAlign = .65f;
-		btn_select.VAlign = .5f;
+		btn_select.VAlign = .7f;
 		Append(btn_select);
 
 		panel = new UIPanel();
@@ -83,7 +86,50 @@ class SkillGetterUI : UIState {
 		Append(panel);
 
 		btn_list = new();
+
+		Set_AllSkill = new("Add all skills");
+		Set_AllSkill.HAlign = .65f;
+		Set_AllSkill.VAlign = .4f;
+		Set_AllSkill.OnLeftClick += Set_AllSkill_OnLeftClick;
+		Append(Set_AllSkill);
+
+		Set_NoSkill = new("Remove all skills");
+		Set_NoSkill.HAlign = .65f;
+		Set_NoSkill.VAlign = .5f;
+		Set_NoSkill.OnLeftClick += Set_NoSkill_OnLeftClick; ;
+		Append(Set_NoSkill);
 	}
+
+	private void Set_NoSkill_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SkillHandlePlayer modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
+		modplayer.ActiveSkill.Clear();
+		modplayer.SkillInventory.Clear();
+		Main.NewText("Removed all of the skill from player inventory");
+	}
+
+	private void Set_AllSkill_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		for (int i = 0; i < SkillModSystem.TotalCount; i++) {
+			int skilltype = SkillModSystem.GetSkill(i).Type;
+			Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(skilltype, count: 999, silent: true);
+		}
+		Main.NewText("added all of the skill to player inventory at max stack of 999");
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (Set_AllSkill.IsMouseHovering) {
+			Set_AllSkill.TextColor = Color.Yellow;
+		}
+		else {
+			Set_AllSkill.TextColor = Color.White;
+		}
+		if (Set_NoSkill.IsMouseHovering) {
+			Set_NoSkill.TextColor = Color.Yellow;
+		}
+		else {
+			Set_NoSkill.TextColor = Color.White;
+		}
+	}
+
 	public override void OnActivate() {
 		btn_list.Clear();
 		panel.RemoveAllChildren();
@@ -93,7 +139,7 @@ class SkillGetterUI : UIState {
 			if (i % SKILL_MAXLINE == 0) {
 				lineCounter++;
 			}
-			btn_Skill button = new(ModContent.Request<Texture2D>(ModTexture.ACCESSORIESSLOT)) {
+			btn_Skill button = new(ModUtils.Get_SkillbackgroundTexture(i)) {
 				Width = StyleDimension.FromPixels(44f),
 				Height = StyleDimension.FromPixels(44f),
 				Left = StyleDimension.FromPixels(i % SKILL_MAXLINE * 46.0f + 6.0f),

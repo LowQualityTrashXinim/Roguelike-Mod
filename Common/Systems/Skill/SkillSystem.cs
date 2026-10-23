@@ -4,6 +4,7 @@ using Roguelike.Common.Systems.UI;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Skill;
 using Roguelike.Texture;
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +32,27 @@ public static class SkillTypeID {
 	public const byte Bundle = 5;
 	public const byte Utility = 6;
 	public const byte Modify = 7;
+
+	public static string Get_SkillTypeString(int type) {
+		switch (type) {
+			case 1:
+				return "Projectile";
+			case 2:
+				return "Stats";
+			case 3:
+				return "Summon";
+			case 4:
+				return "Empowered";
+			case 5:
+				return "Bundle";
+			case 6:
+				return "Utility";
+			case 7:
+				return "Modify";
+			default:
+				return "";
+		}
+	}
 }
 public abstract class ModSkill : ModType {
 	public static int GetSkillType<T>() where T : ModSkill {
@@ -70,7 +92,8 @@ public abstract class ModSkill : ModType {
 
 	protected bool Skill_CanBeSelect = true;
 	public virtual string Texture => ModTexture.Get_MissingTexture("Skill");
-	public string DisplayName => ModUtils.LocalizationText("ModSkill", $"{Name}.DisplayName");
+	public string DisplayName => ModUtils.LocalizationText("ModSkill", $"{Name}.DisplayName") +
+		$" [{SkillTypeID.Get_SkillTypeString(Skill_Type)}]";
 	public string Description => ModUtils.LocalizationText("ModSkill", $"{Name}.Description");
 	public ModSkill() {
 		SetDefault();
@@ -120,6 +143,12 @@ public abstract class ModSkill : ModType {
 	/// </summary>
 	/// <param name="player"></param>
 	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int energy) { }
+	public virtual void Pre_SpawnProjectile(Player player, SkillHandlePlayer skillplayer, int amount, ref Vector2 position, ref Vector2 velocity, ref int damage, ref float knockback, ref int type, ref int useTime) {
+
+	}
+	public virtual void Post_SpawnProjectile(Player player, SkillHandlePlayer skillplayer, ref Projectile projectile, int useTime) {
+
+	}
 	public virtual void ModifyShootProjectile(Player player, SkillHandlePlayer skillplayer, ref int amount, ref List<Vector2> position, ref List<Vector2> velocity) { }
 	/// <summary>
 	/// This only run when the duration of the skill is equal or below 1
@@ -317,7 +346,7 @@ public class SkillHandlePlayer : ModPlayer {
 		AvailableSkillActiveSlot++;
 		return true;
 	}
-	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
+	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true, int count = 1, bool silent = false) {
 		if (skillType < 0 && skillType >= SkillModSystem.TotalCount) {
 			return false;
 		}
@@ -332,19 +361,23 @@ public class SkillHandlePlayer : ModPlayer {
 				else {
 					SkillInventory.Add(skillType, 1);
 				}
-				ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
-				ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillModSystem.GetSkill(skillType).DisplayName}");
+				if (!silent) {
+					ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
+					ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillModSystem.GetSkill(skillType).DisplayName}");
+				}
 				return true;
 			}
 		}
 		if (SkillInventory.ContainsKey(skillType)) {
-			SkillInventory[skillType]++;
+			SkillInventory[skillType] += count;
 		}
 		else {
-			SkillInventory.Add(skillType, 1);
+			SkillInventory.Add(skillType, count);
 		}
-		ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
-		ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
+		if (!silent) {
+			ModContent.GetInstance<UniversalSystem>().skillUIstate.Add_SkillToInventory(skillType);
+			ModUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
+		}
 		return true;
 	}
 	public int SimulateSkillCost() {
@@ -462,7 +495,7 @@ public class SkillHandlePlayer : ModPlayer {
 					}
 				}
 				MaximumDuration += Duration;
-				Energy = Math.Clamp(Energy - energy,0, EnergyCap);
+				Energy = Math.Clamp(Energy - energy, 0, EnergyCap);
 			}
 		}
 	}
@@ -594,11 +627,19 @@ public class SkillHandlePlayer : ModPlayer {
 					else if (Energy >= item.EnergyRequire) {
 						Energy -= item.EnergyRequire;
 					}
+					int cooldown = item.Cooldown;
 					for (int i = 0; i < amount; i++) {
 						if (i >= poslist.Count) {
 							continue;
 						}
-						NewSkillProjectile(source, poslist[i], vellist[i], vellist[i].Length(), item.ShootType, item.Damage, item.Knockback);
+						int damage = item.Damage;
+						float knockback = item.Knockback;
+						int type = item.ShootType;
+						Vector2 pos = poslist[i];
+						Vector2 vel = vellist[i];
+						item.Pre_SpawnProjectile(Player, this, amount, ref pos, ref vel, ref damage, ref knockback, ref type, ref cooldown);
+						Projectile proj = NewSkillProjectile(source, poslist[i], vellist[i], vellist[i].Length(), item.ShootType, item.Damage, item.Knockback);
+						item.Post_SpawnProjectile(Player, this, ref proj, cooldown);
 					}
 					ProjectileShootCoolDown[a] = item.Cooldown;
 				}

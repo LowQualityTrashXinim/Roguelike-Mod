@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,5 +31,13 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 				projectile.velocity *= 1.25f;
 			}
 		}
+	}
+	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+		if (projectile.type == ProjectileID.StarCannonStar
+			|| projectile.type == ProjectileID.Starfury
+			|| projectile.type == ProjectileID.StarWrath) {
+			fallThrough = true;
+		}
+		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
 	}
 }

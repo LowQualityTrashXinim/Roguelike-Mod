@@ -13,14 +13,14 @@ Utility_Last: {
 	Description: Replace the last skill in place of this skill
 }
 
+Utility_Skip1: {
+	DisplayName: Skip
+	Description: Skips one skill to refund 600 Energy back
+}
+
 FastForward: {
 	DisplayName: Fast Forward
 	Description: Halves energy and duration of succeeding skills
-}
-
-Skip1: {
-	DisplayName: Skip
-	Description: Skips one skill to refund 600 Energy back
 }
 
 PowerSaver: {
@@ -133,6 +133,11 @@ BloodToPower: {
 ManaToPower: {
 	DisplayName: Mana to Power
 	Description: Halves your current mana to increase your damage% proportionally to the sacrificed amount
+}
+
+EnergyToPower: {
+	DisplayName: Energy to Power
+	Description: Reduce all of your energy to increase your damage% proportionally to the reduced amount
 }
 
 AdAstra: {
@@ -309,7 +314,47 @@ Modify_QuadShooting: {
 
 Modify_DistanceCast: {
 	DisplayName: Distance Cast
-	Description: Cast your projectile far off from you
+	Description: Cast your projectile far off from you toward your cursor direction
+}
+
+Modify_CastOffSetUp: {
+	DisplayName: Offset up
+	Description: Offset your cast position by unit of 10 on Y axis
+}
+
+Modify_CastOffSetLeft: {
+	DisplayName: Offset left
+	Description: Offset your cast position by unit of -10 on X axis
+}
+
+Modify_CastOffSetRight: {
+	DisplayName: Offset right
+	Description: Offset your cast position by unit of 10 on X axis
+}
+
+Modify_CastOffSetDown: {
+	DisplayName: Offset down
+	Description: Offset your cast position by unit of -10 on Y axis
+}
+
+Modify_CastUp: {
+	DisplayName: Up override
+	Description: Override your projectile's Y axis velocity to shoot up
+}
+
+Modify_CastDown: {
+	DisplayName: Down override
+	Description: Override your projectile's Y axis velocity to shoot down
+}
+
+Modify_CastLeft: {
+	DisplayName: Left override
+	Description: Override your projectile's X axis velocity to shoot left
+}
+
+Modify_CastRight: {
+	DisplayName: Right override
+	Description: Override your projectile's X axis velocity to shoot right
 }
 
 Utility_SummonPerk: {
