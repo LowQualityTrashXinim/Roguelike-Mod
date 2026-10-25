@@ -199,6 +199,11 @@ Along with above change, this UI section will also be repurposed.
 869/ Some code organizing.
 870/ Small clean up and documentation for the codebase.
 871/ Skill background are now different base on the skill type/classification.
+872/ Reworked Band of regeneration, Band of mana regeneration.
+873/ Updated alt attack Akai Hanbun No Hasami visual.
+874/ Added Fury of the sun tag to Golem Fist.
+875/ Fixed a bug in transmutation tablet exchange/upgrade UI due to update core UI.
+
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

@@ -29,6 +29,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 	public static bool RareSpoils = true;
 	public static bool RareLootbox = true;
 	public static bool DataSaved = false;
+	public bool HasThisDataLoaded = false;
 	public override void SaveWorldData(TagCompound tag) {
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
@@ -68,10 +69,12 @@ internal class RoguelikeWorldProperty : ModSystem {
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
+		HasThisDataLoaded = true;
+		DataSaved = tag.Get<bool>("Setting_DataSaved");
+
 		HellishEndeavour = tag.Get<bool>("Setting_HellishEndeavour");
 		RoguelikeWorld = tag.Get<bool>("Setting_RoguelikeWorld");
 		BossRushWorld = tag.Get<bool>("Setting_BossRushWorld");
-		DataSaved = tag.Get<bool>("Setting_DataSaved");
 		BossRush_Set_Progression = tag.Get<bool>("Setting_BossRushSet1");
 		BossRush_Set_CommandFight = tag.Get<bool>("Setting_BossRushSet2");
 		TotalRNG = tag.Get<bool>("Setting_TotalRNG");
@@ -100,6 +103,9 @@ internal class RoguelikeWorldProperty : ModSystem {
 public class RoguelikeWorldProperty_Player : ModPlayer {
 	public override void OnEnterWorld() {
 		var config = RoguelikeWorldProperty.config;
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().HasThisDataLoaded) {
+			Main.NewText("The world data failed to load due to unknown reason");
+		}
 		if (!ModUtils.Is_EnteringOrInASubWorld()) {
 			ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
 		}

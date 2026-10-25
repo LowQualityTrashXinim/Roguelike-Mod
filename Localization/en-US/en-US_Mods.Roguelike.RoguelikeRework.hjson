@@ -233,6 +233,22 @@ Aglet:
 	Increases dodge chance by 15% and jump boost by 35%
 	Upon dodge, player gain 35% movement speed for 30s
 	'''
+ManaRegenerationBand:
+	'''
+	While player's mana is full:
+	+ Increases health regeneration by 3
+	While player's health is full:
+	+ Increases mana regeneration by 15
+	If all above condition is true
+	+ Increases passive energy regeneration by 3
+	'''
+BandofRegeneration:
+	'''
+	Increases your maximum health by 20
+	After getting hit, grant 1s of 0.25 rapid regeneration (CD: 10s)
+	Getting hit repeatedly while under influence of rapid regeneration 
+	will reset the buff time of that effect
+	'''
 ClimbingClaws:
 	'''
 	Increases melee damage by 12%, melee crit chance by 10% and melee crit damage by 25%

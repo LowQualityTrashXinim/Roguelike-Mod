@@ -87,7 +87,7 @@ namespace Roguelike.Common.Global {
 		//		if (global is null || global.Name == "UnloadedGlobalItem") {
 		//			continue;
 		//		}
-				
+
 		//		if (global. is not IGlobalType result) {
 		//			continue;
 		//		}
@@ -178,7 +178,7 @@ namespace Roguelike.Common.Global {
 						}
 					}
 					if (line.Name == "CritChance") {
-						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
+						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage + UpdateCriticalDamage, 2) * 100}% bonus critical damage"));
 						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 					}
 					else if (line.Name == "Damage") {

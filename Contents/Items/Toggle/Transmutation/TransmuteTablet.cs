@@ -173,7 +173,7 @@ public partial class TransmutationUIState {
 		EquivalentExchange.OnLeftClick += ItemShiftOptionPanel_OnLeftClick;
 		EquivalentExchange.Hide = true;
 		EquivalentExchange.Width.Set(0, .45f);
-		EquivalentExchange.BorderColor = Color.Yellow;
+		EquivalentExchange.HighlightColor = Color.Yellow;
 		slotPanel.Append(EquivalentExchange);
 
 		UpgradeRarity = new("Upgrade");
@@ -181,6 +181,7 @@ public partial class TransmutationUIState {
 		UpgradeRarity.Width.Set(0, .45f);
 		UpgradeRarity.Hide = true;
 		UpgradeRarity.HAlign = 1f;
+		UpgradeRarity.HighlightColor = Color.Yellow;
 		slotPanel.Append(UpgradeRarity);
 
 		ItemShiftSlot = new ItemHolderSlot(tex);
@@ -398,14 +399,14 @@ public partial class TransmutationUIState {
 public partial class TransmutationUIState {
 	private void ItemShiftOptionPanel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (listeningElement.UniqueId == EquivalentExchange.UniqueId) {
+			EquivalentExchange.Highlight = true;
+			UpgradeRarity.Highlight = false;
 			UpgradeRarityMode = false;
-			EquivalentExchange.BorderColor = Color.Yellow;
-			UpgradeRarity.BorderColor = Color.Black;
 		}
 		else if (listeningElement.UniqueId == UpgradeRarity.UniqueId) {
+			UpgradeRarity.Highlight = true;
+			EquivalentExchange.Highlight = false;
 			UpgradeRarityMode = true;
-			UpgradeRarity.BorderColor = Color.Yellow;
-			EquivalentExchange.BorderColor = Color.Black;
 		}
 	}
 	private void EnergyItemslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

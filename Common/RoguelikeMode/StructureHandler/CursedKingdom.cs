@@ -17,7 +17,7 @@ public class Structure_CursdKingdomEntrance : ModStructure {
 	public override void CreateStructure(Mod mod, RogueLikeWorldGen system) {
 		var data = ModWrapper.Get_StructureData("Assets/Entrance/CK_Entrance", mod);
 		int X = 17 * RogueLikeWorldGen.GridPart_X + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_X / 2);
-		int Y = 17 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y / 2 );
+		int Y = 17 * RogueLikeWorldGen.GridPart_Y + RogueLikeWorldGen.Rand.Next(RogueLikeWorldGen.GridPart_Y / 2);
 		int Width = data.width / 2;
 		int Height = data.height / 2;
 		Point16 point = new(X - Width, Y - Height);
@@ -79,6 +79,45 @@ public class GenPass_CursedKingdom : GenPass {
 	}
 }
 public class CursedKingdom_GenSystem : ModSystem {
+	const int MaxNPCcanBeOnScreen = 50;
+	const int SpawnCD = 600;
+	const int FailSafe = 9999;
+	int CD = 0;
+	private void CursedKingdomSpawn() {
+		if (!SubworldSystem.IsActive<CursedKingdom>()) {
+			return;
+		}
+		int counter = 0;
+		for (int i = 0; i < Main.npc.Length; i++) {
+			var npc = Main.npc[i];
+			if (npc.active) {
+				counter++;
+			}
+			if (counter >= MaxNPCcanBeOnScreen) {
+				break;
+			}
+		}
+		if (counter < MaxNPCcanBeOnScreen) {
+			if (++CD >= SpawnCD) {
+				Point spawnPos;
+				int failsafeCheck = 0;
+				do {
+					failsafeCheck++;
+					spawnPos = Main.LocalPlayer.position.ToTileCoordinates() + new Point(Main.rand.Next(-1000, 1000), Main.rand.Next(-500, 500));
+				} while (!ModUtils.Check_PositionValid(spawnPos.X, spawnPos.Y) && failsafeCheck < FailSafe);
+				if (failsafeCheck >= FailSafe) {
+					return;
+				}
+				CD = Main.rand.Next(120, 240);
+				spawnPos = spawnPos.ToWorldCoordinates().ToPoint();
+				NPC.NewNPC(Entity.GetSource_NaturalSpawn(), spawnPos.X, spawnPos.Y - 1, NPCID.SkeletonArcher);
+				NPC.NewNPC(Entity.GetSource_NaturalSpawn(), spawnPos.X, spawnPos.Y - 1, NPCID.ArmoredSkeleton);
+			}
+		}
+	}
+	public override void PreUpdateNPCs() {
+		CursedKingdomSpawn();
+	}
 	public bool Place_CursedKingdom() {
 		var data = ModWrapper.Get_StructureData("Assets/CursedKingdom", Mod);
 		int X = Main.maxTilesX / 2;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
 using Roguelike.Common.RoguelikeMode;
+using Roguelike.Common.Systems.UI;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
@@ -33,7 +34,7 @@ internal class AkaiHanbunNoHasami : SynergyModItem {
 	public override bool CanUseItem(Player player) {
 		if (!player.ItemAnimationActive) {
 			var overhaul = Item.GetGlobalItem<MeleeWeaponOverhaul>();
-			if (player.altFunctionUse == 2 && player.GetModPlayer<AkaiHanbunNoHasami_ModPlayer>().ThreadCutter_Counter > 10) {
+			if (player.altFunctionUse == 2 /*&& player.GetModPlayer<AkaiHanbunNoHasami_ModPlayer>().ThreadCutter_Counter > 10*/) {
 				overhaul.HideSwingVisual = true;
 				Item.noUseGraphic = true;
 				Item.noMelee = true;
@@ -83,7 +84,7 @@ internal class AkaiHanbunNoHasami : SynergyModItem {
 		CanShootItem = false;
 		var modplayerExtra = player.GetModPlayer<AkaiHanbunNoHasami_ModPlayer>();
 		if (player.altFunctionUse == 2) {
-			if (modplayerExtra.ThreadCutter_Counter >= 10) {
+			if (true || modplayerExtra.ThreadCutter_Counter >= 10) {
 				switch (ComboChain_ExtraEnhanced) {
 					case 1:
 						damage = (int)(damage * .34f);
@@ -291,6 +292,7 @@ public class AkaiHanbunNoHasami_Dust : Roguelike_Dust_ModDust5x5T1 {
 		dust.velocity *= .9f;
 		dust.velocity = dust.velocity.RotatedBy(MathHelper.ToRadians(2));
 		dust.scale -= .05f;
+		dust.fadeIn++;
 		if (dust.scale <= 0) {
 			dust.active = false;
 		}
@@ -300,12 +302,16 @@ public class AkaiHanbunNoHasami_Dust : Roguelike_Dust_ModDust5x5T1 {
 		return false;
 	}
 	public override bool PreDraw(Dust dust) {
+		Color color = dust.color;
+		float percentage = Math.Clamp(dust.fadeIn / 60f, 0, 1f);
+		color.A = (byte)(color.A * percentage);
+		color = color.ScaleRGB(percentage);
 		var moddust = dust.Dust_GetDust();
 		var texture = Texture2D.Value;
 		var origin = texture.Size() * .5f;
 		for (int i = 0; i < moddust.oldPos.Length; i++) {
 			var drawpos = moddust.oldPos[i] - Main.screenPosition;
-			Main.EntitySpriteDraw(texture, drawpos, null, dust.color, moddust.oldRot[i], origin, dust.scale * (1 - i / (float)moddust.oldPos.Length), SpriteEffects.None);
+			Main.EntitySpriteDraw(texture, drawpos, null, color, moddust.oldRot[i], origin, dust.scale * (1 - i / (float)moddust.oldPos.Length), SpriteEffects.None);
 		}
 		return false;
 	}
@@ -387,7 +393,7 @@ public class AkaiHanbunNoHasami_SawMode_Projectile : ModProjectile {
 				if (decider) {
 					damage = (int)(damage * 2.5f);
 				}
-				var projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(Projectile.velocity, 60) + Main.rand.NextVector2Circular(100, 100), Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<AkaiHanbunNoHasami_Slash_Projectile>(), damage, 2, player.whoAmI, 5, 5);
+				var projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(Projectile.velocity, 60) + Main.rand.NextVector2Circular(200, 200), Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<AkaiHanbunNoHasami_Slash_Projectile>(), damage, 2, player.whoAmI, 5, 5);
 				if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
 					if (decider) {
 						proj.ScaleX = 5f;
@@ -476,16 +482,42 @@ public class AkaiHanbunNoHasami_SawMode_Projectile : ModProjectile {
 		var effect = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, effect, 0);
 		drawPos = drawPos.PositionOFFSET(Projectile.velocity, 60);
-		float scale = Projectile.scale * .5f;
-		if (Mode == 3) {
-			scale = 1f;
-		}
-		for (int i = 1; i < 24; i++) {
-			if (Mode == 1 && Projectile.timeLeft >= 70 + i * 2) {
-				continue;
+		float scale = 0;
+		for (int i = 1; i <= 24; i++) {
+			Color chainsawcolor = Color.Lerp(Color.Red, Color.OrangeRed, i % 4 / 4f).ScaleRGB(1 - .5f * (1 - i % 4 / 4f));
+			//chainsawcolor.A = (byte)(255 * (1 - .75f * (1 - i % 4 / 4f)));
+			if (Mode == 1) {
+				scale = Math.Clamp(ModUtils.InExpo(1 - (Projectile.timeLeft - 90 + i) / 30f), 0, 1f) * .5f;
 			}
-			Main.EntitySpriteDraw(texture, drawPos, null, Color.Red with { A = 200 }, Projectile.rotation + MathHelper.Lerp(0, MathHelper.TwoPi, i / 23f) + Saw_rotationAdd, origin * 2, scale, SpriteEffects.FlipHorizontally, 0);
+			if (Mode == 2) {
+				scale = .25f;
+				scale += Math.Clamp(ModUtils.InExpo(1 - (Projectile.timeLeft - 100 + i) / 100f), 0, 1f) * .5f;
+			}
+			if (Mode == 3) {
+				scale = Math.Clamp(
+					.5f + ModUtils.InOutExpo(1 - (Projectile.timeLeft - 90 + i) / 90f) * .5f,
+					0, 2f);
+			}
+			Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null, chainsawcolor, Projectile.rotation + MathHelper.Lerp(0, MathHelper.TwoPi, i / 24f) + Saw_rotationAdd, origin * 2, new Vector2(scale * 2, scale * .5f), SpriteEffects.FlipHorizontally, 0);
+			Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null,
+				Color.Black /*with { A = (byte)(255 * (1 - .75f * (1 - i % 4 / 4f))) }*/
+				, Projectile.rotation + MathHelper.Lerp(0, MathHelper.TwoPi, i / 24f) + Saw_rotationAdd, origin * 2, new Vector2(scale * 2, scale * .5f) * .65f, SpriteEffects.FlipHorizontally, 0);
 		}
+		float cache = Projectile.scale;
+		Projectile.scale = 3;
+		float result = Projectile.timeLeft % 30;
+		Projectile.scale += .5f * (result % 30 >= 15 ? 15 - result : result) / 30f;
+		Projectile.scale *= scale;
+		ModUtils.Draw_SetUpToDrawGlow(Main.spriteBatch);
+		Color red = Color.Red with { A = 200 };
+		Color black = Color.Black with { A = 200 };
+		Vector2 origin2 = TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value.Size() * .5f;
+		Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null, red, 0, origin2, new Vector2(Projectile.scale * 2, Projectile.scale * .5f), SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null, red, MathHelper.PiOver2, origin2, new Vector2(Projectile.scale * 2, Projectile.scale * .5f), SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null, black, 0, origin2, new Vector2(Projectile.scale * 2, Projectile.scale * .5f) * .5f, SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(TextureAssets.Projectile[ProjectileID.PiercingStarlight].Value, drawPos, null, black, MathHelper.PiOver2, origin2, new Vector2(Projectile.scale * 2, Projectile.scale * .5f) * .5f, SpriteEffects.None, 0);
+		Projectile.scale = cache;
+		ModUtils.Draw_ResetToNormal(Main.spriteBatch);
 		var tex = ModContent.Request<Texture2D>(ModTexture.WHITEDOT).Value;
 		var texOri = tex.Size() * .5f;
 		foreach (var target in Main.ActiveNPCs) {
@@ -501,8 +533,33 @@ public class AkaiHanbunNoHasami_SawMode_Projectile : ModProjectile {
 		return false;
 	}
 	public override void OnKill(int timeLeft) {
+		for (int i = 0; i < 50; i++) {
+			var dust2 = Dust.NewDustDirect(Projectile.Center.PositionOFFSET(Projectile.velocity, 55), 0, 0, ModContent.DustType<AkaiHanbunNoHasami_Dust>());
+			dust2.color = Color.Black;
+			dust2.rotation += Main.rand.NextFloat();
+			if (Mode == 3) {
+				dust2.velocity = Main.rand.NextVector2CircularEdge(35, 35) * Main.rand.NextFloat(.9f, 1.2f);
+				dust2.scale += Main.rand.NextFloat(1.2f, 1.3f);
+			}
+			else {
+				dust2.velocity = Main.rand.NextVector2CircularEdge(15, 15) * Main.rand.NextFloat(.9f, 1.2f) * Mode;
+				dust2.scale += Main.rand.NextFloat(.5f, .7f);
+			}
+		}
 		if (Mode == 3) {
 			Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<AkaiHanbunNoHasami_SawMode_Projectile_DeathProjectile>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+		}
+		else {
+			float amount = 3 * Mode;
+			for (int i = 0; i < amount; i++) {
+				var projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(Projectile.velocity, 60) + Main.rand.NextVector2Circular(100, 100), Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<AkaiHanbunNoHasami_Slash_Projectile>(), Projectile.damage, 2, Projectile.owner, 5, 5 + i * 2);
+				if (projectile.ModProjectile is AkaiHanbunNoHasami_Slash_Projectile proj) {
+					proj.ScaleX = 3f;
+					proj.ScaleY = .5f;
+					proj.ProjectileColor = Color.Red;
+					projectile.scale = 2;
+				}
+			}
 		}
 	}
 }

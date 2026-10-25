@@ -20,7 +20,7 @@ internal class ShrineOfOfferring_ModSystem : ModSystem {
 	public bool IsWithinRange = false;
 	public bool PlayerGetTheItem = false;
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.TerrariaWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

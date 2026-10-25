@@ -473,7 +473,7 @@ CrimsonArmor: {
 		'''
 		Increases movement speed by 25%
 		and jump boost by 30%
-		Strengthen masive regeneration ability
+		Massively strengthen regeneration ability
 		'''
 	Head: +1 life regeneration
 	Body: +1 life regeneration

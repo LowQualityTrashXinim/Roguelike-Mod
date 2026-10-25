@@ -1057,6 +1057,7 @@ internal class OutroEffectSystem : ModSystem {
 		Arr_WeaponTag[tag].Add(ItemID.HelFire);
 		Arr_WeaponTag[tag].Add(ItemID.FireWhip);
 		Arr_WeaponTag[tag].Add(ItemID.MoltenFury);
+		Arr_WeaponTag[tag].Add(ItemID.GolemFist);
 	}
 	private void Add_EletricConductor() {
 		int tag = (int)WeaponTag.ElectricConductor;

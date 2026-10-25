@@ -18,9 +18,9 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().synergyWikiMenu.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().synergyWikiMenu.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().synergyWikiMenu.Activate();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
 
 			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.RemoveAllChildren();
 			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.OnInitialize();

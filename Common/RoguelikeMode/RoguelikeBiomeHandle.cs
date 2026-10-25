@@ -37,6 +37,9 @@ public class RoguelikeBiomeHandle_ModPlayer : ModPlayer {
 		if (!Player.active || !RoguelikeWorldProperty.RoguelikeWorld || Player.difficulty == PlayerDifficultyID.Creative) {
 			return;
 		}
+		if (RoguelikeWorldProperty.TerrariaWorld) {
+			return;
+		}
 		var position = new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y).ToTileCoordinates();
 		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
