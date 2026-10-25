@@ -9,13 +9,19 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.Transfixion.Perks.RoguelikePerk;
 using Terraria.ModLoader.IO;
 using Roguelike.Common.General;
+using Terraria.ID;
 
 namespace Roguelike.Contents.Transfixion.Perks;
 class WorldEssence : ModItem {
-	public override string Texture => ModTexture.Get_MissingTexture("Perk");
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 23);
 		Item.maxStack = 999;
+	}
+	public override void PostUpdate() {
+		Lighting.AddLight(Item.position, TorchID.UltraBright);
+	}
+	public override void Update(ref float gravity, ref float maxFallSpeed) {
+		gravity = 0;
 	}
 	public override bool? UseItem(Player player) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
@@ -83,7 +89,7 @@ class LuckEssence : ModItem {
 				listOfPerk.Add(i);
 			}
 			int perkType = Main.rand.Next(listOfPerk);
-			if(ModContent.GetInstance<RogueLikeConfig>().TotalRNG) {
+			if (ModContent.GetInstance<RogueLikeConfig>().TotalRNG) {
 				UniversalSystem.AddPerk(perkType);
 				ModUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 			}

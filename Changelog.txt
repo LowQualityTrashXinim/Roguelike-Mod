@@ -203,7 +203,8 @@ Along with above change, this UI section will also be repurposed.
 873/ Updated alt attack Akai Hanbun No Hasami visual.
 874/ Added Fury of the sun tag to Golem Fist.
 875/ Fixed a bug in transmutation tablet exchange/upgrade UI due to update core UI.
-
+876/ Added World Essence sprite. ( aka perk chooser sprite )
+877/ Due to the new sprite, the perk chooser will also radiate light.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
