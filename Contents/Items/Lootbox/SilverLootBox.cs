@@ -23,6 +23,9 @@ namespace Roguelike.Contents.Items.Lootbox {
 			if (Main.rand.NextFloat() <= .1f) {
 				types.Add(ItemPool.GetPoolType<Tier3Pool>());
 			}
+			if (Main.rand.NextFloat() <= .01f) {
+				types.Add(ItemPool.GetPoolType<Tier4Pool>());
+			}
 			return types;
 		}
 		public override int WeaponLevelRangeRandomizer(Player player) {

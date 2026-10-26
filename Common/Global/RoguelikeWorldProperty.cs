@@ -3,6 +3,7 @@ using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using Terraria;
+using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
@@ -31,12 +32,14 @@ internal class RoguelikeWorldProperty : ModSystem {
 	public static bool DataSaved = false;
 	public bool HasThisDataLoaded = false;
 	public override void SaveWorldData(TagCompound tag) {
+		HasThisDataLoaded = false;
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
 		if (DataSaved) {
 			return;
 		}
+		//WorldFile.LoadWorld(false);
 		tag["Setting_HellishEndeavour"] = HellishEndeavour;
 		tag["Setting_DataSaved"] = true;
 		tag["Setting_RoguelikeWorld"] = RoguelikeWorld;
@@ -65,11 +68,15 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Difficulty_World_EnemyRevive"] = system.World_EnemyRevive;
 		tag["Difficulty_World_BiomeModifier"] = system.World_BiomeModifier;
 	}
+
+	public override void PostWorldLoad() {
+		base.PostWorldLoad();
+	}
 	public override void LoadWorldData(TagCompound tag) {
+		HasThisDataLoaded = true;
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
-		HasThisDataLoaded = true;
 		DataSaved = tag.Get<bool>("Setting_DataSaved");
 
 		HellishEndeavour = tag.Get<bool>("Setting_HellishEndeavour");

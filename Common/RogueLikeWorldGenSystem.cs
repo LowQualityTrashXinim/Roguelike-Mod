@@ -17,7 +17,6 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Roguelike.Common;
 public enum StructureUI_State : byte {

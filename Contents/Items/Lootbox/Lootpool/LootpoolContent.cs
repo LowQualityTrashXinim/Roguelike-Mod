@@ -122,12 +122,67 @@ public class UniversalPool : ItemPool {
 		ItemID.Nazar, ItemID.TrifoldMap, ItemID.FastClock, ItemID.Vitamins
 		];
 }
+public class Tier5Pool : ItemPool {
+	public override HashSet<int> MeleeLoot() => [
+		ItemID.DD2SquireBetsySword, ItemID.InfluxWaver, ItemID.PossessedHatchet, ItemID.GolemFist, ItemID.Flairon, ItemID.DayBreak, ItemID.SolarEruption, ItemID.MonkStaffT3, ItemID.PiercingStarlight, ItemID.TerraBlade
+		];
+	public override HashSet<int> RangeLoot() => [
+		ItemID.DD2BetsyBow, ItemID.Tsunami, ItemID.FairyQueenRangedItem, ItemID.Phantasm, ItemID.Xenopopper, ItemID.VortexBeater, ItemID.ElectrosphereLauncher
+		];
+	public override HashSet<int> MagicLoot() => [
+		ItemID.StaffofEarth, ItemID.ApprenticeStaffT3, ItemID.LaserMachinegun, ItemID.ChargedBlasterCannon, ItemID.BubbleGun, ItemID.HeatRay, ItemID.RazorbladeTyphoon, ItemID.FairyQueenMagicItem, ItemID.SparkleGuitar, ItemID.NebulaArcanum, ItemID.NebulaBlaze
+		];
+	public override HashSet<int> SummonLoot() => [
+		ItemID.TempestStaff, ItemID.XenoStaff, ItemID.EmpressBlade, ItemID.StardustCellStaff, ItemID.StardustDragonStaff, ItemID.RainbowWhip,
+		];
+	public override HashSet<int> PotionPool() => [
+	ItemID.ArcheryPotion, ItemID.EndurancePotion, ItemID.LifeforcePotion, ItemID.RagePotion, ItemID.WrathPotion, ItemID.SummoningPotion, ItemID.HeartreachPotion,
+		];
+	public override HashSet<int> AccessoryLoot() => [
+		ItemID.AnkhShield, ItemID.FireGauntlet, ItemID.YoyoBag, ItemID.TerrasparkBoots,
+	];
+	public override HashSet<int> ArmorLoot()
+=> [
+			..TerrariaArrayID.HeadArmorPostGolem,
+			..TerrariaArrayID.BodyArmorPostGolem,
+			..TerrariaArrayID.LegArmorPostGolem,
+	];
+}
+public class Tier4Pool : ItemPool {
+	public override HashSet<int> MeleeLoot()
+	=> [ItemID.TrueNightsEdge, ItemID.TrueNightsEdge, ItemID.Excalibur, ItemID.ChlorophyteClaymore, ItemID.Seedler, ItemID.DeathSickle, ItemID.PsychoKnife, ItemID.Keybrand, ItemID.PaladinsHammer, ItemID.HamBat, ItemID.Yelets, ItemID.Kraken, ItemID.TheEyeOfCthulhu, ItemID.ChlorophytePartisan, ItemID.MushroomSpear, ItemID.ObsidianSwordfish, ItemID.NorthPole, ItemID.TheHorsemansBlade, ItemID.LightDisc, ItemID.Bananarang, ItemID.ScourgeoftheCorruptor, ItemID.VampireKnives, ItemID.ChristmasTreeSword
+		];
+	public override HashSet<int> RangeLoot() =>
+		[ItemID.HallowedRepeater, ItemID.ChlorophyteShotbow, ItemID.StakeLauncher, ItemID.Megashark, ItemID.VenusMagnum, ItemID.TacticalShotgun, ItemID.SniperRifle, ItemID.CandyCornRifle, ItemID.ChainGun, ItemID.GrenadeLauncher, ItemID.ProximityMineLauncher, ItemID.RocketLauncher, ItemID.NailGun, ItemID.Stynger, ItemID.JackOLanternLauncher, ItemID.SnowmanCannon, ItemID.FireworksLauncher, ItemID.Flamethrower, ItemID.PiranhaGun, ItemID.ElfMelter,
+		];
+	public override HashSet<int> MagicLoot() =>
+		[ItemID.VenomStaff, ItemID.NettleBurst, ItemID.BatScepter, ItemID.BlizzardStaff, ItemID.InfernoFork, ItemID.ShadowbeamStaff, ItemID.SpectreStaff, ItemID.PrincessWeapon, ItemID.Razorpine, ItemID.LeafBlower, ItemID.WaspGun, ItemID.RainbowGun, ItemID.MagnetSphere
+		];
+	public override HashSet<int> SummonLoot() =>
+		[ItemID.OpticStaff, ItemID.DeadlySphereStaff, ItemID.PygmyStaff, ItemID.RavenStaff, ItemID.StormTigerStaff, ItemID.StaffoftheFrostHydra, ItemID.DD2FlameburstTowerT3Popper, ItemID.DD2LightningAuraT3Popper, ItemID.DD2BallistraTowerT3Popper, ItemID.DD2ExplosiveTrapT3Popper, ItemID.SwordWhip, ItemID.ScytheWhip, ItemID.MaceWhip,
+		];
+	public override HashSet<int> PotionPool() => [
+		ItemID.ArcheryPotion, ItemID.EndurancePotion, ItemID.LifeforcePotion, ItemID.RagePotion, ItemID.WrathPotion, ItemID.SummoningPotion, ItemID.HeartreachPotion,
+		];
+	public override HashSet<int> AccessoryLoot() => [
+	ItemID.FrostsparkBoots, ItemID.MasterNinjaGear, ItemID.FrogGear, ItemID.CelestialStone, ItemID.DestroyerEmblem, ItemID.EyeoftheGolem, ItemID.MechanicalGlove, ItemID.AvengerEmblem, ItemID.BerserkerGlove, ItemID.FrozenShield, ItemID.PaladinsShield, ItemID.HeroShield, ItemID.MoltenQuiver, ItemID.StalkersQuiver, ItemID.StarVeil, ItemID.PapyrusScarab, ItemID.AnkhCharm, ItemID.CharmofMyths, ItemID.ArcaneCrystal, ItemID.MagnetFlower, ItemID.ManaCloak
+	];
+	public override HashSet<int> ArmorLoot()
+	=> [
+		..TerrariaArrayID.HeadArmorHardMode,
+			..TerrariaArrayID.BodyArmorHardMode,
+			..TerrariaArrayID.LegArmorHardMode,
+				..TerrariaArrayID.HeadArmorPostMech,..TerrariaArrayID.HeadArmorPostPlant,
+			..TerrariaArrayID.BodyArmorPostMech,
+			..TerrariaArrayID.LegArmorPostMech,..TerrariaArrayID.BodyArmorPostPlant,
+			..TerrariaArrayID.LegArmorPostPlant,
+		];
+}
 public class Tier3Pool : ItemPool {
 	public override HashSet<int> MeleeLoot()
 		=> [
 			ItemID.NightsEdge, ItemID.CobaltSword, ItemID.PalladiumSword, ItemID.MythrilSword, ItemID.OrichalcumSword, ItemID.AdamantiteSword, ItemID.TitaniumSword, ItemID.BreakerBlade, ItemID.Cutlass, ItemID.Frostbrand, ItemID.BeamSword, ItemID.FetidBaghnakhs, ItemID.Bladetongue, ItemID.HamBat, ItemID.Excalibur, ItemID.WaffleIron, ItemID.FormatC, ItemID.Gradient, ItemID.Chik, ItemID.HelFire, ItemID.Amarok, ItemID.Code1, ItemID.Code2, ItemID.CobaltNaginata, ItemID.PalladiumPike, ItemID.MythrilHalberd, ItemID.OrichalcumHalberd, ItemID.AdamantiteGlaive, ItemID.TitaniumTrident, ItemID.Gungnir, ItemID.BouncingShield,  ItemID.LightDisc, ItemID.DripplerFlail, ItemID.DaoofPow, ItemID.Anchor, ItemID.ChainGuillotines, ItemID.FlyingKnife, ItemID.ShadowFlameKnife, ItemID.DD2SquireDemonSword, ItemID.MonkStaffT1, ItemID.MonkStaffT2
 		];
-
 	public override HashSet<int> RangeLoot()
 		=> [
 			ItemID.Marrow, ItemID.IceBow, ItemID.DaedalusStormbow, ItemID.ShadowFlameBow, ItemID.CobaltRepeater, ItemID.PalladiumRepeater, ItemID.MythrilRepeater, ItemID.OrichalcumRepeater, ItemID.AdamantiteRepeater, ItemID.TitaniumRepeater, ItemID.HallowedRepeater, ItemID.DD2PhoenixBow, ItemID.PulseBow, ItemID.ClockworkAssaultRifle, ItemID.Gatligator, ItemID.Shotgun, ItemID.OnyxBlaster, ItemID.Uzi, ItemID.Megashark, ItemID.Toxikarp, ItemID.DartPistol, ItemID.DartRifle, ItemID.CoinGun, ItemID.SuperStarCannon, ItemID.Flamethrower
@@ -141,7 +196,7 @@ public class Tier3Pool : ItemPool {
 	public override HashSet<int> SummonLoot()
 		=> [
 			ItemID.SpiderStaff, ItemID.SanguineStaff, ItemID.PirateStaff, ItemID.QueenSpiderStaff,
-			ItemID.DD2BallistraTowerT2Popper, ItemID.DD2ExplosiveTrapT2Popper, ItemID.DD2FlameburstTowerT2Popper, ItemID.DD2LightningAuraT2Popper,
+			ItemID.DD2BallistraTowerT2Popper, ItemID.DD2ExplosiveTrapT2Popper, ItemID.DD2FlameburstTowerT2Popper, ItemID.DD2LightningAuraT2Popper, ItemID.CoolWhip, ItemID.FireWhip,
 			];
 	public override HashSet<int> PotionPool()
 		=> [
@@ -187,7 +242,7 @@ public class Tier2Pool : ItemPool {
 	public override HashSet<int> SummonLoot()
 		=> [
 			ItemID.HornetStaff, ItemID.VampireFrogStaff, ItemID.ImpStaff, ItemID.HoundiusShootius,
-			ItemID.DD2BallistraTowerT1Popper, ItemID.DD2ExplosiveTrapT1Popper, ItemID.DD2FlameburstTowerT1Popper, ItemID.DD2LightningAuraT1Popper,
+			ItemID.DD2BallistraTowerT1Popper, ItemID.DD2ExplosiveTrapT1Popper, ItemID.DD2FlameburstTowerT1Popper, ItemID.DD2LightningAuraT1Popper, ItemID.BoneWhip, ItemID.IvyWhip,
 			];
 	public override HashSet<int> PotionPool()
 		=> [

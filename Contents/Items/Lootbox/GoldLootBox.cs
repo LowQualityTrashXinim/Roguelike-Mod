@@ -22,8 +22,11 @@ class GoldLootBox : LootBoxBase {
 				types.Remove(ItemPool.GetPoolType<Tier1Pool>());
 			}
 		}
-		if (Main.rand.NextFloat() <= .1f) {
+		if (Main.rand.NextFloat() <= .2f) {
 			types.Add(ItemPool.GetPoolType<Tier3Pool>());
+		}
+		if (Main.rand.NextFloat() <= .05f) {
+			types.Add(ItemPool.GetPoolType<Tier4Pool>());
 		}
 		return types;
 	}

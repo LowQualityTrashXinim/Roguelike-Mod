@@ -110,7 +110,7 @@ namespace Roguelike.Common.Global {
 			return base.CanUseItem(item, player);
 		}
 		public override void HoldItem(Item item, Player player) {
-			UpdateCriticalDamage = 0;
+			player.ModPlayerStats().UpdateCritDamage += .05f * ItemLevel / 4;
 			if (CheckVariant()) {
 				var variant = WorldVaultSystem.GetVariant(VariantType);
 				if (variant != null) {
@@ -135,7 +135,6 @@ namespace Roguelike.Common.Global {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public float CriticalDamage = 0;
-		public float UpdateCriticalDamage;
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			if (ItemLevel <= 0) {
 				return;
@@ -155,7 +154,6 @@ namespace Roguelike.Common.Global {
 				return;
 			}
 			crit += ItemLevel / 3;
-			UpdateCriticalDamage += .05f * (ItemLevel / 4);
 			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
 				int effectID = list_WeaponEffectType[i];
 				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);
@@ -178,7 +176,7 @@ namespace Roguelike.Common.Global {
 						}
 					}
 					if (line.Name == "CritChance") {
-						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage + UpdateCriticalDamage, 2) * 100}% bonus critical damage"));
+						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
 						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 					}
 					else if (line.Name == "Damage") {

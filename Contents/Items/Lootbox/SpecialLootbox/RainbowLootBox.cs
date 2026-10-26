@@ -4,7 +4,6 @@ using Roguelike.Contents.Items.Accessories;
 using Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Roguelike.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
-using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
 using Roguelike.Contents.Transfixion.Perks;

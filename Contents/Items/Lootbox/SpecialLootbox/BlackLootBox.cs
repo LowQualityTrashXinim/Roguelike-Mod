@@ -1,7 +1,6 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Systems;
 using Roguelike.Contents.Items.Lootbox.BossLootBox;
-using Roguelike.Contents.Items.Lootbox.DisableLootbox;
 using Roguelike.Contents.Items.NoneSynergy.ParadoxPistol;
 using Terraria;
 using Terraria.ID;

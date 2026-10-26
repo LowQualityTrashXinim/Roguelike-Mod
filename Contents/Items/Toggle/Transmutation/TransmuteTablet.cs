@@ -173,6 +173,7 @@ public partial class TransmutationUIState {
 		EquivalentExchange.OnLeftClick += ItemShiftOptionPanel_OnLeftClick;
 		EquivalentExchange.Hide = true;
 		EquivalentExchange.Width.Set(0, .45f);
+		EquivalentExchange.Highlight = true;
 		EquivalentExchange.HighlightColor = Color.Yellow;
 		slotPanel.Append(EquivalentExchange);
 
@@ -402,11 +403,17 @@ public partial class TransmutationUIState {
 			EquivalentExchange.Highlight = true;
 			UpgradeRarity.Highlight = false;
 			UpgradeRarityMode = false;
+			ItemAccSelection.Hide = false;
+			ItemWeaponSelection.Hide = false;
+			ItemArmorSelection.Hide = false;
 		}
 		else if (listeningElement.UniqueId == UpgradeRarity.UniqueId) {
 			UpgradeRarity.Highlight = true;
 			EquivalentExchange.Highlight = false;
 			UpgradeRarityMode = true;
+			ItemAccSelection.Hide = true;
+			ItemWeaponSelection.Hide = true;
+			ItemArmorSelection.Hide = true;
 		}
 	}
 	private void EnergyItemslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -483,75 +490,87 @@ public partial class TransmutationUIState {
 			var player = Main.LocalPlayer;
 			var modplayer = player.ModPlayerStats();
 			var item = ItemShiftSlot.item.Clone();
-			int rareval1 = item.OriginalRarity;
-			byte rareOffset = 0;
-			if (UpgradeRarityMode) {
-				rareOffset = 1;
-			}
 			int itemType = ItemID.None;
-			if (item.type == ModContent.ItemType<Relic>() && UpgradeRarityMode) {
-				if (item.ModItem is Relic relic) {
-					rareval1 = 4 / relic.RelicTier;
-					int costRelic = CalculateCost();
-					if (modplayer.Modify_TransmutationPower(-costRelic)) {
-						UpgradeRelic(ref ItemShiftSlot.item, ref relic);
-						return;
+			if (UpgradeRarityMode) {
+				if (item.type == ModContent.ItemType<Relic>()) {
+					if (item.ModItem is Relic relic) {
+						int costRelic = CalculateCost();
+						if (modplayer.Modify_TransmutationPower(-costRelic)) {
+							UpgradeRelic(ref ItemShiftSlot.item, ref relic);
+							return;
+						}
+					}
+				}
+				if (item.IsAWeapon()) {
+					if (ItemShiftSlot.item.TryGetGlobalItem(out GlobalItemHandle global)) {
+						global.SetItemLevel(global.ItemLevel + 1);
 					}
 				}
 			}
-			if (ItemAccSelection.Highlight) {
-				itemType = GetItemRarityDB(rareval1 + rareOffset, 2);
+			else {
+				byte rareOffset = 0;
+				int rareval1 = item.OriginalRarity;
+				if (ItemAccSelection.Highlight) {
+					itemType = GetItemRarityDB(rareval1 + rareOffset, 2);
+				}
+				else if (ItemWeaponSelection.Highlight) {
+					if (itemType == 0) {
+						int testType = SpecialWeaponShifting(item.type);
+						if (testType == itemType) {
+							itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
+						}
+						else {
+							itemType = testType;
+						}
+					}
+				}
+				else if (ItemArmorSelection.Highlight) {
+					if (item.headSlot > 0) {
+						itemType = GetItemRarityDB(rareval1 + rareOffset, 3);
+					}
+					else if (item.bodySlot > 0) {
+						itemType = GetItemRarityDB(rareval1 + rareOffset, 4);
+					}
+					else if (item.legSlot > 0) {
+						itemType = GetItemRarityDB(rareval1 + rareOffset, 5);
+					}
+					else {
+						itemType = GetItemRarityDB(rareval1 + rareOffset, Main.rand.Next(3, 6));
+					}
+				}
+				if (itemType == ItemID.None) {
+					Main.NewText($"Detected no rarity found ! at {rareval1} rarity with {item.Name}");
+					return;
+				}
+				int cost = CalculateCost();
+				if (!modplayer.Modify_TransmutationPower(-cost)) {
+					return;
+				}
+				ModUtils.AmmoForWeapon(player, itemType);
+				ItemShiftSlot.item = new Item(itemType);
 			}
-			else if (ItemWeaponSelection.Highlight) {
-				if (UpgradeRarityMode) {
-					itemType = SpecialWeaponShifting(item.type);
-				}
-				if (itemType == 0) {
-					itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
-				}
-			}
-			else if (ItemArmorSelection.Highlight) {
-				if (item.headSlot > 0) {
-					itemType = GetItemRarityDB(rareval1 + rareOffset, 3);
-				}
-				else if (item.bodySlot > 0) {
-					itemType = GetItemRarityDB(rareval1 + rareOffset, 4);
-				}
-				else if (item.legSlot > 0) {
-					itemType = GetItemRarityDB(rareval1 + rareOffset, 5);
-				}
-				else {
-					itemType = GetItemRarityDB(rareval1 + rareOffset, Main.rand.Next(3, 6));
-				}
-			}
-			int cost = CalculateCost();
-			if (!modplayer.Modify_TransmutationPower(-cost)) {
-				return;
-			}
-			if (itemType == ItemID.None) {
-				Main.NewText($"Detected no rarity found ! at {rareval1} rarity with {item.Name}");
-				return;
-			}
-			ModUtils.AmmoForWeapon(player, itemType);
-			ItemShiftSlot.item = new Item(itemType);
 		}
 	}
 	private int CalculateCost() {
 		var item = ItemShiftSlot.item;
 		int rareval1 = item.OriginalRarity;
 		byte rareOffset = 0;
-		if (UpgradeRarityMode) {
-			rareOffset = 1;
-		}
 		float extra = .5f;
 
-		if (item.type == ModContent.ItemType<Relic>() && UpgradeRarityMode) {
+		if (UpgradeRarityMode) {
+			rareOffset = 1;
 			if (item.ModItem is Relic relic) {
 				//the number 4 refers to the maximum tier of a relic that can be achieved in normal gameplay
 				rareval1 = 4 / relic.RelicTier;
 				extra += 2;
-				int costRelic = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
-				return costRelic;
+				return EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+			}
+			if (item.IsAWeapon()) {
+				if (item.TryGetGlobalItem(out GlobalItemHandle global)) {
+					int itemLevel = global.ItemLevel;
+					extra += itemLevel * .1f;
+					return EnergyPoint(rareval1 + rareOffset + itemLevel, extramultiplication: extra);
+				}
 			}
 		}
 		if (ItemAccSelection.Highlight) {
@@ -759,7 +778,7 @@ public partial class TransmutationUIState {
 			case ItemID.YellowPhaseblade:
 				return ItemID.YellowPhasesaber;
 			default:
-				return 0;
+				return type;
 		}
 	}
 	public static int GetItemRarityDB(int rare, int option) {

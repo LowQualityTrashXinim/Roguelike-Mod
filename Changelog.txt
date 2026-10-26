@@ -205,6 +205,10 @@ Along with above change, this UI section will also be repurposed.
 875/ Fixed a bug in transmutation tablet exchange/upgrade UI due to update core UI.
 876/ Added World Essence sprite. ( aka perk chooser sprite )
 877/ Due to the new sprite, the perk chooser will also radiate light.
+878/ Player can now upgrade their weapon from transmutation tablet.
+879/ Added Tier 4 and Tier 5 loot pool.
+880/ Re-adjust shadow lootbox, gold lootbox and silver lootbox for the new tier loot pool.
+881/ Attempt to debug RoguelikeWorldProperty LoadWorldData.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
