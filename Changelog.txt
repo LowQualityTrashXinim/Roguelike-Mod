@@ -223,6 +223,7 @@ can be added in much easier manner.
 Added ProjectileAIModify modtype and support for it within RoguelikeGlobalProjectile.
 891/ Very tiny small fix for General Builder Tool where width and height did not match what 
 the builder input.
+892/ Change the file name of accessories rework to match the class name in the file.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
