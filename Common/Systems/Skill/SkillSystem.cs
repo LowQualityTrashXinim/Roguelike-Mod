@@ -618,6 +618,7 @@ public class SkillHandlePlayer : ModPlayer {
 			int amount = 1;
 			List<Vector2> poslist = new() { Player.Center };
 			List<Vector2> vellist = new() { alwaysShoot };
+			List<ModSkill> modifier = new();
 			foreach (var item in skilllist) {
 				item.ModifyShootProjectile(Player, this, ref amount, ref poslist, ref vellist);
 				if (item.Skill_Type == SkillTypeID.Projectile) {
@@ -637,11 +638,21 @@ public class SkillHandlePlayer : ModPlayer {
 						int type = item.ShootType;
 						Vector2 pos = poslist[i];
 						Vector2 vel = vellist[i];
-						item.Pre_SpawnProjectile(Player, this, amount, ref pos, ref vel, ref damage, ref knockback, ref type, ref cooldown);
+						foreach (var modify in modifier) {
+							modify.Pre_SpawnProjectile(Player, this, amount, ref pos, ref vel, ref damage, ref knockback, ref type, ref cooldown);
+						}
 						Projectile proj = NewSkillProjectile(source, poslist[i], vellist[i], vellist[i].Length(), item.ShootType, item.Damage, item.Knockback);
-						item.Post_SpawnProjectile(Player, this, ref proj, cooldown);
+						foreach (var modify in modifier) {
+							modify.Post_SpawnProjectile(Player, this, ref proj, cooldown);
+						}
 					}
-					ProjectileShootCoolDown[a] = item.Cooldown;
+					if (cooldown < 0) {
+						cooldown = 0;
+					}
+					ProjectileShootCoolDown[a] = cooldown;
+				}
+				else if (item.Skill_Type == SkillTypeID.Modify) {
+					modifier.Add(item);
 				}
 			}
 

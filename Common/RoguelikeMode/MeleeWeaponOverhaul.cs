@@ -74,6 +74,7 @@ namespace Roguelike.Common.RoguelikeMode {
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
 		public bool Ignore_AttackSpeed = false;
+		public float OffSetFromHand = 0;
 		/// <summary>
 		/// This will temporary disable attack animation during player item animation active
 		/// </summary>
@@ -217,14 +218,15 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
+			float offset = OffSetFromHand * item.scale;
 			switch (SwingType) {
 				case BossRushUseStyle.Swipe:
 					switch (modPlayer.ComboNumber) {
 						case 0:
-							SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
+							SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage, offset);
 							break;
 						case 1:
-							SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
+							SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage, offset);
 							break;
 						case 2:
 							CircleSwingAttack(player);
@@ -232,10 +234,10 @@ namespace Roguelike.Common.RoguelikeMode {
 					}
 					break;
 				case BossRushUseStyle.SwipeDown:
-					SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
+					SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage, offset);
 					break;
 				case BossRushUseStyle.SwipeUp:
-					SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
+					SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage, offset);
 					break;
 				case BossRushUseStyle.Spin:
 					CircleSwingAttack(player, CircleSwingAmount);
@@ -305,7 +307,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, mouse.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center.PositionOFFSET(mouse, MathHelper.Lerp(-offset, distance, percentDone));
 		}
-		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float animationSpeedMulti = 1) {
+		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float animationSpeedMulti = 1, float offsetHand = 0) {
 			var modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			if (player.itemAnimation == player.itemAnimationMax) {
 				modPlayer.itemAnimationImproved = player.itemAnimationMax;
@@ -316,7 +318,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			float angle = MathHelper.ToRadians(swingDegree) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
-			Swipe(start, end, percentDone, player, direct);
+			Swipe(start, end, percentDone, player, direct, offsetHand);
 			modPlayer.itemAnimationImproved -= 1 * animationSpeedMulti;
 		}
 		private static void CircleSwingAttack(Player player, float spinAmount = 1) {
@@ -325,7 +327,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation() + MathHelper.Pi;
 			Swipe(baseAngle, end + baseAngle, ModUtils.InOutExpo(percentDone), player, 1);
 		}
-		private static void Swipe(float start, float end, float percentDone, Player player, int direct) {
+		private static void Swipe(float start, float end, float percentDone, Player player, int direct, float offsetHand = 0) {
 			bool directIsnegative = direct == -1;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			player.itemRotation = currentAngle;
@@ -336,7 +338,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				modPlayer.CustomItemRotation = currentAngle;
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
-			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (ModUtilsPlayer.PLAYERARMLENGTH + 3);
+			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (ModUtilsPlayer.PLAYERARMLENGTH + 3 + offsetHand);
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {

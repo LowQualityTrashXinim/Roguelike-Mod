@@ -209,6 +209,20 @@ Along with above change, this UI section will also be repurposed.
 879/ Added Tier 4 and Tier 5 loot pool.
 880/ Re-adjust shadow lootbox, gold lootbox and silver lootbox for the new tier loot pool.
 881/ Attempt to debug RoguelikeWorldProperty LoadWorldData.
+882/ Added bunch of new modify skill.
+883/ Fixed weapon leveling save data value that was not properly saved.
+884/ Fixed weapon leveling after reaching a certain value, explode in weapon effect.
+885/ Fixed a bug where the code place the tower in underworld.
+886/ Reworked Blade of grass, Influx Waver and Flying Dragon slightly.
+887/ Added a new offset variable for melee swing offset from hand.
+888/ Added a easier way to check for current player position in what zone.
+889/ Due to forgetting to mention along with the skill modify note above.
+Rewrite the skill system quite a bit and added new function to skill so that modify skill
+can be added in much easier manner.
+890/ Due to fogetting to mention along with the note above.
+Added ProjectileAIModify modtype and support for it within RoguelikeGlobalProjectile.
+891/ Very tiny small fix for General Builder Tool where width and height did not match what 
+the builder input.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

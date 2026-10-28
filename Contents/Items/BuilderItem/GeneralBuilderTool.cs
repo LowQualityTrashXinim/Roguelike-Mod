@@ -571,7 +571,7 @@ public class GeneralBuilderToolUI : UIState {
 		}
 		createPosition = createPosition.ToTileCoordinates16().ToVector2();
 		point1 = createPosition;
-		point2 = createPosition + new Vector2(num1, num2);
+		point2 = createPosition + new Vector2(num1 - 1, num2 - 1);
 
 		Texture2D tex2 = ModContent.Request<Texture2D>("Roguelike/Texture/StructureHelper_Box").Value;
 

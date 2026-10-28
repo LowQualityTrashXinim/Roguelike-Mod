@@ -11,6 +11,7 @@ using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -28,6 +29,9 @@ internal class TheGear : ModItem {
 		if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(Main.LocalPlayer.position.ToTileCoordinates())).Any()) {
 			text = "Made an offer and you shall receive";
 		}
+		if (RogueLikeWorldGen.BiomeZone[Bid.Dungeon].Where(re => re.Contains(Main.LocalPlayer.position.ToTileCoordinates())).Any()) {
+			text = "Powerful curses present here. Best to leave soon";
+		}
 		if (NPC.downedMoonlord) {
 			text = "There are more to be discover...";
 		}
@@ -42,10 +46,16 @@ internal class TheGear : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (!player.dead && player.ItemAnimationJustStarted) {
-			if (RogueLikeWorldGen.BiomeZone[Bid.ShrineOfOffering].Where(re => re.Contains(player.position.ToTileCoordinates())).Any()) {
+			if (RogueLikeWorldGen.Check_PlayerPositionZone(player, Bid.ShrineOfOffering)) {
 				player.GetModPlayer<SpoilsPlayer>().SpoilsGift = ModSpoilSystem.GetSpoilsList().Where(s => s.RareValue == 999).Select(x => x.Name).ToList();
 				ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
 				return true;
+			}
+			if (RogueLikeWorldGen.Check_PlayerPositionZone(player, Bid.Dungeon)) {
+				for (int i = 0; i < 10; i++) {
+					Point point = (player.Center + Main.rand.NextVector2CircularEdge(1000, 1000)).ToPoint();
+					NPC.NewNPC(NPC.GetSource_NaturalSpawn(), point.X, point.Y, NPCID.DungeonGuardian);
+				}
 			}
 			else {
 				KillPlayer(player);
@@ -54,9 +64,9 @@ internal class TheGear : ModItem {
 		return true;
 	}
 	private void KillPlayer(Player player) {
-		string whoAmI = "False God";
-		if (!NPC.downedMoonlord) {
-			whoAmI = "\"True\" God";
+		string whoAmI = "\"True\" God";
+		if (NPC.downedMoonlord) {
+			whoAmI = "False God";
 		}
 		player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} fail to confront {whoAmI}")), 9999999999, 1);
 	}
@@ -67,7 +77,7 @@ internal class TheGear : ModItem {
 			if (delayBetweenSwitch <= 0) {
 				itemToLoad = Main.rand.Next(length);
 				CurrentItemTexture = itemToLoad;
-				delayBetweenSwitch = 5;
+				delayBetweenSwitch = 7;
 			}
 			else {
 				itemToLoad = CurrentItemTexture;

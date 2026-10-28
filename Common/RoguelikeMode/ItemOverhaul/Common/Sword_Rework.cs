@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
-internal class Sword_Rework : GlobalItem{
+internal class Sword_Rework : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		SwordWeaponOverhaul(entity);
 	}
@@ -100,7 +100,12 @@ internal class Sword_Rework : GlobalItem{
 			case ItemID.SlapHand:
 			case ItemID.HamBat:
 			case ItemID.PsychoKnife:
+				global.SwingType = BossRushUseStyle.SwipeDown;
+				item.useTurn = false;
+				item.Set_ItemCriticalDamage(1f);
+				break;
 			case ItemID.DD2SquireBetsySword:
+				global.OffSetFromHand = 20;
 				global.SwingType = BossRushUseStyle.SwipeDown;
 				item.useTurn = false;
 				item.Set_ItemCriticalDamage(1f);

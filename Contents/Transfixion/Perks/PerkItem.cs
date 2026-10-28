@@ -14,14 +14,15 @@ using Terraria.ID;
 namespace Roguelike.Contents.Transfixion.Perks;
 class WorldEssence : ModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultToConsume(32, 23);
+		Item.BossRushDefaultToConsume(56, 110);
 		Item.maxStack = 999;
 	}
 	public override void PostUpdate() {
-		Lighting.AddLight(Item.position, TorchID.UltraBright);
+		Lighting.AddLight(Item.position, TorchID.White);
 	}
 	public override void Update(ref float gravity, ref float maxFallSpeed) {
 		gravity = 0;
+		Item.velocity.Y *= .98f;
 	}
 	public override bool? UseItem(Player player) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();

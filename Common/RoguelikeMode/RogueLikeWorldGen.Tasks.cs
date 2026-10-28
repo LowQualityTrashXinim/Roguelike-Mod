@@ -119,6 +119,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, List<Rectangle>> BiomeZone = new();
 	public static Dictionary<short, List<short>> BiomeGroup = new();
 	public static bool[] StaticNoise255x255 = new bool[65025];
+	public static bool Check_PlayerPositionZone(Player player, short bid) =>
+		BiomeZone[bid].Where(re => re.Contains(player.position.ToTileCoordinates())).Any();
 	public override void OnModLoad() {
 		if (!Main.dedServ) {
 			Asset<Texture2D> sprite = ModContent.Request<Texture2D>(ModTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
@@ -1269,27 +1271,28 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (y >= rect.Y + rect.Height * .9f) {
 					if (y == rect.Y + rect.Height - 1) {
 						GenerationHelper.FastPlaceTile(x, y, TileID.Sandstone);
-						continue;
-					}
-					float percentX = x / halfWidth;
-					float percentY = (y - Height90 - rect.Y) / Height10;
-					if (x > halfWidth) {
-						percentX = (rect.Width - x) / halfWidth;
-					}
-					if (ModUtils.InOutExpo(percentX, 7) > percentY
-						) {
-						GenerationHelper.FastPlaceTile(x, y, TileID.Sand);
 					}
 					else {
-						GenerationHelper.FastPlaceTile(x, y, TileID.Sandstone);
+						float percentX = x / halfWidth;
+						float percentY = (y - Height90 - rect.Y) / Height10;
+						if (x > halfWidth) {
+							percentX = (rect.Width - x) / halfWidth;
+						}
+						if (ModUtils.InOutExpo(percentX, 7) > percentY) {
+							GenerationHelper.FastPlaceTile(x, y, TileID.Sand);
+						}
+						else {
+							GenerationHelper.FastPlaceTile(x, y, TileID.Sandstone);
+						}
 					}
 				}
 				else {
 					if (x > rect.Width * .1f && x < rect.Width * .9f && y <= rect.Y + rect.Height * .85f) {
-						x = (int)(rect.Width * .9f);
-						continue;
+						Tile tile = Main.tile[x, y];
+						tile.LiquidAmount = byte.MaxValue;
+						tile.LiquidType = LiquidID.Water;
 					}
-					if (y > rect.Y + rect.Height * .85f && x > rect.Width * .1f && x < rect.Width * .9f) {
+					else {
 						float percentX = x / halfWidth;
 						float percentY = (y - Height90 + Height5 - rect.Y) / Height5;
 						if (x > halfWidth) {
@@ -1298,8 +1301,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						if (ModUtils.InOutExpo(percentX, 7) > percentY) {
 							continue;
 						}
+						GenerationHelper.FastPlaceTile(x, y, TileID.Sand);
 					}
-					GenerationHelper.FastPlaceTile(x, y, TileID.Sand);
 				}
 			}
 		}
@@ -1447,7 +1450,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			short ID = CharToBid(GetStringDataBiomeMapping(xdex, ydex));
 			if (ID == Bid.Space
 			|| ID == Bid.Ocean
-			|| ID == Bid.None) {
+			|| ID == Bid.None
+			|| ID == Bid.Underworld) {
 				i--;
 				continue;
 			}

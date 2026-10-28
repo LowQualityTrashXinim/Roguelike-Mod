@@ -314,27 +314,27 @@ Modify_QuadShooting: {
 
 Modify_DistanceCast: {
 	DisplayName: Distance Cast
-	Description: Cast your projectile far off from you toward your cursor direction
+	Description: Cast your projectile far off from you toward your cursor direction by 100 unit
 }
 
 Modify_CastOffSetUp: {
 	DisplayName: Offset up
-	Description: Offset your cast position by unit of 10 on Y axis
+	Description: Offset your cast position by unit of 100 on Y axis
 }
 
 Modify_CastOffSetLeft: {
 	DisplayName: Offset left
-	Description: Offset your cast position by unit of -10 on X axis
+	Description: Offset your cast position by unit of -100 on X axis
 }
 
 Modify_CastOffSetRight: {
 	DisplayName: Offset right
-	Description: Offset your cast position by unit of 10 on X axis
+	Description: Offset your cast position by unit of 100 on X axis
 }
 
 Modify_CastOffSetDown: {
 	DisplayName: Offset down
-	Description: Offset your cast position by unit of -10 on Y axis
+	Description: Offset your cast position by unit of -100 on Y axis
 }
 
 Modify_CastUp: {
@@ -355,6 +355,58 @@ Modify_CastLeft: {
 Modify_CastRight: {
 	DisplayName: Right override
 	Description: Override your projectile's X axis velocity to shoot right
+}
+
+Modify_Orbiting: {
+	DisplayName: Orbiting
+	Description: Modify projectile velocity to fly in orbiting manner
+}
+
+Modify_AddTrailWhiteGem: {
+	DisplayName: White trail
+	Description: Add a trail of white dust behind your projectile
+}
+
+Modify_HelixPathPattern: {
+	DisplayName: Helix pattern
+	Description: Modify projectile to fly in helix pattern
+}
+
+Modify_PingPongPattern: {
+	DisplayName: Ping pong pattern
+	Description: Modify projectile to fly in ping pong pattern
+}
+
+Modify_TargetPlayer: {
+	DisplayName: Target player
+	Description: Modify projectile to fly toward player instead in accelerate manner
+}
+
+Modify_ShootDownWard: {
+	DisplayName: Shoot downward
+	Description:
+		'''
+		Modify projectile to shoot itself downward
+		Increases projectile shoot time by 0.5s
+		'''
+}
+
+Modify_ShootChaotically: {
+	DisplayName: Shoot chaotically
+	Description:
+		'''
+		Modify projectile to shoot itself randomly at every direction every 0.5s
+		Increases projectile shoot time by 0.5s
+		'''
+}
+
+Modify_ShootUpWard: {
+	DisplayName: Shoot upward
+	Description:
+		'''
+		Modify projectile to shoot itself upward
+		Increases projectile shoot time by 0.5s
+		'''
 }
 
 Utility_SummonPerk: {

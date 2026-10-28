@@ -57,9 +57,17 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.damage += 12;
 					break;
 				case ItemID.InfluxWaver:
-					item.useTime = item.useAnimation = 30;
+					item.damage = 40;
+					item.scale += .25f;
+					item.useTime = item.useAnimation = 10;
 					item.shootsEveryUse = true;
 					item.shootSpeed = 17;
+					break;
+				case ItemID.DD2SquireBetsySword:
+					item.damage = 200;
+					item.useTime = item.useAnimation = 70;
+					item.shootSpeed = 25;
+					item.scale += .5f;
 					break;
 				case ItemID.DD2LightningAuraT1Popper:
 					item.damage = 10;
@@ -161,12 +169,21 @@ namespace Roguelike.Common.RoguelikeMode {
 						return false;
 					}
 					break;
+				case ItemID.BladeofGrass:
+					return false;
+
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (item.type == ItemID.CandyCaneSword) {
 				player.Heal(5);
+			}
+			if (item.type == ItemID.BladeofGrass) {
+				int amount = Main.rand.Next(3, 6);
+				for (int i = 0; i < amount; i++) {
+					Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(4, 4), item.shoot, item.damage / 4, 1f, player.whoAmI, MathHelper.ToRadians(Main.rand.Next(3, 7)) * Main.rand.NextBool().ToDirectionInt(), Main.rand.Next(4, 8));
+				}
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -184,6 +201,9 @@ namespace Roguelike.Common.RoguelikeMode {
 					tooltips.Add(line);
 					break;
 			}
+			if (item.type == ItemID.BladeofGrass) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Hitting enemy spawn 3 to 5 leafs"));
+			}
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
 			}
@@ -198,8 +218,7 @@ namespace Roguelike.Common.RoguelikeMode {
 					"On every 3rd hit on the same enemy, deal extra 150% damage and do a small sun explosion"));
 			}
 			else if (item.type == ItemID.CandyCaneSword) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CandyCaneSword",
-					"Hitting enemy heal you for 5 health"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CandyCaneSword", "Hitting enemy heal you for 5 health"));
 			}
 		}
 	}

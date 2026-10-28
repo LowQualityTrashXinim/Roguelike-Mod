@@ -13,7 +13,7 @@ public class Effect1 : WeaponEffect {
 }
 public class Effect2 : WeaponEffect {
 	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
-		handler.UpdateCriticalDamage += .75f;
+		player.ModPlayerStats().UpdateCritDamage += .75f;
 	}
 	public override void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 		crit += 20;

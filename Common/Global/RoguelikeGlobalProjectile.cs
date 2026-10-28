@@ -37,6 +37,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int OnKill_ScatterShot = -1;
 	public bool ComeFromSkill = false;
 
+	public int constanttimer = 0;
 	public int NPC_WhoAmI = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
@@ -60,6 +61,19 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	/// any modification later set in the code or outside scope of NewProjectile will be ignored
 	/// </summary>
 	public int InitialTimeLeft { get; private set; } = 0;
+	public List<ProjectileAIModify> list_modifier = new();
+	public static void Add_projectileAImodify(int type, ref Projectile proj) {
+		ProjectileAIModify ai = ProjectileModify_System.Get_Modify(type);
+		if (ai == null) {
+			return;
+		}
+		ai.OnAdded(proj);
+		proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().list_modifier.Add(ai);
+	}
+	public override void SetDefaults(Projectile entity) {
+		list_modifier = new();
+		constanttimer = 0;
+	}
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
 			return;
@@ -111,7 +125,13 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override bool PreAI(Projectile projectile) {
+		if (++constanttimer >= 10000000) {
+			constanttimer = 0;
+		}
 		Pre_VelocityHandler(projectile);
+		foreach (var modifier in list_modifier) {
+			modifier.PreAI(projectile);
+		}
 		return base.PreAI(projectile);
 	}
 	private void Pre_VelocityHandler(Projectile projectile) {
@@ -150,6 +170,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void PostAI(Projectile projectile) {
+		foreach (var modifier in list_modifier) {
+			modifier.PostAI(projectile);
+		}
 		HardCodedInteractionFromUnforgiving(projectile);
 		if (Force_TimeLeft != -1) {
 			Force_TimeLeft--;
@@ -176,6 +199,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				}
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
+		}
+		foreach (var modifier in list_modifier) {
+			modifier.OnHitNPC(projectile, target);
 		}
 	}
 	int BouncyCollide = 0;
@@ -211,6 +237,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		modifiers.CritDamage += CritDamage;
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
+		foreach (var modifier in list_modifier) {
+			modifier.OnKill(projectile);
+		}
 		var player = Main.player[projectile.owner];
 		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0

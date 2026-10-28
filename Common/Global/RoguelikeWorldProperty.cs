@@ -33,6 +33,8 @@ internal class RoguelikeWorldProperty : ModSystem {
 	public bool HasThisDataLoaded = false;
 	public override void SaveWorldData(TagCompound tag) {
 		HasThisDataLoaded = false;
+		Mod.Logger.Info($"{Main.worldName} data is saved");
+		Mod.Logger.Info($"Variable \"HasThisDataLoaded\" has their value set to {HasThisDataLoaded}");
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
@@ -74,6 +76,8 @@ internal class RoguelikeWorldProperty : ModSystem {
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		HasThisDataLoaded = true;
+		Mod.Logger.Info($"{Main.worldName} data is loaded");
+		Mod.Logger.Info($"Variable \"HasThisDataLoaded\" has their value set to {HasThisDataLoaded}");
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}

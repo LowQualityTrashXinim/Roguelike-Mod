@@ -46,11 +46,8 @@ namespace Roguelike.Common.Global {
 		public List<int> list_WeaponEffectType = new();
 		public int ItemEffectCap = 5;
 		public void SetItemLevel(int level) {
-			int amountAdd = Math.Clamp(level / 5, 0, ItemEffectCap);
-			if (amountAdd > 0) {
-				for (int i = 0; i < amountAdd; i++) {
-					list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
-				}
+			if (level % 5 == 0 && list_WeaponEffectType.Count < ItemEffectCap) {
+				list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
 			}
 			ItemLevel = level;
 		}
@@ -69,7 +66,6 @@ namespace Roguelike.Common.Global {
 		}
 		public override void SetDefaults(Item entity) {
 			ItemEffectCap = 5;
-			ItemLevel = 0;
 			CriticalDamage = 0;
 			if (OutroEffect_type == -1) {
 				OutroEffect_type = OutroEffect.GetOutroEffectType<OutroEffect_None>();
@@ -81,25 +77,6 @@ namespace Roguelike.Common.Global {
 				}
 			}
 		}
-		//public static IGlobalType? GetGlobalByTypeName(this Item item, string typeName) {
-		//	var list = item!.Globals;
-		//	foreach (var global in list) {
-		//		if (global is null || global.Name == "UnloadedGlobalItem") {
-		//			continue;
-		//		}
-
-		//		if (global. is not IGlobalType result) {
-		//			continue;
-		//		}
-
-		//		if(result.TypeName != typeName) {
-		//			continue;
-		//		}
-
-		//		return result;
-		//	}
-		//	return null;
-		//}
 		public override bool CanUseItem(Item item, Player player) {
 			DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
 			if (item.type == ItemID.CelestialSigil) {
@@ -176,7 +153,7 @@ namespace Roguelike.Common.Global {
 						}
 					}
 					if (line.Name == "CritChance") {
-						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
+						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(Main.LocalPlayer.ModPlayerStats().UpdateCritDamage.ApplyTo(CriticalDamage), 2) * 100}% bonus critical damage"));
 						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 					}
 					else if (line.Name == "Damage") {
