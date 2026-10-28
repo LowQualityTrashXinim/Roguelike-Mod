@@ -61,6 +61,11 @@ public class Bid {
 	public const short CorruptedDesert = 22;
 	public const short CrimsonTundra = 23;
 	public const short CrimsonDesert = 24;
+	/// <summary>
+	/// This id is used for setting and detecting a structure<br/>
+	/// It should not be used in <see cref="RogueLikeWorldGen.BiomeID"/>
+	/// </summary>
+	public const short Structure = 990;
 	//These are biome ignore char value, do not uses this in general biome mapping
 	public const short Structure_Dungeon = 996;
 	public const short Structure_JungleTemple = 997;

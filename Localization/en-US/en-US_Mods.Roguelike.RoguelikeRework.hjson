@@ -274,6 +274,11 @@ SorcererEmblem:
 	Increases magic critical strike chance by 5%
 	Increases magic critical strike damage by 30%
 	'''
+SummonerEmblem:
+	'''
+	Increases maximum minion slot by 1
+	Increases whip range by 20%
+	'''
 AnkletoftheWind:
 	'''
 	Gain a wind shield that can regenerate itself

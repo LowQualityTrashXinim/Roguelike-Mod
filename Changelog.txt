@@ -224,6 +224,7 @@ Added ProjectileAIModify modtype and support for it within RoguelikeGlobalProjec
 891/ Very tiny small fix for General Builder Tool where width and height did not match what 
 the builder input.
 892/ Change the file name of accessories rework to match the class name in the file.
+893/ Reworked Summoner Emblem.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
