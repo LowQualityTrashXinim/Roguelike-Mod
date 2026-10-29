@@ -24,7 +24,7 @@ using Terraria.UI.Chat;
 namespace Roguelike.Common.Global {
 	/// <summary>
 	/// This class hold mainly tooltip information and other general stats or field<br/>
-	/// However this doesn't handle overhaul information
+	/// However this doesn't handle or hold overhaul information
 	/// </summary>
 	public class GlobalItemHandle : GlobalItem {
 		/// <summary>
@@ -220,13 +220,6 @@ namespace Roguelike.Common.Global {
 			}
 			if (AdvancedBuffItem && NameLine != null) {
 				NameLine.Text += " [Advanced]";
-			}
-		}
-		public override void PostUpdate(Item item) {
-			if (RoguelikeWorldProperty.BossRushWorld) {
-				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
-					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
-				}
 			}
 		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {

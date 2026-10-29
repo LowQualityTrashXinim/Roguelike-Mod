@@ -121,4 +121,15 @@ internal class SuperRareSpoil {
 			}
 		}
 	}
+	public class SuperRare_SameSetArmor : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SuperRare;
+		}
+		public override bool IsSelectable(Player player) {
+			return SpoilDropRarity.SuperRareDrop();
+		}
+		public override void OnChoose(Player player) {
+			
+		}
+	}
 }

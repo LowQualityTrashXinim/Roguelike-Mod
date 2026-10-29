@@ -29,7 +29,7 @@ public class BossRushStructureHandler : ModSystem {
 	}
 
 	private void On_NPC_EncourageDespawn(On_NPC.orig_EncourageDespawn orig, NPC self, int despawnTime) {
-		if (!Active || !RoguelikeWorldProperty.BossRushWorld) {
+		if (!Active || !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return;
 		}
 		orig(self, despawnTime);
@@ -123,7 +123,7 @@ public class BossRushStructureHandler : ModSystem {
 	List<int> BossList = new();
 	public int BossSpawnCD = 0;
 	public override void PostUpdateEverything() {
-		if (!Main.LocalPlayer.active || Main.LocalPlayer.dead || !Active || !RoguelikeWorldProperty.BossRushWorld) {
+		if (!Main.LocalPlayer.active || Main.LocalPlayer.dead || !Active || !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return;
 		}
 		if (BossSpawnCD > 0 && BossSpawnCD <= ModUtils.ToSecond(10))
@@ -146,13 +146,10 @@ public class BossRushStructureHandler : ModSystem {
 		//	npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
 		//	npc.timeLeft = 9999999;
 		//}
-		if (!Setting_SpawnOnPlayerCommand) {
-			SpawnBoss();
-		}
 	}
 	public void SpawnBoss(bool ForcedSpawn = false) {
 		if (!ModContent.GetInstance<BossRushWorldGen>().IsABossAlive) {
-			if (Setting_BossRushExtra && !Setting_SpawnOnPlayerCommand) {
+			if (Setting_BossRushExtra) {
 				var modifier = Main.rand.Next(BossRushModifierLoader.modifier_good);
 				if (modifier != null) {
 					modifier.OnChoose();
@@ -180,7 +177,7 @@ public class BossRushStructureHandler : ModSystem {
 				}
 			}
 			int type;
-			if (Setting_FightBossInProgression) {
+			if (!ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG) {
 				type = BossList[0];
 			}
 			else {
@@ -257,8 +254,6 @@ public class BossRushStructureHandler : ModSystem {
 		BossList = tag.Get<List<int>>("BossList");
 		CurrentBadModifier = tag.Get<int>("BadModifier");
 	}
-	public static bool Setting_FightBossInProgression => ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Setting_FightBossInProgression;
-	public static bool Setting_SpawnOnPlayerCommand => ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Setting_SpawnOnPlayerCommand;
 	public static bool Setting_BossRushExtra => ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra;
 
 }
@@ -282,7 +277,7 @@ public class BossRushModeModPlayer : ModPlayer {
 }
 public class BossRushModeGlobalNPC : GlobalNPC {
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if (!RoguelikeWorldProperty.BossRushWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return;
 		}
 		pool.Clear();
@@ -319,15 +314,20 @@ public class BossRushModeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override void OnKill(NPC npc) {
-		if (!RoguelikeWorldProperty.BossRushWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return;
 		}
 		if (ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra) {
 			ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier = -1;
 		}
-		if (npc.boss && !BossRushStructureHandler.Setting_SpawnOnPlayerCommand) {
-			ModContent.GetInstance<BossRushStructureHandler>().BossSpawnCD = ModUtils.ToSecond(30);
-			Main.NewText("A boss have been killed, 30s until a new boss is spawn", Color.Red);
+	}
+}
+public class BossRushModeGlobalItem : GlobalItem {
+	public override void PostUpdate(Item item) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
+			if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
+				item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
+			}
 		}
 	}
 }
@@ -364,8 +364,7 @@ internal class BossRushModeActivation : ModItem {
 				}
 			}
 			SoundEngine.PlaySound(SoundID.Roar, player.position);
-			if (BossRushStructureHandler.Setting_SpawnOnPlayerCommand && player.ItemAnimationJustStarted
-				&& player.ownedProjectileCounts[ModContent.ProjectileType<BossRush_SpawnBoss_Projectile>()] < 1) {
+			if (player.ItemAnimationJustStarted && player.ownedProjectileCounts[ModContent.ProjectileType<BossRush_SpawnBoss_Projectile>()] < 1) {
 				if (!handler.Active) {
 					handler.Start_BossRush();
 				}

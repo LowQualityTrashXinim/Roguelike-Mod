@@ -113,27 +113,50 @@ public class Roguelike_ChlorophyteClaymore_GlobalProjectile : GlobalProjectile {
 	public override bool AppliesToEntity(Projectile entity, bool lateInstantiation) {
 		return entity.type == ProjectileID.ChlorophyteOrb;
 	}
-	public override void SetDefaults(Projectile entity) {
-		entity.tileCollide = true;
-		entity.timeLeft = 600;
+	public override void OnSpawn(Projectile projectile, IEntitySource source) {
+		if (source is EntitySource_ItemUse parent) {
+			if (parent.Item.type == ItemID.ChlorophyteClaymore) {
+				projectile.tileCollide = true;
+				projectile.timeLeft = 600;
+			}
+		}
 	}
 	public override void PostAI(Projectile projectile) {
+		if (!projectile.Check_ItemTypeSource(ItemID.ChlorophyteClaymore)) {
+			return;
+		}
 		var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.ChlorophyteWeapon);
 		dust.noGravity = true;
 		dust.velocity = Vector2.Zero;
 
 	}
+	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+		if (projectile.Check_ItemTypeSource(ItemID.ChlorophyteClaymore)) {
+			if (projectile.Center.Y < Main.player[projectile.owner].Center.Y) {
+				fallThrough = true;
+			}
+			else {
+				fallThrough = false;
+			}
+		}
+		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
+	}
 	public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
-		if (projectile.velocity.Y != oldVelocity.Y) {
-			projectile.velocity.Y = -oldVelocity.Y;
+		if (projectile.Check_ItemTypeSource(ItemID.ChlorophyteClaymore)) {
+			if (projectile.velocity.Y != oldVelocity.Y) {
+				projectile.velocity.Y = -oldVelocity.Y;
+			}
+			if (projectile.velocity.X != oldVelocity.X) {
+				projectile.velocity.X = -oldVelocity.X;
+			}
+			Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.SporeCloud, projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
 		}
-		if (projectile.velocity.X != oldVelocity.X) {
-			projectile.velocity.X = -oldVelocity.X;
-		}
-		Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.SporeCloud, projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
 		return false;
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
+		if (!projectile.Check_ItemTypeSource(ItemID.ChlorophyteClaymore)) {
+			return;
+		}
 		for (int i = 0; i < 5; i++) {
 			Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.SporeCloud, projectile.damage / 2, projectile.knockBack, projectile.owner, 5, 180);
 		}

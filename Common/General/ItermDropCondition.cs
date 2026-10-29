@@ -11,7 +11,7 @@ namespace Roguelike.Common.General {
 	public class IsInBossRushMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return RoguelikeWorldProperty.BossRushWorld;
+				return ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 			}
 			return false;
 		}
@@ -64,7 +64,7 @@ namespace Roguelike.Common.General {
 	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				if (RoguelikeWorldProperty.BossRushWorld || RoguelikeWorldProperty.RoguelikeWorld) {
+				if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld || ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 					return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1
 						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 3
 						|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5
@@ -85,7 +85,7 @@ namespace Roguelike.Common.General {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return info.player.ConsumedLifeCrystals < Player.LifeCrystalMax &&
-					RoguelikeWorldProperty.BossRushWorld;
+					ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 			}
 			return false;
 		}
@@ -98,7 +98,7 @@ namespace Roguelike.Common.General {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return info.player.ConsumedManaCrystals < Player.ManaCrystalMax &&
-					RoguelikeWorldProperty.BossRushWorld;
+					ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 			}
 			return false;
 		}

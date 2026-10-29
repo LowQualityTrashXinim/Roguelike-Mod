@@ -163,7 +163,7 @@ internal class AshwoodSwordProjectile : ModProjectile {
 			State = 1;
 			Projectile.position += Projectile.velocity * 2;
 			Projectile.velocity = Vector2.Zero;
-			int amount = (int)Math.Ceiling(50 * Projectile.scale);
+			int amount = (int)Math.Ceiling(20 * Projectile.scale);
 			float scale = Projectile.scale;
 			for (int i = 0; i < amount; i++) {
 				var lava = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Lava);

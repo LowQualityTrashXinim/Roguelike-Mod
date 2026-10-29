@@ -35,7 +35,7 @@ internal class FleshChamberStructure : ModSystem {
 	public Rectangle Pos_structure => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("FleshChamber");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

@@ -9,7 +9,7 @@ namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeStructureHandler : ModSystem {
 	int Projectile_WhoAmI = -1;
 	public override void PreUpdateProjectiles() {
-		if(RoguelikeWorldProperty.BossRushWorld || RoguelikeWorldProperty.TerrariaWorld) {
+		if(ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld || ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld) {
 			return;
 		}
 		if (SubworldSystem.Current != null) {

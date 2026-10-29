@@ -74,7 +74,7 @@ namespace Roguelike.Common.Global {
 			}
 		}
 		public override void PostUpdate() {
-			if (RoguelikeWorldProperty.BossRushWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 				return;
 			}
 			var modplayer = Player.GetModPlayer<RoguelikeBiomeHandle_ModPlayer>();
@@ -117,7 +117,7 @@ namespace Roguelike.Common.Global {
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
 			if (!Player.IsDebugPlayer()) {
-				if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+				if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld || ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 					Player.difficulty = PlayerDifficultyID.Hardcore;
 				}
 			}
@@ -144,7 +144,7 @@ namespace Roguelike.Common.Global {
 				}
 			}
 			if (Main.ActiveWorldFileData.IsValid) {
-				if (RoguelikeWorldProperty.NightmareWorld) {
+				if (ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 					Main.NewText("You have entered Nightmare mode", Color.Black);
 				}
 			}
@@ -187,13 +187,13 @@ namespace Roguelike.Common.Global {
 			|| Player.name == "WhoAmI"
 			|| Player.name == "IdentityCrisis"
 			|| Player.name == "Dysmorphia"
-			&& !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato" && !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994" && !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secert_PerkOverload => Player.name == "MrPerk" && !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secret_NinjaMode => Player.name == "Ninja" && !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secret_TrueGod => Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim" && !RoguelikeWorldProperty.TerrariaWorld;
-		public bool Secret_Druggies => Player.name.ToLower().Trim() == "drugaddict" && !RoguelikeWorldProperty.TerrariaWorld;
+			&& !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secert_PerkOverload => Player.name == "MrPerk" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secret_NinjaMode => Player.name == "Ninja" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secret_TrueGod => Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		public bool Secret_Druggies => Player.name.ToLower().Trim() == "drugaddict" && !ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
 		/// <summary>
 		/// This is so that the item is given to player when player enter the world.
 		/// </summary>
@@ -201,8 +201,8 @@ namespace Roguelike.Common.Global {
 		public IEnumerable<Item> StartingItem() {
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
-			if (!RoguelikeWorldProperty.TerrariaWorld) {
-				if (RoguelikeWorldProperty.BossRushWorld) {
+			if (!ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld) {
+				if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 					yield return new Item(ModContent.ItemType<LunchBox>());
 					LifeCrystal += 15;
 					ManaCrystal += 9;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.NPCAIrework;
 internal class SkeletronArcher : GlobalNPC {
 	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) {
-		return entity.type == NPCID.SkeletonArcher && RoguelikeWorldProperty.RoguelikeWorld;
+		return entity.type == NPCID.SkeletonArcher && ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld;
 	}
 	//npc.ai[0] is the counter for the attack
 	public override void AI(NPC npc) {

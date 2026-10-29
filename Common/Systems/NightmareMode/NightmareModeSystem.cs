@@ -22,7 +22,7 @@ internal class NightmareModeSystem : ModSystem {
 	private int On_NPC_NewNPC(On_NPC.orig_NewNPC orig, IEntitySource source, int X, int Y, int Type, int Start, float ai0, float ai1, float ai2, float ai3, int Target) {
 		int whoAmI = orig(source, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target);
 		NPC npc = Main.npc[whoAmI];
-		if (npc.boss || npc.friendly || npc.life <= 5 || Type == NPCID.TargetDummy || !RoguelikeWorldProperty.NightmareWorld) {
+		if (npc.boss || npc.friendly || npc.life <= 5 || Type == NPCID.TargetDummy || !ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 			return whoAmI;
 		}
 		else {
@@ -41,13 +41,13 @@ internal class NightmareModeSystem : ModSystem {
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		base.ModifyWorldGenTasks(tasks, ref totalWeight);
-		if (!Main.masterMode && RoguelikeWorldProperty.NightmareWorld) {
+		if (!Main.masterMode && ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 			Main.ActiveWorldFileData.GameMode = GameModeID.Master;
 		}
 	}
 	public int Cooldown = 0;
 	public override void PostUpdateEverything() {
-		if(!RoguelikeWorldProperty.NightmareWorld) {
+		if(!ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 			return;
 		}
 		bool AnyBossAlive = ModUtils.IsAnyVanillaBossAlive();

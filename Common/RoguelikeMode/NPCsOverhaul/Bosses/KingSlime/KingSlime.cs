@@ -106,6 +106,13 @@ internal class KingSlime : NPCReworker {
 		if (crownNPC != null)
 			crownNPC.active = false;
 
+		foreach (var proj in Main.ActiveProjectiles) {
+
+			if (proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
+				proj.Kill();
+
+		}
+
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 
@@ -117,12 +124,6 @@ internal class KingSlime : NPCReworker {
 
 		}
 
-		foreach (var proj in Main.ActiveProjectiles) {
-
-			if (proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
-				proj.Kill();
-
-		}
 	}
 
 	public override void ReworkedAI(ref NPC npc, Player target) {

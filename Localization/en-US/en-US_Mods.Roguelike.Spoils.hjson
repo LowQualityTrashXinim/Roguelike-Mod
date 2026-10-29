@@ -128,6 +128,11 @@ SuperRare_PerkSpoil: {
 	Description: Contains 1 perk blessing and 1 luck essence.
 }
 
+SuperRare_SameSetArmor: {
+	DisplayName: Armor special
+	Description: Return 1 full set of armor [WIP]
+}
+
 SSR_PerkSpoil: {
 	DisplayName: Perk Mythic III
 	Description: Contains 1 perk blessing.

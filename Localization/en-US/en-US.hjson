@@ -185,10 +185,9 @@ Mods: {
 				'''
 				The normal terraria experience but with this mod contents !
 				[+] Most of the story, quest, and exploreable structures is locked.
-				[+] Enjoy a normal playthrough of the mod in vanilla setting :)
-				[+] Most contents are adjusted, and trying to enable other mode in the same category 
-				will automatically disable
-				[+] Mod's achievement is also disable when playing in this setting
+				[+] Enjoy a normal playthrough of the mod in vanilla setting :).
+				[+] Most contents are adjusted to fit vanilla setting.
+				[+] Mod's achievement is also disable when playing in this setting.
 				[+] Most secret is also disable when playing in this setting.
 				'''
 			BossRushMode:
@@ -203,15 +202,49 @@ Mods: {
 				- Normal enemy receive 2x health ( multiplicative ) and always deal additional 10% percentage damage.
 				- Bosses health is increased by 500%, gain 25% damage reduction, deal 25% percentage damage, 
 				at 50% health or below increases damage dealt by 100% and bosses can't take more than 1% of their health.
-				- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed.
+				- Every enemy have 1 extra update build into it resulting in +100% speed and +100% attack speed
+				but also take 100% more debuff damage and -50% debuff duration.
 				- During a boss fight, a celestial portal opened spawning various celestial being.
 				'''
-			NotSupported.Warning: WARNING: Not Supported By The Terraria Roguelike Mod
+			HellishMode:
+				'''
+				"For those who believe in god"
+				[-] Everything that deal damage via contact will instantly kill you
+				[-] Your loot drop amount is limited down to 1 regardless
+				'''
+			CursedMode:
+				'''
+				"Pushing once self to absolute extreme, a fine tribute to god !"
+				[-] The following perk become unobtainable:
+				Unnerfed
+				Perk Blocker
+				[-] Everything take 50% less damage ( multiplicative )
+				[-] When hit, life regeneration ( not natural life regen ) is
+				multiply by 0, and slowly goes back up to 1 overtime ( +0.01x/s )
+				[-] Each time getting hit, reduce 1% of player maximum health, 
+				up to 40% ( multiplicative ), this slowly regenerate ( 1% per 10s )
+				[-] Boss gain 50% damage reduction and 25% percentage damage
+				[-] Boss will always have a bad modifier goes along with
+				[-] Defeating a boss will force you to choose a bad modifier yourself 
+				( not choosing will result to random modifier to be set )
+				'''
+			TotalRNG:
+				'''
+				[+] Weapon enchantment have 20% to appear on your weapon
+				[+] Accessory have 20% chance to contain a augment
+				[-] You no longer can choose your artifact
+				[-] You lost ability to choose what perk you want
+				[-] Randomize spoil reward, making you unable to choose them
+				[-] Your right to access divine hammer is revoked
+				If you are in boss rush mode:
+				[=] Boss are spawn in randomize order.
+				'''
 
+			NotSupported.Warning: WARNING: Not Supported By The Everlasting Mod
 			DemoEnding: {
 				Tooltip:
 					'''
-					Thank you for playing Terraria: Roguelike. You have reached the end of the demo!
+					Thank you for playing Everlasting. You have reached the end of the demo!
 					You may still continue playing on this world, however the following content is unpolished.
 					'''
 				Close: Close
@@ -4754,7 +4787,6 @@ Mods: {
 				Headers: {
 					QoLHeader: Quality of Life
 					LuckDepartmentHeader: Luck Department
-					BaseGameHeader: Base Game
 					GameModeHeader: Gamemodes
 					DebugHeader: Debug
 					GameHeader: Game option
@@ -4780,29 +4812,6 @@ Mods: {
 						'''
 						Enable to have a chance to get rare item from lootbox
 						Disable to remove rare drop from lootbox
-						'''
-				}
-
-				TotalRNG: {
-					Label: Total RNG mode
-					Tooltip:
-						'''
-						[+] Weapon enchantment have 20% to appear on your weapon
-						[+] Accessory have 20% chance to contain a augment
-						[-] You no longer can choose your artifact
-						[-] You lost ability to choose what perk you want
-						[-] Randomize spoil reward, making you unable to choose them
-						[-] Your right to access divine hammer is revoked
-						'''
-				}
-
-				HellishEndeavour: {
-					Label: Hellish Endeavour
-					Tooltip:
-						'''
-						"For those who believe"
-						[-] Everything that deal damage via contact will instantly kill you
-						[-] Your loot drop amount is limited down to 1 regardless
 						'''
 				}
 
@@ -4860,16 +4869,6 @@ Mods: {
 					Tooltip: Skip a boss fight cutscene
 				}
 
-				BossRushMode_Setting_FightBossInProgression: {
-					Label: Boss Rush - Fight Boss In Progression
-					Tooltip: Make the boss rush mode to spawn boss in a vanilla progression
-				}
-
-				BossRushMode_Setting_SpawnOnPlayerCommand: {
-					Label: Boss Rush - Spawn On Player Command
-					Tooltip: Enable this to give control to player on when player want to spawn boss
-				}
-
 				BossRushMode_Extra: {
 					Label: Boss Rush Mode Extra
 					Tooltip:
@@ -4904,6 +4903,11 @@ Mods: {
 
 				NightmareMode: {
 					Label: Nightmare Mode
+					Tooltip: ""
+				}
+
+				HellishEndeavour: {
+					Label: Hellish Endeavour
 					Tooltip: ""
 				}
 			}

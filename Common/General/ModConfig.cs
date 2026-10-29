@@ -8,23 +8,7 @@ namespace Roguelike.Common.General {
 		[Header($"GameModeHeader")]
 		[ReloadRequired]
 		[DefaultValue(false)]
-		public bool BossRushMode_Setting_FightBossInProgression { get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool BossRushMode_Setting_SpawnOnPlayerCommand { get; set; }
-		
-		/// <summary>
-		/// The following are test boss rush mode
-		/// </summary>
-		[ReloadRequired]
-		[DefaultValue(false)]
 		public bool BossRushMode_Extra { get; set; }
-		[DefaultValue(false)]
-		public bool TotalRNG { get; set; }
-		//Replace Cursed skull
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool HellishEndeavour { get; set; }
 		[Header($"LuckDepartmentHeader")]
 		[DefaultValue(true)]
 		public bool RareSpoils { get; set; }

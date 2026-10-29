@@ -35,7 +35,7 @@ internal class KingSlimeStructure : ModSystem {
 	public Rectangle Pos_KSstructure => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("SlimeChamber");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

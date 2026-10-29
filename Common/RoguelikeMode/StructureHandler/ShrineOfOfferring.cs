@@ -20,7 +20,7 @@ internal class ShrineOfOfferring_ModSystem : ModSystem {
 	public bool IsWithinRange = false;
 	public bool PlayerGetTheItem = false;
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.TerrariaWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld || ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;
@@ -76,7 +76,7 @@ public abstract class ItemObject : ModObject {
 	}
 	public override void Draw(SpriteBatch spritebatch) {
 		BasicDrawItem(spritebatch);
-		BasicSealAuraEffect(spritebatch, 0, Vector2.Zero, Color.White);
+		BasicSealAuraEffect(spritebatch, 0, Vector2.Zero, Color.White with { A = 200 }, 3f);
 	}
 	public void BasicDrawItem(SpriteBatch spritebatch, int framecounter = 1) {
 		Main.instance.LoadItem(itemToDrop);

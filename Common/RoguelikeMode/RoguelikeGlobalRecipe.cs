@@ -47,7 +47,7 @@ internal class RoguelikeGlobalRecipe : ModSystem {
 				) {
 				continue;
 			}
-			recipe.AddCondition(new Condition(ModUtils.LocalizationText("Conditions", "RoguelikeModeCursed"), () => { return !RoguelikeWorldProperty.RoguelikeWorld; }));
+			recipe.AddCondition(new Condition(ModUtils.LocalizationText("Conditions", "RoguelikeModeCursed"), () => { return !ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld; }));
 		}
 	}
 }

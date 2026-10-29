@@ -207,7 +207,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (RoguelikeWorldProperty.RoguelikeWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
@@ -1293,9 +1293,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 				else {
 					if (x > rect.Width * .1f && x < rect.Width * .9f && y <= rect.Y + rect.Height * .85f) {
-						Tile tile = Main.tile[x, y];
-						tile.LiquidAmount = byte.MaxValue;
-						tile.LiquidType = LiquidID.Water;
+						//Tile tile = Main.tile[x, y];
+						//tile.LiquidAmount = byte.MaxValue;
+						//tile.LiquidType = LiquidID.Water;
 					}
 					else {
 						float percentX = x / halfWidth;

@@ -39,7 +39,7 @@ internal class Tower_Structure_ModSystem : ModSystem {
 		NPCID.CaveBat,
 		];
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return;
 		}
 		foreach (var structure in list_StructureLocation.Keys) {

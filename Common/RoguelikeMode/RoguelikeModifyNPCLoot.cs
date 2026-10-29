@@ -23,9 +23,10 @@ namespace Roguelike.Common.RoguelikeMode {
 	class RoguelikeModifyNPCLoot : GlobalNPC {
 		public override void ModifyShop(NPCShop shop) {
 			if (shop.NpcType == NPCID.GoblinTinkerer) {
-				shop.Add(ModContent.ItemType<TransmuteTablet>(), new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
-				shop.Add(ModContent.ItemType<SkillOrb>(), new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
-				shop.Add(ModContent.ItemType<DivineHammer>(), new Condition("", () => !RoguelikeWorldProperty.RoguelikeWorld && !RoguelikeWorldProperty.BossRushWorld));
+				bool condition = !ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld && !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
+				shop.Add(ModContent.ItemType<TransmuteTablet>(), new Condition("", () => condition));
+				shop.Add(ModContent.ItemType<SkillOrb>(), new Condition("", () => condition));
+				shop.Add(ModContent.ItemType<DivineHammer>(), new Condition("", () => condition));
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
@@ -37,7 +38,7 @@ namespace Roguelike.Common.RoguelikeMode {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
-				if (!RoguelikeWorldProperty.TerrariaWorld)
+				if (!ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld)
 					npcLoot.Disable_BossBagDropRule(ItemID.KingSlimeBossBag);
 
 

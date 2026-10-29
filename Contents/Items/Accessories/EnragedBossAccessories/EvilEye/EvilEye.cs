@@ -5,9 +5,9 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Roguelike.Contents.BuffAndDebuff;
+using Roguelike.Common.Systems;
 
-namespace Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
-{
+namespace Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 	internal class EvilEye : ModItem {
 		public override void SetDefaults() {
 			Item.accessory = true;
@@ -19,7 +19,7 @@ namespace Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			Player player = Main.player[Main.myPlayer];
 			if (player.HeldItem.type == ItemID.TheEyeOfCthulhu) {
-				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.TheEyeOfCthulhu}]Damage is scale with progression, for each 4 hit, you spawn out EoC Servant"));
+				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.TheEyeOfCthulhu}]Damage is increases with progression, for each 4 hit, you spawn out EoC Servant"));
 			}
 			if (player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade) {
 				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.EoCShield}]Whenever you walk, you spawn a EoC servant that home into enemy"));
@@ -69,8 +69,7 @@ namespace Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
 				EoCCounter = 0;
 			}
 		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-		{
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (EoCShieldUpgrade && EoCBless && Player.HeldItem.type == ItemID.TheEyeOfCthulhu && proj.type != ModContent.ProjectileType<EoCServant>() && proj.type != ModContent.ProjectileType<PhantasmalEye>()) {
 				EntitySource_ItemUse EoC = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<EvilEye>()));
 				if (EoCCounter2 >= 4) {
@@ -90,38 +89,36 @@ namespace Roguelike.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
 		}
 
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (!NPC.downedPlantBoss && !EoCBless && item.type == ItemID.TheEyeOfCthulhu) {
-				damage *= 0.05f;
+			if (!EoCBless) {
+				return;
 			}
-			else if (EoCBless && item.type == ItemID.TheEyeOfCthulhu) {
-				float DamageMultiplier = 0.05f;
+			if (item.type == ItemID.TheEyeOfCthulhu) {
+				float DamageMultiplier = 1;
 				if (NPC.downedMoonlord) {
-					DamageMultiplier += 1.7f;
+					DamageMultiplier += .05f;
 				}
 				if (NPC.downedAncientCultist) {
-					DamageMultiplier += 0.15f;
+					DamageMultiplier += .05f;
 				}
 				if (NPC.downedGolemBoss) {
-					DamageMultiplier += 0.15f;
+					DamageMultiplier += .05f;
 				}
 				if (NPC.downedPlantBoss) {
-					DamageMultiplier += 0.3f;
+					DamageMultiplier += .03f;
 				}
 				if (NPC.downedMechBossAny) {
-					DamageMultiplier += 0.2f;
-				}
-				if (Main.hardMode) {
-					DamageMultiplier += 0.15f;
+					DamageMultiplier += .02f;
 				}
 				if (NPC.downedBoss3) {
-					DamageMultiplier += 0.1f;
+					DamageMultiplier += .1f;
 				}
 				if (NPC.downedBoss2) {
-					DamageMultiplier += 0.1f;
+					DamageMultiplier += .1f;
 				}
 				if (NPC.downedBoss1) {
-					DamageMultiplier += 0.1f;
+					DamageMultiplier += .1f;
 				}
+				DamageMultiplier += ModContent.GetInstance<UniversalSystem>().Count_BossKill * .01f;
 				damage *= DamageMultiplier;
 			}
 		}

@@ -43,7 +43,7 @@ public class EssenceExtraction : Perk {
 		StackLimit = 999;
 	}
 	public override bool SelectChoosing() {
-		return !RoguelikeWorldProperty.BossRushWorld;
+		return !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PerkPlayer>().perk_EssenceExtraction = true;
@@ -55,7 +55,7 @@ public class PeaceWithGod : Perk {
 		CanBeStack = false;
 	}
 	public override bool SelectChoosing() {
-		return !RoguelikeWorldProperty.BossRushWorld;
+		return !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
@@ -68,7 +68,7 @@ public class AlchemistEmpowerment : Perk {
 		CanBeStack = false;
 	}
 	public override bool SelectChoosing() {
-		return !RoguelikeWorldProperty.BossRushWorld;
+		return !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);

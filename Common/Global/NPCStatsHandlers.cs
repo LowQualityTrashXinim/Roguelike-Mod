@@ -18,12 +18,12 @@ internal class NPCStatsHandlers : GlobalNPC {
 		if (Main.masterMode) {
 			extraMultiply += .3f;
 		}
-		if (RoguelikeWorldProperty.NightmareWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 			extraMultiply = 1f;
 			scale += .1f;
 		}
 		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
-		if (RoguelikeWorldProperty.BossRushWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			extraMultiply *= ModContent.GetInstance<UniversalSystem>().Count_BossKill * .25f;
 		}
 		return (1 + counter * .3f + extraMultiply) * scale;
@@ -42,7 +42,7 @@ internal class NPCStatsHandlers : GlobalNPC {
 		if (Main.ActiveWorldFileData.GameMode == GameModeID.Creative) {
 			return;
 		}
-		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld || ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			float value = GetValueMulti();
 			if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
 				if (!entity.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException) {
@@ -69,7 +69,7 @@ internal class NPCStatsHandlers : GlobalNPC {
 				entity.lifeMax = (int)HPmod.ApplyTo(entity.lifeMax);
 				entity.damage = (int)DMGmod.ApplyTo(entity.damage);
 			}
-			if (RoguelikeWorldProperty.NightmareWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 				entity.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
 				if (entity.boss) {
 					entity.GetGlobalNPC<RoguelikeGlobalNPC>().Static_Endurance += .25f;
@@ -96,9 +96,9 @@ internal class NPCStatsHandlers : GlobalNPC {
 			npc.damage += 50 + npc.damage / 2;
 			npc.GetGlobalNPC<RoguelikeGlobalNPC>().ExtraUpdate++;
 		}
-		if (RoguelikeWorldProperty.RoguelikeWorld || RoguelikeWorldProperty.BossRushWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld || ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			StatModifier mod = new();
-			if (RoguelikeWorldProperty.NightmareWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 				mod += 2;
 				npc.damage *= 2;
 				if (npc.boss) {

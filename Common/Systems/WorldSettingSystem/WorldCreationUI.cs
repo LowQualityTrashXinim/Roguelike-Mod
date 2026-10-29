@@ -24,6 +24,9 @@ public class DifficultySettingSystem : ModSystem {
 	}
 	WorldDifficultyUI difficulty;
 	Roguelike_UIImageButton difficulty_button;
+	public Roguelike_UITextPanel terrariaMode;
+	public Roguelike_UITextPanel bossrushMode;
+	public Roguelike_UITextPanel TotalRNGhMode;
 	private void On_UIWorldCreation_BuildPage(On_UIWorldCreation.orig_BuildPage orig, UIWorldCreation self) {
 		orig(self);
 		difficulty_button = new(ModContent.Request<Texture2D>(ModTexture.Mod_icon));
@@ -32,8 +35,75 @@ public class DifficultySettingSystem : ModSystem {
 		difficulty_button.HAlign = .68f;
 		difficulty_button.VAlign = .25f;
 		self.Append(difficulty_button);
+
+		terrariaMode = new("Terraria mode", .8f);
+		terrariaMode.Width.Pixels = 120;
+		terrariaMode.HighlightColor = Color.Yellow;
+		terrariaMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld;
+		terrariaMode.OnLeftClick += TerrariaMode_OnLeftClick;
+		terrariaMode.OnUpdate += TerrariaMode_OnUpdate;
+		terrariaMode.VAlign = .18f;
+		terrariaMode.HAlign = .39f;
+		self.Append(terrariaMode);
+
+		bossrushMode = new("Bossrush", .8f);
+		bossrushMode.Width.Pixels = 120;
+		bossrushMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
+		bossrushMode.HighlightColor = Color.Yellow;
+		bossrushMode.OnLeftClick += BossrushMode_OnLeftClick;
+		bossrushMode.OnUpdate += BossrushMode_OnUpdate;
+		bossrushMode.VAlign = .18f;
+		bossrushMode.HAlign = .39f;
+		bossrushMode.MarginLeft = 220;
+		self.Append(bossrushMode);
+
+		TotalRNGhMode = new("Total RNG", .8f);
+		TotalRNGhMode.Width.Pixels = 120;
+		TotalRNGhMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG;
+		TotalRNGhMode.HighlightColor = Color.Yellow;
+		TotalRNGhMode.OnLeftClick += TotalRNGhMode_OnLeftClick;
+		TotalRNGhMode.OnUpdate += TotalRNGhMode_OnUpdate;
+		TotalRNGhMode.VAlign = .18f;
+		TotalRNGhMode.HAlign = .39f;
+		TotalRNGhMode.MarginLeft = 440;
+		self.Append(TotalRNGhMode);
 	}
 
+	private void TotalRNGhMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		TotalRNGhMode.Highlight = !TotalRNGhMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG = TotalRNGhMode.Highlight;
+	}
+
+	private void TotalRNGhMode_OnUpdate(UIElement affectedElement) {
+		TotalRNGhMode.HoverText = ModUtils.LocalizationText("SystemTooltip", "TotalRNG");
+		if (TotalRNGhMode.Highlight) {
+			TotalRNGhMode.HoverText += $"\n[c/{Main.DiscoColor.Hex3()}:Active]";
+		}
+	}
+
+	private void TerrariaMode_OnUpdate(UIElement affectedElement) {
+		terrariaMode.HoverText = ModUtils.LocalizationText("SystemTooltip", "TerrariaMode");
+		if (terrariaMode.Highlight) {
+			terrariaMode.HoverText += $"\n[c/{Main.DiscoColor.Hex3()}:Active]";
+		}
+	}
+	private void BossrushMode_OnUpdate(UIElement affectedElement) {
+		bossrushMode.HoverText = ModUtils.LocalizationText("SystemTooltip", "BossRushMode");
+		if (bossrushMode.Highlight) {
+			bossrushMode.HoverText += $"\n[c/{Main.DiscoColor.Hex3()}:Active]";
+		}
+	}
+	private void BossrushMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		bossrushMode.Highlight = !bossrushMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = bossrushMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
+	}
+	private void TerrariaMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		terrariaMode.Highlight = !terrariaMode.Highlight;
+		bossrushMode.Highlight = false;
+		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = false;
+		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !terrariaMode.Highlight;
+	}
 	private void Difficulty_button_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Main.MenuUI.SetState(difficulty);
 	}
@@ -66,12 +136,12 @@ public class WorldDifficultyUI : UIState {
 	public Special_ExitUI exit;
 
 	public Roguelike_UIPanel header_panel;
-	public Roguelike_UITextPanel terrariaMode;
-	public Roguelike_UITextPanel bossrushMode;
+	public Roguelike_UITextPanel cursedMode;
 	public Roguelike_UITextPanel nightmareMode;
+	public Roguelike_UITextPanel hellishMode;
 	public WorldDifficultyUI() {
 		main_panel = new();
-		main_panel.UISetWidthHeight(1000, 800);
+		main_panel.UISetWidthHeight(1200, 800);
 		main_panel.HAlign = .5f;
 		main_panel.VAlign = .5f;
 		Append(main_panel);
@@ -84,31 +154,31 @@ public class WorldDifficultyUI : UIState {
 		header_panel.PaddingBottom = 0;
 		main_panel.Append(header_panel);
 
-		terrariaMode = new("Terraria mode");
-		terrariaMode.Width.Pixels = 150;
-		terrariaMode.HighlightColor = Color.Yellow;
-		terrariaMode.Highlight = RoguelikeWorldProperty.TerrariaWorld;
-		terrariaMode.OnLeftClick += TerrariaMode_OnLeftClick;
-		terrariaMode.VAlign = .5f;
-		header_panel.Append(terrariaMode);
-
-		bossrushMode = new("Boss rush mode");
-		bossrushMode.Width.Pixels = 150;
-		bossrushMode.Highlight = RoguelikeWorldProperty.BossRushWorld;
-		bossrushMode.HighlightColor = Color.Yellow;
-		bossrushMode.OnLeftClick += BossrushMode_OnLeftClick;
-		bossrushMode.VAlign = .5f;
-		bossrushMode.MarginLeft = 160;
-		header_panel.Append(bossrushMode);
+		cursedMode = new("Cursed mode");
+		cursedMode.Width.Pixels = 150;
+		cursedMode.HighlightColor = Color.Yellow;
+		cursedMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().CursedWorld;
+		cursedMode.OnLeftClick += CursedMode_OnLeftClick;
+		cursedMode.VAlign = .5f;
+		header_panel.Append(cursedMode);
 
 		nightmareMode = new("Nightmare mode");
 		nightmareMode.Width.Pixels = 150;
 		nightmareMode.HighlightColor = Color.Yellow;
-		nightmareMode.Highlight = RoguelikeWorldProperty.NightmareWorld;
+		nightmareMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld;
 		nightmareMode.OnLeftClick += NightmareMode_OnLeftClick;
 		nightmareMode.VAlign = .5f;
-		nightmareMode.MarginLeft = 320;
+		nightmareMode.MarginLeft = 160;
 		header_panel.Append(nightmareMode);
+
+		hellishMode = new("Hellish endeavour");
+		hellishMode.Width.Pixels = 150;
+		hellishMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().HellishEndeavour;
+		hellishMode.HighlightColor = Color.Yellow;
+		hellishMode.OnLeftClick += HellishMode_OnLeftClick;
+		hellishMode.VAlign = .5f;
+		hellishMode.MarginLeft = 320;
+		header_panel.Append(hellishMode);
 
 		Arr_difficulty = new DifficultyOption[10];
 		for (int i = 0; i < Arr_difficulty.Length; i++) {
@@ -121,18 +191,11 @@ public class WorldDifficultyUI : UIState {
 		exit.VAlign = .5f;
 		header_panel.Append(exit);
 	}
-	public override void OnInitialize() {
-		string text = ModUtils.LocalizationText("SystemTooltip", "TerrariaMode");
-		terrariaMode.HoverText = text;
-		text = ModUtils.LocalizationText("SystemTooltip", "BossRushMode");
-		bossrushMode.HoverText = text;
-		text = ModUtils.LocalizationText("SystemTooltip", "NightmareMode");
-		nightmareMode.HoverText = text;
-	}
-	private void NightmareMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		nightmareMode.Highlight = !nightmareMode.Highlight;
-		RoguelikeWorldProperty.NightmareWorld = nightmareMode.Highlight;
-		if (nightmareMode.Highlight) {
+
+	private void CursedMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		cursedMode.Highlight = !cursedMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().CursedWorld = cursedMode.Highlight;
+		if (cursedMode.Highlight) {
 			SettingPage_DifficultyValue += 250;
 		}
 		else {
@@ -140,17 +203,28 @@ public class WorldDifficultyUI : UIState {
 		}
 	}
 
-	private void BossrushMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		bossrushMode.Highlight = !bossrushMode.Highlight;
-		RoguelikeWorldProperty.BossRushWorld = bossrushMode.Highlight;
-		RoguelikeWorldProperty.RoguelikeWorld = !RoguelikeWorldProperty.BossRushWorld;
+	private void HellishMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		hellishMode.Highlight = !hellishMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().HellishEndeavour = hellishMode.Highlight;
 	}
 
-	private void TerrariaMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		terrariaMode.Highlight = !terrariaMode.Highlight;
-		bossrushMode.Highlight = false;
-		RoguelikeWorldProperty.BossRushWorld = false;
-		RoguelikeWorldProperty.RoguelikeWorld = !terrariaMode.Highlight;
+	public override void OnInitialize() {
+		string text = ModUtils.LocalizationText("SystemTooltip", "NightmareMode");
+		nightmareMode.HoverText = text;
+		text = ModUtils.LocalizationText("SystemTooltip", "HellishMode");
+		hellishMode.HoverText = text;
+		text = ModUtils.LocalizationText("SystemTooltip", "CursedMode");
+		cursedMode.HoverText = text;
+	}
+	private void NightmareMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		nightmareMode.Highlight = !nightmareMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld = nightmareMode.Highlight;
+		if (nightmareMode.Highlight) {
+			SettingPage_DifficultyValue += 250;
+		}
+		else {
+			SettingPage_DifficultyValue -= 250;
+		}
 	}
 
 	/// <summary>

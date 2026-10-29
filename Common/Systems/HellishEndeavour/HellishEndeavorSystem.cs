@@ -12,12 +12,12 @@ using Roguelike.Common.Utils;
 namespace Roguelike.Common.Systems.HellishEndeavour;
 public class HellishEndeavourPlayer : ModPlayer {
 	public override void UpdateEquips() {
-		if (RoguelikeWorldProperty.HellishEndeavour) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().HellishEndeavour) {
 			PlayerStatsHandle.AddStatsToPlayer(Player, PlayerStats.LootDropIncrease, Multiplicative: 0);
 		}
 	}
 	public override void OnHurt(Player.HurtInfo info) {
-		if (RoguelikeWorldProperty.HellishEndeavour) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().HellishEndeavour) {
 			Player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{Player.name} has fail the challenge")), 9999999999, info.HitDirection);
 			return;
 		}

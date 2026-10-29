@@ -13,7 +13,7 @@ namespace Roguelike.Common.Systems.BossRushMode
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		}
 		public override bool PreAI(NPC npc) {
-			if (RoguelikeWorldProperty.TerrariaWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld) {
 				return base.PreAI(npc);
 			}
 			if (npc.type == NPCID.OldMan) {

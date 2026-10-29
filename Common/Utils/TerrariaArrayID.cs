@@ -357,6 +357,20 @@ public static class TerrariaArrayID {
 	public readonly static int[] LegsAllPiece = [
 		..LegArmorHardMode, ..LegArmorPostEvil, ..LegArmorPostGolem, ..LegArmorPostMech, ..LegArmorPostPlant, ..LegArmorPreBoss,ItemID.NecroGreaves,ItemID.BeeGreaves
 		];
+	/// <summary>
+	/// 0 - 2 is a full armor set, that is how this array is formatted.<br/>
+	/// It will follow that pattern until it reach maximum length of array<br/>
+	/// The order are as follow : Head -> Body -> Leg<br/>
+	/// However it may or may not follow progression order so please check it before you use<br/>
+	/// Or use another utils tool for easier time to manage
+	/// </summary>
+	public readonly static int[] ArmorSetInOrder = [
+		ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves,
+		ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves,
+		ItemID.EbonwoodHelmet, ItemID.EbonwoodBreastplate, ItemID.EbonwoodGreaves,
+		ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves,
+		ItemID.PalmWoodHelmet, ItemID.PalmWoodBreastplate, ItemID.PalmWoodGreaves,
+		];
 	//Potion
 	public readonly static int[] SpecialPotion = {
 				ModContent.ItemType<BerserkerElixir>(),

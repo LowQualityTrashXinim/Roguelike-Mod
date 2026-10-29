@@ -20,7 +20,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			On_Player.ItemCheck_UseBossSpawners += On_Player_ItemCheck_UseBossSpawners;
 		}
 		private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
-			if (RoguelikeWorldProperty.BossRushWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 				if (sItem.type == ItemID.SlimeCrown) {
 					return;
 				}
@@ -28,7 +28,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			orig(self, onWhichPlayer, sItem);
 		}
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!RoguelikeWorldProperty.BossRushWorld || self.difficulty == PlayerDifficultyID.Creative) {
+			if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld || self.difficulty == PlayerDifficultyID.Creative) {
 				orig(self);
 				return;
 			}
@@ -63,7 +63,7 @@ namespace Roguelike.Common.Mode.BossRushMode {
 			}
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			if (RoguelikeWorldProperty.BossRushWorld) {
+			if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 				tasks.ForEach(g => g.Disable());
 				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}

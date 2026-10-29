@@ -65,7 +65,7 @@ new Point(167,92),];
 	public Rectangle Pos_Pyramid => ModContent.GetInstance<RogueLikeWorldGen>().GetStructure("Pyramid");
 	public bool IsWithinRange = false;
 	public override void PostUpdateEverything() {
-		if (!RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return;
 		}
 		var player = Main.LocalPlayer;

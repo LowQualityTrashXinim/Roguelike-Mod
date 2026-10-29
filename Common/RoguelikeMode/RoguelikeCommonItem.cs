@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode;
 internal class RoguelikeCommonItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return RoguelikeWorldProperty.RoguelikeWorld;
+		return ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld;
 	}
 	public override void SetDefaults(Item entity) {
 		if (entity.buffType != 0) {

@@ -1,6 +1,7 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Contents.Items.Weapon;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Roguelike.Common.Systems.Achievement.Extreme;
 public class GodOfChallenge : RoguelikeAchievement {
@@ -10,7 +11,7 @@ public class GodOfChallenge : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
-			&& RoguelikeWorldProperty.HellishEndeavour
+			&& ModContent.GetInstance<RoguelikeWorldProperty>().HellishEndeavour
 			&& (Main.expertMode || Main.masterMode);
 	}
 }
@@ -38,6 +39,6 @@ public class Nightmarish : RoguelikeAchievement {
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
-			&& RoguelikeWorldProperty.NightmareWorld;
+			&& ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld;
 	}
 }

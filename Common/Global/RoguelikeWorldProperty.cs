@@ -9,28 +9,25 @@ using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
-internal class RoguelikeWorldProperty : ModSystem {
-	public static RogueLikeConfig config => ModContent.GetInstance<RogueLikeConfig>();
-	public static bool TerrariaWorld => !RoguelikeWorld && !BossRushWorld;
-	public static bool RoguelikeWorld = false;
-	public static bool BossRushWorld = false;
-	public static bool NightmareWorld = false;
-	public static bool HellishEndeavour = false;
+public class RoguelikeWorldProperty : ModSystem {
+	public bool TerrariaWorld => !RoguelikeWorld && !BossRushWorld;
+	public bool RoguelikeWorld = false;
+	public bool BossRushWorld = false;
 
-	public override void Load() {
-		On_WorldGen.GenerateWorld += On_WorldGen_GenerateWorld;
-	}
-	private void On_WorldGen_GenerateWorld(On_WorldGen.orig_GenerateWorld orig, int seed, GenerationProgress customProgressObject) {
-		orig(seed, customProgressObject);
-	}
+	//Extra difficulty
+	public bool CursedWorld = false;
+	public bool NightmareWorld = false;
+	public bool HellishEndeavour = false;
 
-	public static bool BossRush_Set_Progression = true;
-	public static bool BossRush_Set_CommandFight = true;
-	public static bool TotalRNG = false;
-	public static bool RareSpoils = true;
-	public static bool RareLootbox = true;
-	public static bool DataSaved = false;
+	public bool TotalRNG = false;
+	public bool RareSpoils = true;
+	public bool RareLootbox = true;
+	public bool DataSaved = false;
 	public bool HasThisDataLoaded = false;
+	/// <summary>
+	/// Does absolutely nothing
+	/// </summary>
+	public bool DummyTrashSave = false;
 	public override void SaveWorldData(TagCompound tag) {
 		HasThisDataLoaded = false;
 		Mod.Logger.Info($"{Main.worldName} data is saved");
@@ -38,6 +35,7 @@ internal class RoguelikeWorldProperty : ModSystem {
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
+		tag["DummySave"] = DummyTrashSave;
 		if (DataSaved) {
 			return;
 		}
@@ -46,11 +44,10 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Setting_DataSaved"] = true;
 		tag["Setting_RoguelikeWorld"] = RoguelikeWorld;
 		tag["Setting_BossRushWorld"] = BossRushWorld;
-		tag["Setting_BossRushSet1"] = BossRush_Set_Progression;
-		tag["Setting_BossRushSet2"] = BossRush_Set_CommandFight;
 		tag["Setting_TotalRNG"] = TotalRNG;
 		tag["Setting_RareSpoils"] = RareSpoils;
 		tag["Setting_RareLootbox"] = RareLootbox;
+		tag["Setting_CursedWorld"] = CursedWorld;
 		tag["Setting_Nightmare"] = NightmareWorld;
 
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
@@ -70,11 +67,9 @@ internal class RoguelikeWorldProperty : ModSystem {
 		tag["Difficulty_World_EnemyRevive"] = system.World_EnemyRevive;
 		tag["Difficulty_World_BiomeModifier"] = system.World_BiomeModifier;
 	}
-
-	public override void PostWorldLoad() {
-		base.PostWorldLoad();
-	}
 	public override void LoadWorldData(TagCompound tag) {
+		DummyTrashSave = tag.Get<bool>("DummyTrashSave");
+
 		HasThisDataLoaded = true;
 		Mod.Logger.Info($"{Main.worldName} data is loaded");
 		Mod.Logger.Info($"Variable \"HasThisDataLoaded\" has their value set to {HasThisDataLoaded}");
@@ -83,15 +78,18 @@ internal class RoguelikeWorldProperty : ModSystem {
 		}
 		DataSaved = tag.Get<bool>("Setting_DataSaved");
 
+		bool value;
+
 		HellishEndeavour = tag.Get<bool>("Setting_HellishEndeavour");
 		RoguelikeWorld = tag.Get<bool>("Setting_RoguelikeWorld");
 		BossRushWorld = tag.Get<bool>("Setting_BossRushWorld");
-		BossRush_Set_Progression = tag.Get<bool>("Setting_BossRushSet1");
-		BossRush_Set_CommandFight = tag.Get<bool>("Setting_BossRushSet2");
 		TotalRNG = tag.Get<bool>("Setting_TotalRNG");
 		RareSpoils = tag.Get<bool>("Setting_RareSpoils");
 		RareLootbox = tag.Get<bool>("Setting_RareLootbox");
 		NightmareWorld = tag.Get<bool>("Setting_Nightmare");
+		if (tag.TryGet("Setting_CursedWorld", out value)) {
+			CursedWorld = value;
+		}
 
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
 		system.Enemy_HP = tag.Get<byte>("Difficulty_Enemy_HP");
@@ -113,17 +111,15 @@ internal class RoguelikeWorldProperty : ModSystem {
 }
 public class RoguelikeWorldProperty_Player : ModPlayer {
 	public override void OnEnterWorld() {
-		var config = RoguelikeWorldProperty.config;
-		if (!ModContent.GetInstance<RoguelikeWorldProperty>().HasThisDataLoaded) {
+		var config = ModContent.GetInstance<RogueLikeConfig>();
+		var property = ModContent.GetInstance<RoguelikeWorldProperty>();
+		if (!property.HasThisDataLoaded) {
 			Main.NewText("The world data failed to load due to unknown reason");
 		}
 		if (!ModUtils.Is_EnteringOrInASubWorld()) {
 			ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();
 		}
-		RoguelikeWorldProperty.BossRush_Set_Progression = config.BossRushMode_Setting_FightBossInProgression;
-		RoguelikeWorldProperty.BossRush_Set_CommandFight = config.BossRushMode_Setting_SpawnOnPlayerCommand;
-		RoguelikeWorldProperty.TotalRNG = config.TotalRNG;
-		RoguelikeWorldProperty.RareSpoils = config.RareSpoils;
-		RoguelikeWorldProperty.RareLootbox = config.RareLootbox;
+		property.RareSpoils = config.RareSpoils;
+		property.RareLootbox = config.RareLootbox;
 	}
 }

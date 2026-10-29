@@ -49,7 +49,7 @@ public class SynergyBonus_System : ModSystem {
 	private int On_Item_NewItem_Inner(On_Item.orig_NewItem_Inner orig, IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack, bool noBroadcast, int pfix, bool noGrabDelay, bool reverseLookup) {
 		int whoAmI = orig(source, X, Y, Width, Height, itemToClone, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
 		Item item = Main.item[whoAmI];
-		if (ModContent.GetInstance<RogueLikeConfig>().TotalRNG) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG) {
 			if (Main.rand.NextBool(5)) {
 				if (item.IsAWeapon()) {
 					int amount = 1 + Main.rand.Next(3);

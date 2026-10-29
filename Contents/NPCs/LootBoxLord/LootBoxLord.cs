@@ -217,7 +217,7 @@ internal class LootBoxLord : ModNPC {
 				SpawnProjectileRingPos = NPC.Center;
 				for (int i = 0; i < 200; i++) {
 					Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), SpawnProjectileRingPos, Vector2.Zero, ModContent.ProjectileType<ProjectileRing>(), NPC.damage, 0, NPC.target);
-					proj.ai[0] = 750;
+					proj.ai[0] = 850;
 					if (proj.ModProjectile is BaseHostileProjectile hostile) {
 						hostile.IDtextureValue = Main.rand.Next(itemArr);
 						hostile.SetNPCOwner(NPC.whoAmI);

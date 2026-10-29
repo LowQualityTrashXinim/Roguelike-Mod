@@ -53,10 +53,10 @@ namespace Roguelike.Common.Systems;
 /// </summary>
 internal class UniversalSystem : ModSystem {
 	public static bool DidPlayerBeatTheMod() {
-		if(RoguelikeWorldProperty.BossRushWorld) {
+		if(ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return NPC.downedAncientCultist;
 		}
-		if(RoguelikeWorldProperty.RoguelikeWorld) {
+		if(ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return NPC.downedMoonlord;
 		}
 		return NPC.downedMoonlord;
@@ -64,7 +64,7 @@ internal class UniversalSystem : ModSystem {
 	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 
-	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
+	public static bool Check_TotalRNG() => ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG;
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
 	public const string CHECK_RELICRANDOMVALUE = "relicvalue";
@@ -191,7 +191,7 @@ internal class UniversalSystem : ModSystem {
 		UI_BRmodifier = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if (!RoguelikeWorldProperty.BossRushWorld && !RoguelikeWorldProperty.RoguelikeWorld) {
+		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld && !ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			orig();
 		}
 		else {
@@ -730,7 +730,7 @@ public class DefaultUI : UIState {
 		popUpWarningClose.Disable_MouseItemUsesWhenHoverOverAUI();
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-		if (RoguelikeWorldProperty.BossRushWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			timer.SetText(TimerText(ModContent.GetInstance<BossRushStructureHandler>().Get_Timer));
 		}
 		else {
