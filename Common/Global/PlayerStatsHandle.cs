@@ -264,6 +264,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	/// This percentage damage will always deal NPC% health as true damage
 	/// </summary>
 	public float PercentageDamage = 0;
+	public float HealthDamage = 0;
 	/// <summary>
 	/// Use this to increase the amount of first strike player can hit on NPC
 	/// </summary>
@@ -626,6 +627,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		TransmutationPowerMaximum = 1000;
 
 		PercentageDamage = 0;
+		HealthDamage = 0;
 		TrueDamage = StatModifier.Default;
 
 		DropModifier = StatModifier.Default;

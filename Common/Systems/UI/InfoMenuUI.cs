@@ -184,6 +184,12 @@ public abstract class ModInformation : ModType {
 		return Localization;
 	}
 }
+public class HealthDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "HealthDamage";
+}
+public class PercentageDamage_ModInfo : ModInformation {
+	public override string LocalizationName => "PercentageDamage";
+}
 public class NegativeStatus_ModInfo : ModInformation {
 	public override string LocalizationName => "NegativeStatus";
 }

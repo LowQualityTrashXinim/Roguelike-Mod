@@ -237,6 +237,12 @@ the builder input.
 903/ Total RNG is now available in main world creation UI.
 904/ Clean up config.
 905/ Boss rush item vaccum mechanic is now moved to actual boss rush handler.
+906/ Fixed a bug that caused NPC to always dealt 10% percentage damage and added a percentage value for NPC.
+907/ Added a explanation of percentage damage and health damage.
+908/ Added True Nights Edge, True Excalibur, Chlorophyte Claymore, Chlorophyte saber, Fetid Baghnakhs, Blade tounge, Cutlass and Psycho Knife enchantments.
+909/ Buff Nights Edge, Excalibur and it True variant.
+910/ Added new stats called "Health damage" for player.
+911/ Added Frostbrand, Ice Sickle, Beam sword enchantment.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

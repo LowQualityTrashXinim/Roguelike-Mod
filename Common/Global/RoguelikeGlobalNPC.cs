@@ -48,6 +48,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 
 	public StatModifier Static_PercentageDamage = new();
 
+	public float PercentageDamage = 0;
+
 	public float MaxDamageTaken = 1;
 	/// <summary>
 	/// This is always reset back to 0, if you are looking for static damage reduciton, use <see cref="Static_Endurance"/> instead
@@ -211,7 +213,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		InvincibilityFrame = ModUtils.CountDown(InvincibilityFrame);
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
-		modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .1f);
+		modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * PercentageDamage);
 		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageIncrease.CombineWith(Static_DamageIncrease));
 	}
 	public int ResistHitCount = 0;

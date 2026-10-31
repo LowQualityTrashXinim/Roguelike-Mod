@@ -107,6 +107,34 @@ Mods: {
 				If the item is a synergy item however, the damage is instead treated as 
 				normal weapon damage increases.
 				'''
+			HealthDamage:
+				'''
+				Health damage:
+
+				Not to be confused with percentage damage
+
+				Health damage is a special kind of damage that ignore damage reduction and 
+				defenses of a entity that being attacked on.
+				Health damage always dealt damage based on its value multiply with
+				the entity being attacked current health value.
+
+				For example 15% health damage is equal to 15% of that entity current health
+				dealt as true damage.
+				'''
+			PercentageDamage:
+				'''
+				Percentage damage :
+
+				Not to be confused with health damage.
+
+				Percentage damage is a special kind of damage that ignore damage reduction
+				and defenses of a entity regardless of how much it has.
+				Percentage damage always dealt damage based on its value multiply with 
+				the entity that taken the hit maximum health.
+
+				So for example 15% percentage damage is equal to 15% of that entity maximum health
+				dealt as True Damage.
+				'''
 			TrueDamage:
 				'''
 				True damage :
@@ -239,8 +267,8 @@ Mods: {
 				If you are in boss rush mode:
 				[=] Boss are spawn in randomize order.
 				'''
-
 			NotSupported.Warning: WARNING: Not Supported By The Everlasting Mod
+
 			DemoEnding: {
 				Tooltip:
 					'''

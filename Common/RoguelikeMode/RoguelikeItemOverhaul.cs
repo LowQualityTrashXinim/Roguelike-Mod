@@ -35,6 +35,7 @@ namespace Roguelike.Common.RoguelikeMode {
 			VanillaBuff(entity);
 			UpgradeVariant(entity);
 			MythicalWeapon(entity);
+			DD2(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal || entity.type == ItemID.LifeFruit) {
 				entity.useTime = entity.useAnimation = 12;
 				entity.autoReuse = true;
@@ -47,8 +48,10 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.damage = 22;
 					break;
 				case ItemID.ToxicFlask:
-					item.damage += 5;
-					item.useTime = item.useAnimation = 25;
+					item.damage = 105;
+					item.useTime = item.useAnimation = 15;
+					item.reuseDelay = 60;
+					item.mana = 40;
 					break;
 				case ItemID.AbigailsFlower:
 					item.damage += 10;
@@ -62,36 +65,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.useTime = item.useAnimation = 10;
 					item.shootsEveryUse = true;
 					item.shootSpeed = 17;
-					break;
-				case ItemID.DD2SquireBetsySword:
-					item.damage = 200;
-					item.useTime = item.useAnimation = 70;
-					item.shootSpeed = 25;
-					item.scale += .5f;
-					break;
-				case ItemID.DD2LightningAuraT1Popper:
-					item.damage = 10;
-					break;
-				case ItemID.DD2FlameburstTowerT1Popper:
-					item.damage = 28;
-					break;
-				case ItemID.DD2BallistraTowerT1Popper:
-					item.damage = 55;
-					break;
-				case ItemID.DD2ExplosiveTrapT1Popper:
-					item.damage = 44;
-					break;
-				case ItemID.DD2LightningAuraT2Popper:
-					item.damage = 30;
-					break;
-				case ItemID.DD2FlameburstTowerT2Popper:
-					item.damage = 55;
-					break;
-				case ItemID.DD2BallistraTowerT2Popper:
-					item.damage = 100;
-					break;
-				case ItemID.DD2ExplosiveTrapT2Popper:
-					item.damage = 80;
 					break;
 				case ItemID.Trimarang:
 					item.damage = 40;
@@ -133,7 +106,43 @@ namespace Roguelike.Common.RoguelikeMode {
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
-			base.HoldItem(item, player);
+			if (item.type == ItemID.TrueExcalibur || item.type == ItemID.TrueNightsEdge) {
+				player.ModPlayerStats().TrueDamage += .25f;
+			}
+		}
+		private void DD2(Item item) {
+			switch (item.type) {
+				case ItemID.DD2SquireBetsySword:
+					item.damage = 200;
+					item.useTime = item.useAnimation = 70;
+					item.shootSpeed = 25;
+					item.scale += .5f;
+					break;
+				case ItemID.DD2LightningAuraT1Popper:
+					item.damage = 10;
+					break;
+				case ItemID.DD2FlameburstTowerT1Popper:
+					item.damage = 28;
+					break;
+				case ItemID.DD2BallistraTowerT1Popper:
+					item.damage = 55;
+					break;
+				case ItemID.DD2ExplosiveTrapT1Popper:
+					item.damage = 44;
+					break;
+				case ItemID.DD2LightningAuraT2Popper:
+					item.damage = 30;
+					break;
+				case ItemID.DD2FlameburstTowerT2Popper:
+					item.damage = 55;
+					break;
+				case ItemID.DD2BallistraTowerT2Popper:
+					item.damage = 100;
+					break;
+				case ItemID.DD2ExplosiveTrapT2Popper:
+					item.damage = 80;
+					break;
+			}
 		}
 		private void UpgradeVariant(Item item) {
 			switch (item.type) {
@@ -147,28 +156,24 @@ namespace Roguelike.Common.RoguelikeMode {
 		}
 		private void MythicalWeapon(Item item) {
 			switch (item.type) {
+				case ItemID.Excalibur:
+				case ItemID.NightsEdge:
+					item.crit += 20;
+					item.damage += 10;
+					break;
 				case ItemID.TrueNightsEdge:
 					item.useTime = item.useAnimation = 25;
+					item.crit += 30;
 					break;
 				case ItemID.TrueExcalibur:
 					item.damage += 15;
+					item.crit += 30;
 					break;
 			}
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			switch (item.type) {
-				case ItemID.ToxicFlask:
-					if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
-						for (int i = 0; i < 3; i++) {
-							var vel = velocity.Vector2DistributeEvenlyPlus(3, 45, i);
-							Projectile.NewProjectile(source, position, vel, type, damage, knockback, player.whoAmI);
-						}
-						modplayer.ToxicFlask_DelayWeaponUse = 60;
-						modplayer.ToxicFlask_SpecialCounter = -1;
-						return false;
-					}
-					break;
 				case ItemID.BladeofGrass:
 					return false;
 
@@ -220,20 +225,18 @@ namespace Roguelike.Common.RoguelikeMode {
 			else if (item.type == ItemID.CandyCaneSword) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CandyCaneSword", "Hitting enemy heal you for 5 health"));
 			}
+			else if (item.type == ItemID.TrueExcalibur || item.type == ItemID.TrueNightsEdge) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CandyCaneSword", "While helding, increases true damage by 25%"));
+			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
-		public int ToxicFlask_SpecialCounter = -1;
-		public int ToxicFlask_DelayWeaponUse = 0;
 		public int PhaseSaberBlade_Counter = 0;
 		public int ReuseDelay = 0;
 		public override void ResetEffects() {
 			Player.downedDD2EventAnyDifficulty = true;
 		}
 		public override bool CanUseItem(Item item) {
-			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
-				return false;
-			}
 			if (ReuseDelay > 0) {
 				return false;
 			}
@@ -242,7 +245,6 @@ namespace Roguelike.Common.RoguelikeMode {
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				ReuseDelay = ModUtils.CountDown(ReuseDelay);
-				ToxicFlask_DelayWeaponUse = ModUtils.CountDown(ToxicFlask_DelayWeaponUse);
 			}
 			else {
 				var item = Player.HeldItem;

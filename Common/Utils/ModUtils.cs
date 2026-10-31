@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Roguelike.Common.Global;
+using Roguelike.Common.Systems;
 using Roguelike.Contents.Transfixion.Perks;
 using SubworldLibrary;
 using System;
@@ -225,6 +226,11 @@ namespace Roguelike.Common.Utils {
 			}
 			return RoguelikeGlobalDust.Dust[dust.dustIndex];
 		}
+		/// <summary>
+		/// Avoid using this unless are necessary<br/>
+		/// Instead use <see cref="UniversalSystem.AnyVanillaBossAlive"/>
+		/// </summary>
+		/// <returns></returns>
 		public static bool IsAnyVanillaBossAlive() {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC npc = Main.npc[i];

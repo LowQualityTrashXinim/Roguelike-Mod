@@ -167,8 +167,28 @@ IceBlade.Description:
 	'''
 	Weapon that can shoot will shoot additional ice bolt (CD : 0.5s)
 	hitting enemy with item
-	+ Inflict Frost Burn debuff for 3 - 6s
+	+ Inflict Frost burn debuff for 3 - 6s
 	+ Spawn ice bolts that fly toward enemy (CD: 0.5s)
+	'''
+Frostbrand.Description:
+	'''
+	Weapon that can shoot will shoot additional Frost bolt (CD : 0.5s)
+	Frost bolt hitting enemy with frost burn debuff active will deal
+	an extra 100% damage as taken damage
+	'''
+IceSickle.Description:
+	'''
+	Increases weapon damage by 15%
+	After striking enemy 15 times ( from any source )
+	+ Create a ring of ice sickle that deal 100% weapon damage around you
+	Getting hit will spawn a ice sickle that fly out randomly
+	'''
+BeamSword.Description:
+	'''
+	Increases weapon damage by 15%
+	Every 5s, for the next 2s :
+	[+] Shoot out beam sword near the player toward player's cursor
+	Beam sword created this way deal 67% weapon damage + 20 damage
 	'''
 BatBat.Description:
 	'''
@@ -233,7 +253,7 @@ NightsEdge.Description:
 	'''
 	Create a Night Edge slash everytime you shoot your weapon ( CD : 1s )
 	Hitting enemy will also create Night Edge slash at enemy location ( CD : 2s )
-	If weapon is [i:273] then all above effect is replaced with the following: 
+	If weapon is [i:273] or [i:675] then all above effect is replaced with the following: 
 	+ At 5th swing, releases 8 slashes around player dealing 50% weapon damage
 	+ At 10th swing, create a circle of slashes around player dealing 100% weapon damage
 	'''
@@ -295,6 +315,85 @@ Katana.Description:
 	Increases melee damage by 15%, weapon critical chance by 3%, 
 	critical damage by 20% and first strike damage by 35%
 	Hitting enemy with item will spawn a ghost katana that attack enemy ( CD : 0.25s )
+	'''
+SlapHand.Description:
+	'''
+	Increases weapon base damage based on weapon knockback value
+	Increases strike dealt knockback by 100%
+	'''
+ChlorophyteClaymore.Description:
+	'''
+	Every 5th uses shoot out a heavy chlorophyte orb 
+	dealing 250% weapon damage
+	Increases weapon damage by 25%
+	If weapon has tag "ChlorophyteEmpowerment" :
+	Increases weapon damage by 40%
+	'''
+ChlorophyteSaber.Description:
+	'''
+	Hitting enemy spawn a spore cloud dealing 50% weapon damage (CD: 1s)
+	Increases weapon attack speed by 15%
+	If weapon has tag "ChlorophyteEmpowerment" :
+	Increases weapon attakc speed by 20%
+	'''
+FetidBaghnakhs.Description:
+	'''
+	Striking enemy with melee weapon have 25% to hit twice
+	which deal 100% weapon damage and this "can" happen multiple time in succession
+	Increases melee attack speed by 50% but decrease weapon damage by 20%
+	'''
+Bladetongue.Description:
+	'''
+	[+] Melee strike will always inflict 1s of ichor
+	[+] Hitting target have ichor debuff will increases 
+	that target taken damage by 50%
+	[+] Additionally each strike of any kind will have 50% chance 
+	when dealt to target make target burst out ichor stream
+	dealing 100% weapon damage
+	'''
+Cutlass.Description:
+	'''
+	Each strike grant a passive cutlass bonus
+	For each cutlass bonus weapon have :
+	[+] Increases weapon damage by 1%
+	[+] Increases attack speed by 0.25%
+	[+] Increases chance of copper coin drop by 1%
+	Cutlass bonus capped at 100 value.
+	Cutlass passive bonus decreases passively every 1s
+	'''
+Excalibur.Description:
+	'''
+	"Hero holy sword power now reside in your weapon,
+	it's power yet to be truely awaken"
+	If current weapon has "Sword" tag:
+	[+] Striking inflict Hallowed Gaze debuff onto enemy for 3s.
+	[+] Increases weapon critical strike chance by 20%
+	'''
+Keybrand.Description:
+	'''
+	Increases true damage by 10%
+	Deal 1% health damage which capped at 100 damage
+	'''
+TrueNightsEdge.Description:
+	'''
+	[+] Increases true damage by 25%
+	if held weapon is [i:675] :
+	[+] Above effect is multiply by 2x
+	else if held weapon is not [i:675] :
+	[+] Your weapon inflict 3s of Night Infection debuff
+	'''
+TrueExcalibur.Description:
+	'''
+	[+] Increases true damage by 25%
+	if held weapon is [i:674] :
+	[+] Above effect is multiply by 2x
+	else if held weapon is not [i:674] :
+	[+] Your weapon inflict 3s of Hallowed Gaze debuff
+	'''
+PsychoKnife.Description:
+	'''
+	Increases first strike damage by 300%
+	First hit always guaranteed critical hit.
 	'''
 WoodenBow.Description:
 	'''

@@ -1,17 +1,9 @@
-﻿using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using ReLogic.Graphics;
 using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
-using Roguelike.Common.Mode.BossRushMode;
-using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.Achievement;
-using Roguelike.Common.Systems.ArtifactSystem;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Systems.ShopSystem;
@@ -22,7 +14,6 @@ using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.aDebugItem.DebugStick.DebugSystemUI;
-using Roguelike.Contents.Items.Consumable.Spawner;
 using Roguelike.Contents.Items.Toggle.Transmutation;
 using Roguelike.Contents.Items.Toggle.UserInfo;
 using Roguelike.Contents.NPCs;
@@ -44,7 +35,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Roguelike.Common.Systems;
 /// <summary>
@@ -67,8 +57,6 @@ internal class UniversalSystem : ModSystem {
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG;
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
-	public const string CHECK_RELICRANDOMVALUE = "relicvalue";
-	public const string CHECK_PREFIX = "prefix";
 	/// <summary>
 	/// Check config setting
 	/// </summary>

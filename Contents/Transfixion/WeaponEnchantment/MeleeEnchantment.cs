@@ -437,7 +437,7 @@ public class NightsEdge : ModEnchantment {
 		ItemIDType = ItemID.NightsEdge;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (item.type == ItemID.NightsEdge) {
+		if (item.type == ItemID.NightsEdge || item.type == ItemID.TrueNightsEdge) {
 			if (globalItem.Item_Counter3[index] >= 0) {
 				if (globalItem.Item_Counter3[index] % 5 == 0) {
 					int damage = player.GetWeaponDamage(player.HeldItem);
@@ -452,7 +452,7 @@ public class NightsEdge : ModEnchantment {
 		globalItem.Item_Counter2[index] = ModUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (item.type == ItemID.NightsEdge) {
+		if (item.type == ItemID.NightsEdge || item.type == ItemID.TrueNightsEdge) {
 			if (++globalItem.Item_Counter1[index] >= 5) {
 				globalItem.Item_Counter1[index] = 0;
 				for (int i = 0; i < 8; i++) {
@@ -481,7 +481,7 @@ public class NightsEdge : ModEnchantment {
 		Projectile.NewProjectile(source, player.Center, vel, ProjectileID.NightsEdge, damage, knockback, player.whoAmI, -.1f, 30, 1);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter2[index] > 0 || player.HeldItem.type == ItemID.NightsEdge) {
+		if (globalItem.Item_Counter2[index] > 0 || player.HeldItem.type == ItemID.NightsEdge || player.HeldItem.type == ItemID.TrueNightsEdge) {
 			return;
 		}
 		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 120);
@@ -491,7 +491,7 @@ public class NightsEdge : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter2[index] > 0 || item.type == ItemID.NightsEdge) {
+		if (globalItem.Item_Counter2[index] > 0 || item.type == ItemID.NightsEdge || item.type == ItemID.TrueNightsEdge) {
 			return;
 		}
 		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 120);
@@ -1829,6 +1829,295 @@ public class FalconBlade : ModEnchantment {
 			SpriteEffects effect = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 			Main.EntitySpriteDraw(texture, drawpos, null, lightColor, Projectile.rotation, origin, Projectile.scale, effect);
 			return false;
+		}
+	}
+}
+public class SlapHand : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SlapHand;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.SourceDamage.Base += player.GetWeaponKnockback(item);
+		modifiers.Knockback += 1;
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.SourceDamage.Base += player.GetWeaponKnockback(player.HeldItem);
+		modifiers.Knockback += 1;
+	}
+}
+public class ChlorophyteClaymore : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ChlorophyteClaymore;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationJustStarted) {
+			if (++globalItem.Item_Counter1[index] >= 5) {
+				globalItem.Item_Counter1[index] = 0;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15, ProjectileID.ChlorophyteOrb, (int)(player.GetWeaponDamage(item) * 2.5f), 5f, player.whoAmI);
+			}
+		}
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .25f;
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.ChlorophyteEmpowerment)) {
+			damage += .4f;
+		}
+	}
+}
+public class ChlorophyteSaber : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ChlorophyteSaber;
+	}
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		useSpeed += .15f;
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.ChlorophyteEmpowerment)) {
+			useSpeed += .2f;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] < 1) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(1, 1), ProjectileID.SporeCloud, player.GetWeaponDamage(item) / 2, 1f, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] < 1 && !proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(1, 1), ProjectileID.SporeCloud, player.GetWeaponDamage(player.HeldItem) / 2, 1f, player.whoAmI);
+		}
+	}
+}
+public class FetidBaghnakhs : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FetidBaghnakhs;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage -= .2f;
+	}
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		if (item.DamageType == DamageClass.Melee)
+			useSpeed += .5f;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(4)) {
+			player.StrikeNPCDirect(target, hit);
+		}
+	}
+}
+public class Bladetongue : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Bladetongue;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Ichor))
+			modifiers.SourceDamage += .5f;
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Ichor))
+			modifiers.SourceDamage += .5f;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool() && target.HasBuff(BuffID.Ichor)) {
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(15, 15), ProjectileID.GoldenShowerFriendly, player.GetWeaponDamage(item), 1f, player.whoAmI);
+			}
+		}
+		target.AddBuff(BuffID.Ichor, 60);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool() && target.HasBuff(BuffID.Ichor)) {
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center, Main.rand.NextVector2CircularEdge(15, 15), ProjectileID.GoldenShowerFriendly, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+			}
+		}
+	}
+}
+public class Cutlass : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Cutlass;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (++globalItem.Item_Counter2[index] >= 60) {
+			globalItem.Item_Counter2[index] = 0;
+			globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+		}
+	}
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		useSpeed += .0025f * globalItem.Item_Counter1[index];
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .01f * globalItem.Item_Counter1[index];
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		globalItem.Item_Counter1[index] = Math.Clamp(++globalItem.Item_Counter1[index], 0, 100);
+		if (Main.rand.Next(1, 101) < globalItem.Item_Counter1[index]) {
+			player.QuickSpawnItem(player.GetSource_FromThis(), ItemID.CopperCoin);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			globalItem.Item_Counter1[index] = Math.Clamp(++globalItem.Item_Counter1[index], 0, 100);
+		}
+		if (Main.rand.Next(1, 101) < globalItem.Item_Counter1[index]) {
+			player.QuickSpawnItem(player.GetSource_FromThis(), ItemID.CopperCoin);
+		}
+	}
+}
+public class Excalibur : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Excalibur;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.Sword))
+			crit += 20;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.Sword))
+			target.AddBuff<HallowedGaze>(180);
+	}
+}
+public class PsychoKnife : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PsychoKnife;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().UpdateFullHPDamage += 3;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount < 1) {
+			modifiers.SetCrit();
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (!proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type) && target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount < 1) {
+			modifiers.SetCrit();
+		}
+	}
+}
+public class Keybrand : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Keybrand;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().TrueDamage += .1f;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		float health = .1f + player.ModPlayerStats().HealthDamage;
+		modifiers.FinalDamage.Flat += Math.Clamp(health * target.life, 1, 100);
+	}
+}
+public class TrueNightsEdge : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TrueNightsEdge;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().TrueDamage += .25f;
+		if (item.type == ItemIDType) {
+			player.ModPlayerStats().TrueDamage += .25f;
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.Sword))
+			target.AddBuff<NightInfection>(180);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[player.HeldItem.type].Contains(WeaponTag.Sword) && !proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type))
+			target.AddBuff<NightInfection>(180);
+	}
+}
+public class TrueExcalibur : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TrueExcalibur;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.ModPlayerStats().TrueDamage += .25f;
+		if (item.type == ItemIDType) {
+			player.ModPlayerStats().TrueDamage += .25f;
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[item.type].Contains(WeaponTag.Sword))
+			target.AddBuff<HallowedGaze>(180);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (OutroEffectSystem.Get_WeaponType_WeaponTag[player.HeldItem.type].Contains(WeaponTag.Sword) && !proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type))
+			target.AddBuff<HallowedGaze>(180);
+	}
+}
+public class Frostbrand : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Frostbrand;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = ModUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			Vector2 vel = velocity;
+			if (!vel.IsLimitReached(7)) {
+				vel = vel.SafeNormalize(Vector2.Zero) * 7;
+			}
+			Projectile.NewProjectile(source, position, vel, ProjectileID.FrostBoltSword, damage, knockback, player.whoAmI);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.type == ProjectileID.FrostBoltSword && target.HasBuff(BuffID.Frostburn) && target.HasBuff(BuffID.Frostburn2)) {
+			modifiers.SourceDamage += 1;
+		}
+	}
+}
+public class IceSickle : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.IceSickle;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .15f;
+	}
+	public override void OnHitByAnything(Player player) {
+		Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, Main.rand.NextVector2CircularEdge(15, 15), ProjectileID.IceSickle, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (++globalItem.Item_Counter1[index] >= 15) {
+			for (int i = 0; i < 16; i++) {
+				Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(16, 360, i) * 150;
+				Vector2 vel = (pos - player.Center).SafeNormalize(Vector2.Zero) * 5;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ProjectileID.IceSickle, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+			}
+			globalItem.Item_Counter1[index] = 0;
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (++globalItem.Item_Counter1[index] >= 15) {
+			for (int i = 0; i < 16; i++) {
+				Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(16, 360, i) * 150;
+				Vector2 vel = (pos - player.Center).SafeNormalize(Vector2.Zero) * 5;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ProjectileID.IceSickle, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+			}
+			globalItem.Item_Counter1[index] = 0;
+		}
+	}
+}
+public class BeamSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BeamSword;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage += .15f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (++globalItem.Item_Counter1[index] >= ModUtils.ToSecond(5)) {
+			if (globalItem.Item_Counter1[index] % 10 == 0) {
+				Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(50, 50) * Main.rand.NextFloat(.9f, 1.2f);
+				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 25;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.SwordBeam, (int)(player.GetWeaponDamage(item) * .67f) + 20, 3f, player.whoAmI);
+			}
+			if (globalItem.Item_Counter1[index] >= ModUtils.ToSecond(7)) {
+				globalItem.Item_Counter1[index] = -1;
+			}
 		}
 	}
 }
