@@ -27,6 +27,7 @@ public class DifficultySettingSystem : ModSystem {
 	public Roguelike_UITextPanel terrariaMode;
 	public Roguelike_UITextPanel bossrushMode;
 	public Roguelike_UITextPanel TotalRNGhMode;
+	public Roguelike_UITextPanel arcadeMode;
 	private void On_UIWorldCreation_BuildPage(On_UIWorldCreation.orig_BuildPage orig, UIWorldCreation self) {
 		orig(self);
 		difficulty_button = new(ModContent.Request<Texture2D>(ModTexture.Mod_icon));
@@ -67,8 +68,25 @@ public class DifficultySettingSystem : ModSystem {
 		TotalRNGhMode.HAlign = .39f;
 		TotalRNGhMode.MarginLeft = 440;
 		self.Append(TotalRNGhMode);
+
+		arcadeMode = new("Arcade Mode", .8f);
+		arcadeMode.Width.Pixels = 120;
+		arcadeMode.Highlight = ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG;
+		arcadeMode.HighlightColor = Color.Yellow;
+		arcadeMode.OnLeftClick += ArcadeMode_OnLeftClick;
+		arcadeMode.OnUpdate += ArcadeMode_OnUpdate;
+		arcadeMode.VAlign = .18f;
+		arcadeMode.HAlign = .39f;
+		arcadeMode.MarginLeft = 660;
+		self.Append(arcadeMode);
 	}
 
+	private void ArcadeMode_OnUpdate(UIElement affectedElement) {
+		arcadeMode.HoverText = ModUtils.LocalizationText("SystemTooltip", "ArcadeMode");
+		if (arcadeMode.Highlight) {
+			arcadeMode.HoverText += $"\n[c/{Main.DiscoColor.Hex3()}:Active]";
+		}
+	}
 	private void TotalRNGhMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		TotalRNGhMode.Highlight = !TotalRNGhMode.Highlight;
 		ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG = TotalRNGhMode.Highlight;
@@ -93,16 +111,29 @@ public class DifficultySettingSystem : ModSystem {
 			bossrushMode.HoverText += $"\n[c/{Main.DiscoColor.Hex3()}:Active]";
 		}
 	}
+	private void ArcadeMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		arcadeMode.Highlight = !arcadeMode.Highlight;
+		bossrushMode.Highlight = false;
+		terrariaMode.Highlight = false;
+		ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode = arcadeMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !arcadeMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = false;
+	}
 	private void BossrushMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		bossrushMode.Highlight = !bossrushMode.Highlight;
+		arcadeMode.Highlight = false;
+		terrariaMode.Highlight = false;
 		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = bossrushMode.Highlight;
-		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld;
+		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !bossrushMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode = false;
 	}
 	private void TerrariaMode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		terrariaMode.Highlight = !terrariaMode.Highlight;
 		bossrushMode.Highlight = false;
-		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = false;
+		arcadeMode.Highlight = false;
 		ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld = !terrariaMode.Highlight;
+		ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld = false;
+		ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode = false;
 	}
 	private void Difficulty_button_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Main.MenuUI.SetState(difficulty);

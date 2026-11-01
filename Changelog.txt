@@ -243,6 +243,15 @@ the builder input.
 909/ Buff Nights Edge, Excalibur and it True variant.
 910/ Added new stats called "Health damage" for player.
 911/ Added Frostbrand, Ice Sickle, Beam sword enchantment.
+912/ Implemented Acrade mode.
+913/ Fixed Weapon leveling again.
+914/ Adjust how NPCStatsHandlers set stats.
+915/ Static percentage damage now is handle correctly.
+916/ Added more debug for world property and attempt to fix mod saving world property.
+917/ Created a base system handler for boss rush, arcade and roguelike mode.
+918/ Added Arcade shop UI and item for arcade mode.
+919/ Fixed NextVector2RectangleEdge for not properly calculating based on given rectangle.
+920/ Updated mod version from 0.0.20.10 to 0.0.20.11 ./.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

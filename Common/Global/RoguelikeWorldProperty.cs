@@ -1,4 +1,5 @@
-﻿using Roguelike.Common.General;
+﻿using Mono.Cecil.Cil;
+using Roguelike.Common.General;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems.WorldSettingSystem;
 using Roguelike.Common.Utils;
@@ -10,9 +11,16 @@ using Terraria.WorldBuilding;
 
 namespace Roguelike.Common.Global;
 public class RoguelikeWorldProperty : ModSystem {
-	public bool TerrariaWorld => !RoguelikeWorld && !BossRushWorld;
+	public bool TerrariaWorld => !RoguelikeWorld && !BossRushWorld && !ArcadeMode;
 	public bool RoguelikeWorld = false;
+	/// <summary>
+	/// Not just a boss rush world modifier but also a mode
+	/// </summary>
 	public bool BossRushWorld = false;
+	/// <summary>
+	/// Not just a mode but also a world gen modifier.
+	/// </summary>
+	public bool ArcadeMode = false;
 
 	//Extra difficulty
 	public bool CursedWorld = false;
@@ -28,17 +36,23 @@ public class RoguelikeWorldProperty : ModSystem {
 	/// Does absolutely nothing
 	/// </summary>
 	public bool DummyTrashSave = false;
+	public override void PreSaveAndQuit() {
+		//BossRushWorld = false;
+		//ArcadeMode = false;
+		//BossRushWorld = false;
+		//CursedWorld = false;
+		//NightmareWorld = false;
+		//TotalRNG = false;
+		//RareSpoils = false;
+		//RareLootbox = false;
+		//DataSaved = false;
+	}
 	public override void SaveWorldData(TagCompound tag) {
-		HasThisDataLoaded = false;
-		Mod.Logger.Info($"{Main.worldName} data is saved");
-		Mod.Logger.Info($"Variable \"HasThisDataLoaded\" has their value set to {HasThisDataLoaded}");
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
 		tag["DummySave"] = DummyTrashSave;
-		if (DataSaved) {
-			return;
-		}
+
 		//WorldFile.LoadWorld(false);
 		tag["Setting_HellishEndeavour"] = HellishEndeavour;
 		tag["Setting_DataSaved"] = true;
@@ -49,6 +63,7 @@ public class RoguelikeWorldProperty : ModSystem {
 		tag["Setting_RareLootbox"] = RareLootbox;
 		tag["Setting_CursedWorld"] = CursedWorld;
 		tag["Setting_Nightmare"] = NightmareWorld;
+		tag["Setting_ArcadeMode"] = ArcadeMode;
 
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
 		tag["Difficulty_Enemy_HP"] = system.Enemy_HP;
@@ -70,15 +85,13 @@ public class RoguelikeWorldProperty : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		DummyTrashSave = tag.Get<bool>("DummyTrashSave");
 
-		HasThisDataLoaded = true;
-		Mod.Logger.Info($"{Main.worldName} data is loaded");
-		Mod.Logger.Info($"Variable \"HasThisDataLoaded\" has their value set to {HasThisDataLoaded}");
 		if (ModUtils.Is_EnteringOrInASubWorld()) {
 			return;
 		}
 		DataSaved = tag.Get<bool>("Setting_DataSaved");
 
 		bool value;
+		string prefix = "Setting_";
 
 		HellishEndeavour = tag.Get<bool>("Setting_HellishEndeavour");
 		RoguelikeWorld = tag.Get<bool>("Setting_RoguelikeWorld");
@@ -87,8 +100,11 @@ public class RoguelikeWorldProperty : ModSystem {
 		RareSpoils = tag.Get<bool>("Setting_RareSpoils");
 		RareLootbox = tag.Get<bool>("Setting_RareLootbox");
 		NightmareWorld = tag.Get<bool>("Setting_Nightmare");
-		if (tag.TryGet("Setting_CursedWorld", out value)) {
+		if (tag.TryGet(prefix + "CursedWorld", out value)) {
 			CursedWorld = value;
+		}
+		if (tag.TryGet(prefix + "ArcadeMode", out value)) {
+			ArcadeMode = value;
 		}
 
 		DifficultySettingSystem system = ModContent.GetInstance<DifficultySettingSystem>();
@@ -113,8 +129,14 @@ public class RoguelikeWorldProperty_Player : ModPlayer {
 	public override void OnEnterWorld() {
 		var config = ModContent.GetInstance<RogueLikeConfig>();
 		var property = ModContent.GetInstance<RoguelikeWorldProperty>();
-		if (!property.HasThisDataLoaded) {
-			Main.NewText("The world data failed to load due to unknown reason");
+		if (property.TerrariaWorld) {
+			Main.NewText("Entering terraria world setting");
+		}
+		else if (property.ArcadeMode) {
+			Main.NewText("Entering arcade world setting");
+		}
+		else if (property.BossRushWorld) {
+			Main.NewText("Entering boss rush world setting");
 		}
 		if (!ModUtils.Is_EnteringOrInASubWorld()) {
 			ModContent.GetInstance<RogueLikeWorldGen>().InitializeBiomeWorld();

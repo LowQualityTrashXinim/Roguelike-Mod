@@ -46,8 +46,27 @@ namespace Roguelike.Common.Global {
 		public List<int> list_WeaponEffectType = new();
 		public int ItemEffectCap = 5;
 		public void SetItemLevel(int level) {
-			if (level % 5 == 0 && list_WeaponEffectType.Count < ItemEffectCap) {
-				list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
+			if (ItemLevel < level) {
+				if (list_WeaponEffectType.Count < ItemEffectCap && level != 0) {
+					int min = Math.Min(ItemLevel, level);
+					int max = Math.Max(ItemLevel, level);
+
+					int amount = (max - min) / 5;
+					for (int i = 0; i < amount; i++) {
+						list_WeaponEffectType.Add(Main.rand.Next(WeaponEffectSystem.list_effect.Count));
+					}
+				}
+			}
+			else {
+				int min = Math.Min(ItemLevel, level);
+				int max = Math.Max(ItemLevel, level);
+
+				int amount = (max - min) / 5;
+				if (list_WeaponEffectType.Count > 0) {
+					for (int i = 0; i < amount; i++) {
+						list_WeaponEffectType.RemoveAt(list_WeaponEffectType.Count - 1);
+					}
+				}
 			}
 			ItemLevel = level;
 		}

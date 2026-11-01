@@ -148,7 +148,7 @@ public class BossRushStructureHandler : ModSystem {
 		//}
 	}
 	public void SpawnBoss(bool ForcedSpawn = false) {
-		if (!ModContent.GetInstance<BossRushWorldGen>().IsABossAlive) {
+		if (!UniversalSystem.AnyVanillaBossAlive) {
 			if (Setting_BossRushExtra) {
 				var modifier = Main.rand.Next(BossRushModifierLoader.modifier_good);
 				if (modifier != null) {
@@ -236,8 +236,8 @@ public class BossRushStructureHandler : ModSystem {
 	}
 	public override void PreSaveAndQuit() {
 		Active = false;
-		_timer.Reset();
 		_timer.Stop();
+		_timer.Reset();
 		BossList = [.. Arr_BossID];
 		CurrentBadModifier = -1;
 		if (Main.LocalPlayer.dead) {
@@ -276,12 +276,6 @@ public class BossRushModeModPlayer : ModPlayer {
 	}
 }
 public class BossRushModeGlobalNPC : GlobalNPC {
-	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
-			return;
-		}
-		pool.Clear();
-	}
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier12>()) {
 			npc.GetGlobalNPC<RoguelikeGlobalNPC>().InvincibilityFrame += 30;
@@ -348,7 +342,7 @@ internal class BossRushModeActivation : ModItem {
 		Item.scale = .5f;
 	}
 	public override bool CanUseItem(Player player) {
-		return !ModUtils.IsAnyVanillaBossAlive();
+		return !UniversalSystem.AnyVanillaBossAlive;
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {

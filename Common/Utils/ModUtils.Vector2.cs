@@ -20,17 +20,28 @@ namespace Roguelike.Common.Utils {
 			return velocity;
 		}
 		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, Rectangle rect) {
-			float X = r.NextFloat(-rect.Width, rect.Width);
-			float Y = r.NextFloat(-rect.Height, rect.Height);
-			bool Randomdecider = r.NextBool();
-			Vector2 RandomPointOnEdge = new Vector2(X * r.NextBool().ToInt(), Y * r.NextBool().ToInt());
-			if (RandomPointOnEdge.X == 0) {
-				RandomPointOnEdge.X = rect.Width;
+			float X;
+			float Y;
+			Vector2 RandomPointOnEdge;
+			switch (r.Next(4)) {
+				case 0:
+					X = r.NextFloat(0, rect.Width);
+					RandomPointOnEdge = new Vector2(X, 0);
+					break;
+				case 1:
+					X = r.NextFloat(0, rect.Width);
+					RandomPointOnEdge = new Vector2(X, rect.Height);
+					break;
+				case 2:
+					Y = r.NextFloat(0, rect.Height);
+					RandomPointOnEdge = new Vector2(0, Y);
+					break;
+				default:
+					Y = r.NextFloat(0, rect.Height);
+					RandomPointOnEdge = new Vector2(rect.Width, Y);
+					break;
 			}
-			else {
-				RandomPointOnEdge.Y = rect.Height;
-			}
-			return RandomPointOnEdge * r.NextBool().ToDirectionInt();
+			return RandomPointOnEdge + new Vector2(rect.X, rect.Y);
 		}
 		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, float RectangleWidthHalf, float RectangleHeightHalf) {
 			float X = r.NextFloat(-RectangleWidthHalf, RectangleWidthHalf);

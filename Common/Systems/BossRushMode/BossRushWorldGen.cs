@@ -15,60 +15,12 @@ using Roguelike.Common.Global;
 
 namespace Roguelike.Common.Mode.BossRushMode {
 	public partial class BossRushWorldGen : ModSystem {
-		public override void Load() {
-			On_Player.UpdateBiomes += On_Player_UpdateBiomes;
-			On_Player.ItemCheck_UseBossSpawners += On_Player_ItemCheck_UseBossSpawners;
-		}
-		private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
-			if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
-				if (sItem.type == ItemID.SlimeCrown) {
-					return;
-				}
-			}
-			orig(self, onWhichPlayer, sItem);
-		}
-		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld || self.difficulty == PlayerDifficultyID.Creative) {
-				orig(self);
-				return;
-			}
-			if (ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
-				Main.hardMode = true;
-			}
-			IsABossAlive = false;
-			for (int i = 0; i < 200; i++) {
-				NPC npc = Main.npc[i];
-				if (!npc.active) {
-					continue;
-				}
-				if (npc.boss) {
-					IsABossAlive = true;
-				}
-				if (npc.type == NPCID.DukeFishron) {
-					self.ZoneBeach = true;
-				}
-				if (npc.type == NPCID.BrainofCthulhu) {
-					self.ZoneCrimson = true;
-				}
-				if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
-					IsABossAlive = true;
-					self.ZoneCorrupt = true;
-				}
-				if (npc.type == NPCID.SkeletronHead || npc.type == NPCID.SkeletronPrime || npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism) {
-					Main.dayTime = false;
-				}
-				if (npc.type == NPCID.QueenBee || npc.type == NPCID.Plantera) {
-					self.ZoneJungle = true;
-				}
-			}
-		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 				tasks.ForEach(g => g.Disable());
 				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}
 		}
-		public bool IsABossAlive = false;
 		public override void SaveWorldData(TagCompound tag) {
 			tag["BossRushStructure"] = BossRushStructure;
 		}

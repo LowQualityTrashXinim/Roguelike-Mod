@@ -4,6 +4,7 @@ using Roguelike.Common.General;
 using Roguelike.Common.Global;
 using Roguelike.Common.Global.Mechanic.OutroEffect;
 using Roguelike.Common.Systems.Achievement;
+using Roguelike.Common.Systems.ArcaneMode;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Systems.IOhandle;
 using Roguelike.Common.Systems.ShopSystem;
@@ -43,10 +44,10 @@ namespace Roguelike.Common.Systems;
 /// </summary>
 internal class UniversalSystem : ModSystem {
 	public static bool DidPlayerBeatTheMod() {
-		if(ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			return NPC.downedAncientCultist;
 		}
-		if(ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
 			return NPC.downedMoonlord;
 		}
 		return NPC.downedMoonlord;
@@ -99,6 +100,9 @@ internal class UniversalSystem : ModSystem {
 	public EnchantmentMenuWikiUI enchantmentMenuWiki;
 	public InfoMenuUI infoMenuUI;
 	public ShopUI shopUI;
+	public ArcadeUI arcadeUI;
+	public ArcadeShopUI arcadeShopUI;
+
 
 	public BossRushModifierUIState UI_BRmodifier;
 
@@ -132,6 +136,8 @@ internal class UniversalSystem : ModSystem {
 			infoMenuUI = new();
 			shopUI = new();
 			UI_BRmodifier = new();
+			arcadeUI = new();
+			arcadeShopUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -177,6 +183,8 @@ internal class UniversalSystem : ModSystem {
 		infoMenuUI = null;
 		shopUI = null;
 		UI_BRmodifier = null;
+		arcadeUI = null;
+		arcadeShopUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld && !ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
@@ -298,6 +306,14 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateShopUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(shopUI);
+	}
+	public void ActivateArcadeShopUI() {
+		DeactivateUI();
+		user2ndInterface.SetState(arcadeShopUI);
+	}
+	public void ActivateArcadeUI() {
+		DeactivateUI();
+		user2ndInterface.SetState(arcadeUI);
 	}
 	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();
@@ -446,7 +462,7 @@ public class UniversalGlobalItem : GlobalItem {
 			return;
 		for (int i = 0; i < tooltips.Count; i++) {
 			if (tooltips[i].Name == "ItemName") {
-				string tooltipText = Language.GetTextValue($"Mods.Roguelike.SystemTooltip.WeaponEnchantment.None");
+				string tooltipText = ModUtils.LocalizationText("WeaponEnchantment", "None");
 				if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
 					tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
 				}
@@ -493,7 +509,7 @@ public class UniversalPlayer : ModPlayer {
 			NPC.NewNPC(Terraria.Entity.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
 			uiSystemInstance.DivineHammer_uiState.weaponEnchantmentUIslot.DropItem(Player);
 		}
-		if(ModContent.GetInstance<DifficultySettingSystem>().Player_TimeRestriction) {
+		if (ModContent.GetInstance<DifficultySettingSystem>().Player_TimeRestriction) {
 			TimeLimit = (ulong)(60 * 60 * 3 - 60 * 5 * ModContent.GetInstance<DifficultySettingSystem>().Player_TimeRestriction_Scale);
 		}
 		uiSystemInstance.WorldState = "Entered";
@@ -504,10 +520,10 @@ public class UniversalPlayer : ModPlayer {
 		//}
 	}
 	public override void PostUpdate() {
-		if(TimeLimit == 0) {
+		if (TimeLimit == 0) {
 			return;
 		}
-		if(Main.ActivePlayerFileData.GetPlayTime().TotalSeconds >= TimeLimit) {
+		if (Main.ActivePlayerFileData.GetPlayTime().TotalSeconds >= TimeLimit) {
 			Player.EasyKillPlayer($"{Player.name} has reached the time limit", 9999999);
 		}
 	}
@@ -720,6 +736,9 @@ public class DefaultUI : UIState {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
 		if (ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 			timer.SetText(TimerText(ModContent.GetInstance<BossRushStructureHandler>().Get_Timer));
+		}
+		else if (ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode) {
+			timer.SetText(ModContent.GetInstance<ArcadeMode_System>().Get_Time());
 		}
 		else {
 			if (system.timeBeatenTheGame == TimeSpan.Zero) {

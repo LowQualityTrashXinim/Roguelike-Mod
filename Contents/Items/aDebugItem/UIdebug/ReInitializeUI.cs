@@ -18,9 +18,13 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
+			//ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
+			//ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
+			//ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
+
+			ModContent.GetInstance<UniversalSystem>().arcadeShopUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().arcadeShopUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().arcadeShopUI.Activate();
 
 			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.RemoveAllChildren();
 			ModContent.GetInstance<GeneralBuilderToolSystem>().GeneralBuilderToolState.OnInitialize();

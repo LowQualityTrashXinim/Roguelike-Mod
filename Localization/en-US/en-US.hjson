@@ -224,6 +224,15 @@ Mods: {
 				[+] Player are given custom starting loot
 				[+] Custom world generation for boss rush mode
 				'''
+			ArcadeMode:
+				'''
+				"Want something while still fast but less fast ?"
+				[+] Killing monsters to earn point !
+				[+] Using point to buy items in shop.
+				[+] Play in a wave combat format where monster always spawn.
+				[+] Every 5th round, spawn a boss.
+				[-] After each round, monster get progressively stronger !
+				'''
 			NightmareMode:
 				'''
 				"Your worst imagination came into life"
@@ -789,6 +798,7 @@ Mods: {
 			Roguelike_Trident_Projectile.DisplayName: Roguelike_ Trident_ Projectile
 			Roguelike_Trident_ThrownProjectile.DisplayName: Roguelike_ Trident_ Thrown Projectile
 			Roguelike_DeathSickle_SoulProjectile.DisplayName: Roguelike_ Death Sickle_ Soul Projectile
+			ArcadeMode_SpawnBoss_Projectile.DisplayName: Arcade Mode_ Spawn Boss_ Projectile
 		}
 
 		NPCs: {
@@ -3422,6 +3432,16 @@ Mods: {
 
 			UnnamedPotion7: {
 				DisplayName: Unnamed Potion7
+				Tooltip: ""
+			}
+
+			ArcadeModeActivation: {
+				DisplayName: Arcade Mode Activation
+				Tooltip: ""
+			}
+
+			OpenArcadeShopItem: {
+				DisplayName: Open Arcade Shop Item
 				Tooltip: ""
 			}
 		}
