@@ -94,6 +94,11 @@ public class DivineHammerUIState : UIState {
 	}
 	public void Visual_Enchantment(bool hide) {
 		weaponEnchantmentUIslot.Hide = hide;
+		if (weaponEnchantmentUIslot.item != null && weaponEnchantmentUIslot.item.type != ItemID.None) {
+			slot1.Hide = hide;
+			slot2.Hide = hide;
+			slot3.Hide = hide;
+		}
 	}
 	Roguelike_UIPanel AugmentationSelection_Container;
 	Roguelike_UIPanel AugmentationSelection_Head;

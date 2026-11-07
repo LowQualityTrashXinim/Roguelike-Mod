@@ -318,8 +318,9 @@ ArmorPolish:
 	'''
 FastClock:
 	'''
-	Decreases weapon enchantment cool down by 50%
-	Increases weapon attack speed by 15%
+	Every attack increases attack speed by 1% ( capped at 10% )
+	Upon reaching maximum stack, increases weapon attack speed by 15%
+	After 4s of not attacking, delete all stack
 	'''
 Nazar:
 	'''
@@ -380,6 +381,19 @@ TrifoldMap:
 	"While it is named trifold, it is not a trifold map"
 	Enemy that can't be confused will take 30% more taken damage
 	Have 10% to inflict confused debuff for 3s
+	'''
+MedicatedBandage:
+	'''
+	Increases maximum health by 15% and life regeneration by 3
+	Decreases player debuff duration by 10%
+	Getting hit will heal back 5 - 25 health
+	'''
+HandWarmer:
+	'''
+	"Embedded with power of cold"
+	Target with frost burn take 20% more damage
+	Snowball of any source deal 10 extra damage as true damage
+	and have 50% to inflict weak frost burn for 1s
 	'''
 SharkToothNecklace:
 	'''

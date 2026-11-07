@@ -263,6 +263,9 @@ the builder input.
 928/ Slightly rework minishark.
 929/ Added starter loot for arcade mode.
 930/ Fixed a bug where player can access hidden spoil via a gambling spoil.
+931/ Fixed a bug with Divine hammer where 2 UI modes can overlapped each other.
+932/ Reworked Medicated Bandage and Fast Clock.
+933/ Minor code organization.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.
