@@ -1,34 +1,35 @@
-﻿using System;
-using Terraria;
-using System.IO;
-using Terraria.ID;
-using Terraria.GameInput;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.General;
 using Roguelike.Common.RoguelikeMode;
 using Roguelike.Common.Systems;
-using Roguelike.Contents.Items.Weapon;
-using Roguelike.Contents.Items.Consumable.Spawner;
-using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using Roguelike.Common.Systems.ArcaneMode;
+using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Systems.BossRushMode;
+using Roguelike.Common.Systems.Skill;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.aDebugItem.DebugStick;
 using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Items.Consumable.Spawner;
+using Roguelike.Contents.Items.Lootbox;
+using Roguelike.Contents.Items.Lootbox.BossLootBox;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
+using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
+using Roguelike.Contents.Items.Toggle.Transmutation;
+using Roguelike.Contents.Items.Toggle.UserInfo;
+using Roguelike.Contents.Items.Weapon;
 using Roguelike.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using Roguelike.Contents.Projectiles;
-using Roguelike.Common.General;
-using Roguelike.Common.Utils;
-using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Contents.Items.Lootbox;
-using Roguelike.Contents.Items.Lootbox.SpecialLootbox;
-using Roguelike.Contents.Items.Lootbox.BossLootBox;
 using Roguelike.Contents.Transfixion.Perks;
-using Roguelike.Contents.Items.Toggle.UserInfo;
-using Roguelike.Contents.Items.Toggle.Transmutation;
-using Roguelike.Common.Systems.BossRushMode;
-using Roguelike.Contents.Items.Lootbox.MiscLootbox;
-using Roguelike.Contents.Items.NoneSynergy.FairFrozen;
-using Roguelike.Common.Systems.Skill;
-using Roguelike.Contents.Items.aDebugItem.DebugStick;
+using Roguelike.Contents.Transfixion.WeaponEnchantment;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Terraria;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Roguelike.Common.Global {
 	/// <summary>
@@ -116,6 +117,9 @@ namespace Roguelike.Common.Global {
 		}
 		public override void OnEnterWorld() {
 			Mod.Reflesh_GlobalItem(Player);
+			if (UniversalSystem.Check_TotalRNG()) {
+				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
+			}
 			if (!Player.IsDebugPlayer()) {
 				if (ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld || ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld) {
 					Player.difficulty = PlayerDifficultyID.Hardcore;
@@ -224,6 +228,16 @@ namespace Roguelike.Common.Global {
 					yield return new Item(ModContent.ItemType<SpoilBag>(), 7);
 					yield return new Item(ModContent.ItemType<StarterLootBox>());
 				}
+				else if (ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode) {
+					if (UniversalSystem.CanEnchantmentBeAccess()) {
+						yield return new Item(ModContent.ItemType<DivineHammer>());
+					}
+					yield return new Item(ModContent.ItemType<TransmuteTablet>());
+					yield return new Item(ModContent.ItemType<SkillOrb>());
+					yield return new Item(ModContent.ItemType<WoodenLootBox>());
+					yield return new Item(ModContent.ItemType<ArcadeModeActivation>());
+					yield return new Item(ItemID.GrapplingHook);
+				}
 				else {
 					yield return new Item(ModContent.ItemType<WoodenLootBox>());
 					yield return new Item(ItemID.GrapplingHook);
@@ -281,9 +295,6 @@ namespace Roguelike.Common.Global {
 			yield return new Item(ItemID.ManaCrystal, ManaCrystal);
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
-			if (UniversalSystem.Check_TotalRNG()) {
-				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
-			}
 			var arti = Artifact.GetArtifact(Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
 			if (arti != null) {
 				var moreStarter = arti.AddStartingItems(Player);

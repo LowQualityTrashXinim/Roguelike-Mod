@@ -15,20 +15,7 @@ internal class Roguelike_LuckyCoin : GlobalItem {
 	}
 }
 public class Roguelike_LuckyCoin_ModPlayer : ModPlayer {
-	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		if (Player.hasLuckyCoin) {
-			if (Main.rand.NextBool()) {
-				modifiers.SourceDamage *= .05f;
-			}
-		}
-	}
-	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (Player.hasLuckyCoin) {
-			if (Main.rand.NextBool()) {
-				modifiers.SourceDamage *= .05f;
-			}
-		}
-	}
+
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		if (Player.hasLuckyCoin) {
 			modifiers.SourceDamage += .5f * Main.rand.NextBool().ToDirectionInt();

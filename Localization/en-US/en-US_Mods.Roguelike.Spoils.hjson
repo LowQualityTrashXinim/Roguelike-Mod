@@ -90,7 +90,7 @@ Rare_PerkSpoil: {
 
 Rare_GambleSpoil: {
 	DisplayName: Gambler II
-	Description: Randomly choose 3 rare, uncommon or common spoils.
+	Description: Randomly choose 2 rare, uncommon or common spoils.
 }
 
 Rare_GambleSpoil2: {
@@ -105,7 +105,7 @@ Rare_WingSpoil: {
 
 SuperRare_GambleSpoil: {
 	DisplayName: Gambler III
-	Description: Randomly choose 3 super rare, rare, uncommon or common spoils.
+	Description: Randomly choose 2 super rare, rare, uncommon or common spoils.
 }
 
 SuperRare_SuppliesPackage: {

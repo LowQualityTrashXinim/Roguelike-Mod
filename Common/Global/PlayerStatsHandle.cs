@@ -209,7 +209,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (UpdateThorn.ApplyTo(1) > 0) {
 			NPC.HitInfo newhitinfo = new();
-			newhitinfo.Damage = (int)(UpdateThorn - 1).ApplyTo(hurtInfo.Damage);
+			newhitinfo.Damage = (int)((UpdateThorn - 1).ApplyTo(hurtInfo.Damage) + UpdateThorn.ApplyTo(0));
 			newhitinfo.Crit = false;
 			newhitinfo.DamageType = DamageClass.Default;
 			Player.StrikeNPCDirect(npc, newhitinfo);

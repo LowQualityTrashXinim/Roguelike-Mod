@@ -6,11 +6,11 @@ using Roguelike.Common.Systems.ArcadeMode;
 using Roguelike.Common.Systems.ObjectSystem;
 using Roguelike.Common.Systems.ShopSystem;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Toggle;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -139,18 +139,19 @@ public partial class ArcadeMode_System : ModSystem {
 						count++;
 					}
 				}
-				if (count < wave.SpawnNPC_Limit) {
-					for (int i = 0; i < wave.SpawnNPC_Amount; i++) {
-						if (Main.rand.NextFloat() <= wave.RareValue) {
-							type = wave.Get_RareNPCtoSpawn();
-						}
-						else {
-							type = wave.Get_NPCtoSpawn();
-						}
-						var obj = ModObject.NewModObject(Get_SpawnNPCLocationRandomize(), Vector2.Zero, ModObject.GetModObjectType<ArcadeMode_SpawnNPC_Indicator>());
-						if (obj is ArcadeMode_SpawnNPC_Indicator spawn) {
-							spawn.NPCtoSpawn = type;
-						}
+				for (int i = 0; i < wave.SpawnNPC_Amount; i++) {
+					if (count + i > wave.SpawnNPC_Limit) {
+						break;
+					}
+					if (Main.rand.NextFloat() <= wave.RareValue) {
+						type = wave.Get_RareNPCtoSpawn();
+					}
+					else {
+						type = wave.Get_NPCtoSpawn();
+					}
+					var obj = ModObject.NewModObject(Get_SpawnNPCLocationRandomize(), Vector2.Zero, ModObject.GetModObjectType<ArcadeMode_SpawnNPC_Indicator>());
+					if (obj is ArcadeMode_SpawnNPC_Indicator spawn) {
+						spawn.NPCtoSpawn = type;
 					}
 				}
 				Freqency = 0;
@@ -211,6 +212,9 @@ public class ArcadeMode_GlobalNPC : GlobalNPC {
 	public override bool PreKill(NPC npc) {
 		if (!ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode) {
 			return base.PreKill(npc);
+		}
+		if (npc.boss) {
+			Main.LocalPlayer.QuickSpawnItem(npc.GetSource_Loot(), ModContent.ItemType<SpoilBag>());
 		}
 		int basePointGrant = 0;
 		switch (npc.type) {

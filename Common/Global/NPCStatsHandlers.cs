@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Roguelike.Common.Systems;
+using Roguelike.Common.Systems.ArcaneMode;
 using Roguelike.Common.Systems.BossRushMode;
 using Roguelike.Common.Systems.WorldSettingSystem;
 using Terraria;
@@ -46,6 +47,8 @@ internal class NPCStatsHandlers : GlobalNPC {
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
 		DifficultySettingSystem difficulty = ModContent.GetInstance<DifficultySettingSystem>();
 
+
+
 		StatModifier HPmod = new();
 		StatModifier DMGmod = new();
 		HPmod += .1f * difficulty.Enemy_HP;
@@ -54,6 +57,12 @@ internal class NPCStatsHandlers : GlobalNPC {
 			HPmod += .25f * difficulty.Boss_HP;
 			DMGmod += .025f * difficulty.Boss_DMG;
 
+		}
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().ArcadeMode) {
+			int wave = ModContent.GetInstance<ArcadeMode_System>().CurrentWave;
+			HPmod += wave * .1f;
+			DMGmod += wave * .1f;
+			npc.defense += wave;
 		}
 		if (Main.rand.NextFloat() <= difficulty.World_EnemyToElite * .2f && !npc.boss) {
 			npc.lifeMax += 1000 + npc.lifeMax;

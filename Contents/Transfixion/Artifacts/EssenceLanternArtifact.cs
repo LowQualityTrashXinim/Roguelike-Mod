@@ -1,18 +1,25 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Global;
+using Roguelike.Common.Systems.ArtifactSystem;
+using Roguelike.Common.Systems.Skill;
+using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Consumable.Potion;
+using Roguelike.Contents.Items.Lootbox.MiscLootbox;
+using Roguelike.Contents.ItemVariant;
+using Roguelike.Texture;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Roguelike.Common.Systems.ArtifactSystem;
-using Roguelike.Texture;
-using Roguelike.Common.Global;
-using Roguelike.Common.Utils;
-using Roguelike.Common.Systems.Skill;
 
 namespace Roguelike.Contents.Transfixion.Artifacts;
 internal class EnergyLanternArtifact : Artifact {
 	public override string TexturePath => ModTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.AntiqueWhite;
+	public override IEnumerable<Item> AddStartingItems(Player player) {
+		yield return new(ModContent.ItemType<SkillLootBox>(), 10);
+	}
 }
 public class EnergyLanternArtifact_Player : ModPlayer {
 	bool EssenceLantern = false;

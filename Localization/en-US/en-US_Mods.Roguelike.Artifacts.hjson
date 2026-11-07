@@ -180,6 +180,8 @@ EssenceLanternArtifact: {
 	Description:
 		'''
 		"Passively generate energy around you"
+		[c/00ff47:Starter item] :
+			{0}
 		[c/9b9c76:Neutral effect] :
 			= Your attack spawn energy orb every 10s
 		[c/ffff00:Positive effect] :
@@ -232,7 +234,7 @@ PainStoneArtifact: {
 		'''
 		"The highest tribute to god is to challenge oneself"
 		[c/ffff00:Positive effect] :
-			+ Deal 1% percentage damage
+			+ Increases 1% percentage damage
 		[c/ab3e43:Negative effect] :
 			- Capped your health at 50
 			- Attack speed set to 2s regardless

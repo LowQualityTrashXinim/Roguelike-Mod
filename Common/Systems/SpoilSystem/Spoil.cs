@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Contents.Transfixion.Perks.BlessingPerk;
 using Roguelike.Texture;
@@ -221,6 +222,26 @@ public class SpoilsUIButton : UIImageButton {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
 				Main.instance.MouseText("");
 			}
+		}
+	}
+}
+public class SpoilsSpecificBag : ModItem {
+	public override string Texture => ModUtils.GetTheSameTextureAsEntity<SpoilBag>();
+	public override void SetDefaults() {
+		Item.height = Item.width = 52;
+		Item.value = 0;
+		Item.rare = ItemRarityID.Purple;
+		Item.useAnimation = 30;
+		Item.useTime = 30;
+		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.scale = .5f;
+		Item.maxStack = 1;
+	}
+	public string SpoilName = string.Empty;
+	public override bool CanRightClick() => true;
+	public override void RightClick(Player player) {
+		if (player.whoAmI == Main.myPlayer) {
+			ModContent.GetInstance<UniversalSystem>().ActivateSpoilsUI();
 		}
 	}
 }

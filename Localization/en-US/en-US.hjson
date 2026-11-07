@@ -82,6 +82,36 @@ Mods: {
 
 				May you reach the possibilitiy you wish for !
 				'''
+			ThornDamage:
+				'''
+				Thorn damage : (Not to be confused with vanilla version)
+
+				Thorn damage is referred to reflecting damage based on taken damage from enemy 
+				Thorn damage can not be critical unless a game mechanic enable that.
+
+				The mod thorn damage have 4 types which are "%" | "base" | "x" | "flat"
+
+				For "base" and "flat" damage type, it is a direct increasement to thorn damage.
+				"flat" is unaffected by "%" and "x" damage type.
+
+				The "%" and "x" damage type are enable for reflect damage and increases base thorn damage.
+				10% thorn damage is reflecting 10% damage taken from enemy
+				1.1x thorn damage is multiplying the existing damage taken and addition increases by 1.1x
+
+				Thorn AoE :
+				A specific stats that increases the range of reflect damage be dealt onto
+				By default it can't reflected to other target beside the dealer.
+				'''
+			CounterAttack:
+				'''
+				Work differently compared to Thorn damage
+
+				Counter attack is a different type of reflect damage that can inherit other type of 
+				damage class specific damage buff increases.
+
+				However each counter attack is implemented differently making it each have their own
+				special interaction however it still followed the same rule as reflect damage.
+				'''
 			PiercingDamage:
 				'''
 				Piercing damage :
@@ -835,6 +865,8 @@ Mods: {
 			LootboxLord_Clone.DisplayName: Lootbox Lord_ Clone
 			Roguelike_CookedShrimp_NPC.DisplayName: Roguelike_ Cooked Shrimp_ N P C
 			GhostWeapon1.DisplayName: Ghost Weapon1
+			Jerry.DisplayName: Jerry
+			Jerry_Segment.DisplayName: Jerry_ Segment
 		}
 
 		Items: {
@@ -3442,6 +3474,11 @@ Mods: {
 
 			OpenArcadeShopItem: {
 				DisplayName: Open Arcade Shop Item
+				Tooltip: ""
+			}
+
+			SpoilsSpecificBag: {
+				DisplayName: Spoils Specific Bag
 				Tooltip: ""
 			}
 		}

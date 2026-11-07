@@ -7,6 +7,8 @@ using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
 using Roguelike.Texture;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -151,9 +153,13 @@ public class ArcadeShopUI : UIState {
 			Arr_ShopUIButtonRow1[i].SetItem(ContentSamples.ItemsByType[Main.rand.Next(ModItemLib.ListLootboxType)]);
 		}
 		ItemPool pool = LootboxSystem.GetItemPool(ItemPool.GetPoolType<RainbowLootboxPool>());
-		var itempool = pool.AllWeaponPool();
+		var accpool = pool.AccessoryLoot().ToArray();
+		var armorpool = pool.ArmorLoot().ToArray();
+		var potionpool = pool.PotionPool().ToArray();
+		var itempool = pool.AllWeaponPool().ToArray();
+		List<int> allPool = [.. itempool, .. potionpool, .. accpool, .. armorpool];
 		for (int i = 0; i < Arr_ShopUIButtonRow2.Length; i++) {
-			Arr_ShopUIButtonRow2[i].SetItem(new Item(Main.rand.NextFromHashSet(itempool)));
+			Arr_ShopUIButtonRow2[i].SetItem(new Item(Main.rand.Next(allPool)));
 		}
 	}
 }

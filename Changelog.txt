@@ -243,7 +243,7 @@ the builder input.
 909/ Buff Nights Edge, Excalibur and it True variant.
 910/ Added new stats called "Health damage" for player.
 911/ Added Frostbrand, Ice Sickle, Beam sword enchantment.
-912/ Implemented Acrade mode.
+912/ Implemented the basic for Acrade mode.
 913/ Fixed Weapon leveling again.
 914/ Adjust how NPCStatsHandlers set stats.
 915/ Static percentage damage now is handle correctly.
@@ -251,7 +251,18 @@ the builder input.
 917/ Created a base system handler for boss rush, arcade and roguelike mode.
 918/ Added Arcade shop UI and item for arcade mode.
 919/ Fixed NextVector2RectangleEdge for not properly calculating based on given rectangle.
-920/ Updated mod version from 0.0.20.10 to 0.0.20.11 ./.
+920/ Set up the basic for Arcade mode.
+921/ Nerf gamba spoil amount that can be given.
+921/ Updated mod version from 0.0.20.10 to 0.0.20.11 ./.
+922/ Reworked Lucky Horseshoe and obsidian skull.
+923/ Added more waves data for Arcade mode.
+924/ Added the basic for Jerry boss.
+925/ Added explanation for Thorn damage and Counter attack.
+926/ Added starting item for Energy Lantern artifact.
+927/ Reworked Pocket Mirror, The Plan and Trifold Map.
+928/ Slightly rework minishark.
+929/ Added starter loot for arcade mode.
+930/ Fixed a bug where player can access hidden spoil via a gambling spoil.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

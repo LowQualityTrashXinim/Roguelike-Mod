@@ -52,7 +52,6 @@ internal class UniversalSystem : ModSystem {
 		}
 		return NPC.downedMoonlord;
 	}
-	public const string HELLISH_MODE = "HellishEnable";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 
 	public static bool Check_TotalRNG() => ModContent.GetInstance<RoguelikeWorldProperty>().TotalRNG;
@@ -351,18 +350,21 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateSpoilsUI(int selectionNumber = 3) {
 		DeactivateUI();
 		if (Check_TotalRNG()) {
-			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
-			for (int i = SpoilList.Count - 1; i >= 0; i--) {
-				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(Main.LocalPlayer)) {
-					SpoilList.Remove(spoil);
-				}
-			}
-			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer);
+			Give_RandomSpoil();
 			return;
 		}
 		spoilsState.Limit_Spoils = selectionNumber;
 		user2ndInterface.SetState(spoilsState);
+	}
+	public void Give_RandomSpoil() {
+		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+		for (int i = SpoilList.Count - 1; i >= 0; i--) {
+			ModSpoil spoil = SpoilList[i];
+			if (!spoil.IsSelectable(Main.LocalPlayer)) {
+				SpoilList.Remove(spoil);
+			}
+		}
+		Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer);
 	}
 	public void ActivateBRmodifierUI() {
 		DeactivateUI();
@@ -371,17 +373,12 @@ internal class UniversalSystem : ModSystem {
 	public void DeactivateUI() {
 		user2ndInterface.SetState(null);
 	}
-	public override void PreSaveAndQuit() {
-		GivenBossSpawnItem.Clear();
-		Count_BossKill = 0;
-	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
 	public int Count_BossKill = 0;
 	public string UniqueWorldPlayerID = "";
 	public override void ClearWorld() {
 		ListOfBossKilled.Clear();
-		Count_BossKill = 0;
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;

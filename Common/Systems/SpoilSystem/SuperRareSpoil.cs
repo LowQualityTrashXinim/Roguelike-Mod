@@ -110,26 +110,26 @@ internal class SuperRareSpoil {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (spoil.RareValue == SpoilDropRarity.SSR) {
+				if (spoil.RareValue == SpoilDropRarity.SSR && spoil.RareValue == 999) {
 					SpoilList.Remove(spoil);
 				}
 			}
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 2; i++) {
 				ModSpoil spoil = Main.rand.Next(SpoilList);
 				spoil.OnChoose(Main.LocalPlayer);
 				Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));
 			}
 		}
 	}
-	public class SuperRare_SameSetArmor : ModSpoil {
-		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.SuperRare;
-		}
-		public override bool IsSelectable(Player player) {
-			return SpoilDropRarity.SuperRareDrop();
-		}
-		public override void OnChoose(Player player) {
+	//public class SuperRare_SameSetArmor : ModSpoil {
+	//	public override void SetStaticDefault() {
+	//		RareValue = SpoilDropRarity.SuperRare;
+	//	}
+	//	public override bool IsSelectable(Player player) {
+	//		return SpoilDropRarity.SuperRareDrop();
+	//	}
+	//	public override void OnChoose(Player player) {
 			
-		}
-	}
+	//	}
+	//}
 }

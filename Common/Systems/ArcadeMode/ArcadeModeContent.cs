@@ -84,6 +84,10 @@ public class ArcadeMode_Wave {
 }
 public static class ArcadeMode_Database {
 	public static ArcadeMode_Wave Get_Wave(int waveNumber) {
+		int cappedfornow = 45;
+		if (waveNumber >= cappedfornow) {
+			waveNumber = waveNumber - cappedfornow * waveNumber / cappedfornow;
+		}
 		ArcadeMode_Wave Wave = new(0, 0, 0, 0);
 		switch (waveNumber) {
 			case 1:
@@ -294,34 +298,150 @@ public static class ArcadeMode_Database {
 				Wave.Set_BossNPC(NPCID.Deerclops);
 				break;
 			case 36:
+				Wave = new ArcadeMode_Wave(30, ModUtils.ToSecond(90), 5, 90);
+				Wave.Set_NPCpool([NPCID.MushiLadybug, NPCID.SporeBat, NPCID.SporeSkeleton, NPCID.ZombieMushroomHat, NPCID.ZombieMushroom, NPCID.AnomuraFungus]);
+				//Wave.Set_RareNPCpool([NPCID.IceGolem], .005f);
 				break;
 			case 37:
+				Wave = new ArcadeMode_Wave(20, ModUtils.ToSecond(90), 5, 90);
+				Wave.Set_NPCpool([NPCID.MushiLadybug, NPCID.SporeBat, NPCID.SporeSkeleton, NPCID.ZombieMushroomHat, NPCID.ZombieMushroom, NPCID.AnomuraFungus]);
 				break;
 			case 38:
+				Wave = new ArcadeMode_Wave(15, ModUtils.ToSecond(90), 5, 90);
+				Wave.Set_NPCpool([NPCID.MushiLadybug, NPCID.SporeBat, NPCID.SporeSkeleton, NPCID.ZombieMushroomHat, NPCID.ZombieMushroom, NPCID.AnomuraFungus]);
 				break;
 			case 39:
+				Wave = new ArcadeMode_Wave(15, ModUtils.ToSecond(90), 7, 90);
+				Wave.Set_NPCpool([NPCID.MushiLadybug, NPCID.SporeBat, NPCID.SporeSkeleton, NPCID.ZombieMushroomHat, NPCID.ZombieMushroom, NPCID.AnomuraFungus]);
 				break;
 			case 40:
+				Wave = new ArcadeMode_Wave(30, ModUtils.ToSecond(90), 10, 90);
+				Wave.Set_NPCpool([NPCID.MushiLadybug, NPCID.SporeBat, NPCID.SporeSkeleton, NPCID.ZombieMushroomHat, NPCID.ZombieMushroom, NPCID.AnomuraFungus]);
 				break;
 			case 41:
+				Wave = new ArcadeMode_Wave(30, ModUtils.ToSecond(30), 3, 100);
+				Wave.Set_NPCpool([NPCID.Skeleton, NPCID.AngryBones, NPCID.AngryBonesBig, NPCID.AngryBonesBigHelmet, NPCID.AngryBonesBigMuscle, NPCID.DarkCaster, NPCID.CursedSkull, NPCID.BlueArmoredBones, NPCID.BlueArmoredBonesMace, NPCID.BlueArmoredBonesNoPants, NPCID.BlueArmoredBonesSword, NPCID.RustyArmoredBonesAxe, NPCID.RustyArmoredBonesFlail, NPCID.RustyArmoredBonesSword, NPCID.RustyArmoredBonesSwordNoArmor, NPCID.HellArmoredBones, NPCID.HellArmoredBonesMace, NPCID.HellArmoredBonesSpikeShield, NPCID.HellArmoredBonesSword, NPCID.SkeletonArcher, NPCID.ArmoredSkeleton]);
+				Wave.Set_RareNPCpool([NPCID.RuneWizard, NPCID.GiantCursedSkull, NPCID.BoneLee, NPCID.SkeletonSniper, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.TacticalSkeleton], .05f);
 				break;
 			case 42:
+				Wave = new ArcadeMode_Wave(30, ModUtils.ToSecond(30), 4, 100);
+				Wave.Set_NPCpool([NPCID.Skeleton, NPCID.AngryBones, NPCID.AngryBonesBig, NPCID.AngryBonesBigHelmet, NPCID.AngryBonesBigMuscle, NPCID.DarkCaster, NPCID.CursedSkull, NPCID.BlueArmoredBones, NPCID.BlueArmoredBonesMace, NPCID.BlueArmoredBonesNoPants, NPCID.BlueArmoredBonesSword, NPCID.RustyArmoredBonesAxe, NPCID.RustyArmoredBonesFlail, NPCID.RustyArmoredBonesSword, NPCID.RustyArmoredBonesSwordNoArmor, NPCID.HellArmoredBones, NPCID.HellArmoredBonesMace, NPCID.HellArmoredBonesSpikeShield, NPCID.HellArmoredBonesSword, NPCID.SkeletonArcher, NPCID.ArmoredSkeleton]);
+				Wave.Set_RareNPCpool([NPCID.RuneWizard, NPCID.GiantCursedSkull, NPCID.BoneLee, NPCID.SkeletonSniper, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.TacticalSkeleton], .05f);
 				break;
 			case 43:
+				Wave = new ArcadeMode_Wave(20, ModUtils.ToSecond(30), 5, 100);
+				Wave.Set_NPCpool([NPCID.Skeleton, NPCID.AngryBones, NPCID.AngryBonesBig, NPCID.AngryBonesBigHelmet, NPCID.AngryBonesBigMuscle, NPCID.DarkCaster, NPCID.CursedSkull, NPCID.BlueArmoredBones, NPCID.BlueArmoredBonesMace, NPCID.BlueArmoredBonesNoPants, NPCID.BlueArmoredBonesSword, NPCID.RustyArmoredBonesAxe, NPCID.RustyArmoredBonesFlail, NPCID.RustyArmoredBonesSword, NPCID.RustyArmoredBonesSwordNoArmor, NPCID.HellArmoredBones, NPCID.HellArmoredBonesMace, NPCID.HellArmoredBonesSpikeShield, NPCID.HellArmoredBonesSword, NPCID.SkeletonArcher, NPCID.ArmoredSkeleton]);
+				Wave.Set_RareNPCpool([NPCID.RuneWizard, NPCID.GiantCursedSkull, NPCID.BoneLee, NPCID.SkeletonSniper, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.TacticalSkeleton], .05f);
 				break;
 			case 44:
+				Wave = new ArcadeMode_Wave(30, ModUtils.ToSecond(40), 10, 100);
+				Wave.Set_NPCpool([NPCID.Skeleton, NPCID.AngryBones, NPCID.AngryBonesBig, NPCID.AngryBonesBigHelmet, NPCID.AngryBonesBigMuscle, NPCID.DarkCaster, NPCID.CursedSkull, NPCID.BlueArmoredBones, NPCID.BlueArmoredBonesMace, NPCID.BlueArmoredBonesNoPants, NPCID.BlueArmoredBonesSword, NPCID.RustyArmoredBonesAxe, NPCID.RustyArmoredBonesFlail, NPCID.RustyArmoredBonesSword, NPCID.RustyArmoredBonesSwordNoArmor, NPCID.HellArmoredBones, NPCID.HellArmoredBonesMace, NPCID.HellArmoredBonesSpikeShield, NPCID.HellArmoredBonesSword, NPCID.SkeletonArcher, NPCID.ArmoredSkeleton]);
+				Wave.Set_RareNPCpool([NPCID.RuneWizard, NPCID.GiantCursedSkull, NPCID.BoneLee, NPCID.SkeletonSniper, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.TacticalSkeleton], .1f);
 				break;
 			case 45:
+				Wave = new ArcadeMode_Wave(210, ModUtils.ToSecond(40), 40, 40);
+				Wave.RandomizeChoose = true;
+				Wave.Set_NPCpool([NPCID.Skeleton, NPCID.AngryBones, NPCID.AngryBonesBig, NPCID.AngryBonesBigHelmet, NPCID.AngryBonesBigMuscle, NPCID.DarkCaster, NPCID.CursedSkull, NPCID.BlueArmoredBones, NPCID.BlueArmoredBonesMace, NPCID.BlueArmoredBonesNoPants, NPCID.BlueArmoredBonesSword, NPCID.RustyArmoredBonesAxe, NPCID.RustyArmoredBonesFlail, NPCID.RustyArmoredBonesSword, NPCID.RustyArmoredBonesSwordNoArmor, NPCID.HellArmoredBones, NPCID.HellArmoredBonesMace, NPCID.HellArmoredBonesSpikeShield, NPCID.HellArmoredBonesSword, NPCID.SkeletonArcher, NPCID.ArmoredSkeleton]);
+				Wave.Set_RareNPCpool([NPCID.RuneWizard, NPCID.GiantCursedSkull, NPCID.BoneLee, NPCID.SkeletonSniper, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.TacticalSkeleton], .05f);
+				Wave.Set_BossNPC(NPCID.SkeletronHead);
 				break;
 			case 46:
+				Wave = new ArcadeMode_Wave(120, ModUtils.ToSecond(15), 3, 100);
+				Wave.Set_NPCpool([NPCID.BloodZombie, NPCID.Drippler, NPCID.WanderingEye]);
+				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
 				break;
 			case 47:
+				Wave = new ArcadeMode_Wave(120, ModUtils.ToSecond(15), 4, 100);
+				Wave.Set_NPCpool([NPCID.BloodZombie, NPCID.Drippler, NPCID.WanderingEye]);
+				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
 				break;
 			case 48:
+				Wave = new ArcadeMode_Wave(60, ModUtils.ToSecond(25), 4, 100);
+				Wave.Set_NPCpool([NPCID.BloodZombie, NPCID.Drippler, NPCID.WanderingEye]);
+				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
 				break;
 			case 49:
+				Wave = new ArcadeMode_Wave(60, ModUtils.ToSecond(40), 5, 100);
+				Wave.Set_NPCpool([NPCID.BloodZombie, NPCID.Drippler, NPCID.WanderingEye]);
+				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
 				break;
 			case 50:
+				Wave = new ArcadeMode_Wave(60, ModUtils.ToSecond(40), 5, 100);
+				Wave.Set_NPCpool([NPCID.BloodZombie, NPCID.Drippler, NPCID.WanderingEye]);
+				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
+				Wave.Set_BossNPC(NPCID.BloodNautilus);
+				break;
+				//Underworld raid
+			case 51:
+				break;
+			case 52:
+				break;
+			case 53:
+				break;
+			case 54:
+				break;
+			case 55:
+				break;
+				//
+			case 56:
+				break;
+			case 57:
+				break;
+			case 58:
+				break;
+			case 59:
+				break;
+			case 60:
+				break;
+			case 61:
+				break;
+			case 62:
+				break;
+			case 63:
+				break;
+			case 64:
+				break;
+			case 65:
+				break;
+			case 66:
+				break;
+			case 67:
+				break;
+			case 68:
+				break;
+			case 69:
+				break;
+			case 70:
+				break;
+			case 71:
+				break;
+			case 72:
+				break;
+			case 73:
+				break;
+			case 74:
+				break;
+			case 75:
+				break;
+			case 76:
+				break;
+			case 77:
+				break;
+			case 78:
+				break;
+			case 79:
+				break;
+			case 80:
+				break;
+			case 81:
+				break;
+			case 82:
+				break;
+			case 83:
+				break;
+			case 84:
+				break;
+			case 85:
 				break;
 		}
 		return Wave;

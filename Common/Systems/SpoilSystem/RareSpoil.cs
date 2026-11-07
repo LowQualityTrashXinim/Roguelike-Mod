@@ -6,6 +6,7 @@ using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.RelicItem;
 using Roguelike.Contents.Transfixion.Perks;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -105,7 +106,7 @@ internal class RareSpoil {
 					SpoilList.Remove(spoil);
 				}
 			}
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 2; i++) {
 				ModSpoil spoil = Main.rand.Next(SpoilList);
 				spoil.OnChoose(Main.LocalPlayer);
 				Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));
@@ -121,6 +122,7 @@ internal class RareSpoil {
 		}
 		public override void OnChoose(Player player) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			SpoilList = SpoilList.Where(i => i.RareValue != 999).ToList();
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			spoil.OnChoose(Main.LocalPlayer);
 			Main.NewText("You have earned : " + spoil.DisplayName, SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue));

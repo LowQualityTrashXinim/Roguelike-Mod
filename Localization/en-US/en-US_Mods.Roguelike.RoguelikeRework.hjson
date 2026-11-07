@@ -98,7 +98,8 @@ TheUndertaker:
 Minishark:
 	'''
 	Has 1 in 6 chance to shoot out an additional bullet
-	There is a 1% chance to get Freezy buff for 5s
+	The longer you shoot, the more inaccurate the minigun become
+	After 200 rounds, alt click to gain Freezy buff for 5s
 	While Freezy buff is active, the Minishark shoot out more bullets.
 	'''
 GemStaff: Alt-click to activate special attack
@@ -342,9 +343,43 @@ Vitamins:
 LuckyCoin:
 	'''
 	Increases luck by 15%
-	Getting hit have 50% chance to massively reduce damage taken
 	Dealing damage have 50% chance to increases the damage dealt by 50%
 	There is a very rare chance to increase damage dealt by 1000%
+	'''
+Luckyhorseshoe:
+	'''
+	Increases luck by 15%
+	Getting hit have 50% chance to massively reduce damage taken
+	Have 10% chance to be revived
+	'''
+ObsidianSkull:
+	'''
+	Reduce taken damage by 25% ( not DR )
+	Increases maximum health by 10%
+	Enemy direct contact will receieved Fury of The Sun debuff status
+	and deal 100 counter attack damage
+	'''
+PocketMirror:
+	'''
+	Upon taking direct damage:
+	+ Do a counter attack dealing 300% weapon damage ( CD: 3s )
+	After 5s of not taking damage ( while not on cool down )
+	+ Increases this item counter attack damage by 1000%
+	Hostile projectile may have chance to change their direction when near you.
+	'''
+ThePlan:
+	'''
+	When below 50% hp:
+	[+] Gain a status grant 1 rapid regeneration for 10s
+	When below 20% hp:
+	[+] Gain a status that reduce damage taken by 60% for 15s
+	Whenever any of the status is grant, a 30s cool down is given after duration ended
+	'''
+TrifoldMap:
+	'''
+	"While it is named trifold, it is not a trifold map"
+	Enemy that can't be confused will take 30% more taken damage
+	Have 10% to inflict confused debuff for 3s
 	'''
 SharkToothNecklace:
 	'''
