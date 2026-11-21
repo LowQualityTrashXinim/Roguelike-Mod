@@ -96,8 +96,8 @@ public class FlameProjectile : ModProjectile {
 		float num6 = proj.localAI[0] > num - 10f ? 0.175f : 0.2f;
 		Color transparent;
 		Color color = Projectile.GetAlpha(lightColor);
-		Color color2 = ModUtils.FakeHueShift(color, 10);
-		Color color3 = Color.Lerp(ModUtils.FakeHueShift(color, 20), color2, 0.25f);
+		Color color2 = ModUtils.RGBHueShift(color, 10);
+		Color color3 = Color.Lerp(ModUtils.RGBHueShift(color, 20), color2, 0.25f);
 		Color color4 = new Color(80, 80, 80, 100);
 		float num3 = 0.35f;
 		float num4 = 0.7f;

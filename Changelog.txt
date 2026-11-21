@@ -310,6 +310,8 @@ the builder input.
 964/ Reduce the uses of ModUtils.IsAnyVanillaBossAlive and replace with more optimized one.
 965/ Added in 2 hook methods in preparation for item rarity setting and value setting.
 966/ Neo Dynamite now mine based on your pick power.
+967/ Removed ai generate hue code and replaced it with actual code wrote by human.
+finally, a good change don't you agree ?
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

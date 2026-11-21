@@ -123,52 +123,24 @@ namespace Roguelike.Common.Utils {
 			}
 			return localizationText;
 		}
-		//Taken from chatGPT
-		public static Color FakeHueShift(Color original, float hueShiftDegrees) {
-			float r = original.R / 255f;
-			float g = original.G / 255f;
-			float b = original.B / 255f;
 
-			// Step 3: Approximate hue angle from RGB — not exact HSV, but good for fake shifting
-			float angle = MathF.Atan2(g - b, r - g) * (180f / MathHelper.Pi);
-			if (angle < 0) angle += 360f;
+		public static Color RGBHueShift(Color original, float degree) {
+			Vector3 hue = Main.rgbToHsl(original);
+			//X is color range from 0 to 1
+			//Y is saturation
+			//Z is luminace 
+			hue.X += MathHelper.ToRadians(degree);
+			float huePos = hue.X - 1;
+			float hueNeg = hue.X + 1;
+			if (huePos > 0)
+				hue.X -= huePos;
 
-			// Step 4: Add hue offset
-			float newHue = (angle + hueShiftDegrees) % 360f;
+			if (hueNeg < 0)
+				hue.X += hueNeg;
 
-			// Step 1: Get grayscale (luminance) 
-			// Xinim note : I have verified that this a actual real thing, https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
-			// Turn out our eyes perceive color in weird way
-			float luminance = 0.299f * original.R + 0.587f * original.G + 0.114f * original.B;
-			Color gray = new Color((int)luminance, (int)luminance, (int)luminance, original.A);
-
-			// Step 2: Get RGB hue color from the hueShiftDegrees (approximate pure hue)
-			Color targetHue = HueToRGB(newHue);
-
-			// Step 3: Estimate original saturation (based on min/max channel spread)
-			float min = MathF.Min(original.R, MathF.Min(original.G, original.B)) / 255f;
-			float max = MathF.Max(original.R, MathF.Max(original.G, original.B)) / 255f;
-			float saturation = max - min;
-
-			// Step 4: Lerp from grayscale to target hue by saturation
-			return Color.Lerp(gray, targetHue, saturation);
+			return Main.hslToRgb(hue);
 		}
 
-		// Converts hue (0–360) to an RGB color (pure hue, full saturation, mid brightness)
-		private static Color HueToRGB(float hue) {
-			float c = 1f;
-			float x = c * (1 - MathF.Abs((hue / 60f) % 2 - 1));
-			float r = 0, g = 0, b = 0;
-
-			if (hue < 60) { r = c; g = x; }
-			else if (hue < 120) { r = x; g = c; }
-			else if (hue < 180) { g = c; b = x; }
-			else if (hue < 240) { b = c; g = x; }
-			else if (hue < 300) { b = c; r = x; }
-			else { r = c; b = x; }
-
-			return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255));
-		}
 		public static Color ScaleRGB(this Color color, float scale) {
 			color.R = (byte)MathF.Round(color.R * scale);
 			color.B = (byte)MathF.Round(color.B * scale);
