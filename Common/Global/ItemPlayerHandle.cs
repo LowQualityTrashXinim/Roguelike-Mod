@@ -135,8 +135,8 @@ namespace Roguelike.Common.Global {
 			if (ItemLevel <= 0) {
 				return;
 			}
-			damage += .02f * ItemLevel;
-			damage.Base += (int)(ItemLevel * .5f);
+			damage += .04f * ItemLevel;
+			damage.Base += (int)(ItemLevel);
 			for (int i = 0; i < list_WeaponEffectType.Count; i++) {
 				int effectID = list_WeaponEffectType[i];
 				WeaponEffect effect = WeaponEffectSystem.GetEffect(effectID);

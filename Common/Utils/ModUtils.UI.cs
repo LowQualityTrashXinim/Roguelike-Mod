@@ -8,6 +8,7 @@ using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -192,7 +193,9 @@ namespace Roguelike.Common.Utils {
 		}
 	}
 	/// <summary>
-	/// Special kind of UI that most likely only used once through out the mod
+	/// Special kind of UI that most likely only used once through out the mod<br/>
+	/// <br/>
+	/// This is a UI handler for weapon that have charge or timing mechanic 
 	/// </summary>
 	public class Roguelike_WeaponUIFrame : UIElement {
 		protected Asset<Texture2D> texture;
@@ -200,8 +203,10 @@ namespace Roguelike.Common.Utils {
 		public bool Hide = false;
 		public bool HideBar = false;
 		public bool HideText = false;
-		private int Delay = 0;
+		int Delay = 0;
 		public Color gradientA, gradientB;
+		UIImage barFrame;
+		WeaponProgress inner_progress = null;
 		public void DelayHide(int HideDelay) {
 			if (Delay <= 0 && !Hide) {
 				Delay = HideDelay;
@@ -218,40 +223,26 @@ namespace Roguelike.Common.Utils {
 			barFrame = new UIImage(texture); // Frame of our resource bar
 			Append(barFrame);
 			barFrame.UISetWidthHeight(100, 20);
+			inner_progress = new();
 		}
-		private UIImage barFrame;
-		WeaponProgress inner_progress = null;
 		public void SetWeaponProgress(WeaponProgress progress) {
-			if (inner_progress != null) {
-				if (inner_progress.ItemType != progress.ItemType) {
-					inner_progress = progress;
-				}
-				Hide = false;
-			}
+			Hide = false;
 			inner_progress = progress;
 		}
-		public float BarProgress { get => barProgress; set => barProgress = value; }
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			if (inner_progress != null) {
-				if (inner_progress.ItemType != Main.LocalPlayer.HeldItem.type) {
-					Hide = true;
-				}
+				Hide = true;
 			}
+
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
-			if (inner_progress == null) {
-				return;
-			}
 			if (Hide) {
 				return;
 			}
 			base.Draw(spriteBatch);
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if (inner_progress == null) {
-				return;
-			}
 			if (Hide) {
 				return;
 			}
@@ -301,7 +292,6 @@ namespace Roguelike.Common.Utils {
 	/// For the UI bar to show charging progression, again above but at <see cref="DefaultUI.WeaponBar"/>, change from SetWeaponProgress to barProgress
 	/// </summary>
 	public class WeaponProgress {
-		public int ItemType = 0;
 		/// <summary>
 		/// Setting this true mean that this weapon doesn't contain timing base<br/>
 		/// Otherwise false mean there is a timing elements<br/>
@@ -701,6 +691,306 @@ namespace Roguelike.Common.Utils {
 			Vector2 DrawPos = this.GetInnerDimensions().Position() + FrameOrigin;
 			spriteBatch.Draw(itemtexture, DrawPos, null, colorToDraw, 0, origin, ModUtils.Scale_OuterTextureWithInnerTexture(FrameOrigin, origin, .8f), SpriteEffects.None, 0);
 		}
+	}
+	public enum AnimationType : byte {
+		Move,
+		Rotate,
+		Fade,
+		Scale
+	}
+	/// <summary>
+	/// Use this class as primary way to animate a UI<br/><br/>
+	/// 
+	/// <b>Don't attempt to create a new Animation class and then add it into this</b><br/>
+	/// <b>if you don't know how it work</b>
+	/// </summary>
+	public class UI_Animation {
+		public UI_Animation() {
+			list_animation = new();
+			currentAnimationIndex = 0;
+		}
+		List<Animation> list_animation = new();
+		int currentAnimationIndex = 0;
+
+		public void Play_Animation() {
+			if (currentAnimationIndex < 0 || currentAnimationIndex >= list_animation.Count) {
+				string warn = "Failed to play animation due to out of bound index";
+				if (Main.ActiveWorldFileData != null)
+					Main.NewText(warn);
+				Roguelike.Instance.Logger.Warn(warn);
+			}
+		}
+		/// <summary>
+		/// Use this to set up a simple animation movement
+		/// </summary>
+		/// <param name="type">The type of animation to do</param>
+		/// <param name="info">Act as general information, for rotate and fade type, assign only X field is enough</param>
+		/// <param name="time">Animation time, calculated in tick</param>
+		/// <param name="delay">Animation delay before act, calculated in tick</param>
+		public void Add_AnimationState(AnimationType type, Vector2 info, int time, int delay = 0) {
+			if (list_animation == null) {
+				list_animation = new();
+			}
+			Animation animation = new();
+			switch (type) {
+				case AnimationType.Move:
+					animation.Set_Simple_Movement(time, delay, info);
+					break;
+				case AnimationType.Rotate:
+					animation.Set_Simple_Rotation(time, delay, info.X);
+					break;
+				case AnimationType.Fade:
+					animation.Set_Simple_Fade(time, delay, (byte)info.X);
+					break;
+				case AnimationType.Scale:
+					animation.Set_Simple_Scale(time, delay, info);
+					break;
+			}
+		}
+		public void Add_AnimationComplex(AnimationType[] types, Vector2[] infos, int[] times, int[] delay) {
+			if (list_animation == null) {
+				list_animation = new();
+			}
+			Animation animation = new();
+		}
+	}
+	public partial class Animation {
+		int movedelayMax = 0;
+		int movedelay = 0;
+		int moveTimeMax = 0;
+		int moveTime = 0;
+		Vector2 move = Vector2.Zero;
+
+		int rotatedelayMax = 0;
+		int rotatedelay = 0;
+		int rotateTimeMax = 0;
+		int rotateTime = 0;
+		float rotate = 0;
+
+		int fadedelay = 0;
+		int fadedelayMax = 0;
+		int fadeTimemax = 0;
+		int fadeTime = 0;
+		byte fade = 0;
+
+		int scaledelay = 0;
+		int scaledelayMax = 0;
+		int scaleTimeMax = 0;
+		int scaleTime = 0;
+		Vector2 scale = Vector2.Zero;
+
+		public Animation() {
+		}
+	}
+
+	public partial class Animation {
+		#region movement
+		public void Set_Simple_Movement(int Time, int delay, Vector2 moveVel) {
+			movedelay = movedelayMax = delay;
+			moveTime = moveTimeMax = Time;
+			move = moveVel;
+		}
+		/// <summary>
+		/// Reset the move time and move delay time to their original setter.
+		/// </summary>
+		public void Restart_MoveTime(int newTime, int newDelay) {
+			if (newTime > 0) {
+				moveTimeMax = moveTime = newTime;
+				movedelay = movedelayMax = newDelay;
+			}
+			moveTime = moveTimeMax;
+			movedelay = movedelayMax;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_MoveTime"/> is called before this function<br/>
+		/// Move the element accordingly to the time
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Start_MoveAnimation(ref Vector2 target) {
+			if (--movedelay > 0) {
+				return false;
+			}
+			if (--moveTime > 0) {
+				target += move;
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_MoveTime"/> is called before this function<br/>
+		/// Revert this animation movement accordingly to the time set
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Revert_MoveAnimation(ref Vector2 target) {
+			if (--movedelay > 0) {
+				return false;
+			}
+			if (--moveTime > 0) {
+				target -= move;
+				return false;
+			}
+			return true;
+		}
+		#endregion
+		#region rotation
+		public void Set_Simple_Rotation(int Time, int delay, float rotateVel) {
+			rotatedelay = rotatedelayMax = delay;
+			rotateTime = rotateTimeMax = Time;
+			rotate = rotateVel;
+		}
+		public void Restart_RotateTime(int newTime = -1, int newDelay = -1) {
+			if (newTime > 0) {
+				rotateTimeMax = rotateTime = newTime;
+				rotatedelay = rotatedelayMax = newDelay;
+			}
+			rotateTime = rotateTimeMax;
+			rotatedelay = rotatedelayMax;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_RotateTime"/> is called before this function<br/>
+		/// Move the element accordingly to the time
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Start_RotateAnimation(ref float target) {
+			if (--rotatedelay > 0) {
+				return false;
+			}
+			if (--rotateTime > 0) {
+				target += MathHelper.ToRadians(rotate);
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_MoveTime"/> is called before this function<br/>
+		/// Revert this animation movement accordingly to the time set
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Revert_RotateAnimation(ref float target) {
+			if (--rotatedelay > 0) {
+				return false;
+			}
+			if (--rotateTime > 0) {
+				target -= MathHelper.ToRadians(rotate);
+				return false;
+			}
+			return true;
+		}
+		#endregion
+		#region scale
+		public void Set_Simple_Scale(int Time, int delay, Vector2 scaleVel) {
+			scaledelay = scaledelayMax = delay;
+			scaleTime = scaleTimeMax = Time;
+			scale = scaleVel;
+		}
+		public void Restart_ScaleTime(int newTime = -1, int newDelay = -1) {
+			if (newTime > 0) {
+				scaledelay = scaledelayMax = newTime;
+				scaleTime = scaleTimeMax = newDelay;
+			}
+			scaleTime = scaleTimeMax;
+			scaledelay = scaledelayMax;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_ScaleTime(int, int)"/> is called before this function<br/>
+		/// Scale the element accordingly to the time
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Start_ScaleAnimation(ref Vector2 target) {
+			if (--scaledelay > 0) {
+				return false;
+			}
+			if (--scaleTime > 0) {
+				target += scale;
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_ScaleTime(int, int)"/> is called before this function<br/>
+		/// Revert this animation scale accordingly to the time set
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Revert_ScaleAnimation(ref Vector2 target) {
+			if (--scaledelay > 0) {
+				return false;
+			}
+			if (--scaleTime > 0) {
+				target -= scale;
+				return false;
+			}
+			return true;
+		}
+		#endregion
+		#region fade
+		public void Set_Simple_Fade(int Time, int delay, byte fadeVel) {
+			fadedelay = fadedelayMax = delay;
+			fadeTime = fadeTimemax = Time;
+			fade = fadeVel;
+		}
+		public void Restart_FadeTime(int newTime = -1, int newDelay = -1) {
+			if (newTime > 0) {
+				fadedelay = fadedelayMax = newTime;
+				fadeTime = fadeTimemax = newDelay;
+			}
+			fadedelay = fadedelayMax;
+			fadeTime = fadeTimemax;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_FadeTime(int, int)"/> is called before this function<br/>
+		/// Scale the element accordingly to the time
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Restart_FadeTime(ref byte target) {
+			if (--fadedelay > 0) {
+				return false;
+			}
+			if (--fadeTime > 0) {
+				target += fade;
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
+		/// Make sure <see cref="Restart_FadeTime(int, int)"/> is called before this function<br/>
+		/// Revert this animation scale accordingly to the time set
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <returns>
+		/// <b>True</b> when the animation is finished
+		/// </returns>
+		public bool Revert_FadeAnimation(ref byte target) {
+			if (--fadedelay > 0) {
+				return false;
+			}
+			if (--fadeTime > 0) {
+				target -= fade;
+				return false;
+			}
+			return true;
+		}
+		#endregion
 	}
 }
 

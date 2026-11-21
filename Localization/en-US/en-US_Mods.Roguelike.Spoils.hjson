@@ -175,12 +175,12 @@ SSR_WealthSpoil: {
 
 Hidden_RelicSpoilTier8: {
 	DisplayName: True
-	Description: Grant thy. Supreme tier 8 relic
+	Description: Grant thy. Supreme high tier relic
 }
 
 Hidden_RelicSpoilTier1: {
 	DisplayName: First
-	Description: Grant thy. Supreme tier 1 relic
+	Description: Grant thy. Supreme low tier relic
 }
 
 Hidden_WeaponSpoil: {

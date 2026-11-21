@@ -222,7 +222,13 @@ DeathSickle:
 Handgun:
 	'''
 	Waiting for 1s will make the next shot deal extra 20 damage
-	And if weapon is using normal bullet then it will be changed to high velocity bullet
+	Using normal will be changed to high velocity bullet
+	'''
+BladeOfGrass:
+	'''
+	Intro skill (15s):
+	[+] Releases fury of leaf upon swing
+	Hitting enemy spawn 3 to 5 leafs
 	'''
 MechanicalLens:
 	'''
@@ -394,6 +400,11 @@ HandWarmer:
 	Target with frost burn take 20% more damage
 	Snowball of any source deal 10 extra damage as true damage
 	and have 50% to inflict weak frost burn for 1s
+	'''
+ArmorBracing:
+	'''
+	Increases defenses by 10 and 15% damage reduction
+	For each 100 health missing, increases defenses by 5%
 	'''
 SharkToothNecklace:
 	'''

@@ -28,6 +28,9 @@ public class Roguelike_PocketMirror_ModPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		if(!PocketMirror) {
+			return;
+		}
 		if (Cooldown <= 0) {
 			int damage = Player.GetWeaponDamage(Player.HeldItem) * 3 + 1;
 			if (ChargeTime >= 300) {

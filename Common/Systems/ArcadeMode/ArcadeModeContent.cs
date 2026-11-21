@@ -371,18 +371,34 @@ public static class ArcadeMode_Database {
 				Wave.Set_RareNPCpool([NPCID.BloodEelHead, NPCID.GoblinShark, NPCID.EyeballFlyingFish], .35f);
 				Wave.Set_BossNPC(NPCID.BloodNautilus);
 				break;
-				//Underworld raid
+			//Underworld raid
 			case 51:
+				Wave = new ArcadeMode_Wave(300, ModUtils.ToSecond(15), 15, 100);
+				Wave.Set_NPCpool([NPCID.FireImp, NPCID.LavaSlime, NPCID.Demon]);
+				Wave.Set_RareNPCpool([NPCID.Lavabat, NPCID.RedDevil], .35f);
 				break;
 			case 52:
+				Wave = new ArcadeMode_Wave(240, ModUtils.ToSecond(15), 15, 100);
+				Wave.Set_NPCpool([NPCID.FireImp, NPCID.LavaSlime, NPCID.Demon]);
+				Wave.Set_RareNPCpool([NPCID.Lavabat, NPCID.RedDevil], .35f);
 				break;
 			case 53:
+				Wave = new ArcadeMode_Wave(180, ModUtils.ToSecond(15), 15, 100);
+				Wave.Set_NPCpool([NPCID.FireImp, NPCID.LavaSlime, NPCID.Demon]);
+				Wave.Set_RareNPCpool([NPCID.Lavabat, NPCID.RedDevil], .35f);
 				break;
 			case 54:
+				Wave = new ArcadeMode_Wave(150, ModUtils.ToSecond(30), 15, 100);
+				Wave.Set_NPCpool([NPCID.FireImp, NPCID.LavaSlime, NPCID.Demon]);
+				Wave.Set_RareNPCpool([NPCID.Lavabat, NPCID.RedDevil], .35f);
 				break;
 			case 55:
+				Wave = new ArcadeMode_Wave(300, ModUtils.ToSecond(60), 15, 100);
+				Wave.RandomizeChoose = true;
+				Wave.Set_NPCpool([NPCID.FireImp, NPCID.LavaSlime, NPCID.Demon, NPCID.Lavabat, NPCID.RedDevil]);
+				//Add rework Wall of flesh here
 				break;
-				//
+			//
 			case 56:
 				break;
 			case 57:

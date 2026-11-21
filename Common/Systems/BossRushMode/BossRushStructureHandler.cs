@@ -229,7 +229,7 @@ public class BossRushStructureHandler : ModSystem {
 					NPC enemy = NPC.NewNPCDirect(NPC.GetSource_NaturalSpawn(), pos, type);
 					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().IsAGhostEnemy = true;
 					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().BelongToWho = num;
-					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
+					enemy.GetGlobalNPC<RoguelikeGlobalNPC>().Deny_YouFromLoot = true;
 				}
 			}
 		}
@@ -289,7 +289,7 @@ public class BossRushModeGlobalNPC : GlobalNPC {
 	public override void OnSpawn(NPC npc, IEntitySource source) {
 		if (ModContent.GetInstance<RogueLikeConfig>().BossRushMode_Extra) {
 			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier11>()) {
-				npc.GetGlobalNPC<RoguelikeGlobalNPC>().PositiveLifeRegen = Math.Clamp((int)(npc.lifeMax * .01f), 1, int.MaxValue);
+				npc.GetGlobalNPC<RoguelikeGlobalNPC>().Static_PositiveLifeRegen = Math.Clamp((int)(npc.lifeMax * .01f), 1, int.MaxValue);
 			}
 			if (ModContent.GetInstance<BossRushStructureHandler>().CurrentBadModifier == BossRushModifier.GetModifierType<BR_BadModifier10>()) {
 				if (!npc.friendly && npc.GetGlobalNPC<RoguelikeGlobalNPC>().ResistHitCount <= 0) {

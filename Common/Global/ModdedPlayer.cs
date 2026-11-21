@@ -309,7 +309,7 @@ namespace Roguelike.Common.Global {
 		public bool AllowForAchievement = true;
 		public bool AlreadyGotItem = false;
 		public override void OnHurt(Player.HurtInfo info) {
-			if (ModUtils.IsAnyVanillaBossAlive())
+			if (UniversalSystem.AnyVanillaBossAlive)
 				amountOfTimeGotHit++;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
@@ -319,6 +319,7 @@ namespace Roguelike.Common.Global {
 			packet.Write(EnchantingEnable);
 			packet.Write(SkillEnable);
 			packet.Write(AllowForAchievement);
+			packet.Write(AlreadyGotItem);
 			packet.Send(toWho, fromWho);
 		}
 		public override void Initialize() {
@@ -350,6 +351,7 @@ namespace Roguelike.Common.Global {
 			EnchantingEnable = reader.ReadInt32();
 			SkillEnable = reader.ReadInt32();
 			AllowForAchievement = reader.ReadBoolean();
+			AlreadyGotItem = reader.ReadBoolean();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {

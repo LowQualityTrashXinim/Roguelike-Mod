@@ -1,5 +1,5 @@
 Effect1: Increases weapon damage by 50% and base damage by 10
-Effect2: Increases weapon critical strike chance by 20% and critical damage by 75%
+Effect2: Increases weapon critical strike chance by 15% and critical damage by 35%
 Effect3: Increases direct item damage by 100%
 Effect4: Weapon no longer consume any material or resource
 Effect5: Have 5% to deal weak life steal strike ( heal maximum of 20 health )
@@ -11,3 +11,10 @@ Effect10: Weapon have 20% chance to deal 2nd strike
 Effect11: Increases weapon base damage by 30
 Effect12: Increases weapon damage by 2.5% for every 1% health missing
 Effect13: While health below 50%, increases weapon critical strike chance by 30%
+Effect14:
+	'''
+	Have 70% chance to deal 80 damage + 5% health damage ( capped at 200 damage )
+	but you take 50% more damage
+	'''
+Effect15: Increases critical damage by 100%
+Effect16: Increases crticial strike chance by 40%

@@ -7,8 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Roguelike.Contents.Items.BuilderItem
-{
+namespace Roguelike.Contents.Items.BuilderItem {
 	internal class NeoDynamite : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(18, 56, 0, 0, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<NeoDynamiteExplosion>(), 11f, false);
@@ -60,28 +59,11 @@ namespace Roguelike.Contents.Items.BuilderItem
 			}
 		}
 		public bool canKillTiles(int i, int j) {
+			Player player = Main.player[Projectile.owner];
+			player.HasEnoughPickPowerToHurtTile(i, j);
 			Tile tile = Main.tile[i, j];
 			if (tile != null) {
-				if (Main.tileDungeon[tile.TileType]
-					|| tile.TileType == TileID.Dressers
-					|| tile.TileType == TileID.Containers
-					|| tile.TileType == TileID.DemonAltar
-					|| tile.TileType == TileID.Cobalt
-					|| tile.TileType == TileID.Mythril
-					|| tile.TileType == TileID.Adamantite
-					|| tile.TileType == TileID.LihzahrdBrick
-					|| tile.TileType == TileID.LihzahrdAltar
-					|| tile.TileType == TileID.Palladium
-					|| tile.TileType == TileID.Orichalcum
-					|| tile.TileType == TileID.Titanium
-					|| tile.TileType == TileID.Chlorophyte
-					|| tile.TileType == TileID.DesertFossil) {
-					return false;
-				}
-				if (!Main.hardMode && tile.TileType == TileID.Hellstone) {
-					return false;
-				}
-				if (!TileLoader.CanExplode(i, j)) {
+				if (!player.HasEnoughPickPowerToHurtTile(i, j)) {
 					return false;
 				}
 			}

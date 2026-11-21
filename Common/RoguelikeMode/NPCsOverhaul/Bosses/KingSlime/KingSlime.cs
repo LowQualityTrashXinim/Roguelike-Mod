@@ -19,7 +19,7 @@ using Roguelike.Common.Graphics;
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.Bosses.KingSlime;
 internal class KingSlime : NPCReworker {
 	public override int VanillaNPCType => NPCID.KingSlime;
-
+	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == VanillaNPCType && Main.masterMode;
 	public override void SetDefaults(NPC entity) {
 		entity.aiStyle = -1;
 	}

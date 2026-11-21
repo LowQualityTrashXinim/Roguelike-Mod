@@ -345,7 +345,7 @@ namespace Roguelike.Common.Utils {
 		/// <param name="offsetposY"></param>
 		/// <param name="dramatic"></param>
 		/// <param name="dot"></param>
-		public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, int timeleft = 30, bool dramatic = false, bool dot = false) {
+		public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, int timeleft = 30, bool dramatic = false, bool dot = false, float scale = 1) {
 			int drama = 0;
 			if (dramatic) {
 				drama = 1;
@@ -359,6 +359,7 @@ namespace Roguelike.Common.Utils {
 			cbtext.position.X = location.X + location.Width * 0.5f - vector.X * 0.5f;
 			cbtext.position.Y = location.Y + offsetposY + location.Height * 0.25f - vector.Y * 0.5f;
 			cbtext.lifeTime += timeleft;
+			cbtext.scale = scale;
 		}
 		/// <summary>
 		/// Use to order 2 values from smallest to biggest

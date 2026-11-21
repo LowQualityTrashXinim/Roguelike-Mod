@@ -50,7 +50,7 @@ internal class NightmareModeSystem : ModSystem {
 		if(!ModContent.GetInstance<RoguelikeWorldProperty>().NightmareWorld) {
 			return;
 		}
-		bool AnyBossAlive = ModUtils.IsAnyVanillaBossAlive();
+		bool AnyBossAlive = UniversalSystem.AnyVanillaBossAlive;
 		if (AnyBossAlive) {
 			Cooldown = ModUtils.CountDown(Cooldown);
 			if (Cooldown <= 0) {

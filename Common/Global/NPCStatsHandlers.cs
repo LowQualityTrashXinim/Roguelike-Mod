@@ -8,6 +8,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global;
+/// <summary>
+/// Do not carry this class to other mod<br/>
+/// This class is responsible for handling health from all around the mode<br/>
+/// </summary>
 internal class NPCStatsHandlers : GlobalNPC {
 	public const int BossHP = 6500;
 	public const int BossDMG = 30;
@@ -46,9 +50,6 @@ internal class NPCStatsHandlers : GlobalNPC {
 	//Most creatively bankrupt code
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
 		DifficultySettingSystem difficulty = ModContent.GetInstance<DifficultySettingSystem>();
-
-
-
 		StatModifier HPmod = new();
 		StatModifier DMGmod = new();
 		HPmod += .1f * difficulty.Enemy_HP;

@@ -21,6 +21,9 @@ namespace Roguelike.Common.RoguelikeMode {
 	/// Any complex rework should be put into their own file
 	/// </summary>
 	public class RoguelikeItemOverhaul : GlobalItem {
+		public override void SetStaticDefaults() {
+			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireBetsySword] = 0;
+		}
 		public override void SetDefaults(Item entity) {
 			//Attempt to fix item size using texture asset
 			if (entity.IsAWeapon()) {
@@ -70,11 +73,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					item.damage = 40;
 					item.useTime = item.useAnimation = 10;
 					break;
-				case ItemID.BladeofGrass:
-					item.damage = 41;
-					item.scale += .25f;
-					item.useTime = item.useAnimation = 30;
-					break;
 				case ItemID.LightsBane:
 					item.damage = 29;
 					item.useTime = item.useAnimation = 15;
@@ -113,8 +111,8 @@ namespace Roguelike.Common.RoguelikeMode {
 		private void DD2(Item item) {
 			switch (item.type) {
 				case ItemID.DD2SquireBetsySword:
-					item.damage = 200;
-					item.useTime = item.useAnimation = 70;
+					item.damage = 250;
+					item.useTime = item.useAnimation = 55;
 					item.shootSpeed = 25;
 					item.scale += .5f;
 					break;
@@ -171,26 +169,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					break;
 			}
 		}
-		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			switch (item.type) {
-				case ItemID.BladeofGrass:
-					return false;
-
-			}
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-		}
-		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (item.type == ItemID.CandyCaneSword) {
-				player.Heal(5);
-			}
-			if (item.type == ItemID.BladeofGrass) {
-				int amount = Main.rand.Next(3, 6);
-				for (int i = 0; i < amount; i++) {
-					Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center, Main.rand.NextVector2CircularEdge(4, 4), item.shoot, item.damage / 4, 1f, player.whoAmI, MathHelper.ToRadians(Main.rand.Next(3, 7)) * Main.rand.NextBool().ToDirectionInt(), Main.rand.Next(4, 8));
-				}
-			}
-		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			var player = Main.LocalPlayer;
 			var modplayer = player.GetModPlayer<GlobalItemPlayer>();
@@ -205,9 +183,6 @@ namespace Roguelike.Common.RoguelikeMode {
 					line = new(Mod, "RoguelikeOverhaul_Boomerang", "Reduce enemy's defenses by 10 on hit");
 					tooltips.Add(line);
 					break;
-			}
-			if (item.type == ItemID.BladeofGrass) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Hitting enemy spawn 3 to 5 leafs"));
 			}
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
@@ -231,7 +206,6 @@ namespace Roguelike.Common.RoguelikeMode {
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
-		public int PhaseSaberBlade_Counter = 0;
 		public int ReuseDelay = 0;
 		public override void ResetEffects() {
 			Player.downedDD2EventAnyDifficulty = true;

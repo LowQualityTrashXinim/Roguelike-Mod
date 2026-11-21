@@ -217,35 +217,86 @@ public class ArcadeMode_GlobalNPC : GlobalNPC {
 			Main.LocalPlayer.QuickSpawnItem(npc.GetSource_Loot(), ModContent.ItemType<SpoilBag>());
 		}
 		int basePointGrant = 0;
-		switch (npc.type) {
-			case NPCID.BlueSlime:
-				basePointGrant = 10;
-				break;
-			case NPCID.GreenSlime:
-				basePointGrant = 5;
-				break;
-			case NPCID.RedSlime:
-				basePointGrant = 11;
-				break;
-			case NPCID.YellowSlime:
-				basePointGrant = 12;
-				break;
-			case NPCID.PurpleSlime:
-				basePointGrant = 13;
-				break;
-			case NPCID.SlimeSpiked:
-				basePointGrant = 15;
-				break;
-			case NPCID.GoldenSlime:
-				basePointGrant = 10000;
-				break;
+		basePointGrant = MobsThatGivePoint1(npc.type);
+		if (basePointGrant == 0) {
+			basePointGrant = MobsThatGivePoint2(npc.type);
+		}
+		else if (basePointGrant == 0) {
+			basePointGrant = MobsThatGivePoint3(npc.type);
+		}
+		else if (basePointGrant == 0) {
+			basePointGrant = BossThatGivePoint(npc.type);
+		}
+		else if (basePointGrant == 0) {
+			basePointGrant = 1;
+		}
+
+		//Point amplified
+		ModUtils.CombatTextRevamp(npc.Hitbox, Color.Cyan, $"+{basePointGrant}!", timeleft: 15, scale: 1.5f);
+		ModContent.GetInstance<ArcadeMode_System>().Point += basePointGrant;
+
+		return false;
+	}
+
+	private int BossThatGivePoint(int Type) {
+		switch (Type) {
 			case NPCID.KingSlime:
-				basePointGrant = 400;
-				break;
+			case NPCID.EyeofCthulhu:
+			case NPCID.QueenBee:
+			case NPCID.Deerclops:
+			case NPCID.SkeletronHead:
+				return 1000;
+			default:
+				return 0;
+		}
+	}
+	private int MobsThatGivePoint3(int Type) {
+		switch (Type) {
+			case NPCID.GoblinArcher:
+			case NPCID.GoblinThief:
+			case NPCID.GoblinPeon:
+			case NPCID.GoblinScout:
+			case NPCID.GoblinSorcerer:
+			case NPCID.EaterofWorldsHead:
+			case NPCID.EaterofWorldsBody:
+			case NPCID.EaterofWorldsTail:
+			case NPCID.Slimer:
+			case NPCID.Corruptor:
+			case NPCID.Creeper:
+			case NPCID.Herpling:
+			case NPCID.FloatyGross:
+			case NPCID.IchorSticker:
+			case NPCID.CursedHammer:
+			case NPCID.CrimsonAxe:
+			case NPCID.IceElemental:
+				return 10;
+			default:
+				return 0;
+		}
+	}
+	private int MobsThatGivePoint2(int Type) {
+		switch (Type) {
+			case NPCID.GoldenSlime:
+			case NPCID.WanderingEye:
+			case NPCID.GoblinSummoner:
+			case NPCID.DoctorBones:
+			case NPCID.IceGolem:
+			case NPCID.SkeletronHand:
+				return 500;
+			default:
+				return 0;
+		}
+	}
+	private int MobsThatGivePoint1(int Type) {
+		switch (Type) {
+			case NPCID.BlueSlime:
+			case NPCID.GreenSlime:
+			case NPCID.RedSlime:
+			case NPCID.YellowSlime:
+			case NPCID.PurpleSlime:
+			case NPCID.SlimeSpiked:
 			case NPCID.DemonEye:
 			case NPCID.DemonEye2:
-				basePointGrant = 20;
-				break;
 			case NPCID.CataractEye:
 			case NPCID.CataractEye2:
 			case NPCID.SleepyEye:
@@ -256,141 +307,48 @@ public class ArcadeMode_GlobalNPC : GlobalNPC {
 			case NPCID.GreenEye2:
 			case NPCID.PurpleEye:
 			case NPCID.PurpleEye2:
-				basePointGrant = 21;
-				break;
 			case NPCID.ServantofCthulhu:
-				basePointGrant = 1;
-				break;
-			case NPCID.WanderingEye:
-				basePointGrant = 1000;
-				break;
-			case NPCID.EyeofCthulhu:
-				basePointGrant = 400;
-				break;
-			case NPCID.GoblinArcher:
-			case NPCID.GoblinThief:
-			case NPCID.GoblinPeon:
-			case NPCID.GoblinScout:
-			case NPCID.GoblinSorcerer:
-				basePointGrant = 25;
-				break;
-			case NPCID.GoblinSummoner:
-				basePointGrant = 1000;
-				break;
 			case NPCID.EaterofSouls:
-				basePointGrant = 20;
-				break;
 			case NPCID.DevourerHead:
-				basePointGrant = 50;
-				break;
 			case NPCID.CorruptSlime:
 			case NPCID.Slimeling:
 			case NPCID.DarkMummy:
-				basePointGrant = 30;
-				break;
-			case NPCID.Corruptor:
-				basePointGrant = 100;
-				break;
-			case NPCID.Slimer:
-				basePointGrant = 100;
-				break;
-			case NPCID.EaterofWorldsHead:
-			case NPCID.EaterofWorldsBody:
-			case NPCID.EaterofWorldsTail:
-				basePointGrant = 30;
-				break;
 			case NPCID.Crimera:
 			case NPCID.FaceMonster:
 			case NPCID.LittleCrimera:
 			case NPCID.BigCrimera:
 			case NPCID.BloodCrawler:
 			case NPCID.Crimslime:
-				basePointGrant = 35;
-				break;
 			case NPCID.BloodMummy:
-				basePointGrant = 60;
-				break;
-			case NPCID.Creeper:
-				basePointGrant = 15;
-				break;
-			case NPCID.Herpling:
-			case NPCID.FloatyGross:
-				basePointGrant = 100;
-				break;
-			case NPCID.IchorSticker:
-				basePointGrant = 150;
-				break;
-			case NPCID.CursedHammer:
-			case NPCID.CrimsonAxe:
-				basePointGrant = 300;
-				break;
 			case NPCID.Bee:
 			case NPCID.BeeSmall:
-				basePointGrant = 1;
-				break;
 			case NPCID.Hornet:
 			case NPCID.HornetHoney:
 			case NPCID.HornetSpikey:
 			case NPCID.HornetLeafy:
 			case NPCID.HornetFatty:
 			case NPCID.HornetStingy:
-				basePointGrant = 29;
-				break;
 			case NPCID.BigHornetHoney:
 			case NPCID.BigHornetFatty:
 			case NPCID.BigHornetLeafy:
 			case NPCID.BigHornetSpikey:
 			case NPCID.BigHornetStingy:
-				basePointGrant = 39;
-				break;
 			case NPCID.SpikedJungleSlime:
-				basePointGrant = 40;
-				break;
 			case NPCID.JungleBat:
-				basePointGrant = 15;
-				break;
 			case NPCID.JungleSlime:
-				basePointGrant = 10;
-				break;
 			case NPCID.LacBeetle:
-				basePointGrant = 18;
-				break;
-			case NPCID.DoctorBones:
-				basePointGrant = 3000;
-				break;
-			case NPCID.QueenBee:
-				basePointGrant = 750;
-				break;
 			case NPCID.IceSlime:
-				basePointGrant = 19;
-				break;
 			case NPCID.Wolf:
 			case NPCID.IcyMerman:
-				basePointGrant = 65;
-				break;
-			case NPCID.IceElemental:
-				basePointGrant = 60;
-				break;
 			case NPCID.IceBat:
-				basePointGrant = 40;
-				break;
 			case NPCID.SnowFlinx:
-				basePointGrant = 12;
-				break;
 			case NPCID.UndeadViking:
-				basePointGrant = 21;
-				break;
 			case NPCID.IceGolem:
 			case NPCID.Deerclops:
-				basePointGrant = 1000;
-				break;
+				return 1;
+			default:
+				return 0;
 		}
-
-		//Point amplified
-
-		ModContent.GetInstance<ArcadeMode_System>().Point += basePointGrant;
-
-		return false;
 	}
 }
 public class ArcadeUI : UIState {
@@ -418,14 +376,12 @@ public class ArcadeUI : UIState {
 		panel_Header = new();
 		panel_Header.Width.Precent = 1;
 		panel_Header.Height.Pixels = 60;
-		panel_Header.Disable_MouseItemUsesWhenHoverOverAUI();
 		panel_Main.Append(panel_Header);
 
 		panel_Footer = new();
 		panel_Footer.Width.Precent = 1;
 		panel_Footer.Height.Pixels = 60;
 		panel_Footer.VAlign = 1f;
-		panel_Footer.Disable_MouseItemUsesWhenHoverOverAUI();
 		panel_Main.Append(panel_Footer);
 
 
@@ -433,8 +389,14 @@ public class ArcadeUI : UIState {
 		panel_Body.Width.Precent = 1;
 		panel_Body.Height.Pixels = panel_Main.Height.Pixels - panel_Header.Height.Pixels - panel_Footer.Height.Pixels - 40;
 		panel_Body.VAlign = .5f;
-		panel_Body.Disable_MouseItemUsesWhenHoverOverAUI();
 		panel_Main.Append(panel_Body);
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		panel_Main.Disable_MouseItemUsesWhenHoverOverAUI();
+		panel_Header.Disable_MouseItemUsesWhenHoverOverAUI();
+		panel_Footer.Disable_MouseItemUsesWhenHoverOverAUI();
+		panel_Body.Disable_MouseItemUsesWhenHoverOverAUI();
 	}
 	private void Initialize_HeaderPanel() {
 		text_Start = new("Start", 1.2f);
@@ -554,7 +516,7 @@ internal class ArcadeModeActivation : ModItem {
 		Item.scale = .5f;
 	}
 	public override bool CanUseItem(Player player) {
-		return !ModUtils.IsAnyVanillaBossAlive();
+		return !UniversalSystem.AnyVanillaBossAlive;
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {

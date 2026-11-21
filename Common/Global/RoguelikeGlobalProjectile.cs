@@ -62,6 +62,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	/// </summary>
 	public int InitialTimeLeft { get; private set; } = 0;
 	public List<ProjectileAIModify> list_modifier = new();
+	public List<ModSkill> list_modSkill = new();
 	public static void Add_projectileAImodify(int type, ref Projectile proj) {
 		ProjectileAIModify ai = ProjectileModify_System.Get_Modify(type);
 		if (ai == null) {
@@ -72,6 +73,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	}
 	public override void SetDefaults(Projectile entity) {
 		list_modifier = new();
+		list_modSkill = new();
 		constanttimer = 0;
 	}
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {

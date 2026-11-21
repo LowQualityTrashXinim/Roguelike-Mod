@@ -21,7 +21,7 @@ using Terraria.ModLoader;
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.Bosses.EyeofCuthulu;
 public class EyeofCuthulu : NPCReworkerFSM {
 	public override int VanillaNPCType => NPCID.EyeofCthulhu;
-
+	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == VanillaNPCType && Main.masterMode;
 	public override int frameHeight => 996 / 6;
 	public bool isPhase2 = false;
 	public override int startingFrame => isPhase2 ? 3 : 0;

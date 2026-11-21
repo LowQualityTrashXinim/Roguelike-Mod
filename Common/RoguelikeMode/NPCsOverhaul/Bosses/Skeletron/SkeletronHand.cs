@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Roguelike.Common.RoguelikeMode.NPCsOverhaul.Bosses.Skeletron;
 internal class SkeletronHand : GlobalNPC {
-	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHand;
+	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHand && Main.masterMode;
 	public override void SetDefaults(NPC entity) {
 		entity.aiStyle = -1;
 		entity.lifeMax /= 2;

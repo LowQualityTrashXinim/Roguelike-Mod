@@ -20,7 +20,7 @@ internal class Skeletron : GlobalNPC {
 		Stationary,
 		Despawn,
 	}
-	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHead;
+	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == NPCID.SkeletronHead && Main.masterMode;
 	public override bool InstancePerEntity => true;
 	public override void SetDefaults(NPC entity) {
 		state = State.Hover;

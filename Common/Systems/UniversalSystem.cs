@@ -186,7 +186,7 @@ internal class UniversalSystem : ModSystem {
 		arcadeShopUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if (!ModContent.GetInstance<RoguelikeWorldProperty>().BossRushWorld && !ModContent.GetInstance<RoguelikeWorldProperty>().RoguelikeWorld) {
+		if (ModContent.GetInstance<RoguelikeWorldProperty>().TerrariaWorld) {
 			orig();
 		}
 		else {

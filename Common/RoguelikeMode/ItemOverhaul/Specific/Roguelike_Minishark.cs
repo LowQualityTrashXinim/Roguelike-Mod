@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Roguelike.Common.Systems;
 using Roguelike.Common.Utils;
 using Roguelike.Texture;
 using System;
@@ -13,8 +14,20 @@ internal class Roguelike_Minishark : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.type == ItemID.Minishark;
 	}
+	public static readonly WeaponProgress progress = new() {
+
+	};
+	public override void SetStaticDefaults() {
+		progress.Charge = true;
+	}
 	public override void SetDefaults(Item entity) {
 		entity.damage = 19;
+	}
+	public override void HoldItem(Item item, Player player) {
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.SetWeaponProgress(progress);
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.barProgress = player.GetModPlayer<Roguelike_Minishark_ModPlayer>().FreezyCounter / 200f;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientA = Color.Orange;
+		ModContent.GetInstance<UniversalSystem>().defaultUI.WeaponBar.gradientB = Color.DarkGray;
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 50);
@@ -55,16 +68,33 @@ public class Roguelike_Minishark_ModPlayer : ModPlayer {
 	public int FreezyCounter = 0;
 	public float Recoil = 0;
 	public int Recoil_CoolDown = 0;
+	public bool ActivateEffect = false;
 	public override void ResetEffects() {
 		if (Recoil_CoolDown <= 0 && Recoil > 0) {
 			Recoil--;
 			if (Recoil < 0) {
 				Recoil = 0;
 			}
-			Recoil_CoolDown = 10;
+			Recoil_CoolDown = 20;
 		}
 		else {
 			Recoil_CoolDown = ModUtils.CountDown(Recoil_CoolDown);
+		}
+		if (FreezyCounter >= 200) {
+			if (!ActivateEffect) {
+				ActivateEffect = true;
+				ModUtils.DustStar(Player.Center, DustID.GemDiamond, Color.White);
+				for (int a = 0; a < 5; a++) {
+					for (int i = 0; i < 30; i++) {
+						Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.GemDiamond);
+						dust.noGravity = true;
+						dust.velocity = Vector2.One.Vector2DistributeEvenly(30, 360, i) * (10 + a);
+					}
+				}
+			}
+		}
+		else {
+			ActivateEffect = false;
 		}
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -73,6 +103,7 @@ public class Roguelike_Minishark_ModPlayer : ModPlayer {
 				velocity = velocity.Vector2RotateByRandom(Recoil);
 				velocity = velocity.Vector2RandomSpread(Math.Clamp(Recoil, 0, 3));
 			}
+			Recoil_CoolDown = 30;
 			Recoil += .05f;
 		}
 	}

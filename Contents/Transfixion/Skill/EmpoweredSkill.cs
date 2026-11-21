@@ -272,7 +272,7 @@ public class DiceRoll : ModSkill {
 				Main.NewText("World smile with malice");
 				for (int i = 0; i < 10; i++) {
 					var npc = NPC.NewNPCDirect(player.GetSource_FromThis("Skill"), player.Center + Vector2.One.Vector2DistributeEvenlyPlus(10, 360, i) * 600, NPCID.Ghost);
-					npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().Deny_YouFromLoot = true;
 				}
 				break;
 			case 5:
@@ -321,7 +321,7 @@ public class GhostForm : ModSkill {
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		player.ModPlayerStats().DodgeChance += .75f;
-		player.ModPlayerStats().DamageTaken += 1;
+		player.ModPlayerStats().TakenDamage += 1;
 	}
 }
 public class ProtectiveBarrier : ModSkill {

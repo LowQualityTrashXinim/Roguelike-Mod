@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -7,9 +7,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Roguelike.Common.Utils;
+using Roguelike.Common.Systems;
 
-namespace Roguelike.Contents.Items.Toggle
-{
+namespace Roguelike.Contents.Items.Toggle {
 	public class CursedSkull : ModItem {
 		public override void SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
@@ -33,7 +33,7 @@ namespace Roguelike.Contents.Items.Toggle
 			tooltips.Add(line);
 		}
 		public override bool CanUseItem(Player player) {
-			return !ModUtils.IsAnyVanillaBossAlive();
+			return !UniversalSystem.AnyVanillaBossAlive;
 		}
 		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {

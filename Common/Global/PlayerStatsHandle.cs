@@ -149,7 +149,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	/// The cool down are made public and free to be modify cause fun
 	/// </summary>
 	public StatModifier LifeSteal = StatModifier.Default;
-	public StatModifier DamageTaken = StatModifier.Default;
+	public StatModifier TakenDamage = StatModifier.Default;
 	/// <summary>
 	/// This is the public count cool down of <see cref="LifeSteal"/>
 	/// </summary>
@@ -241,12 +241,12 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 		modifiers.FinalDamage.Flat += target.lifeMax * PercentageDamage;
 	}
-	public StatModifier UpdateCritDamage = new StatModifier();
+	public StatModifier UpdateCritDamage = StatModifier.Default;
 	public StatModifier Melee_CritDamage = StatModifier.Default;
 	public StatModifier Range_CritDamage = StatModifier.Default;
 	public StatModifier Magic_CritDamage = StatModifier.Default;
 	public StatModifier Summon_CritDamage = StatModifier.Default;
-	public StatModifier NonCriticalDamage = new StatModifier();
+	public StatModifier NonCriticalDamage = StatModifier.Default;
 	public StatModifier Melee_NonCritDmg = StatModifier.Default;
 	public StatModifier Range_NonCritDmg = StatModifier.Default;
 	public StatModifier Magic_NonCritDmg = StatModifier.Default;
@@ -328,7 +328,9 @@ public partial class PlayerStatsHandle : ModPlayer {
 		if (modifiers.DamageType == Roguelike_DamageClass.True) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(TrueDamage);
 		}
-		modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
+		else {
+			modifiers.FinalDamage = modifiers.FinalDamage.CombineWith(TrueDamage);
+		}
 	}
 	private void TransferStatsModifier(ref StatModifier stat1, ref StatModifier stat2, float percentage) {
 		if (percentage >= 1) {
@@ -604,7 +606,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;
 		TransmutationModifier = StatModifier.Default;
-		DamageTaken = StatModifier.Default;
+		TakenDamage = StatModifier.Default;
 		OnKillHealing = StatModifier.Default - 1;
 		PiercingDamage = StatModifier.Default;
 		WingUpTime = StatModifier.Default;
@@ -689,7 +691,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 	public float HitTakenEffectiveness = 0;
 	public int HitTakenEffectivenessCoolDown = 0;
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(TakenDamage);
 		modifiers.SourceDamage += HitTakenEffectiveness;
 		if (ModContent.GetInstance<DifficultySettingSystem>().Player_HitTakenEffectiveness) {
 			HitTakenEffectiveness += .1f;
@@ -697,7 +699,7 @@ public partial class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DamageTaken);
+		modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(TakenDamage);
 		modifiers.SourceDamage += HitTakenEffectiveness;
 		if (ModContent.GetInstance<DifficultySettingSystem>().Player_HitTakenEffectiveness) {
 			HitTakenEffectiveness += .1f;

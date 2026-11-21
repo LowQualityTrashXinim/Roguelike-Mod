@@ -11,10 +11,12 @@ public class WeaponSwap : ModPlayer {
 	public int ItemTypeOld = 0;
 	public bool IsTheItemInQuestionASynergyItem = false;
 	public bool JustSwitched = false;
+	public uint ItemHeldTime = 0;
 	public override void ResetEffects() {
 		Item item = Player.HeldItem;
 		IsTheItemInQuestionASynergyItem = item.ModItem is SynergyModItem;
 		if (item.type == ItemID.None) {
+			ItemHeldTime = 0;
 			return;
 		}
 		JustSwitched = false;
@@ -23,6 +25,7 @@ public class WeaponSwap : ModPlayer {
 		}
 		if (Player.itemAnimation == Player.itemAnimationMax) {
 			if (ItemTypeCurrent != item.type) {
+				ItemHeldTime = 0;
 				ItemTypeCurrent = item.type;
 				if (itemOld != null) {
 					if (itemOld.TryGetGlobalItem(out GlobalItemHandle handler)) {
@@ -31,6 +34,7 @@ public class WeaponSwap : ModPlayer {
 				}
 				itemOld = item;
 			}
+			ItemHeldTime++;
 			ItemTypeOld = ItemTypeCurrent;
 		}
 	}

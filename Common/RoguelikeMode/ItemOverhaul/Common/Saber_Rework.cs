@@ -20,6 +20,8 @@ internal class Roguelike_Saber : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return CheckSaber(entity.type);
 	}
+	public override bool InstancePerEntity => true;
+	public int PhaseSaberBlade_Counter = 0;
 	public bool CheckSaber(int type) {
 		switch (type) {
 			case ItemID.PurplePhaseblade:
@@ -48,8 +50,8 @@ internal class Roguelike_Saber : GlobalItem {
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		var modplayer = player.GetModPlayer<GlobalItemPlayer>();
-		if (++modplayer.PhaseSaberBlade_Counter >= 3) {
-			modplayer.PhaseSaberBlade_Counter = 0;
+		if (++PhaseSaberBlade_Counter >= 3) {
+			PhaseSaberBlade_Counter = 0;
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 1, type, damage, knockback, player.whoAmI);
 			if (projectile.ModProjectile is StarWarSwordProjectile starwarProjectile) {
 				starwarProjectile.ColorOfSaber = SwordSlashTrail.averageColorByID[item.type] * 2;

@@ -17,6 +17,15 @@ internal class RoguelikeCommonItem : GlobalItem {
 			entity.maxStack = 99;
 		}
 		entity.maxStack = 999;
+		Set_ItemRarity(entity);
+		Set_ItemValue(entity);
+	}
+
+	private void Set_ItemRarity(Item item) {
+
+	}
+	private void Set_ItemValue(Item item) {
+
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		base.ModifyTooltips(item, tooltips);

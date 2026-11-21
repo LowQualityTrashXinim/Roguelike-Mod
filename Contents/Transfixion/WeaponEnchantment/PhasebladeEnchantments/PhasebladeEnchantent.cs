@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Roguelike.Common.Global;
 using Roguelike.Common.Graphics;
+using Roguelike.Common.RoguelikeMode.ItemOverhaul.Common;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Projectiles;
 using Terraria;

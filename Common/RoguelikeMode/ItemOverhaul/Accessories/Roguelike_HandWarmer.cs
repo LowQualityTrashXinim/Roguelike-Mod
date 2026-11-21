@@ -1,12 +1,8 @@
-﻿using Roguelike.Common.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Roguelike.Common.Utils;
+using System.Collections.Generic;
 
 namespace Roguelike.Common.RoguelikeMode.ItemOverhaul.Accessories;
 internal class Roguelike_HandWarmer : GlobalItem {

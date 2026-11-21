@@ -6,10 +6,17 @@ using Roguelike.Common.Utils;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace Roguelike.Common.Global;
+/// <summary>
+/// Common word prefix need to know : <br/><br/>
+/// If the value is a stats<br/>
+/// "no prefix" - assumed this value always update and reset <br/>
+/// "static" - This is a value that won't be changed or update, instead developer must handle or change this value themselves, useful for adding custom fixed stats like mutation or weapon that reduce said stats on hit permanently.<br/>
+/// </summary>
 internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 
@@ -17,6 +24,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool OneTimeDR = false;
 	public int DRTimer = 0;
 	public int ExtraUpdate = 0;
+	//The below should be synced with netcode
+	/// <summary>
+	/// Have 3 slots much like Projectile.ai<br/>
+	/// </summary>
+	public float[] Global_AI = [4];
 	/// <summary>
 	/// Use this for always update velocity
 	/// </summary>
@@ -27,39 +39,63 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public float static_velocityMultiplier = 1;
 	/// <summary>
 	/// Set this to true if your NPC is a ghost NPC which can't be kill<br/>
-	/// Uses this along with <see cref="BelongToWho"/> to make it so that this NPC will die when the parent NPC is killed
+	/// Uses this along with <see cref="BelongToWho"/> to make it so that this NPC will die when the parent NPC is killed <br/>
+	/// if you are making a undying minion. <br/>
+	/// Otherwise make sure you handle this NPC properly/
 	/// </summary>
 	public bool IsAGhostEnemy = false;
-	public int BelongToWho = -1;
 	/// <summary>
-	/// Currently this is broken, highly not recommand to use it.
+	/// The whoAmI but to owner NPC, by default it is set to -1 meaning this NPC is not a minion<br/>
+	/// The moment this value is set to a NPC to follow, this NPC will automatically be handled<br/>
+	/// This NPC will automatically die upon the owner NPC die.
 	/// </summary>
-	public bool CanDenyYouFromLoot = false;
+	public int BelongToWho = -1;
+
+	public bool Deny_YouFromLoot = false;
 	/// <summary>
 	/// This doesn't reset anywhere, it is a static value that allow npc to regenerate hp
 	/// </summary>
-	public int PositiveLifeRegen = 0;
+	public int Static_PositiveLifeRegen = 0;
 	public int PositiveLifeRegenCount = 0;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
 	public bool NPC_SpecialException = false;
-	public int InvincibilityFrame = 0;
 
-	public float Static_PercentageDamage = 0;
+	//Add value to this will grant NPC i-frame
+	//Unlike player where you have to set both value
+	public int InvincibilityFrame = 0;
 
 	public float PercentageDamage = 0;
 
-	public float MaxDamageTaken = 1;
 	/// <summary>
-	/// This is always reset back to 0, if you are looking for static damage reduciton, use <see cref="Static_Endurance"/> instead
+	/// This is a percentage damage block value, by default it is set to 1<br/>
+	/// Setting it to 0.15f will mean that this NPC can't take more than 15% of their health as damage
 	/// </summary>
-	public float Endurance = 0;
-	public float Static_Endurance = 0;
+	public float MaxDamageTaken = 1;
 	/// <summary>
 	/// This is a always reset value, will increases damage NPC via ModifyHit hook and can be applied to projectile
 	/// </summary>
 	public StatModifier DamageIncrease = new();
+	/// <summary>
+	/// This is always reset back to 0, if you are looking for static damage reduciton, use <see cref="Static_Endurance"/> instead
+	/// </summary>
+	public float Endurance = 0;
+	/// <summary>
+	/// NPC dodge chance, can only range from 1 to 100%<br/>
+	/// This value is a always update reset value
+	/// </summary>
+	public float DodgeChance = 0;
+	/// <summary>
+	/// Static prefix mean that this won't be change during the update
+	/// </summary>
+	public float Static_Endurance = 0;
+	/// <summary>
+	/// NPC dodge chance, can only range from 1 to 100%<br/>
+	/// This value is a non-update value
+	/// </summary>
+	public float Static_DodgeChance = 0;
+	public float Static_PercentageDamage = 0;
 
 	public StatModifier Static_DamageIncrease = new();
 
@@ -83,6 +119,33 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			Poison_Global.Add(key, value);
 		}
 	}
+	/// <summary>
+	/// Only run once in this class OnSpawn hook<br/>
+	/// Use this if you want a easy way to add additive or flat health increases<br/>
+	/// <br/>
+	/// Best to use this in hook <see cref="GlobalNPC.ApplyDifficultyAndPlayerScaling"/><br/>
+	/// Unexpected behavior may occur from trying to set in <see cref="GlobalNPC.SetDefaultsFromNetId(NPC)"/> hook<br/>
+	/// This variable will only run once in <see cref="GlobalNPC.OnSpawn(NPC, IEntitySource)"/> hook
+	/// </summary>
+	public StatModifier Adjust_Extra_Health = StatModifier.Default;
+	/// <summary>
+	/// Only run once in this class OnSpawn hook<br/>
+	/// Use this if you want a easy way to add additive or flat defenses increases<br/>
+	/// <br/>
+	/// Best to use this in hook <see cref="GlobalNPC.ApplyDifficultyAndPlayerScaling"/><br/>
+	/// Unexpected behavior may occur from trying to set in <see cref="GlobalNPC.SetDefaultsFromNetId(NPC)"/> hook<br/>
+	/// This variable will only run once in <see cref="GlobalNPC.OnSpawn(NPC, IEntitySource)"/> hook
+	/// </summary>
+	public StatModifier Adjust_Extra_Defense = StatModifier.Default;
+	/// <summary>
+	/// Only run once in this class OnSpawn hook<br/>
+	/// Use this if you want a easy way to add additive or flat damage increases<br/>
+	/// <br/>
+	/// Best to use this in hook <see cref="GlobalNPC.ApplyDifficultyAndPlayerScaling"/><br/>
+	/// Unexpected behavior may occur from trying to set in <see cref="GlobalNPC.SetDefaultsFromNetId(NPC)"/> hook<br/>
+	/// This variable will only run once in <see cref="GlobalNPC.OnSpawn(NPC, IEntitySource)"/> hook
+	/// </summary>
+	public StatModifier Adjust_Extra_Damage = StatModifier.Default;
 	public StatModifier Poison_Additional = StatModifier.Default - 1;
 	public float Poison_Additional_Timer = 0;
 	public float Poison_Additional_MaxTimer = 60;
@@ -90,6 +153,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
 		DamageIncrease = new();
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
+		npc.lifeMax = (int)Adjust_Extra_Health.ApplyTo(npc.lifeMax);
+		npc.defense = (int)Adjust_Extra_Defense.ApplyTo(npc.defense);
+		npc.damage = (int)Adjust_Extra_Damage.ApplyTo(npc.damage);
 	}
 	public int TimeLimit = -1;
 	public override void ResetEffects(NPC npc) {
@@ -100,9 +168,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		StatDefense = new();
 		DamageIncrease = new();
 		MaxDamageTaken = 1;
+		DodgeChance = 0;
 		if (IsAGhostEnemy) {
 			npc.dontTakeDamage = true;
 			npc.chaseable = false;
+			npc.life = npc.lifeMax;
 		}
 		if (--DRTimer <= 0) {
 			DRFromFatalAttack = false;
@@ -160,12 +230,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		return base.CanBeHitByProjectile(npc, projectile);
 	}
-	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-		LeadingConditionRule rule = new(new DenyYouFromLoot());
-		foreach (var item in npcLoot.Get()) {
-			item.OnSuccess(rule);
-		}
-	}
 	public override Color? GetAlpha(NPC npc, Color drawColor) {
 		if (IsAGhostEnemy) {
 			drawColor.A = 0;
@@ -174,6 +238,13 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			return drawColor;
 		}
 		return base.GetAlpha(npc, drawColor);
+	}
+	public override bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) {
+		if (Main.rand.NextFloat() <= DodgeChance) {
+			InvincibilityFrame = 30;
+			return false;
+		}
+		return base.ModifyCollisionData(npc, victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
@@ -208,7 +279,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		if (++PositiveLifeRegenCount >= 60) {
 			PositiveLifeRegenCount = 0;
-			npc.life = Math.Clamp(npc.life + PositiveLifeRegen, 0, npc.lifeMax);
+			npc.life = Math.Clamp(npc.life + Static_PositiveLifeRegen, 0, npc.lifeMax);
 		}
 		InvincibilityFrame = ModUtils.CountDown(InvincibilityFrame);
 	}
@@ -260,6 +331,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			return check;
 		}
 		return base.CheckDead(npc);
+	}
+	public override bool PreKill(NPC npc) {
+		return !Deny_YouFromLoot;
 	}
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		if (InvincibilityFrame > 0 && InvincibilityFrame % 5 == 0) {

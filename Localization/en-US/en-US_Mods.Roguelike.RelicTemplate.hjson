@@ -16,3 +16,4 @@ RangeFocusTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], [c/{0}:{4}] [c/{0}:{3
 PowerTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.16x while slowly decreases energy"
 TierOneTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.25x when the relic is tier 1"
 ArmorlessTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 1.20x when player aren't wearing any armor"
+OnlyOneTemplate.Description: "[c/{0}:+{2}] [c/{0}:{1}], 3.5x if player only have 1 point relic activate"

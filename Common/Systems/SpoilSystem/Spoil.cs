@@ -210,8 +210,8 @@ public class SpoilsUIButton : UIImageButton {
 				Main.instance.MouseText(Language.GetTextValue($"Mods.Roguelike.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
-				if (spoil.RareValue == 999) {
-					Main.instance.MouseText($"[c/{SpoilDropRarity.ColorBaseOnRareValue(999).Hex3()}:{spoil.FinalDisplayName()}]", spoil.FinalDescription());
+				if (!ItemRarityID.Search.ContainsId(spoil.RareValue)) {
+					Main.instance.MouseText($"[c/{SpoilDropRarity.ColorBaseOnRareValue(spoil.RareValue).Hex3()}:{spoil.FinalDisplayName()}]", spoil.FinalDescription());
 				}
 				else {
 					Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);

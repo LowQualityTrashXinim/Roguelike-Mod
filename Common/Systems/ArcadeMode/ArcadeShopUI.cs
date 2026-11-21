@@ -1,10 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using log4net.Core;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Roguelike.Common.Global;
 using Roguelike.Common.Systems.ArcaneMode;
 using Roguelike.Common.Utils;
+using Roguelike.Contents.Items;
+using Roguelike.Contents.Items.Lootbox;
 using Roguelike.Contents.Items.Lootbox.Lootpool;
+using Roguelike.Contents.Transfixion.Perks;
 using Roguelike.Texture;
 using System;
 using System.Collections.Generic;
@@ -147,20 +151,89 @@ public class ArcadeShopUI : UIState {
 	private void Txpanel_PointCounter_OnUpdate(UIElement affectedElement) {
 		txpanel_PointCounter.SetText($"Point: {ModContent.GetInstance<ArcadeMode_System>().Point}");
 	}
-
-	public override void OnActivate() {
+	private void SettingUpSpecialShop() {
 		for (int i = 0; i < Arr_ShopUIButtonRow1.Length; i++) {
-			Arr_ShopUIButtonRow1[i].SetItem(ContentSamples.ItemsByType[Main.rand.Next(ModItemLib.ListLootboxType)]);
+			int item = Main.rand.Next([
+				ModContent.ItemType<SynergyEnergy>(),
+				ModContent.ItemType<WoodenLootBox>(),
+				ModContent.ItemType<IronLootBox>(),
+				ModContent.ItemType<SilverLootBox>(),
+				ModContent.ItemType<GoldLootBox>(),
+				ModContent.ItemType<ShadowLootBox>(),
+				ModContent.ItemType<WorldEssence>()
+
+				]);
+			int value = 0;
+			if (item == ModContent.ItemType<SynergyEnergy>()) {
+				value = 15000;
+			}
+			if (item == ModContent.ItemType<WoodenLootBox>()) {
+				value = 10000;
+			}
+			else if (item == ModContent.ItemType<IronLootBox>()) {
+				value = 12500;
+			}
+			else if (item == ModContent.ItemType<SilverLootBox>()) {
+				value = 15000;
+			}
+			else if (item == ModContent.ItemType<GoldLootBox>()) {
+				value = 17500;
+			}
+			else if (item == ModContent.ItemType<ShadowLootBox>()) {
+				value = 20000;
+			}
+			else if (item == ModContent.ItemType<WorldEssence>()) {
+				value = 50000;
+			}
+			Arr_ShopUIButtonRow1[i].SetItem(new Item(item), value);
 		}
+	}
+	public override void OnActivate() {
+		SettingUpSpecialShop();
+
 		ItemPool pool = LootboxSystem.GetItemPool(ItemPool.GetPoolType<RainbowLootboxPool>());
 		var accpool = pool.AccessoryLoot().ToArray();
 		var armorpool = pool.ArmorLoot().ToArray();
 		var potionpool = pool.PotionPool().ToArray();
 		var itempool = pool.AllWeaponPool().ToArray();
 		List<int> allPool = [.. itempool, .. potionpool, .. accpool, .. armorpool];
+		Player player = Main.LocalPlayer;
+		bool CanConsumeAnyActually = player.ConsumedLifeCrystals < Player.LifeCrystalMax
+			|| player.ConsumedLifeFruit < Player.LifeFruitMax
+			|| player.ConsumedManaCrystals < Player.ManaCrystalMax;
 		for (int i = 0; i < Arr_ShopUIButtonRow2.Length; i++) {
-			Arr_ShopUIButtonRow2[i].SetItem(new Item(Main.rand.Next(allPool)));
+			if (CanConsumeAnyActually && Main.rand.NextBool(10)) {
+				Set_HealthManaFruitCrystal(i);
+			}
+			else {
+				Set_ItemToShop(i, Main.rand.Next(allPool));
+			}
 		}
+	}
+	private void Set_HealthManaFruitCrystal(int i) {
+		Player player = Main.LocalPlayer;
+		//True is health and false is mana
+		bool ChooseBetweenManaAndHealth =
+			player.ConsumedLifeCrystals < Player.LifeCrystalMax
+		|| player.ConsumedLifeFruit < Player.LifeFruitMax
+		&& Main.rand.NextBool();
+		if (player.ConsumedLifeCrystals >= Player.ManaCrystalMax) {
+			ChooseBetweenManaAndHealth = true;
+		}
+		if (ChooseBetweenManaAndHealth) {
+			if (player.ConsumedLifeCrystals < Player.LifeCrystalMax) {
+				Arr_ShopUIButtonRow2[i].SetItem(new Item(ItemID.LifeCrystal));
+			}
+			else {
+				Arr_ShopUIButtonRow2[i].SetItem(new Item(ItemID.LifeFruit));
+			}
+		}
+		else {
+			Arr_ShopUIButtonRow2[i].SetItem(new Item(ItemID.ManaCrystal));
+		}
+	}
+	private void Set_ItemToShop(int i, int weapon) {
+		Arr_ShopUIButtonRow2[i].SetItem(new Item(weapon));
 	}
 }
 public class ArcadeShopUIButton : Roguelike_UIImageButton {
@@ -180,19 +253,28 @@ public class ArcadeShopUIButton : Roguelike_UIImageButton {
 		priceTag.HAlign = .5f;
 		Append(priceTag);
 	}
-	public void SetItem(Item sellitem) {
+	public void SetItem(Item sellitem, int customPrice = 0) {
 		item = sellitem;
 		SetVisibility(.6f, 1f);
 		UnselectAble = false;
-		int level = Main.rand.Next(0, 5);
-		float chanceForRareHighLevel = .2f;
-		while (Main.rand.NextFloat() <= chanceForRareHighLevel) {
-			level += Main.rand.Next(0, 5);
+		if (sellitem.IsAWeapon()) {
+			int level = Main.rand.Next(0, 5);
+			float chanceForRareHighLevel = .2f + ModContent.GetInstance<ArcadeMode_System>().CurrentWave * .01f;
+			while (Main.rand.NextFloat() <= chanceForRareHighLevel) {
+				level += Main.rand.Next(0, 5);
+				chanceForRareHighLevel /= 2;
+			}
+			if (level != 0) {
+				item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(level);
+			}
+			Value = Math.Clamp(item.value / 1000 + 100 * level, 10, 9999999);
 		}
-		if (level != 0) {
-			item.GetGlobalItem<GlobalItemHandle>().SetItemLevel(level);
+		else {
+			Value = 5000;
 		}
-		Value = Math.Clamp(item.value / 1000 + 100 * level, 0, 9999999);
+		if (customPrice > 0) {
+			Value = customPrice;
+		}
 		//priceTag.SetText($"{Value}p");
 	}
 	public override void UpdateOuter(GameTime gametime) {
@@ -204,6 +286,7 @@ public class ArcadeShopUIButton : Roguelike_UIImageButton {
 		if (ModContent.GetInstance<ArcadeMode_System>().Point >= Value) {
 			ModContent.GetInstance<ArcadeMode_System>().Point -= Value;
 			Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("Shop"), item);
+			ModUtils.AmmoForWeapon(Main.LocalPlayer, item.type);
 			UnselectAble = true;
 			SetVisibility(.4f, .4f);
 			priceTag.SetText("Sold !");

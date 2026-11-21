@@ -288,7 +288,7 @@ internal class LootBoxLord : ModNPC {
 					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
 					RoguelikeGlobalNPC clone = newNPC.GetGlobalNPC<RoguelikeGlobalNPC>();
 					clone.BelongToWho = NPC.whoAmI;
-					clone.CanDenyYouFromLoot = true;
+					clone.Deny_YouFromLoot = true;
 					clone.IsAGhostEnemy = true;
 					list_clones.Add((LootboxLord_Clone)newNPC.ModNPC);
 					list_clones[i - 1].index = i;
@@ -310,7 +310,7 @@ internal class LootBoxLord : ModNPC {
 					NPC newNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center.Add(100 * i, 0), ModContent.NPCType<LootboxLord_Clone>());
 					RoguelikeGlobalNPC clone = newNPC.GetGlobalNPC<RoguelikeGlobalNPC>();
 					clone.BelongToWho = NPC.whoAmI;
-					clone.CanDenyYouFromLoot = true;
+					clone.Deny_YouFromLoot = true;
 					clone.IsAGhostEnemy = true;
 					list_clones.Add((LootboxLord_Clone)newNPC.ModNPC);
 					list_clones[i - 1].index = i;

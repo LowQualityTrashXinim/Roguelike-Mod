@@ -266,6 +266,50 @@ the builder input.
 931/ Fixed a bug with Divine hammer where 2 UI modes can overlapped each other.
 932/ Reworked Medicated Bandage and Fast Clock.
 933/ Minor code organization.
+934/ Reworked Armor bracing.
+935/ Updated mod version from 0.0.20.11 to 0.0.20.12 ./.
+936/ Player are now given ammo once they purchase range weapon.
+937/ Flying Dragon no longer benefit from attack speed stats, however to compenstate for this change, increases damage from 200 -> 250 and usetime 70 -> 55
+938/ The shop now can sell life crystal, mana crystal and life fruit.
+939/ Added some basic balancing for special shop.
+940/ Added point text when killing a enemy.
+941/ Readjusted the point data base.
+942/ Future proof spoil rarity code.
+943/ Bosses reworked ai is now locked behind master mode.
+944/ Added WeaponEffect 14,15 and 16.
+945/ Buff weapon leveling to be better rather than "barely better".
+946/ Re-Added mutation system.
+947/ Added explanation for general system and more specific mechanic.
+948/ Added content for mutation system which are :
+- Tanky
+- Ninja
+- Vampiric
+- Death touch
+- Deadly
+- Extra deadly
+- Sandbag
+- Weakening
+- Empowered
+- Omega
+- Energetic
+949/ Added basic stats for NPC and basic HP, DMG, DEF scaler for NPC without causing much conflict.
+950/ Slight refactor to weapon charge/timing UI codes.
+951/ Added item held time variable into Weapon Swap Player.
+952/ Changed a variable name in PlayerStatsHandler class to make it easier to understand.
+953/ Added more custom shop price in to the shop database.
+954/ Added the basic ground work for UI animation.
+955/ Deleted ItemDropRule DenyYouFromLoot due to it being broken and better alternative way found instead.
+956/ Added a lot more comment so that the future development won't be as confusing.
+957/ Added dodge chance and custom I-frame handler for NPC.
+958/ Added OnlyOneTemplate relic template.
+959/ Slight fixed to OneTierTemplate calculation.
+960/ Added description for Unending melody and base item for it.
+961/ Reorganize "info" in main localization file.
+962/ Added new tooltip for Blade of Grass, more rework for it to be expected.
+963/ Updated mod version from 0.0.20.11 to 0.0.21 ./.
+964/ Reduce the uses of ModUtils.IsAnyVanillaBossAlive and replace with more optimized one.
+965/ Added in 2 hook methods in preparation for item rarity setting and value setting.
+966/ Neo Dynamite now mine based on your pick power.
 
 Version 0.0.1:
 1/ Ported the mod into a new repository.

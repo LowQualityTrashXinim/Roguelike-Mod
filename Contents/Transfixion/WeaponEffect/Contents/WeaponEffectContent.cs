@@ -1,6 +1,7 @@
 ﻿using Roguelike.Common.Global;
 using Roguelike.Common.Utils;
 using Roguelike.Contents.Items.Weapon;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,10 +14,10 @@ public class Effect1 : WeaponEffect {
 }
 public class Effect2 : WeaponEffect {
 	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
-		player.ModPlayerStats().UpdateCritDamage += .75f;
+		player.ModPlayerStats().UpdateCritDamage += .35f;
 	}
 	public override void ModifyWeaponCrit(Player player, Item item, ref float crit) {
-		crit += 20;
+		crit += 15;
 	}
 }
 public class Effect3 : WeaponEffect {
@@ -76,16 +77,33 @@ public class Effect13 : WeaponEffect {
 		}
 	}
 }
+public class Effect14 : WeaponEffect {
+	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
+		player.GetModPlayer<WeaponEffectPlayer>().Effect14++;
+	}
+}
+public class Effect15 : WeaponEffect {
+	public override void UpdateItem(Player player, Item item, GlobalItemHandle handler) {
+		player.ModPlayerStats().UpdateCritDamage += 1;
+	}
+}
+public class Effect16 : WeaponEffect {
+	public override void ModifyWeaponCrit(Player player, Item item, ref float crit) {
+		crit += 40;
+	}
+}
 public class WeaponEffectPlayer : ModPlayer {
 	public bool Effect4 = false;
 	public int Effect5 = 0;
 	public bool Effect6 = false;
 	public int Effect10 = 0;
+	public int Effect14 = 0;
 	public override void ResetEffects() {
 		Effect4 = false;
 		Effect5 = 0;
 		Effect6 = false;
 		Effect10 = 0;
+		Effect14 = 0;
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		if (Effect6) {
@@ -94,17 +112,32 @@ public class WeaponEffectPlayer : ModPlayer {
 			}
 		}
 	}
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		modifiers.SourceDamage += .5f * Effect14;
+	}
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		modifiers.SourceDamage += .5f * Effect14;
+	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.minion || !proj.Check_ItemTypeSource(Player.HeldItem.type)) {
+			return;
+		}
 		for (int i = 0; i < Effect5; i++) {
-			if (Main.rand.NextBool(20) && !proj.minion && proj.Check_ItemTypeSource(Player.HeldItem.type)) {
+			if (Main.rand.NextBool(20)) {
 				Player.Heal(Main.rand.Next(1, 20));
 			}
 		}
-		for (int i = 0; i < Effect10; i++) {
-			if (Main.rand.NextBool(5) && !proj.minion && proj.Check_ItemTypeSource(Player.HeldItem.type)) {
-				Player.StrikeNPCDirect(target, hit);
-				Effect10--;
+		for (int i = 0; i < Effect14; i++) {
+			if (Main.rand.NextFloat() <= .7f) {
+				Player.StrikeNPCDirect(target, target.CalculateHitInfo(80 + Math.Min((int)(target.life * .05f), 200), 1));
 			}
+			Effect14--;
+		}
+		for (int i = 0; i < Effect10; i++) {
+			if (Main.rand.NextBool(5)) {
+				Player.StrikeNPCDirect(target, hit);
+			}
+			Effect10--;
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -113,11 +146,17 @@ public class WeaponEffectPlayer : ModPlayer {
 				Player.Heal(Main.rand.Next(1, 20));
 			}
 		}
+		for (int i = 0; i < Effect14; i++) {
+			if (Main.rand.NextFloat() <= .7f) {
+				Player.StrikeNPCDirect(target, target.CalculateHitInfo(80 + Math.Min((int)(target.life * .05f), 200), 1));
+			}
+			Effect14--;
+		}
 		for (int i = 0; i < Effect10; i++) {
 			if (Main.rand.NextBool(5)) {
 				Player.StrikeNPCDirect(target, hit);
-				Effect10--;
 			}
+			Effect10--;
 		}
 	}
 	public override bool CanConsumeAmmo(Item weapon, Item ammo) {

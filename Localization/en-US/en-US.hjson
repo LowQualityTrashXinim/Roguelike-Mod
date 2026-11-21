@@ -1,6 +1,19 @@
 Mods: {
 	Roguelike: {
 		Info: {
+			Header_WeaponTag: Weapon Tag
+			WeaponTag:
+				'''
+				Weapon tag and Weapon tag effect are 2 entirely different catagory
+
+				For weapon tag :
+				Almost every weapon contain a tag which is called weapon tag.
+				Weapon tag are to clarify outro effect specification of application
+
+				For Weapon tag effect :
+				Weapon tag effect will provide effect without needing any extra condition
+				while still act like a weapon tag. Example: Hallowed Gaze is a weapon tag 
+				'''
 			HallowedGaze:
 				'''
 				[c/ffffc0:Hallowed Gaze]:
@@ -70,33 +83,17 @@ Mods: {
 				Everytime striking enemy with [c/6f00ab:Night Infection] active,
 				It have 1 in 5 chance to create 3 shadow flame tentacle at target location.
 				'''
-			WorldProgression:
-				'''
-				World progression:
-
-				Everytime you defeated a boss, the boss gain a stats boosted.
-				All of the enemies also gain a stats boost.
-				At certain progression line, some aspect of the world become much more hazardous
-
-				Do your best to survive <3.
-
-				May you reach the possibilitiy you wish for !
-				'''
+			Header_DamageInfo: Damage information
 			ThornDamage:
 				'''
 				Thorn damage : (Not to be confused with vanilla version)
 
-				Thorn damage is referred to reflecting damage based on taken damage from enemy 
+				Thorn damage is reflect damage based on taken damage from enemy 
 				Thorn damage can not be critical unless a game mechanic enable that.
 
-				The mod thorn damage have 4 types which are "%" | "base" | "x" | "flat"
+				10% thorn is equal to reflect back 10% of taken damage back to enemy as thorn damage
 
-				For "base" and "flat" damage type, it is a direct increasement to thorn damage.
-				"flat" is unaffected by "%" and "x" damage type.
-
-				The "%" and "x" damage type are enable for reflect damage and increases base thorn damage.
-				10% thorn damage is reflecting 10% damage taken from enemy
-				1.1x thorn damage is multiplying the existing damage taken and addition increases by 1.1x
+				10 flat thorn damage is strike back 10 thorn damage to the dealer
 
 				Thorn AoE :
 				A specific stats that increases the range of reflect damage be dealt onto
@@ -181,17 +178,18 @@ Mods: {
 				- True damage type
 				If your weapon has true damage type, meaning it will inherit true damage attribute.
 				'''
-			WeaponTag:
+			Header_GeneralInfo: General information
+			WorldProgression:
 				'''
-				Weapon tag and Weapon tag effect are 2 entirely different catagory
+				World progression:
 
-				For weapon tag :
-				Almost every weapon contain a tag which is called weapon tag.
-				Weapon tag are to clarify outro effect specification of application
+				Everytime you defeated a boss, the boss gain a stats boosted.
+				All of the enemies also gain a stats boost and have chance to become mutated.
+				At certain progression line, some aspect of the world become much more hazardous
 
-				For Weapon tag effect :
-				Weapon tag effect will provide effect without needing any extra condition
-				while still act like a weapon tag. Example: Hallowed Gaze is a weapon tag 
+				Do your best to survive <3.
+
+				May you reach the possibilitiy you wish for !
 				'''
 			NegativeStatus:
 				'''
@@ -199,6 +197,31 @@ Mods: {
 
 				Negative status is a custom form of a status effect that is not considered to be a debuff
 				So this mean that debuff related mechanic won't be applied to negative status.
+				'''
+			TakenDamage:
+				'''
+				Not to be confused with damage reduciton
+				Taken damage uses a entirely different calculation and will stack with each other instead of damage reduction
+
+				So if a item that has
+				-30% taken damage
+				combine with
+				+15% damage reduction
+
+				Taken damage is treated as source damage not final damage.
+				Meaning it won't ignore DR or defenses of the player.
+				it does not result in 45% damage reduction
+				'''
+			DamageStat:
+				'''
+				In the mod there are 4 damage stat types:
+				"%" which is additive, increases your base damage in a % value
+				"x" which is multiplicative, increases both your base and additive in a x value
+				"base" which as the name suggest, your base unmodified damage
+				"flat" which is flat addition that can't be changed by any of the above
+
+				There are special case where these damage stat types are
+				applied differently for example thorn damage
 				'''
 			LootBox:
 				'''
@@ -232,6 +255,40 @@ Mods: {
 
 				- Black lootbox
 				- Rainbow Lootbox
+				'''
+			Spoil:
+				'''
+				Spoil has up to 5 obtainable rarity tiers with each tier provide it's own loot drop amount
+				Higher tier have more specific or more specific loot pool given
+
+				These 5 tiers along with appear rate are :
+				- Common 
+				- Uncommon - 44%
+				- Rare - 10%
+				- Super rare - 2.5%
+				- Super super rare ( SSR ) - 0.1%
+
+				Blessing of Opportunity will increases the above drop rate by 1.5x
+				'''
+			Mutation:
+				'''
+				"The world become more hostile the more you progress"
+				Mutation is a progressive difficulty that increase based on world progression.
+				for each progression normal NPC gain 1% to become mutated
+				If enemy successfully mutated. they will roll again at half that chance again and again until fail.
+				Only none-boss and none-friendly NPC can gain mutation and they can have unlimited amount
+				of mutation.
+				
+				Mutation NPC are overall extremely dangerous but there are mutation class that are 
+				much more dangerous than the rest. We classified mutation into 2 types :
+
+				- Normal mutation
+				Make enemy become more annoying, harder to kill or hit harder. 
+				Doesn't add in any abilty that make them any more dangerous than fighting boss
+
+				- Super mutation
+				Turn them into a mini boss entirely, so dangerous that fighting them have high 
+				chance to die to them more than dying to boss
 				'''
 		}
 
@@ -3073,6 +3130,44 @@ Mods: {
 					'''
 			}
 
+			UnendingMelody:	{
+				DisplayName: Unending melody
+				Tooltip:
+					'''
+					"Once I dreamt we were dear to each other. I woke to find that we were stranger"
+					Upon held, summon a phantom minion.
+					After each 3th attack, the next attack is enhanced deal extra 50% damage.
+					After 6th cycle of attacks, alt attack will unleash "Story untold" attack.
+					Alt attacking again will activate "Forgotten Opera"
+					During "Forgotten Opera" state, weapon will be switched to auto attack state
+					'''
+				ExtraInfo:
+					'''
+					Phantom minion: 
+					Phantom minion from this weapon dynamically adjusted damage, crit chacne and crit dmg.
+					The phantom minion will attack at where your cursor are.
+					
+					After a cycle of attack ( 4 attack chain ) :
+					You will also gain "Melody of peace" and "Melody of tragedy"
+					If during all of your attack, you haven't taken a hit, you instead gain "Melody of harmony"
+
+					Story untold:
+					During the special attack, you can't take damage but you also can't move
+					Any of cycle attack afterward will instead replace existing melody.
+					"Melody of harmony" are however can't be replaced.
+					There can only be 6 melodies present at all time
+
+					Forgotten Opera:
+					During ultimate of the weapon, every 5s consumed a melody.
+					[+] "Melody of peace" give the minion more attack and switch 
+					to more rapid attack 
+					[+] "Melody of tragedy" give the minion more crit rate and
+					switch the minion attack to more heavy attack deal increased damage
+					[+] "Melody of harmony" grant both benefit of the melody and minion do
+					both version of attack at the same time.
+					'''
+			}
+
 			PositionWand: {
 				DisplayName: Position Wand
 				Tooltip: ""
@@ -5025,6 +5120,91 @@ Mods: {
 			Stealthy.DisplayName: Stealthy
 			Vampiric.DisplayName: Vampiric
 			Vital.DisplayName: Vital
+		}
+
+		Mutation: {
+			Tanky: {
+				Name: Tanky
+				Desc: Target gain extra 500% health, 100 defenses and 20% damage reduction
+			}
+			Ninja: {
+				Name: Ninja
+				Desc: 
+					'''
+					Have 50% to deal 4x damage
+					Have 50% to dodge an attack			
+					'''
+			}
+			Sandbag: {
+				Name: Sandbag
+				Desc: Target gain 1000% more health
+			}
+			Super: {
+				Name: Super
+				Desc: 
+					'''
+					Target deal 75% more damage
+					And gain 50% damage reduction
+					'''
+			}
+			Empowered: {
+				Name: Empowered
+				Desc:
+					'''
+					Target gain ability to regenerate 0.5%
+					their maximum health every 1s
+					Target gain 10% percentage damage, 
+					deal 50% more damage, 150% more health
+					and 50 defenses
+					'''
+			}
+			Deadly: {
+				Name: Deadly
+				Desc: Target gain 100% more damage
+			}
+			ExtraDeadly: {
+				Name: Extra deadly
+				Desc: Target gain 300% more damage
+			}
+			Vampiric: {
+				Name: Vampiric
+				Desc: Target gain ability to life steal on contact damage
+			}
+			DeathTouch: {
+				Name: Death Touch
+				Desc: 
+				'''
+				When dealing direct damage to player :
+				If player's health exceed 100
+				immediately set it to 1 and player gain a debuff 
+				that make player take extra 1000% damage from any source 
+				( beside DoT ) for 5s
+				'''
+			}
+			Energetic: {
+				Name: Energetic 
+				Desc:
+				'''
+				Target gain 1 extra update, 
+				resulting in 100% move speed and 100% attack speed, 
+				however debuff last 50% less but also DoT is 100% more effective
+				'''
+			}
+			Omega: {
+				Name: Omega
+				Desc:
+				'''
+				"You can't come up with enough rotten things to say about this mutation"
+				- Periodically gain 1 - 2s of immunity frame after being hit or hitting player
+				- Have 30% to completely teleport dodge a attack
+				- On hit, reduce damage taken by 40% to 90%
+				- When below 30%, 10% health, heal 90% of health back
+				- When at 50%,30%,15% health, gain regeneration ability
+				- Have 1 in 10 chance to gain protection which reduce incoming damage by 90% for 10s
+				- Increases maximum life by 500% and 30% percentage damage
+				- Immunity to most debuff
+				'''
+			}
 		}
 	}
 }
